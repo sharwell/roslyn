@@ -39,9 +39,10 @@ namespace Roslyn.Utilities
             return PooledObject<List<TItem>>.Create(pool);
         }
 
-        public static PooledObject<T> GetPooledObject<T>(this ObjectPool<T> pool) where T : class
+        public static PooledObject<T> GetPooledObject<T>(this ObjectPool<T> pool)
+            where T : class, IPoolableObject
         {
-            return new PooledObject<T>(pool, p => p.Allocate(), (p, o) => p.Free(o));
+            return new PooledObject<T>(pool, p => SafeAllocator(p), (p, o, t) => SafeReleaser(p, o, t));
         }
 
         public static StringBuilder AllocateAndClear(this ObjectPool<StringBuilder> pool)
@@ -196,6 +197,25 @@ namespace Roslyn.Utilities
             }
 
             pool.Free(list);
+        }
+
+        public static (T, PooledObjectToken) SafeAllocator<T>(ObjectPool<T> pool)
+            where T : class, IPoolableObject
+        {
+            T instance = pool.Allocate();
+            instance.Initialize();
+            return (instance, instance.Token);
+        }
+
+        public static void SafeReleaser<T>(ObjectPool<T> pool, T instance, PooledObjectToken token)
+            where T : class, IPoolableObject
+        {
+            Contract.ThrowIfFalse(instance.Token == token, "Attempted to release the same pooled object multiple times.");
+
+            if (instance.Release())
+                pool.Free(instance);
+            else
+                pool.ForgetTrackedObject(instance);
         }
     }
 }
