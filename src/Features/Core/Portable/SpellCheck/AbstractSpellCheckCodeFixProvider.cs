@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.SpellCheck
                 return;
             }
 
-            var similarityChecker = WordSimilarityChecker.Allocate(nameText, substringsAreSimilar: true);
+            var (similarityChecker, token) = WordSimilarityChecker.Allocate(nameText, substringsAreSimilar: true);
             try
             {
                 await CheckItemsAsync(
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.SpellCheck
             }
             finally
             {
-                similarityChecker.Free();
+                similarityChecker.Free(token);
             }
         }
 

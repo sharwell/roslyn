@@ -19,6 +19,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
         private readonly Func<string, bool> _predicate;
 
         private readonly WordSimilarityChecker _wordSimilarityChecker;
+        private readonly WordSimilarityChecker.Token _similarityCheckerToken;
 
         private SearchQuery(string name, SearchKind kind)
         {
@@ -38,7 +39,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                     // its 'AreSimilar' method. That way we only create the WordSimilarityChecker
                     // once and it can cache all the information it needs while it does the AreSimilar
                     // check against all the possible candidates.
-                    _wordSimilarityChecker = WordSimilarityChecker.Allocate(name, substringsAreSimilar: false);
+                    (_wordSimilarityChecker, _similarityCheckerToken) = WordSimilarityChecker.Allocate(name, substringsAreSimilar: false);
                     _predicate = _wordSimilarityChecker.AreSimilar;
                     break;
                 default:
@@ -54,7 +55,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
         public void Dispose()
         {
-            _wordSimilarityChecker?.Free();
+            _wordSimilarityChecker?.Free(_similarityCheckerToken);
         }
 
         public static SearchQuery Create(string name, SearchKind kind)

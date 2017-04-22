@@ -35,9 +35,9 @@ namespace Roslyn.Utilities
         {
             var result = _bkTree.Find(value, threshold: null);
 
-            var checker = WordSimilarityChecker.Allocate(value, substringsAreSimilar);
+            var (checker, token) = WordSimilarityChecker.Allocate(value, substringsAreSimilar);
             var array = result.Where(checker.AreSimilar).ToArray();
-            checker.Free();
+            checker.Free(token);
 
             return array;
         }
@@ -89,6 +89,44 @@ namespace Roslyn.Utilities
             }
         }
 
+        public struct Token : IEquatable<Token>
+        {
+            public readonly int Value;
+
+            public Token(int value)
+            {
+                Value = value;
+            }
+
+            public static bool operator ==(Token a, Token b)
+            {
+                return a.Equals(b);
+            }
+
+            public static bool operator !=(Token a, Token b)
+            {
+                return !a.Equals(b);
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (!(obj is Token other))
+                    return false;
+
+                return Equals(other);
+            }
+
+            public bool Equals(Token other)
+            {
+                return Value == other.Value;
+            }
+
+            public override int GetHashCode()
+            {
+                return Value;
+            }
+        }
+
         // Cache the result of the last call to AreSimilar.  We'll often be called with the same
         // value multiple times in a row, so we can avoid expensive computation by returning the
         // same value immediately.
@@ -105,10 +143,12 @@ namespace Roslyn.Utilities
         /// </summary>
         private bool _substringsAreSimilar;
 
+        private Token _token;
+
         private static readonly object s_poolGate = new object();
         private static readonly Stack<WordSimilarityChecker> s_pool = new Stack<WordSimilarityChecker>();
 
-        public static WordSimilarityChecker Allocate(string text, bool substringsAreSimilar)
+        public static (WordSimilarityChecker, Token) Allocate(string text, bool substringsAreSimilar)
         {
             WordSimilarityChecker checker;
             lock (s_poolGate)
@@ -119,7 +159,7 @@ namespace Roslyn.Utilities
             }
 
             checker.Initialize(text, substringsAreSimilar);
-            return checker;
+            return (checker, checker._token);
         }
 
         private WordSimilarityChecker()
@@ -132,14 +172,18 @@ namespace Roslyn.Utilities
             _threshold = GetThreshold(_source);
             _editDistance = new EditDistance(text);
             _substringsAreSimilar = substringsAreSimilar;
+            _token = new Token(_token.Value + 1);
         }
 
-        public void Free()
+        public void Free(Token token)
         {
+            Contract.ThrowIfFalse(token == _token);
+
             _editDistance?.Dispose();
             _source = null;
             _editDistance = null;
             _lastAreSimilarResult = default(CacheResult);
+            _token = new Token(_token.Value + 1);
             s_pool.Push(this);
         }
 
@@ -163,9 +207,9 @@ namespace Roslyn.Utilities
         /// </summary>
         public static bool AreSimilar(string originalText, string candidateText, bool substringsAreSimilar, out double similarityWeight)
         {
-            var checker = Allocate(originalText, substringsAreSimilar);
+            var (checker, token) = Allocate(originalText, substringsAreSimilar);
             var result = checker.AreSimilar(candidateText, out similarityWeight);
-            checker.Free();
+            checker.Free(token);
 
             return result;
         }

@@ -26,20 +26,21 @@ namespace Microsoft.CodeAnalysis.PatternMatching
             public readonly StringBreaks CharacterSpans;
 
             public readonly WordSimilarityChecker SimilarityChecker;
+            private readonly WordSimilarityChecker.Token _similarityCheckerToken;
 
             public TextChunk(string text, bool allowFuzzingMatching)
             {
                 this.Text = text;
                 this.CharacterSpans = StringBreaker.BreakIntoCharacterParts(text);
-                this.SimilarityChecker = allowFuzzingMatching
+                (SimilarityChecker, _similarityCheckerToken) = allowFuzzingMatching
                     ? WordSimilarityChecker.Allocate(text, substringsAreSimilar: false)
-                    : null;
+                    : (null, default(WordSimilarityChecker.Token));
             }
 
             public void Dispose()
             {
                 this.CharacterSpans.Dispose();
-                this.SimilarityChecker?.Free();
+                this.SimilarityChecker?.Free(_similarityCheckerToken);
             }
         }
     }
