@@ -25,22 +25,21 @@ namespace Microsoft.CodeAnalysis.PatternMatching
             /// </summary>
             public readonly StringBreaks CharacterSpans;
 
-            public readonly WordSimilarityChecker SimilarityChecker;
-            private readonly WordSimilarityChecker.Token _similarityCheckerToken;
+            public readonly PooledObject<WordSimilarityChecker> SimilarityChecker;
 
             public TextChunk(string text, bool allowFuzzingMatching)
             {
                 this.Text = text;
                 this.CharacterSpans = StringBreaker.BreakIntoCharacterParts(text);
-                (SimilarityChecker, _similarityCheckerToken) = allowFuzzingMatching
+                this.SimilarityChecker = allowFuzzingMatching
                     ? WordSimilarityChecker.Allocate(text, substringsAreSimilar: false)
-                    : (null, default(WordSimilarityChecker.Token));
+                    : default(PooledObject<WordSimilarityChecker>);
             }
 
             public void Dispose()
             {
                 this.CharacterSpans.Dispose();
-                this.SimilarityChecker?.Free(_similarityCheckerToken);
+                this.SimilarityChecker.Dispose();
             }
         }
     }

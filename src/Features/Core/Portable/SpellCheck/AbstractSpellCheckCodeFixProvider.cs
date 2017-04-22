@@ -76,16 +76,10 @@ namespace Microsoft.CodeAnalysis.SpellCheck
                 return;
             }
 
-            var (similarityChecker, token) = WordSimilarityChecker.Allocate(nameText, substringsAreSimilar: true);
-            try
+            using (var similarityChecker = WordSimilarityChecker.Allocate(nameText, substringsAreSimilar: true))
             {
-                await CheckItemsAsync(
-                    context, nameNode, nameText,
-                    completionList, similarityChecker).ConfigureAwait(false);
-            }
-            finally
-            {
-                similarityChecker.Free(token);
+                await CheckItemsAsync(context, nameNode, nameText, completionList, similarityChecker.Object)
+                    .ConfigureAwait(false);
             }
         }
 

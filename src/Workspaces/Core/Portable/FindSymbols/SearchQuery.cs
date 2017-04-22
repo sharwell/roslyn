@@ -18,8 +18,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
         ///<summary>The predicate to fall back on if faster index searching is not possible.</summary>
         private readonly Func<string, bool> _predicate;
 
-        private readonly WordSimilarityChecker _wordSimilarityChecker;
-        private readonly WordSimilarityChecker.Token _similarityCheckerToken;
+        private PooledObject<WordSimilarityChecker> _wordSimilarityChecker;
 
         private SearchQuery(string name, SearchKind kind)
         {
@@ -39,8 +38,8 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                     // its 'AreSimilar' method. That way we only create the WordSimilarityChecker
                     // once and it can cache all the information it needs while it does the AreSimilar
                     // check against all the possible candidates.
-                    (_wordSimilarityChecker, _similarityCheckerToken) = WordSimilarityChecker.Allocate(name, substringsAreSimilar: false);
-                    _predicate = _wordSimilarityChecker.AreSimilar;
+                    _wordSimilarityChecker = WordSimilarityChecker.Allocate(name, substringsAreSimilar: false);
+                    _predicate = _wordSimilarityChecker.Object.AreSimilar;
                     break;
                 default:
                     throw ExceptionUtilities.UnexpectedValue(kind);
@@ -55,7 +54,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
         public void Dispose()
         {
-            _wordSimilarityChecker?.Free(_similarityCheckerToken);
+            _wordSimilarityChecker.Dispose();
         }
 
         public static SearchQuery Create(string name, SearchKind kind)

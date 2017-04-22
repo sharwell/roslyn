@@ -35,11 +35,10 @@ namespace Roslyn.Utilities
         {
             var result = _bkTree.Find(value, threshold: null);
 
-            var (checker, token) = WordSimilarityChecker.Allocate(value, substringsAreSimilar);
-            var array = result.Where(checker.AreSimilar).ToArray();
-            checker.Free(token);
-
-            return array;
+            using (var checker = WordSimilarityChecker.Allocate(value, substringsAreSimilar))
+            {
+                return result.Where(checker.Object.AreSimilar).ToArray();
+            }
         }
 
         internal void WriteTo(ObjectWriter writer)
@@ -73,7 +72,7 @@ namespace Roslyn.Utilities
         }
     }
 
-    internal class WordSimilarityChecker
+    internal class WordSimilarityChecker : IPoolableObject
     {
         private struct CacheResult
         {
@@ -86,44 +85,6 @@ namespace Roslyn.Utilities
                 CandidateText = candidate;
                 AreSimilar = areSimilar;
                 SimilarityWeight = similarityWeight;
-            }
-        }
-
-        public struct Token : IEquatable<Token>
-        {
-            public readonly int Value;
-
-            public Token(int value)
-            {
-                Value = value;
-            }
-
-            public static bool operator ==(Token a, Token b)
-            {
-                return a.Equals(b);
-            }
-
-            public static bool operator !=(Token a, Token b)
-            {
-                return !a.Equals(b);
-            }
-
-            public override bool Equals(object obj)
-            {
-                if (!(obj is Token other))
-                    return false;
-
-                return Equals(other);
-            }
-
-            public bool Equals(Token other)
-            {
-                return Value == other.Value;
-            }
-
-            public override int GetHashCode()
-            {
-                return Value;
             }
         }
 
@@ -143,23 +104,17 @@ namespace Roslyn.Utilities
         /// </summary>
         private bool _substringsAreSimilar;
 
-        private Token _token;
+        private PooledObjectToken _token;
 
-        private static readonly object s_poolGate = new object();
-        private static readonly Stack<WordSimilarityChecker> s_pool = new Stack<WordSimilarityChecker>();
+        private static readonly ObjectPool<WordSimilarityChecker> s_pool = new ObjectPool<WordSimilarityChecker>(() => new WordSimilarityChecker());
 
-        public static (WordSimilarityChecker, Token) Allocate(string text, bool substringsAreSimilar)
+        PooledObjectToken IPoolableObject.Token => _token;
+
+        public static PooledObject<WordSimilarityChecker> Allocate(string text, bool substringsAreSimilar)
         {
-            WordSimilarityChecker checker;
-            lock (s_poolGate)
-            {
-                checker = s_pool.Count > 0
-                    ? s_pool.Pop()
-                    : new WordSimilarityChecker();
-            }
-
-            checker.Initialize(text, substringsAreSimilar);
-            return (checker, checker._token);
+            var checker = s_pool.GetPooledObject();
+            checker.Object.Initialize(text, substringsAreSimilar);
+            return checker;
         }
 
         private WordSimilarityChecker()
@@ -172,19 +127,21 @@ namespace Roslyn.Utilities
             _threshold = GetThreshold(_source);
             _editDistance = new EditDistance(text);
             _substringsAreSimilar = substringsAreSimilar;
-            _token = new Token(_token.Value + 1);
         }
 
-        public void Free(Token token)
+        void IPoolableObject.Initialize()
         {
-            Contract.ThrowIfFalse(token == _token);
+            _token = new PooledObjectToken(_token.Value + 1);
+        }
 
+        bool IPoolableObject.Release()
+        {
             _editDistance?.Dispose();
             _source = null;
             _editDistance = null;
             _lastAreSimilarResult = default(CacheResult);
-            _token = new Token(_token.Value + 1);
-            s_pool.Push(this);
+            _token = new PooledObjectToken(_token.Value + 1);
+            return true;
         }
 
         public static bool AreSimilar(string originalText, string candidateText)
@@ -207,11 +164,10 @@ namespace Roslyn.Utilities
         /// </summary>
         public static bool AreSimilar(string originalText, string candidateText, bool substringsAreSimilar, out double similarityWeight)
         {
-            var (checker, token) = Allocate(originalText, substringsAreSimilar);
-            var result = checker.AreSimilar(candidateText, out similarityWeight);
-            checker.Free(token);
-
-            return result;
+            using (var checker = Allocate(originalText, substringsAreSimilar))
+            {
+                return checker.Object.AreSimilar(candidateText, out similarityWeight);
+            }
         }
 
         internal static int GetThreshold(string value)

@@ -57,19 +57,16 @@ namespace Microsoft.CodeAnalysis.CodeFixes.AddImport
                     // TODO(cyrusn): It's a shame we have to compute this twice.  However, there's no
                     // great way to store the original value we compute because it happens deep in the 
                     // compiler bowels when we call FindDeclarations.
-                    var (similarityChecker, token) = WordSimilarityChecker.Allocate(name, substringsAreSimilar: false);
-
-                    var result = symbols.SelectAsArray(s =>
+                    using (var similarityChecker = WordSimilarityChecker.Allocate(name, substringsAreSimilar: false))
                     {
-                        var areSimilar = similarityChecker.AreSimilar(s.Name, out var matchCost);
+                        return symbols.SelectAsArray(s =>
+                        {
+                            var areSimilar = similarityChecker.Object.AreSimilar(s.Name, out var matchCost);
 
-                        Debug.Assert(areSimilar);
-                        return SymbolResult.Create(s.Name, nameNode, s, matchCost);
-                    });
-
-                    similarityChecker.Free(token);
-
-                    return result;
+                            Debug.Assert(areSimilar);
+                            return SymbolResult.Create(s.Name, nameNode, s, matchCost);
+                        });
+                    }
                 }
             }
         }

@@ -404,7 +404,7 @@ namespace Microsoft.CodeAnalysis.PatternMatching
 
             if (fuzzyMatch)
             {
-                if (patternChunk.SimilarityChecker.AreSimilar(candidate))
+                if (patternChunk.SimilarityChecker.Object.AreSimilar(candidate))
                 {
                     return new PatternMatch(
                         PatternMatchKind.Fuzzy, punctuationStripped, isCaseSensitive: false, matchedSpan: null);
