@@ -126,6 +126,15 @@ Microsoft.CodeAnalysis.OperationKind.VariableDeclarationStatement = 3 -> Microso
 Microsoft.CodeAnalysis.OperationKind.WithStatement = 82 -> Microsoft.CodeAnalysis.OperationKind
 Microsoft.CodeAnalysis.OperationKind.YieldBreakStatement = 12 -> Microsoft.CodeAnalysis.OperationKind
 Microsoft.CodeAnalysis.OperationKind.YieldReturnStatement = 16 -> Microsoft.CodeAnalysis.OperationKind
+Microsoft.CodeAnalysis.Opt
+Microsoft.CodeAnalysis.Opt.MissingValue
+Microsoft.CodeAnalysis.Opt.MissingValue.MissingValue() -> void
+Microsoft.CodeAnalysis.Opt<T>
+Microsoft.CodeAnalysis.Opt<T>.As<TOther>() -> Microsoft.CodeAnalysis.Opt<TOther>
+Microsoft.CodeAnalysis.Opt<T>.Equals(Microsoft.CodeAnalysis.Opt<T> obj) -> bool
+Microsoft.CodeAnalysis.Opt<T>.HasValue.get -> bool
+Microsoft.CodeAnalysis.Opt<T>.Value.get -> T
+Microsoft.CodeAnalysis.Opt<T>.ValueOrDefault.get -> T
 Microsoft.CodeAnalysis.ParseOptions.Errors.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.Diagnostic>
 Microsoft.CodeAnalysis.ParseOptions.SpecifiedKind.get -> Microsoft.CodeAnalysis.SourceCodeKind
 Microsoft.CodeAnalysis.SemanticModel.GetOperation(Microsoft.CodeAnalysis.SyntaxNode node, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> Microsoft.CodeAnalysis.IOperation
@@ -666,6 +675,8 @@ abstract Microsoft.CodeAnalysis.Diagnostics.OperationBlockStartAnalysisContext.R
 abstract Microsoft.CodeAnalysis.Diagnostics.OperationBlockStartAnalysisContext.RegisterOperationBlockEndAction(System.Action<Microsoft.CodeAnalysis.Diagnostics.OperationBlockAnalysisContext> action) -> void
 abstract Microsoft.CodeAnalysis.SemanticModel.GetOperationCore(Microsoft.CodeAnalysis.SyntaxNode node, System.Threading.CancellationToken cancellationToken) -> Microsoft.CodeAnalysis.IOperation
 const Microsoft.CodeAnalysis.LanguageNames.FSharp = "F#" -> string
+override Microsoft.CodeAnalysis.Opt<T>.Equals(object obj) -> bool
+override Microsoft.CodeAnalysis.Opt<T>.GetHashCode() -> int
 override Microsoft.CodeAnalysis.Semantics.OperationWalker.Visit(Microsoft.CodeAnalysis.IOperation operation) -> void
 override Microsoft.CodeAnalysis.Semantics.OperationWalker.VisitAddressOfExpression(Microsoft.CodeAnalysis.Semantics.IAddressOfExpression operation) -> void
 override Microsoft.CodeAnalysis.Semantics.OperationWalker.VisitArgument(Microsoft.CodeAnalysis.Semantics.IArgument operation) -> void
@@ -741,6 +752,21 @@ override Microsoft.CodeAnalysis.Semantics.OperationWalker.VisitWhileUntilLoopSta
 override Microsoft.CodeAnalysis.Semantics.OperationWalker.VisitWithStatement(Microsoft.CodeAnalysis.Semantics.IWithStatement operation) -> void
 override Microsoft.CodeAnalysis.Semantics.OperationWalker.VisitYieldBreakStatement(Microsoft.CodeAnalysis.Semantics.IReturnStatement operation) -> void
 static Microsoft.CodeAnalysis.Compilation.GetRequiredLanguageVersion(Microsoft.CodeAnalysis.Diagnostic diagnostic) -> string
+static Microsoft.CodeAnalysis.Opt.From<T>(T value) -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt.FromNullable<T>(T value) -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt.Missing -> Microsoft.CodeAnalysis.Opt.MissingValue
+static Microsoft.CodeAnalysis.Opt<T>.From(T value) -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt<T>.FromNullable(T value) -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt<T>.Missing -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt<T>.explicit operator Microsoft.CodeAnalysis.Opt<T>(T value) -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt<T>.explicit operator T(Microsoft.CodeAnalysis.Opt<T> value) -> T
+static Microsoft.CodeAnalysis.Opt<T>.implicit operator Microsoft.CodeAnalysis.Opt<T>(Microsoft.CodeAnalysis.Opt.MissingValue missing) -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt<T>.operator !=(Microsoft.CodeAnalysis.Opt<T> x, Microsoft.CodeAnalysis.Opt<T> y) -> bool
+static Microsoft.CodeAnalysis.Opt<T>.operator !=(Microsoft.CodeAnalysis.Opt<T> x, T y) -> bool
+static Microsoft.CodeAnalysis.Opt<T>.operator !=(T x, Microsoft.CodeAnalysis.Opt<T> y) -> bool
+static Microsoft.CodeAnalysis.Opt<T>.operator ==(Microsoft.CodeAnalysis.Opt<T> x, Microsoft.CodeAnalysis.Opt<T> y) -> bool
+static Microsoft.CodeAnalysis.Opt<T>.operator ==(Microsoft.CodeAnalysis.Opt<T> x, T y) -> bool
+static Microsoft.CodeAnalysis.Opt<T>.operator ==(T x, Microsoft.CodeAnalysis.Opt<T> y) -> bool
 static Microsoft.CodeAnalysis.Semantics.OperationExtensions.Descendants(this Microsoft.CodeAnalysis.IOperation operation) -> System.Collections.Generic.IEnumerable<Microsoft.CodeAnalysis.IOperation>
 static Microsoft.CodeAnalysis.Semantics.OperationExtensions.DescendantsAndSelf(this Microsoft.CodeAnalysis.IOperation operation) -> System.Collections.Generic.IEnumerable<Microsoft.CodeAnalysis.IOperation>
 static Microsoft.CodeAnalysis.Semantics.OperationExtensions.GetDeclaredVariables(this Microsoft.CodeAnalysis.Semantics.IVariableDeclarationStatement declarationStatement) -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.ILocalSymbol>

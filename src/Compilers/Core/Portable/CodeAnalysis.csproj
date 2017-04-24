@@ -137,6 +137,8 @@
     <Compile Include="Operations\UnaryAndBinaryOperationExtensions.cs" />
     <Compile Include="Operations\UnaryOperandKind.cs" />
     <Compile Include="Operations\UnaryOperationKind.cs" />
+    <Compile Include="Opt.cs" />
+    <Compile Include="Opt`1.cs" />
     <Compile Include="Emit\AsyncMoveNextBodyDebugInfo.cs" />
     <Compile Include="Emit\IteratorMoveNextBodyDebugInfo.cs" />
     <Compile Include="Emit\StateMachineMoveNextDebugInfo.cs" />
