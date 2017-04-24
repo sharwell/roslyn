@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis
 
         public static implicit operator Opt<T>(Opt.MissingValue missing) => Missing;
 
-        public static explicit operator Opt<T>(T value) => From(value);
+        public static implicit operator Opt<T>(T value) => FromNullable(value);
         public static explicit operator T(Opt<T> value) => value.Value;
 
         public static bool operator ==(Opt<T> x, Opt<T> y)

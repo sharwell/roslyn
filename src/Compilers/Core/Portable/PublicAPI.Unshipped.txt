@@ -758,9 +758,9 @@ static Microsoft.CodeAnalysis.Opt.Missing -> Microsoft.CodeAnalysis.Opt.MissingV
 static Microsoft.CodeAnalysis.Opt<T>.From(T value) -> Microsoft.CodeAnalysis.Opt<T>
 static Microsoft.CodeAnalysis.Opt<T>.FromNullable(T value) -> Microsoft.CodeAnalysis.Opt<T>
 static Microsoft.CodeAnalysis.Opt<T>.Missing -> Microsoft.CodeAnalysis.Opt<T>
-static Microsoft.CodeAnalysis.Opt<T>.explicit operator Microsoft.CodeAnalysis.Opt<T>(T value) -> Microsoft.CodeAnalysis.Opt<T>
 static Microsoft.CodeAnalysis.Opt<T>.explicit operator T(Microsoft.CodeAnalysis.Opt<T> value) -> T
 static Microsoft.CodeAnalysis.Opt<T>.implicit operator Microsoft.CodeAnalysis.Opt<T>(Microsoft.CodeAnalysis.Opt.MissingValue missing) -> Microsoft.CodeAnalysis.Opt<T>
+static Microsoft.CodeAnalysis.Opt<T>.implicit operator Microsoft.CodeAnalysis.Opt<T>(T value) -> Microsoft.CodeAnalysis.Opt<T>
 static Microsoft.CodeAnalysis.Opt<T>.operator !=(Microsoft.CodeAnalysis.Opt<T> x, Microsoft.CodeAnalysis.Opt<T> y) -> bool
 static Microsoft.CodeAnalysis.Opt<T>.operator !=(Microsoft.CodeAnalysis.Opt<T> x, T y) -> bool
 static Microsoft.CodeAnalysis.Opt<T>.operator !=(T x, Microsoft.CodeAnalysis.Opt<T> y) -> bool
