@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 
 namespace Roslyn.Utilities
 {
@@ -66,6 +67,20 @@ namespace Roslyn.Utilities
         /// all builds
         /// </summary>
         public static void ThrowIfNull<T>(T value, string message = null) where T : class
+        {
+            if (value == null)
+            {
+                message = message ?? "Unexpected Null";
+                Fail(message);
+            }
+        }
+
+        /// <summary>
+        /// Throws a non-accessible exception if the provided value is null.  This method executes in
+        /// all builds
+        /// </summary>
+        public static void ThrowIfNull<T>(Opt<T> value, string message = null)
+            where T : class
         {
             if (value == null)
             {
