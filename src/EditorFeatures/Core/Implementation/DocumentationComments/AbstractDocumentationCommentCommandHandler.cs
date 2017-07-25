@@ -334,9 +334,15 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             CancellationToken cancellationToken)
         {
             // Find the documentation comment before the new line that was just pressed
-            var token = GetTokenToRight(syntaxTree, originalPosition, cancellationToken);
-            if (!IsDocCommentNewLine(token) || token.SpanStart != originalPosition)
+            var token = GetTokenToLeft(syntaxTree, position, cancellationToken);
+            if (!IsDocCommentNewLine(token) || token.Span.End > position)
             {
+                return false;
+            }
+
+            if (token.Span.End < position && !string.IsNullOrWhiteSpace(text.ToString(TextSpan.FromBounds(token.Span.End, position))))
+            {
+                // The tokens were separated by something other than an indenting whitespace
                 return false;
             }
 
