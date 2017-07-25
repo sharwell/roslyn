@@ -591,6 +591,40 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             return default;
         }
 
+        /// <summary>
+        /// Look inside a trivia list for a documentation token that contains the given position.
+        /// </summary>
+        private static readonly Func<SyntaxTriviaList, int, SyntaxToken> s_findDocumentationTokenBackward = FindDocumentationTokenBackward;
+
+        /// <summary>
+        /// Look inside a trivia list for a documentation token that contains the given position.
+        /// </summary>
+        private static SyntaxToken FindDocumentationTokenBackward(SyntaxTriviaList triviaList, int position)
+        {
+            foreach (var trivia in triviaList.Reverse())
+            {
+                if (trivia.HasStructure)
+                {
+                    var structuredTrivia = trivia.GetStructure();
+                    if (!(structuredTrivia is ISkippedTokensTriviaSyntax))
+                    {
+                        var lastToken = structuredTrivia.GetLastToken(includeDirectives: true, includeDocumentationComments: true);
+                        while (lastToken.RawKind != 0 && lastToken.SpanStart > position)
+                        {
+                            lastToken = lastToken.GetPreviousToken(includeDirectives: true, includeDocumentationComments: true);
+                        }
+
+                        if (lastToken.RawKind != 0)
+                        {
+                            return lastToken;
+                        }
+                    }
+                }
+            }
+
+            return default;
+        }
+
         private static SyntaxToken GetInitialToken(
             SyntaxNode root,
             int position,
@@ -653,7 +687,9 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             bool includeDirectives = false,
             bool includeDocumentationComments = false)
         {
-            var findSkippedToken = includeSkipped ? s_findSkippedTokenBackward : ((l, p) => default);
+            var findTokenBackward = includeSkipped
+                ? s_findSkippedTokenBackward
+                : includeDocumentationComments ? s_findDocumentationTokenBackward : ((l, p) => default);
 
             var token = GetInitialToken(root, position, includeSkipped, includeDirectives, includeDocumentationComments);
 
@@ -661,7 +697,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             {
                 do
                 {
-                    var skippedToken = findSkippedToken(token.LeadingTrivia, position);
+                    var skippedToken = findTokenBackward(token.LeadingTrivia, position);
                     token = skippedToken.RawKind != 0
                         ? skippedToken
                         : token.GetPreviousToken(includeZeroWidth: false, includeSkipped: includeSkipped, includeDirectives: includeDirectives, includeDocumentationComments: includeDocumentationComments);
@@ -670,7 +706,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             }
             else if (token.Span.End < position)
             {
-                var skippedToken = findSkippedToken(token.TrailingTrivia, position);
+                var skippedToken = findTokenBackward(token.TrailingTrivia, position);
                 token = skippedToken.RawKind != 0 ? skippedToken : token;
             }
 
