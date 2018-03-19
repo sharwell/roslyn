@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Editor.UnitTests;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces;
 using Microsoft.CodeAnalysis.Remote;
 using Microsoft.CodeAnalysis.Remote.DebugUtil;
@@ -127,7 +128,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
         {
             var code = @"class Test { void Method() { } }";
 
-            using (var workspace = TestWorkspace.CreateCSharp(code))
+            using (var workspace = TestWorkspace.CreateCSharp(code, exportProvider: MinimalTestExportProvider.CreateExportProvider(MinimalTestExportProvider.CreateAssemblyCatalog(RoslynServices.RemoteHostAssemblies))))
             {
                 var solution = workspace.CurrentSolution;
                 var service = await GetSolutionServiceAsync(solution);
@@ -205,7 +206,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
         public async Task TestAdditionalDocument()
         {
             var code = @"class Test { void Method() { } }";
-            using (var workspace = TestWorkspace.CreateCSharp(code))
+            using (var workspace = TestWorkspace.CreateCSharp(code, exportProvider: MinimalTestExportProvider.CreateExportProvider(MinimalTestExportProvider.CreateAssemblyCatalog(RoslynServices.RemoteHostAssemblies))))
             {
                 var projectId = workspace.CurrentSolution.ProjectIds.First();
                 var additionalDocumentId = DocumentId.CreateNewId(projectId);
@@ -237,7 +238,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
         {
             var code = @"class Test { void Method() { } }";
 
-            using (var workspace = TestWorkspace.CreateCSharp(code))
+            using (var workspace = TestWorkspace.CreateCSharp(code, exportProvider: MinimalTestExportProvider.CreateExportProvider(MinimalTestExportProvider.CreateAssemblyCatalog(RoslynServices.RemoteHostAssemblies))))
             {
                 var projectId = workspace.CurrentSolution.ProjectIds.First();
                 var documentId = DocumentId.CreateNewId(projectId);
@@ -270,7 +271,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
             var code = @"class Test { void Method() { } }";
 
             // create base solution
-            using (var workspace = TestWorkspace.CreateCSharp(code))
+            using (var workspace = TestWorkspace.CreateCSharp(code, exportProvider: MinimalTestExportProvider.CreateExportProvider(MinimalTestExportProvider.CreateAssemblyCatalog(RoslynServices.RemoteHostAssemblies))))
             {
                 // create solution service
                 var solution = workspace.CurrentSolution;
@@ -310,7 +311,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
 
         private static async Task VerifySolutionUpdate(string code, Func<Solution, Solution> newSolutionGetter)
         {
-            using (var workspace = TestWorkspace.CreateCSharp(code))
+            using (var workspace = TestWorkspace.CreateCSharp(code, exportProvider: MinimalTestExportProvider.CreateExportProvider(MinimalTestExportProvider.CreateAssemblyCatalog(RoslynServices.RemoteHostAssemblies))))
             {
                 await VerifySolutionUpdate(workspace, newSolutionGetter);
             }
@@ -364,7 +365,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
             var sessionId = 0;
             var storage = new AssetStorage();
             var source = new TestAssetSource(storage, map);
-            var remoteWorkspace = new RemoteWorkspace();
+            var remoteWorkspace = new RemoteWorkspace(solution.Workspace.Services.HostServices);
             var service = new SolutionService(new AssetService(sessionId, storage, remoteWorkspace), remoteWorkspace);
 
             return service;

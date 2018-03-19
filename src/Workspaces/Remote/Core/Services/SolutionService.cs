@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.Remote
             }
 
             // otherwise, just return new solution
-            var workspace = new TemporaryWorkspace(await updater.CreateSolutionInfoAsync(solutionChecksum).ConfigureAwait(false));
+            var workspace = new TemporaryWorkspace(await updater.CreateSolutionInfoAsync(solutionChecksum).ConfigureAwait(false), baseSolution.Workspace.Services.HostServices);
             return workspace.CurrentSolution;
         }
 

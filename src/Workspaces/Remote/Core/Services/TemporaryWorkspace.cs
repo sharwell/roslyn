@@ -12,15 +12,15 @@ namespace Microsoft.CodeAnalysis.Remote
     internal class TemporaryWorkspace : Workspace
     {
         public TemporaryWorkspace(Solution solution)
-            : base(RoslynServices.HostServices, workspaceKind: WorkspaceKind.RemoteTemporaryWorkspace)
+            : base(solution.Workspace.Services.HostServices, workspaceKind: WorkspaceKind.RemoteTemporaryWorkspace)
         {
             Options = Options.WithChangedOption(CacheOptions.RecoverableTreeLengthThreshold, 0);
 
             this.SetCurrentSolution(solution);
         }
 
-        public TemporaryWorkspace(SolutionInfo solutionInfo)
-            : base(RoslynServices.HostServices, workspaceKind: WorkspaceKind.RemoteTemporaryWorkspace)
+        public TemporaryWorkspace(SolutionInfo solutionInfo, HostServices hostServices)
+            : base(hostServices, workspaceKind: WorkspaceKind.RemoteTemporaryWorkspace)
         {
             Options = Options.WithChangedOption(CacheOptions.RecoverableTreeLengthThreshold, 0);
 

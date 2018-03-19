@@ -270,7 +270,8 @@ namespace Microsoft.CodeAnalysis.Remote
 
         private RemoteGlobalOperationNotificationService GetGlobalOperationNotificationService()
         {
-            var notificationService = RoslynServices.SolutionService.PrimaryWorkspace.Services.GetService<IGlobalOperationNotificationService>() as RemoteGlobalOperationNotificationService;
+            var workspace = RoslynServices.SolutionService.PrimaryWorkspace;
+            var notificationService = workspace.Services.GetService<IGlobalOperationNotificationService>() as RemoteGlobalOperationNotificationService;
             return notificationService;
         }
 

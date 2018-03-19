@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Execution;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.VisualStudio.LanguageServices.Remote;
 using Roslyn.Utilities;
 using StreamJsonRpc;
@@ -75,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Remote
             {
                 if (_lazyRoslynServices == null)
                 {
-                    _lazyRoslynServices = new RoslynServices(_solutionInfo.ScopeId, AssetStorage, RoslynServices.HostServices);
+                    _lazyRoslynServices = new RoslynServices(_solutionInfo.ScopeId, AssetStorage, MefHostServices.Create(RoslynServices.RemoteHostAssemblies));
                 }
 
                 return _lazyRoslynServices;
@@ -91,7 +92,7 @@ namespace Microsoft.CodeAnalysis.Remote
 
         protected Task<Solution> GetSolutionAsync(PinnedSolutionInfo solutionInfo, CancellationToken cancellationToken)
         {
-            var localRoslynService = new RoslynServices(solutionInfo.ScopeId, AssetStorage, RoslynServices.HostServices);
+            var localRoslynService = new RoslynServices(solutionInfo.ScopeId, AssetStorage, MefHostServices.Create(RoslynServices.RemoteHostAssemblies));
             return GetSolutionAsync(localRoslynService, solutionInfo, cancellationToken);
         }
 

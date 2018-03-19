@@ -20,8 +20,8 @@ namespace Microsoft.CodeAnalysis.Remote
         // guard to make sure host API doesn't run concurrently
         private readonly object _gate = new object();
 
-        public RemoteWorkspace()
-            : base(RoslynServices.HostServices, workspaceKind: WorkspaceKind.RemoteWorkspace)
+        public RemoteWorkspace(HostServices hostServices)
+            : base(hostServices, workspaceKind: WorkspaceKind.RemoteWorkspace)
         {
             var exportProvider = (IMefHostExportProvider)Services.HostServices;
             var primaryWorkspace = exportProvider.GetExports<PrimaryWorkspace>().Single().Value;
@@ -41,8 +41,8 @@ namespace Microsoft.CodeAnalysis.Remote
         }
 
         // constructor for testing
-        public RemoteWorkspace(string workspaceKind)
-            : base(RoslynServices.HostServices, workspaceKind: workspaceKind)
+        public RemoteWorkspace(HostServices hostServices, string workspaceKind)
+            : base(hostServices, workspaceKind: workspaceKind)
         {
         }
 
