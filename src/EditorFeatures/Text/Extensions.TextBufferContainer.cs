@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using Microsoft.VisualStudio.Text;
 using Roslyn.Utilities;
 
@@ -19,7 +18,7 @@ namespace Microsoft.CodeAnalysis.Text
         {
             private readonly WeakReference<ITextBuffer> _weakEditorBuffer;
             private readonly object _gate = new object();
-            private readonly ITextBufferCloneService _textBufferCloneService;
+            private readonly Opt<ITextBufferCloneService> _textBufferCloneService;
 
             private event EventHandler<TextChangeEventArgs> EtextChanged;
             private SourceText _currentText;
@@ -29,7 +28,8 @@ namespace Microsoft.CodeAnalysis.Text
                 Contract.ThrowIfNull(editorBuffer);
 
                 _weakEditorBuffer = new WeakReference<ITextBuffer>(editorBuffer);
-                editorBuffer.Properties.TryGetProperty(typeof(ITextBufferCloneService), out _textBufferCloneService);
+                editorBuffer.Properties.TryGetProperty(typeof(ITextBufferCloneService), out ITextBufferCloneService textBufferCloneService);
+                _textBufferCloneService = Opt.FromNullable(textBufferCloneService);
                 _currentText = SnapshotSourceText.From(_textBufferCloneService, editorBuffer.CurrentSnapshot, this);
             }
 

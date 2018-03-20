@@ -29,17 +29,17 @@ namespace Microsoft.CodeAnalysis.Text
             /// </summary>
             public readonly ITextImage TextImage;
 
-            private readonly ITextBufferCloneService _textBufferCloneService;
+            private readonly Opt<ITextBufferCloneService> _textBufferCloneService;
 
             private readonly Encoding _encodingOpt;
             private readonly TextBufferContainer _containerOpt;
 
-            private SnapshotSourceText(ITextBufferCloneService textBufferCloneService, ITextSnapshot editorSnapshot) :
+            private SnapshotSourceText(Opt<ITextBufferCloneService> textBufferCloneService, ITextSnapshot editorSnapshot) :
                 this(textBufferCloneService, editorSnapshot, TextBufferContainer.From(editorSnapshot.TextBuffer))
             {
             }
 
-            private SnapshotSourceText(ITextBufferCloneService textBufferCloneService, ITextSnapshot editorSnapshot, TextBufferContainer container)
+            private SnapshotSourceText(Opt<ITextBufferCloneService> textBufferCloneService, ITextSnapshot editorSnapshot, TextBufferContainer container)
             {
                 Contract.ThrowIfNull(editorSnapshot);
 
@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.Text
                 _containerOpt = container;
             }
 
-            public SnapshotSourceText(ITextBufferCloneService textBufferCloneService, ITextImage textImage, Encoding encodingOpt, TextBufferContainer containerOpt)
+            public SnapshotSourceText(Opt<ITextBufferCloneService> textBufferCloneService, ITextImage textImage, Encoding encodingOpt, TextBufferContainer containerOpt)
             {
                 Contract.ThrowIfNull(textImage);
 
@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Text
             /// </summary>
             private static readonly ConditionalWeakTable<ITextImage, WeakReference<ITextSnapshot>> s_textImageToEditorSnapshotMap = new ConditionalWeakTable<ITextImage, WeakReference<ITextSnapshot>>();
 
-            public static SourceText From(ITextBufferCloneService textBufferCloneService, ITextSnapshot editorSnapshot)
+            public static SourceText From(Opt<ITextBufferCloneService> textBufferCloneService, ITextSnapshot editorSnapshot)
             {
                 if (editorSnapshot == null)
                 {
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.Text
             /// <summary>
             /// This only exist to break circular dependency on creating buffer. nobody except extension itself should use it
             /// </summary>
-            internal static SourceText From(ITextBufferCloneService textBufferCloneService, ITextSnapshot editorSnapshot, TextBufferContainer container)
+            internal static SourceText From(Opt<ITextBufferCloneService> textBufferCloneService, ITextSnapshot editorSnapshot, TextBufferContainer container)
             {
                 if (editorSnapshot == null)
                 {
@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.Text
                 }
 
                 // otherwise, create a new cloned snapshot
-                var buffer = factory.Clone(TextImage);
+                var buffer = factory.Value.Clone(TextImage);
                 var baseSnapshot = buffer.CurrentSnapshot;
 
                 // apply the change to the buffer
@@ -272,7 +272,7 @@ namespace Microsoft.CodeAnalysis.Text
             /// </summary>
             internal sealed class ClosedSnapshotSourceText : SnapshotSourceText
             {
-                public ClosedSnapshotSourceText(ITextBufferCloneService textBufferCloneService, ITextImage textImage, Encoding encodingOpt)
+                public ClosedSnapshotSourceText(Opt<ITextBufferCloneService> textBufferCloneService, ITextImage textImage, Encoding encodingOpt)
                     : base(textBufferCloneService, textImage, encodingOpt, containerOpt: null)
                 {
                 }
@@ -286,7 +286,7 @@ namespace Microsoft.CodeAnalysis.Text
                 private readonly SnapshotSourceText _baseText;
                 private readonly ITextImage _baseSnapshot;
 
-                public ChangedSourceText(ITextBufferCloneService textBufferCloneService, SnapshotSourceText baseText, ITextImage baseSnapshot, ITextImage currentSnapshot)
+                public ChangedSourceText(Opt<ITextBufferCloneService> textBufferCloneService, SnapshotSourceText baseText, ITextImage baseSnapshot, ITextImage currentSnapshot)
                     : base(textBufferCloneService, currentSnapshot, baseText.Encoding, containerOpt: null)
                 {
                     _baseText = baseText;

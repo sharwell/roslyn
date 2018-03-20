@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Workspaces
             var buffer = CreateTextBuffer(reader, cancellationToken);
 
             // use the given encoding as it is.
-            return buffer.CurrentSnapshot.AsRoslynText(_textBufferCloneService, encoding);
+            return buffer.CurrentSnapshot.AsRoslynText(Opt.From(_textBufferCloneService), encoding);
         }
 
         private ITextBuffer CreateTextBuffer(TextReader reader, CancellationToken cancellationToken = default)
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Workspaces
             using (var reader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks: true, bufferSize: 1024, leaveOpen: true))
             {
                 var buffer = CreateTextBuffer(reader, cancellationToken);
-                return buffer.CurrentSnapshot.AsRoslynText(_textBufferCloneService, reader.CurrentEncoding ?? Encoding.UTF8);
+                return buffer.CurrentSnapshot.AsRoslynText(Opt.From(_textBufferCloneService), reader.CurrentEncoding ?? Encoding.UTF8);
             }
         }
     }
