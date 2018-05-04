@@ -162,7 +162,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
                 throw new NotImplementedException();
             }
 
-            if ((iEndLine >= 0 && iEndColumn >= 0) &&
+            if (iEndLine >= 0 && iEndColumn >= 0 &&
                ((iEndLine < iStartLine) ||
                 (iEndLine == iStartLine && iEndColumn < iStartColumn)))
             {

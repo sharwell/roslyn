@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis
                 pstring.theString = sb.ToString();
             }
 
-            return (pstring);
+            return pstring;
         }
     }
 
@@ -554,12 +554,12 @@ namespace Microsoft.CodeAnalysis
             const WORD RT_MANIFEST = 24;
 
             var resWriter = new BinaryWriter(resStream);
-            resWriter.Write((DWORD)(manifestStream.Length));    //data size
+            resWriter.Write((DWORD)manifestStream.Length);    //data size
             resWriter.Write((DWORD)0x00000020);                 //header size
             resWriter.Write((WORD)0xFFFF);                      //identifies type as ordinal.
             resWriter.Write((WORD)RT_MANIFEST);                 //type
             resWriter.Write((WORD)0xFFFF);                      //identifies name as ordinal.
-            resWriter.Write((WORD)((isDll) ? 0x0002 : 0x0001));  //EDMAURER executables are named "1", DLLs "2"
+            resWriter.Write((WORD)(isDll ? 0x0002 : 0x0001));  //EDMAURER executables are named "1", DLLs "2"
             resWriter.Write((DWORD)0x00000000);                 //data version
             resWriter.Write((WORD)0x1030);                      //memory flags
             resWriter.Write((WORD)0x0000);                      //languageId
@@ -634,7 +634,7 @@ namespace Microsoft.CodeAnalysis
                 if (_assemblyVersionContents != null) yield return new KeyValuePair<string, string>("Assembly Version", _assemblyVersionContents.ToString());
             }
 
-            private uint FileType { get { return (_isDll) ? VFT_DLL : VFT_APP; } }
+            private uint FileType { get { return _isDll ? VFT_DLL : VFT_APP; } }
 
             private void WriteVSFixedFileInfo(BinaryWriter writer)
             {

@@ -403,7 +403,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             }
 
             if ((next.IsKind(SyntaxKind.QuestionToken) || next.IsKind(SyntaxKind.ColonToken))
-                && (next.Parent.IsKind(SyntaxKind.ConditionalExpression)))
+                && next.Parent.IsKind(SyntaxKind.ConditionalExpression))
             {
                 return true;
             }

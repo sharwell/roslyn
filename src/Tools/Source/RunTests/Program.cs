@@ -434,7 +434,7 @@ namespace RunTests
 
             foreach (var dumpFile in dumpFiles)
             {
-                long fileSizeInMegabytes = (new FileInfo(dumpFile).Length / 1024) / 1024;
+                long fileSizeInMegabytes = new FileInfo(dumpFile).Length / 1024 / 1024;
                 currentTotalSize += fileSizeInMegabytes;
                 if (currentTotalSize > MaxTotalDumpSizeInMegabytes)
                 {

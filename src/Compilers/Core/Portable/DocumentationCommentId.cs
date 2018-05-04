@@ -1354,7 +1354,7 @@ namespace Microsoft.CodeAnalysis
             private static bool ParameterMatches(IParameterSymbol symbol, ParameterInfo parameterInfo)
             {
                 // same ref'ness?
-                if ((symbol.RefKind == RefKind.None) == parameterInfo.IsRefOrOut)
+                if (symbol.RefKind == RefKind.None == parameterInfo.IsRefOrOut)
                 {
                     return false;
                 }

@@ -335,8 +335,8 @@ class C
                 GetChildren(evalResult, 0, null, out enumContext);
 
                 var items = GetItems(enumContext, offset, 2);
-                var indices1 = string.Format("{0}, {1}, {2}", offset / 1000000, (offset % 1000000) / 1000, 0);
-                var indices2 = string.Format("{0}, {1}, {2}", (offset + 1) / 1000000, ((offset + 1) % 1000000) / 1000, 1);
+                var indices1 = string.Format("{0}, {1}, {2}", offset / 1000000, offset % 1000000 / 1000, 0);
+                var indices2 = string.Format("{0}, {1}, {2}", (offset + 1) / 1000000, (offset + 1) % 1000000 / 1000, 1);
                 Verify(items,
                     EvalResult(string.Format("[{0}]", indices1), "0", "byte", string.Format("{0}[{1}]", parenthesizedExpr, indices1)),
                     EvalResult(string.Format("[{0}]", indices2), "0", "byte", string.Format("{0}[{1}]", parenthesizedExpr, indices2)));

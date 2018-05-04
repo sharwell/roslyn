@@ -661,7 +661,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             bool leftDefault = left.IsLiteralDefault();
             bool rightDefault = right.IsLiteralDefault();
-            if ((operatorToken.Kind() == SyntaxKind.EqualsEqualsToken || operatorToken.Kind() == SyntaxKind.ExclamationEqualsToken))
+            if (operatorToken.Kind() == SyntaxKind.EqualsEqualsToken || operatorToken.Kind() == SyntaxKind.ExclamationEqualsToken)
             {
                 if (leftDefault && rightDefault)
                 {
@@ -1643,7 +1643,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             {
                                 // IMPL CHANGE: Dev10 raises WRN_NubExprIsConstBool in some cases, but that really doesn't
                                 // make sense (why warn that a constant has a constant value?).
-                                return (leftIsNull == rightIsNull) == (op == BinaryOperatorKind.Equal) ? ConstantValue.True : ConstantValue.False;
+                                return leftIsNull == rightIsNull == (op == BinaryOperatorKind.Equal) ? ConstantValue.True : ConstantValue.False;
                             }
                         }
                     }

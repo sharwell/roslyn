@@ -256,7 +256,7 @@ namespace Microsoft.CodeAnalysis.Remote.Diagnostics
                     lrdb += reachability.Value;
                 }
 
-                return (lrdb / rowKNeighborsIndices.Count) / lrda;
+                return lrdb / rowKNeighborsIndices.Count / lrda;
             }
 
             private double GetReachabilityDistance(

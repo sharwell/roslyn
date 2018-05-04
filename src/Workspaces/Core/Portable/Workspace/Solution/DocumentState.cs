@@ -303,8 +303,8 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool HasTextChanged(DocumentState oldState)
         {
-            return (oldState.sourceTextOpt != this.sourceTextOpt
-                || oldState.textAndVersionSource != this.textAndVersionSource);
+            return oldState.sourceTextOpt != this.sourceTextOpt
+                || oldState.textAndVersionSource != this.textAndVersionSource;
         }
 
         public DocumentState UpdateParseOptions(ParseOptions options)

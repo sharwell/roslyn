@@ -93,7 +93,7 @@ namespace Microsoft.Cci
             var constant = fieldDefinition.GetCompileTimeValue(Context);
             var marshalling = fieldDefinition.MarshallingInformation;
 
-            Debug.Assert((constant != null) == fieldDefinition.IsCompileTimeConstant);
+            Debug.Assert(constant != null == fieldDefinition.IsCompileTimeConstant);
             Debug.Assert((marshalling != null || !fieldDefinition.MarshallingDescriptor.IsDefaultOrEmpty) == fieldDefinition.IsMarshalledExplicitly);
 
             if (constant != null)

@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis
         {
             Debug.Assert(tokenOrList != null || (position == 0 && index == 0 && parent == null));
             Debug.Assert(position >= 0);
-            Debug.Assert(tokenOrList == null || (tokenOrList.IsToken) || (tokenOrList.IsList));
+            Debug.Assert(tokenOrList == null || tokenOrList.IsToken || tokenOrList.IsList);
             _parent = parent;
             Node = tokenOrList;
             Position = position;

@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
             //delete all statements
             var rewriter = new RedRewriter(rewriteNode: node =>
-                (node.IsKind(SyntaxKind.ExpressionStatement)) ? null : node);
+                node.IsKind(SyntaxKind.ExpressionStatement) ? null : node);
 
             TestRed(input, output, rewriter, isExpr: false);
         }

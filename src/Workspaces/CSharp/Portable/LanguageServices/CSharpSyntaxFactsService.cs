@@ -735,7 +735,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public bool IsIfStatement(SyntaxNode node)
         {
-            return (node.Kind() == SyntaxKind.IfStatement);
+            return node.Kind() == SyntaxKind.IfStatement;
         }
 
         public bool IsAttribute(SyntaxNode node)

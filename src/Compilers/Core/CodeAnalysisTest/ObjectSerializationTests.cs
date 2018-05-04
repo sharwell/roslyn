@@ -1208,7 +1208,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
         private Node ConstructGraph(ref int id, int width, int depth)
         {
-            var name = "node" + (id++);
+            var name = "node" + id++;
 
             Node[] children;
 

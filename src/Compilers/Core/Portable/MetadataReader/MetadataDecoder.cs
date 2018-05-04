@@ -2040,7 +2040,7 @@ namespace Microsoft.CodeAnalysis
                 HashSet<TypeSymbol> visitedTypeSymbols = new HashSet<TypeSymbol>();
 
                 bool hasMoreTypeDefs;
-                while ((hasMoreTypeDefs = (typeDefsToSearch.Count > 0)) || typeSymbolsToSearch.Count > 0)
+                while ((hasMoreTypeDefs = typeDefsToSearch.Count > 0) || typeSymbolsToSearch.Count > 0)
                 {
                     if (hasMoreTypeDefs)
                     {
@@ -2383,7 +2383,7 @@ namespace Microsoft.CodeAnalysis
         /// <returns>True if the accessor signature is appropriate for the containing property.</returns>
         internal bool DoPropertySignaturesMatch(ParamInfo<TypeSymbol>[] signature1, ParamInfo<TypeSymbol>[] signature2, bool comparingToSetter, bool compareParamByRef, bool compareReturnType)
         {
-            int additionalParamCount = (comparingToSetter ? 1 : 0);
+            int additionalParamCount = comparingToSetter ? 1 : 0;
 
             // Check the number of parameters.
             if ((signature2.Length - additionalParamCount) != signature1.Length)

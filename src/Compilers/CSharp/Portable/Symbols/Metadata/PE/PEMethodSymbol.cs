@@ -570,7 +570,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             SignatureHeader signatureHeader;
             BadImageFormatException mrEx;
             ParamInfo<TypeSymbol>[] paramInfo = new MetadataDecoder(moduleSymbol, this).GetSignatureForMethod(_handle, out signatureHeader, out mrEx);
-            bool makeBad = (mrEx != null);
+            bool makeBad = mrEx != null;
 
             // If method is not generic, let's assign empty list for type parameters
             if (!signatureHeader.IsGeneric &&
@@ -984,9 +984,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     {
                         anyToRemove = true;
                         sawObjectFinalize =
-                            (method.ContainingType.SpecialType == SpecialType.System_Object &&
+                            method.ContainingType.SpecialType == SpecialType.System_Object &&
                              method.Name == WellKnownMemberNames.DestructorName && // Cheaper than MethodKind.
-                             method.MethodKind == MethodKind.Destructor);
+                             method.MethodKind == MethodKind.Destructor;
                     }
 
                     if (anyToRemove && sawObjectFinalize)

@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             Assert.NotNull(compilation);
 
             Assert.True(expectedOutput == null ||
-                (compilation.Options.OutputKind == OutputKind.ConsoleApplication || compilation.Options.OutputKind == OutputKind.WindowsApplication),
+                compilation.Options.OutputKind == OutputKind.ConsoleApplication || compilation.Options.OutputKind == OutputKind.WindowsApplication,
                 "Compilation must be executable if output is expected.");
 
             if (sourceSymbolValidator != null)

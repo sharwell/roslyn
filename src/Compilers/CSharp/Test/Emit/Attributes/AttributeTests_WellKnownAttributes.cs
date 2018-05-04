@@ -2751,7 +2751,7 @@ public class C
             {
                 sb.Append(testCase.attr);
                 sb.AppendLine();
-                sb.Append("static extern void M" + (i++) + "();");
+                sb.Append("static extern void M" + i++ + "();");
                 sb.AppendLine();
             }
 
@@ -8741,24 +8741,24 @@ class MyAttribute : System.Attribute
                 var program2 = m.GlobalNamespace.GetTypeMember("Program2");
 
                 Assert.Equal("DebuggerHiddenAttribute is missing\nDebuggerStepperBoundaryAttribute is missing\n",
-                                                   CheckAttributePropagation(((NamedTypeSymbol)program1.GetMember<MethodSymbol>("test1").
+                                                   CheckAttributePropagation((NamedTypeSymbol)program1.GetMember<MethodSymbol>("test1").
                                                                              GetAttribute("System.Runtime.CompilerServices", "AsyncStateMachineAttribute").
-                                                                             ConstructorArguments.Single().Value)));
+                                                                             ConstructorArguments.Single().Value));
 
                 Assert.Equal("DebuggerNonUserCodeAttribute is missing\nDebuggerHiddenAttribute is missing\nDebuggerStepperBoundaryAttribute is missing\nDebuggerStepThroughAttribute is missing\n",
-                                                   CheckAttributePropagation(((NamedTypeSymbol)program2.GetMember<MethodSymbol>("test2").
+                                                   CheckAttributePropagation((NamedTypeSymbol)program2.GetMember<MethodSymbol>("test2").
                                                                              GetAttribute("System.Runtime.CompilerServices", "AsyncStateMachineAttribute").
-                                                                             ConstructorArguments.Single().Value)));
+                                                                             ConstructorArguments.Single().Value));
 
                 Assert.Equal("DebuggerHiddenAttribute is missing\nDebuggerStepperBoundaryAttribute is missing\n",
-                                                   CheckAttributePropagation(((NamedTypeSymbol)program1.GetMember<MethodSymbol>("Test3").
+                                                   CheckAttributePropagation((NamedTypeSymbol)program1.GetMember<MethodSymbol>("Test3").
                                                                              GetAttribute("System.Runtime.CompilerServices", "IteratorStateMachineAttribute").
-                                                                             ConstructorArguments.Single().Value)));
+                                                                             ConstructorArguments.Single().Value));
 
                 Assert.Equal("DebuggerNonUserCodeAttribute is missing\nDebuggerHiddenAttribute is missing\nDebuggerStepperBoundaryAttribute is missing\nDebuggerStepThroughAttribute is missing\n",
-                                                   CheckAttributePropagation(((NamedTypeSymbol)program2.GetMember<MethodSymbol>("Test4").
+                                                   CheckAttributePropagation((NamedTypeSymbol)program2.GetMember<MethodSymbol>("Test4").
                                                                              GetAttribute("System.Runtime.CompilerServices", "IteratorStateMachineAttribute").
-                                                                             ConstructorArguments.Single().Value)));
+                                                                             ConstructorArguments.Single().Value));
             };
 
             CompileAndVerify(source, symbolValidator: attributeValidator);

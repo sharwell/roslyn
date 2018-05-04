@@ -4314,7 +4314,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
             }
 
-            Debug.Assert((methods.Count == 0) == (resultKind == LookupResultKind.Empty));
+            Debug.Assert(methods.Count == 0 == (resultKind == LookupResultKind.Empty));
             Debug.Assert(methods.Count == filteredMethods.Count);
         }
 
@@ -4472,9 +4472,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static void ValidateSymbolInfoOptions(SymbolInfoOptions options)
         {
-            Debug.Assert(((options & SymbolInfoOptions.PreferConstructorsToType) != 0) !=
+            Debug.Assert((options & SymbolInfoOptions.PreferConstructorsToType) != 0 !=
                          ((options & SymbolInfoOptions.PreferTypeToConstructors) != 0), "Options are mutually exclusive");
-            Debug.Assert(((options & SymbolInfoOptions.ResolveAliases) != 0) !=
+            Debug.Assert((options & SymbolInfoOptions.ResolveAliases) != 0 !=
                          ((options & SymbolInfoOptions.PreserveAliases) != 0), "Options are mutually exclusive");
         }
 

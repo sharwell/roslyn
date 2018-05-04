@@ -133,7 +133,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal static DeclarationModifiers MakeModifiers(NamedTypeSymbol containingType, SyntaxToken firstIdentifier, SyntaxTokenList modifiers, DiagnosticBag diagnostics, out bool modifierErrors)
         {
             DeclarationModifiers defaultAccess =
-                (containingType.IsInterface) ? DeclarationModifiers.Public : DeclarationModifiers.Private;
+                containingType.IsInterface ? DeclarationModifiers.Public : DeclarationModifiers.Private;
 
             DeclarationModifiers allowedModifiers =
                 DeclarationModifiers.AccessibilityMask |

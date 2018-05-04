@@ -424,7 +424,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             bool invalidNamedArgument = false;
             TypeSymbol namedArgumentType = null;
-            invalidNamedArgument |= (namedArgumentNameSymbol.DeclaredAccessibility != Accessibility.Public);
+            invalidNamedArgument |= namedArgumentNameSymbol.DeclaredAccessibility != Accessibility.Public;
             invalidNamedArgument |= namedArgumentNameSymbol.IsStatic;
 
             if (!invalidNamedArgument)

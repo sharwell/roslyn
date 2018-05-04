@@ -45,7 +45,7 @@ namespace RunTests
             // Use 1.5 times the number of processors for unit tests, but only 1 processor for the open integration tests
             // since they perform actual UI operations (such as mouse clicks and sending keystrokes) and we don't want two
             // tests to conflict with one-another.
-            var max = (_options.TestVsi) ? 1 : (int)(Environment.ProcessorCount * 1.5);
+            var max = _options.TestVsi ? 1 : (int)(Environment.ProcessorCount * 1.5);
             var cacheCount = 0;
             var waiting = new Stack<AssemblyInfo>(assemblyInfoList);
             var running = new List<Task<TestResult>>();
@@ -120,7 +120,7 @@ namespace RunTests
                 processResults.AddRange(c.ProcessResults);
             }
 
-            return new RunAllResult((failures == 0), cacheCount, completed.ToImmutableArray(), processResults.ToImmutable());
+            return new RunAllResult(failures == 0, cacheCount, completed.ToImmutableArray(), processResults.ToImmutable());
         }
 
         private void Print(List<TestResult> testResults)

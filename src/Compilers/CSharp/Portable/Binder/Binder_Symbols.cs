@@ -938,7 +938,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             diagnostics.Add(node, useSiteDiagnostics);
 
             bool wasError;
-            Symbol lookupResultSymbol = ResultSymbol(lookupResult, plainName, arity, node, diagnostics, (basesBeingResolved != null), out wasError, qualifierOpt, options);
+            Symbol lookupResultSymbol = ResultSymbol(lookupResult, plainName, arity, node, diagnostics, basesBeingResolved != null, out wasError, qualifierOpt, options);
 
             // As we said in the method above, there are three cases here:
             //
@@ -1746,7 +1746,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 diagnostics.Add(new CSDiagnostic(result.Error, where.Location));
             }
 
-            if ((symbols.Count > 1) || (symbols[0] is NamespaceOrTypeSymbol || symbols[0] is AliasSymbol) ||
+            if ((symbols.Count > 1) || symbols[0] is NamespaceOrTypeSymbol || symbols[0] is AliasSymbol ||
                 result.Kind == LookupResultKind.NotATypeOrNamespace || result.Kind == LookupResultKind.NotAnAttributeType)
             {
                 // Bad type or namespace (or things expected as types/namespaces) are packaged up as error types, preserving the symbols and the result kind.

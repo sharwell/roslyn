@@ -303,7 +303,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             }
             builder.Free();
 
-            Debug.Assert((formatSpecifiers.Count == 0) == (newLength == oldLength));
+            Debug.Assert(formatSpecifiers.Count == 0 == (newLength == oldLength));
             if (newLength < oldLength)
             {
                 return expression.Substring(0, newLength);

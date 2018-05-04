@@ -364,7 +364,7 @@ namespace Microsoft.CodeAnalysis
         internal static ImmutableArray<PortableExecutableReference> ResolveMetadataReference(CommandLineReference cmdReference, MetadataReferenceResolver metadataResolver, List<DiagnosticInfo> diagnosticsOpt, CommonMessageProvider messageProviderOpt)
         {
             Debug.Assert(metadataResolver != null);
-            Debug.Assert((diagnosticsOpt == null) == (messageProviderOpt == null));
+            Debug.Assert(diagnosticsOpt == null == (messageProviderOpt == null));
 
             ImmutableArray<PortableExecutableReference> references;
             try

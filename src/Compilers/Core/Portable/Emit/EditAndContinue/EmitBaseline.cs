@@ -329,8 +329,8 @@ namespace Microsoft.CodeAnalysis.Emit
             IReadOnlyDictionary<MethodImplKey, int> methodImpls)
         {
             Debug.Assert(module != null);
-            Debug.Assert((ordinal == 0) == (encId == default));
-            Debug.Assert((ordinal == 0) == (initialBaseline == null));
+            Debug.Assert(ordinal == 0 == (encId == default));
+            Debug.Assert(ordinal == 0 == (initialBaseline == null));
             Debug.Assert(encId != module.GetModuleVersionId());
             Debug.Assert(debugInformationProvider != null);
             Debug.Assert(localSignatureProvider != null);

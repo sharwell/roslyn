@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             bool compareParameterName = false,
             bool isParameterCaseSensitive = false)
         {
-            if ((method1.MethodKind == MethodKind.AnonymousFunction) !=
+            if (method1.MethodKind == MethodKind.AnonymousFunction !=
                 (method2.MethodKind == MethodKind.AnonymousFunction))
             {
                 return false;

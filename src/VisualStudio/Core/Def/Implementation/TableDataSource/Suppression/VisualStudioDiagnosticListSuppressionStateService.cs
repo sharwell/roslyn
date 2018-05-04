@@ -259,8 +259,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                         }
 
                         Document document = null;
-                        var hasLocation = (entryHandle.TryGetValue(StandardTableColumnDefinitions.DocumentName, out filePath) && !string.IsNullOrEmpty(filePath)) &&
-                            (entryHandle.TryGetValue(StandardTableColumnDefinitions.Line, out line) && line >= 0);
+                        var hasLocation = entryHandle.TryGetValue(StandardTableColumnDefinitions.DocumentName, out filePath) && !string.IsNullOrEmpty(filePath) &&
+                            entryHandle.TryGetValue(StandardTableColumnDefinitions.Line, out line) && line >= 0;
                         if (hasLocation)
                         {
                             if (string.IsNullOrEmpty(filePath) || line < 0)
@@ -292,7 +292,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                         }
 
                         Contract.ThrowIfNull(project);
-                        Contract.ThrowIfFalse((document != null) == (location != null));
+                        Contract.ThrowIfFalse(document != null == (location != null));
 
                         // Create a diagnostic with correct values for fields we care about: id, category, message, isSuppressed, location
                         // and default values for the rest of the fields (not used by suppression fixer).

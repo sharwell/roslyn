@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
 
             // Assert that the cheap check for "this" is equivalent to the expensive check for "this".
             Debug.Assert(
-                (GetThisProxy(_displayClassVariables) != null) ==
+                GetThisProxy(_displayClassVariables) != null ==
                 _displayClassVariables.Values.Any(v => v.Kind == DisplayClassVariableKind.This));
         }
 

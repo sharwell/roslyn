@@ -6721,7 +6721,7 @@ class Outer
     }
 }
 ";
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -7741,7 +7741,7 @@ unsafe struct S
 }
 ";
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8356,7 +8356,7 @@ unsafe class C
         public void CheckedNumericAdditionOverflow1()
         {
             var text = MakeNumericOverflowTest(PositiveNumericAdditionCasesTemplate, "S00", "Add", "+", "checked");
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8457,7 +8457,7 @@ AddULong: Exception at 1 + ulong.MaxValue
         {
             var text = MakeNumericOverflowTest(PositiveNumericAdditionCasesTemplate, "S02", "Add", "+", "checked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8558,7 +8558,7 @@ AddULong: Exception at 1 + ulong.MaxValue
         {
             var text = MakeNumericOverflowTest(NegativeNumericAdditionCasesTemplate, "S00", "Add", "+", "checked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8593,7 +8593,7 @@ AddLong: No exception at 0 + long.MinValue (value = 9223372036854775808)
         {
             var text = MakeNumericOverflowTest(NegativeNumericAdditionCasesTemplate, "S02", "Add", "+", "checked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8681,7 +8681,7 @@ SubULong: Exception at 0 - ulong.MaxValue
         public void CheckedNumericSubtractionOverflow3()
         {
             var text = MakeNumericOverflowTest(NegativeNumericSubtractionCasesTemplate, "S00", "Sub", "-", "checked");
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8728,7 +8728,7 @@ SubLong: Exception at 0 - -int.MinValue
         {
             var text = MakeNumericOverflowTest(NegativeNumericSubtractionCasesTemplate, "S02", "Sub", "-", "checked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8829,7 +8829,7 @@ unsafe struct S
     }
 }
 ";
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8872,7 +8872,7 @@ unsafe struct S
     }
 }
 ";
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -8942,7 +8942,7 @@ Exception for add-then-dereference
         {
             var text = MakeNumericOverflowTest(PositiveNumericAdditionCasesTemplate, "S00", "Add", "+", "unchecked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -9043,7 +9043,7 @@ AddULong: No exception at 1 + ulong.MaxValue (value = 0)
         {
             var text = MakeNumericOverflowTest(PositiveNumericAdditionCasesTemplate, "S02", "Add", "+", "unchecked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -9144,7 +9144,7 @@ AddULong: No exception at 1 + ulong.MaxValue (value = 18446744073709551613)
         {
             var text = MakeNumericOverflowTest(NegativeNumericAdditionCasesTemplate, "S00", "Add", "+", "unchecked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -9179,7 +9179,7 @@ AddLong: No exception at 0 + long.MinValue (value = 9223372036854775808)
         {
             var text = MakeNumericOverflowTest(NegativeNumericAdditionCasesTemplate, "S02", "Add", "+", "unchecked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -9214,7 +9214,7 @@ AddLong: No exception at 0 + long.MinValue (value = 0)
         {
             var text = MakeNumericOverflowTest(PositiveNumericSubtractionCasesTemplate, "S00", "Sub", "-", "unchecked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -9271,7 +9271,7 @@ SubULong: No exception at 0 - ulong.MaxValue (value = 1)
         {
             var text = MakeNumericOverflowTest(PositiveNumericSubtractionCasesTemplate, "S02", "Sub", "-", "unchecked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -9328,7 +9328,7 @@ SubULong: No exception at 0 - ulong.MaxValue (value = 4)
         {
             var text = MakeNumericOverflowTest(NegativeNumericSubtractionCasesTemplate, "S00", "Sub", "-", "unchecked");
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -9374,7 +9374,7 @@ SubLong: No exception at 0 - -int.MinValue (value = 18446744071562067968)
         public void UncheckedNumericSubtractionOverflow4()
         {
             var text = MakeNumericOverflowTest(NegativeNumericSubtractionCasesTemplate, "S02", "Sub", "-", "unchecked");
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)
@@ -10015,7 +10015,7 @@ unsafe class C
 }
 " + SizedStructs;
 
-            bool isx86 = (IntPtr.Size == 4);
+            bool isx86 = IntPtr.Size == 4;
             string expectedOutput;
 
             if (isx86)

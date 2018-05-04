@@ -311,7 +311,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             }
 
                             if (method.Arity != descriptor.Arity || methodKind != targetMethodKind ||
-                                ((descriptor.Flags & MemberFlags.Virtual) != 0) != (method.IsVirtual || method.IsOverride || method.IsAbstract))
+                                (descriptor.Flags & MemberFlags.Virtual) != 0 != (method.IsVirtual || method.IsOverride || method.IsAbstract))
                             {
                                 continue;
                             }
@@ -327,7 +327,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     case SymbolKind.Property:
                         {
                             PropertySymbol property = (PropertySymbol)member;
-                            if (((descriptor.Flags & MemberFlags.Virtual) != 0) != (property.IsVirtual || property.IsOverride || property.IsAbstract))
+                            if ((descriptor.Flags & MemberFlags.Virtual) != 0 != (property.IsVirtual || property.IsOverride || property.IsAbstract))
                             {
                                 continue;
                             }
@@ -986,7 +986,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     return false;
                 }
-                return (typeParam.Ordinal == paramPosition);
+                return typeParam.Ordinal == paramPosition;
             }
 
             protected override bool IsGenericTypeParam(TypeSymbol type, int paramPosition)
@@ -1000,7 +1000,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     return false;
                 }
-                return (typeParam.Ordinal == paramPosition);
+                return typeParam.Ordinal == paramPosition;
             }
 
             protected override bool MatchArrayRank(TypeSymbol type, int countOfDimensions)
@@ -1011,7 +1011,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 ArrayTypeSymbol array = (ArrayTypeSymbol)type;
-                return (array.Rank == countOfDimensions);
+                return array.Rank == countOfDimensions;
             }
 
             protected override bool MatchTypeToTypeId(TypeSymbol type, int typeId)
@@ -1034,7 +1034,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 WellKnownType wellKnownId = (WellKnownType)typeId;
                 if (wellKnownId.IsWellKnownType())
                 {
-                    return (type == _compilation.GetWellKnownType(wellKnownId));
+                    return type == _compilation.GetWellKnownType(wellKnownId);
                 }
 
                 return base.MatchTypeToTypeId(type, typeId);

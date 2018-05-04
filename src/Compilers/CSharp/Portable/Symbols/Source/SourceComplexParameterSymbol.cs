@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             bool isExtensionMethodThis)
             : base(owner, parameterType, ordinal, refKind, name, locations)
         {
-            Debug.Assert((syntaxRef == null) || (syntaxRef.GetSyntax().IsKind(SyntaxKind.Parameter)));
+            Debug.Assert((syntaxRef == null) || syntaxRef.GetSyntax().IsKind(SyntaxKind.Parameter));
 
             _lazyHasOptionalAttribute = ThreeState.Unknown;
             _syntaxRef = syntaxRef;

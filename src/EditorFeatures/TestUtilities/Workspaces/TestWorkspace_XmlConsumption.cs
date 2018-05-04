@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 
             foreach (var submissionElement in submissionElements)
             {
-                var submissionName = "Submission" + (submissionIndex++);
+                var submissionName = "Submission" + submissionIndex++;
 
                 var languageName = GetLanguage(workspace, submissionElement);
 

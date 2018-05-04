@@ -555,7 +555,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             public ExceptionHandlerScope(ExceptionHandlerContainerScope containingScope, ScopeType type, Microsoft.Cci.ITypeReference exceptionType)
             {
                 Debug.Assert((type == ScopeType.Try) || (type == ScopeType.Catch) || (type == ScopeType.Filter) || (type == ScopeType.Finally) || (type == ScopeType.Fault));
-                Debug.Assert((type == ScopeType.Catch) == (exceptionType != null));
+                Debug.Assert(type == ScopeType.Catch == (exceptionType != null));
 
                 _containingScope = containingScope;
                 _type = type;
@@ -768,7 +768,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                         Debug.Assert((reachability == Reachability.Reachable) || (reachability == Reachability.NotReachable));
 
                         // All handler blocks should have same reachability.
-                        Debug.Assert(_handlers.All(h => (h.LeaderBlock.Reachability == reachability)));
+                        Debug.Assert(_handlers.All(h => h.LeaderBlock.Reachability == reachability));
 
                         if (reachability != Reachability.Reachable)
                         {

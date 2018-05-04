@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Scripting
             CancellationToken cancellationToken)
         {
             Debug.Assert(_frozen == 0);
-            Debug.Assert((exceptionHolderOpt != null) == (catchExceptionOpt != null));
+            Debug.Assert(exceptionHolderOpt != null == (catchExceptionOpt != null));
 
             // Each executor points to a <Factory> method of the Submission class.
             // The method creates an instance of the Submission class passing the submission states to its constructor.

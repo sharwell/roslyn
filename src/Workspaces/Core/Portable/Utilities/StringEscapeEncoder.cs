@@ -137,11 +137,11 @@ namespace Roslyn.Utilities
             }
             else if (ch >= 'A' && ch <= 'F')
             {
-                return ((int)ch - (int)'A') + 10;
+                return (int)ch - (int)'A' + 10;
             }
             else if (ch >= 'a' && ch <= 'f')
             {
-                return ((int)ch - (int)'a') + 10;
+                return (int)ch - (int)'a' + 10;
             }
             else
             {

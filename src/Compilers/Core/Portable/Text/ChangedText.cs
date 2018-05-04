@@ -286,7 +286,7 @@ namespace Microsoft.CodeAnalysis.Text
                     {
                         // new change starts before old change, but overlaps
                         // add as much of new change deletion as possible and try again
-                        var newChangeLeadingDeletion = (oldChange.Span.Start + oldDelta) - newChange.Span.Start;
+                        var newChangeLeadingDeletion = oldChange.Span.Start + oldDelta - newChange.Span.Start;
                         AddRange(list, new TextChangeRange(new TextSpan(newChange.Span.Start - oldDelta, newChangeLeadingDeletion), 0));
                         newChange = new TextChangeRange(new TextSpan(oldChange.Span.Start + oldDelta, newChange.Span.Length - newChangeLeadingDeletion), newChange.NewLength);
                         goto tryAgain;
@@ -457,7 +457,7 @@ namespace Microsoft.CodeAnalysis.Text
                 }
 
                 position = change.Span.End;
-                delta += (change.NewLength - change.Span.Length);
+                delta += change.NewLength - change.Span.Length;
             }
 
             // include existing line starts that occur after all changes

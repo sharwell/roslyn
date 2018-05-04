@@ -746,7 +746,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             containingSlot = DescendThroughTupleRestFields(ref symbol, containingSlot, forceContainingSlotsToExist: false);
 
             int slot;
-            return (_variableSlot.TryGetValue(new VariableIdentifier(symbol, containingSlot), out slot)) ? slot : -1;
+            return _variableSlot.TryGetValue(new VariableIdentifier(symbol, containingSlot), out slot) ? slot : -1;
         }
 
         /// <summary>
@@ -1111,7 +1111,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 case BoundKind.Parameter:
                     {
-                        var parameter = ((BoundParameter)node);
+                        var parameter = (BoundParameter)node;
                         unassignedSlot = GetOrCreateSlot(parameter.ParameterSymbol);
                         break;
                     }

@@ -2319,7 +2319,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                             }
 
                             oldSymbol = GetSymbolForEdit(oldModel, edit.OldNode, edit.Kind, editMap, cancellationToken);
-                            Debug.Assert((newSymbol == null) == (oldSymbol == null));
+                            Debug.Assert(newSymbol == null == (oldSymbol == null));
 
                             var oldContainingType = oldSymbol.ContainingType;
                             var newContainingType = newSymbol.ContainingType;

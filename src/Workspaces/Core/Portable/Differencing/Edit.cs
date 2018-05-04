@@ -23,8 +23,8 @@ namespace Microsoft.CodeAnalysis.Differencing
             Debug.Assert((oldNode == null || oldNode.Equals(default)) == (kind == EditKind.Insert));
             Debug.Assert((newNode == null || newNode.Equals(default)) == (kind == EditKind.Delete));
 
-            Debug.Assert((oldNode == null || oldNode.Equals(default)) ||
-                         (newNode == null || newNode.Equals(default)) ||
+            Debug.Assert(oldNode == null || oldNode.Equals(default) ||
+                         newNode == null || newNode.Equals(default) ||
                          !comparer.TreesEqual(oldNode, newNode));
 
             _comparer = comparer;

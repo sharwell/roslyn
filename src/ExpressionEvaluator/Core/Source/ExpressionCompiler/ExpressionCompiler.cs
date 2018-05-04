@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                             diagnostics,
                             out typeName,
                             testData: null);
-                        Debug.Assert((builder.Count == 0) == (assembly.Count == 0));
+                        Debug.Assert(builder.Count == 0 == (assembly.Count == 0));
                         var locals = new ReadOnlyCollection<DkmClrLocalVariableInfo>(builder.SelectAsArray(ToLocalVariableInfo));
                         builder.Free();
                         return new GetLocalsResult(typeName, locals, assembly);

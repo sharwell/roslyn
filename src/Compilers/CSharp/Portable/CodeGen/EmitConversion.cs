@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         {
             var typeTo = (NamedTypeSymbol)conversion.Type;
 
-            Debug.Assert((operand.Type.IsArray()) &&
+            Debug.Assert(operand.Type.IsArray() &&
                          this._module.Compilation.IsReadOnlySpanType(typeTo),
                          "only special kinds of conversions involving ReadOnlySpan may be handled in emit");
 

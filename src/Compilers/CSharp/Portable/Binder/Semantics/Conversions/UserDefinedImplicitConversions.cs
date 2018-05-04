@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             bool allowAnyTarget = false)
         {
             Debug.Assert(sourceExpression != null || (object)source != null);
-            Debug.Assert(((object)target != null) == !allowAnyTarget);
+            Debug.Assert((object)target != null == !allowAnyTarget);
             Debug.Assert(d != null);
             Debug.Assert(u != null);
 

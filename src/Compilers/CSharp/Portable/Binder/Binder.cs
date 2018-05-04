@@ -663,7 +663,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal BoundExpression WrapWithVariablesIfAny(CSharpSyntaxNode scopeDesignator, BoundExpression expression)
         {
             var locals = this.GetDeclaredLocalsForScope(scopeDesignator);
-            return (locals.IsEmpty)
+            return locals.IsEmpty
                 ? expression
                 : new BoundSequence(scopeDesignator, locals, ImmutableArray<BoundExpression>.Empty, expression, expression.Type) { WasCompilerGenerated = true };
         }

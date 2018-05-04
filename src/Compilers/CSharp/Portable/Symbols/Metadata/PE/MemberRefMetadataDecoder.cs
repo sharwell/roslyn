@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             // This could be combined into a single return statement with a more complicated expression, but that would
             // be harder to debug.
 
-            if ((candidateParam.RefKind != RefKind.None) != targetParam.IsByRef)
+            if (candidateParam.RefKind != RefKind.None != targetParam.IsByRef)
             {
                 return false;
             }

@@ -198,7 +198,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                 CommandLineArgs = GetArguments(commandLineCommands, responseFileCommands).Select(arg => new TaskItem(arg)).ToArray();
             }
 
-            return (SkipInteractiveExecution) ? 0 : base.ExecuteTool(pathToTool, responseFileCommands, commandLineCommands);
+            return SkipInteractiveExecution ? 0 : base.ExecuteTool(pathToTool, responseFileCommands, commandLineCommands);
         }
 
         public string GenerateCommandLineContents() => GenerateCommandLineCommands();

@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             ArrayBuilder<int> yieldPoints = _asyncYieldPoints;
             ArrayBuilder<int> resumePoints = _asyncResumePoints;
 
-            Debug.Assert((yieldPoints == null) == (resumePoints == null));
+            Debug.Assert(yieldPoints == null == (resumePoints == null));
 
             if (yieldPoints == null)
             {

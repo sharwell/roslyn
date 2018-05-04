@@ -1078,7 +1078,7 @@ partial class Program
             using (var testWorkspace = TestWorkspace.Create(xmlString))
             {
                 // refactor file1 and check
-                var actions = await GetCodeActionsAsync(testWorkspace, parameters: (default));
+                var actions = await GetCodeActionsAsync(testWorkspace, parameters: default);
                 await TestActionsAsync(
                     testWorkspace,
                     file1AfterRefactor,
@@ -1124,7 +1124,7 @@ partial class Program
             using (var testWorkspace = TestWorkspace.Create(xmlString))
             {
                 // refactor file2 and check
-                var actions = await GetCodeActionsAsync(testWorkspace, parameters: (default));
+                var actions = await GetCodeActionsAsync(testWorkspace, parameters: default);
                 await TestActionsAsync(
                     testWorkspace,
                     file2AfterRefactor,

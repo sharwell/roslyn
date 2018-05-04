@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         {
             // We can either report categorized (local/non-local) diagnostics or non-categorized diagnostics.
             Debug.Assert((addNonCategorizedDiagnosticOpt != null) ^ (addCategorizedLocalDiagnosticOpt != null));
-            Debug.Assert((addCategorizedLocalDiagnosticOpt != null) == (addCategorizedNonLocalDiagnosticOpt != null));
+            Debug.Assert(addCategorizedLocalDiagnosticOpt != null == (addCategorizedNonLocalDiagnosticOpt != null));
 
             var analyzerExecutionTimeMapOpt = logExecutionTime ? new ConcurrentDictionary<DiagnosticAnalyzer, StrongBox<long>>() : null;
 

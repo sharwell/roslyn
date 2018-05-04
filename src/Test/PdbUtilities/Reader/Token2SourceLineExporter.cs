@@ -170,7 +170,7 @@ namespace Roslyn.Test.PdbUtilities
             {
                 unchecked
                 {
-                    value = (byte)((_buffer[_offset + 0] & 0xFF));
+                    value = (byte)(_buffer[_offset + 0] & 0xFF);
                 }
                 _offset += 1;
             }
@@ -321,12 +321,12 @@ namespace Roslyn.Test.PdbUtilities
             {
                 int word = index / 32;
                 if (word >= _size) return false;
-                return ((_words[word] & GetBit(index)) != 0);
+                return (_words[word] & GetBit(index)) != 0;
             }
 
             private static uint GetBit(int index)
             {
-                return ((uint)1 << (index % 32));
+                return (uint)1 << (index % 32);
             }
 
             internal bool IsEmpty
@@ -404,7 +404,7 @@ namespace Roslyn.Test.PdbUtilities
                     throw new ArgumentOutOfRangeException(nameof(loadFactorPerc), "ArgumentOutOfRange_IntHashTableLoadFactor");
 
                 // Based on perf work, .72 is the optimal load factor for this table.
-                _loadFactorPerc = (loadFactorPerc * 72) / 100;
+                _loadFactorPerc = loadFactorPerc * 72 / 100;
 
                 int hashsize = GetPrime((int)(capacity / _loadFactorPerc));
                 _buckets = new bucket[hashsize];
@@ -629,7 +629,7 @@ namespace Roslyn.Test.PdbUtilities
                 {
                     int bucketNumber = (int)(seed % (uint)newBuckets.Length);
 
-                    if ((newBuckets[bucketNumber].val == null))
+                    if (newBuckets[bucketNumber].val == null)
                     {
                         newBuckets[bucketNumber].val = nvalue;
                         newBuckets[bucketNumber].key = key;
@@ -811,7 +811,7 @@ namespace Roslyn.Test.PdbUtilities
                 bits.ReadInt32(out this.directorySize);     //  44..47
                 bits.ReadInt32(out this.zero);              //  48..51
 
-                int directoryPages = ((((directorySize + pageSize - 1) / pageSize) * 4) + pageSize - 1) / pageSize;
+                int directoryPages = (((directorySize + pageSize - 1) / pageSize * 4) + pageSize - 1) / pageSize;
                 this.directoryRoot = new int[directoryPages];
                 bits.FillBuffer(reader, directoryPages * 4);
                 bits.ReadInt32(this.directoryRoot);
@@ -846,7 +846,7 @@ namespace Roslyn.Test.PdbUtilities
 
             internal int PagesFromSize(int size)
             {
-                return (size + pageSize - 1) / (pageSize);
+                return (size + pageSize - 1) / pageSize;
             }
 
             internal readonly int pageSize;

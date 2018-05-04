@@ -457,7 +457,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                             // Avoid int i = (from x in a select x).Count(), j = i;
                             ((VariableDeclarationSyntax)invocationParent.Parent.Parent).Variables.Count == 1)
                         {
-                            var variableDeclarator = ((VariableDeclaratorSyntax)invocationParent.Parent);
+                            var variableDeclarator = (VariableDeclaratorSyntax)invocationParent.Parent;
                             Convert(
                                 SyntaxFactory.IdentifierName(variableDeclarator.Identifier),
                                 ((VariableDeclarationSyntax)variableDeclarator.Parent).Type,
@@ -954,7 +954,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                     Stack = new Stack<CSharpSyntaxNode>();
                     Stack.Push(fromClause);
                     IdentifierNames = new HashSet<string>();
-                    IdentifierNames.Add((fromClause.Identifier.ValueText));
+                    IdentifierNames.Add(fromClause.Identifier.ValueText);
                 }
 
                 public bool TryAdd(CSharpSyntaxNode node, SyntaxToken identifier)

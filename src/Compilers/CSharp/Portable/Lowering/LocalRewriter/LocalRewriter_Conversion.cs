@@ -1021,7 +1021,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // - in expression trees or 
             // - special situations when converting from array to ReadOnlySpan, which has special support in codegen
             bool doNotLowerToCall = _inExpressionLambda ||
-                                    (rewrittenOperand.Type.IsArray()) && _compilation.IsReadOnlySpanType(rewrittenType);
+                                    rewrittenOperand.Type.IsArray() && _compilation.IsReadOnlySpanType(rewrittenType);
 
             BoundExpression result =
                 doNotLowerToCall

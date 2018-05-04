@@ -240,7 +240,7 @@ namespace CSharpSyntaxGenerator
 
         protected string StripNode(string name)
         {
-            return (_tree.Root.EndsWith("Node", StringComparison.Ordinal)) ? _tree.Root.Substring(0, _tree.Root.Length - 4) : _tree.Root;
+            return _tree.Root.EndsWith("Node", StringComparison.Ordinal) ? _tree.Root.Substring(0, _tree.Root.Length - 4) : _tree.Root;
         }
 
         protected string StripRoot(string name)

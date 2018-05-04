@@ -277,7 +277,7 @@ namespace Microsoft.CodeAnalysis.CodeRefactorings.InvertIf
                 if (variableExpression is IPropertyReferenceOperation propertyOperation)
                 {
                     var property = propertyOperation.Property;
-                    if ((property.Name == nameof(Array.Length) || property.Name == LongLength))
+                    if (property.Name == nameof(Array.Length) || property.Name == LongLength)
                     {
                         var containingType = property.ContainingType;
                         if (containingType?.SpecialType == SpecialType.System_Array ||

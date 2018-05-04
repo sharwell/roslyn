@@ -5468,7 +5468,7 @@ tryAgain:
                 SyntaxKind nextTokenKind = SyntaxKind.None;
 
                 if (result.IsMissing &&
-                    (this.CurrentToken.Kind != SyntaxKind.CommaToken && this.CurrentToken.Kind != SyntaxKind.GreaterThanToken) &&
+                    this.CurrentToken.Kind != SyntaxKind.CommaToken && this.CurrentToken.Kind != SyntaxKind.GreaterThanToken &&
                     ((nextTokenKind = this.PeekToken(1).Kind) == SyntaxKind.CommaToken || nextTokenKind == SyntaxKind.GreaterThanToken))
                 {
                     // Eat the current token and add it as skipped so we recover
@@ -6323,7 +6323,7 @@ tryAgain:
 
                 // Don't end on a comma.
                 // If the omitted size would be the only element, then skip it unless sizes were expected.
-                if (((list.Count & 1) == 0))
+                if ((list.Count & 1) == 0)
                 {
                     sawOmittedSize = true;
                     list.Add(omittedArraySizeExpressionInstance);
@@ -9512,7 +9512,7 @@ tryAgain:
         {
             Debug.Assert(openKind == SyntaxKind.OpenParenToken || openKind == SyntaxKind.OpenBracketToken);
             Debug.Assert(closeKind == SyntaxKind.CloseParenToken || closeKind == SyntaxKind.CloseBracketToken);
-            Debug.Assert((openKind == SyntaxKind.OpenParenToken) == (closeKind == SyntaxKind.CloseParenToken));
+            Debug.Assert(openKind == SyntaxKind.OpenParenToken == (closeKind == SyntaxKind.CloseParenToken));
             bool isIndexer = openKind == SyntaxKind.OpenBracketToken;
 
             if (this.CurrentToken.Kind == SyntaxKind.OpenParenToken ||

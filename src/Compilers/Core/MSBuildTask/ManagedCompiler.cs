@@ -403,7 +403,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
         {
             get
             {
-                return (Utf8Output) ? Encoding.UTF8 : base.StandardOutputEncoding;
+                return Utf8Output ? Encoding.UTF8 : base.StandardOutputEncoding;
             }
         }
 

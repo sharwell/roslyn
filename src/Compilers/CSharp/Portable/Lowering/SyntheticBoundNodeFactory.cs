@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundExpression Property(BoundExpression receiverOpt, PropertySymbol property)
         {
-            Debug.Assert((receiverOpt == null) == property.IsStatic);
+            Debug.Assert(receiverOpt == null == property.IsStatic);
             return Call(receiverOpt, property.GetMethod); // TODO: should we use property.GetBaseProperty().GetMethod to ensure we generate a call to the overridden method?
         }
 

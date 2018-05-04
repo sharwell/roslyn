@@ -265,7 +265,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
             AddIfValidTerm(invocationExpression.Expression, leftFlags, terms);
 
             // We're valid if both children are...
-            expressionType = (leftFlags & rightFlags) & ExpressionType.ValidExpression;
+            expressionType = leftFlags & rightFlags & ExpressionType.ValidExpression;
         }
 
         private static void AddPrefixUnaryExpressionTerms(PrefixUnaryExpressionSyntax prefixUnaryExpression, IList<string> terms, ref ExpressionType expressionType)
@@ -326,7 +326,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
             AddIfValidTerm(conditionalExpression.WhenFalse, falseFlags, terms);
 
             // We're valid if all children are...
-            expressionType = (conditionFlags & trueFlags & falseFlags) & ExpressionType.ValidExpression;
+            expressionType = conditionFlags & trueFlags & falseFlags & ExpressionType.ValidExpression;
         }
 
         private static void AddBinaryExpressionTerms(ExpressionSyntax binaryExpression, ExpressionSyntax left, ExpressionSyntax right, IList<string> terms, ref ExpressionType expressionType)
@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
                 case SyntaxKind.AsExpression:
                 case SyntaxKind.CoalesceExpression:
                     // We're valid if both children are...
-                    expressionType = (leftFlags & rightFlags) & ExpressionType.ValidExpression;
+                    expressionType = leftFlags & rightFlags & ExpressionType.ValidExpression;
                     return;
 
                 default:

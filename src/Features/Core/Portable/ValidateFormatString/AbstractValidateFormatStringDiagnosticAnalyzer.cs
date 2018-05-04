@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.ValidateFormatString
                 var nameOfMemberAccessExpression = syntaxFacts.GetNameOfMemberAccessExpression(expression);
                 return !syntaxFacts.IsGenericName(nameOfMemberAccessExpression)
                     && syntaxFacts.GetIdentifierOfSimpleName(nameOfMemberAccessExpression).ValueText
-                    == (nameof(string.Format));
+                    == nameof(string.Format);
             }
 
             // When using static System.String and calling Format(...), the expression will be
@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.ValidateFormatString
             if (syntaxFacts.IsIdentifierName(expression))
             {
                 return syntaxFacts.GetIdentifierOfSimpleName(expression).ValueText
-                    == (nameof(string.Format));
+                    == nameof(string.Format);
             }
 
             return false;

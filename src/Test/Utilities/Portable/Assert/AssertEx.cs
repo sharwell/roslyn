@@ -151,7 +151,7 @@ namespace Roslyn.Test.Utilities
         {
             if (actual == null || expected.IsDefault)
             {
-                Assert.True((actual == null) == expected.IsDefault, message);
+                Assert.True(actual == null == expected.IsDefault, message);
             }
             else
             {
@@ -163,7 +163,7 @@ namespace Roslyn.Test.Utilities
         {
             if (expected == null || actual.IsDefault)
             {
-                Assert.True((expected == null) == actual.IsDefault, message);
+                Assert.True(expected == null == actual.IsDefault, message);
             }
             else
             {

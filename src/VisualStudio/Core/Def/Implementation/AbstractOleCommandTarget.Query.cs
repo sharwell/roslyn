@@ -513,7 +513,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
             fixed (char* pinnedText = text)
             {
                 char* src = pinnedText;
-                char* dest = (char*)(&pText->rgwz);
+                char* dest = (char*)&pText->rgwz;
 
                 // Don't copy too much, and make sure to reserve space for the terminator
                 int length = Math.Min(text.Length, (int)pText->cwBuf - 1);

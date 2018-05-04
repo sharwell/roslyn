@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         {
             if (node.IsKind(SyntaxKind.VariableDeclarator))
             {
-                return (((VariableDeclaratorSyntax)node).Initializer)?.Value;
+                return ((VariableDeclaratorSyntax)node).Initializer?.Value;
             }
 
             return SyntaxUtilities.TryGetMethodDeclarationBody(node);
@@ -2465,7 +2465,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
                 // If the argument lists are mismatched the field must have mismatched "fixed" modifier, 
                 // which is reported by the field declaration.
-                if ((oldNode.ArgumentList == null) == (newNode.ArgumentList == null))
+                if (oldNode.ArgumentList == null == (newNode.ArgumentList == null))
                 {
                     if (!SyntaxFactory.AreEquivalent(oldNode.ArgumentList, newNode.ArgumentList))
                     {
@@ -2822,7 +2822,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 Debug.Assert(oldBody is BlockSyntax || oldBody is ExpressionSyntax || oldBody == null);
                 Debug.Assert(newBody is BlockSyntax || newBody is ExpressionSyntax || newBody == null);
 
-                if ((oldBody == null) != (newBody == null))
+                if (oldBody == null != (newBody == null))
                 {
                     if (oldBody == null)
                     {

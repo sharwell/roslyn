@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 : new PEPropertySymbolWithCustomModifiers(moduleSymbol, containingType, handle, getMethod, setMethod, propertyParams, metadataDecoder);
 
             // A property should always have this modreq, and vice versa.
-            var isBad = (result.RefKind == RefKind.In) != result.RefCustomModifiers.HasInAttributeModifier();
+            var isBad = result.RefKind == RefKind.In != result.RefCustomModifiers.HasInAttributeModifier();
 
             if (propEx != null || isBad)
             {
@@ -506,7 +506,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             get
             {
                 var metadataDecoder = new MetadataDecoder(_containingType.ContainingPEModule, _containingType);
-                return (Microsoft.Cci.CallingConvention)(metadataDecoder.GetSignatureHeaderForProperty(_handle).RawValue);
+                return (Microsoft.Cci.CallingConvention)metadataDecoder.GetSignatureHeaderForProperty(_handle).RawValue;
             }
         }
 
@@ -609,8 +609,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             PEMethodSymbol setMethod,
             ParamInfo<TypeSymbol>[] setMethodParams)
         {
-            Debug.Assert((getMethodParams == null) == ((object)getMethod == null));
-            Debug.Assert((setMethodParams == null) == ((object)setMethod == null));
+            Debug.Assert(getMethodParams == null == ((object)getMethod == null));
+            Debug.Assert(setMethodParams == null == ((object)setMethod == null));
 
             bool hasGetMethod = getMethodParams != null;
             bool hasSetMethod = setMethodParams != null;
@@ -710,7 +710,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         {
             get
             {
-                ObsoleteAttributeHelpers.InitializeObsoleteDataFromMetadata(ref _lazyObsoleteAttributeData, _handle, (PEModuleSymbol)(this.ContainingModule), ignoreByRefLikeMarker: false);
+                ObsoleteAttributeHelpers.InitializeObsoleteDataFromMetadata(ref _lazyObsoleteAttributeData, _handle, (PEModuleSymbol)this.ContainingModule, ignoreByRefLikeMarker: false);
                 return _lazyObsoleteAttributeData;
             }
         }

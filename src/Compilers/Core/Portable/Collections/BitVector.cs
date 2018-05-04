@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis
             Word bits0 = ~ZeroWord;
             for (int j = 0; j < lastWord; j++)
                 bits[j] = ~ZeroWord;
-            int numTrailingBits = capacity & ((BitsPerWord) - 1);
+            int numTrailingBits = capacity & (BitsPerWord - 1);
             if (numTrailingBits > 0)
             {
                 Debug.Assert(numTrailingBits <= BitsPerWord);

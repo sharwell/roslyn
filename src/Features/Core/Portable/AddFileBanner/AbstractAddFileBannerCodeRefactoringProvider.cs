@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.AddFileBanner
                             d.TryGetSyntaxRoot(out var siblingRoot);
                             return (document: d, root: siblingRoot);
                         })
-                        .OrderBy((t1, t2) => (t1.root != null) == (t2.root != null) ? 0 : t1.root != null ? -1 : 1);
+                        .OrderBy((t1, t2) => t1.root != null == (t2.root != null) ? 0 : t1.root != null ? -1 : 1);
 
             foreach (var (siblingDocument, siblingRoot) in siblingDocumentsAndRoots)
             {

@@ -683,7 +683,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
                 else
                 {
-                    if ((refKind1 == RefKind.None) != (refKind2 == RefKind.None))
+                    if (refKind1 == RefKind.None != (refKind2 == RefKind.None))
                     {
                         return false;
                     }

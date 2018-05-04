@@ -2355,8 +2355,8 @@ class Test
             var semanticModel = compilation.GetSemanticModel(tree);
 
             var selectClause = tree.GetCompilationUnitRoot().DescendantNodes().Where(n => n.IsKind(SyntaxKind.SelectClause)).Single() as SelectClauseSyntax;
-            var fromClause1 = tree.GetCompilationUnitRoot().DescendantNodes().Where(n => (n.IsKind(SyntaxKind.FromClause)) && (n.ToString().Contains("num1"))).Single() as FromClauseSyntax;
-            var fromClause2 = tree.GetCompilationUnitRoot().DescendantNodes().Where(n => (n.IsKind(SyntaxKind.FromClause)) && (n.ToString().Contains("num2"))).Single() as FromClauseSyntax;
+            var fromClause1 = tree.GetCompilationUnitRoot().DescendantNodes().Where(n => n.IsKind(SyntaxKind.FromClause) && n.ToString().Contains("num1")).Single() as FromClauseSyntax;
+            var fromClause2 = tree.GetCompilationUnitRoot().DescendantNodes().Where(n => n.IsKind(SyntaxKind.FromClause) && n.ToString().Contains("num2")).Single() as FromClauseSyntax;
 
             var symbolInfoForSelect = semanticModel.GetSemanticInfoSummary(selectClause);
             var queryInfoForFrom1 = semanticModel.GetQueryClauseInfo(fromClause1);

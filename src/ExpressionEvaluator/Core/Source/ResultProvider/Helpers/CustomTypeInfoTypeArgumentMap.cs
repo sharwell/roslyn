@@ -30,8 +30,8 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             int[] tupleElementNameStartIndices)
         {
             Debug.Assert(typeDefinition != null);
-            Debug.Assert((dynamicFlags != null) == (dynamicFlagStartIndices != null));
-            Debug.Assert((tupleElementNames != null) == (tupleElementNameStartIndices != null));
+            Debug.Assert(dynamicFlags != null == (dynamicFlagStartIndices != null));
+            Debug.Assert(tupleElementNames != null == (tupleElementNameStartIndices != null));
 
 #if DEBUG
             Debug.Assert(typeDefinition.IsGenericTypeDefinition);

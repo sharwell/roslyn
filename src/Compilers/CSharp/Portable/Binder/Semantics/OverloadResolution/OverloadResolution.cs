@@ -1610,7 +1610,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Debug.Assert(result == r);
                     Debug.Assert(result == BetterResult.Left || result == BetterResult.Right);
 
-                    okToDowngradeResultToNeither = (okToDowngradeResultToNeither && okToDowngradeToNeither);
+                    okToDowngradeResultToNeither = okToDowngradeResultToNeither && okToDowngradeToNeither;
                 }
             }
 
@@ -2031,7 +2031,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var n1 = t1.TupleUnderlyingTypeOrSelf() as NamedTypeSymbol;
             var n2 = t2.TupleUnderlyingTypeOrSelf() as NamedTypeSymbol;
-            Debug.Assert(((object)n1 == null) == ((object)n2 == null));
+            Debug.Assert((object)n1 == null == ((object)n2 == null));
 
             if ((object)n1 == null)
             {
