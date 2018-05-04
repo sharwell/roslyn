@@ -51,8 +51,8 @@ namespace Microsoft.CodeAnalysis.AddPackage
                 SymbolSearchOptions.SuggestForTypesInNuGetPackages, language);
 
             var codeActions = ArrayBuilder<CodeAction>.GetInstance();
-            if (symbolSearchService != null &&
-                installerService != null &&
+            if ((symbolSearchService != null) &&
+                (installerService != null) &&
                 searchNugetPackages &&
                 installerService.IsEnabled(document.Project.Id))
             {

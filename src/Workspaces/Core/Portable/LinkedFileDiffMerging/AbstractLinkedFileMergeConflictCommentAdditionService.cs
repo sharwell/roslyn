@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis
             {
                 // If changes are on adjacent lines, consider them part of the same change.
                 var changeStartLine = originalSourceText.Lines.GetLineFromPosition(change.Span.Start);
-                if (changeStartLine.LineNumber >= currentPartitionEndLine.LineNumber + 2)
+                if (changeStartLine.LineNumber >= (currentPartitionEndLine.LineNumber + 2))
                 {
                     partitionedChanges.Add(currentPartition);
                     currentPartition = new List<TextChange>();

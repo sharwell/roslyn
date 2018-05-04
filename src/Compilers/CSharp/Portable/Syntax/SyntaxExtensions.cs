@@ -198,7 +198,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static SyntaxNode SkipParens(this SyntaxNode expression)
         {
-            while (expression != null && expression.Kind() == SyntaxKind.ParenthesizedExpression)
+            while ((expression != null) && (expression.Kind() == SyntaxKind.ParenthesizedExpression))
             {
                 expression = ((ParenthesizedExpressionSyntax)expression).Expression;
             }
@@ -255,7 +255,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return false;
 
                 default:
-                    return node.Parent != null && IsInContextWhichNeedsDynamicAttribute(node.Parent);
+                    return (node.Parent != null) && IsInContextWhichNeedsDynamicAttribute(node.Parent);
             }
         }
 
@@ -339,14 +339,14 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal static CSharpSyntaxNode GetContainingDeconstruction(this ExpressionSyntax expr)
         {
             var kind = expr.Kind();
-            if (kind != SyntaxKind.TupleExpression && kind != SyntaxKind.DeclarationExpression && kind != SyntaxKind.IdentifierName)
+            if ((kind != SyntaxKind.TupleExpression) && (kind != SyntaxKind.DeclarationExpression) && (kind != SyntaxKind.IdentifierName))
             {
                 return null;
             }
 
             while (true)
             {
-                Debug.Assert(expr.Kind() == SyntaxKind.TupleExpression || expr.Kind() == SyntaxKind.DeclarationExpression || expr.Kind() == SyntaxKind.IdentifierName);
+                Debug.Assert((expr.Kind() == SyntaxKind.TupleExpression) || (expr.Kind() == SyntaxKind.DeclarationExpression) || (expr.Kind() == SyntaxKind.IdentifierName));
                 var parent = expr.Parent;
                 if (parent == null) { return null; }
 
@@ -379,13 +379,13 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static bool IsOutDeclaration(this DeclarationExpressionSyntax p)
         {
-            return p.Parent?.Kind() == SyntaxKind.Argument
-                && ((ArgumentSyntax)p.Parent).RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword;
+            return (p.Parent?.Kind() == SyntaxKind.Argument)
+                && (((ArgumentSyntax)p.Parent).RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword);
         }
 
         internal static bool IsOutVarDeclaration(this DeclarationExpressionSyntax p)
         {
-            return p.Designation.Kind() == SyntaxKind.SingleVariableDesignation && p.IsOutDeclaration();
+            return (p.Designation.Kind() == SyntaxKind.SingleVariableDesignation) && p.IsOutDeclaration();
         }
     }
 }

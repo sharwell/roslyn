@@ -67,9 +67,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
             //                                  |
             //                               }
             //      To support this, we treat `shift + enter` like `enter` here.
-            var afterOpenBrace = startToken.Kind() == SyntaxKind.OpenBraceToken
-                              && endToken.Kind() == SyntaxKind.CloseBraceToken
-                              && tokenToLeft == startToken
+            var afterOpenBrace = (startToken.Kind() == SyntaxKind.OpenBraceToken)
+                              && (endToken.Kind() == SyntaxKind.CloseBraceToken)
+                              && (tokenToLeft == startToken)
                               && endToken.Parent.IsKind(SyntaxKind.Block)
                               && FormattingRangeHelper.AreTwoTokensOnSameLine(startToken, endToken);
 
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
             }
 
             var startToken = ranges.Value.Item1;
-            if (startToken.IsMissing || startToken.Kind() == SyntaxKind.None)
+            if (startToken.IsMissing || (startToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -139,7 +139,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
                 var node = ParseNode(tree, owningNode, textToParse);
 
                 // Insert line ender if we didn't introduce any diagnostics, if not try the next owning node.
-                if (node != null && !node.ContainsDiagnostics)
+                if ((node != null) && !node.ContainsDiagnostics)
                 {
                     return semicolon;
                 }
@@ -179,7 +179,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
 
             // if caret is at the end of the line and containing statement is expression statement
             // don't do anything
-            if (position == line.End && owningNode is ExpressionStatementSyntax)
+            if ((position == line.End) && (owningNode is ExpressionStatementSyntax))
             {
                 return false;
             }
@@ -198,19 +198,19 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
 
             // check whether using has contents
             if (owningNode is UsingDirectiveSyntax u &&
-                (u.Name == null || u.Name.IsMissing))
+                ((u.Name == null) || u.Name.IsMissing))
             {
                 return false;
             }
 
             // make sure there is no open string literals
             var previousToken = lastToken.GetPreviousToken();
-            if (previousToken.Kind() == SyntaxKind.StringLiteralToken && previousToken.ToString().Last() != '"')
+            if ((previousToken.Kind() == SyntaxKind.StringLiteralToken) && (previousToken.ToString().Last() != '"'))
             {
                 return false;
             }
 
-            if (previousToken.Kind() == SyntaxKind.CharacterLiteralToken && previousToken.ToString().Last() != '\'')
+            if ((previousToken.Kind() == SyntaxKind.CharacterLiteralToken) && (previousToken.ToString().Last() != '\''))
             {
                 return false;
             }
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
             if (owningNode.IsEmbeddedStatementOwner())
             {
                 var embeddedStatement = owningNode.GetEmbeddedStatement();
-                if (embeddedStatement == null || embeddedStatement.Span.IsEmpty)
+                if ((embeddedStatement == null) || embeddedStatement.Span.IsEmpty)
                 {
                     return false;
                 }
@@ -238,13 +238,13 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
             // last token must be on the same line as the caret
             var line = text.Lines.GetLineFromPosition(position);
             var locatedAtTheEndOfLine = LocatedAtTheEndOfLine(line, lastToken);
-            if (!locatedAtTheEndOfLine && text.Lines.IndexOf(lastToken.Span.End) != line.LineNumber)
+            if (!locatedAtTheEndOfLine && (text.Lines.IndexOf(lastToken.Span.End) != line.LineNumber))
             {
                 return false;
             }
 
             // if we already have last semicolon, we don't need to do anything
-            if (!lastToken.IsMissing && lastToken.Kind() == SyntaxKind.SemicolonToken)
+            if (!lastToken.IsMissing && (lastToken.Kind() == SyntaxKind.SemicolonToken))
             {
                 return false;
             }
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
         /// </summary>
         private static bool LocatedAtTheEndOfLine(TextLine line, SyntaxToken lastToken)
         {
-            return lastToken.IsMissing && lastToken.Span.End == line.EndIncludingLineBreak;
+            return lastToken.IsMissing && (lastToken.Span.End == line.EndIncludingLineBreak);
         }
 
         /// <summary>
@@ -279,10 +279,10 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
 
         private static bool AllowedConstructs(SyntaxNode n)
         {
-            return n is StatementSyntax ||
-                   n is BaseFieldDeclarationSyntax ||
-                   n is UsingDirectiveSyntax ||
-                   n is ArrowExpressionClauseSyntax;
+            return (n is StatementSyntax) ||
+                   (n is BaseFieldDeclarationSyntax) ||
+                   (n is UsingDirectiveSyntax) ||
+                   (n is ArrowExpressionClauseSyntax);
         }
 
         private static SyntaxNode OwningNode(SyntaxNode n)

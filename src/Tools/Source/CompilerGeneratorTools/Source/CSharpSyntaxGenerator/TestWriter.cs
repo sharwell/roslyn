@@ -240,7 +240,7 @@ namespace CSharpSyntaxGenerator
                 {
                     if (IsOptional(field))
                     {
-                        if (!isGreen && field.Type == "SyntaxToken")
+                        if (!isGreen && (field.Type == "SyntaxToken"))
                         {
                             WriteLine("Assert.Equal(SyntaxKind.None, node.{0}.Kind());", field.Name);
                         }
@@ -280,7 +280,7 @@ namespace CSharpSyntaxGenerator
                     }
                 }
 
-                if (!isGreen && withStat != null)
+                if (!isGreen && (withStat != null))
                 {
                     WriteLine("var newNode = node{0};", withStat);
                     WriteLine("Assert.Equal(node, newNode);");

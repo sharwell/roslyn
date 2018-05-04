@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             bool IEquatable<BinderCacheKey>.Equals(BinderCacheKey other)
             {
-                return syntaxNode == other.syntaxNode && this.usage == other.usage;
+                return (syntaxNode == other.syntaxNode) && (this.usage == other.usage);
             }
 
             public override int GetHashCode()
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Unless this is interactive retrieving a binder for global statements
             // at the very top-level (i.e. in a completely empty file) use
             // node.Parent to maintain existing behavior.
-            if (!InScript || node.Kind() != SyntaxKind.CompilationUnit)
+            if (!InScript || (node.Kind() != SyntaxKind.CompilationUnit))
             {
                 node = node.Parent;
             }

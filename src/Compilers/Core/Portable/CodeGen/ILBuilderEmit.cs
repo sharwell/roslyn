@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             bool validOpCode = (code == ILOpCode.Nop) || code.IsBranch();
 
             Debug.Assert(validOpCode);
-            Debug.Assert(revOpCode == ILOpCode.Nop || revOpCode.IsBranch());
+            Debug.Assert((revOpCode == ILOpCode.Nop) || revOpCode.IsBranch());
             Debug.Assert(!code.HasVariableStackBehavior());
 
             _emitState.AdjustStack(code.NetStackBehavior());
@@ -674,12 +674,12 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         internal void EmitLongConstant(long value)
         {
-            if (value >= int.MinValue && value <= int.MaxValue)
+            if ((value >= int.MinValue) && (value <= int.MaxValue))
             {
                 EmitIntConstant((int)value);
                 EmitOpCode(ILOpCode.Conv_i8);
             }
-            else if (value >= uint.MinValue && value <= uint.MaxValue)
+            else if ((value >= uint.MinValue) && (value <= uint.MaxValue))
             {
                 EmitIntConstant(unchecked((int)value));
                 EmitOpCode(ILOpCode.Conv_u8);

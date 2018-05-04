@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         public override bool Equals(Type o)
         {
-            return o != null && o.GetType() == this.GetType() && ((TypeImpl)o).Type == this.Type;
+            return (o != null) && (o.GetType() == this.GetType()) && (((TypeImpl)o).Type == this.Type);
         }
 
         public override bool Equals(object objOther)

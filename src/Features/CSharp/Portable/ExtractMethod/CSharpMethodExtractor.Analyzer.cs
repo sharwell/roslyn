@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                     return null;
                 }
 
-                return info.Type == null || info.Type.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object
+                return (info.Type == null) || (info.Type.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
                     ? info.Type
                     : info.ConvertedType;
             }
@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 var last = csharpSelectionResult.GetLastStatement();
 
                 // single statement case
-                if (first == last ||
+                if ((first == last) ||
                     first.Span.Contains(last.Span))
                 {
                     return new Tuple<SyntaxNode, SyntaxNode>(first, first);

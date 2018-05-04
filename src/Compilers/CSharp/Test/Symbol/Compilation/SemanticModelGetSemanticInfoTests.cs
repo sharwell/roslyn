@@ -4542,7 +4542,7 @@ class C
 
             var symbol = semanticInfo.Symbol;
             Assert.Equal(SymbolKind.Parameter, symbol.Kind);
-            Assert.True(symbol.ContainingSymbol.Kind == SymbolKind.Property && ((IPropertySymbol)symbol.ContainingSymbol).IsIndexer);
+            Assert.True((symbol.ContainingSymbol.Kind == SymbolKind.Property) && ((IPropertySymbol)symbol.ContainingSymbol).IsIndexer);
             Assert.Equal("System.Int16 i", symbol.ToTestDisplayString());
         }
 

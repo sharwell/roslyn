@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion.P
                 ? _editorSessionOpt.Presenter as IIntellisenseCommandTarget
                 : null;
 
-            return target != null && target.ExecuteKeyboardCommand(command);
+            return (target != null) && target.ExecuteKeyboardCommand(command);
         }
 
         public void SelectPreviousItem()

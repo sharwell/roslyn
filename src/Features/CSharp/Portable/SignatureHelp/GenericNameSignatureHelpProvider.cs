@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
     {
         public override bool IsTriggerCharacter(char ch)
         {
-            return ch == '<' || ch == ',';
+            return (ch == '<') || (ch == ',');
         }
 
         public override bool IsRetriggerCharacter(char ch)
@@ -53,17 +53,17 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
         private bool IsTriggerToken(SyntaxToken token)
         {
             return !token.IsKind(SyntaxKind.None) &&
-                token.ValueText.Length == 1 &&
+                (token.ValueText.Length == 1) &&
                 IsTriggerCharacter(token.ValueText[0]) &&
-                token.Parent is TypeArgumentListSyntax &&
-                token.Parent.Parent is GenericNameSyntax;
+                (token.Parent is TypeArgumentListSyntax) &&
+                (token.Parent.Parent is GenericNameSyntax);
         }
 
         private bool IsArgumentListToken(GenericNameSyntax node, SyntaxToken token)
         {
-            return node.TypeArgumentList != null &&
+            return (node.TypeArgumentList != null) &&
                 node.TypeArgumentList.Span.Contains(token.SpanStart) &&
-                token != node.TypeArgumentList.GreaterThanToken;
+                (token != node.TypeArgumentList.GreaterThanToken);
         }
 
         protected override async Task<SignatureHelpItems> GetItemsWorkerAsync(Document document, int position, SignatureHelpTriggerInfo triggerInfo, CancellationToken cancellationToken)
@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
 
             var isBaseAccess = beforeDotExpression is BaseExpressionSyntax;
             var namespacesOrTypesOnly = SyntaxFacts.IsInNamespaceOrTypeContext(simpleName);
-            var includeExtensions = leftSymbol == null && leftType != null;
+            var includeExtensions = (leftSymbol == null) && (leftType != null);
             var name = genericIdentifier.ValueText;
             var symbols = isBaseAccess
                 ? semanticModel.LookupBaseMembers(position, name)
@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
             var symbolDisplayService = document.Project.LanguageServices.GetService<ISymbolDisplayService>();
             var accessibleSymbols =
                 symbols.WhereAsArray(s => s.GetArity() > 0)
-                       .WhereAsArray(s => s is INamedTypeSymbol || s is IMethodSymbol)
+                       .WhereAsArray(s => (s is INamedTypeSymbol) || (s is IMethodSymbol))
                        .FilterToVisibleAndBrowsableSymbols(document.ShouldHideAdvancedMembers(), semanticModel.Compilation)
                        .Sort(symbolDisplayService, semanticModel, genericIdentifier.SpanStart);
 
@@ -155,7 +155,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
 
         protected virtual TextSpan GetTextSpan(SyntaxToken genericIdentifier, SyntaxToken lessThanToken)
         {
-            Contract.ThrowIfFalse(lessThanToken.Parent is TypeArgumentListSyntax && lessThanToken.Parent.Parent is GenericNameSyntax);
+            Contract.ThrowIfFalse((lessThanToken.Parent is TypeArgumentListSyntax) && (lessThanToken.Parent.Parent is GenericNameSyntax));
             return SignatureHelpUtilities.GetSignatureHelpSpan(((GenericNameSyntax)lessThanToken.Parent.Parent).TypeArgumentList);
         }
 

@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     SourceMemberMethodSymbol method = null;
 
-                    if (usage != NodeUsage.Normal && methodDecl.TypeParameterList != null)
+                    if ((usage != NodeUsage.Normal) && (methodDecl.TypeParameterList != null))
                     {
                         method = GetMethodSymbol(methodDecl, resultBinder);
                         resultBinder = new WithMethodTypeParametersBinder(method, resultBinder);
@@ -301,7 +301,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     resultBinder = VisitCore(parent.Parent);
 
                     MethodSymbol method = GetMethodSymbol(parent, resultBinder);
-                    if ((object)method != null && inBody)
+                    if (((object)method != null) && inBody)
                     {
                         resultBinder = new InMethodBinder(method, resultBinder);
                     }
@@ -387,7 +387,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if ((object)container == null)
                 {
                     Debug.Assert(binder.ContainingMemberOrLambda is NamespaceSymbol);
-                    if (node.Parent.Kind() == SyntaxKind.CompilationUnit && syntaxTree.Options.Kind != SourceCodeKind.Regular)
+                    if ((node.Parent.Kind() == SyntaxKind.CompilationUnit) && (syntaxTree.Options.Kind != SourceCodeKind.Regular))
                     {
                         container = compilation.ScriptClass;
                     }
@@ -472,7 +472,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             private SourcePropertySymbol GetPropertySymbol(BasePropertyDeclarationSyntax basePropertyDeclarationSyntax, Binder outerBinder)
             {
-                Debug.Assert(basePropertyDeclarationSyntax.Kind() == SyntaxKind.PropertyDeclaration || basePropertyDeclarationSyntax.Kind() == SyntaxKind.IndexerDeclaration);
+                Debug.Assert((basePropertyDeclarationSyntax.Kind() == SyntaxKind.PropertyDeclaration) || (basePropertyDeclarationSyntax.Kind() == SyntaxKind.IndexerDeclaration));
 
                 if (basePropertyDeclarationSyntax == _memberDeclarationOpt)
                 {
@@ -748,7 +748,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     InContainerBinder outer;
                     var container = parent.Parent;
 
-                    if (InScript && container.Kind() == SyntaxKind.CompilationUnit)
+                    if (InScript && (container.Kind() == SyntaxKind.CompilationUnit))
                     {
                         // Although namespaces are not allowed in script code we still bind them so that we don't report useless errors.
                         // A namespace in script code is not bound within the scope of a Script class, 
@@ -852,7 +852,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             // NB: This binder has a full Imports object, but only the non-alias imports are
                             // ever consumed.  Aliases are actually checked in scriptClassBinder (below).
                             // Note: #loaded trees don't consume previous submission imports.
-                            result = compilation.PreviousSubmission == null || !isSubmissionTree
+                            result = (compilation.PreviousSubmission == null) || !isSubmissionTree
                                 ? new InContainerBinder(result, basesBeingResolved => scriptClassBinder.GetImports(basesBeingResolved))
                                 : new InContainerBinder(result, basesBeingResolved =>
                                     compilation.GetPreviousSubmissionImports().Concat(scriptClassBinder.GetImports(basesBeingResolved)));
@@ -903,13 +903,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 TextSpan containingSpan = containingNode.Span;
 
                 SyntaxToken token;
-                if (containingNode.Kind() != SyntaxKind.CompilationUnit && _position == containingSpan.End)
+                if ((containingNode.Kind() != SyntaxKind.CompilationUnit) && (_position == containingSpan.End))
                 {
                     // This occurs at EOF
                     token = containingNode.GetLastToken();
                     Debug.Assert(token == this.syntaxTree.GetRoot().GetLastToken());
                 }
-                else if (_position < containingSpan.Start || _position > containingSpan.End) //NB: > not >=
+                else if ((_position < containingSpan.Start) || (_position > containingSpan.End)) //NB: > not >=
                 {
                     return false;
                 }
@@ -919,13 +919,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 var node = token.Parent;
-                while (node != null && node != containingNode)
+                while ((node != null) && (node != containingNode))
                 {
                     // ACASEY: the restriction that we're only interested in children
                     // of containingNode (vs descendants) seems to be required for cases like
                     // GetSemanticInfoTests.BindAliasQualifier, which binds an alias name
                     // within a using directive.
-                    if (node.IsKind(SyntaxKind.UsingDirective) && node.Parent == containingNode)
+                    if (node.IsKind(SyntaxKind.UsingDirective) && (node.Parent == containingNode))
                     {
                         return true;
                     }
@@ -977,7 +977,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             private Binder VisitXmlCrefAttributeInternal(XmlCrefAttributeSyntax parent, NodeUsage extraInfo)
             {
-                Debug.Assert(extraInfo == NodeUsage.Normal || extraInfo == NodeUsage.CrefParameterOrReturnType,
+                Debug.Assert((extraInfo == NodeUsage.Normal) || (extraInfo == NodeUsage.CrefParameterOrReturnType),
                     "Unexpected extraInfo " + extraInfo);
 
                 var key = CreateBinderCacheKey(parent, extraInfo);
@@ -1076,7 +1076,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             private Binder GetParameterNameAttributeValueBinder(MemberDeclarationSyntax memberSyntax, Binder nextBinder)
             {
                 BaseMethodDeclarationSyntax baseMethodDeclSyntax = memberSyntax as BaseMethodDeclarationSyntax;
-                if ((object)baseMethodDeclSyntax != null && baseMethodDeclSyntax.ParameterList.ParameterCount > 0)
+                if (((object)baseMethodDeclSyntax != null) && (baseMethodDeclSyntax.ParameterList.ParameterCount > 0))
                 {
                     Binder outerBinder = VisitCore(memberSyntax.Parent);
                     MethodSymbol method = GetMethodSymbol(baseMethodDeclSyntax, outerBinder);
@@ -1085,7 +1085,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // As in Dev11, we do not allow <param name="value"> on events.
                 SyntaxKind memberKind = memberSyntax.Kind();
-                if (memberKind == SyntaxKind.PropertyDeclaration || memberKind == SyntaxKind.IndexerDeclaration)
+                if ((memberKind == SyntaxKind.PropertyDeclaration) || (memberKind == SyntaxKind.IndexerDeclaration))
                 {
                     Binder outerBinder = VisitCore(memberSyntax.Parent);
 
@@ -1144,7 +1144,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // NOTE: don't care about enums, since they don't have type parameters.
                 TypeDeclarationSyntax typeDeclSyntax = memberSyntax as TypeDeclarationSyntax;
-                if ((object)typeDeclSyntax != null && typeDeclSyntax.Arity > 0)
+                if (((object)typeDeclSyntax != null) && (typeDeclSyntax.Arity > 0))
                 {
                     Binder outerBinder = VisitCore(memberSyntax.Parent);
                     SourceNamedTypeSymbol typeSymbol = ((NamespaceOrTypeSymbol)outerBinder.ContainingMemberOrLambda).GetSourceTypeMember(typeDeclSyntax);
@@ -1230,7 +1230,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static MemberDeclarationSyntax GetAssociatedMemberForXmlSyntax(CSharpSyntaxNode xmlSyntax)
         {
-            Debug.Assert(xmlSyntax is XmlAttributeSyntax || xmlSyntax.Kind() == SyntaxKind.XmlEmptyElement || xmlSyntax.Kind() == SyntaxKind.XmlElementStartTag);
+            Debug.Assert((xmlSyntax is XmlAttributeSyntax) || (xmlSyntax.Kind() == SyntaxKind.XmlEmptyElement) || (xmlSyntax.Kind() == SyntaxKind.XmlElementStartTag));
 
             StructuredTriviaSyntax structuredTrivia = GetEnclosingDocumentationComment(xmlSyntax);
             SyntaxTrivia containingTrivia = structuredTrivia.ParentTrivia;

@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                     return base.WithSpace(space, context, formattingRules);
                 }
 
-                if (this.LineBreaks == _original.LineBreaks && _original.Spaces == space)
+                if ((this.LineBreaks == _original.LineBreaks) && (_original.Spaces == space))
                 {
                     return _original;
                 }
@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                     return base.WithLine(line, indentation, context, formattingRules, cancellationToken);
                 }
 
-                if (_original.LineBreaks == line && _original.Spaces == indentation)
+                if ((_original.LineBreaks == line) && (_original.Spaces == indentation))
                 {
                     return _original;
                 }
@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                     return base.WithIndentation(indentation, context, formattingRules, cancellationToken);
                 }
 
-                if (this.LineBreaks == _original.LineBreaks && _original.Spaces == indentation)
+                if ((this.LineBreaks == _original.LineBreaks) && (_original.Spaces == indentation))
                 {
                     return _original;
                 }

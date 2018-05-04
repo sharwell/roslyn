@@ -157,7 +157,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 var rootNamespace = _service.GetRootNamespace(_document.SemanticModel.Compilation.Options).Trim();
                 if (!string.IsNullOrWhiteSpace(rootNamespace))
                 {
-                    if (namespaceToGenerateInto == rootNamespace ||
+                    if ((namespaceToGenerateInto == rootNamespace) ||
                         namespaceToGenerateInto.StartsWith(rootNamespace + ".", StringComparison.Ordinal))
                     {
                         namespaceToGenerateInto = namespaceToGenerateInto.Substring(rootNamespace.Length);
@@ -171,8 +171,8 @@ namespace Microsoft.CodeAnalysis.GenerateType
             {
                 var namespaceToGenerateInto = _state.NamespaceToGenerateInOpt.Trim();
 
-                if (targetProject.Language == LanguageNames.CSharp ||
-                    targetProject == triggeringProject)
+                if ((targetProject.Language == LanguageNames.CSharp) ||
+                    (targetProject == triggeringProject))
                 {
                     // If the target project is C# project then we don't have to make any modification to the namespace
                     // or
@@ -243,10 +243,10 @@ namespace Microsoft.CodeAnalysis.GenerateType
             private void AddFoldersToNamespaceContainers(List<string> container, IList<string> folders)
             {
                 // Add the folder as part of the namespace if there are not empty
-                if (folders != null && folders.Count != 0)
+                if ((folders != null) && (folders.Count != 0))
                 {
                     // Remove the empty entries and replace the spaces in the folder name to '_'
-                    var refinedFolders = folders.Where(n => n != null && !n.IsEmpty()).Select(n => n.Replace(' ', '_')).ToArray();
+                    var refinedFolders = folders.Where(n => (n != null) && !n.IsEmpty()).Select(n => n.Replace(' ', '_')).ToArray();
                     container.AddRange(refinedFolders);
                 }
             }
@@ -494,9 +494,9 @@ namespace Microsoft.CodeAnalysis.GenerateType
                     // Case 2 : If the type is generated from a C# project to a C# Project
                     // Case 3 : If the Type is generated from a VB Project to a C# Project
                     // Using and Namespace will be the DefaultNamespace + Folder Structure
-                    if ((_document.Project == _generateTypeOptionsResult.Project && _document.Project.Language == LanguageNames.CSharp) ||
-                        (_targetProjectChangeInLanguage == TargetProjectChangeInLanguage.NoChange && _generateTypeOptionsResult.Project.Language == LanguageNames.CSharp) ||
-                        _targetProjectChangeInLanguage == TargetProjectChangeInLanguage.VisualBasicToCSharp)
+                    if (((_document.Project == _generateTypeOptionsResult.Project) && (_document.Project.Language == LanguageNames.CSharp)) ||
+                        ((_targetProjectChangeInLanguage == TargetProjectChangeInLanguage.NoChange) && (_generateTypeOptionsResult.Project.Language == LanguageNames.CSharp)) ||
+                        (_targetProjectChangeInLanguage == TargetProjectChangeInLanguage.VisualBasicToCSharp))
                     {
                         if (!string.IsNullOrWhiteSpace(defaultNamespace))
                         {
@@ -514,9 +514,9 @@ namespace Microsoft.CodeAnalysis.GenerateType
                     // Case 5 : If Type is generated from a VB Project to VB Project
                     // Case 6 : If Type is generated from a C# Project to VB Project 
                     // Namespace will be Folder Structure and Import will have the RootNamespace of the project generated into as part of the Imports
-                    if ((_document.Project == _generateTypeOptionsResult.Project && _document.Project.Language == LanguageNames.VisualBasic) ||
-                        (_document.Project != _generateTypeOptionsResult.Project && _targetProjectChangeInLanguage == TargetProjectChangeInLanguage.NoChange && _generateTypeOptionsResult.Project.Language == LanguageNames.VisualBasic) ||
-                        _targetProjectChangeInLanguage == TargetProjectChangeInLanguage.CSharpToVisualBasic)
+                    if (((_document.Project == _generateTypeOptionsResult.Project) && (_document.Project.Language == LanguageNames.VisualBasic)) ||
+                        ((_document.Project != _generateTypeOptionsResult.Project) && (_targetProjectChangeInLanguage == TargetProjectChangeInLanguage.NoChange) && (_generateTypeOptionsResult.Project.Language == LanguageNames.VisualBasic)) ||
+                        (_targetProjectChangeInLanguage == TargetProjectChangeInLanguage.CSharpToVisualBasic))
                     {
                         // Populate the ContainerList
                         AddFoldersToNamespaceContainers(containerList, folders);
@@ -604,7 +604,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 ITypeSymbol parameterType,
                 ISymbol symbol)
             {
-                if (symbol != null && !symbol.IsStatic && parameterType.Language == symbol.Language)
+                if ((symbol != null) && !symbol.IsStatic && (parameterType.Language == symbol.Language))
                 {
                     if (symbol is IFieldSymbol field)
                     {
@@ -615,8 +615,8 @@ namespace Microsoft.CodeAnalysis.GenerateType
                     else if (symbol is IPropertySymbol property)
                     {
                         return
-                            property.Parameters.Length == 0 &&
-                            property.SetMethod != null &&
+                            (property.Parameters.Length == 0) &&
+                            (property.SetMethod != null) &&
                             IsSymbolAccessible(property.SetMethod) &&
                             _service.IsConversionImplicit(_document.SemanticModel.Compilation, parameterType, property.Type);
                     }

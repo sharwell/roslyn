@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 // Ignore constructors and namespaces.  We don't want to expose them through this API.
                 if (symbol.IsConstructor() ||
                     symbol.IsStaticConstructor() ||
-                    symbol is INamespaceSymbol)
+                    (symbol is INamespaceSymbol))
                 {
                     continue;
                 }
@@ -148,7 +148,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 }
 
                 // report both parts of partial methods
-                if (symbol is IMethodSymbol method && method.PartialImplementationPart != null)
+                if (symbol is IMethodSymbol method && (method.PartialImplementationPart != null))
                 {
                     results.Add(method);
                 }

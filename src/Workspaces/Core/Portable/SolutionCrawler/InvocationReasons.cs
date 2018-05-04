@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
         {
             get
             {
-                return _reasons == null || _reasons.Count == 0;
+                return (_reasons == null) || (_reasons.Count == 0);
             }
         }
 

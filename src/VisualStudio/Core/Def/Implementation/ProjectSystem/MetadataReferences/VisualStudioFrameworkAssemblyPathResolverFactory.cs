@@ -117,9 +117,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 }
 
                 IVsHierarchy hierarchy = _workspace.GetHierarchy(projectId);
-                if (hierarchy == null ||
+                if ((hierarchy == null) ||
                     !hierarchy.TryGetProperty((__VSHPROPID)__VSHPROPID4.VSHPROPID_TargetFrameworkMoniker, out string targetMoniker) ||
-                    targetMoniker == null)
+                    (targetMoniker == null))
                 {
                     return null;
                 }
@@ -137,7 +137,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
                     var frameworkName = new FrameworkName(targetMoniker);
                     if (StringComparer.OrdinalIgnoreCase.Equals(frameworkName.Identifier, ".NETCore") &&
-                        frameworkName.Version >= new Version(major: 5, minor: 0))
+                        (frameworkName.Version >= new Version(major: 5, minor: 0)))
                     {
                         return null;
                     }

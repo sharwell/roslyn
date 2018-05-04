@@ -145,16 +145,16 @@ namespace Microsoft.CodeAnalysis.CodeGen
             //  placed at the end of it such that block offset of the marker points
             //  to the next byte *after* the block is closed. In this case the marker 
             //  should be moved to the next block
-            if (_lastCompleteBlock != null &&
-                _lastCompleteBlock.BranchCode == ILOpCode.Nop &&
-                _lastCompleteBlock.LastILMarker >= 0 &&
-                _allocatedILMarkers[_lastCompleteBlock.LastILMarker].BlockOffset == _lastCompleteBlock.RegularInstructionsLength)
+            if ((_lastCompleteBlock != null) &&
+                (_lastCompleteBlock.BranchCode == ILOpCode.Nop) &&
+                (_lastCompleteBlock.LastILMarker >= 0) &&
+                (_allocatedILMarkers[_lastCompleteBlock.LastILMarker].BlockOffset == _lastCompleteBlock.RegularInstructionsLength))
             {
                 int startMarker = -1;
                 int endMarker = -1;
 
-                while (_lastCompleteBlock.LastILMarker >= 0 &&
-                      _allocatedILMarkers[_lastCompleteBlock.LastILMarker].BlockOffset == _lastCompleteBlock.RegularInstructionsLength)
+                while ((_lastCompleteBlock.LastILMarker >= 0) &&
+                      (_allocatedILMarkers[_lastCompleteBlock.LastILMarker].BlockOffset == _lastCompleteBlock.RegularInstructionsLength))
                 {
                     Debug.Assert((startMarker < 0) || (startMarker == (_lastCompleteBlock.LastILMarker + 1)));
                     startMarker = _lastCompleteBlock.LastILMarker;
@@ -275,12 +275,12 @@ namespace Microsoft.CodeAnalysis.CodeGen
         {
         tryAgain:
 
-            if (block != null && block.Reachability == Reachability.NotReachable)
+            if ((block != null) && (block.Reachability == Reachability.NotReachable))
             {
                 block.Reachability = Reachability.Reachable;
 
                 var branchCode = block.BranchCode;
-                if (branchCode == ILOpCode.Nop && block.Type == BlockType.Normal)
+                if ((branchCode == ILOpCode.Nop) && (block.Type == BlockType.Normal))
                 {
                     block = block.NextBlock;
                     goto tryAgain;
@@ -445,7 +445,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 // Here, we push the handler blocks, then the try block.
                 while (handlerBlock != null)
                 {
-                    Debug.Assert(handlerBlock.Type == BlockType.Catch || handlerBlock.Type == BlockType.Fault || handlerBlock.Type == BlockType.Filter);
+                    Debug.Assert((handlerBlock.Type == BlockType.Catch) || (handlerBlock.Type == BlockType.Fault) || (handlerBlock.Type == BlockType.Filter));
                     PushReachableBlockToProcess(reachableBlocks, handlerBlock);
                     handlerBlock = handlerBlock.NextExceptionHandler;
                 }
@@ -618,7 +618,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             // just disallow labels to move outside of a catch-protected regions.
 
             // no handler means outermost scope (method level)
-            if (newHandler == null && currentHandler.ContainingExceptionScope.FinallyOnly())
+            if ((newHandler == null) && currentHandler.ContainingExceptionScope.FinallyOnly())
             {
                 return true;
             }
@@ -713,7 +713,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             {
                 // The only blocks that should be marked as BlockedByFinally
                 // are the special blocks inserted at the end of exception handlers.
-                Debug.Assert(current.Reachability != Reachability.BlockedByFinally ||
+                Debug.Assert((current.Reachability != Reachability.BlockedByFinally) ||
                     IsSpecialEndHandlerBlock(current));
 
                 if (IsSpecialEndHandlerBlock(current))
@@ -840,7 +840,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             RewriteSpecialBlocks();
             DropUnreachableBlocks();
 
-            if (_optimizations == OptimizationLevel.Release && OptimizeLabels())
+            if ((_optimizations == OptimizationLevel.Release) && OptimizeLabels())
             {
                 // redo unreachable code elimination if some labels were optimized
                 // as that could result in more dead code. 
@@ -1082,7 +1082,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         internal void OpenLocalScope(ScopeType scopeType = ScopeType.Variable, Cci.ITypeReference exceptionType = null)
         {
-            if (scopeType == ScopeType.TryCatchFinally && IsJustPastLabel())
+            if ((scopeType == ScopeType.TryCatchFinally) && IsJustPastLabel())
             {
                 DefineHiddenSequencePoint();
                 EmitOpCode(ILOpCode.Nop);
@@ -1237,7 +1237,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         {
             Debug.Assert(!RealizedIL.IsDefault, "Builder must be realized to perform this operation");
             Debug.Assert(_allocatedILMarkers != null, "There are not markers in this builder");
-            Debug.Assert(ilMarker >= 0 && ilMarker < _allocatedILMarkers.Count, "Wrong builder?");
+            Debug.Assert((ilMarker >= 0) && (ilMarker < _allocatedILMarkers.Count), "Wrong builder?");
             return _allocatedILMarkers[ilMarker].AbsoluteOffset;
         }
 

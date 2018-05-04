@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 diagnostics);
 
             // Do not instrument any methods if CreatePayload is not present.
-            if ((object)createPayloadForMethodsSpanningSingleFile == null || (object)createPayloadForMethodsSpanningMultipleFiles == null)
+            if (((object)createPayloadForMethodsSpanningSingleFile == null) || ((object)createPayloadForMethodsSpanningMultipleFiles == null))
             {
                 return null;
             }
@@ -417,8 +417,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static bool ReturnsValueWithinExpressionBodiedConstruct(BoundReturnStatement returnStatement)
         {
             if (returnStatement.WasCompilerGenerated &&
-                returnStatement.ExpressionOpt != null &&
-                returnStatement.ExpressionOpt.Syntax != null)
+                (returnStatement.ExpressionOpt != null) &&
+                (returnStatement.ExpressionOpt.Syntax != null))
             {
                 SyntaxKind parentKind = returnStatement.ExpressionOpt.Syntax.Parent.Kind();
                 switch (parentKind)
@@ -466,7 +466,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (!original.WasCompilerGenerated)
             {
                 // Do not instrument implicit constructor initializers
-                if (!original.IsConstructorInitializer() || original.Syntax.Kind() != SyntaxKind.ConstructorDeclaration)
+                if (!original.IsConstructorInitializer() || (original.Syntax.Kind() != SyntaxKind.ConstructorDeclaration))
                 {
                     return CollectDynamicAnalysis(original, rewritten);
                 }

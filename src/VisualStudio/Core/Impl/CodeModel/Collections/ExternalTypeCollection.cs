@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
         {
             var index = _typeSymbols.IndexOf(t => t.Name == name);
 
-            if (index >= 0 && index < _typeSymbols.Length)
+            if ((index >= 0) && (index < _typeSymbols.Length))
             {
                 element = this.State.CodeModelService.CreateCodeType(this.State, _projectId, _typeSymbols[index]);
                 return true;

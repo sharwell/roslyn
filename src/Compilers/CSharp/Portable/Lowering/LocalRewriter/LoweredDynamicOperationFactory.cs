@@ -570,9 +570,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundExpression loweredRight = null)
         {
             const string NoName = null;
-            Debug.Assert(argumentNames.IsDefaultOrEmpty || loweredArguments.Length == argumentNames.Length);
-            Debug.Assert(refKinds.IsDefault || loweredArguments.Length == refKinds.Length);
-            Debug.Assert(!receiverIsStaticType || receiverRefKind == RefKind.None);
+            Debug.Assert(argumentNames.IsDefaultOrEmpty || (loweredArguments.Length == argumentNames.Length));
+            Debug.Assert(refKinds.IsDefault || (loweredArguments.Length == refKinds.Length));
+            Debug.Assert(!receiverIsStaticType || (receiverRefKind == RefKind.None));
 
             var infos = new BoundExpression[(loweredReceiver != null ? 1 : 0) + loweredArguments.Length + (loweredRight != null ? 1 : 0)];
             int j = 0;
@@ -617,13 +617,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             FieldSymbol callSiteTargetFieldGeneric = (FieldSymbol)_factory.WellKnownMember(WellKnownMember.System_Runtime_CompilerServices_CallSite_T__Target);
             MethodSymbol delegateInvoke;
 
-            if (binderConstruction == null ||
-                (object)delegateTypeOverMethodTypeParameters == null ||
+            if ((binderConstruction == null) ||
+                ((object)delegateTypeOverMethodTypeParameters == null) ||
                 delegateTypeOverMethodTypeParameters.IsErrorType() ||
-                (object)(delegateInvoke = delegateTypeOverMethodTypeParameters.DelegateInvokeMethod) == null ||
+                ((object)(delegateInvoke = delegateTypeOverMethodTypeParameters.DelegateInvokeMethod) == null) ||
                 callSiteTypeGeneric.IsErrorType() ||
-                (object)callSiteFactoryGeneric == null ||
-                (object)callSiteTargetFieldGeneric == null)
+                ((object)callSiteFactoryGeneric == null) ||
+                ((object)callSiteTargetFieldGeneric == null))
             {
                 // CS1969: One or more types required to compile a dynamic expression cannot be found.
                 // Dev11 reports it with source location for each dynamic operation, which results in many error messages.
@@ -720,7 +720,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundExpression loweredRight,
             TypeSymbol resultType)
         {
-            Debug.Assert(refKinds.IsDefaultOrEmpty || refKinds.Length == loweredArguments.Length);
+            Debug.Assert(refKinds.IsDefaultOrEmpty || (refKinds.Length == loweredArguments.Length));
 
             var callSiteType = _factory.WellKnownType(WellKnownType.System_Runtime_CompilerServices_CallSite);
             if (callSiteType.IsErrorType())
@@ -730,7 +730,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var delegateSignature = MakeCallSiteDelegateSignature(callSiteType, loweredReceiver, loweredArguments, loweredRight, resultType);
             bool returnsVoid = resultType.SpecialType == SpecialType.System_Void;
-            bool hasByRefs = receiverRefKind != RefKind.None || !refKinds.IsDefaultOrEmpty;
+            bool hasByRefs = (receiverRefKind != RefKind.None) || !refKinds.IsDefaultOrEmpty;
 
             if (!hasByRefs)
             {
@@ -800,7 +800,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 flags |= CSharpArgumentInfoFlags.NamedArgument;
             }
 
-            Debug.Assert(refKind == RefKind.None || refKind == RefKind.Ref || refKind == RefKind.Out, "unexpected refKind in dynamic");
+            Debug.Assert((refKind == RefKind.None) || (refKind == RefKind.Ref) || (refKind == RefKind.Out), "unexpected refKind in dynamic");
 
             // by-ref type doesn't trigger dynamic dispatch and it can't be a null literal => set UseCompileTimeType
             if (refKind == RefKind.Out)
@@ -848,7 +848,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // Check compile time type.
             // See also DynamicRewriter::GenerateCallingObjectFlags.
-            if ((object)argType != null && !argType.IsDynamic())
+            if (((object)argType != null) && !argType.IsDynamic())
             {
                 flags |= CSharpArgumentInfoFlags.UseCompileTimeType;
             }

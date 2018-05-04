@@ -196,14 +196,14 @@ namespace Microsoft.CodeAnalysis
             dependencyGraph = dependencyGraph ?? _dependencyGraph;
             lazyLatestProjectVersion = lazyLatestProjectVersion ?? _lazyLatestProjectVersion;
 
-            if (branchId == _branchId &&
-                solutionInfo == _solutionInfo &&
-                projectIds == _projectIds &&
-                idToProjectStateMap == _projectIdToProjectStateMap &&
-                projectIdToTrackerMap == _projectIdToTrackerMap &&
-                linkedFilesMap == _linkedFilesMap &&
-                dependencyGraph == _dependencyGraph &&
-                lazyLatestProjectVersion == _lazyLatestProjectVersion)
+            if ((branchId == _branchId) &&
+                (solutionInfo == _solutionInfo) &&
+                (projectIds == _projectIds) &&
+                (idToProjectStateMap == _projectIdToProjectStateMap) &&
+                (projectIdToTrackerMap == _projectIdToTrackerMap) &&
+                (linkedFilesMap == _linkedFilesMap) &&
+                (dependencyGraph == _dependencyGraph) &&
+                (lazyLatestProjectVersion == _lazyLatestProjectVersion))
             {
                 return this;
             }
@@ -227,9 +227,9 @@ namespace Microsoft.CodeAnalysis
             int workspaceVersion,
             SolutionServices services)
         {
-            if (branchId == _branchId &&
-                workspaceVersion == _workspaceVersion &&
-                services == _solutionServices)
+            if ((branchId == _branchId) &&
+                (workspaceVersion == _workspaceVersion) &&
+                (services == _solutionServices))
             {
                 return this;
             }
@@ -269,7 +269,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool ContainsProject(ProjectId projectId)
         {
-            return projectId != null && _projectIdToProjectStateMap.ContainsKey(projectId);
+            return (projectId != null) && _projectIdToProjectStateMap.ContainsKey(projectId);
         }
 
         /// <summary>
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis
         public bool ContainsDocument(DocumentId documentId)
         {
             return
-                documentId != null &&
+                (documentId != null) &&
                 this.ContainsProject(documentId.ProjectId) &&
                 this.GetProjectState(documentId.ProjectId).ContainsDocument(documentId);
         }
@@ -289,7 +289,7 @@ namespace Microsoft.CodeAnalysis
         public bool ContainsAdditionalDocument(DocumentId documentId)
         {
             return
-                documentId != null &&
+                (documentId != null) &&
                 this.ContainsProject(documentId.ProjectId) &&
                 this.GetProjectState(documentId.ProjectId).ContainsAdditionalDocument(documentId);
         }
@@ -314,14 +314,14 @@ namespace Microsoft.CodeAnalysis
             {
                 // is this tree known to be associated with a document?
                 var docId = DocumentState.GetDocumentIdForTree(syntaxTree);
-                if (docId != null && (projectId == null || docId.ProjectId == projectId))
+                if ((docId != null) && ((projectId == null) || (docId.ProjectId == projectId)))
                 {
                     // does this solution even have the document?
                     var document = this.GetDocumentState(docId);
                     if (document != null)
                     {
                         // does this document really have the syntax tree?
-                        if (document.TryGetSyntaxTree(out var documentTree) && documentTree == syntaxTree)
+                        if (document.TryGetSyntaxTree(out var documentTree) && (documentTree == syntaxTree))
                         {
                             return document;
                         }
@@ -1191,7 +1191,7 @@ namespace Microsoft.CodeAnalysis
             CheckContainsDocument(documentId);
 
             var oldDocument = this.GetDocumentState(documentId);
-            if (oldDocument.TryGetText(out var oldText) && text == oldText)
+            if (oldDocument.TryGetText(out var oldText) && (text == oldText))
             {
                 return this;
             }
@@ -1201,7 +1201,7 @@ namespace Microsoft.CodeAnalysis
             if (mode == PreservationMode.PreserveIdentity)
             {
                 var branch = _firstBranch;
-                if (branch != null && branch.Id == documentId && branch.Text == text)
+                if ((branch != null) && (branch.Id == documentId) && (branch.Text == text))
                 {
                     return branch.Solution;
                 }
@@ -1209,7 +1209,7 @@ namespace Microsoft.CodeAnalysis
 
             var newSolution = this.WithDocumentState(oldDocument.UpdateText(text, mode), textChanged: true);
 
-            if (mode == PreservationMode.PreserveIdentity && _firstBranch == null)
+            if ((mode == PreservationMode.PreserveIdentity) && (_firstBranch == null))
             {
                 Interlocked.CompareExchange(ref _firstBranch, new SolutionBranch(documentId, text, newSolution), null);
             }
@@ -1236,7 +1236,7 @@ namespace Microsoft.CodeAnalysis
             CheckContainsAdditionalDocument(documentId);
 
             var oldDocument = this.GetAdditionalDocumentState(documentId);
-            if (oldDocument.TryGetText(out var oldText) && text == oldText)
+            if (oldDocument.TryGetText(out var oldText) && (text == oldText))
             {
                 return this;
             }
@@ -1328,7 +1328,7 @@ namespace Microsoft.CodeAnalysis
             var oldDocument = this.GetDocumentState(documentId);
             if (oldDocument.TryGetSyntaxTree(out var oldTree) &&
                 oldTree.TryGetRoot(out var oldRoot) &&
-                oldRoot == root)
+                (oldRoot == root))
             {
                 return this;
             }
@@ -1545,7 +1545,7 @@ namespace Microsoft.CodeAnalysis
                     continue;
                 }
 
-                var canReuse = id == projectId || !dependencies.Contains(id);
+                var canReuse = (id == projectId) || !dependencies.Contains(id);
                 builder.Add(id, canReuse ? tracker : tracker.Fork(tracker.ProjectState));
             }
 
@@ -1612,9 +1612,9 @@ namespace Microsoft.CodeAnalysis
                     }
 
                     // if we don't have one or it is stale, create a new partial solution
-                    if (currentPartialSolution == null
-                        || (DateTime.UtcNow - _timeOfLatestSolutionWithPartialCompilation).TotalSeconds >= 0.1
-                        || _documentIdOfLatestSolutionWithPartialCompilation != documentId)
+                    if ((currentPartialSolution == null)
+                        || ((DateTime.UtcNow - _timeOfLatestSolutionWithPartialCompilation).TotalSeconds >= 0.1)
+                        || (_documentIdOfLatestSolutionWithPartialCompilation != documentId))
                     {
                         var tracker = this.GetCompilationTracker(documentId.ProjectId);
                         var newTracker = tracker.FreezePartialStateWithTree(this, doc, tree, cancellationToken);
@@ -1663,7 +1663,7 @@ namespace Microsoft.CodeAnalysis
                 var doc = solution.GetDocumentState(documentId);
                 if (doc != null)
                 {
-                    if (!doc.TryGetText(out var existingText) || existingText != text)
+                    if (!doc.TryGetText(out var existingText) || (existingText != text))
                     {
                         solution = solution.WithDocumentText(documentId, text, mode);
                     }

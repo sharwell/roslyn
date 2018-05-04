@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.Rename
                 if (symbol.Kind == SymbolKind.NamedType)
                 {
                     var typeSymbol = (INamedTypeSymbol)symbol;
-                    if (typeSymbol.IsImplicitlyDeclared && typeSymbol.IsDelegateType() && typeSymbol.AssociatedSymbol != null)
+                    if (typeSymbol.IsImplicitlyDeclared && typeSymbol.IsDelegateType() && (typeSymbol.AssociatedSymbol != null))
                     {
                         return bestSymbolAndProjectId.WithSymbol(
                             typeSymbol.AssociatedSymbol);
@@ -99,9 +99,9 @@ namespace Microsoft.CodeAnalysis.Rename
                 if (symbol.Kind == SymbolKind.Method)
                 {
                     var methodSymbol = (IMethodSymbol)symbol;
-                    if (methodSymbol.MethodKind == MethodKind.Constructor ||
-                        methodSymbol.MethodKind == MethodKind.StaticConstructor ||
-                        methodSymbol.MethodKind == MethodKind.Destructor)
+                    if ((methodSymbol.MethodKind == MethodKind.Constructor) ||
+                        (methodSymbol.MethodKind == MethodKind.StaticConstructor) ||
+                        (methodSymbol.MethodKind == MethodKind.Destructor))
                     {
                         return bestSymbolAndProjectId.WithSymbol(
                             methodSymbol.ContainingType);
@@ -143,13 +143,13 @@ namespace Microsoft.CodeAnalysis.Rename
 
                 // Parameters of properties and methods can cascade to each other in
                 // indexer scenarios.
-                if (originalSymbol.Kind == SymbolKind.Parameter && referencedSymbol.Kind == SymbolKind.Parameter)
+                if ((originalSymbol.Kind == SymbolKind.Parameter) && (referencedSymbol.Kind == SymbolKind.Parameter))
                 {
                     return true;
                 }
 
                 // If the original symbol is a property, cascade to the backing field
-                if (referencedSymbol.Kind == SymbolKind.Field && originalSymbol.Equals(((IFieldSymbol)referencedSymbol).AssociatedSymbol))
+                if ((referencedSymbol.Kind == SymbolKind.Field) && originalSymbol.Equals(((IFieldSymbol)referencedSymbol).AssociatedSymbol))
                 {
                     return true;
                 }
@@ -164,8 +164,8 @@ namespace Microsoft.CodeAnalysis.Rename
                 // where the names might be different is explicit interface implementations in
                 // Visual Basic and VB's identifiers are case insensitive. 
                 // Do not cascade to symbols that are defined only in metadata.
-                if (referencedSymbol.Kind == originalSymbol.Kind &&
-                    string.Compare(TrimNameToAfterLastDot(referencedSymbol.Name), TrimNameToAfterLastDot(originalSymbol.Name), StringComparison.OrdinalIgnoreCase) == 0 &&
+                if ((referencedSymbol.Kind == originalSymbol.Kind) &&
+                    (string.Compare(TrimNameToAfterLastDot(referencedSymbol.Name), TrimNameToAfterLastDot(originalSymbol.Name), StringComparison.OrdinalIgnoreCase) == 0) &&
                     referencedSymbol.Locations.Any(loc => loc.IsInSource))
                 {
                     return true;
@@ -192,9 +192,9 @@ namespace Microsoft.CodeAnalysis.Rename
                     return true;
                 }
 
-                if (referencedSymbol.ContainingSymbol != null &&
-                    referencedSymbol.ContainingSymbol.Kind == SymbolKind.NamedType &&
-                    ((INamedTypeSymbol)referencedSymbol.ContainingSymbol).TypeKind == TypeKind.Interface &&
+                if ((referencedSymbol.ContainingSymbol != null) &&
+                    (referencedSymbol.ContainingSymbol.Kind == SymbolKind.NamedType) &&
+                    (((INamedTypeSymbol)referencedSymbol.ContainingSymbol).TypeKind == TypeKind.Interface) &&
                     !originalSymbol.ExplicitInterfaceImplementations().Any(s => s.Equals(referencedSymbol)))
                 {
                     return true;
@@ -213,7 +213,7 @@ namespace Microsoft.CodeAnalysis.Rename
                         ((IMethodSymbol)symbol).AssociatedSymbol);
                 }
 
-                if (symbol.IsOverride && symbol.OverriddenMember() != null)
+                if (symbol.IsOverride && (symbol.OverriddenMember() != null))
                 {
                     var originalSourceSymbol = await SymbolFinder.FindSourceDefinitionAsync(
                         symbolAndProjectId.WithSymbol(symbol.OverriddenMember()),
@@ -225,8 +225,8 @@ namespace Microsoft.CodeAnalysis.Rename
                     }
                 }
 
-                if (symbol.Kind == SymbolKind.Method &&
-                    symbol.ContainingType.TypeKind == TypeKind.Interface)
+                if ((symbol.Kind == SymbolKind.Method) &&
+                    (symbol.ContainingType.TypeKind == TypeKind.Interface))
                 {
                     var methodImplementors = await SymbolFinder.FindImplementationsAsync(
                         symbolAndProjectId, solution, cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -311,23 +311,23 @@ namespace Microsoft.CodeAnalysis.Rename
 
                 // If we're renaming a named type, we'll also have to find constructors and
                 // destructors declarations that match the name
-                if (referencedSymbol.Kind == SymbolKind.NamedType && referencedSymbol.Locations.All(l => l.IsInSource))
+                if ((referencedSymbol.Kind == SymbolKind.NamedType) && referencedSymbol.Locations.All(l => l.IsInSource))
                 {
                     var syntaxFacts = solution.GetDocument(referencedSymbol.Locations[0].SourceTree).GetLanguageService<ISyntaxFactsService>();
 
                     var namedType = (INamedTypeSymbol)referencedSymbol;
                     foreach (var method in namedType.GetMembers().OfType<IMethodSymbol>())
                     {
-                        if (!method.IsImplicitlyDeclared && (method.MethodKind == MethodKind.Constructor ||
-                                                      method.MethodKind == MethodKind.StaticConstructor ||
-                                                      method.MethodKind == MethodKind.Destructor))
+                        if (!method.IsImplicitlyDeclared && ((method.MethodKind == MethodKind.Constructor) ||
+                                                      (method.MethodKind == MethodKind.StaticConstructor) ||
+                                                      (method.MethodKind == MethodKind.Destructor)))
                         {
                             foreach (var location in method.Locations)
                             {
                                 if (location.IsInSource)
                                 {
                                     var token = location.FindToken(cancellationToken);
-                                    if (!syntaxFacts.IsKeyword(token) && token.ValueText == referencedSymbol.Name)
+                                    if (!syntaxFacts.IsKeyword(token) && (token.ValueText == referencedSymbol.Name))
                                     {
                                         results.Add(new RenameLocation(location, solution.GetDocument(location.SourceTree).Id));
                                     }
@@ -449,7 +449,7 @@ namespace Microsoft.CodeAnalysis.Rename
 
                 var renameStringsAndPositions = root
                     .DescendantTokens()
-                    .Where(t => syntaxFactsService.IsStringLiteralOrInterpolatedStringLiteral(t) && t.Span.Length >= renameTextLength)
+                    .Where(t => syntaxFactsService.IsStringLiteralOrInterpolatedStringLiteral(t) && (t.Span.Length >= renameTextLength))
                     .Select(t => Tuple.Create(t.ToString(), t.Span.Start, t.Span));
 
                 if (renameStringsAndPositions.Any())

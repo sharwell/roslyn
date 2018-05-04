@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Diagnostics.GenerateType
             }
 
             InvocationDocument = Workspace.CurrentSolution.GetDocument(_testDocument.Id);
-            if (projectToBeModified == null && existingFileName == null)
+            if ((projectToBeModified == null) && (existingFileName == null))
             {
                 ExistingDocument = InvocationDocument;
             }

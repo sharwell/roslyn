@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Utilities
             }
 
             var absoluteUri = new Uri(link, UriKind.Absolute);
-            if (absoluteUri.Scheme != Uri.UriSchemeHttp && absoluteUri.Scheme != Uri.UriSchemeHttps)
+            if ((absoluteUri.Scheme != Uri.UriSchemeHttp) && (absoluteUri.Scheme != Uri.UriSchemeHttps))
             {
                 return false;
             }

@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 Assert.Equal(match, actual1);
                 Assert.Equal(unificationApplied, unificationApplied1);
 
-                if (!partial && id1 != null)
+                if (!partial && (id1 != null))
                 {
                     bool unificationApplied2;
                     var actual2 = comparer.Compare(id1, null, id2, out unificationApplied2, ignoreVersion);

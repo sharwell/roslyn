@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
 
         public Signature(ITrackingSpan applicableToSpan, SignatureHelpItem signatureHelpItem, int selectedParameterIndex)
         {
-            if (selectedParameterIndex < -1 || selectedParameterIndex >= signatureHelpItem.Parameters.Length)
+            if ((selectedParameterIndex < -1) || (selectedParameterIndex >= signatureHelpItem.Parameters.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(selectedParameterIndex));
             }
@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
             get
             {
                 EnsureInitialized();
-                return _parameterIndex >= 0 && _parameters != null ? _parameters[_parameterIndex] : null;
+                return (_parameterIndex >= 0) && (_parameters != null) ? _parameters[_parameterIndex] : null;
             }
         }
 

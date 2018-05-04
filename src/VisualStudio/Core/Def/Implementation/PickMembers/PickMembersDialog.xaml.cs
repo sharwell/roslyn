@@ -85,7 +85,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.PickMembers
         private void MoveUp_Click(object sender, EventArgs e)
         {
             int oldSelectedIndex = Members.SelectedIndex;
-            if (_viewModel.CanMoveUp && oldSelectedIndex >= 0)
+            if (_viewModel.CanMoveUp && (oldSelectedIndex >= 0))
             {
                 _viewModel.MoveUp();
                 Members.Items.Refresh();
@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.PickMembers
         private void MoveDown_Click(object sender, EventArgs e)
         {
             int oldSelectedIndex = Members.SelectedIndex;
-            if (_viewModel.CanMoveDown && oldSelectedIndex >= 0)
+            if (_viewModel.CanMoveDown && (oldSelectedIndex >= 0))
             {
                 _viewModel.MoveDown();
                 Members.Items.Refresh();
@@ -125,7 +125,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.PickMembers
 
         private void OnListViewPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+            if ((e.Key == Key.Space) && (e.KeyboardDevice.Modifiers == ModifierKeys.None))
             {
                 ToggleCheckSelection();
                 e.Handled = true;

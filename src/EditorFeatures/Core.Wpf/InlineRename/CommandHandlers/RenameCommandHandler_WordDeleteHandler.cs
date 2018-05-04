@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                     if (!view.Selection.IsEmpty)
                     {
                         var selectedSpans = view.Selection.GetSnapshotSpansOnBuffer(subjectBuffer);
-                        if (selectedSpans.Count == 1 && span.Contains(selectedSpans.Single().Span))
+                        if ((selectedSpans.Count == 1) && span.Contains(selectedSpans.Single().Span))
                         {
                             // We might want to delete past the caret's active position if there's a selection
                             start = selectedSpans.Single().Start;

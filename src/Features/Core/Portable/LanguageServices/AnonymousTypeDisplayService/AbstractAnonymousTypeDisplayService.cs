@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
         private string GenerateAnonymousTypeName(int current)
         {
             char c = (char)('a' + current);
-            if (c >= 'a' && c <= 'z')
+            if ((c >= 'a') && (c <= 'z'))
             {
                 return "'" + c.ToString();
             }

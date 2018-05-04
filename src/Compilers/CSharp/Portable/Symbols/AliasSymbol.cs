@@ -300,7 +300,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal void CheckConstraints(DiagnosticBag diagnostics)
         {
             var target = this.Target as TypeSymbol;
-            if ((object)target != null && _locations.Length > 0)
+            if (((object)target != null) && (_locations.Length > 0))
             {
                 var corLibrary = this.ContainingAssembly.CorLibrary;
                 var conversions = new TypeConversions(corLibrary);
@@ -341,9 +341,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             AliasSymbol other = obj as AliasSymbol;
 
-            return (object)other != null &&
+            return ((object)other != null) &&
                 Equals(this.Locations.FirstOrDefault(), other.Locations.FirstOrDefault()) &&
-                this.ContainingAssembly == other.ContainingAssembly;
+                (this.ContainingAssembly == other.ContainingAssembly);
         }
 
         public override int GetHashCode()

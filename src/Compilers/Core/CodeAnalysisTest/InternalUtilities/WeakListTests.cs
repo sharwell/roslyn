@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.InternalUtilities
             Assert.Equal(4, list.TestOnly_UnderlyingArray.Length);
 
             Add(list, e);
-            Assert.Equal(2 * 4 + 1, list.TestOnly_UnderlyingArray.Length);
+            Assert.Equal((2 * 4) + 1, list.TestOnly_UnderlyingArray.Length);
 
             Assert.Equal(5, list.WeakCount);
 
@@ -254,7 +254,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.InternalUtilities
             a.AssertReleased();
 
             Add(list, b); // expands #alive > 3/4 length
-            Assert.Equal(9 * 2 + 1, list.TestOnly_UnderlyingArray.Length);
+            Assert.Equal((9 * 2) + 1, list.TestOnly_UnderlyingArray.Length);
             Assert.Equal(8, list.WeakCount);
 
             for (int i = 0; i < list.TestOnly_UnderlyingArray.Length; i++)
@@ -286,7 +286,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.InternalUtilities
             Assert.Equal(list.WeakCount, list.TestOnly_UnderlyingArray.Length); // full
 
             Add(list, b); // expands #alive > 3/4 length
-            Assert.Equal(9 * 2 + 1, list.TestOnly_UnderlyingArray.Length);
+            Assert.Equal((9 * 2) + 1, list.TestOnly_UnderlyingArray.Length);
             Assert.Equal(10, list.WeakCount);
 
             for (int i = 0; i < list.TestOnly_UnderlyingArray.Length; i++)

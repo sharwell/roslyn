@@ -288,7 +288,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                         }
                     }
 
-                    if ((object)acyclicBase != null && BaseTypeAnalysis.ClassDependsOn(acyclicBase, this))
+                    if (((object)acyclicBase != null) && BaseTypeAnalysis.ClassDependsOn(acyclicBase, this))
                     {
                         return CyclicInheritanceError(this, acyclicBase);
                     }

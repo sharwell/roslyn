@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.CSharp.IntroduceVariable
             public override SyntaxNode VisitParenthesizedExpression(ParenthesizedExpressionSyntax node)
             {
                 var newNode = base.VisitParenthesizedExpression(node);
-                if (node != newNode &&
+                if ((node != newNode) &&
                     newNode.IsKind(SyntaxKind.ParenthesizedExpression))
                 {
                     var parenthesizedExpression = (ParenthesizedExpressionSyntax)newNode;

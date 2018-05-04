@@ -146,8 +146,8 @@ namespace Microsoft.CodeAnalysis.Rename
                     _symbolAndProjectId.Symbol,
                     _solution,
                     _originalSymbolResult.Locations,
-                    optionSet.GetOption(RenameOptions.RenameInStrings) && _stringsResult == null,
-                    optionSet.GetOption(RenameOptions.RenameInComments) && _commentsResult == null,
+                    optionSet.GetOption(RenameOptions.RenameInStrings) && (_stringsResult == null),
+                    optionSet.GetOption(RenameOptions.RenameInComments) && (_commentsResult == null),
                     cancellationToken).ConfigureAwait(false);
 
                 return new RenameLocations(
@@ -181,7 +181,7 @@ namespace Microsoft.CodeAnalysis.Rename
                 {
                     foreach (var member in containingType.GetMembers())
                     {
-                        if (string.Equals(member.MetadataName, symbol.MetadataName, StringComparison.Ordinal) && member is IMethodSymbol && !member.Equals(symbol))
+                        if (string.Equals(member.MetadataName, symbol.MetadataName, StringComparison.Ordinal) && (member is IMethodSymbol) && !member.Equals(symbol))
                         {
                             yield return symbolAndProjectId.WithSymbol(member);
                         }

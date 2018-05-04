@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Options.Style
         private void MoveDown_Click(object sender, EventArgs e)
         {
             var oldSelectedIndex = CodeStyleMembers.SelectedIndex;
-            if (oldSelectedIndex < CodeStyleMembers.Items.Count - 1)
+            if (oldSelectedIndex < (CodeStyleMembers.Items.Count - 1))
             {
                 _viewModel.MoveItem(oldSelectedIndex, oldSelectedIndex + 1);
                 CodeStyleMembers.SelectedIndex = oldSelectedIndex + 1;

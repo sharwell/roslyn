@@ -66,10 +66,10 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
 
             // Special case to handle class designer because it asks for debugger IntelliSense using
             // spans between members.
-            if (contextPoint > token.Span.End &&
+            if ((contextPoint > token.Span.End) &&
                 token.IsKindOrHasMatchingText(SyntaxKind.CloseBraceToken) &&
                 token.Parent.IsKind(SyntaxKind.Block) &&
-                token.Parent.Parent is MemberDeclarationSyntax)
+                (token.Parent.Parent is MemberDeclarationSyntax))
             {
                 return contextPoint;
             }

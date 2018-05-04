@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.Emit
 
         public override bool Equals(object obj)
         {
-            return obj is EncHoistedLocalInfo && Equals((EncHoistedLocalInfo)obj);
+            return (obj is EncHoistedLocalInfo) && Equals((EncHoistedLocalInfo)obj);
         }
 
         public override int GetHashCode()

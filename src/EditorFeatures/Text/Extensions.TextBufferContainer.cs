@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Text
                     lock (_gate)
                     {
                         var textBuffer = this.TryFindEditorTextBuffer();
-                        if (this.EtextChanged == null && textBuffer != null)
+                        if ((this.EtextChanged == null) && (textBuffer != null))
                         {
                             textBuffer.ChangedHighPriority += this.OnTextContentChanged;
                         }
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.Text
                         this.EtextChanged -= value;
 
                         var textBuffer = this.TryFindEditorTextBuffer();
-                        if (this.EtextChanged == null && textBuffer != null)
+                        if ((this.EtextChanged == null) && (textBuffer != null))
                         {
                             textBuffer.ChangedHighPriority -= this.OnTextContentChanged;
                         }

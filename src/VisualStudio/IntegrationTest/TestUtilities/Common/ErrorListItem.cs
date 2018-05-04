@@ -38,13 +38,13 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Common
         }
 
         public bool Equals(ErrorListItem other)
-            => other != null
+            => (other != null)
             && Comparison.AreStringValuesEqual(Severity, other.Severity)
             && Comparison.AreStringValuesEqual(Description, other.Description)
             && Comparison.AreStringValuesEqual(Project, other.Project)
             && Comparison.AreStringValuesEqual(FileName, other.FileName)
-            && Line == other.Line
-            && Column == other.Column;
+            && (Line == other.Line)
+            && (Column == other.Column);
 
         public override bool Equals(object obj)
             => Equals(obj as ErrorListItem);

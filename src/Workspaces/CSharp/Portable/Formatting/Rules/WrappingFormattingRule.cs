@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         private void AddStatementExceptBlockSuppressOperations(List<SuppressOperation> list, SyntaxNode node)
         {
             var statementNode = node as StatementSyntax;
-            if (statementNode == null || statementNode.Kind() == SyntaxKind.Block)
+            if ((statementNode == null) || (statementNode.Kind() == SyntaxKind.Block))
             {
                 return;
             }
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         private void RemoveSuppressOperationForStatementMethodDeclaration(List<SuppressOperation> list, SyntaxNode node)
         {
             var statementNode = node as StatementSyntax;
-            if (!(statementNode == null || statementNode.Kind() == SyntaxKind.Block))
+            if (!((statementNode == null) || (statementNode.Kind() == SyntaxKind.Block)))
             {
                 var firstToken = statementNode.GetFirstToken(includeZeroWidth: true);
                 var lastToken = statementNode.GetLastToken(includeZeroWidth: true);
@@ -137,17 +137,17 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         private ValueTuple<SyntaxToken, SyntaxToken> GetBracePair(SyntaxNode node)
         {
-            if (node is BaseMethodDeclarationSyntax methodDeclaration && methodDeclaration.Body != null)
+            if (node is BaseMethodDeclarationSyntax methodDeclaration && (methodDeclaration.Body != null))
             {
                 return ValueTuple.Create(methodDeclaration.Body.OpenBraceToken, methodDeclaration.Body.CloseBraceToken);
             }
 
-            if (node is PropertyDeclarationSyntax propertyDeclaration && propertyDeclaration.AccessorList != null)
+            if (node is PropertyDeclarationSyntax propertyDeclaration && (propertyDeclaration.AccessorList != null))
             {
                 return ValueTuple.Create(propertyDeclaration.AccessorList.OpenBraceToken, propertyDeclaration.AccessorList.CloseBraceToken);
             }
 
-            if (node is AccessorDeclarationSyntax accessorDeclaration && accessorDeclaration.Body != null)
+            if (node is AccessorDeclarationSyntax accessorDeclaration && (accessorDeclaration.Body != null))
             {
                 return ValueTuple.Create(accessorDeclaration.Body.OpenBraceToken, accessorDeclaration.Body.CloseBraceToken);
             }
@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             SyntaxToken startToken,
             SyntaxToken endToken)
         {
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i] != null && list[i].TextSpan.Start >= span.Start && list[i].TextSpan.End <= span.End)
+                if ((list[i] != null) && (list[i].TextSpan.Start >= span.Start) && (list[i].TextSpan.End <= span.End))
                 {
                     list[i] = null;
                 }

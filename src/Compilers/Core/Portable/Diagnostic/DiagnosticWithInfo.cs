@@ -129,8 +129,8 @@ namespace Microsoft.CodeAnalysis
         {
             get
             {
-                return _info.Severity == InternalDiagnosticSeverity.Unknown ||
-                    _info.Severity == InternalDiagnosticSeverity.Void;
+                return (_info.Severity == InternalDiagnosticSeverity.Unknown) ||
+                    (_info.Severity == InternalDiagnosticSeverity.Void);
             }
         }
 
@@ -153,7 +153,7 @@ namespace Microsoft.CodeAnalysis
 
             var other = obj as DiagnosticWithInfo;
 
-            if (other == null || this.GetType() != other.GetType())
+            if ((other == null) || (this.GetType() != other.GetType()))
             {
                 return false;
             }

@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 {
                     var currentSynchronousRequestThread = synchronousRequestThread;
 
-                    asyncContinuationRanSynchronously = currentSynchronousRequestThread != null && currentSynchronousRequestThread == Thread.CurrentThread;
+                    asyncContinuationRanSynchronously = (currentSynchronousRequestThread != null) && (currentSynchronousRequestThread == Thread.CurrentThread);
                     observedAntecedentTaskStatus = antecedent.Status;
                 },
                 CancellationToken.None,

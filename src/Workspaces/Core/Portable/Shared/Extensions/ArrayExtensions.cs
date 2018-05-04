@@ -8,7 +8,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
     {
         public static bool IsNullOrEmpty<T>(this T[] array)
         {
-            return array == null || array.Length == 0;
+            return (array == null) || (array.Length == 0);
         }
 
         public static bool Contains<T>(this T[] array, T item)

@@ -11,8 +11,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
     {
         private static string GetSearchText(VSOBSEARCHCRITERIA2[] pobSrch)
         {
-            if (pobSrch.Length == 0 ||
-                pobSrch[0].szName == null)
+            if ((pobSrch.Length == 0) ||
+                (pobSrch[0].szName == null))
             {
                 return null;
             }

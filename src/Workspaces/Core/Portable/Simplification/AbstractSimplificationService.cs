@@ -203,12 +203,12 @@ namespace Microsoft.CodeAnalysis.Simplification
 
                                     // Certain node kinds (expressions/statements) require non-null parent nodes during simplification.
                                     // However, the reduced nodes haven't been parented yet, so do the required parenting using the original node's parent.
-                                    if (currentNodeOrToken.Parent == null &&
-                                        nodeOrToken.Parent != null &&
+                                    if ((currentNodeOrToken.Parent == null) &&
+                                        (nodeOrToken.Parent != null) &&
                                         (currentNodeOrToken.IsToken ||
-                                        currentNodeOrToken.AsNode() is TExpressionSyntax ||
-                                        currentNodeOrToken.AsNode() is TStatementSyntax ||
-                                        currentNodeOrToken.AsNode() is TCrefSyntax))
+                                        (currentNodeOrToken.AsNode() is TExpressionSyntax) ||
+                                        (currentNodeOrToken.AsNode() is TStatementSyntax) ||
+                                        (currentNodeOrToken.AsNode() is TCrefSyntax)))
                                     {
                                         var annotation = new SyntaxAnnotation();
                                         currentNodeOrToken = currentNodeOrToken.WithAdditionalAnnotations(annotation);
@@ -281,7 +281,7 @@ namespace Microsoft.CodeAnalysis.Simplification
 
             var importsToSimplify = root.DescendantNodes().Where(n =>
                 !isNodeOrTokenOutsideSimplifySpan(n)
-                && gen.GetDeclarationKind(n) == DeclarationKind.NamespaceImport
+                && (gen.GetDeclarationKind(n) == DeclarationKind.NamespaceImport)
                 && n.HasAnnotation(Simplifier.Annotation));
 
             return root.ReplaceNodes(importsToSimplify, (o, r) => r.WithAdditionalAnnotations(removeIfUnusedAnnotation));

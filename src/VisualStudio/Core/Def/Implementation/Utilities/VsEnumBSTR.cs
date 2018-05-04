@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Utilities
         public int Next(uint celt, string[] rgelt, out uint pceltFetched)
         {
             var i = 0;
-            for (; i < celt && _currentIndex < _values.Count; i++, _currentIndex++)
+            for (; (i < celt) && (_currentIndex < _values.Count); i++, _currentIndex++)
             {
                 rgelt[i] = _values[_currentIndex];
             }

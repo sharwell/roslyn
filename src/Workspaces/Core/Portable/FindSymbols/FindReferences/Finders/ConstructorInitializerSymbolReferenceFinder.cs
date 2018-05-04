@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                     {
                         return true;
                     }
-                    else if (project.Language == LanguageNames.VisualBasic && index.ProbablyContainsIdentifier("New"))
+                    else if ((project.Language == LanguageNames.VisualBasic) && index.ProbablyContainsIdentifier("New"))
                     {
                         // "New" can be explicitly accessed in xml doc comments to reference a constructor.
                         return true;
@@ -64,14 +64,14 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 if (syntaxFactsService.IsBaseConstructorInitializer(t))
                 {
                     var containingType = semanticModel.GetEnclosingNamedType(t.SpanStart, cancellationToken);
-                    return containingType != null && containingType.BaseType != null && containingType.BaseType.Name == typeName;
+                    return (containingType != null) && (containingType.BaseType != null) && (containingType.BaseType.Name == typeName);
                 }
                 else if (syntaxFactsService.IsThisConstructorInitializer(t))
                 {
                     var containingType = semanticModel.GetEnclosingNamedType(t.SpanStart, cancellationToken);
-                    return containingType != null && containingType.Name == typeName;
+                    return (containingType != null) && (containingType.Name == typeName);
                 }
-                else if (semanticModel.Language == LanguageNames.VisualBasic && t.IsPartOfStructuredTrivia())
+                else if ((semanticModel.Language == LanguageNames.VisualBasic) && t.IsPartOfStructuredTrivia())
                 {
                     return true;
                 }

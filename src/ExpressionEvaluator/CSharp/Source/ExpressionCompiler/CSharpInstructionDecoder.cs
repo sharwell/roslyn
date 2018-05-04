@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                             {
                                 i++;
                             }
-                            while ((i < numParts) && parts[i].Kind != SymbolDisplayPartKind.MethodName);
+                            while ((i < numParts) && (parts[i].Kind != SymbolDisplayPartKind.MethodName));
                             i--;
                         }
                         break;
@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                         GeneratedNameKind kind;
                         int openBracketOffset, closeBracketOffset;
                         if (GeneratedNames.TryParseGeneratedName(displayString, out kind, out openBracketOffset, out closeBracketOffset) &&
-                            (kind == GeneratedNameKind.LambdaMethod || kind == GeneratedNameKind.LocalFunction))
+                            ((kind == GeneratedNameKind.LambdaMethod) || (kind == GeneratedNameKind.LocalFunction)))
                         {
                             builder.Append(displayString, openBracketOffset + 1, closeBracketOffset - openBracketOffset - 1); // source method name
                             builder.Append('.');

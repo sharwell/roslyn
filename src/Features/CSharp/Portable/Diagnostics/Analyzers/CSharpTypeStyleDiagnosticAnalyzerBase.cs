@@ -32,9 +32,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Diagnostics.TypeStyle
             var whereApparentOption = workspace.Options.GetOption(CSharpCodeStyleOptions.UseImplicitTypeWhereApparent).Notification;
             var wherePossibleOption = workspace.Options.GetOption(CSharpCodeStyleOptions.UseImplicitTypeWherePossible).Notification;
 
-            return !(forIntrinsicTypesOption == NotificationOption.Warning || forIntrinsicTypesOption == NotificationOption.Error ||
-                     whereApparentOption == NotificationOption.Warning || whereApparentOption == NotificationOption.Error ||
-                     wherePossibleOption == NotificationOption.Warning || wherePossibleOption == NotificationOption.Error);
+            return !((forIntrinsicTypesOption == NotificationOption.Warning) || (forIntrinsicTypesOption == NotificationOption.Error) ||
+                     (whereApparentOption == NotificationOption.Warning) || (whereApparentOption == NotificationOption.Error) ||
+                     (wherePossibleOption == NotificationOption.Warning) || (wherePossibleOption == NotificationOption.Error));
         }
 
         protected override void InitializeWorker(AnalysisContext context)
@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Diagnostics.TypeStyle
             var typeStyle = Helper.AnalyzeTypeName(
                 declaredType, semanticModel, optionSet, cancellationToken);
             if (!typeStyle.IsStylePreferred ||
-                typeStyle.Severity == DiagnosticSeverity.Hidden ||
+                (typeStyle.Severity == DiagnosticSeverity.Hidden) ||
                 !typeStyle.CanConvert())
             {
                 return;

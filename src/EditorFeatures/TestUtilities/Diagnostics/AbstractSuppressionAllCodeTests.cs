@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Diagnostics
                     }
 
                     var fixes = fixer.GetSuppressionsAsync(document, diagnostic.Location.SourceSpan, SpecializedCollections.SingletonEnumerable(diagnostic), CancellationToken.None).GetAwaiter().GetResult();
-                    if (fixes == null || fixes.Count() <= 0)
+                    if ((fixes == null) || (fixes.Count() <= 0))
                     {
                         continue;
                     }
@@ -125,7 +125,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Diagnostics
 
         public bool Equals(Diagnostic x, Diagnostic y)
         {
-            return x.Id == y.Id && x.Descriptor.Category == y.Descriptor.Category;
+            return (x.Id == y.Id) && (x.Descriptor.Category == y.Descriptor.Category);
         }
 
         public int GetHashCode(Diagnostic obj)

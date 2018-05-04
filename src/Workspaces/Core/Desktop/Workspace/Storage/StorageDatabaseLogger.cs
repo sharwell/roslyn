@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.Storage
             _reportedExceptionMessage = ex.ToString();
 
             // we already reported about this exception. also don't hold onto too many exceptions.
-            if (_set.Count > 10 || !_set.TryAdd(ex.GetType(), ex))
+            if ((_set.Count > 10) || !_set.TryAdd(ex.GetType(), ex))
             {
                 return;
             }

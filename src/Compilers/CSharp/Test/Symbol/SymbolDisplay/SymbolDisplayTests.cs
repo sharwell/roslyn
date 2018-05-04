@@ -5433,7 +5433,7 @@ public class C
             var type = global.GetTypeMembers("C").Single();
             var method = type.GetMembers("F").Single();
             var property = type.GetMembers("P").Single();
-            var indexer = type.GetMembers().Where(m => m.Kind == SymbolKind.Property && ((IPropertySymbol)m).IsIndexer).Single();
+            var indexer = type.GetMembers().Where(m => (m.Kind == SymbolKind.Property) && ((IPropertySymbol)m).IsIndexer).Single();
             var @delegate = global.GetTypeMembers("D").Single();
 
             // Method without IncludeRef.
@@ -5637,7 +5637,7 @@ public class C
             var type = global.GetTypeMembers("C").Single();
             var method = type.GetMembers("F").Single();
             var property = type.GetMembers("P").Single();
-            var indexer = type.GetMembers().Where(m => m.Kind == SymbolKind.Property && ((IPropertySymbol)m).IsIndexer).Single();
+            var indexer = type.GetMembers().Where(m => (m.Kind == SymbolKind.Property) && ((IPropertySymbol)m).IsIndexer).Single();
             var @delegate = global.GetTypeMembers("D").Single();
 
             // Method without IncludeRef.

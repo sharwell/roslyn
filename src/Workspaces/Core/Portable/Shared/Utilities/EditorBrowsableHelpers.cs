@@ -21,13 +21,13 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             var editorBrowsableAttributeType = compilation.EditorBrowsableAttributeType();
             var editorBrowsableStateType = compilation.EditorBrowsableStateType();
 
-            if (editorBrowsableAttributeType == null || editorBrowsableStateType == null)
+            if ((editorBrowsableAttributeType == null) || (editorBrowsableStateType == null))
             {
                 return null;
             }
 
             var candidateConstructors = editorBrowsableAttributeType.Constructors
-                                                                    .Where(c => c.Parameters.Length == 1 && c.Parameters[0].Type == editorBrowsableStateType);
+                                                                    .Where(c => (c.Parameters.Length == 1) && (c.Parameters[0].Type == editorBrowsableStateType));
 
             // Ensure the constructor adheres to the expected EditorBrowsable pattern
             candidateConstructors = candidateConstructors.Where(c => !c.IsVararg &&
@@ -86,14 +86,14 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             var typeLibFlagsType = compilation.GetTypeByMetadataName(flagsMetadataName);
             var shortType = compilation.GetSpecialType(SpecialType.System_Int16);
 
-            if (typeLibAttributeType == null || typeLibFlagsType == null || shortType == null)
+            if ((typeLibAttributeType == null) || (typeLibFlagsType == null) || (shortType == null))
             {
                 return new List<IMethodSymbol>();
             }
 
             var candidateConstructors = typeLibAttributeType.Constructors
-                                                            .Where(c => c.Parameters.Length == 1 &&
-                                                                        (c.Parameters[0].Type == typeLibFlagsType || c.Parameters[0].Type == shortType));
+                                                            .Where(c => (c.Parameters.Length == 1) &&
+                                                                        ((c.Parameters[0].Type == typeLibFlagsType) || (c.Parameters[0].Type == shortType)));
 
             candidateConstructors = candidateConstructors.Where(c => !c.IsVararg &&
                                                                       !c.Parameters[0].IsRefOrOut() &&

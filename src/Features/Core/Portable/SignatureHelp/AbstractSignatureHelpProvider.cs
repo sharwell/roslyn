@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.SignatureHelp
         protected static SignatureHelpItems CreateSignatureHelpItems(
             IList<SignatureHelpItem> items, TextSpan applicableSpan, SignatureHelpState state)
         {
-            if (items == null || !items.Any() || state == null)
+            if ((items == null) || !items.Any() || (state == null))
             {
                 return null;
             }

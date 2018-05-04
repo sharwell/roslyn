@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
         internal static bool CanSimplifyTupleElementName(ArgumentSyntax node, CSharpParseOptions parseOptions)
         {
             // Tuple elements are arguments in a tuple expression
-            if (node.NameColon == null || !node.IsParentKind(SyntaxKind.TupleExpression))
+            if ((node.NameColon == null) || !node.IsParentKind(SyntaxKind.TupleExpression))
             {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             }
 
             var inferredName = node.Expression.TryGetInferredMemberName();
-            if (inferredName == null || inferredName != node.NameColon.Name.Identifier.ValueText)
+            if ((inferredName == null) || (inferredName != node.NameColon.Name.Identifier.ValueText))
             {
                 return false;
             }
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             }
 
             var inferredName = node.Expression.TryGetInferredMemberName();
-            if (inferredName == null || inferredName != node.NameEquals.Name.Identifier.ValueText)
+            if ((inferredName == null) || (inferredName != node.NameEquals.Name.Identifier.ValueText))
             {
                 return false;
             }
@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                     continue;
                 }
 
-                if (argument.NameColon is null && argument.Expression.TryGetInferredMemberName()?.Equals(name) == true)
+                if ((argument.NameColon is null) && (argument.Expression.TryGetInferredMemberName()?.Equals(name) == true))
                 {
                     return true;
                 }
@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                     continue;
                 }
 
-                if (initializer.NameEquals is null && initializer.Expression.TryGetInferredMemberName()?.Equals(name) == true)
+                if ((initializer.NameEquals is null) && (initializer.Expression.TryGetInferredMemberName()?.Equals(name) == true))
                 {
                     return true;
                 }

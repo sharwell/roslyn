@@ -23,9 +23,9 @@ namespace Microsoft.CodeAnalysis
 
         internal SyntaxTokenList(SyntaxNode parent, GreenNode tokenOrList, int position, int index)
         {
-            Debug.Assert(tokenOrList != null || (position == 0 && index == 0 && parent == null));
+            Debug.Assert((tokenOrList != null) || ((position == 0) && (index == 0) && (parent == null)));
             Debug.Assert(position >= 0);
-            Debug.Assert(tokenOrList == null || tokenOrList.IsToken || tokenOrList.IsList);
+            Debug.Assert((tokenOrList == null) || tokenOrList.IsToken || tokenOrList.IsList);
             _parent = parent;
             Node = tokenOrList;
             Position = position;
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis
 
         internal void CopyTo(int offset, GreenNode[] array, int arrayOffset, int count)
         {
-            Debug.Assert(this.Count >= offset + count);
+            Debug.Assert(this.Count >= (offset + count));
 
             for (int i = 0; i < count; i++)
             {
@@ -260,7 +260,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         private static GreenNode GetGreenNodeAt(GreenNode node, int i)
         {
-            Debug.Assert(node.IsList || (i == 0 && !node.IsList));
+            Debug.Assert(node.IsList || ((i == 0) && !node.IsList));
             return node.IsList ? node.GetSlot(i) : node;
         }
 
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="tokens">The tokens to insert.</param>
         public SyntaxTokenList InsertRange(int index, IEnumerable<SyntaxToken> tokens)
         {
-            if (index < 0 || index > this.Count)
+            if ((index < 0) || (index > this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -364,7 +364,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="index">The index of the token to remove.</param>
         public SyntaxTokenList RemoveAt(int index)
         {
-            if (index < 0 || index >= this.Count)
+            if ((index < 0) || (index >= this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -381,7 +381,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxTokenList Remove(SyntaxToken tokenInList)
         {
             var index = this.IndexOf(tokenInList);
-            if (index >= 0 && index <= this.Count)
+            if ((index >= 0) && (index <= this.Count))
             {
                 return RemoveAt(index);
             }
@@ -412,7 +412,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxTokenList ReplaceRange(SyntaxToken tokenInList, IEnumerable<SyntaxToken> newTokens)
         {
             var index = this.IndexOf(tokenInList);
-            if (index >= 0 && index <= this.Count)
+            if ((index >= 0) && (index <= this.Count))
             {
                 var list = this.ToList();
                 list.RemoveAt(index);
@@ -478,7 +478,7 @@ namespace Microsoft.CodeAnalysis
 
         public bool Equals(SyntaxTokenList other)
         {
-            return Node == other.Node && _parent == other._parent && _index == other._index;
+            return (Node == other.Node) && (_parent == other._parent) && (_index == other._index);
         }
 
         /// <summary>
@@ -487,7 +487,7 @@ namespace Microsoft.CodeAnalysis
         /// <returns>True if the two objects are equal.</returns>
         public override bool Equals(object obj)
         {
-            return obj is SyntaxTokenList && Equals((SyntaxTokenList)obj);
+            return (obj is SyntaxTokenList) && Equals((SyntaxTokenList)obj);
         }
 
         /// <summary>

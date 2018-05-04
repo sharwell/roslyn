@@ -229,7 +229,7 @@ namespace Roslyn.Utilities
 
                 if (currentNodeEdgeCount < CompactEdgeAllocationSize)
                 {
-                    _compactEdges[currentNodeIndex * CompactEdgeAllocationSize + currentNodeEdgeCount] =
+                    _compactEdges[(currentNodeIndex * CompactEdgeAllocationSize) + currentNodeEdgeCount] =
                         new Edge(editDistance, insertionIndex);
                 }
                 else

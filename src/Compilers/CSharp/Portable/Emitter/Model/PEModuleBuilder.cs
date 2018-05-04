@@ -173,14 +173,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
             AssemblyIdentity refIdentity = asmRef.Identity;
 
             if (asmIdentity.IsStrongName && !refIdentity.IsStrongName &&
-                asmRef.Identity.ContentType != AssemblyContentType.WindowsRuntime)
+                (asmRef.Identity.ContentType != AssemblyContentType.WindowsRuntime))
             {
                 // Dev12 reported error, we have changed it to a warning to allow referencing libraries 
                 // built for platforms that don't support strong names.
                 diagnostics.Add(new CSDiagnosticInfo(ErrorCode.WRN_ReferencedAssemblyDoesNotHaveStrongName, assembly), NoLocation.Singleton);
             }
 
-            if (OutputKind != OutputKind.NetModule &&
+            if ((OutputKind != OutputKind.NetModule) &&
                !string.IsNullOrEmpty(refIdentity.CultureName) &&
                !string.Equals(refIdentity.CultureName, asmIdentity.CultureName, StringComparison.OrdinalIgnoreCase))
             {
@@ -194,20 +194,20 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
             // this is a 64-bit mscorlib, which will produce a warning if /platform:x86 is
             // specified. A reference to the default mscorlib should always succeed without
             // warning so we ignore it here.
-            if ((object)assembly != (object)assembly.CorLibrary &&
-                !(refMachine == Machine.I386 && !assembly.Bit32Required))
+            if (((object)assembly != (object)assembly.CorLibrary) &&
+                !((refMachine == Machine.I386) && !assembly.Bit32Required))
             {
                 var machine = SourceModule.Machine;
 
-                if (!(machine == Machine.I386 && !SourceModule.Bit32Required) &&
-                    machine != refMachine)
+                if (!((machine == Machine.I386) && !SourceModule.Bit32Required) &&
+                    (machine != refMachine))
                 {
                     // Different machine types, and neither is agnostic
                     diagnostics.Add(new CSDiagnosticInfo(ErrorCode.WRN_ConflictingMachineAssembly, assembly), NoLocation.Singleton);
                 }
             }
 
-            if (_embeddedTypesManagerOpt != null && _embeddedTypesManagerOpt.IsFrozen)
+            if ((_embeddedTypesManagerOpt != null) && _embeddedTypesManagerOpt.IsFrozen)
             {
                 _embeddedTypesManagerOpt.ReportIndirectReferencesToLinkedAssemblies(assembly, diagnostics);
             }
@@ -275,7 +275,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
                                         //       but adds synthesized instance constructors, Roslyn adds both
                                         var method = (MethodSymbol)member;
                                         if (method.IsDefaultValueTypeConstructor() ||
-                                            method.IsPartialMethod() && (object)method.PartialImplementationPart == null)
+                                            (method.IsPartialMethod() && ((object)method.PartialImplementationPart == null)))
                                         {
                                             break;
                                         }
@@ -350,7 +350,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
             Location result = null;
             foreach (var loc in symbol.Locations)
             {
-                if (loc.IsInSource && (result == null || compilation.CompareSourceLocations(result, loc) > 0))
+                if (loc.IsInSource && ((result == null) || (compilation.CompareSourceLocations(result, loc) > 0)))
                 {
                     result = loc;
                 }
@@ -802,7 +802,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
         {
             AssemblySymbol container = module.ContainingAssembly;
 
-            if ((object)container != null && ReferenceEquals(container.Modules[0], module))
+            if (((object)container != null) && ReferenceEquals(container.Modules[0], module))
             {
                 Cci.IModuleReference moduleRef = new AssemblyReference(container);
                 Cci.IModuleReference cachedModuleRef = AssemblyOrModuleSymbolToModuleRefMap.GetOrAdd(container, moduleRef);
@@ -854,7 +854,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
                 ErrorTypeSymbol errorType = (ErrorTypeSymbol)namedTypeSymbol.OriginalDefinition;
                 DiagnosticInfo diagInfo = errorType.GetUseSiteDiagnostic() ?? errorType.ErrorInfo;
 
-                if (diagInfo == null && namedTypeSymbol.Kind == SymbolKind.ErrorType)
+                if ((diagInfo == null) && (namedTypeSymbol.Kind == SymbolKind.ErrorType))
                 {
                     errorType = (ErrorTypeSymbol)namedTypeSymbol;
                     diagInfo = errorType.GetUseSiteDiagnostic() ?? errorType.ErrorInfo;
@@ -952,7 +952,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
             // but if it does happen we should make it a failure.
             // NOTE: declaredBase could be null for interfaces
             var declaredBase = namedTypeSymbol.BaseTypeNoUseSiteDiagnostics;
-            if ((object)declaredBase != null && declaredBase.SpecialType == SpecialType.System_ValueType)
+            if (((object)declaredBase != null) && (declaredBase.SpecialType == SpecialType.System_ValueType))
             {
                 return;
             }
@@ -967,7 +967,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
             if ((object)declaredBase != null)
             {
                 var diagnosticInfo = declaredBase.GetUseSiteDiagnostic();
-                if (diagnosticInfo != null && diagnosticInfo.Severity == DiagnosticSeverity.Error)
+                if ((diagnosticInfo != null) && (diagnosticInfo.Severity == DiagnosticSeverity.Error))
                 {
                     diagnostics.Add(diagnosticInfo, location);
                     return;
@@ -1159,11 +1159,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
             BoundArgListOperator optArgList = null,
             bool needDeclaration = false)
         {
-            Debug.Assert(optArgList == null || (methodSymbol.IsVararg && !needDeclaration));
+            Debug.Assert((optArgList == null) || (methodSymbol.IsVararg && !needDeclaration));
 
             Cci.IMethodReference unexpandedMethodRef = Translate(methodSymbol, syntaxNodeOpt, diagnostics, needDeclaration);
 
-            if (optArgList != null && optArgList.Arguments.Length > 0)
+            if ((optArgList != null) && (optArgList.Arguments.Length > 0))
             {
                 Cci.IParameterTypeInformation[] @params = new Cci.IParameterTypeInformation[optArgList.Arguments.Length];
                 int ordinal = methodSymbol.ParameterCount;
@@ -1171,7 +1171,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
                 for (int i = 0; i < @params.Length; i++)
                 {
                     @params[i] = new ArgListParameterTypeInformation(ordinal,
-                                                                    !optArgList.ArgumentRefKindsOpt.IsDefaultOrEmpty && optArgList.ArgumentRefKindsOpt[i] != RefKind.None,
+                                                                    !optArgList.ArgumentRefKindsOpt.IsDefaultOrEmpty && (optArgList.ArgumentRefKindsOpt[i] != RefKind.None),
                                                                     Translate(optArgList.Arguments[i].Type, syntaxNodeOpt, diagnostics));
                     ordinal++;
                 }
@@ -1370,7 +1370,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
 
         private static bool ContainerIsGeneric(Symbol container)
         {
-            return container.Kind == SymbolKind.Method && ((MethodSymbol)container).IsGenericMethod ||
+            return ((container.Kind == SymbolKind.Method) && ((MethodSymbol)container).IsGenericMethod) ||
                 IsGenericType(container.ContainingType);
         }
 

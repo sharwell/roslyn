@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     return false;
                 }
 
-                if (_waiters == null || _waiters.Count == 0)
+                if ((_waiters == null) || (_waiters.Count == 0))
                 {
                     _data.Enqueue(value);
                     return true;

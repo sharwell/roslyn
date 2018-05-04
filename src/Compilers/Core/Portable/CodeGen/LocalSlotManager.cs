@@ -46,8 +46,8 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 // ITypeReference does not have object identity.
                 // Same type may be represented by multiple instances.
                 // Therefore the use of "Equals" here.
-                return _constraints == other._constraints &&
-                    (_type == other._type || _type.Equals(other._type));
+                return (_constraints == other._constraints) &&
+                    ((_type == other._type) || _type.Equals(other._type));
             }
 
             public override int GetHashCode()
@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
             LocalDefinition local;
 
-            if (symbolOpt != null && _slotAllocatorOpt != null)
+            if ((symbolOpt != null) && (_slotAllocatorOpt != null))
             {
                 local = _slotAllocatorOpt.GetPreviousLocal(
                     type,

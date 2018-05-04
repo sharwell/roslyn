@@ -98,8 +98,8 @@ namespace Microsoft.CodeAnalysis
         {
             // shall not throw
 
-            Debug.Assert((peReader == null) ^ (metadataOpt == IntPtr.Zero && metadataSizeOpt == 0));
-            Debug.Assert(metadataOpt == IntPtr.Zero || metadataSizeOpt > 0);
+            Debug.Assert((peReader == null) ^ ((metadataOpt == IntPtr.Zero) && (metadataSizeOpt == 0)));
+            Debug.Assert((metadataOpt == IntPtr.Zero) || (metadataSizeOpt > 0));
 
             _owner = owner;
             _peReaderOpt = peReader;
@@ -479,7 +479,7 @@ namespace Microsoft.CodeAnalysis
         {
             TypeDefinition typeDefinition = MetadataReader.GetTypeDefinition(typeDef);
             string name = MetadataReader.GetString(typeDefinition.Name);
-            Debug.Assert(name.Length == 0 || MetadataHelpers.IsValidMetadataIdentifier(name)); // Obfuscated assemblies can have types with empty names.
+            Debug.Assert((name.Length == 0) || MetadataHelpers.IsValidMetadataIdentifier(name)); // Obfuscated assemblies can have types with empty names.
 
             // The problem is that the mangled name for an static machine type looks like 
             // "<" + methodName + ">d__" + uniqueId.However, methodName will have dots in 
@@ -1004,7 +1004,7 @@ namespace Microsoft.CodeAnalysis
         internal bool HasDynamicAttribute(EntityHandle token, out ImmutableArray<bool> dynamicTransforms)
         {
             AttributeInfo info = FindTargetAttribute(token, AttributeDescription.DynamicAttribute);
-            Debug.Assert(!info.HasValue || info.SignatureIndex == 0 || info.SignatureIndex == 1);
+            Debug.Assert(!info.HasValue || (info.SignatureIndex == 0) || (info.SignatureIndex == 1));
 
             if (!info.HasValue)
             {
@@ -1024,7 +1024,7 @@ namespace Microsoft.CodeAnalysis
         internal bool HasTupleElementNamesAttribute(EntityHandle token, out ImmutableArray<string> tupleElementNames)
         {
             var info = FindTargetAttribute(token, AttributeDescription.TupleElementNamesAttribute);
-            Debug.Assert(!info.HasValue || info.SignatureIndex == 0 || info.SignatureIndex == 1);
+            Debug.Assert(!info.HasValue || (info.SignatureIndex == 0) || (info.SignatureIndex == 1));
 
             if (!info.HasValue)
             {
@@ -1058,9 +1058,9 @@ namespace Microsoft.CodeAnalysis
             if (info.HasValue)
             {
                 ObsoleteAttributeData obsoleteData = TryExtractObsoleteDataFromAttribute(info);
-                if (obsoleteData != null &&
+                if ((obsoleteData != null) &&
                     ignoreByRefLikeMarker &&
-                    obsoleteData.Message == ByRefLikeMarker)
+                    (obsoleteData.Message == ByRefLikeMarker))
                 {
                     return null;
                 }
@@ -1117,7 +1117,7 @@ namespace Microsoft.CodeAnalysis
             if (info.HasValue && TryExtractLongValueFromAttribute(info.Handle, out value))
             {
                 // if value is outside this range, DateTime would throw when constructed
-                if (value < DateTime.MinValue.Ticks || value > DateTime.MaxValue.Ticks)
+                if ((value < DateTime.MinValue.Ticks) || (value > DateTime.MaxValue.Ticks))
                 {
                     defaultValue = ConstantValue.Bad;
                 }
@@ -1174,7 +1174,7 @@ namespace Microsoft.CodeAnalysis
             foreach (var ai in attrInfos)
             {
                 string extractedStr;
-                if (TryExtractStringValueFromAttribute(ai.Handle, out extractedStr) && extractedStr != null)
+                if (TryExtractStringValueFromAttribute(ai.Handle, out extractedStr) && (extractedStr != null))
                 {
                     result.Add(extractedStr);
                 }
@@ -1390,7 +1390,7 @@ namespace Microsoft.CodeAnalysis
                     if (reader.Length > 4)
                     {
                         // check prolog
-                        if (reader.ReadByte() == 1 && reader.ReadByte() == 0)
+                        if ((reader.ReadByte() == 1) && (reader.ReadByte() == 0))
                         {
                             return valueExtractor(out value, ref reader);
                         }
@@ -1492,7 +1492,7 @@ namespace Microsoft.CodeAnalysis
         private static bool CrackObsoleteAttributeData(out ObsoleteAttributeData value, ref BlobReader sig)
         {
             string message;
-            if (CrackStringInAttributeValue(out message, ref sig) && sig.RemainingBytes >= 1)
+            if (CrackStringInAttributeValue(out message, ref sig) && (sig.RemainingBytes >= 1))
             {
                 bool isError = sig.ReadBoolean();
                 value = new ObsoleteAttributeData(ObsoleteAttributeKind.Obsolete, message, isError);
@@ -1529,7 +1529,7 @@ namespace Microsoft.CodeAnalysis
             try
             {
                 int strLen;
-                if (sig.TryReadCompressedInteger(out strLen) && sig.RemainingBytes >= strLen)
+                if (sig.TryReadCompressedInteger(out strLen) && (sig.RemainingBytes >= strLen))
                 {
                     value = sig.ReadUTF8(strLen);
 
@@ -1543,7 +1543,7 @@ namespace Microsoft.CodeAnalysis
                 value = null;
 
                 // Strings are stored as UTF8, but 0xFF means NULL string.
-                return sig.RemainingBytes >= 1 && sig.ReadByte() == 0xFF;
+                return (sig.RemainingBytes >= 1) && (sig.ReadByte() == 0xFF);
             }
             catch (BadImageFormatException)
             {
@@ -1675,7 +1675,7 @@ namespace Microsoft.CodeAnalysis
 
             public AttributeInfo(CustomAttributeHandle handle, int signatureIndex)
             {
-                Debug.Assert(signatureIndex >= 0 && signatureIndex <= byte.MaxValue);
+                Debug.Assert((signatureIndex >= 0) && (signatureIndex <= byte.MaxValue));
                 this.Handle = handle;
                 this.SignatureIndex = (byte)signatureIndex;
             }
@@ -1783,8 +1783,8 @@ namespace Microsoft.CodeAnalysis
                 return false;
             }
 
-            if (_lazyNoPiaLocalTypeCheckBitMap != null &&
-                _lazyTypeDefToTypeIdentifierMap != null)
+            if ((_lazyNoPiaLocalTypeCheckBitMap != null) &&
+                (_lazyTypeDefToTypeIdentifierMap != null))
             {
                 int rid = MetadataReader.GetRowNumber(typeDef);
                 Debug.Assert(rid > 0);
@@ -2109,10 +2109,10 @@ namespace Microsoft.CodeAnalysis
                     sig.Reset();
 
                     // Make sure the headers match.
-                    if (sig.RemainingBytes >= 3 &&
-                        sig.ReadByte() == targetSignature[0] &&
-                        sig.ReadByte() == targetSignature[1] &&
-                        sig.ReadByte() == targetSignature[2])
+                    if ((sig.RemainingBytes >= 3) &&
+                        (sig.ReadByte() == targetSignature[0]) &&
+                        (sig.ReadByte() == targetSignature[1]) &&
+                        (sig.ReadByte() == targetSignature[2]))
                     {
                         int j = 3;
                         for (; j < targetSignature.Length; j++)
@@ -2189,7 +2189,7 @@ namespace Microsoft.CodeAnalysis
                             break; // Signature doesn't match.
                         }
 
-                        if (sig.RemainingBytes == 0 && j == targetSignature.Length)
+                        if ((sig.RemainingBytes == 0) && (j == targetSignature.Length))
                         {
                             // We found a match
                             return i;
@@ -2303,7 +2303,7 @@ namespace Microsoft.CodeAnalysis
                     TypeReference typeRefRow = metadataReader.GetTypeReference((TypeReferenceHandle)typeDefOrRef);
                     HandleKind handleType = typeRefRow.ResolutionScope.Kind;
 
-                    if (handleType == HandleKind.TypeReference || handleType == HandleKind.TypeDefinition)
+                    if ((handleType == HandleKind.TypeReference) || (handleType == HandleKind.TypeDefinition))
                     {
                         // TODO - Support nested types.  
                         return false;
@@ -2956,7 +2956,7 @@ namespace Microsoft.CodeAnalysis
                             continue;
                         }
 
-                        if (referencedAssemblyIndex < 0 || referencedAssemblyIndex >= this.ReferencedAssemblies.Length)
+                        if ((referencedAssemblyIndex < 0) || (referencedAssemblyIndex >= this.ReferencedAssemblies.Length))
                         {
                             continue;
                         }
@@ -2979,7 +2979,7 @@ namespace Microsoft.CodeAnalysis
                             Debug.Assert(indices.FirstIndex >= 0, "Not allowed to store a negative (non-existent) index in typesToAssemblyIndexMap");
 
                             // Store it only if it was not a duplicate
-                            if (indices.FirstIndex != referencedAssemblyIndex && indices.SecondIndex < 0)
+                            if ((indices.FirstIndex != referencedAssemblyIndex) && (indices.SecondIndex < 0))
                             {
                                 indices.SecondIndex = referencedAssemblyIndex;
                                 typesToAssemblyIndexMap[name] = indices;
@@ -3050,7 +3050,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         internal bool IsEntireImageAvailable
         {
-            get { return _peReaderOpt != null && _peReaderOpt.IsEntireImageAvailable; }
+            get { return (_peReaderOpt != null) && _peReaderOpt.IsEntireImageAvailable; }
         }
 
         /// <exception cref="BadImageFormatException">Invalid metadata.</exception>
@@ -3060,8 +3060,8 @@ namespace Microsoft.CodeAnalysis
             Debug.Assert(_peReaderOpt != null);
 
             MethodDefinition method = MetadataReader.GetMethodDefinition(methodHandle);
-            if ((method.ImplAttributes & MethodImplAttributes.CodeTypeMask) != MethodImplAttributes.IL ||
-                 method.RelativeVirtualAddress == 0)
+            if (((method.ImplAttributes & MethodImplAttributes.CodeTypeMask) != MethodImplAttributes.IL) ||
+                 (method.RelativeVirtualAddress == 0))
             {
                 return null;
             }

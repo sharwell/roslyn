@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation
                 value = e;
                 evalFlags |= DkmEvaluationResultFlags.ExceptionThrown;
             }
-            var valueType = new DkmClrType(this.Type.RuntimeInstance, (value == null || elementType.IsPointer) ? elementType : (TypeImpl)value.GetType());
+            var valueType = new DkmClrType(this.Type.RuntimeInstance, ((value == null) || elementType.IsPointer) ? elementType : (TypeImpl)value.GetType());
             return new DkmClrValue(
                 value,
                 value,
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation
             //       will return.  We will need to update this implementation to match the real behavior we add
             //       specialized support for additional types. 
             var typeCode = Metadata.Type.GetTypeCode(lmrType);
-            return (lmrType.IsPointer || lmrType.IsEnum || typeCode != TypeCode.DateTime || typeCode != TypeCode.Object)
+            return (lmrType.IsPointer || lmrType.IsEnum || (typeCode != TypeCode.DateTime) || (typeCode != TypeCode.Object))
                 ? rawValue
                 : null;
         }
@@ -224,7 +224,7 @@ namespace Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation
             }
 
             var rawValue = RawValue;
-            Debug.Assert(rawValue != null || this.Type.GetLmrType().IsVoid(), "In our mock system, this should only happen for void.");
+            Debug.Assert((rawValue != null) || this.Type.GetLmrType().IsVoid(), "In our mock system, this should only happen for void.");
             return rawValue == null ? null : rawValue.ToString();
         }
 
@@ -333,7 +333,7 @@ namespace Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation
                             var method = type.GetMethod(name, bindingFlags);
                             // The real implementation requires parens on method invocations, so
                             // we'll return error if there wasn't at least an open paren...
-                            if ((openParenIndex >= 0) && method != null)
+                            if ((openParenIndex >= 0) && (method != null))
                             {
                                 var methodValue = method.Invoke(RawValue, new object[] { });
                                 exprValue = new DkmClrValue(
@@ -521,7 +521,7 @@ namespace Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation
                 value = UnboxPointer(value);
                 type = declaredType;
             }
-            else if (value == null || declaredType.IsNullable())
+            else if ((value == null) || declaredType.IsNullable())
             {
                 type = declaredType;
             }

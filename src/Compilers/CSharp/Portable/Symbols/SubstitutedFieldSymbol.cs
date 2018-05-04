@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var other = obj as SubstitutedFieldSymbol;
-            return (object)other != null && _containingType == other._containingType && OriginalDefinition == other.OriginalDefinition;
+            return ((object)other != null) && (_containingType == other._containingType) && (OriginalDefinition == other.OriginalDefinition);
         }
 
         public override int GetHashCode()

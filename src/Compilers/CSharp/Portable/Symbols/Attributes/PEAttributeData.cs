@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     // TODO: should we create CSErrorTypeSymbol for attribute class??
                     _lazyHasErrors = ThreeState.True;
                 }
-                else if ((object)attributeClass == null || attributeClass.IsErrorType() || (object)attributeConstructor == null)
+                else if (((object)attributeClass == null) || attributeClass.IsErrorType() || ((object)attributeConstructor == null))
                 {
                     _lazyHasErrors = ThreeState.True;
                 }
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     _lazyHasErrors = ThreeState.True;
                 }
 
-                Debug.Assert(lazyConstructorArguments != null && lazyNamedArguments != null);
+                Debug.Assert((lazyConstructorArguments != null) && (lazyNamedArguments != null));
 
                 ImmutableInterlocked.InterlockedInitialize(ref _lazyConstructorArguments,
                     ImmutableArray.Create<TypedConstant>(lazyConstructorArguments));

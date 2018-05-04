@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
 
             int shift = 20;
             string unit = "MB";
-            if (free >> shift == 0)
+            if ((free >> shift) == 0)
             {
                 shift = 10;
                 unit = "KB";
@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
 
             CompilerServerLogger.Log("Free memory: {1}{0} of {2}{0}.", unit, free >> shift, max >> shift);
 
-            return free >= 800 << 20; // Value (500MB) is arbitrary; feel free to improve.
+            return free >= (800 << 20); // Value (500MB) is arbitrary; feel free to improve.
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]

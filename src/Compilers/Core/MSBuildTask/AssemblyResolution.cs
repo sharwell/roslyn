@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
         private static bool TryRedirect(AssemblyName name, byte[] token, int major, int minor, int build, int revision)
         {
             var version = new Version(major, minor, build, revision);
-            if (KeysEqual(name.GetPublicKeyToken(), token) && name.Version < version)
+            if (KeysEqual(name.GetPublicKeyToken(), token) && (name.Version < version))
             {
                 name.Version = version;
                 return true;

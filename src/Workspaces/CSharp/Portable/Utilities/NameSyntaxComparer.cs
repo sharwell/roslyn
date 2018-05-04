@@ -55,17 +55,17 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
             // If we have a basic name, then it's simple to compare.  Just
             // check that token versus whatever the other name has as the
             // first token.
-            if (x is IdentifierNameSyntax && y is IdentifierNameSyntax)
+            if ((x is IdentifierNameSyntax) && (y is IdentifierNameSyntax))
             {
                 return _tokenComparer.Compare(x.GetFirstToken(includeSkipped: true), y.GetFirstToken());
             }
-            else if (x is GenericNameSyntax && y is GenericNameSyntax)
+            else if ((x is GenericNameSyntax) && (y is GenericNameSyntax))
             {
                 // if both names are generic, then use a specialized routine
                 // that will check the names *and* the arguments.
                 return Compare((GenericNameSyntax)x, (GenericNameSyntax)y);
             }
-            else if (x is IdentifierNameSyntax && y is GenericNameSyntax)
+            else if ((x is IdentifierNameSyntax) && (y is GenericNameSyntax))
             {
                 int compare = _tokenComparer.Compare(x.GetFirstToken(includeSkipped: true), y.GetFirstToken());
                 if (compare != 0)
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
                 // Goo goes before Goo<T>
                 return -1;
             }
-            else if (x is GenericNameSyntax && y is IdentifierNameSyntax)
+            else if ((x is GenericNameSyntax) && (y is IdentifierNameSyntax))
             {
                 int compare = _tokenComparer.Compare(x.GetFirstToken(includeSkipped: true), y.GetFirstToken());
                 if (compare != 0)
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
             var xNameParts = DecomposeNameParts(x);
             var yNameParts = DecomposeNameParts(y);
 
-            for (int i = 0; i < xNameParts.Count && i < yNameParts.Count; i++)
+            for (int i = 0; (i < xNameParts.Count) && (i < yNameParts.Count); i++)
             {
                 int compare = Compare(xNameParts[i], yNameParts[i]);
                 if (compare != 0)

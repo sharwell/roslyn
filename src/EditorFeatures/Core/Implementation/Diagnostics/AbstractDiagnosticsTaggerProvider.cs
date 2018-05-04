@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Diagnostics
 
         private void OnDiagnosticsUpdated(object sender, DiagnosticsUpdatedArgs e)
         {
-            if (e.Solution == null || e.DocumentId == null)
+            if ((e.Solution == null) || (e.DocumentId == null))
             {
                 return;
             }
@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Diagnostics
             // document, we'll just use the current editor snapshot.  If that's the same, then the tags
             // will be hte same.  If it is different, we'll eventually hear about the new diagnostics 
             // for it and we'll reach our fixed point.
-            if (document != null && document.IsOpen())
+            if ((document != null) && document.IsOpen())
             {
                 // This should always be fast since the document is open.
                 var sourceText = document.State.GetTextSynchronously(cancellationToken: default);
@@ -223,6 +223,6 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Diagnostics
         }
 
         private bool IsSuppressed(NormalizedSnapshotSpanCollection suppressedSpans, SnapshotSpan span)
-            => suppressedSpans != null && suppressedSpans.IntersectsWith(span);
+            => (suppressedSpans != null) && suppressedSpans.IntersectsWith(span);
     }
 }

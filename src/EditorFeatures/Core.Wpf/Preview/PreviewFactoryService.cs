@@ -405,7 +405,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Preview
                 var suppressDiagnosticsSpans = suppressDiagnosticsNodes.Select(n => n.Span.ToSpan()).ToList();
                 AttachAnnotationsToBuffer(newBuffer, conflictSpans, warningSpans, suppressDiagnosticsSpans);
 
-                description = conflictSpans.Count == 0 && warningSpans.Count == 0
+                description = (conflictSpans.Count == 0) && (warningSpans.Count == 0)
                     ? null
                     : string.Join(Environment.NewLine, conflictDescriptions.Concat(warningDescriptions));
                 allSpans = new NormalizedSpanCollection(conflictSpans.Concat(warningSpans).Concat(changedSpans));
@@ -679,7 +679,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Preview
 
                 // We merge them if there's no more than one line between the two.  Otherwise
                 // we'd show "..." between two spans where we could just show the actual code. 
-                if (nextLineSpan.Start >= lastLineSpan.Start && nextLineSpan.Start <= (lastLineSpan.End + 1))
+                if ((nextLineSpan.Start >= lastLineSpan.Start) && (nextLineSpan.Start <= (lastLineSpan.End + 1)))
                 {
                     nextLineSpan = LineSpan.FromBounds(lastLineSpan.Start, nextLineSpan.End);
                     lineSpans.RemoveAt(lineSpans.Count - 1);

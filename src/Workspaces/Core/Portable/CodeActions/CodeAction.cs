@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.CodeActions
         internal async Task<Solution> GetChangedSolutionInternalAsync(bool postProcessChanges = true, CancellationToken cancellationToken = default)
         {
             var solution = await GetChangedSolutionAsync(new ProgressTracker(), cancellationToken).ConfigureAwait(false);
-            if (solution == null || !postProcessChanges)
+            if ((solution == null) || !postProcessChanges)
             {
                 return solution;
             }

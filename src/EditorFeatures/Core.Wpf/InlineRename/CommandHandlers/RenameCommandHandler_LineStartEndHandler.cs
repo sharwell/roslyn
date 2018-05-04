@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 if (_renameService.ActiveSession.TryGetContainingEditableSpan(caretPoint.Value, out var span))
                 {
                     var newPoint = lineStart ? span.Start : span.End;
-                    if (newPoint == caretPoint.Value && (view.Selection.IsEmpty || extendSelection))
+                    if ((newPoint == caretPoint.Value) && (view.Selection.IsEmpty || extendSelection))
                     {
                         // We're already at a boundary, let the editor handle the command
                         return false;

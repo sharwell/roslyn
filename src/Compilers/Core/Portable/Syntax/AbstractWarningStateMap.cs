@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.Syntax
         /// </summary>
         private WarningStateMapEntry GetEntryAtOrBeforePosition(int position)
         {
-            Debug.Assert(_warningStateMapEntries != null && _warningStateMapEntries.Length > 0);
+            Debug.Assert((_warningStateMapEntries != null) && (_warningStateMapEntries.Length > 0));
             int r = Array.BinarySearch(_warningStateMapEntries, new WarningStateMapEntry(position));
             return _warningStateMapEntries[r >= 0 ? r : ((~r) - 1)];
         }

@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public static bool IsCompilationOutputWinMdObj(this Symbol symbol)
         {
             var comp = symbol.DeclaringCompilation;
-            return comp != null && comp.Options.OutputKind == OutputKind.WindowsRuntimeMetadata;
+            return (comp != null) && (comp.Options.OutputKind == OutputKind.WindowsRuntimeMetadata);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public static bool IsNestedType(this Symbol symbol)
         {
-            return symbol is NamedTypeSymbol && (object)symbol.ContainingType != null;
+            return (symbol is NamedTypeSymbol) && ((object)symbol.ContainingType != null);
         }
 
         public static bool Any<T>(this ImmutableArray<T> array, SymbolKind kind)
@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             for (int i = 0, n = array.Length; i < n; i++)
             {
                 var item = array[i];
-                if ((object)item != null && item.Kind == kind)
+                if (((object)item != null) && (item.Kind == kind))
                 {
                     return true;
                 }
@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             // The method returns true for superType == subType.
             // Two different submission type symbols semantically represent a single type, so we should also return true.
-            return superType.TypeKind == TypeKind.Submission && subType.TypeKind == TypeKind.Submission;
+            return (superType.TypeKind == TypeKind.Submission) && (subType.TypeKind == TypeKind.Submission);
         }
 
         public static bool IsNoMoreVisibleThan(this Symbol symbol, TypeSymbol type, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -117,10 +117,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal static Symbol ContainingNonLambdaMember(this Symbol containingMember)
         {
-            while ((object)containingMember != null && containingMember.Kind == SymbolKind.Method)
+            while (((object)containingMember != null) && (containingMember.Kind == SymbolKind.Method))
             {
                 MethodSymbol method = (MethodSymbol)containingMember;
-                if (method.MethodKind != MethodKind.AnonymousFunction && method.MethodKind != MethodKind.LocalFunction) break;
+                if ((method.MethodKind != MethodKind.AnonymousFunction) && (method.MethodKind != MethodKind.LocalFunction)) break;
                 containingMember = containingMember.ContainingSymbol;
             }
 
@@ -140,7 +140,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         MethodSymbol method = (MethodSymbol)symbol;
 
                         // skip lambdas:
-                        if (method.MethodKind == MethodKind.AnonymousFunction || method.MethodKind == MethodKind.LocalFunction)
+                        if ((method.MethodKind == MethodKind.AnonymousFunction) || (method.MethodKind == MethodKind.LocalFunction))
                         {
                             symbol = method.ContainingSymbol;
                             continue;
@@ -314,7 +314,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 SyntaxReference reference = symbol.DeclaringSyntaxReferences.FirstOrDefault();
 
-                if (reference == null && symbol.IsImplicitlyDeclared)
+                if ((reference == null) && symbol.IsImplicitlyDeclared)
                 {
                     Symbol containingSymbol = symbol.ContainingSymbol;
                     if ((object)containingSymbol != null)
@@ -338,7 +338,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             var csSymbol = symbol as TDestination;
 
-            if ((object)csSymbol == null && (object)symbol != null)
+            if (((object)csSymbol == null) && ((object)symbol != null))
             {
                 throw new ArgumentException(CSharpResources.NotACSharpSymbol, paramName);
             }

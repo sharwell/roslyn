@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private TypeSymbol GetIteratorElementTypeFromReturnType(RefKind refKind, TypeSymbol returnType, CSharpSyntaxNode errorLocationNode, DiagnosticBag diagnostics)
         {
-            if (refKind == RefKind.None && returnType.Kind == SymbolKind.NamedType)
+            if ((refKind == RefKind.None) && (returnType.Kind == SymbolKind.NamedType))
             {
                 switch (returnType.OriginalDefinition.SpecialType)
                 {
@@ -197,7 +197,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             Debug.Assert(result.IsClear);
 
-            if (_methodSymbol.ParameterCount == 0 || (options & LookupOptions.NamespaceAliasesOnly) != 0)
+            if ((_methodSymbol.ParameterCount == 0) || ((options & LookupOptions.NamespaceAliasesOnly) != 0))
             {
                 return;
             }
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal static bool ReportConflictWithParameter(Symbol parameter, Symbol newSymbol, string name, Location newLocation, DiagnosticBag diagnostics)
         {
             var oldLocation = parameter.Locations[0];
-            Debug.Assert(oldLocation != newLocation || oldLocation == Location.None || newLocation.SourceTree?.GetRoot().ContainsDiagnostics == true,
+            Debug.Assert((oldLocation != newLocation) || (oldLocation == Location.None) || (newLocation.SourceTree?.GetRoot().ContainsDiagnostics == true),
                 "same nonempty location refers to different symbols?");
             SymbolKind parameterKind = parameter.Kind;
 
@@ -252,9 +252,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (parameterKind == SymbolKind.Parameter)
             {
-                if (newSymbolKind == SymbolKind.Parameter || newSymbolKind == SymbolKind.Local ||
-                    (newSymbolKind == SymbolKind.Method &&
-                     ((MethodSymbol)newSymbol).MethodKind == MethodKind.LocalFunction))
+                if ((newSymbolKind == SymbolKind.Parameter) || (newSymbolKind == SymbolKind.Local) ||
+                    ((newSymbolKind == SymbolKind.Method) &&
+                     (((MethodSymbol)newSymbol).MethodKind == MethodKind.LocalFunction)))
                 {
                     // A local or parameter named '{0}' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter
                     diagnostics.Add(ErrorCode.ERR_LocalIllegallyOverrides, newLocation, name);
@@ -271,9 +271,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (parameterKind == SymbolKind.TypeParameter)
             {
-                if (newSymbolKind == SymbolKind.Parameter || newSymbolKind == SymbolKind.Local ||
-                    (newSymbolKind == SymbolKind.Method && 
-                     ((MethodSymbol)newSymbol).MethodKind == MethodKind.LocalFunction))
+                if ((newSymbolKind == SymbolKind.Parameter) || (newSymbolKind == SymbolKind.Local) ||
+                    ((newSymbolKind == SymbolKind.Method) && 
+                     (((MethodSymbol)newSymbol).MethodKind == MethodKind.LocalFunction)))
                 {
                     // CS0412: '{0}': a parameter, local variable, or local function cannot have the same name as a method type parameter
                     diagnostics.Add(ErrorCode.ERR_LocalSameNameAsTypeParam, newLocation, name);

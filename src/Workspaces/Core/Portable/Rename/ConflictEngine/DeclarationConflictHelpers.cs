@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
             var potentiallyConfictingMethods =
                 renamedMethod.ContainingType.GetMembers(renamedMethod.Name)
                                             .OfType<IMethodSymbol>()
-                                            .Where(m => !m.Equals(renamedMethod) && m.Arity == renamedMethod.Arity);
+                                            .Where(m => !m.Equals(renamedMethod) && (m.Arity == renamedMethod.Arity));
 
             var signatureToConflictingMember = new Dictionary<ImmutableArray<ITypeSymbol>, IMethodSymbol>(ConflictingSignatureComparer.Instance);
 
@@ -33,8 +33,8 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
             {
                 if (signatureToConflictingMember.TryGetValue(signature, out var conflictingSymbol))
                 {
-                    if (!(conflictingSymbol.PartialDefinitionPart != null && conflictingSymbol.PartialDefinitionPart == renamedMethod) &&
-                        !(conflictingSymbol.PartialImplementationPart != null && conflictingSymbol.PartialImplementationPart == renamedMethod))
+                    if (!((conflictingSymbol.PartialDefinitionPart != null) && (conflictingSymbol.PartialDefinitionPart == renamedMethod)) &&
+                        !((conflictingSymbol.PartialImplementationPart != null) && (conflictingSymbol.PartialImplementationPart == renamedMethod)))
                     {
                         builder.AddRange(conflictingSymbol.Locations);
                     }

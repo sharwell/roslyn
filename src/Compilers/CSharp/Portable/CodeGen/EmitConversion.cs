@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
         private void EmitDelegateCreation(BoundExpression node, BoundExpression receiver, bool isExtensionMethod, MethodSymbol method, TypeSymbol delegateType, bool used)
         {
-            var isStatic = receiver == null || (!isExtensionMethod && method.IsStatic);
+            var isStatic = (receiver == null) || (!isExtensionMethod && method.IsStatic);
             if (!used)
             {
                 if (!isStatic)
@@ -347,7 +347,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 if (parameters.Length != 2) continue;
                 if (parameters[0].Type.SpecialType != SpecialType.System_Object) continue;
                 var p1t = parameters[1].Type.SpecialType;
-                if (p1t == SpecialType.System_IntPtr || p1t == SpecialType.System_UIntPtr)
+                if ((p1t == SpecialType.System_IntPtr) || (p1t == SpecialType.System_UIntPtr))
                 {
                     return m;
                 }

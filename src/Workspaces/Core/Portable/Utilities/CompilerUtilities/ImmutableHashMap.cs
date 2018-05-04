@@ -379,7 +379,7 @@ namespace Roslyn.Collections.Immutable
             if (_root != null)
             {
                 var vb = _root.Get(_keyComparer.GetHashCode(keyValuePair.Key), keyValuePair.Key, _keyComparer);
-                return vb != null && _valueComparer.Equals(vb.Value, keyValuePair.Value);
+                return (vb != null) && _valueComparer.Equals(vb.Value, keyValuePair.Value);
             }
 
             return false;
@@ -678,7 +678,7 @@ namespace Roslyn.Collections.Immutable
 
             internal override Bucket Remove(int hash, TKey key, IEqualityComparer<TKey> comparer)
             {
-                if (this.Hash == hash && comparer.Equals(this.Key, key))
+                if ((this.Hash == hash) && comparer.Equals(this.Key, key))
                 {
                     return null;
                 }
@@ -688,7 +688,7 @@ namespace Roslyn.Collections.Immutable
 
             internal override ValueBucket Get(int hash, TKey key, IEqualityComparer<TKey> comparer)
             {
-                if (this.Hash == hash && comparer.Equals(this.Key, key))
+                if ((this.Hash == hash) && comparer.Equals(this.Key, key))
                 {
                     return this;
                 }
@@ -971,18 +971,18 @@ namespace Roslyn.Collections.Immutable
             [Pure]
             private static uint RotateRight(uint v, int n)
             {
-                Contract.Requires(n >= 0 && n < 32);
+                Contract.Requires((n >= 0) && (n < 32));
                 if (n == 0)
                 {
                     return v;
                 }
 
-                return v >> n | (v << (32 - n));
+                return (v >> n) | (v << (32 - n));
             }
 
             private int ComputePhysicalSlot(int logicalSlot)
             {
-                Contract.Requires(logicalSlot >= 0 && logicalSlot < 32);
+                Contract.Requires((logicalSlot >= 0) && (logicalSlot < 32));
                 Contract.Ensures(Contract.Result<int>() >= 0);
                 if (_buckets.Length == 32)
                 {
@@ -1005,7 +1005,7 @@ namespace Roslyn.Collections.Immutable
                 {
                     v = v - ((v >> 1) & 0x55555555u);
                     v = (v & 0x33333333u) + ((v >> 2) & 0x33333333u);
-                    return (int)((v + (v >> 4) & 0xF0F0F0Fu) * 0x1010101u) >> 24;
+                    return (int)(((v + (v >> 4)) & 0xF0F0F0Fu) * 0x1010101u) >> 24;
                 }
             }
 

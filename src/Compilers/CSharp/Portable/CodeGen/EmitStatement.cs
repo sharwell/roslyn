@@ -210,8 +210,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         {
             var opKind = condition.OperatorKind.Operator();
 
-            Debug.Assert(opKind == BinaryOperatorKind.Equal ||
-                        opKind == BinaryOperatorKind.NotEqual);
+            Debug.Assert((opKind == BinaryOperatorKind.Equal) ||
+                        (opKind == BinaryOperatorKind.NotEqual));
 
             BoundExpression nonConstOp;
             BoundExpression constOp = (condition.Left.ConstantValue != null) ? condition.Left : null;
@@ -473,7 +473,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                         // or if we deal with stack local (reads are destructive)
                         var complexCase = !receiverType.IsReferenceType ||
                                           LocalRewriter.CanChangeValueBetweenReads(receiver, localsMayBeAssignedOrCaptured: false) ||
-                                          (receiver.Kind == BoundKind.Local && IsStackLocal(((BoundLocal)receiver).LocalSymbol)) ||
+                                          ((receiver.Kind == BoundKind.Local) && IsStackLocal(((BoundLocal)receiver).LocalSymbol)) ||
                                           (ca.WhenNullOpt?.IsDefaultValue() == false);
 
                         if (complexCase)
@@ -595,7 +595,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             //sometimes top level node is a statement list containing 
             //epilogue and then a block. If we are having that block, it will do.
             var list = _boundBody as BoundStatementList;
-            if (list != null && list.Statements.LastOrDefault() == block)
+            if ((list != null) && (list.Statements.LastOrDefault() == block))
             {
                 return true;
             }
@@ -613,7 +613,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
                 foreach (var local in block.Locals)
                 {
-                    Debug.Assert(local.RefKind == RefKind.None || local.SynthesizedKind.IsLongLived(), 
+                    Debug.Assert((local.RefKind == RefKind.None) || local.SynthesizedKind.IsLongLived(), 
                         "A ref local ended up in a block and claims it is shortlived. That is dangerous. Are we sure it is short lived?");
 
                     var declaringReferences = local.DeclaringSyntaxReferences;
@@ -623,7 +623,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
             EmitStatements(block.Statements);
 
-            if (_indirectReturnState == IndirectReturnState.Needed &&
+            if ((_indirectReturnState == IndirectReturnState.Needed) &&
                 IsLastBlockInMethod(block))
             {
                 HandleReturn();
@@ -657,8 +657,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             foreach (var local in block.Locals)
             {
                 Debug.Assert(local.Name != null);
-                Debug.Assert(local.SynthesizedKind == SynthesizedLocalKind.UserDefined &&
-                    local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection);
+                Debug.Assert((local.SynthesizedKind == SynthesizedLocalKind.UserDefined) &&
+                    (local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection));
                 if (!local.IsConst && !IsStackLocal(local))
                 {
                     _builder.AddLocalToScope(_builder.LocalSlotManager.GetLocal(local));
@@ -700,7 +700,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             //   ret
             //
             // Do not emit this pattern if the method doesn't include user code or doesn't have a block body.
-            return _ilEmitStyle == ILEmitStyle.Debug && _method.GenerateDebugInfo && _methodBodySyntaxOpt?.IsKind(SyntaxKind.Block) == true ||
+            return (((_ilEmitStyle == ILEmitStyle.Debug) && _method.GenerateDebugInfo && (_methodBodySyntaxOpt?.IsKind(SyntaxKind.Block) == true))) ||
                    _builder.InExceptionHandler;
         }
 
@@ -711,7 +711,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         private bool CanHandleReturnLabel(BoundReturnStatement boundReturnStatement)
         {
             return boundReturnStatement.WasCompilerGenerated &&
-                    (boundReturnStatement.Syntax.IsKind(SyntaxKind.Block) || _method?.IsImplicitConstructor == true) &&
+                    (boundReturnStatement.Syntax.IsKind(SyntaxKind.Block) || (_method?.IsImplicitConstructor == true)) &&
                     !_builder.InExceptionHandler;
         }
 
@@ -737,7 +737,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     _builder.EmitLocalStore(LazyReturnTemp);
                 }
 
-                if (_indirectReturnState != IndirectReturnState.Emitted && CanHandleReturnLabel(boundReturnStatement))
+                if ((_indirectReturnState != IndirectReturnState.Emitted) && CanHandleReturnLabel(boundReturnStatement))
                 {
                     HandleReturn();
                 }
@@ -753,7 +753,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             }
             else
             {
-                if (_indirectReturnState == IndirectReturnState.Needed && CanHandleReturnLabel(boundReturnStatement))
+                if ((_indirectReturnState == IndirectReturnState.Needed) && CanHandleReturnLabel(boundReturnStatement))
                 {
                     if (expressionOpt != null)
                     {
@@ -1136,7 +1136,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     else
                     {
                         var value = boundLabel.ConstantValueOpt;
-                        Debug.Assert(value != null
+                        Debug.Assert((value != null)
                             && SwitchConstantValueHelper.IsValidSwitchCaseLabelConstant(value));
 
                         if (firstLabelInSection == null)
@@ -1165,7 +1165,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             LabelSymbol fallThroughLabel)
         {
             Debug.Assert(expression.ConstantValue == null);
-            Debug.Assert((object)expression.Type != null &&
+            Debug.Assert(((object)expression.Type != null) &&
                 expression.Type.IsValidV6SwitchGoverningType());
             Debug.Assert(switchCaseLabels.Length > 0);
 
@@ -1194,7 +1194,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             {
                 case BoundKind.Local:
                     var local = ((BoundLocal)expression).LocalSymbol;
-                    if (local.RefKind == RefKind.None && !IsStackLocal(local))
+                    if ((local.RefKind == RefKind.None) && !IsStackLocal(local))
                     {
                         key = this.GetLocal(local);
                         break;
@@ -1283,7 +1283,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
             Cci.IMethodReference stringLengthRef = null;
             var stringLengthMethod = _module.Compilation.GetSpecialTypeMember(SpecialMember.System_String__Length) as MethodSymbol;
-            if (stringLengthMethod != null && !stringLengthMethod.HasUseSiteError)
+            if ((stringLengthMethod != null) && !stringLengthMethod.HasUseSiteError)
             {
                 stringLengthRef = _module.Translate(stringLengthMethod, syntaxNode, _diagnostics);
             }
@@ -1298,7 +1298,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                         _builder.EmitLoad(keyArg);
                         _builder.EmitBranch(ILOpCode.Brfalse, targetLabel, ILOpCode.Brtrue);
                     }
-                    else if (stringConstant.StringValue.Length == 0 && stringLengthRef != null)
+                    else if ((stringConstant.StringValue.Length == 0) && (stringLengthRef != null))
                     {
                         // if (key != null && key.Length == 0)
                         //      goto targetLabel
@@ -1465,7 +1465,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             LocalSlotConstraints constraints;
             Cci.ITypeReference translatedType;
 
-            if (local.DeclarationKind == LocalDeclarationKind.FixedVariable && local.IsPinned) // Excludes pointer local and string local in fixed string case.
+            if ((local.DeclarationKind == LocalDeclarationKind.FixedVariable) && local.IsPinned) // Excludes pointer local and string local in fixed string case.
             {
                 Debug.Assert(local.RefKind == RefKind.None);
                 Debug.Assert(local.Type.IsPointerType());
@@ -1507,9 +1507,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 isSlotReusable: local.SynthesizedKind.IsSlotReusable(_ilEmitStyle != ILEmitStyle.Release));
 
             // If named, add it to the local debug scope.
-            if (localDef.Name != null &&
-                !(local.SynthesizedKind == SynthesizedLocalKind.UserDefined &&
-                    local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection)) // Visibility scope of such locals is represented by BoundScope node.
+            if ((localDef.Name != null) &&
+                !((local.SynthesizedKind == SynthesizedLocalKind.UserDefined) &&
+                    (local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection))) // Visibility scope of such locals is represented by BoundScope node.
             {
                 _builder.AddLocalToScope(localDef);
             }
@@ -1537,7 +1537,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             // Generating debug names for instrumentation payloads should be allowed, as described in https://github.com/dotnet/roslyn/issues/11024.
             // For now, skip naming locals generated by instrumentation as they might not have a local syntax offset.
             // Locals generated by instrumentation might exist in methods which do not contain a body (auto property initializers).
-            if (!localKind.IsLongLived() || localKind == SynthesizedLocalKind.InstrumentationPayload)
+            if (!localKind.IsLongLived() || (localKind == SynthesizedLocalKind.InstrumentationPayload))
             {
                 return null;
             }
@@ -1554,7 +1554,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     _synthesizedLocalOrdinals.AssignLocalOrdinal(localKind, syntaxOffset) : 0;
 
                 // user-defined locals should have 0 ordinal:
-                Debug.Assert(ordinal == 0 || localKind != SynthesizedLocalKind.UserDefined);
+                Debug.Assert((ordinal == 0) || (localKind != SynthesizedLocalKind.UserDefined));
 
                 localId = new LocalDebugId(syntaxOffset, ordinal);
             }
@@ -1573,7 +1573,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         private void FreeLocal(LocalSymbol local)
         {
             // TODO: releasing named locals is NYI.
-            if (local.Name == null && IsSlotReusable(local) && !IsStackLocal(local))
+            if ((local.Name == null) && IsSlotReusable(local) && !IsStackLocal(local))
             {
                 _builder.LocalSlotManager.FreeLocal(local);
             }

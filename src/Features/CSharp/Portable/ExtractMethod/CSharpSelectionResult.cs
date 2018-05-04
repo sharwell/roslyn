@@ -76,23 +76,23 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
             var current = token.Parent;
             for (; current != null; current = current.Parent)
             {
-                if (current is MemberDeclarationSyntax ||
-                    current is SimpleLambdaExpressionSyntax ||
-                    current is ParenthesizedLambdaExpressionSyntax ||
-                    current is AnonymousMethodExpressionSyntax)
+                if ((current is MemberDeclarationSyntax) ||
+                    (current is SimpleLambdaExpressionSyntax) ||
+                    (current is ParenthesizedLambdaExpressionSyntax) ||
+                    (current is AnonymousMethodExpressionSyntax))
                 {
                     break;
                 }
             }
 
-            if (current == null || current is MemberDeclarationSyntax)
+            if ((current == null) || (current is MemberDeclarationSyntax))
             {
                 return false;
             }
 
             // make sure the selection contains the lambda
-            return firstToken.SpanStart <= current.GetFirstToken().SpanStart &&
-                   current.GetLastToken().Span.End <= lastToken.Span.End;
+            return (firstToken.SpanStart <= current.GetFirstToken().SpanStart) &&
+                   (current.GetLastToken().Span.End <= lastToken.Span.End);
         }
 
         public StatementSyntax GetFirstStatement()

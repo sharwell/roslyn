@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateParameterizedMember
             // static class or an interface), then offer to generate it abstractly.
             var canGenerateAbstractly = state.TypeToGenerateIn.IsAbstract &&
                 !state.TypeToGenerateIn.IsStatic &&
-                state.TypeToGenerateIn.TypeKind != TypeKind.Interface &&
+                (state.TypeToGenerateIn.TypeKind != TypeKind.Interface) &&
                 !state.IsStatic;
 
             if (canGenerateAbstractly)
@@ -60,12 +60,12 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateParameterizedMember
             var semanticFacts = document.Project.Solution.Workspace.Services.GetLanguageServices(state.TypeToGenerateIn.Language).GetService<ISemanticFactsService>();
 
             if (semanticFacts.SupportsParameterizedProperties &&
-                state.InvocationExpressionOpt != null)
+                (state.InvocationExpressionOpt != null))
             {
                 var typeParameters = state.SignatureInfo.DetermineTypeParameters(cancellationToken);
                 var returnType = state.SignatureInfo.DetermineReturnType(cancellationToken);
 
-                if (typeParameters.Length == 0 && returnType.SpecialType != SpecialType.System_Void)
+                if ((typeParameters.Length == 0) && (returnType.SpecialType != SpecialType.System_Void))
                 {
                     result.Add(new GenerateParameterizedMemberCodeAction((TService)this, document, state, isAbstract: false, generateProperty: true));
 

@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis
             var textchanges = await textDiffService.GetTextChangesAsync(oldDocument, newDocument, cancellationToken).ConfigureAwait(false);
             foreach (var change in textchanges)
             {
-                while (cumulativeChangeIndex < cumulativeChanges.Count && cumulativeChanges[cumulativeChangeIndex].Span.End < change.Span.Start)
+                while ((cumulativeChangeIndex < cumulativeChanges.Count) && (cumulativeChanges[cumulativeChangeIndex].Span.End < change.Span.Start))
                 {
                     // Existing change that does not overlap with the current change in consideration
                     successfullyMergedChanges.Add(cumulativeChanges[cumulativeChangeIndex]);
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis
                     }
                     else
                     {
-                        if (change.Span != cumulativeChange.Span || change.NewText != cumulativeChange.NewText)
+                        if ((change.Span != cumulativeChange.Span) || (change.NewText != cumulativeChange.NewText))
                         {
                             // The current change in consideration overlaps an existing change but
                             // the changes are not identical. 
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis
 
             foreach (var mergedChange in mergedChangesList)
             {
-                while (commentChangeIndex < commentChangesList.Count && commentChangesList[commentChangeIndex].Span.End <= mergedChange.Span.Start)
+                while ((commentChangeIndex < commentChangesList.Count) && (commentChangesList[commentChangeIndex].Span.End <= mergedChange.Span.Start))
                 {
                     // Add a comment change that does not conflict with any merge change
                     combinedChanges.Add(commentChangesList[commentChangeIndex]);
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis
                     commentChangeIndex++;
                 }
 
-                if (commentChangeIndex >= commentChangesList.Count || mergedChange.Span.End <= commentChangesList[commentChangeIndex].Span.Start)
+                if ((commentChangeIndex >= commentChangesList.Count) || (mergedChange.Span.End <= commentChangesList[commentChangeIndex].Span.Start))
                 {
                     // Add a merge change that does not conflict with any comment change
                     combinedChanges.Add(mergedChange);
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis
 
                 // The current comment insertion location conflicts with a merge diff location. Add the comment before the diff.
                 var conflictingCommentInsertionLocation = new TextSpan(mergedChange.Span.Start, 0);
-                while (commentChangeIndex < commentChangesList.Count && commentChangesList[commentChangeIndex].Span.Start < mergedChange.Span.End)
+                while ((commentChangeIndex < commentChangesList.Count) && (commentChangesList[commentChangeIndex].Span.Start < mergedChange.Span.End))
                 {
                     combinedChanges.Add(new TextChange(conflictingCommentInsertionLocation, commentChangesList[commentChangeIndex].NewText));
                     mergeConflictResolutionSpans.Add(new TextSpan(commentChangesList[commentChangeIndex].Span.Start + currentPositionDelta, commentChangesList[commentChangeIndex].NewText.Length));

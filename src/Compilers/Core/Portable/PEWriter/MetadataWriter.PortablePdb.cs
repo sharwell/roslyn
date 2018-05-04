@@ -31,8 +31,8 @@ namespace Microsoft.Cci
 
             public bool Equals(IImportScope x, IImportScope y)
             {
-                return (object)x == y ||
-                       x != null && y != null && Equals(x.Parent, y.Parent) && x.GetUsedNamespaces().SequenceEqual(y.GetUsedNamespaces());
+                return ((object)x == y) ||
+                       ((((x != null) && (y != null) && Equals(x.Parent, y.Parent) && x.GetUsedNamespaces().SequenceEqual(y.GetUsedNamespaces()))));
             }
 
             public int GetHashCode(IImportScope obj)
@@ -707,7 +707,7 @@ namespace Microsoft.Cci
             int deltaColumns = sequencePoint.EndColumn - sequencePoint.StartColumn;
 
             // only hidden sequence points have zero width
-            Debug.Assert(deltaLines != 0 || deltaColumns != 0 || sequencePoint.IsHidden);
+            Debug.Assert((deltaLines != 0) || (deltaColumns != 0) || sequencePoint.IsHidden);
 
             writer.WriteCompressedInteger(deltaLines);
 

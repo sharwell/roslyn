@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         // Add all active #line directives under trivia into the list, in source code order.
         protected override bool ShouldAddDirective(DirectiveTriviaSyntax directive)
         {
-            return directive.IsActive && directive.Kind() == SyntaxKind.LineDirectiveTrivia;
+            return directive.IsActive && (directive.Kind() == SyntaxKind.LineDirectiveTrivia);
         }
 
         // Given a directive and the previous entry, create a new entry.
@@ -106,9 +106,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             var entry = Entries[index];
 
             // the state should not be set to the ones used for VB only.
-            Debug.Assert(entry.State != PositionState.Unknown &&
-                         entry.State != PositionState.RemappedAfterHidden &&
-                         entry.State != PositionState.RemappedAfterUnknown);
+            Debug.Assert((entry.State != PositionState.Unknown) &&
+                         (entry.State != PositionState.RemappedAfterHidden) &&
+                         (entry.State != PositionState.RemappedAfterUnknown));
 
             switch (entry.State)
             {
@@ -154,9 +154,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             var entry = FindEntry(unmappedStartPos.Line);
 
             // the state should not be set to the ones used for VB only.
-            Debug.Assert(entry.State != PositionState.Unknown &&
-                            entry.State != PositionState.RemappedAfterHidden &&
-                            entry.State != PositionState.RemappedAfterUnknown);
+            Debug.Assert((entry.State != PositionState.Unknown) &&
+                            (entry.State != PositionState.RemappedAfterHidden) &&
+                            (entry.State != PositionState.RemappedAfterUnknown));
 
             isHiddenPosition = entry.State == PositionState.Hidden;
 

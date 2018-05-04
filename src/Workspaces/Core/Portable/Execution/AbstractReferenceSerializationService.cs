@@ -336,7 +336,7 @@ namespace Microsoft.CodeAnalysis.Execution
         private PortableExecutableReference ReadPortableExecutableReferenceFrom(ObjectReader reader, CancellationToken cancellationToken)
         {
             var kind = (SerializationKinds)reader.ReadInt32();
-            if (kind == SerializationKinds.Bits || kind == SerializationKinds.MemoryMapFile)
+            if ((kind == SerializationKinds.Bits) || (kind == SerializationKinds.MemoryMapFile))
             {
                 var properties = ReadMetadataReferencePropertiesFrom(reader, cancellationToken);
 
@@ -359,7 +359,7 @@ namespace Microsoft.CodeAnalysis.Execution
                 // an alternative approach of this is synching content of xml doc comment to remote host as well
                 // so that we can put xml doc comment as part of snapshot. but until we believe that is necessary,
                 // it will go with simpler approach
-                var documentProvider = filePath != null && _documentationService != null ?
+                var documentProvider = (filePath != null) && (_documentationService != null) ?
                     _documentationService.GetDocumentationProvider(filePath) : XmlDocumentationProvider.Default;
 
                 return new SerializedMetadataReference(
@@ -560,7 +560,7 @@ namespace Microsoft.CodeAnalysis.Execution
             PinnedObject pinnedObject;
             if (stream is MemoryStream memory &&
                 memory.TryGetBuffer(out var buffer) &&
-                buffer.Offset == 0)
+                (buffer.Offset == 0))
             {
                 pinnedObject = new PinnedObject(buffer.Array, buffer.Count);
             }

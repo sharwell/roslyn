@@ -121,10 +121,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             {
                 TypeSymbol transformedType = decoder.TransformType(metadataType);
 
-                if ((object)transformedType != null && (!checkLength || decoder._index == dynamicTransformFlags.Length))
+                if (((object)transformedType != null) && (!checkLength || (decoder._index == dynamicTransformFlags.Length)))
                 {
                     // Even when we're not checking the length, there shouldn't be any unconsumed "true"s.
-                    Debug.Assert(checkLength || decoder._dynamicTransformFlags.LastIndexOf(true) < decoder._index);
+                    Debug.Assert(checkLength || (decoder._dynamicTransformFlags.LastIndexOf(true) < decoder._index));
                     return transformedType;
                 }
             }
@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             Debug.Assert(_index >= 0);
 
             if (!HasFlag ||
-                PeekFlag() && type.SpecialType != SpecialType.System_Object && !type.IsDynamic())
+                ((PeekFlag() && (type.SpecialType != SpecialType.System_Object) && !type.IsDynamic())))
             {
                 // Bail, since flags are invalid.
                 return null;
@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         private bool HandleParameterRefKind(RefKind refKind)
         {
             Debug.Assert(_index >= 0);
-            return refKind == RefKind.None || !ConsumeFlag();
+            return (refKind == RefKind.None) || !ConsumeFlag();
         }
 
         private NamedTypeSymbol TransformNamedType(NamedTypeSymbol namedType, bool isContaining = false)
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
             NamedTypeSymbol containingType = namedType.ContainingType;
             NamedTypeSymbol newContainingType;
-            if ((object)containingType != null && containingType.IsGenericType)
+            if (((object)containingType != null) && containingType.IsGenericType)
             {
                 newContainingType = TransformNamedType(namedType.ContainingType, isContaining: true);
                 if ((object)newContainingType == null)
@@ -249,7 +249,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             // Construct a new namedType, if required.
             bool containerIsChanged = newContainingType != containingType;
 
-            if (containerIsChanged || transformedTypeArguments != typeArguments)
+            if (containerIsChanged || (transformedTypeArguments != typeArguments))
             {
                 var newTypeArguments = namedType.HasTypeArgumentsCustomModifiers ?
                                            transformedTypeArguments.SelectAsArray((t, i, nt) => new TypeWithModifiers(t, nt.GetTypeArgumentCustomModifiers(i)), namedType) :
@@ -361,9 +361,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 new PointerTypeSymbol(transformedPointedAtType, pointerType.CustomModifiers);
         }
 
-        private bool HasFlag => _index < _dynamicTransformFlags.Length || !_checkLength;
+        private bool HasFlag => (_index < _dynamicTransformFlags.Length) || !_checkLength;
 
-        private bool PeekFlag() => _index < _dynamicTransformFlags.Length && _dynamicTransformFlags[_index];
+        private bool PeekFlag() => (_index < _dynamicTransformFlags.Length) && _dynamicTransformFlags[_index];
 
         private bool ConsumeFlag()
         {

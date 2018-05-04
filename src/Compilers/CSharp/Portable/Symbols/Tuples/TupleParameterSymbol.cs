@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            return (object)other != null && _container == other._container && _underlyingParameter == other._underlyingParameter;
+            return ((object)other != null) && (_container == other._container) && (_underlyingParameter == other._underlyingParameter);
         }
     }
 }

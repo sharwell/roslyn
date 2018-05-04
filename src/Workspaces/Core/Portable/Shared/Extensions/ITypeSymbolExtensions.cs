@@ -20,12 +20,12 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         private const string DefaultBuiltInParameterName = "v";
 
         public static bool CanAddNullCheck(this ITypeSymbol type)
-            => type != null && (type.IsReferenceType || type.IsNullable());
+            => (type != null) && (type.IsReferenceType || type.IsNullable());
 
         public static IList<INamedTypeSymbol> GetAllInterfacesIncludingThis(this ITypeSymbol type)
         {
             var allInterfaces = type.AllInterfaces;
-            if (type is INamedTypeSymbol namedType && namedType.TypeKind == TypeKind.Interface && !allInterfaces.Contains(namedType))
+            if (type is INamedTypeSymbol namedType && (namedType.TypeKind == TypeKind.Interface) && !allInterfaces.Contains(namedType))
             {
                 var result = new List<INamedTypeSymbol>(allInterfaces.Length + 1);
                 result.Add(namedType);
@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         public static bool IsAbstractClass(this ITypeSymbol symbol)
         {
-            return symbol?.TypeKind == TypeKind.Class && symbol.IsAbstract;
+            return (symbol?.TypeKind == TypeKind.Class) && symbol.IsAbstract;
         }
 
         public static bool IsSystemVoid(this ITypeSymbol symbol)
@@ -114,14 +114,14 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             // TODO(cyrusn): Implement this using the actual code for
             // TypeSymbol.FindImplementationForInterfaceMember
             var typeSymbol = typeSymbolAndProjectId.Symbol;
-            if (typeSymbol == null || interfaceMember == null)
+            if ((typeSymbol == null) || (interfaceMember == null))
             {
                 yield break;
             }
 
-            if (interfaceMember.Kind != SymbolKind.Event &&
-                interfaceMember.Kind != SymbolKind.Method &&
-                interfaceMember.Kind != SymbolKind.Property)
+            if ((interfaceMember.Kind != SymbolKind.Event) &&
+                (interfaceMember.Kind != SymbolKind.Method) &&
+                (interfaceMember.Kind != SymbolKind.Property))
             {
                 yield break;
             }
@@ -254,7 +254,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             var implicitMatches =
                 from baseType in typeSymbol.GetBaseTypesAndThis()
                 from member in baseType.GetMembers(interfaceSymbol.Name).OfType<TSymbol>()
-                where member.DeclaredAccessibility == Accessibility.Public &&
+                where (member.DeclaredAccessibility == Accessibility.Public) &&
                       !member.IsStatic &&
                       SignatureComparer.Instance.HaveSameSignatureAndConstraintsAndReturnTypeAndAccessors(member, interfaceSymbol, syntaxFacts.IsCaseSensitive)
                 select member;
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             this ITypeSymbol type, ITypeSymbol interfaceType)
         {
             var originalInterfaceType = interfaceType.OriginalDefinition;
-            if (type is INamedTypeSymbol && type.TypeKind == TypeKind.Interface)
+            if ((type is INamedTypeSymbol) && (type.TypeKind == TypeKind.Interface))
             {
                 // Interfaces don't implement other interfaces. They extend them.
                 return false;
@@ -379,11 +379,11 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         {
             for (var b = symbol.BaseType; b != null; b = b.BaseType)
             {
-                if (b.MetadataName == "Attribute" &&
-                    b.ContainingType == null &&
-                    b.ContainingNamespace != null &&
-                    b.ContainingNamespace.Name == "System" &&
-                    b.ContainingNamespace.ContainingNamespace != null &&
+                if ((b.MetadataName == "Attribute") &&
+                    (b.ContainingType == null) &&
+                    (b.ContainingNamespace != null) &&
+                    (b.ContainingNamespace.Name == "System") &&
+                    (b.ContainingNamespace.ContainingNamespace != null) &&
                     b.ContainingNamespace.ContainingNamespace.IsGlobalNamespace)
                 {
                     return true;
@@ -395,10 +395,10 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         public static bool IsFormattableString(this ITypeSymbol symbol)
         {
-            return symbol?.MetadataName == "FormattableString"
-                && symbol.ContainingType == null
-                && symbol.ContainingNamespace?.Name == "System"
-                && symbol.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true;
+            return (symbol?.MetadataName == "FormattableString")
+                && (symbol.ContainingType == null)
+                && (symbol.ContainingNamespace?.Name == "System")
+                && (symbol.ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true);
         }
 
         public static ITypeSymbol RemoveUnavailableTypeParameters(
@@ -585,12 +585,12 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         private static string GetParameterName(ITypeSymbol type)
         {
-            if (type == null || type.IsAnonymousType() || type.IsTupleType)
+            if ((type == null) || type.IsAnonymousType() || type.IsTupleType)
             {
                 return DefaultParameterName;
             }
 
-            if (type.IsSpecialType() || type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            if (type.IsSpecialType() || (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T))
             {
                 return DefaultBuiltInParameterName;
             }
@@ -852,7 +852,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         public static bool IsEnumType(this ITypeSymbol type)
         {
-            return type.IsValueType && type.TypeKind == TypeKind.Enum;
+            return type.IsValueType && (type.TypeKind == TypeKind.Enum);
         }
     }
 }

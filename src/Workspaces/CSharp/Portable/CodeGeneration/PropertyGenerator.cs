@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
     {
         public static bool CanBeGenerated(IPropertySymbol property)
         {
-            return property.IsIndexer || property.Parameters.Length == 0;
+            return property.IsIndexer || (property.Parameters.Length == 0);
         }
 
         private static MemberDeclarationSyntax LastPropertyOrField(
@@ -143,8 +143,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             out ArrowExpressionClauseSyntax arrowExpression, out SyntaxToken semicolonToken)
         {
             var accessorList = baseProperty.AccessorList;
-            if (preference != ExpressionBodyPreference.Never &&
-                accessorList.Accessors.Count == 1)
+            if ((preference != ExpressionBodyPreference.Never) &&
+                (accessorList.Accessors.Count == 1))
             {
                 var accessor = accessorList.Accessors[0];
                 if (accessor.IsKind(SyntaxKind.GetAccessorDeclaration))
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 GenerateAccessorDeclaration(property, property.SetMethod, SyntaxKind.SetAccessorDeclaration, destination, workspace, options, parseOptions),
             };
 
-            return accessors[0] == null && accessors[1] == null
+            return (accessors[0] == null) && (accessors[1] == null)
                 ? null
                 : SyntaxFactory.AccessorList(accessors.WhereNotNull().ToSyntaxList());
         }
@@ -297,9 +297,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             CodeGenerationDestination destination,
             IMethodSymbol accessor)
         {
-            return destination != CodeGenerationDestination.InterfaceType &&
+            return (destination != CodeGenerationDestination.InterfaceType) &&
                 !property.IsAbstract &&
-                accessor != null &&
+                (accessor != null) &&
                 !accessor.IsAbstract;
         }
 
@@ -308,8 +308,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             IMethodSymbol accessor,
             CodeGenerationOptions options)
         {
-            if (accessor.DeclaredAccessibility == Accessibility.NotApplicable ||
-                accessor.DeclaredAccessibility == property.DeclaredAccessibility)
+            if ((accessor.DeclaredAccessibility == Accessibility.NotApplicable) ||
+                (accessor.DeclaredAccessibility == property.DeclaredAccessibility))
             {
                 return new SyntaxTokenList();
             }
@@ -328,8 +328,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             // Most modifiers not allowed if we're an explicit impl.
             if (!property.ExplicitInterfaceImplementations.Any())
             {
-                if (destination != CodeGenerationDestination.CompilationUnit &&
-                    destination != CodeGenerationDestination.InterfaceType)
+                if ((destination != CodeGenerationDestination.CompilationUnit) &&
+                    (destination != CodeGenerationDestination.InterfaceType))
                 {
                     AddAccessibilityModifiers(property.DeclaredAccessibility, tokens, options, Accessibility.Private);
 

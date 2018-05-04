@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Differencing.UnitTests
 
             foreach (SequenceEdit edit in edits)
             {
-                Assert.True(edit.Kind == EditKind.Delete || edit.Kind == EditKind.Insert || edit.Kind == EditKind.Update);
+                Assert.True((edit.Kind == EditKind.Delete) || (edit.Kind == EditKind.Insert) || (edit.Kind == EditKind.Update));
                 switch (edit.Kind)
                 {
                     case EditKind.Delete:

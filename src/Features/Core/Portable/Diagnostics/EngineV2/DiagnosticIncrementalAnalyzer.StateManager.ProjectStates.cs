@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     var removedStates = DiffStateSets(entry.AnalyzerReferences.Except(project.AnalyzerReferences), entry.MapPerReferences, entry.AnalyzerMap);
 
                     // nothing has changed
-                    if (addedStates.Length == 0 && removedStates.Length == 0)
+                    if ((addedStates.Length == 0) && (removedStates.Length == 0))
                     {
                         return;
                     }
@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     ImmutableDictionary<object, ImmutableArray<DiagnosticAnalyzer>> mapPerReference,
                     ImmutableDictionary<DiagnosticAnalyzer, StateSet> map)
                 {
-                    if (mapPerReference.Count == 0 || map.Count == 0)
+                    if ((mapPerReference.Count == 0) || (map.Count == 0))
                     {
                         // nothing to diff
                         return ImmutableArray<StateSet>.Empty;

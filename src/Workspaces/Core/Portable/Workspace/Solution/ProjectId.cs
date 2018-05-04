@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis
         {
             return
                 !ReferenceEquals(other, null) &&
-                this.Id == other.Id;
+                (this.Id == other.Id);
         }
 
         public static bool operator ==(ProjectId left, ProjectId right)

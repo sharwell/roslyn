@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 int fieldsCount = typeDescr.Fields.Length;
 
                 //  members
-                Symbol[] members = new Symbol[fieldsCount * 2 + 1];
+                Symbol[] members = new Symbol[(fieldsCount * 2) + 1];
                 int memberIndex = 0;
 
                 // The array storing property symbols to be used in 
@@ -357,7 +357,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 var other = t2 as AnonymousTypePublicSymbol;
-                return (object)other != null && this.TypeDescriptor.Equals(other.TypeDescriptor, comparison);
+                return ((object)other != null) && this.TypeDescriptor.Equals(other.TypeDescriptor, comparison);
             }
 
             public override int GetHashCode()

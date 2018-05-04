@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
         public static DocumentationComment FromXmlFragment(string xml)
         {
             var result = s_cacheLastXmlFragmentParse;
-            if (result == null || result.FullXmlFragment != xml)
+            if ((result == null) || (result.FullXmlFragment != xml))
             {
                 // Cache miss
                 result = CommentBuilder.Parse(xml);
@@ -170,19 +170,19 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 if (reader.NodeType == XmlNodeType.Element)
                 {
                     string localName = reader.LocalName;
-                    if (XmlNames.ElementEquals(localName, XmlNames.ExampleElementName) && _comment.ExampleText == null)
+                    if (XmlNames.ElementEquals(localName, XmlNames.ExampleElementName) && (_comment.ExampleText == null))
                     {
                         _comment.ExampleText = TrimEachLine(reader.ReadInnerXml());
                     }
-                    else if (XmlNames.ElementEquals(localName, XmlNames.SummaryElementName) && _comment.SummaryText == null)
+                    else if (XmlNames.ElementEquals(localName, XmlNames.SummaryElementName) && (_comment.SummaryText == null))
                     {
                         _comment.SummaryText = TrimEachLine(reader.ReadInnerXml());
                     }
-                    else if (XmlNames.ElementEquals(localName, XmlNames.ReturnsElementName) && _comment.ReturnsText == null)
+                    else if (XmlNames.ElementEquals(localName, XmlNames.ReturnsElementName) && (_comment.ReturnsText == null))
                     {
                         _comment.ReturnsText = TrimEachLine(reader.ReadInnerXml());
                     }
-                    else if (XmlNames.ElementEquals(localName, XmlNames.RemarksElementName) && _comment.RemarksText == null)
+                    else if (XmlNames.ElementEquals(localName, XmlNames.RemarksElementName) && (_comment.RemarksText == null))
                     {
                         _comment.RemarksText = TrimEachLine(reader.ReadInnerXml());
                     }
@@ -215,7 +215,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
                         if (!string.IsNullOrWhiteSpace(type))
                         {
-                            if (_exceptionTextBuilders == null || !_exceptionTextBuilders.ContainsKey(type))
+                            if ((_exceptionTextBuilders == null) || !_exceptionTextBuilders.ContainsKey(type))
                             {
                                 (_exceptionTypesBuilder ?? (_exceptionTypesBuilder = ImmutableArray.CreateBuilder<string>())).Add(type);
                                 (_exceptionTextBuilders ?? (_exceptionTextBuilders = new Dictionary<string, ImmutableArray<string>.Builder>())).Add(type, ImmutableArray.CreateBuilder<string>());

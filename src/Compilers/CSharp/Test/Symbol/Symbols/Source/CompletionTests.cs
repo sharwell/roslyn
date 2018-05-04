@@ -153,7 +153,7 @@ class A {
         private static bool HasAtMostOneBitSetSafe(sbyte bits)
         {
             bool seenOne = false;
-            for (int i = 0; i < sizeof(sbyte) * 8; i++)
+            for (int i = 0; i < (sizeof(sbyte) * 8); i++)
             {
                 if ((bits & (1 << i)) != 0)
                 {

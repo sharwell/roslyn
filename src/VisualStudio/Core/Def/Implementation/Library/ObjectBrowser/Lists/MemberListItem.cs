@@ -38,8 +38,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
 
                 case SymbolKind.Method:
                     var methodSymbol = (IMethodSymbol)symbol;
-                    _kind = methodSymbol.MethodKind == MethodKind.Conversion ||
-                                      methodSymbol.MethodKind == MethodKind.UserDefinedOperator
+                    _kind = (methodSymbol.MethodKind == MethodKind.Conversion) ||
+                                      (methodSymbol.MethodKind == MethodKind.UserDefinedOperator)
                         ? MemberKind.Operator
                         : MemberKind.Method;
 

@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 Current = null;
                 _stack = null;
                 _count = 0;
-                if (node != null && node.ContainsDiagnostics)
+                if ((node != null) && node.ContainsDiagnostics)
                 {
                     _stack = new NodeIteration[8];
                     this.PushNodeOrToken(node);
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                     var diagIndex = _stack[_count - 1].DiagnosticIndex;
                     var node = _stack[_count - 1].Node;
                     var diags = node.GetDiagnostics();
-                    if (diagIndex < diags.Length - 1)
+                    if (diagIndex < (diags.Length - 1))
                     {
                         diagIndex++;
                         Current = diags[diagIndex];
@@ -81,11 +81,11 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 
                     var slotIndex = _stack[_count - 1].SlotIndex;
                 tryAgain:
-                    if (slotIndex < node.SlotCount - 1)
+                    if (slotIndex < (node.SlotCount - 1))
                     {
                         slotIndex++;
                         var child = node.GetSlot(slotIndex);
-                        if (child == null || !child.ContainsDiagnostics)
+                        if ((child == null) || !child.ContainsDiagnostics)
                         {
                             goto tryAgain;
                         }

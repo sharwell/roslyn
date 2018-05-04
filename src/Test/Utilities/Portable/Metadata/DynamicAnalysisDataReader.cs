@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis
             var reader = new BlobReader(buffer, size);
 
             // header:
-            if (reader.ReadByte() != 'D' || reader.ReadByte() != 'A' || reader.ReadByte() != 'M' || reader.ReadByte() != 'D')
+            if ((reader.ReadByte() != 'D') || (reader.ReadByte() != 'A') || (reader.ReadByte() != 'M') || (reader.ReadByte() != 'D'))
             {
                 throw new BadImageFormatException();
             }
@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis
             // version
             byte major = reader.ReadByte();
             byte minor = reader.ReadByte();
-            if (major != 0 || minor < 1 || minor > 2)
+            if ((major != 0) || (minor < 1) || (minor > 2))
             {
                 throw new NotSupportedException();
             }
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis
             // TODO: check size ranges
 
             bool isBlobHeapSmall = blobHeapSize <= ushort.MaxValue;
-            bool isGuidHeapSmall = guidHeapSize / GuidSize <= ushort.MaxValue;
+            bool isGuidHeapSmall = (guidHeapSize / GuidSize) <= ushort.MaxValue;
 
             var documentsBuilder = ArrayBuilder<DynamicAnalysisDocument>.GetInstance(documentRowCount);
 
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis
             int guidHeapOffset = userStringHeapOffset + userStringHeapSize;
             int blobHeapOffset = guidHeapOffset + guidHeapSize;
 
-            if (reader.Length != blobHeapOffset + blobHeapSize)
+            if (reader.Length != (blobHeapOffset + blobHeapSize))
             {
                 throw new BadImageFormatException();
             }
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis
             {
                 var resource = mdReader.GetManifestResource(resourceHandle);
                 if (resource.Implementation.IsNil &&
-                    resource.Attributes == ManifestResourceAttributes.Private &&
+                    (resource.Attributes == ManifestResourceAttributes.Private) &&
                     mdReader.StringComparer.Equals(resource.Name, resourceName))
                 {
                     offset = resource.Offset;
@@ -169,14 +169,14 @@ namespace Microsoft.CodeAnalysis
             }
 
             var peImage = peReader.GetEntireImage();
-            if (start >= peImage.Length - resourcesDir.Size)
+            if (start >= (peImage.Length - resourcesDir.Size))
             {
                 throw new BadImageFormatException();
             }
 
             byte* resourceStart = peImage.Pointer + start;
             int resourceSize = *(int*)resourceStart;
-            if (resourceSize > resourcesDir.Size - sizeof(int))
+            if (resourceSize > (resourcesDir.Size - sizeof(int)))
             {
                 throw new BadImageFormatException();
             }
@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis
                 ReadDeltaLinesAndColumns(ref reader, out var deltaLines, out var deltaColumns);
 
                 // document:
-                if (deltaLines == 0 && deltaColumns == 0)
+                if ((deltaLines == 0) && (deltaColumns == 0))
                 {
                     documentRowId = ReadDocumentRowId(ref reader);
                     continue;
@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             int offset = (MetadataTokens.GetHeapOffset(handle) - 1) * GuidSize;
-            if (offset + GuidSize > _guidHeapBlob.Length)
+            if ((offset + GuidSize) > _guidHeapBlob.Length)
             {
                 throw new BadImageFormatException();
             }
@@ -307,7 +307,7 @@ namespace Microsoft.CodeAnalysis
             bool isFirstPart = true;
             while (blobReader.RemainingBytes > 0)
             {
-                if (separator != 0 && !isFirstPart)
+                if ((separator != 0) && !isFirstPart)
                 {
                     builder.Append((char)separator);
                 }
@@ -358,7 +358,7 @@ namespace Microsoft.CodeAnalysis
         private ushort AddColumns(ushort value, int delta)
         {
             int result = unchecked(value + delta);
-            if (result < 0 || result >= ushort.MaxValue)
+            if ((result < 0) || (result >= ushort.MaxValue))
             {
                 throw new BadImageFormatException("SequencePointValueOutOfRange");
             }

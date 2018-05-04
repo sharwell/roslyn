@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp.TodoComments
             {
                 var ch = message[i];
                 if (!SyntaxFacts.IsWhitespace(ch) &&
-                    ch != '*' && ch != '/')
+                    (ch != '*') && (ch != '/'))
                 {
                     return i;
                 }
@@ -83,8 +83,8 @@ namespace Microsoft.CodeAnalysis.CSharp.TodoComments
 
         protected override bool PreprocessorHasComment(SyntaxTrivia trivia)
         {
-            return trivia.Kind() != SyntaxKind.RegionDirectiveTrivia &&
-                   SyntaxFacts.IsPreprocessorDirective(trivia.Kind()) && trivia.ToString().IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal) > 0;
+            return (trivia.Kind() != SyntaxKind.RegionDirectiveTrivia) &&
+                   SyntaxFacts.IsPreprocessorDirective(trivia.Kind()) && (trivia.ToString().IndexOf(SingleLineCommentPrefix, StringComparison.Ordinal) > 0);
         }
 
         protected override bool IsSingleLineComment(SyntaxTrivia trivia)

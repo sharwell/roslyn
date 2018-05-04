@@ -153,7 +153,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateParameterizedMember
                 {
                     var typeInference = document.Document.GetLanguageService<ITypeInferenceService>();
                     var delegateType = typeInference.InferDelegateType(semanticModel, this.SimpleNameOrMemberAccessExpression, cancellationToken);
-                    if (delegateType != null && delegateType.DelegateInvokeMethod != null)
+                    if ((delegateType != null) && (delegateType.DelegateInvokeMethod != null))
                     {
                         this.SignatureInfo = new MethodSignatureInfo(document, this, delegateType.DelegateInvokeMethod);
                     }
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateParameterizedMember
 
                 // If the name bound with errors, then this is a candidate for generate method.
                 var semanticInfo = semanticModel.GetSymbolInfo(this.SimpleNameOrMemberAccessExpression, cancellationToken);
-                if (semanticInfo.GetAllSymbols().Any(s => s.Kind == SymbolKind.Local || s.Kind == SymbolKind.Parameter) &&
+                if (semanticInfo.GetAllSymbols().Any(s => (s.Kind == SymbolKind.Local) || (s.Kind == SymbolKind.Parameter)) &&
                     !service.AreSpecialOptionsActive(semanticModel))
                 {
                     // if the name bound to something in scope then we don't want to generate the
@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateParameterizedMember
 
                 // Check if the symbol is on the list of valid symbols for this language. 
                 cancellationToken.ThrowIfCancellationRequested();
-                if (semanticInfo.Symbol != null && !service.IsValidSymbol(semanticInfo.Symbol, semanticModel))
+                if ((semanticInfo.Symbol != null) && !service.IsValidSymbol(semanticInfo.Symbol, semanticModel))
                 {
                     return false;
                 }

@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.ConflictMarkerResolution
                 {
                     var leadingTrivia = token.LeadingTrivia;
 
-                    if (index + 3 < token.LeadingTrivia.Count)
+                    if ((index + 3) < token.LeadingTrivia.Count)
                     {
                         // normal case where there us =====, then dead code, then >>>>>>
 
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.ConflictMarkerResolution
                         }
                     }
 
-                    if (index + 2 < token.LeadingTrivia.Count)
+                    if ((index + 2) < token.LeadingTrivia.Count)
                     {
                         // case where there is ===== followed by >>>>>>  on the next line.
 
@@ -206,8 +206,8 @@ namespace Microsoft.CodeAnalysis.ConflictMarkerResolution
         {
             return 
                 IsConflictMarker(trivia) &&
-                trivia.Span.Length > 0 &&
-                text[trivia.SpanStart] == ch;
+                (trivia.Span.Length > 0) &&
+                (text[trivia.SpanStart] == ch);
         }
 
         private class MyCodeAction : CodeAction.DocumentChangeAction

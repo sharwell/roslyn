@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         protected override void AddTableSourceIfNecessary(Solution solution)
         {
-            if (solution.ProjectIds.Count == 0 || this.TableManager.Sources.Any(s => s == _source))
+            if ((solution.ProjectIds.Count == 0) || this.TableManager.Sources.Any(s => s == _source))
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         protected override void RemoveTableSourceIfNecessary(Solution solution)
         {
-            if (solution.ProjectIds.Count > 0 || !this.TableManager.Sources.Any(s => s == _source))
+            if ((solution.ProjectIds.Count > 0) || !this.TableManager.Sources.Any(s => s == _source))
             {
                 return;
             }

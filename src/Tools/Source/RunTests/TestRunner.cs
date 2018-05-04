@@ -91,7 +91,7 @@ namespace RunTests
                     }
                 }
 
-                while (running.Count < max && waiting.Count > 0)
+                while ((running.Count < max) && (waiting.Count > 0))
                 {
                     var task = _testExecutor.RunTestAsync(waiting.Pop(), cancellationToken);
                     running.Add(task);

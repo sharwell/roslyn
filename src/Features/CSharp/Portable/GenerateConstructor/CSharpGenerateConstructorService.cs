@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateConstructor
             if (fullName.Parent is ObjectCreationExpressionSyntax)
             {
                 var objectCreationExpression = (ObjectCreationExpressionSyntax)fullName.Parent;
-                if (objectCreationExpression.ArgumentList != null &&
+                if ((objectCreationExpression.ArgumentList != null) &&
                     !objectCreationExpression.ArgumentList.CloseParenToken.IsMissing)
                 {
                     var symbolInfo = document.SemanticModel.GetSymbolInfo(objectCreationExpression.Type, cancellationToken);
@@ -101,11 +101,11 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateConstructor
             if (fullName.Parent is AttributeSyntax)
             {
                 var attribute = (AttributeSyntax)fullName.Parent;
-                if (attribute.ArgumentList != null &&
+                if ((attribute.ArgumentList != null) &&
                     !attribute.ArgumentList.CloseParenToken.IsMissing)
                 {
                     var symbolInfo = document.SemanticModel.GetSymbolInfo(attribute, cancellationToken);
-                    if (symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure && !symbolInfo.CandidateSymbols.IsEmpty)
+                    if ((symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure) && !symbolInfo.CandidateSymbols.IsEmpty)
                     {
                         token = simpleName.Identifier;
                         attributeArguments = attribute.ArgumentList.Arguments.ToImmutableArray();
@@ -181,7 +181,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateConstructor
             {
                 SyntaxToken thisOrBaseKeyword;
                 SyntaxKind newCtorInitializerKind;
-                if (tokenKind != SyntaxKind.BaseKeyword && state.TypeToGenerateIn == namedType)
+                if ((tokenKind != SyntaxKind.BaseKeyword) && (state.TypeToGenerateIn == namedType))
                 {
                     thisOrBaseKeyword = SyntaxFactory.Token(SyntaxKind.ThisKeyword);
                     newCtorInitializerKind = SyntaxKind.ThisConstructorInitializer;
@@ -203,7 +203,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateConstructor
                     var delegatingConstructor = GenerateConstructorHelpers.GetDelegatingConstructor(
                         document, symbolInfo, candidates, namedType, state.ParameterTypes);
 
-                    if (delegatingConstructor == null || thisOrBaseKeyword.IsKind(SyntaxKind.BaseKeyword))
+                    if ((delegatingConstructor == null) || thisOrBaseKeyword.IsKind(SyntaxKind.BaseKeyword))
                     {
                         return delegatingConstructor;
                     }
@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateConstructor
 
         private static ArgumentListSyntax GetNewArgumentList(ArgumentListSyntax oldArgumentList, int argumentCount)
         {
-            if (oldArgumentList.IsMissing || oldArgumentList.Arguments.Count == argumentCount)
+            if (oldArgumentList.IsMissing || (oldArgumentList.Arguments.Count == argumentCount))
             {
                 return oldArgumentList;
             }

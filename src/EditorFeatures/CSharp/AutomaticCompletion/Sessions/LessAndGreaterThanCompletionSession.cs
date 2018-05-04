@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
             var node = token.Parent as BinaryExpressionSyntax;
 
             // type argument can be easily ambiguous with normal < operations
-            if (node == null || node.Kind() != SyntaxKind.LessThanExpression || node.OperatorToken != token)
+            if ((node == null) || (node.Kind() != SyntaxKind.LessThanExpression) || (node.OperatorToken != token))
             {
                 return false;
             }

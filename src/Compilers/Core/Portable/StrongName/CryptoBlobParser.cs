@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis
         internal static bool IsValidPublicKey(ImmutableArray<byte> blob)
         {
             // The number of public key bytes must be at least large enough for the header and one byte of data.
-            if (blob.IsDefault || blob.Length < s_publicKeyHeaderSize + 1)
+            if (blob.IsDefault || (blob.Length < (s_publicKeyHeaderSize + 1)))
             {
                 return false;
             }
@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis
             var publicKey = blobReader.ReadByte();
 
             // The number of public key bytes must be the same as the size of the header plus the size of the public key data.
-            if (blob.Length != s_publicKeyHeaderSize + publicKeySize)
+            if (blob.Length != (s_publicKeyHeaderSize + publicKeySize))
             {
                 return false;
             }
@@ -121,13 +121,13 @@ namespace Microsoft.CodeAnalysis
             }
 
             var signatureAlgorithmId = new AlgorithmId(sigAlgId);
-            if (signatureAlgorithmId.IsSet && signatureAlgorithmId.Class != AlgorithmClass.Signature)
+            if (signatureAlgorithmId.IsSet && (signatureAlgorithmId.Class != AlgorithmClass.Signature))
             {
                 return false;
             }
 
             var hashAlgorithmId = new AlgorithmId(hashAlgId);
-            if (hashAlgorithmId.IsSet && (hashAlgorithmId.Class != AlgorithmClass.Hash || hashAlgorithmId.SubId < AlgorithmSubId.Sha1Hash))
+            if (hashAlgorithmId.IsSet && ((hashAlgorithmId.Class != AlgorithmClass.Hash) || (hashAlgorithmId.SubId < AlgorithmSubId.Sha1Hash)))
             {
                 return false;
             }
@@ -155,7 +155,7 @@ namespace Microsoft.CodeAnalysis
             uint pubExp, 
             byte[] pubKeyData)
         {
-            var w = new BlobWriter(3 * sizeof(uint) + s_offsetToKeyData + pubKeyData.Length);
+            var w = new BlobWriter((3 * sizeof(uint)) + s_offsetToKeyData + pubKeyData.Length);
             w.WriteUInt32(AlgorithmId.RsaSign);
             w.WriteUInt32(AlgorithmId.Sha);
             w.WriteUInt32((uint)(s_offsetToKeyData + pubKeyData.Length));
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis
                 return true;
             }
 
-            if (blob.Length < BlobHeaderSize + RsaPubKeySize)
+            if (blob.Length < (BlobHeaderSize + RsaPubKeySize))
             {
                 return false;
             }
@@ -214,14 +214,14 @@ namespace Microsoft.CodeAnalysis
                     var pubExp = br.ReadUInt32();  // Exponent 
                     var modulusLength = (int)(bitLen / 8);
 
-                    if (blob.Length - s_offsetToKeyData < modulusLength)
+                    if ((blob.Length - s_offsetToKeyData) < modulusLength)
                     {
                         return false;
                     }
 
                     var modulus = br.ReadBytes(modulusLength);
 
-                    if (!(bType == PrivateKeyBlobId && magic == RSA2) && !(bType == PublicKeyBlobId && magic == RSA1))
+                    if (!((bType == PrivateKeyBlobId) && (magic == RSA2)) && !((bType == PublicKeyBlobId) && (magic == RSA1)))
                     {
                         return false;
                     }

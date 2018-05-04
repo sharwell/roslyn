@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             foreach (var record in HoistedLocalScopeRecords)
             {
                 var delta = ilOffset - record.StartOffset;
-                if (0 <= delta && delta < record.Length)
+                if ((0 <= delta) && (delta < record.Length))
                 {
                     scopesBuilder.Add(i);
                 }

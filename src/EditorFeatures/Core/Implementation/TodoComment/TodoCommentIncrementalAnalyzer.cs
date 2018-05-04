@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TodoComments
             await _state.PersistAsync(document, data, cancellationToken).ConfigureAwait(false);
 
             // * NOTE * cancellation can't throw after this point.
-            if (existingData == null || existingData.Items.Length > 0 || data.Items.Length > 0)
+            if ((existingData == null) || (existingData.Items.Length > 0) || (data.Items.Length > 0))
             {
                 Contract.Requires(_workspace == document.Project.Solution.Workspace);
                 RaiseTaskListUpdated(_workspace, document.Project.Solution, document.Id, data.Items);

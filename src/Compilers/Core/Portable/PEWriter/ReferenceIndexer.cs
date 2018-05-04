@@ -53,7 +53,7 @@ namespace Microsoft.Cci
             else
             {
                 definingAssembly = ((IModuleReference)definingUnit).GetContainingAssembly(Context);
-                if (definingAssembly != null && !ReferenceEquals(definingAssembly, Context.Module.GetContainingAssembly(Context)))
+                if ((definingAssembly != null) && !ReferenceEquals(definingAssembly, Context.Module.GetContainingAssembly(Context)))
                 {
                     Visit(definingAssembly);
                 }

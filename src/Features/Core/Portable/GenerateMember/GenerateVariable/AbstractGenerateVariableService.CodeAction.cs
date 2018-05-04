@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateVariable
                 if (_generateProperty)
                 {
                     var getAccessor = CreateAccessor(DetermineMaximalAccessibility(_state), cancellationToken);
-                    var setAccessor = _isReadonly || _refKind != RefKind.None
+                    var setAccessor = _isReadonly || (_refKind != RefKind.None)
                         ? null 
                         : CreateAccessor(DetermineMinimalAccessibility(_state), cancellationToken);
 
@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateVariable
                 var throwStatement = CodeGenerationHelpers.GenerateThrowStatement(
                     syntaxFactory, this._document, "System.NotImplementedException", cancellationToken);
 
-                return _state.TypeToGenerateIn.TypeKind != TypeKind.Interface && _refKind != RefKind.None
+                return (_state.TypeToGenerateIn.TypeKind != TypeKind.Interface) && (_refKind != RefKind.None)
                     ? ImmutableArray.Create(throwStatement)
                     : default;
             }

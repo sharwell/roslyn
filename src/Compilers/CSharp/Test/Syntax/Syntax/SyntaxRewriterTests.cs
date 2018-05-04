@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
             //delete the middle type argument (should clear the following comma)
             var rewriter = new RedRewriter(rewriteNode: node =>
-                (node.IsKind(SyntaxKind.IdentifierName) && node.ToString() == "C") ? null : node);
+                (node.IsKind(SyntaxKind.IdentifierName) && (node.ToString() == "C")) ? null : node);
 
             Exception caught = null;
             try
@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
             //delete all type arguments, should clear the intervening commas
             var rewriter = new RedRewriter(rewriteNode: node =>
-                (node.IsKind(SyntaxKind.IdentifierName) && node.ToString() != "A") ? null : node);
+                (node.IsKind(SyntaxKind.IdentifierName) && (node.ToString() != "A")) ? null : node);
 
             Exception caught = null;
             try
@@ -137,7 +137,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             bool first = true;
             var rewriter = new RedRewriter(rewriteToken: token =>
             {
-                if (token.Kind() == SyntaxKind.CommaToken && first)
+                if ((token.Kind() == SyntaxKind.CommaToken) && first)
                 {
                     first = false;
                     return default(SyntaxToken);
@@ -269,7 +269,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             bool first = true;
             var rewriter = new RedRewriter(rewriteNode: node =>
             {
-                if (node != null && node.IsKind(SyntaxKind.OmittedArraySizeExpression) && first)
+                if ((node != null) && node.IsKind(SyntaxKind.OmittedArraySizeExpression) && first)
                 {
                     first = false;
                     return null;
@@ -300,7 +300,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
             //delete the last type argument (should clear the *preceding* comma)
             var rewriter = new RedRewriter(rewriteNode: node =>
-                (node.IsKind(SyntaxKind.IdentifierName) && node.ToString() == "D") ? null : node);
+                (node.IsKind(SyntaxKind.IdentifierName) && (node.ToString() == "D")) ? null : node);
 
             TestRed(input, output, rewriter, isExpr: true);
         }

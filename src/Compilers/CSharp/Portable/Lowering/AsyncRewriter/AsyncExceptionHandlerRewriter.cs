@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // if these helpers are available, we can rethrow with original stack info
             // as long as it derives from Exception
-            if (exceptionDispatchInfoCapture != null && exceptionDispatchInfoThrow != null)
+            if ((exceptionDispatchInfoCapture != null) && (exceptionDispatchInfoThrow != null))
             {
                 var ex = _F.SynthesizedLocal(_F.WellKnownType(WellKnownType.System_Exception));
                 var assignment = _F.Assignment(
@@ -638,7 +638,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var catchFrame = _currentAwaitCatchFrame;
             LocalSymbol hoistedLocal;
-            if (catchFrame == null || !catchFrame.TryGetHoistedLocal(node.LocalSymbol, out hoistedLocal))
+            if ((catchFrame == null) || !catchFrame.TryGetHoistedLocal(node.LocalSymbol, out hoistedLocal))
             {
                 return base.VisitLocal(node);
             }
@@ -648,7 +648,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override BoundNode VisitThrowStatement(BoundThrowStatement node)
         {
-            if (node.ExpressionOpt != null || _currentAwaitCatchFrame == null)
+            if ((node.ExpressionOpt != null) || (_currentAwaitCatchFrame == null))
             {
                 return base.VisitThrowStatement(node);
             }
@@ -728,7 +728,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             /// </summary>
             public bool FinallyContainsAwaits(BoundTryStatement statement)
             {
-                return _labelsInInterestingTry != null && _labelsInInterestingTry.ContainsKey(statement);
+                return (_labelsInInterestingTry != null) && _labelsInInterestingTry.ContainsKey(statement);
             }
 
             /// <summary>
@@ -736,7 +736,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             /// </summary>
             internal bool CatchContainsAwait(BoundCatchBlock node)
             {
-                return _awaitContainingCatches != null && _awaitContainingCatches.Contains(node);
+                return (_awaitContainingCatches != null) && _awaitContainingCatches.Contains(node);
             }
 
             /// <summary>
@@ -744,7 +744,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             /// </summary>
             public bool ContainsAwaitInHandlers()
             {
-                return _labelsInInterestingTry != null || _awaitContainingCatches != null;
+                return (_labelsInInterestingTry != null) || (_awaitContainingCatches != null);
             }
 
             /// <summary>
@@ -908,7 +908,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             public LabelSymbol ProxyLabelIfNeeded(LabelSymbol label)
             {
                 // no need to proxy a label in the current frame or when we are at the root
-                if (this.IsRoot() || (LabelsOpt != null && LabelsOpt.Contains(label)))
+                if (this.IsRoot() || ((LabelsOpt != null) && LabelsOpt.Contains(label)))
                 {
                     return label;
                 }
@@ -1001,7 +1001,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             public void HoistLocal(LocalSymbol local, SyntheticBoundNodeFactory F)
             {
-                if (!_hoistedLocals.Keys.Any(l => l.Name == local.Name && l.Type == local.Type))
+                if (!_hoistedLocals.Keys.Any(l => (l.Name == local.Name) && (l.Type == local.Type)))
                 {
                     _hoistedLocals.Add(local, local);
                     _orderedHoistedLocals.Add(local);

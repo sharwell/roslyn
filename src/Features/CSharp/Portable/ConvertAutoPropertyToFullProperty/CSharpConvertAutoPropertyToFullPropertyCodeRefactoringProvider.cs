@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertAutoPropertyToFullProperty
 
             // Offer this refactoring anywhere in the signature of the property
             var position = token.SpanStart;
-            if (position < start || position > containingProperty.Identifier.Span.End)
+            if ((position < start) || (position > containingProperty.Identifier.Span.End))
             {
                 return null;
             }
@@ -197,8 +197,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertAutoPropertyToFullProperty
             }
 
             // if there is a get accessor only, we can move the expression body to the property
-            if (propertyDeclaration.AccessorList?.Accessors.Count == 1 &&
-                propertyDeclaration.AccessorList.Accessors[0].Kind() == SyntaxKind.GetAccessorDeclaration)
+            if ((propertyDeclaration.AccessorList?.Accessors.Count == 1) &&
+                (propertyDeclaration.AccessorList.Accessors[0].Kind() == SyntaxKind.GetAccessorDeclaration))
             {
                 var getAccessor = propertyDeclaration.AccessorList.Accessors[0];
                 if (getAccessor.ExpressionBody != null)

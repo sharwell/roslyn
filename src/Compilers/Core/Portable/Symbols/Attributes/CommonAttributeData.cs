@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis
             long value = this.CommonConstructorArguments[0].DecodeValue<long>(SpecialType.System_Int64);
 
             // if value is outside this range, DateTime would throw when constructed
-            if (value < DateTime.MinValue.Ticks || value > DateTime.MaxValue.Ticks)
+            if ((value < DateTime.MinValue.Ticks) || (value > DateTime.MaxValue.Ticks))
             {
                 return ConstantValue.Bad;
             }
@@ -248,7 +248,7 @@ namespace Microsoft.CodeAnalysis
             string message = null;
             bool isError = false;
 
-            if (args.Length == 3 || args.Length == 4)
+            if ((args.Length == 3) || (args.Length == 4))
             {
                 // DeprecatedAttribute(String, DeprecationType, UInt32) 
                 // DeprecatedAttribute(String, DeprecationType, UInt32, Platform) 
@@ -312,7 +312,7 @@ namespace Microsoft.CodeAnalysis
                 if (namedArg.Key == "MethodCodeType")
                 {
                     var value = (MethodImplAttributes)namedArg.Value.DecodeValue<int>(SpecialType.System_Enum);
-                    if (value < 0 || value > MethodImplAttributes.Runtime)
+                    if ((value < 0) || (value > MethodImplAttributes.Runtime))
                     {
                         messageProvider.ReportInvalidNamedArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, position, attribute.AttributeClass, "MethodCodeType");
                     }
@@ -390,7 +390,7 @@ namespace Microsoft.CodeAnalysis
                         alignment = namedArg.Value.DecodeValue<int>(SpecialType.System_Int32);
 
                         // only powers of 2 less or equal to 128 are allowed:
-                        if (alignment > 128 || (alignment & (alignment - 1)) != 0)
+                        if ((alignment > 128) || ((alignment & (alignment - 1)) != 0))
                         {
                             messageProvider.ReportInvalidNamedArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, position, attribute.AttributeClass, namedArg.Key);
                             hasErrors = true;
@@ -414,7 +414,7 @@ namespace Microsoft.CodeAnalysis
 
             if (!hasErrors)
             {
-                if (kind == LayoutKind.Auto && size == null && alignment != null)
+                if ((kind == LayoutKind.Auto) && (size == null) && (alignment != null))
                 {
                     // If size is unspecified
                     //   C# emits size=0

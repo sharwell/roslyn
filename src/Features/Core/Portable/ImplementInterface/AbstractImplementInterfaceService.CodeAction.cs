@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.ImplementInterface
                 // matters, so we don't want to much with them.
                 var insertionBehavior = options.GetOption(ImplementTypeOptions.InsertionBehavior);
                 var groupMembers = !isComImport &&
-                    insertionBehavior == ImplementTypeInsertionBehavior.WithOtherMembersOfTheSameKind;
+                    (insertionBehavior == ImplementTypeInsertionBehavior.WithOtherMembersOfTheSameKind);
 
                 result = await CodeGenerator.AddMemberDeclarationsAsync(
                     result.Project.Solution, classOrStructType, memberDefinitions,
@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis.ImplementInterface
             {
                 var condition1 = typeParameter.ConstraintTypes.Count(t => t.TypeKind == TypeKind.Class) >= 2;
                 var condition2 = typeParameter.ConstraintTypes.Any(ts => ts.IsUnexpressibleTypeParameterConstraint());
-                var condition3 = typeParameter.HasReferenceTypeConstraint && typeParameter.ConstraintTypes.Any(ts => ts.IsReferenceType && ts.SpecialType != SpecialType.System_Object);
+                var condition3 = typeParameter.HasReferenceTypeConstraint && typeParameter.ConstraintTypes.Any(ts => ts.IsReferenceType && (ts.SpecialType != SpecialType.System_Object));
 
                 return condition1 || condition2 || condition3;
             }
@@ -390,7 +390,7 @@ namespace Microsoft.CodeAnalysis.ImplementInterface
                 var modifiers = new DeclarationModifiers(isAbstract: generateAbstractly, isNew: addNew, isUnsafe: addUnsafe);
 
                 var useExplicitInterfaceSymbol = generateInvisibly || !Service.CanImplementImplicitly;
-                var accessibility = member.Name == memberName || generateAbstractly
+                var accessibility = (member.Name == memberName) || generateAbstractly
                     ? Accessibility.Public
                     : Accessibility.Private;
 
@@ -538,16 +538,16 @@ namespace Microsoft.CodeAnalysis.ImplementInterface
             {
                 Contract.Requires(memberName == baseMember.Name);
 
-                if (member.Kind == SymbolKind.Method && baseMember.Kind == SymbolKind.Method)
+                if ((member.Kind == SymbolKind.Method) && (baseMember.Kind == SymbolKind.Method))
                 {
                     // A method only conflicts with another method if they have the same parameter
                     // signature (return type is irrelevant). 
                     var method1 = (IMethodSymbol)member;
                     var method2 = (IMethodSymbol)baseMember;
 
-                    if (method1.MethodKind == MethodKind.Ordinary &&
-                        method2.MethodKind == MethodKind.Ordinary &&
-                        method1.TypeParameters.Length == method2.TypeParameters.Length)
+                    if ((method1.MethodKind == MethodKind.Ordinary) &&
+                        (method2.MethodKind == MethodKind.Ordinary) &&
+                        (method1.TypeParameters.Length == method2.TypeParameters.Length))
                     {
                         return method1.Parameters.Select(p => p.Type)
                                                  .SequenceEqual(method2.Parameters.Select(p => p.Type));
@@ -605,8 +605,8 @@ namespace Microsoft.CodeAnalysis.ImplementInterface
                     return false;
                 }
 
-                if (member1.DeclaredAccessibility != member2.DeclaredAccessibility ||
-                    member1.IsStatic != member2.IsStatic)
+                if ((member1.DeclaredAccessibility != member2.DeclaredAccessibility) ||
+                    (member1.IsStatic != member2.IsStatic))
                 {
                     return false;
                 }

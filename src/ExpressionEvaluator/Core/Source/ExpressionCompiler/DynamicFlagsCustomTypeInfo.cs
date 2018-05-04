@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             {
                 for (int i = 0; i < 8; i++)
                 {
-                    var f = b * 8 + i;
+                    var f = (b * 8) + i;
                     if (f >= numFlags)
                     {
                         Debug.Assert(f == numFlags);
@@ -54,8 +54,8 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 return false;
             }
             var b = index / 8;
-            return b < bytes.Count &&
-                (bytes[b] & (1 << (index % 8))) != 0;
+            return (b < bytes.Count) &&
+                ((bytes[b] & (1 << (index % 8))) != 0);
         }
 
         /// <remarks>

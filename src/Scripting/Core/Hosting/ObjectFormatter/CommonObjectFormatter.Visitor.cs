@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
             private Builder FormatObjectRecursive(Builder result, object obj, bool isRoot, out string debuggerDisplayName)
             {
                 // TODO (https://github.com/dotnet/roslyn/issues/6689): remove this
-                if (!isRoot && _memberDisplayFormat == MemberDisplayFormat.SeparateLines)
+                if (!isRoot && (_memberDisplayFormat == MemberDisplayFormat.SeparateLines))
                 {
                     _memberDisplayFormat = MemberDisplayFormat.SingleLine;
                 }
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                 // This is more general than overriding Dictionary<,> debugger proxy attribute since it applies on all
                 // types that return an array of KeyValuePair in their DebuggerDisplay to display items.
                 //
-                if (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
+                if (typeInfo.IsGenericType && (typeInfo.GetGenericTypeDefinition() == typeof(KeyValuePair<,>)))
                 {
                     if (isRoot)
                     {
@@ -155,7 +155,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                 {
                     FormatCollectionHeader(result, collection);
                 }
-                else if (debuggerDisplay != null && !string.IsNullOrEmpty(debuggerDisplay.Value))
+                else if ((debuggerDisplay != null) && !string.IsNullOrEmpty(debuggerDisplay.Value))
                 {
                     if (isRoot)
                     {
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                 while (type != null)
                 {
                     members.AddRange(type.DeclaredFields.Where(f => !f.IsStatic));
-                    members.AddRange(type.DeclaredProperties.Where(f => f.GetMethod != null && !f.GetMethod.IsStatic));
+                    members.AddRange(type.DeclaredProperties.Where(f => (f.GetMethod != null) && !f.GetMethod.IsStatic));
                     type = type.BaseType?.GetTypeInfo();
                 }
 
@@ -391,7 +391,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                         // If not ignoring visibility include properties that has a visible getter or setter.
                         if (!(includeNonPublic || ignoreVisibility ||
                             getter.IsPublic || getter.IsFamily || getter.IsFamilyOrAssembly ||
-                            (setter != null && (setter.IsPublic || setter.IsFamily || setter.IsFamilyOrAssembly))))
+                            ((setter != null) && (setter.IsPublic || setter.IsFamily || setter.IsFamilyOrAssembly))))
                         {
                             continue;
                         }
@@ -431,7 +431,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
                     if (rootHidden)
                     {
-                        if (value != null && !VisitedObjects.Contains(value))
+                        if ((value != null) && !VisitedObjects.Contains(value))
                         {
                             Array array;
                             if ((array = value as Array) != null)  // TODO (tomat): n-dim arrays
@@ -456,7 +456,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                                     i++;
                                 }
                             }
-                            else if (_formatter.PrimitiveFormatter.FormatPrimitive(value, _primitiveOptions) == null && VisitedObjects.Add(value))
+                            else if ((_formatter.PrimitiveFormatter.FormatPrimitive(value, _primitiveOptions) == null) && VisitedObjects.Add(value))
                             {
                                 FormatObjectMembersRecursive(result, value, includeNonPublic, ref lengthLimit);
                                 VisitedObjects.Remove(value);
@@ -668,7 +668,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                     while (indices[i] > array.GetUpperBound(i))
                     {
                         indices[i] = array.GetLowerBound(i);
-                        result.AppendGroupClosing(inline: inline || nesting != 1);
+                        result.AppendGroupClosing(inline: inline || (nesting != 1));
                         nesting--;
 
                         i--;
@@ -680,16 +680,16 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                         indices[i]++;
                     }
 
-                    result.AppendCollectionItemSeparator(isFirst: flatIndex == 0, inline: inline || nesting != 1);
+                    result.AppendCollectionItemSeparator(isFirst: flatIndex == 0, inline: inline || (nesting != 1));
 
                     i = indices.Length - 1;
-                    while (i >= 0 && indices[i] == array.GetLowerBound(i))
+                    while ((i >= 0) && (indices[i] == array.GetLowerBound(i)))
                     {
                         result.AppendGroupOpening();
                         nesting++;
 
                         // array isn't empty, so there is always an element following this separator
-                        result.AppendCollectionItemSeparator(isFirst: true, inline: inline || nesting != 1);
+                        result.AppendCollectionItemSeparator(isFirst: true, inline: inline || (nesting != 1));
 
                         i--;
                     }
@@ -761,7 +761,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                     char c = format[i++];
                     if (c == '{')
                     {
-                        if (i >= 2 && format[i - 2] == '\\')
+                        if ((i >= 2) && (format[i - 2] == '\\'))
                         {
                             result.Append('{');
                         }
@@ -771,7 +771,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
                             bool noQuotes, callableOnly;
                             string memberName;
-                            if (expressionEnd == -1 || (memberName = ParseSimpleMemberName(format, i, expressionEnd, out noQuotes, out callableOnly)) == null)
+                            if ((expressionEnd == -1) || ((memberName = ParseSimpleMemberName(format, i, expressionEnd, out noQuotes, out callableOnly)) == null))
                             {
                                 // the expression isn't properly formatted
                                 result.Append(format, i - 1, format.Length - i + 1);

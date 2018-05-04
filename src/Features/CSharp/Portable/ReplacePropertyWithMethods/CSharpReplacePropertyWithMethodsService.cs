@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ReplacePropertyWithMethods
 
             // Offer this refactoring anywhere in the signature of the property.
             var position = token.SpanStart;
-            if (position < start || position > containingProperty.Identifier.Span.End)
+            if ((position < start) || (position > containingProperty.Identifier.Span.End))
             {
                 return null;
             }
@@ -203,8 +203,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ReplacePropertyWithMethods
 
         private static SyntaxTrivia ConvertTrivia(SyntaxTrivia trivia, CSharpSyntaxRewriter rewriter)
         {
-            if (trivia.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia ||
-                trivia.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia)
+            if ((trivia.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia) ||
+                (trivia.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia))
             {
                 return ConvertDocumentationComment(trivia, rewriter);
             }
@@ -224,7 +224,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ReplacePropertyWithMethods
             MethodDeclarationSyntax methodDeclaration, bool createReturnStatementForExpression)
         {
             var expressionBodyPreference = documentOptions.GetOption(CSharpCodeStyleOptions.PreferExpressionBodiedMethods).Value;
-            if (methodDeclaration?.Body != null && expressionBodyPreference != ExpressionBodyPreference.Never)
+            if ((methodDeclaration?.Body != null) && (expressionBodyPreference != ExpressionBodyPreference.Never))
             {
                 if (methodDeclaration.Body.TryConvertToExpressionBody(
                         methodDeclaration.Kind(), parseOptions, expressionBodyPreference,
@@ -236,7 +236,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ReplacePropertyWithMethods
                                             .WithAdditionalAnnotations(Formatter.Annotation);
                 }
             }
-            else if (methodDeclaration?.ExpressionBody != null && expressionBodyPreference == ExpressionBodyPreference.Never)
+            else if ((methodDeclaration?.ExpressionBody != null) && (expressionBodyPreference == ExpressionBodyPreference.Never))
             {
                 if (methodDeclaration.ExpressionBody.TryConvertToBlock(
                         methodDeclaration.SemicolonToken, createReturnStatementForExpression, out var block))
@@ -297,8 +297,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ReplacePropertyWithMethods
         /// Used by the documentation comment rewriters to identify top-level <c>&lt;value&gt;</c> nodes.
         /// </summary>
         private static bool IsValueName(XmlNameSyntax name)
-            => name.Prefix == null &&
-               name.LocalName.ValueText == "value";
+            => (name.Prefix == null) &&
+               (name.LocalName.ValueText == "value");
 
         public override SyntaxNode GetPropertyNodeToReplace(SyntaxNode propertyDeclaration)
         {

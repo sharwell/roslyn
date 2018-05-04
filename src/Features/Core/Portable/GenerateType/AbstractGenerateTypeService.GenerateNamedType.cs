@@ -68,9 +68,9 @@ namespace Microsoft.CodeAnalysis.GenerateType
 
             private ITypeSymbol DetermineReturnType(GenerateTypeOptionsResult options)
             {
-                if (_state.DelegateMethodSymbol == null ||
-                    _state.DelegateMethodSymbol.ReturnType == null ||
-                    _state.DelegateMethodSymbol.ReturnType is IErrorTypeSymbol)
+                if ((_state.DelegateMethodSymbol == null) ||
+                    (_state.DelegateMethodSymbol.ReturnType == null) ||
+                    (_state.DelegateMethodSymbol.ReturnType is IErrorTypeSymbol))
                 {
                     // Since we cannot determine the return type, we are returning void
                     return _state.Compilation.GetSpecialType(SpecialType.System_Void);
@@ -139,7 +139,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 // just call into that instead of generating fields.
                 if (_state.BaseTypeOrInterfaceOpt != null)
                 {
-                    if (_state.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface && argumentList.Count == 0)
+                    if ((_state.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface) && (argumentList.Count == 0))
                     {
                         // No need to add the default constructor if our base type is going to be
                         // 'object'.  We get that constructor for free.
@@ -240,7 +240,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 }
 
                 // Empty Constructor for Struct is not allowed
-                if (!(parameters.Count == 0 && options != null && (options.TypeKind == TypeKind.Struct || options.TypeKind == TypeKind.Structure)))
+                if (!((parameters.Count == 0) && (options != null) && ((options.TypeKind == TypeKind.Struct) || (options.TypeKind == TypeKind.Structure))))
                 {
                     var (fields, constructor) = factory.CreateFieldDelegatingConstructor(
                         _document.SemanticModel.Compilation,
@@ -261,7 +261,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 var exceptionType = _document.SemanticModel.Compilation.ExceptionType();
                 var constructors =
                    exceptionType.InstanceConstructors
-                       .Where(c => c.DeclaredAccessibility == Accessibility.Public || c.DeclaredAccessibility == Accessibility.Protected)
+                       .Where(c => (c.DeclaredAccessibility == Accessibility.Public) || (c.DeclaredAccessibility == Accessibility.Protected))
                        .Select(c => CodeGenerationSymbolFactory.CreateConstructorSymbol(
                            attributes: default,
                            accessibility: c.DeclaredAccessibility,
@@ -302,7 +302,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
 
             private INamedTypeSymbol DetermineBaseType()
             {
-                if (_state.BaseTypeOrInterfaceOpt == null || _state.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface)
+                if ((_state.BaseTypeOrInterfaceOpt == null) || (_state.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface))
                 {
                     return null;
                 }
@@ -312,7 +312,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
 
             private ImmutableArray<INamedTypeSymbol> DetermineInterfaces()
             {
-                if (_state.BaseTypeOrInterfaceOpt != null && _state.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface)
+                if ((_state.BaseTypeOrInterfaceOpt != null) && (_state.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface))
                 {
                     var type = RemoveUnavailableTypeParameters(_state.BaseTypeOrInterfaceOpt);
                     if (type != null)
@@ -350,7 +350,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
             protected IList<ITypeParameterSymbol> GetAvailableTypeParameters()
             {
                 var availableInnerTypeParameters = _service.GetTypeParameters(_state, _document.SemanticModel, _cancellationToken);
-                var availableOuterTypeParameters = !_intoNamespace && _state.TypeToGenerateInOpt != null
+                var availableOuterTypeParameters = !_intoNamespace && (_state.TypeToGenerateInOpt != null)
                     ? _state.TypeToGenerateInOpt.GetAllTypeParameters()
                     : SpecializedCollections.EmptyEnumerable<ITypeParameterSymbol>();
 

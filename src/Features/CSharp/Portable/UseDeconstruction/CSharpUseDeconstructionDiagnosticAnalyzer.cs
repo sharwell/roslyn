@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseDeconstruction
             }
 
             var type = semanticModel.GetTypeInfo(typeNode, cancellationToken).Type;
-            if (type == null || !type.IsTupleType)
+            if ((type == null) || !type.IsTupleType)
             {
                 return false;
             }

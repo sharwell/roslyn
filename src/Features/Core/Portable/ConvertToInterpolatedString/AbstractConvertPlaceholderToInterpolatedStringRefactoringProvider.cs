@@ -107,8 +107,8 @@ namespace Microsoft.CodeAnalysis.ConvertToInterpolatedString
         {
             var arguments = nullableArguments.Value;
             var firstExpression = syntaxFactsService.GetExpressionOfArgument(GetFormatArgument(arguments, syntaxFactsService)) as TLiteralExpressionSyntax;
-            if (arguments.Count >= 2 &&
-                firstExpression != null &&
+            if ((arguments.Count >= 2) &&
+                (firstExpression != null) &&
                 syntaxFactsService.IsStringLiteral(firstExpression.GetFirstToken()))
             {
                 // We do not want to substitute the expression if it is being passed to params array argument
@@ -206,7 +206,7 @@ namespace Microsoft.CodeAnalysis.ConvertToInterpolatedString
                     {
                         if (int.TryParse(literalExpression.GetFirstToken().ValueText, out var index))
                         {
-                            if (index >= 0 && index < expandedArguments.Length)
+                            if ((index >= 0) && (index < expandedArguments.Length))
                             {
                                 return interpolationSyntaxNode.ReplaceNode(
                                     syntaxFactsService.GetExpressionOfInterpolation(interpolationSyntaxNode),
@@ -249,7 +249,7 @@ namespace Microsoft.CodeAnalysis.ConvertToInterpolatedString
             CancellationToken cancellationToken)
         {
             var formatMethodsAcceptingParamsArray = formatMethods
-                    .Where(x => x.Parameters.Length > 1 && x.Parameters[1].Type.Kind == SymbolKind.ArrayType);
+                    .Where(x => (x.Parameters.Length > 1) && (x.Parameters[1].Type.Kind == SymbolKind.ArrayType));
             if (formatMethodsAcceptingParamsArray.Contains(invocationSymbol))
             {
                 return semanticModel.GetTypeInfo(expression, cancellationToken).Type?.Kind != SymbolKind.ArrayType;

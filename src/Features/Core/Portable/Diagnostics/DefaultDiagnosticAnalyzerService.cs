@@ -66,8 +66,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
             public bool NeedsReanalysisOnOptionChanged(object sender, OptionChangedEventArgs e)
             {
-                if (e.Option == InternalRuntimeDiagnosticOptions.Syntax ||
-                    e.Option == InternalRuntimeDiagnosticOptions.Semantic)
+                if ((e.Option == InternalRuntimeDiagnosticOptions.Syntax) ||
+                    (e.Option == InternalRuntimeDiagnosticOptions.Semantic))
                 {
                     return true;
                 }
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                         return false;
                     }
 
-                    return _workspaceKind == other._workspaceKind && base.Equals(obj);
+                    return (_workspaceKind == other._workspaceKind) && base.Equals(obj);
                 }
 
                 public override int GetHashCode()

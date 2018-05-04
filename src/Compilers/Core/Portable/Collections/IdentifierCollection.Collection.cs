@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis
             {
                 using (var enumerator = this.GetEnumerator())
                 {
-                    while (arrayIndex < array.Length && enumerator.MoveNext())
+                    while ((arrayIndex < array.Length) && enumerator.MoveNext())
                     {
                         array[arrayIndex] = enumerator.Current;
                         arrayIndex++;

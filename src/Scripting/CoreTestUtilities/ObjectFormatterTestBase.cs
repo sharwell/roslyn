@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting.UnitTests
                 {
                     Assert.Equal(expected[i] + " {", line);
                 }
-                else if (i == expected.Length - 1)
+                else if (i == (expected.Length - 1))
                 {
                     Assert.Equal(expected[i] + Environment.NewLine + "}" + Environment.NewLine, line);
                 }

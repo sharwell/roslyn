@@ -97,12 +97,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var other = obj as SignatureOnlyParameterSymbol;
-            return (object)other != null &&
-                _type == other._type &&
+            return ((object)other != null) &&
+                (_type == other._type) &&
                 _customModifiers.SequenceEqual(other._customModifiers) &&
                 _refCustomModifiers.SequenceEqual(other._refCustomModifiers) &&
-                _isParams == other._isParams &&
-                _refKind == other._refKind;
+                (_isParams == other._isParams) &&
+                (_refKind == other._refKind);
         }
 
         public override int GetHashCode()

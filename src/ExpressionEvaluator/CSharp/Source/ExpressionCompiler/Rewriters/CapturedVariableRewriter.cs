@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
 
         public override BoundNode VisitBlock(BoundBlock node)
         {
-            var rewrittenLocals = node.Locals.WhereAsArray(local => local.IsCompilerGenerated || local.Name == null || this.GetVariable(local.Name) == null);
+            var rewrittenLocals = node.Locals.WhereAsArray(local => local.IsCompilerGenerated || (local.Name == null) || (this.GetVariable(local.Name) == null));
             var rewrittenLocalFunctions = node.LocalFunctions;
             var rewrittenStatements = VisitList(node.Statements);
             return node.Update(rewrittenLocals, rewrittenLocalFunctions, rewrittenStatements);
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             var baseType = node.Type;
             HashSet<DiagnosticInfo> unusedUseSiteDiagnostics = null;
             var conversion = _conversions.ClassifyImplicitConversionFromExpression(rewrittenThis, baseType, ref unusedUseSiteDiagnostics);
-            Debug.Assert(unusedUseSiteDiagnostics == null || !conversion.IsValid || unusedUseSiteDiagnostics.All(d => d.Severity < DiagnosticSeverity.Error));
+            Debug.Assert((unusedUseSiteDiagnostics == null) || !conversion.IsValid || unusedUseSiteDiagnostics.All(d => d.Severity < DiagnosticSeverity.Error));
 
             // It would be nice if we could just call BoundConversion.Synthesized, but it doesn't seem worthwhile to
             // introduce a bunch of new overloads to accommodate isBaseConversion.
@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 return rewrittenThis;
             }
             var boundKind = node.Kind;
-            Debug.Assert(boundKind == BoundKind.ThisReference || boundKind == BoundKind.BaseReference);
+            Debug.Assert((boundKind == BoundKind.ThisReference) || (boundKind == BoundKind.BaseReference));
             var errorCode = boundKind == BoundKind.BaseReference
                 ? ErrorCode.ERR_BaseInBadContext
                 : ErrorCode.ERR_ThisInBadContext;

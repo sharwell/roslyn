@@ -53,14 +53,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             public override bool Equals(object obj)
             {
-                return obj is SynthesizedDelegateKey && Equals((SynthesizedDelegateKey)obj);
+                return (obj is SynthesizedDelegateKey) && Equals((SynthesizedDelegateKey)obj);
             }
 
             public bool Equals(SynthesizedDelegateKey other)
             {
-                return _parameterCount == other._parameterCount
-                    && _returnsVoid == other._returnsVoid
-                    && _generation == other._generation
+                return (_parameterCount == other._parameterCount)
+                    && (_returnsVoid == other._returnsVoid)
+                    && (_generation == other._generation)
                     && _byRefs.Equals(other._byRefs);
             }
 
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             public SynthesizedDelegateValue(AnonymousTypeManager manager, SynthesizedDelegateSymbol @delegate)
             {
-                Debug.Assert(manager != null && (object)@delegate != null);
+                Debug.Assert((manager != null) && ((object)@delegate != null));
                 this.Manager = manager;
                 this.Delegate = @delegate;
             }
@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal SynthesizedDelegateSymbol SynthesizeDelegate(int parameterCount, BitVector byRefParameters, bool returnsVoid, int generation)
         {
             // parameterCount doesn't include return type
-            Debug.Assert(byRefParameters.IsNull || parameterCount == byRefParameters.Capacity);
+            Debug.Assert(byRefParameters.IsNull || (parameterCount == byRefParameters.Capacity));
 
             var key = new SynthesizedDelegateKey(parameterCount, byRefParameters, returnsVoid, generation);
 
@@ -295,7 +295,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 this.SealTemplates();
             }
 
-            if (builder.Count > 0 && !ReportMissingOrErroneousSymbols(diagnostics))
+            if ((builder.Count > 0) && !ReportMissingOrErroneousSymbols(diagnostics))
             {
                 // Process all the templates
                 foreach (var template in builder)

@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis
             get
             {
                 VerifySealed(expected: true);
-                return _lazySecurityAttributeData != null || this.HasSuppressUnmanagedCodeSecurityAttribute;
+                return (_lazySecurityAttributeData != null) || this.HasSuppressUnmanagedCodeSecurityAttribute;
             }
         }
 
@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis
         public void SetStructLayout(TypeLayout layout, CharSet charSet)
         {
             VerifySealed(expected: false);
-            Debug.Assert(charSet == CharSet.Ansi || charSet == CharSet.Unicode || charSet == Cci.Constants.CharSet_Auto);
+            Debug.Assert((charSet == CharSet.Ansi) || (charSet == CharSet.Unicode) || (charSet == Cci.Constants.CharSet_Auto));
             _layout = layout;
             _charSet = charSet;
             SetDataStored();

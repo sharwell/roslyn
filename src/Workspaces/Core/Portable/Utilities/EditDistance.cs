@@ -118,7 +118,7 @@ namespace Roslyn.Utilities
 
         private static int[,] GetMatrix(int width, int height)
         {
-            if (width > MaxMatrixPoolDimension || height > MaxMatrixPoolDimension)
+            if ((width > MaxMatrixPoolDimension) || (height > MaxMatrixPoolDimension))
             {
                 return InitializeMatrix(new int[width, height]);
             }
@@ -151,7 +151,7 @@ namespace Roslyn.Utilities
             {
                 matrix[i, 0] = Infinity;
 
-                if (i < width - 1)
+                if (i < (width - 1))
                 {
                     matrix[i + 1, 1] = i;
                 }
@@ -161,7 +161,7 @@ namespace Roslyn.Utilities
             {
                 matrix[0, j] = Infinity;
 
-                if (j < height - 1)
+                if (j < (height - 1))
                 {
                     matrix[1, j + 1] = j;
                 }
@@ -189,13 +189,13 @@ namespace Roslyn.Utilities
             // First:
             // Determine the common prefix/suffix portions of the strings.  We don't even need to 
             // consider them as they won't add anything to the edit cost.
-            while (source.Length > 0 && source[source.Length - 1] == target[target.Length - 1])
+            while ((source.Length > 0) && (source[source.Length - 1] == target[target.Length - 1]))
             {
                 source.SetLength(source.Length - 1);
                 target.SetLength(target.Length - 1);
             }
 
-            while (source.Length > 0 && source[0] == target[0])
+            while ((source.Length > 0) && (source[0] == target[0]))
             {
                 source.MoveStartForward(amount: 1);
                 target.MoveStartForward(amount: 1);

@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
         protected override QueryExpressionSyntax FindNodeToRefactor(SyntaxNode root, TextSpan span)
         {
             var node = root.FindNode(span);
-            return node as QueryExpressionSyntax ?? (node is ArgumentSyntax argument ? argument.Expression as QueryExpressionSyntax : default);
+            return (node as QueryExpressionSyntax) ?? (node is ArgumentSyntax argument ? argument.Expression as QueryExpressionSyntax : default);
         }
 
         private sealed class Converter
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                     !_semanticModel.GetDiagnostics(_source.Span, _cancellationToken).Any(diagnostic => diagnostic.DefaultSeverity == DiagnosticSeverity.Error))
                 {
                     if (!documentUpdateInfo.Source.IsParentKind(SyntaxKind.Block) &&
-                        documentUpdateInfo.Destinations.Length > 1)
+                        (documentUpdateInfo.Destinations.Length > 1))
 
                         documentUpdateInfo = new DocumentUpdateInfo(documentUpdateInfo.Source, SyntaxFactory.Block(documentUpdateInfo.Destinations));
                     return true;
@@ -248,12 +248,12 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                 while (currentNode != null)
                 {
                     if (currentNode is StatementSyntax) { return true; }
-                    if (currentNode is ExpressionSyntax ||
-                        currentNode is ArgumentSyntax ||
-                        currentNode is ArgumentListSyntax ||
-                        currentNode is EqualsValueClauseSyntax ||
-                        currentNode is VariableDeclaratorSyntax ||
-                        currentNode is VariableDeclarationSyntax)
+                    if ((currentNode is ExpressionSyntax) ||
+                        (currentNode is ArgumentSyntax) ||
+                        (currentNode is ArgumentListSyntax) ||
+                        (currentNode is EqualsValueClauseSyntax) ||
+                        (currentNode is VariableDeclaratorSyntax) ||
+                        (currentNode is VariableDeclarationSyntax))
                     {
                         currentNode = currentNode.Parent;
                     }
@@ -294,9 +294,9 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                 out DocumentUpdateInfo documentUpdateInfo)
             {
                 if (_semanticModel.GetSymbolInfo(invocationExpression, _cancellationToken).Symbol is IMethodSymbol methodSymbol &&
-                    methodSymbol.Parameters.Length == 0 &&
-                    methodSymbol.ReturnType?.SpecialType == SpecialType.System_Int32 &&
-                    methodSymbol.RefKind == RefKind.None)
+                    (methodSymbol.Parameters.Length == 0) &&
+                    (methodSymbol.ReturnType?.SpecialType == SpecialType.System_Int32) &&
+                    (methodSymbol.RefKind == RefKind.None))
                 {
                     // before var count = (from a in b select a).Count();
                     // after
@@ -333,9 +333,9 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                 //     list.Add(a)
                 // }
                 if (_semanticModel.GetSymbolInfo(invocationExpression, _cancellationToken).Symbol is IMethodSymbol methodSymbol &&
-                    methodSymbol.RefKind == RefKind.None &&
+                    (methodSymbol.RefKind == RefKind.None) &&
                     IsList(methodSymbol.ReturnType) &&
-                    methodSymbol.Parameters.Length == 0)
+                    (methodSymbol.Parameters.Length == 0))
                 {
                     return TryConvertIfInInvocation(
                               invocationExpression,
@@ -455,7 +455,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                         // Avoid for(int i = (from x in a select x).Count(); i < 10; i++)
                         if (invocationParent.IsParentKind(SyntaxKind.VariableDeclarator, SyntaxKind.VariableDeclaration, SyntaxKind.LocalDeclarationStatement) &&
                             // Avoid int i = (from x in a select x).Count(), j = i;
-                            ((VariableDeclarationSyntax)invocationParent.Parent.Parent).Variables.Count == 1)
+                            (((VariableDeclarationSyntax)invocationParent.Parent.Parent).Variables.Count == 1))
                         {
                             var variableDeclarator = (VariableDeclaratorSyntax)invocationParent.Parent;
                             Convert(
@@ -651,7 +651,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                     // The last clause in query stack must be SelectClauseSyntax.
                     var lastSelectExpression = ((SelectClauseSyntax)queryExpressionProcessingInfo.Stack.Peek()).Expression;
                     if (lastSelectExpression is IdentifierNameSyntax identifierName &&
-                        forEachStatement.Identifier.ValueText == identifierName.Identifier.ValueText &&
+                        (forEachStatement.Identifier.ValueText == identifierName.Identifier.ValueText) &&
                         queryExpressionProcessingInfo.IdentifierNames.Contains(identifierName.Identifier.ValueText))
                     {
                         var forEachStatementTypeSymbolType = _semanticModel.GetTypeInfo(forEachStatement.Type, _cancellationToken).Type;
@@ -906,7 +906,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertLinq
                     return IsLocalOrParameterSymbol(conversion.Operand);
                 }
 
-                return operation.Kind == OperationKind.LocalReference || operation.Kind == OperationKind.ParameterReference;
+                return (operation.Kind == OperationKind.LocalReference) || (operation.Kind == OperationKind.ParameterReference);
             }
 
             private static BlockSyntax WrapWithBlock(StatementSyntax statement)

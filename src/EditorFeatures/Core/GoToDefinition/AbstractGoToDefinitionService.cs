@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
                 // if we are navigating from the corresponding type.
 
                 if (semanticModel.GetDeclaredSymbol(containingTypeDeclaration, cancellationToken) is ITypeSymbol containingTypeSymbol &&
-                    (symbolToNavigateTo is ITypeSymbol || symbolToNavigateTo.IsConstructor()))
+                    ((symbolToNavigateTo is ITypeSymbol) || symbolToNavigateTo.IsConstructor()))
                 {
                     var candidateTypeSymbol = symbolToNavigateTo is ITypeSymbol
                         ? symbolToNavigateTo

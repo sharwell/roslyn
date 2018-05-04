@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 // Possible values are 0 = false, 1 = true, 2 = not ready.
                 // At this point, we should only get 0 or 1, but to be
                 // safe, treat values other than 0 or 1 as false.
-                Debug.Assert(result == 0 || result == 1);
+                Debug.Assert((result == 0) || (result == 1));
                 return result == 0; 
             }
             catch (NotImplementedException)

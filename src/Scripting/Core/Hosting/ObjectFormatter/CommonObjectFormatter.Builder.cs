@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
                 _sb.Append(c, length);
 
-                if (!_suppressEllipsis && length < count)
+                if (!_suppressEllipsis && (length < count))
                 {
                     AppendEllipsis();
                 }
@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
             public void Append(string str, int start = 0, int count = Int32.MaxValue)
             {
-                if (str == null || CurrentRemaining < 0)
+                if ((str == null) || (CurrentRemaining < 0))
                 {
                     return;
                 }
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                 int length = Math.Min(count, CurrentRemaining);
                 _sb.Append(str, start, length);
 
-                if (!_suppressEllipsis && length < count)
+                if (!_suppressEllipsis && (length < count))
                 {
                     AppendEllipsis();
                 }

@@ -157,15 +157,15 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is MetadataReferenceProperties && Equals((MetadataReferenceProperties)obj);
+            return (obj is MetadataReferenceProperties) && Equals((MetadataReferenceProperties)obj);
         }
 
         public bool Equals(MetadataReferenceProperties other)
         {
             return Aliases.SequenceEqual(other.Aliases)
-                && _embedInteropTypes == other._embedInteropTypes
-                && _kind == other._kind
-                && HasRecursiveAliases == other.HasRecursiveAliases;
+                && (_embedInteropTypes == other._embedInteropTypes)
+                && (_kind == other._kind)
+                && (HasRecursiveAliases == other.HasRecursiveAliases);
         }
 
         public override int GetHashCode()

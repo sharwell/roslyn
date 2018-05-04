@@ -133,7 +133,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
                 IsInVarContext(name))
             {
                 var alias = semanticModel.GetAliasInfo(name, cancellationToken);
-                if (alias == null || alias.Name != "var")
+                if ((alias == null) || (alias.Name != "var"))
                 {
                     if (!IsSymbolWithName(symbol, "var"))
                     {
@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
             if (name.IsUnmanaged && name.Parent.IsKind(SyntaxKind.TypeConstraint))
             {
                 var alias = semanticModel.GetAliasInfo(name, cancellationToken);
-                if (alias == null || alias.Name != "unmanaged")
+                if ((alias == null) || (alias.Name != "unmanaged"))
                 {
                     if (!IsSymbolWithName(symbol, "unmanaged"))
                     {
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
                     classifiedSpan = new ClassifiedSpan(token.Span, ClassificationTypeNames.EventName);
                     return true;
                 case IParameterSymbol parameterSymbol:
-                    if (parameterSymbol.IsImplicitlyDeclared && parameterSymbol.Name == "value")
+                    if (parameterSymbol.IsImplicitlyDeclared && (parameterSymbol.Name == "value"))
                     {
                         break;
                     }
@@ -250,7 +250,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
 
         private static ISymbol TryGetSymbol(NameSyntax name, SymbolInfo symbolInfo, SemanticModel semanticModel)
         {
-            if (symbolInfo.Symbol == null && symbolInfo.CandidateSymbols.Length > 0)
+            if ((symbolInfo.Symbol == null) && (symbolInfo.CandidateSymbols.Length > 0))
             {
                 var firstSymbol = symbolInfo.CandidateSymbols[0];
 
@@ -261,7 +261,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
 
                     case CandidateReason.NotCreatable:
                         // We want to color types even if they can't be constructed.
-                        if (firstSymbol.IsConstructor() || firstSymbol is ITypeSymbol)
+                        if (firstSymbol.IsConstructor() || (firstSymbol is ITypeSymbol))
                         {
                             return firstSymbol;
                         }
@@ -312,7 +312,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
             // doesn't bind to anything then optimistically color from as a keyword.
             if (name is IdentifierNameSyntax identifierName &&
                 identifierName.Identifier.HasMatchingText(SyntaxKind.FromKeyword) &&
-                symbolInfo.Symbol == null)
+                (symbolInfo.Symbol == null))
             {
                 var token = identifierName.Identifier;
                 if (identifierName.IsRightSideOfAnyAssignExpression() || identifierName.IsVariableDeclaratorValue())
@@ -345,7 +345,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
         {
             if (name is IdentifierNameSyntax identifierName &&
                 identifierName.Identifier.IsKindOrHasMatchingText(SyntaxKind.NameOfKeyword) &&
-                symbolInfo.Symbol == null &&
+                (symbolInfo.Symbol == null) &&
                 !symbolInfo.CandidateSymbols.Any())
             {
                 result.Add(new ClassifiedSpan(identifierName.Identifier.Span, ClassificationTypeNames.Keyword));
@@ -357,7 +357,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
 
         private bool IsSymbolWithName(ISymbol symbol, string name)
         {
-            if (symbol is null || symbol.Name != name)
+            if ((symbol is null) || (symbol.Name != name))
             {
                 return false;
             }

@@ -254,7 +254,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Extensions
             }
 
             var previousPosition = finalCaretPositionOpt.Value.Position - 1;
-            var inRange = previousPosition >= 0 && previousPosition < subjectBuffer.CurrentSnapshot.Length;
+            var inRange = (previousPosition >= 0) && (previousPosition < subjectBuffer.CurrentSnapshot.Length);
             if (!inRange)
             {
                 // The character before the caret isn't even in the buffer we care about.  Don't

@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.MoveDeclarationNearReference
 
             // Move leading whitespace from the declaration statement to the next statement.
             var statementIndex = state.OutermostBlockStatements.IndexOf(state.DeclarationStatement);
-            if (statementIndex + 1 < state.OutermostBlockStatements.Count)
+            if ((statementIndex + 1) < state.OutermostBlockStatements.Count)
             {
                 var originalNextStatement = state.OutermostBlockStatements[statementIndex + 1];
                 editor.ReplaceNode(
@@ -201,7 +201,7 @@ namespace Microsoft.CodeAnalysis.MoveDeclarationNearReference
             var syntaxFacts = document.GetLanguageService<ISyntaxFactsService>();
 
             var initializer = syntaxFacts.GetInitializerOfVariableDeclarator(state.VariableDeclarator);
-            if (initializer == null ||
+            if ((initializer == null) ||
                 syntaxFacts.IsLiteralExpression(syntaxFacts.GetValueOfEqualsValueClause(initializer)))
             {
                 var firstStatement = state.FirstStatementAffectedInInnermostBlock;

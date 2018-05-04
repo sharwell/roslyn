@@ -249,8 +249,8 @@ namespace Microsoft.CodeAnalysis.VisualBasic.ExpressionEvaluator
 
         private bool IsStartOfTypeArguments()
         {
-            return CurrentToken.Kind == TokenKind.OpenParen &&
-                PeekToken(1).KeywordKind == SyntaxKind.OfKeyword;
+            return (CurrentToken.Kind == TokenKind.OpenParen) &&
+                (PeekToken(1).KeywordKind == SyntaxKind.OfKeyword);
         }
 
         private enum ParameterModifier

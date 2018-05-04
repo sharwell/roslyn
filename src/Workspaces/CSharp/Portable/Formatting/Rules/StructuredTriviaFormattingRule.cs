@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         public override AdjustNewLinesOperation GetAdjustNewLinesOperation(SyntaxToken previousToken, SyntaxToken currentToken, OptionSet optionSet, NextOperation<AdjustNewLinesOperation> nextOperation)
         {
-            if (previousToken.Parent is StructuredTriviaSyntax || currentToken.Parent is StructuredTriviaSyntax)
+            if ((previousToken.Parent is StructuredTriviaSyntax) || (currentToken.Parent is StructuredTriviaSyntax))
             {
                 return null;
             }
@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         public override AdjustSpacesOperation GetAdjustSpacesOperation(SyntaxToken previousToken, SyntaxToken currentToken, OptionSet optionSet, NextOperation<AdjustSpacesOperation> nextOperation)
         {
-            if (previousToken.Parent is StructuredTriviaSyntax || currentToken.Parent is StructuredTriviaSyntax)
+            if ((previousToken.Parent is StructuredTriviaSyntax) || (currentToken.Parent is StructuredTriviaSyntax))
             {
                 // this doesn't take care of all cases where tokens belong to structured trivia. this is only for cases we care
                 return GetAdjustSpacesOperation(previousToken, currentToken, nextOperation);
@@ -36,12 +36,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         private AdjustSpacesOperation GetAdjustSpacesOperation(SyntaxToken previousToken, SyntaxToken currentToken, NextOperation<AdjustSpacesOperation> nextOperation)
         {
-            if (previousToken.Kind() == SyntaxKind.HashToken && SyntaxFacts.IsPreprocessorKeyword(currentToken.Kind()))
+            if ((previousToken.Kind() == SyntaxKind.HashToken) && SyntaxFacts.IsPreprocessorKeyword(currentToken.Kind()))
             {
                 return CreateAdjustSpacesOperation(space: 0, option: AdjustSpacesOption.ForceSpacesIfOnSingleLine);
             }
 
-            if (previousToken.Kind() == SyntaxKind.RegionKeyword && currentToken.Kind() == SyntaxKind.EndOfDirectiveToken)
+            if ((previousToken.Kind() == SyntaxKind.RegionKeyword) && (currentToken.Kind() == SyntaxKind.EndOfDirectiveToken))
             {
                 return CreateAdjustSpacesOperation(space: 0, option: AdjustSpacesOption.PreserveSpaces);
             }

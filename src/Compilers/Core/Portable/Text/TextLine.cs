@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Text
                 throw new ArgumentNullException(nameof(text));
             }
 
-            if (span.Start > text.Length || span.Start < 0 || span.End > text.Length)
+            if ((span.Start > text.Length) || (span.Start < 0) || (span.End > text.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(span));
             }
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Text
             if (text.Length > 0)
             {
                 // check span is start of line
-                if (span.Start > 0 && !TextUtilities.IsAnyLineBreakCharacter(text[span.Start - 1]))
+                if ((span.Start > 0) && !TextUtilities.IsAnyLineBreakCharacter(text[span.Start - 1]))
                 {
                     throw new ArgumentOutOfRangeException(nameof(span), CodeAnalysisResources.SpanDoesNotIncludeStartOfLine);
                 }
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Text
                     endIncludesLineBreak = TextUtilities.IsAnyLineBreakCharacter(text[span.End - 1]);
                 }
 
-                if (!endIncludesLineBreak && span.End < text.Length)
+                if (!endIncludesLineBreak && (span.End < text.Length))
                 {
                     var lineBreakLen = TextUtilities.GetLengthOfLineBreak(text, span.End);
                     if (lineBreakLen > 0)
@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.Text
                 }
 
                 // check end of span is at end of line
-                if (span.End < text.Length && !endIncludesLineBreak)
+                if ((span.End < text.Length) && !endIncludesLineBreak)
                 {
                     throw new ArgumentOutOfRangeException(nameof(span), CodeAnalysisResources.SpanDoesNotIncludeEndOfLine);
                 }
@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.Text
         {
             get
             {
-                if (_text == null || _text.Length == 0 || _endIncludingBreaks == _start)
+                if ((_text == null) || (_text.Length == 0) || (_endIncludingBreaks == _start))
                 {
                     return 0;
                 }
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         public override string ToString()
         {
-            if (_text == null || _text.Length == 0)
+            if ((_text == null) || (_text.Length == 0))
             {
                 return string.Empty;
             }
@@ -178,9 +178,9 @@ namespace Microsoft.CodeAnalysis.Text
 
         public bool Equals(TextLine other)
         {
-            return other._text == _text
-                && other._start == _start
-                && other._endIncludingBreaks == _endIncludingBreaks;
+            return (other._text == _text)
+                && (other._start == _start)
+                && (other._endIncludingBreaks == _endIncludingBreaks);
         }
 
         public override bool Equals(object obj)

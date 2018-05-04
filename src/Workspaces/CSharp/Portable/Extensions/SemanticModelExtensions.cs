@@ -271,7 +271,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 if (argument.Parent is BaseArgumentListSyntax argumentList)
                 {
                     var index = argumentList.Arguments.IndexOf(argument);
-                    if (semanticModel.GetSymbolInfo(argumentList.Parent, cancellationToken).Symbol is IMethodSymbol member && index < member.Parameters.Length)
+                    if (semanticModel.GetSymbolInfo(argumentList.Parent, cancellationToken).Symbol is IMethodSymbol member && (index < member.Parameters.Length))
                     {
                         var parameter = member.Parameters[index];
                         if (parameter.Type.OriginalDefinition.TypeKind != TypeKind.TypeParameter)
@@ -356,7 +356,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 if (@using.Alias == null)
                 {
                     var symbolInfo = semanticModel.GetSymbolInfo(@using.Name);
-                    if (symbolInfo.Symbol != null && symbolInfo.Symbol.Kind == SymbolKind.Namespace)
+                    if ((symbolInfo.Symbol != null) && (symbolInfo.Symbol.Kind == SymbolKind.Namespace))
                     {
                         result = result ?? new HashSet<INamespaceSymbol>();
                         result.Add((INamespaceSymbol)symbolInfo.Symbol);
@@ -391,10 +391,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             //    as the interface type itself.
             if (type != null)
             {
-                if (type.Parent is BaseTypeSyntax && type.Parent.IsParentKind(SyntaxKind.BaseList) && ((BaseTypeSyntax)type.Parent).Type == type)
+                if ((type.Parent is BaseTypeSyntax) && type.Parent.IsParentKind(SyntaxKind.BaseList) && (((BaseTypeSyntax)type.Parent).Type == type))
                 {
                     var containingType = semanticModel.GetDeclaredSymbol(type.GetAncestor<BaseTypeDeclarationSyntax>(), cancellationToken) as INamedTypeSymbol;
-                    if (containingType != null && containingType.TypeKind == TypeKind.Interface)
+                    if ((containingType != null) && (containingType.TypeKind == TypeKind.Interface))
                     {
                         return containingType.DeclaredAccessibility;
                     }

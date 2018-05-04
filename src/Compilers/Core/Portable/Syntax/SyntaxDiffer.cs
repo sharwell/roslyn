@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis
             FindBestMatch(_newNodes, _oldNodes.Peek(), out indexOfOldInNew, out similarityOfOldInNew);
             FindBestMatch(_oldNodes, _newNodes.Peek(), out indexOfNewInOld, out similarityOfNewInOld);
 
-            if (indexOfOldInNew == 0 && indexOfNewInOld == 0)
+            if ((indexOfOldInNew == 0) && (indexOfNewInOld == 0))
             {
                 // both first nodes are somewhat similar to each other
 
@@ -232,12 +232,12 @@ namespace Microsoft.CodeAnalysis
                     return new DiffAction(DiffOp.ReplaceOldWithNew, 1);
                 }
             }
-            else if (indexOfOldInNew >= 0 || indexOfNewInOld >= 0)
+            else if ((indexOfOldInNew >= 0) || (indexOfNewInOld >= 0))
             {
                 // either the first old-node is similar to some node in the new-list or
                 // the first new-node is similar to some node in the old-list
 
-                if (indexOfNewInOld < 0 || similarityOfOldInNew >= similarityOfNewInOld)
+                if ((indexOfNewInOld < 0) || (similarityOfOldInNew >= similarityOfNewInOld))
                 {
                     // either there is no match for the first new-node in the old-list or the 
                     // the similarity of the first old-node in the new-list is much greater
@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis
                         FindBestMatch(_oldNodes, _oldNodes.Peek(), out indexOfOldInOld, out similarityOfOldInOld, 1);
 
                         // don't declare an insert if the node also appeared later in the original list
-                        var oldHasSimilarSibling = indexOfOldInOld >= 1 && similarityOfOldInOld >= similarityOfOldInNew;
+                        var oldHasSimilarSibling = (indexOfOldInOld >= 1) && (similarityOfOldInOld >= similarityOfOldInNew);
                         if (!oldHasSimilarSibling)
                         {
                             return new DiffAction(DiffOp.InsertNew, indexOfOldInNew);
@@ -367,7 +367,7 @@ namespace Microsoft.CodeAnalysis
 
                         // Are these really the same? This may be expensive so only check this if 
                         // similarity is rated equal to them being identical.
-                        if (sim == node.FullSpan.Length && node.IsToken)
+                        if ((sim == node.FullSpan.Length) && node.IsToken)
                         {
                             if (stackNode.ToFullString() == node.ToFullString())
                             {
@@ -529,7 +529,7 @@ namespace Microsoft.CodeAnalysis
 
         private void RecordReplaceOldWithNew(int oldNodeCount, int newNodeCount)
         {
-            if (oldNodeCount == 1 && newNodeCount == 1)
+            if ((oldNodeCount == 1) && (newNodeCount == 1))
             {
                 // Avoid creating a Queue<T> which we immediately discard in the most common case for old/new counts
                 var removedNode = _oldNodes.Pop();
@@ -623,7 +623,7 @@ namespace Microsoft.CodeAnalysis
                     start = n.Position;
                 }
 
-                if (i == first + length - 1)
+                if (i == ((first + length - 1)))
                 {
                     end = n.EndPosition;
                     break;
@@ -648,7 +648,7 @@ namespace Microsoft.CodeAnalysis
                     start = n.Position;
                 }
 
-                if (i == first + length - 1)
+                if (i == ((first + length - 1)))
                 {
                     end = n.EndPosition;
                     break;
@@ -665,12 +665,12 @@ namespace Microsoft.CodeAnalysis
 
         private static Queue<SyntaxNodeOrToken> Combine(Queue<SyntaxNodeOrToken> first, Queue<SyntaxNodeOrToken> next)
         {
-            if (first == null || first.Count == 0)
+            if ((first == null) || (first.Count == 0))
             {
                 return next;
             }
 
-            if (next == null || next.Count == 0)
+            if ((next == null) || (next.Count == 0))
             {
                 return first;
             }
@@ -754,7 +754,7 @@ namespace Microsoft.CodeAnalysis
             foreach (var cr in changeRecords)
             {
                 // try to reduce change range by finding common characters
-                if (cr.Range.Span.Length > 0 && cr.Range.NewLength > 0)
+                if ((cr.Range.Span.Length > 0) && (cr.Range.NewLength > 0))
                 {
                     var range = cr.Range;
 
@@ -766,7 +766,7 @@ namespace Microsoft.CodeAnalysis
                     GetCommonEdgeLengths(oldText, newText, out commonLeadingCount, out commonTrailingCount);
 
                     // did we have any common leading or trailing characters between the strings?
-                    if (commonLeadingCount > 0 || commonTrailingCount > 0)
+                    if ((commonLeadingCount > 0) || (commonTrailingCount > 0))
                     {
                         range = new TextChangeRange(
                             new TextSpan(range.Span.Start + commonLeadingCount, range.Span.Length - (commonLeadingCount + commonTrailingCount)),
@@ -784,7 +784,7 @@ namespace Microsoft.CodeAnalysis
                     }
 
                     // only include adjusted change if there is still a change 
-                    if (range.Span.Length > 0 || range.NewLength > 0)
+                    if ((range.Span.Length > 0) || (range.NewLength > 0))
                     {
                         textChanges.Add(new ChangeRangeWithText(range, _computeNewText ? newText.ToString() : null));
                     }
@@ -827,7 +827,7 @@ namespace Microsoft.CodeAnalysis
 
         private static string GetText(Queue<SyntaxNodeOrToken> queue)
         {
-            if (queue == null || queue.Count == 0)
+            if ((queue == null) || (queue.Count == 0))
             {
                 return string.Empty;
             }
@@ -844,7 +844,7 @@ namespace Microsoft.CodeAnalysis
         {
             builder.Length = 0;
 
-            if (queue != null && queue.Count > 0)
+            if ((queue != null) && (queue.Count > 0))
             {
                 var writer = new System.IO.StringWriter(builder);
 

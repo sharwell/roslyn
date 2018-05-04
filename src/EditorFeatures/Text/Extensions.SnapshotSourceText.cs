@@ -344,7 +344,7 @@ namespace Microsoft.CodeAnalysis.Text
                 if (this.Container is TextBufferContainer container)
                 {
                     var lastEventArgs = container.LastEventArgs;
-                    if (lastEventArgs != null && lastEventArgs.OldText == oldText && lastEventArgs.NewText == this)
+                    if ((lastEventArgs != null) && (lastEventArgs.OldText == oldText) && (lastEventArgs.NewText == this))
                     {
                         return lastEventArgs.Changes;
                     }
@@ -357,9 +357,9 @@ namespace Microsoft.CodeAnalysis.Text
 
             private IReadOnlyList<TextChangeRange> GetChangeRanges(ITextImage oldImage, int oldTextLength, ITextImage newImage)
             {
-                if (oldImage == null ||
-                    newImage == null ||
-                    oldImage.Version.Identifier != newImage.Version.Identifier)
+                if ((oldImage == null) ||
+                    (newImage == null) ||
+                    (oldImage.Version.Identifier != newImage.Version.Identifier))
                 {
                     // Claim its all changed
                     Logger.Log(FunctionId.Workspace_SourceText_GetChangeRanges, "Invalid Snapshots");
@@ -381,7 +381,7 @@ namespace Microsoft.CodeAnalysis.Text
                 var oldSnapshot = TryFindEditorSnapshot(oldImage);
                 var newSnapshot = TryFindEditorSnapshot(newImage);
 
-                return oldSnapshot != null && newSnapshot != null && oldSnapshot.Version.ReiteratedVersionNumber == newSnapshot.Version.ReiteratedVersionNumber;
+                return (oldSnapshot != null) && (newSnapshot != null) && (oldSnapshot.Version.ReiteratedVersionNumber == newSnapshot.Version.ReiteratedVersionNumber);
             }
 
             private static readonly Func<ITextChange, TextChangeRange> s_forwardTextChangeRange = c => CreateTextChangeRange(c, forward: true);

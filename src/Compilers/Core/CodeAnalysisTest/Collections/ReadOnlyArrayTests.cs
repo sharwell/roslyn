@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.Collections
             Assert.Equal(1, ImmutableArray.Create<int>(1).Single());
             Assert.Throws<InvalidOperationException>(() => ImmutableArray.Create<int>(1, 2).Single());
 
-            Func<int, bool> isOdd = x => x % 2 == 1;
+            Func<int, bool> isOdd = x => (x % 2) == 1;
 
             // BUG:753260 Should this be ArgumentNullException for consistency?
             Assert.Throws<NullReferenceException>(() => default(ImmutableArray<int>).Single(isOdd));
@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.Collections
             Assert.False(r.SequenceEqual(Enumerable.Range(1, 4)));
 
             var s = ImmutableArray.Create<int>(10, 20, 30);
-            Assert.True(r.SequenceEqual(s, (x, y) => 10 * x == y));
+            Assert.True(r.SequenceEqual(s, (x, y) => (10 * x) == y));
         }
 
         [Fact]
@@ -424,9 +424,9 @@ namespace Microsoft.CodeAnalysis.UnitTests.Collections
             // Second half.
             Assert.True(a.WhereAsArray(i => i > 2).SequenceEqual(ImmutableArray.Create<int>(3, 4, 5)));
             // Even.
-            Assert.True(a.WhereAsArray(i => i % 2 == 0).SequenceEqual(ImmutableArray.Create<int>(0, 2, 4)));
+            Assert.True(a.WhereAsArray(i => (i % 2) == 0).SequenceEqual(ImmutableArray.Create<int>(0, 2, 4)));
             // Odd.
-            Assert.True(a.WhereAsArray(i => i % 2 == 1).SequenceEqual(ImmutableArray.Create<int>(1, 3, 5)));
+            Assert.True(a.WhereAsArray(i => (i % 2) == 1).SequenceEqual(ImmutableArray.Create<int>(1, 3, 5)));
         }
 
         private class C

@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis
             {
                 var newState = _newProject.GetAdditionalDocumentState(id);
                 var oldState = _oldProject.GetAdditionalDocumentState(id);
-                if (oldState != null && newState != oldState)
+                if ((oldState != null) && (newState != oldState))
                 {
                     yield return id;
                 }

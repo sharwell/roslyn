@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
                 // do completion anyway. Generally, if this is the case, we have to walk
                 // up the parent elements until we find an unmatched start tag.
 
-                if (parentStartTag.Name.LocalName.ValueText.Length > 0 && HasMatchingEndTag(parentStartTag))
+                if ((parentStartTag.Name.LocalName.ValueText.Length > 0) && HasMatchingEndTag(parentStartTag))
                 {
                     if (HasUnmatchedIdenticalParent(parentStartTag))
                     {
@@ -127,7 +127,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
             }
 
             var endTag = parentElement.EndTag;
-            return endTag != null && !endTag.IsMissing && endTag.Name.LocalName.ValueText == parentStartTag.Name.LocalName.ValueText;
+            return (endTag != null) && !endTag.IsMissing && (endTag.Name.LocalName.ValueText == parentStartTag.Name.LocalName.ValueText);
         }
 
         private void CheckNameAndInsertText(ITextView textView, ITextBuffer subjectBuffer, SnapshotPoint position, XmlElementStartTagSyntax startTag, int? finalCaretPosition, string formatString)

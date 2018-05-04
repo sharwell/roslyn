@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Recommendations
                 if (RecommendKeywordsAsync != null)
                 {
                     var keywords = await RecommendKeywordsAsync(position, context);
-                    Assert.True(keywords == null || !keywords.Any(), "Keywords must be null or empty.");
+                    Assert.True((keywords == null) || !keywords.Any(), "Keywords must be null or empty.");
                 }
             }
             else

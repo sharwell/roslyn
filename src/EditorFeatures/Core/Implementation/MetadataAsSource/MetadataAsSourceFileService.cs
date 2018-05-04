@@ -119,8 +119,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.MetadataAsSource
                     var useDecompiler = allowDecompilation;
                     if (useDecompiler)
                     {
-                        useDecompiler = !symbol.ContainingAssembly.GetAttributes().Any(attribute => attribute.AttributeClass.Name == nameof(SuppressIldasmAttribute)
-                            && attribute.AttributeClass.ToNameDisplayString() == typeof(SuppressIldasmAttribute).FullName);
+                        useDecompiler = !symbol.ContainingAssembly.GetAttributes().Any(attribute => (attribute.AttributeClass.Name == nameof(SuppressIldasmAttribute))
+                            && (attribute.AttributeClass.ToNameDisplayString() == typeof(SuppressIldasmAttribute).FullName));
                     }
 
                     if (useDecompiler)
@@ -199,8 +199,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.MetadataAsSource
             var compilation = await temporaryDocument.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
             string assemblyLocation = null;
-            var isReferenceAssembly = symbol.ContainingAssembly.GetAttributes().Any(attribute => attribute.AttributeClass.Name == nameof(ReferenceAssemblyAttribute)
-                && attribute.AttributeClass.ToNameDisplayString() == typeof(ReferenceAssemblyAttribute).FullName);
+            var isReferenceAssembly = symbol.ContainingAssembly.GetAttributes().Any(attribute => (attribute.AttributeClass.Name == nameof(ReferenceAssemblyAttribute))
+                && (attribute.AttributeClass.ToNameDisplayString() == typeof(ReferenceAssemblyAttribute).FullName));
             if (isReferenceAssembly)
             {
                 try
@@ -266,13 +266,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.MetadataAsSource
             {
                 foreach (var assembly in parentCompilation.GetReferencedAssemblySymbols())
                 {
-                    if (assembly.Identity.Name != name.Name
+                    if ((assembly.Identity.Name != name.Name)
                         || !assembly.Identity.PublicKeyToken.SequenceEqual(name.PublicKeyToken ?? Array.Empty<byte>()))
                     {
                         continue;
                     }
 
-                    if (assembly.Identity.Version != name.Version
+                    if ((assembly.Identity.Version != name.Version)
                         && !string.Equals("mscorlib", assembly.Identity.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         // MSBuild treats mscorlib special for the purpose of assembly resolution/unification, where all
@@ -304,7 +304,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.MetadataAsSource
                 stack.Push(ns.Name);
                 ns = ns.ContainingNamespace;
             }
-            while (ns != null && !ns.IsGlobalNamespace);
+            while ((ns != null) && !ns.IsGlobalNamespace);
 
             return string.Join(".", stack);
         }
@@ -569,7 +569,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.MetadataAsSource
 
                 return StringComparer.OrdinalIgnoreCase.Equals(_filePath, other._filePath) &&
                     object.Equals(_assemblyIdentity, other._assemblyIdentity) &&
-                    _language == other._language &&
+                    (_language == other._language) &&
                     s_symbolIdComparer.Equals(_symbolId, other._symbolId);
             }
 

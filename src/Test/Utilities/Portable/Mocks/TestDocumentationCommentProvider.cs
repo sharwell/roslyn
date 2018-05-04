@@ -11,7 +11,7 @@ namespace Roslyn.Test.Utilities
     internal class TestDocumentationProviderEquals : DocumentationProvider
     {
         protected internal override string GetDocumentationForSymbol(string documentationMemberID, CultureInfo preferredCulture, CancellationToken cancellationToken) => "";
-        public override bool Equals(object obj) => obj != null && this.GetType() == obj.GetType();
+        public override bool Equals(object obj) => (obj != null) && (this.GetType() == obj.GetType());
         public override int GetHashCode() => GetType().GetHashCode();
     }
 

@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.Differencing
             foreach (TNode node in comparer.GetDescendants(root))
             {
                 int label = comparer.GetLabel(node);
-                if (label < 0 || label >= labelCount)
+                if ((label < 0) || (label >= labelCount))
                 {
                     throw new InvalidOperationException(string.Format(WorkspacesResources.Label_for_node_0_is_invalid_it_must_be_within_bracket_0_1, node, labelCount));
                 }
@@ -140,7 +140,7 @@ namespace Microsoft.CodeAnalysis.Differencing
 
             for (int l = 0; l < nodes1.Length; l++)
             {
-                if (nodes1[l] != null && nodes2[l] != null)
+                if ((nodes1[l] != null) && (nodes2[l] != null))
                 {
                     ComputeMatchForLabel(l, nodes1[l], nodes2[l]);
                 }
@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.Differencing
             // So in the case of totally matching sequences, we process them in O(n) - 
             // both node1 and firstNonMatch2 will be advanced simultaneously.
 
-            Debug.Assert(maxAcceptableDistance >= ExactMatchDistance && maxAcceptableDistance <= MaxDistance);
+            Debug.Assert((maxAcceptableDistance >= ExactMatchDistance) && (maxAcceptableDistance <= MaxDistance));
             int count1 = s1.Count;
             int count2 = s2.Count;
             int firstNonMatch2 = 0;
@@ -246,7 +246,7 @@ namespace Microsoft.CodeAnalysis.Differencing
                     }
                 }
 
-                if (matched && bestDistance <= maxAcceptableDistance)
+                if (matched && (bestDistance <= maxAcceptableDistance))
                 {
                     bool added = TryAdd(node1, bestMatch);
 

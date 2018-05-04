@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return;
             }
 
-            ErrorCode code = (this.MethodKind == MethodKind.Conversion || this.MethodKind == MethodKind.UserDefinedOperator) ?
+            ErrorCode code = ((this.MethodKind == MethodKind.Conversion) || (this.MethodKind == MethodKind.UserDefinedOperator)) ?
                 ErrorCode.ERR_BadVisOpReturn :
                 ErrorCode.ERR_BadVisReturnType;
 
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 diagnostics.Add(code, Locations[0], this, returnType);
             }
 
-            code = (this.MethodKind == MethodKind.Conversion || this.MethodKind == MethodKind.UserDefinedOperator) ?
+            code = ((this.MethodKind == MethodKind.Conversion) || (this.MethodKind == MethodKind.UserDefinedOperator)) ?
                 ErrorCode.ERR_BadVisOpParam :
                 ErrorCode.ERR_BadVisParamType;
 
@@ -546,9 +546,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         return (accessor.Body, accessor.ExpressionBody);
 
                     case ArrowExpressionClauseSyntax arrowExpression:
-                        Debug.Assert(arrowExpression.Parent.Kind() == SyntaxKind.PropertyDeclaration ||
-                                     arrowExpression.Parent.Kind() == SyntaxKind.IndexerDeclaration ||
-                                     this is SynthesizedClosureMethod);
+                        Debug.Assert((arrowExpression.Parent.Kind() == SyntaxKind.PropertyDeclaration) ||
+                                     (arrowExpression.Parent.Kind() == SyntaxKind.IndexerDeclaration) ||
+                                     (this is SynthesizedClosureMethod));
                         return (null, arrowExpression);
 
                     case BlockSyntax block:
@@ -582,8 +582,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     break;
 
                 case ArrowExpressionClauseSyntax arrowExpression:
-                    Debug.Assert(arrowExpression.Parent.Kind() == SyntaxKind.PropertyDeclaration ||
-                                 arrowExpression.Parent.Kind() == SyntaxKind.IndexerDeclaration);
+                    Debug.Assert((arrowExpression.Parent.Kind() == SyntaxKind.PropertyDeclaration) ||
+                                 (arrowExpression.Parent.Kind() == SyntaxKind.IndexerDeclaration));
                     contextNode = arrowExpression;
                     break;
             }
@@ -704,7 +704,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal sealed override bool TryGetThisParameter(out ParameterSymbol thisParameter)
         {
             thisParameter = _lazyThisParameter;
-            if ((object)thisParameter != null || IsStatic)
+            if (((object)thisParameter != null) || IsStatic)
             {
                 return true;
             }
@@ -722,7 +722,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
             set
             {
-                Debug.Assert((object)_iteratorElementType == null || _iteratorElementType == value);
+                Debug.Assert(((object)_iteratorElementType == null) || (_iteratorElementType == value));
                 Interlocked.CompareExchange(ref _iteratorElementType, value, null);
             }
         }
@@ -909,7 +909,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal CommonMethodEarlyWellKnownAttributeData GetEarlyDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -926,7 +926,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         protected CommonMethodWellKnownAttributeData GetDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -943,7 +943,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal CommonReturnTypeWellKnownAttributeData GetDecodedReturnTypeWellKnownAttributeData()
         {
             var attributesBag = _lazyReturnTypeCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetReturnTypeAttributesBag();
             }
@@ -960,7 +960,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private CustomAttributesBag<CSharpAttributeData> GetAttributesBag()
         {
             var bag = _lazyCustomAttributesBag;
-            if (bag != null && bag.IsSealed)
+            if ((bag != null) && bag.IsSealed)
             {
                 return bag;
             }
@@ -977,7 +977,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private CustomAttributesBag<CSharpAttributeData> GetReturnTypeAttributesBag()
         {
             var bag = _lazyReturnTypeCustomAttributesBag;
-            if (bag != null && bag.IsSealed)
+            if ((bag != null) && bag.IsSealed)
             {
                 return bag;
             }
@@ -1039,7 +1039,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal override CSharpAttributeData EarlyDecodeWellKnownAttribute(ref EarlyDecodeWellKnownAttributeArguments<EarlyWellKnownAttributeBinder, NamedTypeSymbol, AttributeSyntax, AttributeLocation> arguments)
         {
-            Debug.Assert(arguments.SymbolPart == AttributeLocation.None || arguments.SymbolPart == AttributeLocation.Return);
+            Debug.Assert((arguments.SymbolPart == AttributeLocation.None) || (arguments.SymbolPart == AttributeLocation.Return));
 
             bool hasAnyDiagnostics;
 
@@ -1089,13 +1089,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var sourceContainer = ContainingType as SourceMemberContainerTypeSymbol;
-                if ((object)sourceContainer == null || !sourceContainer.AnyMemberHasAttributes)
+                if (((object)sourceContainer == null) || !sourceContainer.AnyMemberHasAttributes)
                 {
                     return null;
                 }
 
                 var lazyCustomAttributesBag = _lazyCustomAttributesBag;
-                if (lazyCustomAttributesBag != null && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+                if ((lazyCustomAttributesBag != null) && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
                 {
                     var data = (CommonMethodEarlyWellKnownAttributeData)lazyCustomAttributesBag.EarlyDecodedWellKnownAttributeData;
                     return data != null ? data.ObsoleteAttributeData : null;
@@ -1121,7 +1121,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal override void DecodeWellKnownAttribute(ref DecodeWellKnownAttributeArguments<AttributeSyntax, CSharpAttributeData, AttributeLocation> arguments)
         {
             Debug.Assert(!arguments.Attribute.HasErrors);
-            Debug.Assert(arguments.SymbolPart == AttributeLocation.None || arguments.SymbolPart == AttributeLocation.Return);
+            Debug.Assert((arguments.SymbolPart == AttributeLocation.None) || (arguments.SymbolPart == AttributeLocation.Return));
 
             if (arguments.SymbolPart == AttributeLocation.None)
             {
@@ -1255,7 +1255,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // CS0243: The Conditional attribute is not valid on '{0}' because it is an override method
                 diagnostics.Add(ErrorCode.ERR_ConditionalOnOverride, node.Location, this);
             }
-            else if (!this.CanBeReferencedByName || this.MethodKind == MethodKind.Destructor)
+            else if (!this.CanBeReferencedByName || (this.MethodKind == MethodKind.Destructor))
             {
                 // CS0577: The Conditional attribute is not valid on '{0}' because it is a constructor, destructor, operator, or explicit interface implementation
                 diagnostics.Add(ErrorCode.ERR_ConditionalOnSpecialMethod, node.Location, this);
@@ -1274,7 +1274,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 string name = attribute.GetConstructorArgument<string>(0, SpecialType.System_String);
 
-                if (name == null || !SyntaxFacts.IsValidIdentifier(name))
+                if ((name == null) || !SyntaxFacts.IsValidIdentifier(name))
                 {
                     // CS0633: The argument to the '{0}' attribute must be a valid identifier
                     CSharpSyntaxNode attributeArgumentSyntax = attribute.GetAttributeArgumentSyntax(0, node);
@@ -1348,7 +1348,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 hasErrors = true;
             }
 
-            if (this.IsGenericMethod || (object)_containingType != null && _containingType.IsGenericType)
+            if (this.IsGenericMethod || (((object)_containingType != null) && _containingType.IsGenericType))
             {
                 arguments.Diagnostics.Add(ErrorCode.ERR_DllImportOnGenericMethod, arguments.AttributeSyntaxOpt.Name.Location);
                 hasErrors = true;
@@ -1453,14 +1453,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(!boundAttributes.IsDefault);
             Debug.Assert(!allAttributeSyntaxNodes.IsDefault);
             Debug.Assert(boundAttributes.Length == allAttributeSyntaxNodes.Length);
-            Debug.Assert(symbolPart == AttributeLocation.None || symbolPart == AttributeLocation.Return);
+            Debug.Assert((symbolPart == AttributeLocation.None) || (symbolPart == AttributeLocation.Return));
 
             if (symbolPart != AttributeLocation.Return)
             {
                 Debug.Assert(_lazyCustomAttributesBag != null);
                 Debug.Assert(_lazyCustomAttributesBag.IsDecodedWellKnownAttributeDataComputed);
 
-                if (_containingType.IsComImport && _containingType.TypeKind == TypeKind.Class)
+                if (_containingType.IsComImport && (_containingType.TypeKind == TypeKind.Class))
                 {
                     switch (this.MethodKind)
                     {
@@ -1508,7 +1508,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private bool IsVtableGapInterfaceMethod()
         {
             return this.ContainingType.IsInterface &&
-                   ModuleExtensions.GetVTableGapSize(this.MetadataName) > 0;
+                   (ModuleExtensions.GetVTableGapSize(this.MetadataName) > 0);
         }
 
         internal sealed override bool HasSpecialName
@@ -1534,7 +1534,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 var data = GetDecodedWellKnownAttributeData();
-                return data != null && data.HasSpecialNameAttribute;
+                return (data != null) && data.HasSpecialNameAttribute;
             }
         }
 
@@ -1546,7 +1546,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                return data != null && data.HasDynamicSecurityMethodAttribute;
+                return (data != null) && data.HasDynamicSecurityMethodAttribute;
             }
         }
 
@@ -1555,7 +1555,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = this.GetDecodedWellKnownAttributeData();
-                return data != null && data.HasDeclarativeSecurity;
+                return (data != null) && data.HasDeclarativeSecurity;
             }
         }
 
@@ -1597,7 +1597,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 var data = GetDecodedWellKnownAttributeData();
                 var result = (data != null) ? data.MethodImplAttributes : default(System.Reflection.MethodImplAttributes);
 
-                if (this.ContainingType.IsComImport && this.MethodKind == MethodKind.Constructor)
+                if (this.ContainingType.IsComImport && (this.MethodKind == MethodKind.Constructor))
                 {
                     // Synthesized constructor of ComImport types is marked as Runtime implemented and InternalCall
                     result |= System.Reflection.MethodImplAttributes.Runtime | System.Reflection.MethodImplAttributes.InternalCall;

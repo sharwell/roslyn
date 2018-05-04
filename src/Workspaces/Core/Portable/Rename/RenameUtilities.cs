@@ -63,10 +63,10 @@ namespace Microsoft.CodeAnalysis.Rename
         private static bool IsSymbolDefinedInsideMethod(ISymbol symbol)
         {
             return
-                symbol.Kind == SymbolKind.Local ||
-                symbol.Kind == SymbolKind.Label ||
-                symbol.Kind == SymbolKind.RangeVariable ||
-                symbol.Kind == SymbolKind.Parameter;
+                (symbol.Kind == SymbolKind.Local) ||
+                (symbol.Kind == SymbolKind.Label) ||
+                (symbol.Kind == SymbolKind.RangeVariable) ||
+                (symbol.Kind == SymbolKind.Parameter);
         }
 
         internal static IEnumerable<Document> GetDocumentsAffectedByRename(ISymbol symbol, Solution solution, IEnumerable<RenameLocation> renameLocations)
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.Rename
         private static bool ShouldRenameOnlyAffectDeclaringProject(ISymbol symbol)
         {
             // Explicit interface implementations can cascade to other projects
-            return symbol.DeclaredAccessibility == Accessibility.Private && !symbol.ExplicitInterfaceImplementations().Any();
+            return (symbol.DeclaredAccessibility == Accessibility.Private) && !symbol.ExplicitInterfaceImplementations().Any();
         }
 
         internal static TokenRenameInfo GetTokenRenameInfo(
@@ -135,14 +135,14 @@ namespace Microsoft.CodeAnalysis.Rename
                 return TokenRenameInfo.CreateSingleSymbolTokenInfo(symbolInfo.Symbol);
             }
 
-            if (symbolInfo.CandidateReason == CandidateReason.MemberGroup && symbolInfo.CandidateSymbols.Any())
+            if ((symbolInfo.CandidateReason == CandidateReason.MemberGroup) && symbolInfo.CandidateSymbols.Any())
             {
                 // This is a reference from a nameof expression. Allow the rename but set the RenameOverloads option
                 return TokenRenameInfo.CreateMemberGroupTokenInfo(symbolInfo.CandidateSymbols);
             }
 
             if (RenameLocation.ShouldRename(symbolInfo.CandidateReason) &&
-                symbolInfo.CandidateSymbols.Length == 1)
+                (symbolInfo.CandidateSymbols.Length == 1))
             {
                 // TODO(cyrusn): We're allowing rename here, but we likely should let the user
                 // know that there is an error in the code and that rename results might be

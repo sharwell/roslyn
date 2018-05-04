@@ -132,7 +132,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
                 var startToken = snapshot.FindToken(startPosition, CancellationToken.None);
                 if (startToken.IsKind(SyntaxKind.OpenBraceToken) &&
                     (startToken.Parent.IsInitializerForArrayOrCollectionCreationExpression() ||
-                     startToken.Parent is AnonymousObjectCreationExpressionSyntax))
+                     (startToken.Parent is AnonymousObjectCreationExpressionSyntax)))
                 {
                     // format everything but the brace pair.
                     var endToken = snapshot.FindToken(endPosition, CancellationToken.None);
@@ -150,14 +150,14 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
             if (style == IndentStyle.Smart)
             {
                 // skip whitespace
-                while (startPosition >= 0 && char.IsWhiteSpace(snapshot[startPosition]))
+                while ((startPosition >= 0) && char.IsWhiteSpace(snapshot[startPosition]))
                 {
                     startPosition--;
                 }
 
                 // skip token
                 startPosition--;
-                while (startPosition >= 0 && !char.IsWhiteSpace(snapshot[startPosition]))
+                while ((startPosition >= 0) && !char.IsWhiteSpace(snapshot[startPosition]))
                 {
                     startPosition--;
                 }
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
 
         private class BraceCompletionFormattingRule : BaseFormattingRule
         {
-            private static readonly Predicate<SuppressOperation> s_predicate = o => o == null || o.Option.IsOn(SuppressOption.NoWrapping);
+            private static readonly Predicate<SuppressOperation> s_predicate = o => (o == null) || o.Option.IsOn(SuppressOption.NoWrapping);
 
             public static readonly IFormattingRule Instance = new BraceCompletionFormattingRule();
 
@@ -205,11 +205,11 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
                 // int[] arr = {
                 //           = new[] {
                 //           = new int[] {
-                if (currentToken.IsKind(SyntaxKind.OpenBraceToken) && currentToken.Parent != null &&
-                (currentToken.Parent.Kind() == SyntaxKind.ObjectInitializerExpression ||
-                currentToken.Parent.Kind() == SyntaxKind.CollectionInitializerExpression ||
-                currentToken.Parent.Kind() == SyntaxKind.ArrayInitializerExpression ||
-                currentToken.Parent.Kind() == SyntaxKind.ImplicitArrayCreationExpression))
+                if (currentToken.IsKind(SyntaxKind.OpenBraceToken) && (currentToken.Parent != null) &&
+                ((currentToken.Parent.Kind() == SyntaxKind.ObjectInitializerExpression) ||
+                (currentToken.Parent.Kind() == SyntaxKind.CollectionInitializerExpression) ||
+                (currentToken.Parent.Kind() == SyntaxKind.ArrayInitializerExpression) ||
+                (currentToken.Parent.Kind() == SyntaxKind.ImplicitArrayCreationExpression)))
                 {
                     if (optionSet.GetOption(CSharpFormattingOptions.NewLinesForBracesInObjectCollectionArrayInitializers))
                     {

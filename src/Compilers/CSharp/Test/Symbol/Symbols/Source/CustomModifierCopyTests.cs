@@ -1969,7 +1969,7 @@ class Implementation : I
             var parameters = member.GetParameters();
             for (int i = 0; i < numParameters; i++)
             {
-                if (!(ignoreLast && i == numParameters - 1))
+                if (!(ignoreLast && (i == (numParameters - 1))))
                 {
                     var param = parameters[i];
                     Assert.Equal(ConstModOptType, param.CustomModifiers.Single().Modifier.ToTestDisplayString());

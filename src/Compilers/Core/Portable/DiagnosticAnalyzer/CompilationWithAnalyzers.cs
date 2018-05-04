@@ -801,7 +801,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             if (driver != null)
             {
                 // Throw away the driver instance if the initialization didn't succeed.
-                if (driver.WhenInitializedTask == null || driver.WhenInitializedTask.IsCanceled)
+                if ((driver.WhenInitializedTask == null) || driver.WhenInitializedTask.IsCanceled)
                 {
                     _driverPool.ForgetTrackedObject(driver);
                 }
@@ -821,7 +821,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             {
                 Debug.Assert(!driver.WhenInitializedTask.IsCanceled);
 
-                if (eventQueue.Count > 0 || _analysisState.HasPendingSyntaxAnalysis(analysisScope))
+                if ((eventQueue.Count > 0) || _analysisState.HasPendingSyntaxAnalysis(analysisScope))
                 {
                     try
                     {
@@ -863,8 +863,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                 lock (_executingTasksLock)
                 {
-                    if ((_executingConcurrentTreeTasksOpt == null || _executingConcurrentTreeTasksOpt.Count == 0) &&
-                        _executingCompilationOrNonConcurrentTreeTask == null)
+                    if (((_executingConcurrentTreeTasksOpt == null) || (_executingConcurrentTreeTasksOpt.Count == 0)) &&
+                        (_executingCompilationOrNonConcurrentTreeTask == null))
                     {
                         _executingCompilationOrNonConcurrentTreeTask = getNewCompilationTask();
                         return _executingCompilationOrNonConcurrentTreeTask.Item1;
@@ -885,12 +885,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                 lock (_executingTasksLock)
                 {
-                    if (waitForTreeTasks && _executingConcurrentTreeTasksOpt?.Count > 0)
+                    if (waitForTreeTasks && (_executingConcurrentTreeTasksOpt?.Count > 0))
                     {
                         executingTasks.AddRange(_executingConcurrentTreeTasksOpt.Values);
                     }
 
-                    if (waitForCompilationOrNonConcurrentTask && _executingCompilationOrNonConcurrentTreeTask != null)
+                    if (waitForCompilationOrNonConcurrentTask && (_executingCompilationOrNonConcurrentTreeTask != null))
                     {
                         executingTasks.Add(_executingCompilationOrNonConcurrentTreeTask);
                     }
@@ -941,7 +941,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                         Debug.Assert(_concurrentTreeTaskTokensOpt != null);
 
                         if (!_executingConcurrentTreeTasksOpt.TryGetValue(tree, out executingTreeTask) ||
-                            _concurrentTreeTaskTokensOpt[executingTreeTask.Item1] < newTaskToken)
+                            (_concurrentTreeTaskTokensOpt[executingTreeTask.Item1] < newTaskToken))
                         {
                             if (executingTreeTask != null)
                             {
@@ -986,13 +986,13 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 lock (_executingTasksLock)
                 {
                     Tuple<Task, CancellationTokenSource> executingTask;
-                    if (treeOpt != null && _analysisOptions.ConcurrentAnalysis)
+                    if ((treeOpt != null) && _analysisOptions.ConcurrentAnalysis)
                     {
                         Debug.Assert(_executingConcurrentTreeTasksOpt != null);
                         Debug.Assert(_concurrentTreeTaskTokensOpt != null);
 
                         if (_executingConcurrentTreeTasksOpt.TryGetValue(treeOpt, out executingTask) &&
-                            executingTask.Item1 == computeTask)
+                            (executingTask.Item1 == computeTask))
                         {
                             _executingConcurrentTreeTasksOpt.Remove(treeOpt);
                         }
@@ -1042,7 +1042,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         private static void FreeEventQueue(AsyncQueue<CompilationEvent> eventQueue, ObjectPool<AsyncQueue<CompilationEvent>> eventQueuePool)
         {
-            if (eventQueue == null || ReferenceEquals(eventQueue, s_EmptyEventQueue))
+            if ((eventQueue == null) || ReferenceEquals(eventQueue, s_EmptyEventQueue))
             {
                 return;
             }

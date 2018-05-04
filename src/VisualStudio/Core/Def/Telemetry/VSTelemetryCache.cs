@@ -55,12 +55,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Telemetry
 
             public override bool Equals(object obj)
             {
-                return obj is Key && Equals((Key)obj);
+                return (obj is Key) && Equals((Key)obj);
             }
 
             public bool Equals(Key key)
             {
-                return this.FunctionId == key.FunctionId && this.ItemKey == key.ItemKey;
+                return (this.FunctionId == key.FunctionId) && (this.ItemKey == key.ItemKey);
             }
         }
     }

@@ -274,7 +274,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 
         internal void CloseTextView()
         {
-            if (_textView != null && !_textView.IsClosed)
+            if ((_textView != null) && !_textView.IsClosed)
             {
                 _textView.Close();
                 _textView = null;

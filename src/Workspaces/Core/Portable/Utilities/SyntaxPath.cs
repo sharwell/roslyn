@@ -71,7 +71,7 @@ namespace Roslyn.Utilities
                         return;
                     }
 
-                    if (!_trackKinds || child.RawKind == kind)
+                    if (!_trackKinds || (child.RawKind == kind))
                     {
                         ordinal++;
                     }
@@ -100,7 +100,7 @@ namespace Roslyn.Utilities
                 }
             }
 
-            if (!_trackKinds || current.RawKind == _kind)
+            if (!_trackKinds || (current.RawKind == _kind))
             {
                 nodeOrToken = current;
                 return true;
@@ -114,7 +114,7 @@ namespace Roslyn.Utilities
             var ordinal = segment.Ordinal;
             foreach (var child in current.ChildNodesAndTokens())
             {
-                if (!_trackKinds || child.RawKind == segment.Kind)
+                if (!_trackKinds || (child.RawKind == segment.Kind))
                 {
                     if (ordinal == 0)
                     {
@@ -141,7 +141,7 @@ namespace Roslyn.Utilities
         {
             if (TryResolve(root, out var nodeOrToken) &&
                 nodeOrToken.IsNode &&
-                nodeOrToken.AsNode() is TNode)
+                (nodeOrToken.AsNode() is TNode))
             {
                 node = nodeOrToken.AsNode() as TNode;
                 return true;
@@ -185,8 +185,8 @@ namespace Roslyn.Utilities
             }
 
             return
-                _trackKinds == other._trackKinds &&
-                _kind == other._kind &&
+                (_trackKinds == other._trackKinds) &&
+                (_kind == other._kind) &&
                 _segments.SequenceEqual(other._segments, (x, y) => x.Equals(y));
         }
 

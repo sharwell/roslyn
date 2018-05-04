@@ -71,20 +71,20 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
 
         public static bool CanSpeculateOnNode(SyntaxNode node)
         {
-            return (node is StatementSyntax && node.Kind() != SyntaxKind.Block) ||
-                node is TypeSyntax ||
-                node is CrefSyntax ||
-                node.Kind() == SyntaxKind.Attribute ||
-                node.Kind() == SyntaxKind.ThisConstructorInitializer ||
-                node.Kind() == SyntaxKind.BaseConstructorInitializer ||
-                node.Kind() == SyntaxKind.EqualsValueClause ||
-                node.Kind() == SyntaxKind.ArrowExpressionClause;
+            return ((node is StatementSyntax) && (node.Kind() != SyntaxKind.Block)) ||
+                (node is TypeSyntax) ||
+                (node is CrefSyntax) ||
+                (node.Kind() == SyntaxKind.Attribute) ||
+                (node.Kind() == SyntaxKind.ThisConstructorInitializer) ||
+                (node.Kind() == SyntaxKind.BaseConstructorInitializer) ||
+                (node.Kind() == SyntaxKind.EqualsValueClause) ||
+                (node.Kind() == SyntaxKind.ArrowExpressionClause);
         }
 
         protected override void ValidateSpeculativeSemanticModel(SemanticModel speculativeSemanticModel, SyntaxNode nodeToSpeculate)
         {
-            Debug.Assert(speculativeSemanticModel != null ||
-                nodeToSpeculate is ExpressionSyntax ||
+            Debug.Assert((speculativeSemanticModel != null) ||
+                (nodeToSpeculate is ExpressionSyntax) ||
                 this.SemanticRootOfOriginalExpression.GetAncestors().Any(node => node.IsKind(SyntaxKind.UnknownAccessorDeclaration) ||
                     node.IsKind(SyntaxKind.IncompleteMember) ||
                     node.IsKind(SyntaxKind.BracketedArgumentList)),
@@ -275,8 +275,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
 
         protected override bool ReplacementChangesSemanticsForNodeLanguageSpecific(SyntaxNode currentOriginalNode, SyntaxNode currentReplacedNode, SyntaxNode previousOriginalNode, SyntaxNode previousReplacedNode)
         {
-            Debug.Assert(previousOriginalNode == null || previousOriginalNode.Parent == currentOriginalNode);
-            Debug.Assert(previousReplacedNode == null || previousReplacedNode.Parent == currentReplacedNode);
+            Debug.Assert((previousOriginalNode == null) || (previousOriginalNode.Parent == currentOriginalNode));
+            Debug.Assert((previousReplacedNode == null) || (previousReplacedNode.Parent == currentReplacedNode));
 
             if (currentOriginalNode.IsKind(SyntaxKind.CaseSwitchLabel, SyntaxKind.ConstantPattern))
             {
@@ -306,7 +306,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
                 // If replacing the node will result in a broken assignment expression, we won't remove it.
                 return ReplacementBreaksAssignmentExpression(assignment, (AssignmentExpressionSyntax)currentReplacedNode);
             }
-            else if (currentOriginalNode is SelectOrGroupClauseSyntax || currentOriginalNode is OrderingSyntax)
+            else if ((currentOriginalNode is SelectOrGroupClauseSyntax) || (currentOriginalNode is OrderingSyntax))
             {
                 return !SymbolsAreCompatible(currentOriginalNode, currentReplacedNode);
             }
@@ -365,7 +365,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
                     var originalExpressionType = this.OriginalSemanticModel.GetTypeInfo(originalExpression, this.CancellationToken).Type;
                     var newExpressionType = this.SpeculativeSemanticModel.GetTypeInfo(newExpression, this.CancellationToken).Type;
 
-                    if (originalExpressionType == null || newExpressionType == null)
+                    if ((originalExpressionType == null) || (newExpressionType == null))
                     {
                         // With the current implementation of the C# binder, this is impossible, but it's probably not wise to
                         // depend on an implementation detail of another layer.
@@ -463,7 +463,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
             }
             else if (currentOriginalNode.Kind() == SyntaxKind.CollectionInitializerExpression)
             {
-                return previousOriginalNode != null &&
+                return (previousOriginalNode != null) &&
                     ReplacementBreaksCollectionInitializerAddMethod((ExpressionSyntax)previousOriginalNode, (ExpressionSyntax)previousReplacedNode);
             }
             else if (currentOriginalNode.Kind() == SyntaxKind.Interpolation)
@@ -617,7 +617,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
 
         protected override bool IsNamedArgument(ArgumentSyntax argument)
         {
-            return argument.NameColon != null && !argument.NameColon.IsMissing;
+            return (argument.NameColon != null) && !argument.NameColon.IsMissing;
         }
 
         protected override string GetNamedArgumentIdentifierValueText(ArgumentSyntax argument)
@@ -665,7 +665,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
             var originalConvertedType = this.OriginalSemanticModel.GetTypeInfo(originalIsOrAsExpression.Right).Type;
             var newConvertedType = this.SpeculativeSemanticModel.GetTypeInfo(newIsOrAsExpression.Right).Type;
 
-            if (originalConvertedType == null || newConvertedType == null)
+            if ((originalConvertedType == null) || (newConvertedType == null))
             {
                 return originalConvertedType != newConvertedType;
             }
@@ -680,8 +680,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
         private bool ReplacementBreaksAssignmentExpression(AssignmentExpressionSyntax assignmentExpression, AssignmentExpressionSyntax newAssignmentExpression)
         {
             if (assignmentExpression.IsCompoundAssignExpression() &&
-                assignmentExpression.Kind() != SyntaxKind.LeftShiftAssignmentExpression &&
-                assignmentExpression.Kind() != SyntaxKind.RightShiftAssignmentExpression &&
+                (assignmentExpression.Kind() != SyntaxKind.LeftShiftAssignmentExpression) &&
+                (assignmentExpression.Kind() != SyntaxKind.RightShiftAssignmentExpression) &&
                 ReplacementBreaksCompoundAssignment(assignmentExpression.Left, assignmentExpression.Right, newAssignmentExpression.Left, newAssignmentExpression.Right))
             {
                 return true;
@@ -711,7 +711,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
         {
             this.GetConversions(originalExpression, originalTargetType, newExpression, newTargetType, out var originalConversion, out var newConversion);
 
-            if (originalConversion == null || newConversion == null)
+            if ((originalConversion == null) || (newConversion == null))
             {
                 return false;
             }
@@ -721,7 +721,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
 
         private bool ConversionsAreCompatible(Conversion originalConversion, Conversion newConversion)
         {
-            if (originalConversion.Exists != newConversion.Exists ||
+            if ((originalConversion.Exists != newConversion.Exists) ||
                 (!originalConversion.IsExplicit && newConversion.IsExplicit))
             {
                 return false;
@@ -735,7 +735,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
                 return false;
             }
 
-            if (originalIsUserDefined || originalConversion.MethodSymbol != null || newConversion.MethodSymbol != null)
+            if (originalIsUserDefined || (originalConversion.MethodSymbol != null) || (newConversion.MethodSymbol != null))
             {
                 return SymbolsAreCompatible(originalConversion.MethodSymbol, newConversion.MethodSymbol);
             }

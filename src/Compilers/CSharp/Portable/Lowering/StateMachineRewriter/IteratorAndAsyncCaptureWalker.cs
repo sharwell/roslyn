@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             walker.Analyze(ref badRegion);
             Debug.Assert(!badRegion);
 
-            if (!method.IsStatic && method.ContainingType.TypeKind == TypeKind.Struct)
+            if (!method.IsStatic && (method.ContainingType.TypeKind == TypeKind.Struct))
             {
                 // It is possible that the enclosing method only *writes* to the enclosing struct, but in that
                 // case it should be considered captured anyway so that we have a proxy for it to write to.
@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 foreach (var v in allVariables)
                 {
                     var symbol = v.Symbol;
-                    if ((object)symbol != null && HoistInDebugBuild(symbol))
+                    if (((object)symbol != null) && HoistInDebugBuild(symbol))
                     {
                         variablesToHoist.Add(symbol);
                     }
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         protected override void EnterParameter(ParameterSymbol parameter)
         {
             // Async and iterators should never have ref parameters aside from `this`
-            Debug.Assert(parameter.IsThis || parameter.RefKind == RefKind.None);
+            Debug.Assert(parameter.IsThis || (parameter.RefKind == RefKind.None));
 
             // parameters are NOT initially assigned here - if that is a problem, then
             // the parameters must be captured.
@@ -261,7 +261,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override BoundNode VisitFieldAccess(BoundFieldAccess node)
         {
-            if (node.ReceiverOpt != null && node.ReceiverOpt.Kind == BoundKind.ThisReference)
+            if ((node.ReceiverOpt != null) && (node.ReceiverOpt.Kind == BoundKind.ThisReference))
             {
                 var thisSymbol = topLevelMethod.ThisParameter;
                 CaptureVariable(thisSymbol, node.Syntax);
@@ -381,7 +381,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             private void Capture(Symbol s, SyntaxNode syntax)
             {
-                if ((object)s != null && !_localsInScope.Contains(s))
+                if (((object)s != null) && !_localsInScope.Contains(s))
                 {
                     _analyzer.CaptureVariable(s, syntax);
                 }

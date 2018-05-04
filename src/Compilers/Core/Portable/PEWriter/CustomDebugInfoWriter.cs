@@ -202,8 +202,8 @@ namespace Microsoft.Cci
                 {
                     var dynamicTransformFlags = local.DynamicTransformFlags;
                     return !dynamicTransformFlags.IsEmpty &&
-                        dynamicTransformFlags.Length <= CustomDebugInfoEncoder.DynamicAttributeSize &&
-                        local.Name.Length < CustomDebugInfoEncoder.IdentifierSize;
+                        (dynamicTransformFlags.Length <= CustomDebugInfoEncoder.DynamicAttributeSize) &&
+                        (local.Name.Length < CustomDebugInfoEncoder.IdentifierSize);
                 },
                 (scope, local) => (local.Name, GetDynamicFlags(local), local.DynamicTransformFlags.Length, (local.SlotIndex < 0) ? 0 : local.SlotIndex));
 
@@ -256,7 +256,7 @@ namespace Microsoft.Cci
             encoder.AddUsingGroups(usingCounts);
             usingCounts.Free();
 
-            if (_methodBodyWithModuleInfo != null && !ReferenceEquals(_methodBodyWithModuleInfo, methodBody))
+            if ((_methodBodyWithModuleInfo != null) && !ReferenceEquals(_methodBodyWithModuleInfo, methodBody))
             {
                 encoder.AddForwardModuleInfo(_methodWithModuleInfo);
             }
@@ -264,7 +264,7 @@ namespace Microsoft.Cci
 
         private bool ShouldForwardToPreviousMethodWithUsingInfo(EmitContext context, IMethodBody methodBody)
         {
-            if (_previousMethodBodyWithUsingInfo == null ||
+            if ((_previousMethodBodyWithUsingInfo == null) ||
                 ReferenceEquals(_previousMethodBodyWithUsingInfo, methodBody))
             {
                 return false;
@@ -293,7 +293,7 @@ namespace Microsoft.Cci
             // Note: not comparing project-level imports since those are the same for all method bodies.
             var s1 = methodBody.ImportScope;
             var s2 = previousScopes;
-            while (s1 != null && s2 != null)
+            while ((s1 != null) && (s2 != null))
             {
                 if (!s1.GetUsedNamespaces().SequenceEqual(s2.GetUsedNamespaces()))
                 {

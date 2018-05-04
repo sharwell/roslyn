@@ -54,14 +54,14 @@ namespace Microsoft.CodeAnalysis.CSharp.UseExpressionBody
             {
                 var grandparent = context.Node.Parent.Parent;
 
-                if (grandparent.Kind() == SyntaxKind.PropertyDeclaration &&
-                    AnalyzeSyntax(optionSet, grandparent, UseExpressionBodyForPropertiesHelper.Instance) != null)
+                if ((grandparent.Kind() == SyntaxKind.PropertyDeclaration) &&
+                    (AnalyzeSyntax(optionSet, grandparent, UseExpressionBodyForPropertiesHelper.Instance) != null))
                 {
                     return;
                 }
 
-                if (grandparent.Kind() == SyntaxKind.IndexerDeclaration &&
-                    AnalyzeSyntax(optionSet, grandparent, UseExpressionBodyForIndexersHelper.Instance) != null)
+                if ((grandparent.Kind() == SyntaxKind.IndexerDeclaration) &&
+                    (AnalyzeSyntax(optionSet, grandparent, UseExpressionBodyForIndexersHelper.Instance) != null))
                 {
                     return;
                 }

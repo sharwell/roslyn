@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             // SymbolEquivalenceComparer, and returned true. If S1 and S2 were from different projects,
             // they would compare false but transitivity would say they must be true. Another way to think
             // of this is any use of a source symbol "poisons" the comparison and requires it to be stricter.
-            if (x == null || y == null || IsInSource(x) || IsInSource(y))
+            if ((x == null) || (y == null) || IsInSource(x) || IsInSource(y))
             {
                 return object.Equals(x, y);
             }

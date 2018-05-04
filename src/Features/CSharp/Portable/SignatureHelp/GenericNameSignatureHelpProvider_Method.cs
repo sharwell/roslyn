@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
         {
             var result = method.ReceiverType;
 
-            if (result.Kind != SymbolKind.NamedType || !((INamedTypeSymbol)result).IsScriptClass)
+            if ((result.Kind != SymbolKind.NamedType) || !((INamedTypeSymbol)result).IsScriptClass)
             {
                 return result;
             }

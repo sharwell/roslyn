@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             finder.Visit(node);
             HashSet<LabelSymbol> gotos = finder._gotos;
             HashSet<LabelSymbol> targets = finder._targets;
-            if (gotos != null && targets != null)
+            if ((gotos != null) && (targets != null))
             {
                 gotos.RemoveAll(targets);
             }
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public override BoundNode Visit(BoundNode node)
         {
             HashSet<LabelSymbol> unmatched;
-            if (node != null && _unmatchedLabelsCache.TryGetValue(node, out unmatched))
+            if ((node != null) && _unmatchedLabelsCache.TryGetValue(node, out unmatched))
             {
                 if (unmatched != null)
                 {

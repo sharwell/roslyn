@@ -33,8 +33,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             //
             //   IsEvent("Member", dyn) ? InvokeMember("{add|remove}_Member", dyn, RHS) : SetMember(BinaryOperation("op=", GetMember("Member", dyn)), RHS)
             //
-            bool isPossibleEventHandlerOperation = node.Left.Kind == BoundKind.DynamicMemberAccess &&
-                (binaryOperator == BinaryOperatorKind.Addition || binaryOperator == BinaryOperatorKind.Subtraction);
+            bool isPossibleEventHandlerOperation = (node.Left.Kind == BoundKind.DynamicMemberAccess) &&
+                ((binaryOperator == BinaryOperatorKind.Addition) || (binaryOperator == BinaryOperatorKind.Subtraction));
 
             // save RHS to a temp, we need to use it twice:
             if (isPossibleEventHandlerOperation && CanChangeValueBetweenReads(loweredRight))
@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 rewrittenAssignment = _factory.Conditional(isEventCondition.ToExpression(), invokeEventAccessor.ToExpression(), rewrittenAssignment, rewrittenAssignment.Type);
             }
 
-            BoundExpression result = (temps.Count == 0 && stores.Count == 0) ?
+            BoundExpression result = ((temps.Count == 0) && (stores.Count == 0)) ?
                 rewrittenAssignment :
                 new BoundSequence(
                     syntax,
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression TransformPropertyOrEventReceiver(Symbol propertyOrEvent, BoundExpression receiverOpt, ArrayBuilder<BoundExpression> stores, ArrayBuilder<LocalSymbol> temps)
         {
-            Debug.Assert(propertyOrEvent.Kind == SymbolKind.Property || propertyOrEvent.Kind == SymbolKind.Event);
+            Debug.Assert((propertyOrEvent.Kind == SymbolKind.Property) || (propertyOrEvent.Kind == SymbolKind.Event));
 
             // We need to stash away the receiver so that it does not get evaluated twice.
             // If the receiver is classified as a value of reference type then we can simply say
@@ -144,7 +144,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // assume that was the case.
 
             // If the property is static or if the receiver is of kind "Base" or "this", then we can just generate prop = prop + value
-            if (receiverOpt == null || propertyOrEvent.IsStatic || !CanChangeValueBetweenReads(receiverOpt))
+            if ((receiverOpt == null) || propertyOrEvent.IsStatic || !CanChangeValueBetweenReads(receiverOpt))
             {
                 return receiverOpt;
             }
@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // SPEC VIOLATION: in a case of unconstrained generic type parameter a runtime test (default(T) == null) would be needed
             // SPEC VIOLATION: However, for compatibility with Dev12 we will continue treating all generic type parameters, constrained or not,
             // SPEC VIOLATION: as value types.
-            var variableRepresentsLocation = rewrittenReceiver.Type.IsValueType || rewrittenReceiver.Type.Kind == SymbolKind.TypeParameter;
+            var variableRepresentsLocation = rewrittenReceiver.Type.IsValueType || (rewrittenReceiver.Type.Kind == SymbolKind.TypeParameter);
 
             var receiverTemp = _factory.StoreToTemp(rewrittenReceiver, out assignmentToTemp, refKind: variableRepresentsLocation ? RefKind.Ref : RefKind.None);
             stores.Add(assignmentToTemp);
@@ -207,7 +207,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // SPEC VIOLATION: in a case of unconstrained generic type parameter a runtime test (default(T) == null) would be needed
                 // SPEC VIOLATION: However, for compatibility with Dev12 we will continue treating all generic type parameters, constrained or not,
                 // SPEC VIOLATION: as value types.
-                var variableRepresentsLocation = rewrittenReceiver.Type.IsValueType || rewrittenReceiver.Type.Kind == SymbolKind.TypeParameter;
+                var variableRepresentsLocation = rewrittenReceiver.Type.IsValueType || (rewrittenReceiver.Type.Kind == SymbolKind.TypeParameter);
 
                 var receiverTemp = _factory.StoreToTemp(rewrittenReceiver, out assignmentToTemp, refKind: variableRepresentsLocation ? RefKind.Ref : RefKind.None);
                 transformedReceiver = receiverTemp;
@@ -348,7 +348,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         private bool TransformCompoundAssignmentFieldOrEventAccessReceiver(Symbol fieldOrEvent, ref BoundExpression receiver, ArrayBuilder<BoundExpression> stores, ArrayBuilder<LocalSymbol> temps)
         {
-            Debug.Assert(fieldOrEvent.Kind == SymbolKind.Field || fieldOrEvent.Kind == SymbolKind.Event);
+            Debug.Assert((fieldOrEvent.Kind == SymbolKind.Field) || (fieldOrEvent.Kind == SymbolKind.Event));
 
             //If the receiver is static or is the receiver is of kind "Base" or "this", then we can just generate field = field + value
             if (fieldOrEvent.IsStatic || !CanChangeValueBetweenReads(receiver))
@@ -703,10 +703,10 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return !ConstantValueIsTrivial(type);
 
                 case BoundKind.Parameter:
-                    return localsMayBeAssignedOrCaptured || ((BoundParameter)expression).ParameterSymbol.RefKind != RefKind.None;
+                    return localsMayBeAssignedOrCaptured || (((BoundParameter)expression).ParameterSymbol.RefKind != RefKind.None);
 
                 case BoundKind.Local:
-                    return localsMayBeAssignedOrCaptured || ((BoundLocal)expression).LocalSymbol.RefKind != RefKind.None;
+                    return localsMayBeAssignedOrCaptured || (((BoundLocal)expression).LocalSymbol.RefKind != RefKind.None);
 
                 default:
                     return true;
@@ -751,7 +751,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     if (expression.Type.IsNullableType())
                     {
                         var objCreation = (BoundObjectCreationExpression)expression;
-                        return objCreation.Arguments.Length == 1 && ReadIsSideeffecting(objCreation.Arguments[0]);
+                        return (objCreation.Arguments.Length == 1) && ReadIsSideeffecting(objCreation.Arguments[0]);
                     }
 
                     return true;
@@ -789,7 +789,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         // to treat them as potentially changing.
         private static bool ConstantValueIsTrivial(TypeSymbol type)
         {
-            return (object)type == null ||
+            return ((object)type == null) ||
                 type.SpecialType.IsClrInteger() ||
                 type.IsReferenceType ||
                 type.IsEnumType();

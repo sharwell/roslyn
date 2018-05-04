@@ -483,9 +483,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                 private void AddIfCaptured(Symbol symbol, SyntaxNode syntax)
                 {
                     Debug.Assert(
-                        symbol.Kind == SymbolKind.Local ||
-                        symbol.Kind == SymbolKind.Parameter ||
-                        symbol.Kind == SymbolKind.Method);
+                        (symbol.Kind == SymbolKind.Local) ||
+                        (symbol.Kind == SymbolKind.Parameter) ||
+                        (symbol.Kind == SymbolKind.Method));
 
                     if (_currentClosure == null)
                     {
@@ -500,7 +500,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
 
                     if (symbol is MethodSymbol method &&
-                        _currentClosure.OriginalMethodSymbol == method)
+                        (_currentClosure.OriginalMethodSymbol == method))
                     {
                         // Is this recursion? If so there's no capturing
                         return;
@@ -514,7 +514,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // Record the captured variable where it's captured
                         var scope = _currentScope;
                         var closure = _currentClosure;
-                        while (closure != null && symbol.ContainingSymbol != closure.OriginalMethodSymbol)
+                        while ((closure != null) && (symbol.ContainingSymbol != closure.OriginalMethodSymbol))
                         {
                             closure.CapturedVariables.Add(symbol);
 
@@ -586,7 +586,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     where TSymbol : Symbol
                 {
                     Scope scope;
-                    if (locals.IsEmpty || _currentScope.BoundNode == node)
+                    if (locals.IsEmpty || (_currentScope.BoundNode == node))
                     {
                         // We should never create a new scope with the same bound
                         // node. We can get into this situation for methods and

@@ -72,8 +72,8 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Tagging
                     // The span changed.  This could have happened for a few different reasons.  
                     // If none of the view's text snapshots changed, then it was because of scrolling.
 
-                    if (_viewTextSnapshot == lastViewTextSnapshot &&
-                        _viewVisualSnapshot == lastViewVisualSnapshot)
+                    if ((_viewTextSnapshot == lastViewTextSnapshot) &&
+                        (_viewVisualSnapshot == lastViewVisualSnapshot))
                     {
                         // We scrolled.
                         RaiseChanged(_scrollChangeDelay);

@@ -915,7 +915,7 @@ namespace Microsoft.Cci
             // Additionally, methods within COM types have no body.
 
             return !methodDef.IsAbstract && !methodDef.IsExternal &&
-                (methodDef.ContainingTypeDefinition == null || !methodDef.ContainingTypeDefinition.IsComObject);
+                ((methodDef.ContainingTypeDefinition == null) || !methodDef.ContainingTypeDefinition.IsComObject);
         }
 
         /// <summary>
@@ -929,7 +929,7 @@ namespace Microsoft.Cci
             }
 
             var method = member as IMethodDefinition;
-            if (method != null && method.IsVirtual)
+            if ((method != null) && method.IsVirtual)
             {
                 return true;
             }
@@ -940,7 +940,7 @@ namespace Microsoft.Cci
                     return context.IncludePrivateMembers;
                 case TypeMemberVisibility.Assembly:
                 case TypeMemberVisibility.FamilyAndAssembly:
-                    return context.IncludePrivateMembers || context.Module.SourceAssemblyOpt?.InternalsAreVisible == true;
+                    return context.IncludePrivateMembers || (context.Module.SourceAssemblyOpt?.InternalsAreVisible == true);
             }
             return true;
         }

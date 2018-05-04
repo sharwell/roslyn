@@ -140,7 +140,7 @@ namespace Roslyn.Utilities
             for (var i = startInclusive; i < endExclusive; i++)
             {
                 var childEditDistance = _edges[i].EditDistance;
-                if (min <= childEditDistance && childEditDistance <= max)
+                if ((min <= childEditDistance) && (childEditDistance <= max))
                 {
                     Lookup(_nodes[_edges[i].ChildNodeIndex],
                         queryCharacters, queryLength, threshold, result,

@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
 
                 default:
-                    if (lexer.Options.Kind == SourceCodeKind.Script && contextualKind == SyntaxKind.ExclamationToken && hashPosition == 0 && !hash.HasTrailingTrivia)
+                    if ((lexer.Options.Kind == SourceCodeKind.Script) && (contextualKind == SyntaxKind.ExclamationToken) && (hashPosition == 0) && !hash.HasTrailingTrivia)
                     {
                         result = this.ParseShebangDirective(hash, this.EatToken(SyntaxKind.ExclamationToken), isActive);
                     }
@@ -358,7 +358,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 default:
                     line = this.EatToken(SyntaxKind.NumericLiteralToken, ErrorCode.ERR_InvalidLineNumber, reportError: isActive);
                     sawLineButNotFile = true; //assume this is the case until we (potentially) see the file name below
-                    if (isActive && !line.IsMissing && line.Kind == SyntaxKind.NumericLiteralToken)
+                    if (isActive && !line.IsMissing && (line.Kind == SyntaxKind.NumericLiteralToken))
                     {
                         if ((int)line.Value < 1)
                         {
@@ -370,8 +370,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                         }
                     }
 
-                    if (this.CurrentToken.Kind == SyntaxKind.StringLiteralToken &&
-                        (line.IsMissing || line.GetTrailingTriviaWidth() > 0 || this.CurrentToken.GetLeadingTriviaWidth() > 0)) //require separation between line number and file name
+                    if ((this.CurrentToken.Kind == SyntaxKind.StringLiteralToken) &&
+                        (line.IsMissing || (line.GetTrailingTriviaWidth() > 0) || (this.CurrentToken.GetLeadingTriviaWidth() > 0))) //require separation between line number and file name
                     {
                         file = this.EatToken();
                         sawLineButNotFile = false;
@@ -433,7 +433,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             {
                 var warning = this.EatContextualToken(SyntaxKind.WarningKeyword);
                 SyntaxToken style;
-                if (this.CurrentToken.Kind == SyntaxKind.DisableKeyword || this.CurrentToken.Kind == SyntaxKind.RestoreKeyword)
+                if ((this.CurrentToken.Kind == SyntaxKind.DisableKeyword) || (this.CurrentToken.Kind == SyntaxKind.RestoreKeyword))
                 {
                     style = this.EatToken();
                     var ids = new SeparatedSyntaxListBuilder<ExpressionSyntax>(10);
@@ -510,7 +510,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 var bytes = this.EatToken(SyntaxKind.StringLiteralToken, ErrorCode.WRN_IllegalPPChecksum, reportError: isActive && !guid.IsMissing);
                 if (isActive && !bytes.IsMissing)
                 {
-                    if (bytes.ValueText.Length % 2 != 0)
+                    if ((bytes.ValueText.Length % 2) != 0)
                     {
                         bytes = this.AddError(bytes, ErrorCode.WRN_IllegalPPChecksum);
                     }
@@ -552,13 +552,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             StringBuilder builder = null;
 
-            if (this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken &&
-                this.CurrentToken.Kind != SyntaxKind.EndOfFileToken)
+            if ((this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken) &&
+                (this.CurrentToken.Kind != SyntaxKind.EndOfFileToken))
             {
                 builder = new StringBuilder(this.CurrentToken.FullWidth);
 
-                while (this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken &&
-                       this.CurrentToken.Kind != SyntaxKind.EndOfFileToken)
+                while ((this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken) &&
+                       (this.CurrentToken.Kind != SyntaxKind.EndOfFileToken))
                 {
                     var token = this.EatToken();
 
@@ -584,8 +584,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             var skippedTokens = new SyntaxListBuilder<SyntaxToken>();
 
             // Consume all extraneous tokens as leading SkippedTokens trivia.
-            if (this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken &&
-                this.CurrentToken.Kind != SyntaxKind.EndOfFileToken)
+            if ((this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken) &&
+                (this.CurrentToken.Kind != SyntaxKind.EndOfFileToken))
             {
                 skippedTokens = new SyntaxListBuilder<SyntaxToken>(10);
 
@@ -604,8 +604,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     skippedTokens.Add(this.AddError(this.EatToken().WithoutDiagnosticsGreen(), errorCode));
                 }
 
-                while (this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken &&
-                       this.CurrentToken.Kind != SyntaxKind.EndOfFileToken)
+                while ((this.CurrentToken.Kind != SyntaxKind.EndOfDirectiveToken) &&
+                       (this.CurrentToken.Kind != SyntaxKind.EndOfFileToken))
                 {
                     skippedTokens.Add(this.EatToken().WithoutDiagnosticsGreen());
                 }
@@ -659,7 +659,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         private ExpressionSyntax ParseEquality()
         {
             var left = this.ParseLogicalNot();
-            while (this.CurrentToken.Kind == SyntaxKind.EqualsEqualsToken || this.CurrentToken.Kind == SyntaxKind.ExclamationEqualsToken)
+            while ((this.CurrentToken.Kind == SyntaxKind.EqualsEqualsToken) || (this.CurrentToken.Kind == SyntaxKind.ExclamationEqualsToken))
             {
                 var op = this.EatToken();
                 var right = this.ParseEquality();

@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                         var root = await GetOrDefaultAsync(document, (d, c) => d.GetSyntaxRootAsync(c), cancellationToken).ConfigureAwait(false);
                         var syntaxFactsService = document.Project.LanguageServices.GetService<ISyntaxFactsService>();
                         var reasons = workItem.InvocationReasons;
-                        if (root == null || syntaxFactsService == null)
+                        if ((root == null) || (syntaxFactsService == null))
                         {
                             // as a fallback mechanism, if we can't run one method body due to some missing service, run whole document analyzer.
                             await RunAnalyzersAsync(analyzers, document, (a, d, c) => a.AnalyzeDocumentAsync(d, null, reasons, c), cancellationToken).ConfigureAwait(false);
@@ -245,7 +245,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                 private static SyntaxNode GetMemberNode(ISyntaxFactsService service, SyntaxNode root, SyntaxPath memberPath)
                 {
-                    if (root == null || memberPath == null)
+                    if ((root == null) || (memberPath == null))
                     {
                         return null;
                     }

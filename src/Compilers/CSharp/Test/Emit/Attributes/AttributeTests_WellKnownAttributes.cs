@@ -3392,7 +3392,7 @@ delegate void D();
                     var name = metadataReader.GetString(row.Name);
                     var actual = row.Attributes & TypeAttributes.StringFormatMask;
 
-                    if (name == "<Module>" ||
+                    if ((name == "<Module>") ||
                         name.StartsWith("__StaticArrayInitTypeSize=", StringComparison.Ordinal) ||
                         name.StartsWith("<PrivateImplementationDetails>", StringComparison.Ordinal))
                     {

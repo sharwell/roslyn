@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.MakeMethodAsynchronous
             // if our member is already Task-Like, and that functionality recognizes
             // ValueTask if it is available, but does not care if it is not.
             var (taskType, taskOfTType, valueTaskOfTTypeOpt) = GetTaskTypes(compilation);
-            if (taskType == null || taskOfTType == null)
+            if ((taskType == null) || (taskOfTType == null))
             {
                 return;
             }
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.MakeMethodAsynchronous
             var symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken) as IMethodSymbol;
 
             // Heuristic to recognize the common case for entry point method
-            var isEntryPoint = symbol != null && symbol.IsStatic && IsLikelyEntryPointName(symbol.Name, context.Document);
+            var isEntryPoint = (symbol != null) && symbol.IsStatic && IsLikelyEntryPointName(symbol.Name, context.Document);
 
             // Offer to convert to a Task return type.
             context.RegisterCodeFix(

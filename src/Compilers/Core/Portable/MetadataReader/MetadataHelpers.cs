@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis
                         Debug.Assert(decodedString != null);
 
                         // Type name is generic if the decoded name of the top level type OR any of the outer types of a nested type had the '`' character.
-                        isGenericTypeName = isGenericTypeName || decodedString.IndexOf(GenericTypeNameManglingChar) >= 0;
+                        isGenericTypeName = isGenericTypeName || (decodedString.IndexOf(GenericTypeNameManglingChar) >= 0);
                         typeNameBuilder.Append(decodedString);
 
                         switch (c)
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis
                                 break;
 
                             case '+':
-                                if (arrayRanksBuilder != null || pointerCount > 0)
+                                if ((arrayRanksBuilder != null) || (pointerCount > 0))
                                 {
                                     // Error case, array shape must be specified at the end of the type name.
                                     // Process as a regular character and continue.
@@ -196,10 +196,10 @@ namespace Microsoft.CodeAnalysis
 
                             case '[':
                                 // Is type followed by generic type arguments?
-                                if (isGenericTypeName && typeArguments == null)
+                                if (isGenericTypeName && (typeArguments == null))
                                 {
                                     Advance();
-                                    if (arrayRanksBuilder != null || pointerCount > 0)
+                                    if ((arrayRanksBuilder != null) || (pointerCount > 0))
                                     {
                                         // Error case, array shape must be specified at the end of the type name.
                                         // Process as a regular character and continue.
@@ -301,7 +301,7 @@ namespace Microsoft.CodeAnalysis
             /// </summary>
             private string DecodeGenericName(int i)
             {
-                Debug.Assert(i == _input.Length || s_typeNameDelimiters.Contains(_input[i]));
+                Debug.Assert((i == _input.Length) || s_typeNameDelimiters.Contains(_input[i]));
 
                 var length = i - _offset;
                 if (length == 0)
@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis
 
                 if (isTypeArgumentWithAssemblyName)
                 {
-                    if (!EndOfInput && Current == ']')
+                    if (!EndOfInput && (Current == ']'))
                     {
                         Advance();
                     }
@@ -432,7 +432,7 @@ namespace Microsoft.CodeAnalysis
                                 arrayRanksBuilder = ArrayBuilder<int>.GetInstance();
                             }
 
-                            arrayRanksBuilder.Add(rank == 1 && !isMultiDimensionalIfRankOne ? 0 : rank);
+                            arrayRanksBuilder.Add((rank == 1) && !isMultiDimensionalIfRankOne ? 0 : rank);
                             Advance();
                             return;
 
@@ -499,9 +499,9 @@ namespace Microsoft.CodeAnalysis
                 }
             }
 
-            if (indexOfManglingChar < 2 ||
-               (emittedTypeNameLength - indexOfManglingChar) == 0 ||
-               emittedTypeNameLength - indexOfManglingChar > MaxStringLengthForParamSize)
+            if ((indexOfManglingChar < 2) ||
+               ((emittedTypeNameLength - indexOfManglingChar) == 0) ||
+               ((emittedTypeNameLength - indexOfManglingChar) > MaxStringLengthForParamSize))
             {
                 suffixStartsAt = -1;
                 return 0;
@@ -514,8 +514,8 @@ namespace Microsoft.CodeAnalysis
             int arity;
             bool nonNumericCharFound = !int.TryParse(stringRepresentingArity, NumberStyles.None, CultureInfo.InvariantCulture, out arity);
 
-            if (nonNumericCharFound || arity < 0 || arity > short.MaxValue ||
-                stringRepresentingArity != arity.ToString())
+            if (nonNumericCharFound || (arity < 0) || (arity > short.MaxValue) ||
+                (stringRepresentingArity != arity.ToString()))
             {
                 suffixStartsAt = -1;
                 return 0;
@@ -536,7 +536,7 @@ namespace Microsoft.CodeAnalysis
                 return emittedTypeName;
             }
 
-            Debug.Assert(suffixStartsAt > 0 && suffixStartsAt < emittedTypeName.Length - 1);
+            Debug.Assert((suffixStartsAt > 0) && (suffixStartsAt < (emittedTypeName.Length - 1)));
             return emittedTypeName.Substring(0, suffixStartsAt);
         }
 
@@ -547,7 +547,7 @@ namespace Microsoft.CodeAnalysis
             int suffixStartsAt;
             if (arity == InferTypeArityFromMetadataName(emittedTypeName, out suffixStartsAt))
             {
-                Debug.Assert(suffixStartsAt > 0 && suffixStartsAt < emittedTypeName.Length - 1);
+                Debug.Assert((suffixStartsAt > 0) && (suffixStartsAt < (emittedTypeName.Length - 1)));
                 return emittedTypeName.Substring(0, suffixStartsAt);
             }
 
@@ -594,7 +594,7 @@ namespace Microsoft.CodeAnalysis
                 if (name[i] == DotDelimiter)
                 {
                     int len = i - start;
-                    if (len == 6 && start == 0 && name.StartsWith(SystemString, StringComparison.Ordinal))
+                    if ((len == 6) && (start == 0) && name.StartsWith(SystemString, StringComparison.Ordinal))
                     {
                         result.Add(SystemString);
                     }
@@ -638,7 +638,7 @@ namespace Microsoft.CodeAnalysis
                     case DotDelimiter:
                         // If we see consecutive dots, the second is part of the method name
                         // (i.e. ".ctor" or ".cctor").
-                        if (angleBracketDepth == 0 && (i == 0 || delimiter < i - 1))
+                        if ((angleBracketDepth == 0) && ((i == 0) || (delimiter < (i - 1))))
                         {
                             delimiter = i;
                         }
@@ -653,7 +653,7 @@ namespace Microsoft.CodeAnalysis
                 return pstrName;
             }
 
-            if (delimiter == 6 && pstrName.StartsWith(SystemString, StringComparison.Ordinal))
+            if ((delimiter == 6) && pstrName.StartsWith(SystemString, StringComparison.Ordinal))
             {
                 qualifier = SystemString;
             }
@@ -725,7 +725,7 @@ namespace Microsoft.CodeAnalysis
         {
             Debug.Assert(typesByNS != null);
             Debug.Assert(namespaceNameLength >= 0);
-            Debug.Assert(!isGlobalNamespace || namespaceNameLength == 0);
+            Debug.Assert(!isGlobalNamespace || (namespaceNameLength == 0));
 
             // A list of groups of TypeDef row ids for types immediately contained within this namespace.
             var nestedTypes = new List<IGrouping<string, TypeDefinitionHandle>>();
@@ -901,7 +901,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         internal static bool IsValidMetadataIdentifier(string str)
         {
-            return !string.IsNullOrEmpty(str) && str.IsValidUnicodeString() && str.IndexOf('\0') == -1;
+            return !string.IsNullOrEmpty(str) && str.IsValidUnicodeString() && (str.IndexOf('\0') == -1);
         }
 
         /// <summary>
@@ -909,7 +909,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         internal static bool IsValidUnicodeString(string str)
         {
-            return str == null || str.IsValidUnicodeString();
+            return (str == null) || str.IsValidUnicodeString();
         }
 
         internal static bool IsValidAssemblyOrModuleName(string name)
@@ -993,8 +993,8 @@ namespace Microsoft.CodeAnalysis
         internal static bool SplitNameEqualsFullyQualifiedName(string namespaceName, string typeName, string fullyQualified)
         {
             // Look for "[namespaceName].[typeName]" exactly
-            return fullyQualified.Length == namespaceName.Length + typeName.Length + 1 &&
-                   fullyQualified[namespaceName.Length] == MetadataHelpers.DotDelimiter &&
+            return (fullyQualified.Length == ((namespaceName.Length + typeName.Length + 1))) &&
+                   (fullyQualified[namespaceName.Length] == MetadataHelpers.DotDelimiter) &&
                    fullyQualified.StartsWith(namespaceName, StringComparison.Ordinal) &&
                    fullyQualified.EndsWith(typeName, StringComparison.Ordinal);
         }

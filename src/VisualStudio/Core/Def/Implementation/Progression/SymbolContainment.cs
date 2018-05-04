@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var symbol = semanticModel.GetDeclaredSymbol(syntaxNode, cancellationToken);
-                if (symbol != null &&
+                if ((symbol != null) &&
                     !string.IsNullOrEmpty(symbol.Name) &&
                     IsTopLevelSymbol(symbol))
                 {
@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                     }
 
 
-                    if (member is IMethodSymbol method && method.AssociatedSymbol != null)
+                    if (member is IMethodSymbol method && (method.AssociatedSymbol != null))
                     {
                         continue;
                     }

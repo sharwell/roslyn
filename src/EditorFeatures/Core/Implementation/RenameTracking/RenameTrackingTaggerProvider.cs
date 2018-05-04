@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
             {
                 var document = workspace.CurrentSolution.GetDocument(documentId);
                 ITextBuffer textBuffer;
-                if (document != null &&
+                if ((document != null) &&
                     document.TryGetText(out var text))
                 {
                     textBuffer = text.Container.TryGetTextBuffer();
@@ -111,11 +111,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
             try
             {
                 // This can run on a background thread.
-                if (tree != null &&
+                if ((tree != null) &&
                     tree.TryGetText(out var text))
                 {
                     var textBuffer = text.Container.TryGetTextBuffer();
-                    if (textBuffer != null && textBuffer.Properties.TryGetProperty(typeof(StateMachine), out StateMachine stateMachine))
+                    if ((textBuffer != null) && textBuffer.Properties.TryGetProperty(typeof(StateMachine), out StateMachine stateMachine))
                     {
                         return await stateMachine.GetDiagnostic(tree, diagnosticDescriptor, cancellationToken).ConfigureAwait(false);
                     }
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
 
         internal static bool IsRenamableIdentifier(Task<TriggerIdentifierKind> isRenamableIdentifierTask, bool waitForResult, CancellationToken cancellationToken)
         {
-            if (isRenamableIdentifierTask.Status == TaskStatus.RanToCompletion && isRenamableIdentifierTask.Result != TriggerIdentifierKind.NotRenamable)
+            if ((isRenamableIdentifierTask.Status == TaskStatus.RanToCompletion) && (isRenamableIdentifierTask.Result != TriggerIdentifierKind.NotRenamable))
             {
                 return true;
             }
@@ -172,7 +172,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
             {
                 return isRenamableIdentifierTask.WaitAndGetResult(cancellationToken) != TriggerIdentifierKind.NotRenamable;
             }
-            catch (OperationCanceledException e) when (e.CancellationToken != cancellationToken || cancellationToken == CancellationToken.None)
+            catch (OperationCanceledException e) when ((e.CancellationToken != cancellationToken) || (cancellationToken == CancellationToken.None))
             {
                 // We passed in a different cancellationToken, so if there's a race and 
                 // isRenamableIdentifierTask was cancelled, we'll get a OperationCanceledException
@@ -183,13 +183,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
         internal static bool CanInvokeRename(Document document)
         {
             ITextBuffer textBuffer;
-            if (document == null || !document.TryGetText(out var text))
+            if ((document == null) || !document.TryGetText(out var text))
             {
                 return false;
             }
 
             textBuffer = text.Container.TryGetTextBuffer();
-            return textBuffer != null &&
+            return (textBuffer != null) &&
                 textBuffer.Properties.TryGetProperty(typeof(StateMachine), out StateMachine stateMachine) &&
                 stateMachine.CanInvokeRename(out var unused);
         }

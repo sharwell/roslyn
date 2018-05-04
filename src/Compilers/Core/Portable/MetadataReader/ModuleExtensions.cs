@@ -164,9 +164,9 @@ namespace Microsoft.CodeAnalysis
                     }
                 }
 
-                if (index == prefix.Length ||
-                    index >= emittedMethodName.Length - 1 ||
-                    emittedMethodName[index] != '_' ||
+                if ((index == prefix.Length) ||
+                    (index >= (emittedMethodName.Length - 1)) ||
+                    (emittedMethodName[index] != '_') ||
                     !char.IsDigit(emittedMethodName, index + 1))
                 {
                     return 1;
@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis
                 int countOfSlots;
 
                 if (int.TryParse(emittedMethodName.Substring(index + 1), NumberStyles.None, CultureInfo.InvariantCulture, out countOfSlots)
-                    && countOfSlots > 0)
+                    && (countOfSlots > 0))
                 {
                     return countOfSlots;
                 }

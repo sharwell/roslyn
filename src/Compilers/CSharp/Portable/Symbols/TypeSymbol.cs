@@ -70,9 +70,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             internal bool IsDefaultValue()
             {
                 return allInterfaces.IsDefault &&
-                    interfacesAndTheirBaseInterfaces == null &&
-                    _implementationForInterfaceMemberMap == null &&
-                    explicitInterfaceImplementationMap == null;
+                    (interfacesAndTheirBaseInterfaces == null) &&
+                    (_implementationForInterfaceMemberMap == null) &&
+                    (explicitInterfaceImplementationMap == null);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             var info = _lazyInterfaceInfo;
             if (info != null)
             {
-                Debug.Assert(info != s_noInterfaces || info.IsDefaultValue(), "default value was modified");
+                Debug.Assert((info != s_noInterfaces) || info.IsDefaultValue(), "default value was modified");
                 return info;
             }
 
@@ -516,7 +516,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 DiagnosticInfo info = GetUseSiteDiagnostic();
-                return (object)info != null && info.Code == (int)ErrorCode.ERR_BogusType;
+                return ((object)info != null) && (info.Code == (int)ErrorCode.ERR_BogusType);
             }
         }
 
@@ -573,7 +573,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             int countOfItems;
-            return IsTupleCompatible(out countOfItems) && countOfItems == targetCardinality;
+            return IsTupleCompatible(out countOfItems) && (countOfItems == targetCardinality);
         }
 
         /// <summary>
@@ -710,7 +710,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var interfaceType = interfaceMember.ContainingType;
-            if ((object)interfaceType == null || !interfaceType.IsInterface)
+            if (((object)interfaceType == null) || !interfaceType.IsInterface)
             {
                 return SymbolAndDiagnostics.Empty;
             }
@@ -763,10 +763,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// <returns>The implementing property or null, if there isn't one.</returns>
         private static Symbol ComputeImplementationForInterfaceMember(Symbol interfaceMember, TypeSymbol implementingType, DiagnosticBag diagnostics)
         {
-            Debug.Assert(interfaceMember.Kind == SymbolKind.Method || interfaceMember.Kind == SymbolKind.Property || interfaceMember.Kind == SymbolKind.Event);
+            Debug.Assert((interfaceMember.Kind == SymbolKind.Method) || (interfaceMember.Kind == SymbolKind.Property) || (interfaceMember.Kind == SymbolKind.Event));
 
             NamedTypeSymbol interfaceType = interfaceMember.ContainingType;
-            Debug.Assert((object)interfaceType != null && interfaceType.IsInterface);
+            Debug.Assert(((object)interfaceType != null) && interfaceType.IsInterface);
 
             bool seenTypeDeclaringInterface = false;
 
@@ -915,7 +915,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 // If there's more than one associated property/event, don't do anything special - just let the algorithm
                 // fail in the usual way.
-                if ((object)associated1 == null || (object)associated2 == null || associated1 == associated2)
+                if (((object)associated1 == null) || ((object)associated2 == null) || (associated1 == associated2))
                 {
                     implementingMember = associated1 ?? associated2;
 
@@ -923,7 +923,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     // If we haven't then there is no implementation.  We need this check to match dev11 in some edge cases
                     // (e.g. IndexerTests.AmbiguousExplicitIndexerImplementation).  Such cases already fail
                     // to roundtrip correctly, so it's not important to check for a particular compilation.
-                    if ((object)implementingMember != null && implementingMember.Dangerous_IsFromSomeCompilation)
+                    if (((object)implementingMember != null) && implementingMember.Dangerous_IsFromSomeCompilation)
                     {
                         implementingMember = null;
                     }
@@ -998,13 +998,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 return;
             }
-            else if ((object)correspondingImplementingAccessor == null && (object)implicitImpl != null && implicitImpl.IsAccessor())
+            else if (((object)correspondingImplementingAccessor == null) && ((object)implicitImpl != null) && implicitImpl.IsAccessor())
             {
                 // If we found an accessor, but it's not (directly or indirectly) on the property implementation,
                 // then it's not a valid match.
                 implicitImpl = null;
             }
-            else if ((object)correspondingImplementingAccessor != null && ((object)implicitImpl == null || correspondingImplementingAccessor.ContainingType == implicitImpl.ContainingType))
+            else if (((object)correspondingImplementingAccessor != null) && (((object)implicitImpl == null) || (correspondingImplementingAccessor.ContainingType == implicitImpl.ContainingType)))
             {
                 // Suppose the interface accessor and the implementing accessor have different names.
                 // In Dev10, as long as the corresponding properties have an implementation relationship,
@@ -1083,7 +1083,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 foreach (Symbol member in implicitImpl.ContainingType.GetMembers(implicitImpl.Name))
                 {
-                    if (member.DeclaredAccessibility != Accessibility.Public || member.IsStatic || member == implicitImpl)
+                    if ((member.DeclaredAccessibility != Accessibility.Public) || member.IsStatic || (member == implicitImpl))
                     {
                         //do nothing - not an ambiguous implementation
                     }
@@ -1159,9 +1159,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 DiagnosticInfo useSiteDiagnostic;
-                if ((object)interfaceMemberReturnType != null &&
-                    (useSiteDiagnostic = interfaceMemberReturnType.GetUseSiteDiagnostic()) != null &&
-                    useSiteDiagnostic.DefaultSeverity == DiagnosticSeverity.Error)
+                if (((object)interfaceMemberReturnType != null) &&
+                    ((useSiteDiagnostic = interfaceMemberReturnType.GetUseSiteDiagnostic()) != null) &&
+                    (useSiteDiagnostic.DefaultSeverity == DiagnosticSeverity.Error))
                 {
                     diagnostics.Add(useSiteDiagnostic, interfaceLocation);
                 }
@@ -1263,7 +1263,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     }
 
                     //if we haven't found a match, do a weaker comparison that ignores static-ness, accessibility, and return type
-                    if ((object)closeMismatch == null && implementingTypeIsFromSomeCompilation)
+                    if (((object)closeMismatch == null) && implementingTypeIsFromSomeCompilation)
                     {
                         // We can ignore custom modifiers here, because our goal is to improve the helpfulness
                         // of an error we're already giving, rather than to generate a new error.
@@ -1305,7 +1305,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         private static bool IsInterfaceMemberImplementation(Symbol candidateMember, Symbol interfaceMember, bool implementingTypeIsFromSomeCompilation)
         {
-            if (candidateMember.DeclaredAccessibility != Accessibility.Public || candidateMember.IsStatic)
+            if ((candidateMember.DeclaredAccessibility != Accessibility.Public) || candidateMember.IsStatic)
             {
                 return false;
             }
@@ -1395,7 +1395,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             foreach (var member in this.GetMembersUnordered())
             {
-                if (this.IsAbstract && member.IsAbstract && member.Kind != SymbolKind.NamedType)
+                if (this.IsAbstract && member.IsAbstract && (member.Kind != SymbolKind.NamedType))
                 {
                     abstractMembers = abstractMembers.Add(member);
                 }
@@ -1426,7 +1426,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
             }
 
-            if ((object)this.BaseTypeNoUseSiteDiagnostics != null && this.BaseTypeNoUseSiteDiagnostics.IsAbstract)
+            if (((object)this.BaseTypeNoUseSiteDiagnostics != null) && this.BaseTypeNoUseSiteDiagnostics.IsAbstract)
             {
                 foreach (var baseAbstractMember in this.BaseTypeNoUseSiteDiagnostics.AbstractMembers)
                 {

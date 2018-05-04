@@ -180,7 +180,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     break;
 
                 case BoundKind.Local:
-                    Debug.Assert(expr.Syntax.Kind() != SyntaxKind.Argument || valueKind == BindValueKind.RefOrOut);
+                    Debug.Assert((expr.Syntax.Kind() != SyntaxKind.Argument) || (valueKind == BindValueKind.RefOrOut));
                     break;
 
                 case BoundKind.OutVariablePendingInference:
@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return expr;
 
                 case BoundKind.DiscardExpression:
-                    Debug.Assert(valueKind == BindValueKind.Assignable || valueKind == BindValueKind.RefOrOut || diagnostics.HasAnyResolvedErrors());
+                    Debug.Assert((valueKind == BindValueKind.Assignable) || (valueKind == BindValueKind.RefOrOut) || diagnostics.HasAnyResolvedErrors());
                     return expr;
 
                 case BoundKind.IndexerAccess:
@@ -197,7 +197,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // Assigning to an non ref return indexer needs to set 'useSetterForDefaultArgumentGeneration' to true. 
                         // This is for IOperation purpose.
                         var indexerAccess = (BoundIndexerAccess)expr;
-                        if (valueKind == BindValueKind.Assignable && !indexerAccess.Indexer.ReturnsByRef)
+                        if ((valueKind == BindValueKind.Assignable) && !indexerAccess.Indexer.ReturnsByRef)
                         {
                             expr = indexerAccess.Update(useSetterForDefaultArgumentGeneration: true);
                         }
@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // (and resolve) MethodGroups (in short, cases where valueKind != BindValueKind.RValueOrMethodGroup),
             // resolve the MethodGroup here to generate the appropriate errors, otherwise resolution errors (such as
             // "member is inaccessible") will be dropped.
-            if (expr.Kind == BoundKind.MethodGroup && valueKind != BindValueKind.RValueOrMethodGroup)
+            if ((expr.Kind == BoundKind.MethodGroup) && (valueKind != BindValueKind.RValueOrMethodGroup))
             {
                 var methodGroup = (BoundMethodGroup)expr;
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
@@ -236,7 +236,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     Debug.Assert(methodGroup.ResultKind != LookupResultKind.Viable);
                     var receiver = methodGroup.ReceiverOpt;
-                    if ((object)otherSymbol != null && receiver?.Kind == BoundKind.TypeOrValueExpression)
+                    if (((object)otherSymbol != null) && (receiver?.Kind == BoundKind.TypeOrValueExpression))
                     {
                         // Since we're not accessing a method, this can't be a Color Color case, so TypeOrValueExpression should not have been used.
                         // CAVEAT: otherSymbol could be invalid in some way (e.g. inaccessible), in which case we would have fallen back on a
@@ -258,13 +258,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
             }
 
-            if (!hasResolutionErrors && CheckValueKind(expr.Syntax, expr, valueKind, checkingReceiver: false, diagnostics: diagnostics) ||
-                expr.HasAnyErrors && valueKind == BindValueKind.RValueOrMethodGroup)
+            if ((!hasResolutionErrors && CheckValueKind(expr.Syntax, expr, valueKind, checkingReceiver: false, diagnostics: diagnostics)) ||
+                (expr.HasAnyErrors && (valueKind == BindValueKind.RValueOrMethodGroup)))
             {
                 return expr;
             }
 
-            var resultKind = (valueKind == BindValueKind.RValue || valueKind == BindValueKind.RValueOrMethodGroup) ?
+            var resultKind = ((valueKind == BindValueKind.RValue) || (valueKind == BindValueKind.RValueOrMethodGroup)) ?
                 LookupResultKind.NotAValue :
                 LookupResultKind.NotAVariable;
 
@@ -429,7 +429,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     if (!thisref.Type.IsValueType ||
                             (RequiresAssignableVariable(valueKind) &&
                              thisref.Type.IsReadOnly && 
-                             (this.ContainingMemberOrLambda as MethodSymbol)?.MethodKind != MethodKind.Constructor))
+                             ((this.ContainingMemberOrLambda as MethodSymbol)?.MethodKind != MethodKind.Constructor)))
                     {
                         // CONSIDER: the Dev10 name has angle brackets (i.e. "<this>")
                         Error(diagnostics, GetThisLvalueError(valueKind), node, ThisParameterSymbol.SymbolName);
@@ -503,8 +503,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // IsWritable means the variable is writable. If this is a ref variable, IsWritable
                 // does not imply anything about the storage location
-                if (localSymbol.RefKind == RefKind.RefReadOnly ||
-                    (localSymbol.RefKind == RefKind.None && !localSymbol.IsWritableVariable))
+                if ((localSymbol.RefKind == RefKind.RefReadOnly) ||
+                    ((localSymbol.RefKind == RefKind.None) && !localSymbol.IsWritableVariable))
                 {
                     ReportReadonlyLocalError(node, localSymbol, valueKind, checkingReceiver, diagnostics);
                     return false;
@@ -574,7 +574,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // all parameters can be passed by ref/out or assigned to
             // except "in" parameters, which are readonly
-            if (parameterSymbol.RefKind == RefKind.In && RequiresAssignableVariable(valueKind))
+            if ((parameterSymbol.RefKind == RefKind.In) && RequiresAssignableVariable(valueKind))
             {
                 ReportReadOnlyError(parameterSymbol, node, valueKind, checkingReceiver, diagnostics);
                 return false;
@@ -598,7 +598,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // byval parameters can escape to method's top level.
             // others can be escape further, unless they are ref-like.
-            if (escapeTo == Binder.ExternalScope && parameterSymbol.RefKind == RefKind.None)
+            if ((escapeTo == Binder.ExternalScope) && (parameterSymbol.RefKind == RefKind.None))
             {
                 if (checkingReceiver)
                 {
@@ -634,9 +634,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                     var canModifyReadonly = false;
 
                     Symbol containing = this.ContainingMemberOrLambda;
-                    if ((object)containing != null &&
-                        fieldIsStatic == containing.IsStatic &&
-                        (fieldIsStatic || fieldAccess.ReceiverOpt.Kind == BoundKind.ThisReference) &&
+                    if (((object)containing != null) &&
+                        (fieldIsStatic == containing.IsStatic) &&
+                        (fieldIsStatic || (fieldAccess.ReceiverOpt.Kind == BoundKind.ThisReference)) &&
                         (Compilation.FeatureStrictEnabled
                             ? fieldSymbol.ContainingType == containing.ContainingType
                             // We duplicate a bug in the native compiler for compatibility in non-strict mode
@@ -740,7 +740,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // NOTE: availability of well-known members is checked in BindEventAssignment because
                 // we don't have the context to determine whether addition or subtraction is being performed.
 
-                if (receiver?.Kind == BoundKind.BaseReference && eventSymbol.IsAbstract)
+                if ((receiver?.Kind == BoundKind.BaseReference) && eventSymbol.IsAbstract)
                 {
                     Error(diagnostics, ErrorCode.ERR_AbstractBaseCall, boundEvent.Syntax, eventSymbol);
                     return false;
@@ -772,7 +772,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
                 else if (RequiresVariable(valueKind))
                 {
-                    if (eventSymbol.IsWindowsRuntimeEvent && valueKind != BindValueKind.Assignable)
+                    if (eventSymbol.IsWindowsRuntimeEvent && (valueKind != BindValueKind.Assignable))
                     {
                         // NOTE: Dev11 reports ERR_RefProperty, as if this were a property access (since that's how it will be lowered).
                         // Roslyn reports a new, more specific, error code.
@@ -795,7 +795,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private bool CheckIsValidReceiverForVariable(SyntaxNode node, BoundExpression receiver, BindValueKind kind, DiagnosticBag diagnostics)
         {
             Debug.Assert(receiver != null);
-            return Flags.Includes(BinderFlags.ObjectInitializerMember) && receiver.Kind == BoundKind.ImplicitReceiver ||
+            return (Flags.Includes(BinderFlags.ObjectInitializerMember) && (receiver.Kind == BoundKind.ImplicitReceiver)) ||
                 CheckValueKind(node, receiver, kind, true, diagnostics);
         }
 
@@ -814,8 +814,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static bool RequiresVariableReceiver(BoundExpression receiver, Symbol symbol)
         {
             return !symbol.IsStatic
-                && symbol.Kind != SymbolKind.Event
-                && receiver?.Type?.IsValueType == true;
+                && (symbol.Kind != SymbolKind.Event)
+                && (receiver?.Type?.IsValueType == true);
         }
 
         private bool CheckCallValueKind(BoundCall call, SyntaxNode node, BindValueKind valueKind, bool checkingReceiver, DiagnosticBag diagnostics)
@@ -835,7 +835,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // - If call is used in a context demanding ref-returnable reference all of its ref
             //   inputs must be ref-returnable
 
-            if (RequiresVariable(valueKind) && methodSymbol.RefKind == RefKind.None)
+            if (RequiresVariable(valueKind) && (methodSymbol.RefKind == RefKind.None))
             {
                 if (checkingReceiver)
                 {
@@ -850,7 +850,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false;
             }
 
-            if (RequiresAssignableVariable(valueKind) && methodSymbol.RefKind == RefKind.RefReadOnly)
+            if (RequiresAssignableVariable(valueKind) && (methodSymbol.RefKind == RefKind.RefReadOnly))
             {
                 ReportReadOnlyError(methodSymbol, node, valueKind, checkingReceiver, diagnostics);
                 return false;
@@ -881,7 +881,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(propertySyntax != null);
 
             if ((RequiresReferenceToLocation(valueKind) || checkingReceiver) &&
-                propertySymbol.RefKind == RefKind.None)
+                (propertySymbol.RefKind == RefKind.None))
             {
                 if (checkingReceiver)
                 {
@@ -901,13 +901,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false;
             }
 
-            if (RequiresAssignableVariable(valueKind) && propertySymbol.RefKind == RefKind.RefReadOnly)
+            if (RequiresAssignableVariable(valueKind) && (propertySymbol.RefKind == RefKind.RefReadOnly))
             {
                 ReportReadOnlyError(propertySymbol, node, valueKind, checkingReceiver, diagnostics);
                 return false;
             }
 
-            var requiresSet = RequiresAssignableVariable(valueKind) && propertySymbol.RefKind == RefKind.None;
+            var requiresSet = RequiresAssignableVariable(valueKind) && (propertySymbol.RefKind == RefKind.None);
             if (requiresSet)
             {
                 var setMethod = propertySymbol.GetOwnOrInheritedSetMethod();
@@ -921,7 +921,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         return false;
                     }
                 }
-                else if (receiver?.Kind == BoundKind.BaseReference && setMethod.IsAbstract)
+                else if ((receiver?.Kind == BoundKind.BaseReference) && setMethod.IsAbstract)
                 {
                     Error(diagnostics, ErrorCode.ERR_AbstractBaseCall, node, propertySymbol);
                     return false;
@@ -960,7 +960,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
             }
 
-            var requiresGet = !RequiresAssignmentOnly(valueKind) || propertySymbol.RefKind != RefKind.None;
+            var requiresGet = !RequiresAssignmentOnly(valueKind) || (propertySymbol.RefKind != RefKind.None);
             if (requiresGet)
             {
                 var getMethod = propertySymbol.GetOwnOrInheritedGetMethod();
@@ -970,7 +970,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Error(diagnostics, ErrorCode.ERR_PropertyLacksGet, node, propertySymbol);
                     return false;
                 }
-                else if (receiver?.Kind == BoundKind.BaseReference && getMethod.IsAbstract)
+                else if ((receiver?.Kind == BoundKind.BaseReference) && getMethod.IsAbstract)
                 {
                     Error(diagnostics, ErrorCode.ERR_AbstractBaseCall, node, propertySymbol);
                     return false;
@@ -1063,7 +1063,7 @@ moreArguments:
                     var argument = argsOpt[argIndex];
                     if (argument.Kind == BoundKind.ArgListOperator)
                     {
-                        Debug.Assert(argIndex == argsOpt.Length - 1, "vararg must be the last");
+                        Debug.Assert(argIndex == (argsOpt.Length - 1), "vararg must be the last");
                         var argList = (BoundArgListOperator)argument;
 
                         // unwrap varargs and process as more arguments
@@ -1086,7 +1086,7 @@ moreArguments:
                     // val escape scope is the narrowest of 
                     // - val escape of all byval arguments  (refs cannot be wrapped into values, so their ref escape is irrelevant, only use val escapes)
 
-                    var argEscape = effectiveRefKind != RefKind.None && isRefEscape ?
+                    var argEscape = (effectiveRefKind != RefKind.None) && isRefEscape ?
                                         GetRefEscape(argument, scopeOfTheContainingExpression) :
                                         GetValEscape(argument, scopeOfTheContainingExpression);
 
@@ -1108,7 +1108,7 @@ moreArguments:
 
             // unmatched "in" parameter is the same as a literal, its ref escape is scopeOfTheContainingExpression  (can't get any worse)
             //                                                    its val escape is ExternalScope                   (does not affect overall result)
-            if (unmatchedInParameter != null && isRefEscape)
+            if ((unmatchedInParameter != null) && isRefEscape)
             {
                 return scopeOfTheContainingExpression;
             }
@@ -1168,7 +1168,7 @@ moreArguments:
                     var argument = argsOpt[argIndex];
                     if (argument.Kind == BoundKind.ArgListOperator)
                     {
-                        Debug.Assert(argIndex == argsOpt.Length - 1, "vararg must be the last");
+                        Debug.Assert(argIndex == (argsOpt.Length - 1), "vararg must be the last");
                         var argList = (BoundArgListOperator)argument;
 
                         // unwrap varargs and process as more arguments
@@ -1190,7 +1190,7 @@ moreArguments:
                     //
                     // val escape scope is the narrowest of 
                     // - val escape of all byval arguments  (refs cannot be wrapped into values, so their ref escape is irrelevant, only use val escapes)
-                    var valid = effectiveRefKind != RefKind.None && isRefEscape ?
+                    var valid = (effectiveRefKind != RefKind.None) && isRefEscape ?
                                         CheckRefEscape(argument.Syntax, argument, escapeFrom, escapeTo, false, diagnostics) :
                                         CheckValEscape(argument.Syntax, argument, escapeFrom, escapeTo, false, diagnostics);
 
@@ -1223,7 +1223,7 @@ moreArguments:
 
             // unmatched "in" parameter is the same as a literal, its ref escape is scopeOfTheContainingExpression  (can't get any worse)
             //                                                    its val escape is ExternalScope                   (does not affect overall result)
-            if (unmatchedInParameter != null && isRefEscape)
+            if ((unmatchedInParameter != null) && isRefEscape)
             {
                 Error(diagnostics, GetStandardCallEscapeError(checkingReceiver), syntax, symbol, unmatchedInParameter.Name);
                 return false;
@@ -1264,7 +1264,7 @@ moreArguments:
 
             // collect all writeable ref-like arguments, including receiver
             var receiverType = receiverOpt?.Type;
-            if (receiverType?.IsByRefLikeType == true && receiverType?.IsReadOnly == false)
+            if ((receiverType?.IsByRefLikeType == true) && (receiverType?.IsReadOnly == false))
             {
                 escapeTo = GetValEscape(receiverOpt, scopeOfTheContainingExpression);
             }
@@ -1277,13 +1277,13 @@ moreArguments:
                     var argument = argsOpt[argIndex];
                     if (argument.Kind == BoundKind.ArgListOperator)
                     {
-                        Debug.Assert(argIndex == argsOpt.Length - 1, "vararg must be the last");
+                        Debug.Assert(argIndex == (argsOpt.Length - 1), "vararg must be the last");
                         argList = (BoundArgListOperator)argument;
                         break;
                     }
 
                     var refKind = argRefKindsOpt.IsDefault ? RefKind.None : argRefKindsOpt[argIndex];
-                    if (refKind != RefKind.None && argument.Type?.IsByRefLikeType == true)
+                    if ((refKind != RefKind.None) && (argument.Type?.IsByRefLikeType == true))
                     {
                         escapeTo = Math.Min(escapeTo, GetValEscape(argument, scopeOfTheContainingExpression));
                     }
@@ -1298,7 +1298,7 @@ moreArguments:
                     {
                         var argument = argListArgs[argIndex];
                         var refKind = argListRefKindsOpt.IsDefault ? RefKind.None : argListRefKindsOpt[argIndex];
-                        if (refKind != RefKind.None && argument.Type?.IsByRefLikeType == true)
+                        if ((refKind != RefKind.None) && (argument.Type?.IsByRefLikeType == true))
                         {
                             escapeTo = Math.Min(escapeTo, GetValEscape(argument, scopeOfTheContainingExpression));
                         }
@@ -1321,7 +1321,7 @@ moreArguments:
                     var argument = argsOpt[argIndex];
                     if (argument.Kind == BoundKind.ArgListOperator)
                     {
-                        Debug.Assert(argIndex == argsOpt.Length - 1, "vararg must be the last");
+                        Debug.Assert(argIndex == (argsOpt.Length - 1), "vararg must be the last");
                         var argList = (BoundArgListOperator)argument;
 
                         // unwrap varargs and process as more arguments
@@ -1382,7 +1382,7 @@ moreArguments:
             ref ArrayBuilder<bool> inParametersMatchedWithArgs)
         {
             var effectiveRefKind = argRefKindsOpt.IsDefault ? RefKind.None : argRefKindsOpt[argIndex];
-            if ((effectiveRefKind == RefKind.None || effectiveRefKind == RefKind.In) && argIndex < parameters.Length)
+            if (((effectiveRefKind == RefKind.None) || (effectiveRefKind == RefKind.In)) && (argIndex < parameters.Length))
             {
                 var paramIndex = argsToParamsOpt.IsDefault ? argIndex : argsToParamsOpt[argIndex];
 
@@ -1416,9 +1416,9 @@ moreArguments:
                             break;
                         }
 
-                        if (parameter.RefKind == RefKind.In &&
-                            inParametersMatchedWithArgs?[i] != true &&
-                            parameter.Type.IsByRefLikeType == false)
+                        if ((parameter.RefKind == RefKind.In) &&
+                            (inParametersMatchedWithArgs?[i] != true) &&
+                            (parameter.Type.IsByRefLikeType == false))
                         {
                             return parameter;
                         }
@@ -1746,7 +1746,7 @@ moreArguments:
                     // byval parameters can escape to method's top level.
                     // others can be escape further, unless they are ref-like.
                     // NOTE: "method" here means nearest containing method, lambda or nested method
-                    return parameter.RefKind == RefKind.None || parameter.Type?.IsByRefLikeType == true ?
+                    return (parameter.RefKind == RefKind.None) || (parameter.Type?.IsByRefLikeType == true) ?
                         Binder.TopLevelScope :
                         Binder.ExternalScope;
 

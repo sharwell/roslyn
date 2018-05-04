@@ -229,7 +229,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             AssertTypeInfo(model, decl.Type, local.Type);
 
             var declarator = designation.Ancestors().OfType<VariableDeclaratorSyntax>().FirstOrDefault();
-            var inFieldDeclaratorArgumentlist = declarator != null && declarator.Parent.Parent.Kind() != SyntaxKind.LocalDeclarationStatement &&
+            var inFieldDeclaratorArgumentlist = (declarator != null) && (declarator.Parent.Parent.Kind() != SyntaxKind.LocalDeclarationStatement) &&
                                            (declarator.ArgumentList?.Contains(designation)).GetValueOrDefault();
 
             // this is a declaration site, not a use site.

@@ -63,9 +63,9 @@ namespace Microsoft.CodeAnalysis.Formatting
             //  #4. indentation (Item3) is aligned to indentation level
             var canUseCache = !elastic &&
                               useTriviaAsItIs &&
-                              lineBreaks > 0 &&
-                              lineBreaks <= LineBreakCacheSize &&
-                              indentation % this.OptionSet.GetOption(FormattingOptions.IndentationSize, this.TreeInfo.Root.Language) == 0;
+                              (lineBreaks > 0) &&
+                              (lineBreaks <= LineBreakCacheSize) &&
+                              ((indentation % this.OptionSet.GetOption(FormattingOptions.IndentationSize, this.TreeInfo.Root.Language)) == 0);
 
             if (canUseCache)
             {
@@ -86,8 +86,8 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         private void EnsureWhitespaceTriviaInfo(int lineIndex, int indentationLevel)
         {
-            Contract.ThrowIfFalse(lineIndex >= 0 && lineIndex < LineBreakCacheSize);
-            Contract.ThrowIfFalse(indentationLevel >= 0 && indentationLevel < _whitespaces.Length / _whitespaces.Rank);
+            Contract.ThrowIfFalse((lineIndex >= 0) && (lineIndex < LineBreakCacheSize));
+            Contract.ThrowIfFalse((indentationLevel >= 0) && (indentationLevel < (_whitespaces.Length / _whitespaces.Rank)));
 
             // set up caches
             if (_whitespaces[lineIndex, indentationLevel] == null)

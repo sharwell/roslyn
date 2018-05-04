@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // Don't descend - we've already written out everything necessary.
                     return;
                 }
-                else if (diagnose && nodeKind == SyntaxKind.XmlNameAttribute)
+                else if (diagnose && (nodeKind == SyntaxKind.XmlNameAttribute))
                 {
                     XmlNameAttributeSyntax nameAttr = (XmlNameAttributeSyntax)node;
 
@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         nameSyntax = ((XmlElementStartTagSyntax)node).Name;
                     }
 
-                    if (nameSyntax != null && nameSyntax.Prefix == null &&
+                    if ((nameSyntax != null) && (nameSyntax.Prefix == null) &&
                         DocumentationCommentXmlNames.ElementEquals(nameSyntax.LocalName.ValueText, DocumentationCommentXmlNames.IncludeElementName))
                     {
                         _includeElementNodes.Add((CSharpSyntaxNode)node);

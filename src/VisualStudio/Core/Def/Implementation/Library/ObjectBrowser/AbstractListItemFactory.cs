@@ -156,8 +156,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                 // type to pass along for protected checks. Besides, protected members are 
                 // interesting for the user to know about since they could create a sub class 
                 // and access them.
-                return symbol.DeclaredAccessibility == Accessibility.Protected
-                    || symbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal
+                return (symbol.DeclaredAccessibility == Accessibility.Protected)
+                    || (symbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal)
                     || symbol.IsAccessibleWithin(assemblySymbol);
             }
 
@@ -255,8 +255,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
         public ImmutableArray<ObjectListItem> GetFolderListItems(ObjectListItem parentListItem, Compilation compilation)
         {
             Debug.Assert(parentListItem != null);
-            Debug.Assert(parentListItem is TypeListItem ||
-                         parentListItem is ProjectListItem);
+            Debug.Assert((parentListItem is TypeListItem) ||
+                         (parentListItem is ProjectListItem));
             Debug.Assert(compilation != null);
 
             // Hierarchies are parented by either a project or a type. In the case that it's a project, we show a folder
@@ -282,8 +282,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                         addBaseTypes = true;
                     }
                 }
-                else if (typeSymbol.TypeKind != TypeKind.Module &&
-                         typeSymbol.SpecialType != SpecialType.System_Object)
+                else if ((typeSymbol.TypeKind != TypeKind.Module) &&
+                         (typeSymbol.SpecialType != SpecialType.System_Object))
                 {
                     addBaseTypes = true;
                 }
@@ -355,8 +355,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                     if (member.Kind == SymbolKind.Method)
                     {
                         var methodSymbol = (IMethodSymbol)member;
-                        if (methodSymbol.MethodKind == MethodKind.Destructor ||
-                            methodSymbol.MethodKind == MethodKind.Constructor ||
+                        if ((methodSymbol.MethodKind == MethodKind.Destructor) ||
+                            (methodSymbol.MethodKind == MethodKind.Constructor) ||
                             methodSymbol.IsImplicitlyDeclared)
                         {
                             continue;
@@ -368,7 +368,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                         continue;
                     }
 
-                    if (overriddenMembers != null && overriddenMembers.Contains(member))
+                    if ((overriddenMembers != null) && overriddenMembers.Contains(member))
                     {
                         continue;
                     }
@@ -459,8 +459,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
         public ImmutableArray<ObjectListItem> GetNamespaceListItems(ObjectListItem parentListItem, Compilation compilation)
         {
             Debug.Assert(parentListItem != null);
-            Debug.Assert(parentListItem is ProjectListItem ||
-                         parentListItem is ReferenceListItem);
+            Debug.Assert((parentListItem is ProjectListItem) ||
+                         (parentListItem is ReferenceListItem));
             Debug.Assert(compilation != null);
 
             var assemblySymbol = parentListItem is ReferenceListItem
@@ -510,8 +510,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                     .GetCompilationAsync(cancellationToken)
                     .WaitAndGetResult(cancellationToken);
 
-                if (compilation != null &&
-                    compilation.Assembly != null)
+                if ((compilation != null) &&
+                    (compilation.Assembly != null))
                 {
                     set.Add(Tuple.Create(projectId, compilation.Assembly));
 
@@ -538,8 +538,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                 .GetCompilationAsync(cancellationToken)
                 .WaitAndGetResult(cancellationToken);
 
-            if (compilation != null &&
-                compilation.Assembly != null)
+            if ((compilation != null) &&
+                (compilation.Assembly != null))
             {
                 set.Add(Tuple.Create(project.Id, compilation.Assembly));
 
@@ -648,7 +648,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                         if (reference is PortableExecutableReference portableExecutableReference)
                         {
                             var assemblyIdentity = AssemblyIdentityUtils.TryGetAssemblyIdentity(portableExecutableReference.FilePath);
-                            if (assemblyIdentity != null && !assemblyIdentitySet.Contains(assemblyIdentity))
+                            if ((assemblyIdentity != null) && !assemblyIdentitySet.Contains(assemblyIdentity))
                             {
                                 assemblyIdentitySet.Add(assemblyIdentity);
 
@@ -750,9 +750,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
         public ImmutableArray<ObjectListItem> GetTypeListItems(ObjectListItem parentListItem, Compilation compilation)
         {
             Debug.Assert(parentListItem != null);
-            Debug.Assert(parentListItem is NamespaceListItem ||
-                         parentListItem is ProjectListItem ||
-                         parentListItem is ReferenceListItem);
+            Debug.Assert((parentListItem is NamespaceListItem) ||
+                         (parentListItem is ProjectListItem) ||
+                         (parentListItem is ReferenceListItem));
             Debug.Assert(compilation != null);
 
             INamespaceSymbol namespaceSymbol;

@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices.TypeInferenceService
             {
                 this.SemanticModel = semanticModel;
                 this.CancellationToken = cancellationToken;
-                this.IsUsableTypeFunc = t => t.InferredType != null && !IsUnusableType(t.InferredType);
+                this.IsUsableTypeFunc = t => (t.InferredType != null) && !IsUnusableType(t.InferredType);
             }
 
             protected abstract IEnumerable<TypeInferenceInfo> InferTypesWorker_DoNotCallDirectly(int position);

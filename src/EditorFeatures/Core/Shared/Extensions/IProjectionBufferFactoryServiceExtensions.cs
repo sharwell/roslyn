@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Extensions
                 // Without throwing out the first line in the example above, the indentation column
                 // used will be 4, rather than 8.
                 var startLineFirstNonWhitespace = snapshot.GetLineFromLineNumber(startLineNumber).GetFirstNonWhitespacePosition();
-                if (startLineFirstNonWhitespace.HasValue && startLineFirstNonWhitespace.Value < span.Start)
+                if (startLineFirstNonWhitespace.HasValue && (startLineFirstNonWhitespace.Value < span.Start))
                 {
                     startLineNumber++;
                 }
@@ -241,7 +241,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Extensions
             var spans = new List<object>();
             if (exposedLineSpans.Length > 0)
             {
-                if (exposedLineSpans[0].Start > 0 && !string.IsNullOrEmpty(separator))
+                if ((exposedLineSpans[0].Start > 0) && !string.IsNullOrEmpty(separator))
                 {
                     spans.Add(separator);
                     spans.Add(editorOptions.GetNewLineCharacter());
@@ -281,7 +281,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Extensions
                     }
                 }
 
-                if (snapshot.GetLineNumberFromPosition(snapshotSpanRanges.Last().Last().End) < snapshot.LineCount - 1)
+                if (snapshot.GetLineNumberFromPosition(snapshotSpanRanges.Last().Last().End) < (snapshot.LineCount - 1))
                 {
                     spans.Add(editorOptions.GetNewLineCharacter());
                     spans.Add(separator);

@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis
 
             public Data(ImmutableArray<ModuleMetadata> modules, PEAssembly assembly)
             {
-                Debug.Assert(!modules.IsDefaultOrEmpty && assembly != null);
+                Debug.Assert(!modules.IsDefaultOrEmpty && (assembly != null));
 
                 this.Modules = modules;
                 this.Assembly = assembly;
@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis
                 }
                 finally
                 {
-                    if (moduleBuilder != null && !createdModulesUsed)
+                    if ((moduleBuilder != null) && !createdModulesUsed)
                     {
                         // dispose unused modules created above:
                         for (int i = _initialModules.Length; i < moduleBuilder.Count; i++)
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis
         {
             var previousData = Interlocked.Exchange(ref _lazyData, Data.Disposed);
 
-            if (previousData == Data.Disposed || !this.IsImageOwner)
+            if ((previousData == Data.Disposed) || !this.IsImageOwner)
             {
                 // already disposed, or not an owner
                 return;
@@ -378,7 +378,7 @@ namespace Microsoft.CodeAnalysis
                 return;
             }
 
-            Debug.Assert(_initialModules.Length == 1 || _initialModules.Length == previousData.Modules.Length);
+            Debug.Assert((_initialModules.Length == 1) || (_initialModules.Length == previousData.Modules.Length));
 
             // dispose additional modules created lazily:
             for (int i = _initialModules.Length; i < previousData.Modules.Length; i++)
@@ -406,7 +406,7 @@ namespace Microsoft.CodeAnalysis
             {
                 // Ignore winmd modules since runtime winmd modules may be loaded as non-primary modules.
                 var module = modules[i].Module;
-                if (!module.IsLinkedModule && module.MetadataReader.MetadataKind != MetadataKind.WindowsMetadata)
+                if (!module.IsLinkedModule && (module.MetadataReader.MetadataKind != MetadataKind.WindowsMetadata))
                 {
                     return false;
                 }

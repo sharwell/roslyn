@@ -46,12 +46,12 @@ namespace Microsoft.CodeAnalysis
                         }
 
                         // only higher version candidates are considered for match:
-                        if (!allowHigherVersion || currentIdentity.Version < identity.Version)
+                        if (!allowHigherVersion || (currentIdentity.Version < identity.Version))
                         {
                             continue;
                         }
 
-                        if (minHigherVersionCandidate == -1 || currentIdentity.Version < sameName[minHigherVersionCandidate].Key.Version)
+                        if ((minHigherVersionCandidate == -1) || (currentIdentity.Version < sameName[minHigherVersionCandidate].Key.Version))
                         {
                             minHigherVersionCandidate = i;
                         }

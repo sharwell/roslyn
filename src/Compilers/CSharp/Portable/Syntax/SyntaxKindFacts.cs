@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool IsReservedKeyword(SyntaxKind kind)
         {
-            return kind >= SyntaxKind.BoolKeyword && kind <= SyntaxKind.ImplicitKeyword;
+            return (kind >= SyntaxKind.BoolKeyword) && (kind <= SyntaxKind.ImplicitKeyword);
         }
 
         public static bool IsAttributeTargetSpecifier(SyntaxKind kind)
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool IsPunctuation(SyntaxKind kind)
         {
-            return kind >= SyntaxKind.TildeToken && kind <= SyntaxKind.PercentEqualsToken;
+            return (kind >= SyntaxKind.TildeToken) && (kind <= SyntaxKind.PercentEqualsToken);
         }
 
         public static bool IsLanguagePunctuation(SyntaxKind kind)
@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool IsPunctuationOrKeyword(SyntaxKind kind)
         {
-            return kind >= SyntaxKind.TildeToken && kind <= SyntaxKind.EndOfFileToken;
+            return (kind >= SyntaxKind.TildeToken) && (kind <= SyntaxKind.EndOfFileToken);
         }
 
         internal static bool IsLiteral(SyntaxKind kind)
@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool IsAnyToken(SyntaxKind kind)
         {
-            if (kind >= SyntaxKind.TildeToken && kind < SyntaxKind.EndOfLineTrivia) return true;
+            if ((kind >= SyntaxKind.TildeToken) && (kind < SyntaxKind.EndOfLineTrivia)) return true;
             switch (kind)
             {
                 case SyntaxKind.InterpolatedStringToken:
@@ -431,8 +431,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         public static bool IsUnaryOperatorDeclarationToken(SyntaxKind token)
         {
             return IsPrefixUnaryExpressionOperatorToken(token) ||
-                   token == SyntaxKind.TrueKeyword ||
-                   token == SyntaxKind.FalseKeyword;
+                   (token == SyntaxKind.TrueKeyword) ||
+                   (token == SyntaxKind.FalseKeyword);
         }
 
         public static bool IsAnyOverloadableOperator(SyntaxKind kind)
@@ -1605,13 +1605,13 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool IsTypeParameterVarianceKeyword(SyntaxKind kind)
         {
-            return kind == SyntaxKind.OutKeyword || kind == SyntaxKind.InKeyword;
+            return (kind == SyntaxKind.OutKeyword) || (kind == SyntaxKind.InKeyword);
         }
 
         public static bool IsDocumentationCommentTrivia(SyntaxKind kind)
         {
-            return kind == SyntaxKind.SingleLineDocumentationCommentTrivia ||
-                kind == SyntaxKind.MultiLineDocumentationCommentTrivia;
+            return (kind == SyntaxKind.SingleLineDocumentationCommentTrivia) ||
+                (kind == SyntaxKind.MultiLineDocumentationCommentTrivia);
         }
     }
 }

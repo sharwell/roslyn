@@ -540,7 +540,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             // have no expansion if null, or be expanded as a T.
             var declaredType = declaredTypeAndInfo.Type;
             var lmrNullableTypeArg = declaredType.GetNullableTypeArgument();
-            if (lmrNullableTypeArg != null && !value.HasExceptionThrown())
+            if ((lmrNullableTypeArg != null) && !value.HasExceptionThrown())
             {
                 Debug.Assert(value.Type.GetProxyType() == null);
 
@@ -563,7 +563,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                     expansion = this.GetTypeExpansion(inspectionContext, new TypeAndCustomInfo(DkmClrType.Create(declaredTypeAndInfo.ClrType.AppDomain, lmrNullableTypeArg)), value, ExpansionFlags.IncludeResultsView);
                 }
             }
-            else if (value.IsError() || (inspectionContext.EvaluationFlags & DkmEvaluationFlags.NoExpansion) != 0)
+            else if (value.IsError() || ((inspectionContext.EvaluationFlags & DkmEvaluationFlags.NoExpansion) != 0))
             {
                 expansion = null;
             }
@@ -829,7 +829,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             // Note: Dev12 respects the debugger display name in the Locals window,
             // but not in the Watch window, but we can't distinguish and this 
             // behavior seems reasonable.
-            if (displayName != null && useDebuggerDisplay)
+            if ((displayName != null) && useDebuggerDisplay)
             {
                 name = displayName;
             }

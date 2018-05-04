@@ -1193,7 +1193,7 @@ namespace System
             var sourceString = mystring.BaseType();
             Assert.Equal(0,
                 sourceString.GetMembers()
-                .Count(m => !(m is MethodSymbol) || (m as MethodSymbol).MethodKind != MethodKind.Constructor));
+                .Count(m => !(m is MethodSymbol) || ((m as MethodSymbol).MethodKind != MethodKind.Constructor)));
         }
 
         [Fact, WorkItem(538012, "http://vstfdevdiv:8080/DevDiv2/DevDiv/_workitems/edit/538012"), WorkItem(538580, "http://vstfdevdiv:8080/DevDiv2/DevDiv/_workitems/edit/538580")]

@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis
 
         public XmlFileResolver(string baseDirectory)
         {
-            if (baseDirectory != null && PathUtilities.GetPathKind(baseDirectory) != PathKind.Absolute)
+            if ((baseDirectory != null) && (PathUtilities.GetPathKind(baseDirectory) != PathKind.Absolute))
             {
                 throw new ArgumentException(CodeAnalysisResources.AbsolutePathExpected, nameof(baseDirectory));
             }
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis
             if (baseFilePath != null)
             {
                 resolvedPath = FileUtilities.ResolveRelativePath(path, baseFilePath, _baseDirectory);
-                Debug.Assert(resolvedPath == null || PathUtilities.IsAbsolute(resolvedPath));
+                Debug.Assert((resolvedPath == null) || PathUtilities.IsAbsolute(resolvedPath));
                 if (FileExists(resolvedPath))
                 {
                     return FileUtilities.TryNormalizeAbsolutePath(resolvedPath);
@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis
             if (_baseDirectory != null)
             {
                 resolvedPath = FileUtilities.ResolveRelativePath(path, _baseDirectory);
-                Debug.Assert(resolvedPath == null || PathUtilities.IsAbsolute(resolvedPath));
+                Debug.Assert((resolvedPath == null) || PathUtilities.IsAbsolute(resolvedPath));
                 if (FileExists(resolvedPath))
                 {
                     return FileUtilities.TryNormalizeAbsolutePath(resolvedPath);
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis
         public override bool Equals(object obj)
         {
             // Explicitly check that we're not comparing against a derived type
-            if (obj == null || GetType() != obj.GetType())
+            if ((obj == null) || (GetType() != obj.GetType()))
             {
                 return false;
             }

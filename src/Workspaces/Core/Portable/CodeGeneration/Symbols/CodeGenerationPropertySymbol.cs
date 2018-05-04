@@ -64,9 +64,9 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
         public override TResult Accept<TResult>(SymbolVisitor<TResult> visitor)
             => visitor.VisitProperty(this);
 
-        public bool IsReadOnly => this.GetMethod != null && this.SetMethod == null;
+        public bool IsReadOnly => (this.GetMethod != null) && (this.SetMethod == null);
 
-        public bool IsWriteOnly => this.GetMethod == null && this.SetMethod != null;
+        public bool IsWriteOnly => (this.GetMethod == null) && (this.SetMethod != null);
 
         public new IPropertySymbol OriginalDefinition => this;
 

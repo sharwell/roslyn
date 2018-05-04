@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.Collections
         public bool TryPop(T key, out R value)
         {
             Stack<R> store;
-            if (_dict.TryGetValue(key, out store) && store.Count > 0)
+            if (_dict.TryGetValue(key, out store) && (store.Count > 0))
             {
                 value = store.Pop();
                 return true;

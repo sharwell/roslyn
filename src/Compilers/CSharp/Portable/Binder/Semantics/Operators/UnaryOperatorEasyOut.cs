@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     case SpecialType.System_Decimal: return 14;
 
                     case SpecialType.None:
-                        if ((object)type != null && type.IsNullableType())
+                        if (((object)type != null) && type.IsNullableType())
                         {
                             TypeSymbol underlyingType = type.GetNullableUnderlyingType();
 

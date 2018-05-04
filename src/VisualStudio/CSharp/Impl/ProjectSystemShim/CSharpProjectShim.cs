@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ProjectSystemShim
             IDictionary<string, ReportDiagnostic> diagnosticOptions = new Dictionary<string, ReportDiagnostic>(ruleSetSpecificDiagnosticOptions);
 
             // Update the specific options based on the general settings
-            if (warningsAreErrors.HasValue && warningsAreErrors.Value == true)
+            if (warningsAreErrors.HasValue && (warningsAreErrors.Value == true))
             {
                 foreach (var pair in ruleSetSpecificDiagnosticOptions)
                 {
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ProjectSystemShim
 
         private IEnumerable<string> ParseWarningCodes(CompilerOptions compilerOptions)
         {
-            Contract.ThrowIfFalse(compilerOptions == CompilerOptions.OPTID_NOWARNLIST || compilerOptions == CompilerOptions.OPTID_WARNASERRORLIST || compilerOptions == CompilerOptions.OPTID_WARNNOTASERRORLIST);
+            Contract.ThrowIfFalse((compilerOptions == CompilerOptions.OPTID_NOWARNLIST) || (compilerOptions == CompilerOptions.OPTID_WARNASERRORLIST) || (compilerOptions == CompilerOptions.OPTID_WARNNOTASERRORLIST));
             foreach (var warning in GetStringOption(compilerOptions, defaultValue: "").Split(new[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 var warningStringID = warning;

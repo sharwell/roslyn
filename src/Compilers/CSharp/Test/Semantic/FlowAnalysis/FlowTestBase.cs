@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             ExpressionSyntax syntaxToBind = null;
             foreach (var expr in GetSyntaxNodeList(tree).OfType<ExpressionSyntax>())
             {
-                if (expr.SpanStart >= start && expr.Span.End <= end)
+                if ((expr.SpanStart >= start) && (expr.Span.End <= end))
                 {
                     syntaxToBind = expr;
                     break;
@@ -119,12 +119,12 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             StatementSyntax firstStatement = null, lastStatement = null;
             foreach (var stmt in GetSyntaxNodeList(tree).OfType<StatementSyntax>())
             {
-                if (firstStatement == null && stmt.SpanStart >= start)
+                if ((firstStatement == null) && (stmt.SpanStart >= start))
                 {
                     firstStatement = stmt;
                 }
 
-                if (firstStatement != null && stmt.Span.End <= end && stmt.Parent == firstStatement.Parent)
+                if ((firstStatement != null) && (stmt.Span.End <= end) && (stmt.Parent == firstStatement.Parent))
                 {
                     lastStatement = stmt;
                 }

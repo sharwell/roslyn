@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
             public override TriviaData WithSpace(int space, FormattingContext context, ChainedFormattingRules formattingRules)
             {
-                if (this.LineBreaks == 0 && this.Spaces == space)
+                if ((this.LineBreaks == 0) && (this.Spaces == space))
                 {
                     return this;
                 }
@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             {
                 Contract.ThrowIfFalse(line > 0);
 
-                if (this.LineBreaks == line && this.Spaces == indentation)
+                if ((this.LineBreaks == line) && (this.Spaces == indentation))
                 {
                     return this;
                 }

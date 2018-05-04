@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Interactive
         {
             InitializedRemoteService initializedService;
 
-            return (_lazyRemoteService?.InitializedService != null &&
+            return ((_lazyRemoteService?.InitializedService != null) &&
                     _lazyRemoteService.InitializedService.TryGetValue(out initializedService)) ? initializedService.ServiceOpt.Process : null;
         }
 
@@ -336,7 +336,7 @@ namespace Microsoft.CodeAnalysis.Interactive
                 for (int attempt = 0; attempt < MaxAttemptsToCreateProcess; attempt++)
                 {
                     var initializedService = await currentRemoteService.InitializedService.GetValueAsync(currentRemoteService.CancellationSource.Token).ConfigureAwait(false);
-                    if (initializedService.ServiceOpt != null && initializedService.ServiceOpt.Process.IsAlive())
+                    if ((initializedService.ServiceOpt != null) && initializedService.ServiceOpt.Process.IsAlive())
                     {
                         return initializedService;
                     }

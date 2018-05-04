@@ -339,14 +339,14 @@ namespace Microsoft.CodeAnalysis.Operations
             Optional<object> constantValue = ConvertToOptional(boundCall.ConstantValue);
             bool isImplicit = boundCall.WasCompilerGenerated;
 
-            if (!boundCall.OriginalMethodsOpt.IsDefault || boundCall.ResultKind == LookupResultKind.OverloadResolutionFailure || targetMethod == null || targetMethod.OriginalDefinition is ErrorMethodSymbol)
+            if (!boundCall.OriginalMethodsOpt.IsDefault || (boundCall.ResultKind == LookupResultKind.OverloadResolutionFailure) || (targetMethod == null) || (targetMethod.OriginalDefinition is ErrorMethodSymbol))
             {
                 return CreateInvalidExpressionForHasArgumentsExpression(boundCall.ReceiverOpt, boundCall.Arguments, null, syntax, type, constantValue, isImplicit);
             }
 
             Lazy<IOperation> instance = CreateReceiverOperation(boundCall.ReceiverOpt, targetMethod);
-            bool isVirtual = (object)targetMethod != null &&
-                        boundCall.ReceiverOpt != null &&
+            bool isVirtual = ((object)targetMethod != null) &&
+                        (boundCall.ReceiverOpt != null) &&
                         (targetMethod.IsVirtual || targetMethod.IsAbstract || targetMethod.IsOverride) &&
                         !boundCall.ReceiverOpt.SuppressVirtualCalls;
             Lazy<ImmutableArray<IArgumentOperation>> arguments = new Lazy<ImmutableArray<IArgumentOperation>>(() =>
@@ -429,7 +429,7 @@ namespace Microsoft.CodeAnalysis.Operations
                 ? property.GetOwnOrInheritedSetMethod()
                 : property.GetOwnOrInheritedGetMethod();
 
-            if (!boundIndexerAccess.OriginalIndexersOpt.IsDefault || boundIndexerAccess.ResultKind == LookupResultKind.OverloadResolutionFailure || accessor == null || accessor.OriginalDefinition is ErrorMethodSymbol)
+            if (!boundIndexerAccess.OriginalIndexersOpt.IsDefault || (boundIndexerAccess.ResultKind == LookupResultKind.OverloadResolutionFailure) || (accessor == null) || (accessor.OriginalDefinition is ErrorMethodSymbol))
             {
                 return CreateInvalidExpressionForHasArgumentsExpression(boundIndexerAccess.ReceiverOpt, boundIndexerAccess.Arguments, null, syntax, type, constantValue, isImplicit);
             }
@@ -523,7 +523,7 @@ namespace Microsoft.CodeAnalysis.Operations
             Optional<object> constantValue = ConvertToOptional(boundObjectCreationExpression.ConstantValue);
             bool isImplicit = boundObjectCreationExpression.WasCompilerGenerated;
 
-            if (boundObjectCreationExpression.ResultKind == LookupResultKind.OverloadResolutionFailure || constructor == null || constructor.OriginalDefinition is ErrorMethodSymbol)
+            if ((boundObjectCreationExpression.ResultKind == LookupResultKind.OverloadResolutionFailure) || (constructor == null) || (constructor.OriginalDefinition is ErrorMethodSymbol))
             {
                 return CreateInvalidExpressionForHasArgumentsExpression(null, boundObjectCreationExpression.Arguments, boundObjectCreationExpression.InitializerExpressionOpt, syntax, type, constantValue, isImplicit);
             }
@@ -665,7 +665,7 @@ namespace Microsoft.CodeAnalysis.Operations
                     else
                     {
                         var accessor = property.GetOwnOrInheritedSetMethod();
-                        if (accessor == null || boundObjectInitializerMember.ResultKind == LookupResultKind.OverloadResolutionFailure || accessor.OriginalDefinition is ErrorMethodSymbol)
+                        if ((accessor == null) || (boundObjectInitializerMember.ResultKind == LookupResultKind.OverloadResolutionFailure) || (accessor.OriginalDefinition is ErrorMethodSymbol))
                         {
                             Lazy<ImmutableArray<IOperation>> children = new Lazy<ImmutableArray<IOperation>>(() =>
                                 boundObjectInitializerMember.Arguments.SelectAsArray(a => Create(a)));
@@ -722,7 +722,7 @@ namespace Microsoft.CodeAnalysis.Operations
             ConstantValue value,
             bool isImplicit)
         {
-            Lazy<IOperation> instance = receiverOpt == null || receiverOpt.Kind == BoundKind.TypeExpression ? 
+            Lazy<IOperation> instance = (receiverOpt == null) || (receiverOpt.Kind == BoundKind.TypeExpression) ? 
                                             OperationFactory.NullOperation :
                                             new Lazy<IOperation>(() => Create(receiverOpt));
 
@@ -777,7 +777,7 @@ namespace Microsoft.CodeAnalysis.Operations
         {
             IMethodSymbol symbol = boundLocalFunctionStatement.Symbol;
             Lazy<IBlockOperation> body = new Lazy<IBlockOperation>(() => (IBlockOperation)Create(boundLocalFunctionStatement.Body));
-            Lazy<IBlockOperation> ignoredBody = new Lazy<IBlockOperation>(() => boundLocalFunctionStatement.BlockBody != null && boundLocalFunctionStatement.ExpressionBody != null ?
+            Lazy<IBlockOperation> ignoredBody = new Lazy<IBlockOperation>(() => (boundLocalFunctionStatement.BlockBody != null) && (boundLocalFunctionStatement.ExpressionBody != null) ?
                                                                                         (IBlockOperation)Create(boundLocalFunctionStatement.ExpressionBody) :
                                                                                         null);
             SyntaxNode syntax = boundLocalFunctionStatement.Syntax;
@@ -819,9 +819,9 @@ namespace Microsoft.CodeAnalysis.Operations
                     // Semantic model has a special case here that we match: if the underlying syntax is missing, don't create a conversion expression,
                     // and instead directly return the operand, which will be a BoundBadExpression. When we generate a node for the BoundBadExpression,
                     // the resulting IOperation will also have a null Type.
-                    Debug.Assert(boundOperand.Kind == BoundKind.BadExpression ||
-                                 ((boundOperand as BoundLambda)?.Body.Statements.SingleOrDefault() as BoundReturnStatement)?.
-                                     ExpressionOpt?.Kind == BoundKind.BadExpression);
+                    Debug.Assert((boundOperand.Kind == BoundKind.BadExpression) ||
+                                 (((boundOperand as BoundLambda)?.Body.Statements.SingleOrDefault() as BoundReturnStatement)?.
+                                     ExpressionOpt?.Kind == BoundKind.BadExpression));
                     return Create(boundOperand);
                 }
 
@@ -830,7 +830,7 @@ namespace Microsoft.CodeAnalysis.Operations
 
                 if (boundOperand.Syntax == boundConversion.Syntax)
                 {
-                    if (boundOperand.Kind == BoundKind.ConvertedTupleLiteral && boundOperand.Type == boundConversion.Type)
+                    if ((boundOperand.Kind == BoundKind.ConvertedTupleLiteral) && (boundOperand.Type == boundConversion.Type))
                     {
                         // Erase this conversion, this is an artificial conversion added on top of BoundConvertedTupleLiteral
                         // in Binder.CreateTupleLiteralConversion
@@ -843,14 +843,14 @@ namespace Microsoft.CodeAnalysis.Operations
                     }
                 }
 
-                if (boundConversion.ExplicitCastInCode && conversion.IsIdentity && boundOperand.Kind == BoundKind.Conversion)
+                if (boundConversion.ExplicitCastInCode && conversion.IsIdentity && (boundOperand.Kind == BoundKind.Conversion))
                 {
                     var nestedConversion = (BoundConversion)boundOperand;
                     BoundExpression nestedOperand = nestedConversion.Operand;
 
-                    if (nestedConversion.Syntax == nestedOperand.Syntax && nestedConversion.ExplicitCastInCode &&
-                        nestedOperand.Kind == BoundKind.ConvertedTupleLiteral &&
-                        nestedConversion.Type != nestedOperand.Type)
+                    if ((nestedConversion.Syntax == nestedOperand.Syntax) && nestedConversion.ExplicitCastInCode &&
+                        (nestedOperand.Kind == BoundKind.ConvertedTupleLiteral) &&
+                        (nestedConversion.Type != nestedOperand.Type))
                     {
                         // Let's erase the nested conversion, this is an artificial conversion added on top of BoundConvertedTupleLiteral
                         // in Binder.CreateTupleLiteralConversion.
@@ -870,9 +870,9 @@ namespace Microsoft.CodeAnalysis.Operations
                 Optional<object> constantValue = ConvertToOptional(boundConversion.ConstantValue);
 
                 // If this is a lambda or method group conversion to a delegate type, we return a delegate creation instead of a conversion
-                if ((boundOperand.Kind == BoundKind.Lambda ||
-                     boundOperand.Kind == BoundKind.UnboundLambda ||
-                     boundOperand.Kind == BoundKind.MethodGroup) &&
+                if (((boundOperand.Kind == BoundKind.Lambda) ||
+                     (boundOperand.Kind == BoundKind.UnboundLambda) ||
+                     (boundOperand.Kind == BoundKind.MethodGroup)) &&
                     boundConversion.Type.IsDelegateType())
                 {
                     return new LazyDelegateCreationExpression(operand, _semanticModel, syntax, type, constantValue, isImplicit);
@@ -904,8 +904,8 @@ namespace Microsoft.CodeAnalysis.Operations
         {
             Lazy<IOperation> target = new Lazy<IOperation>(() =>
             {
-                if (boundDelegateCreationExpression.Argument.Kind == BoundKind.MethodGroup &&
-                    boundDelegateCreationExpression.MethodOpt != null)
+                if ((boundDelegateCreationExpression.Argument.Kind == BoundKind.MethodGroup) &&
+                    (boundDelegateCreationExpression.MethodOpt != null))
                 {
                     // If this is a method binding, and a valid candidate method was found, then we want to expose
                     // this child as an IMethodBindingReference. Otherwise, we want to just delegate to the standard
@@ -977,7 +977,7 @@ namespace Microsoft.CodeAnalysis.Operations
             ITypeSymbol type = boundArrayCreation.Type;
             Optional<object> constantValue = ConvertToOptional(boundArrayCreation.ConstantValue);
             bool isImplicit = boundArrayCreation.WasCompilerGenerated ||
-                              (boundArrayCreation.InitializerOpt?.Syntax == syntax && !boundArrayCreation.InitializerOpt.WasCompilerGenerated);
+                              ((boundArrayCreation.InitializerOpt?.Syntax == syntax) && !boundArrayCreation.InitializerOpt.WasCompilerGenerated);
             return new LazyArrayCreationExpression(dimensionSizes, initializer, _semanticModel, syntax, type, constantValue, isImplicit);
         }
 
@@ -1025,7 +1025,7 @@ namespace Microsoft.CodeAnalysis.Operations
         }
 
         private static bool IsMemberInitializer(BoundAssignmentOperator boundAssignmentOperator) =>
-            boundAssignmentOperator.Right?.Kind == BoundKind.ObjectInitializerExpression || boundAssignmentOperator.Right?.Kind == BoundKind.CollectionInitializerExpression;
+            (boundAssignmentOperator.Right?.Kind == BoundKind.ObjectInitializerExpression) || (boundAssignmentOperator.Right?.Kind == BoundKind.CollectionInitializerExpression);
 
         private ISimpleAssignmentOperation CreateBoundAssignmentOperatorOperation(BoundAssignmentOperator boundAssignmentOperator)
         {
@@ -1326,8 +1326,8 @@ namespace Microsoft.CodeAnalysis.Operations
                 new Lazy<ImmutableArray<IOperation>>(() => boundBlock.Statements.Select(s => (bound: s, operation: Create(s)))
                                                                                 // Filter out all OperationKind.None except fixed statements for now.
                                                                                 // https://github.com/dotnet/roslyn/issues/21776
-                                                                                .Where(s => s.operation.Kind != OperationKind.None ||
-                                                                                s.bound.Kind == BoundKind.FixedStatement)
+                                                                                .Where(s => (s.operation.Kind != OperationKind.None) ||
+                                                                                (s.bound.Kind == BoundKind.FixedStatement))
                                                                                 .Select(s => s.operation).ToImmutableArray());
 
             ImmutableArray<ILocalSymbol> locals = boundBlock.Locals.As<ILocalSymbol>();
@@ -1690,7 +1690,7 @@ namespace Microsoft.CodeAnalysis.Operations
             Optional<object> constantValue = default(Optional<object>);
             // If the syntax was the same, we're in a fixed statement or using statement. We make the Group operation implicit in this scenario, as the
             // syntax itself is a VariableDeclaration
-            bool isImplicit = declarationGroupSyntax == declarationSyntax || boundMultipleLocalDeclarations.WasCompilerGenerated;
+            bool isImplicit = (declarationGroupSyntax == declarationSyntax) || boundMultipleLocalDeclarations.WasCompilerGenerated;
             return new VariableDeclarationGroupOperation(ImmutableArray.Create(multiVariableDeclaration), _semanticModel, declarationGroupSyntax, type, constantValue, isImplicit);
         }
 
@@ -1726,7 +1726,7 @@ namespace Microsoft.CodeAnalysis.Operations
             // lambda body can point to expression directly and binder can insert expression statement there. and end up statement pointing to
             // expression syntax node since there is no statement syntax node to point to. this will mark such one as implicit since it doesn't
             // actually exist in code
-            bool isImplicit = boundExpressionStatement.WasCompilerGenerated || boundExpressionStatement.Syntax == boundExpressionStatement.Expression.Syntax;
+            bool isImplicit = boundExpressionStatement.WasCompilerGenerated || (boundExpressionStatement.Syntax == boundExpressionStatement.Expression.Syntax);
             return new LazyExpressionStatement(expression, _semanticModel, syntax, type, constantValue, isImplicit);
         }
 

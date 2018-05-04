@@ -6,7 +6,7 @@ namespace Microsoft.CodeAnalysis.Syntax
     {
         public static SyntaxTokenList ToTokenList(this SyntaxListBuilder builder)
         {
-            if (builder == null || builder.Count == 0)
+            if ((builder == null) || (builder.Count == 0))
             {
                 return default(SyntaxTokenList);
             }
@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public static SyntaxList<SyntaxNode> ToList(this SyntaxListBuilder builder)
         {
-            if (builder == null || builder.Count == 0)
+            if ((builder == null) || (builder.Count == 0))
             {
                 return default(SyntaxList<SyntaxNode>);
             }
@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.Syntax
         public static SyntaxList<TNode> ToList<TNode>(this SyntaxListBuilder builder)
             where TNode : SyntaxNode
         {
-            if (builder == null || builder.Count == 0)
+            if ((builder == null) || (builder.Count == 0))
             {
                 return new SyntaxList<TNode>();
             }
@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public static SeparatedSyntaxList<TNode> ToSeparatedList<TNode>(this SyntaxListBuilder builder) where TNode : SyntaxNode
         {
-            if (builder == null || builder.Count == 0)
+            if ((builder == null) || (builder.Count == 0))
             {
                 return default(SeparatedSyntaxList<TNode>);
             }

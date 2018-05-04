@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
             var start = firstToken.Span.End;
 
             var nextToken = firstToken.GetNextToken();
-            if (nextToken.Kind() != SyntaxKind.None && nextToken.HasLeadingTrivia)
+            if ((nextToken.Kind() != SyntaxKind.None) && nextToken.HasLeadingTrivia)
             {
                 var lastLeadingCommentTrivia = nextToken.LeadingTrivia.GetLastComment();
                 if (lastLeadingCommentTrivia != null)
@@ -82,10 +82,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
             // If the next token is a semicolon, and we aren't in the initializer of a for-loop, use that token as the end.
 
             var nextToken = lastToken.GetNextToken(includeSkipped: true);
-            if (nextToken.Kind() != SyntaxKind.None && nextToken.Kind() == SyntaxKind.SemicolonToken)
+            if ((nextToken.Kind() != SyntaxKind.None) && (nextToken.Kind() == SyntaxKind.SemicolonToken))
             {
                 var forStatement = nextToken.GetAncestor<ForStatementSyntax>();
-                if (forStatement != null && forStatement.FirstSemicolonToken == nextToken)
+                if ((forStatement != null) && (forStatement.FirstSemicolonToken == nextToken))
                 {
                     return default;
                 }
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
                 }
                 else
                 {
-                    text = text.Length >= "/**/".Length && text.EndsWith(MultiLineCommentSuffix) 
+                    text = (text.Length >= "/**/".Length) && text.EndsWith(MultiLineCommentSuffix) 
                         ? text.Substring(0, text.Length - MultiLineCommentSuffix.Length)
                         : text;
                 }

@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis
             else if (hr != S_OK)
             {
                 Exception e = Marshal.GetExceptionForHR(hr);
-                if (e is FileNotFoundException || e is DirectoryNotFoundException)
+                if ((e is FileNotFoundException) || (e is DirectoryNotFoundException))
                 {
                     // invalid assembly name:
                     yield break;
@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var candidates = GetAssemblyObjects(nameObject, architectureFilter);
-            string cultureName = (preferredCulture != null && !preferredCulture.IsNeutralCulture) ? preferredCulture.Name : null;
+            string cultureName = ((preferredCulture != null) && !preferredCulture.IsNeutralCulture) ? preferredCulture.Name : null;
 
             var bestMatch = FusionAssemblyIdentity.GetBestMatch(candidates, cultureName);
             if (bestMatch == null)

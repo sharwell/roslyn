@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         private CustomAttributesBag<CSharpAttributeData> GetAttributesBag()
         {
-            if ((_lazyCustomAttributesBag == null || !_lazyCustomAttributesBag.IsSealed) &&
+            if (((_lazyCustomAttributesBag == null) || !_lazyCustomAttributesBag.IsSealed) &&
                 LoadAndValidateAttributes(OneOrMany.Create(this.AttributeDeclarationSyntaxList), ref _lazyCustomAttributesBag))
             {
                 DeclaringCompilation.SymbolDeclaredEvent(this);
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         protected CommonEventWellKnownAttributeData GetDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             var attributesBag = _lazyCustomAttributesBag;
 
-            if (attributesBag == null || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -267,7 +267,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 var lazyCustomAttributesBag = _lazyCustomAttributesBag;
-                if (lazyCustomAttributesBag != null && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+                if ((lazyCustomAttributesBag != null) && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
                 {
                     var data = (CommonEventEarlyWellKnownAttributeData)lazyCustomAttributesBag.EarlyDecodedWellKnownAttributeData;
                     return data != null ? data.ObsoleteAttributeData : null;
@@ -322,7 +322,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                return data != null && data.HasSpecialNameAttribute;
+                return (data != null) && data.HasSpecialNameAttribute;
             }
         }
 
@@ -447,7 +447,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Location location = this.Locations[0];
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
 
-            if (this.DeclaredAccessibility == Accessibility.Private && (IsVirtual || IsAbstract || IsOverride))
+            if ((this.DeclaredAccessibility == Accessibility.Private) && (IsVirtual || IsAbstract || IsOverride))
             {
                 diagnostics.Add(ErrorCode.ERR_VirtualPrivate, location, this);
             }
@@ -466,12 +466,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // '{0}' cannot be sealed because it is not an override
                 diagnostics.Add(ErrorCode.ERR_SealedNonOverride, location, this);
             }
-            else if (IsAbstract && ContainingType.TypeKind == TypeKind.Struct)
+            else if (IsAbstract && (ContainingType.TypeKind == TypeKind.Struct))
             {
                 // The modifier '{0}' is not valid for this item
                 diagnostics.Add(ErrorCode.ERR_BadMemberFlag, location, SyntaxFacts.GetText(SyntaxKind.AbstractKeyword));
             }
-            else if (IsVirtual && ContainingType.TypeKind == TypeKind.Struct)
+            else if (IsVirtual && (ContainingType.TypeKind == TypeKind.Struct))
             {
                 // The modifier '{0}' is not valid for this item
                 diagnostics.Add(ErrorCode.ERR_BadMemberFlag, location, SyntaxFacts.GetText(SyntaxKind.VirtualKeyword));
@@ -512,7 +512,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // Suppressed for error types.
                 diagnostics.Add(ErrorCode.ERR_EventNotDelegate, location, this);
             }
-            else if (IsAbstract && !ContainingType.IsAbstract && (ContainingType.TypeKind == TypeKind.Class || ContainingType.TypeKind == TypeKind.Submission))
+            else if (IsAbstract && !ContainingType.IsAbstract && ((ContainingType.TypeKind == TypeKind.Class) || (ContainingType.TypeKind == TypeKind.Submission)))
             {
                 // '{0}' is abstract but it is contained in non-abstract class '{1}'
                 diagnostics.Add(ErrorCode.ERR_AbstractInConcreteClass, location, this, ContainingType);
@@ -612,8 +612,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 foreach (Symbol interfaceMember in @interface.GetMembers(this.Name))
                 {
-                    if (interfaceMember.Kind == SymbolKind.Event && //quick check (necessary, not sufficient)
-                        this == this.containingType.FindImplementationForInterfaceMember(interfaceMember)) //slow check (necessary and sufficient)
+                    if ((interfaceMember.Kind == SymbolKind.Event) && //quick check (necessary, not sufficient)
+                        (this == this.containingType.FindImplementationForInterfaceMember(interfaceMember))) //slow check (necessary and sufficient)
                     {
                         sawImplicitImplementation = true;
 

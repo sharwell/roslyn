@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Text
         {
             ValidateChecksumAlgorithm(checksumAlgorithm);
 
-            if (!checksum.IsDefault && checksum.Length != CryptographicHashProvider.GetHashSize(checksumAlgorithm))
+            if (!checksum.IsDefault && (checksum.Length != CryptographicHashProvider.GetHashSize(checksumAlgorithm)))
             {
                 throw new ArgumentException(CodeAnalysisResources.InvalidHash, nameof(checksum));
             }
@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis.Text
                 throw new ArgumentNullException(nameof(buffer));
             }
 
-            if (length < 0 || length > buffer.Length)
+            if ((length < 0) || (length > buffer.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
@@ -453,7 +453,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         internal void CheckSubSpan(TextSpan span)
         {
-            if (span.Start < 0 || span.Start > this.Length || span.End > this.Length)
+            if ((span.Start < 0) || (span.Start > this.Length) || (span.End > this.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(span));
             }
@@ -471,7 +471,7 @@ namespace Microsoft.CodeAnalysis.Text
             {
                 return SourceText.From(string.Empty, this.Encoding, this.ChecksumAlgorithm);
             }
-            else if (spanLength == this.Length && span.Start == 0)
+            else if ((spanLength == this.Length) && (span.Start == 0))
             {
                 return this;
             }
@@ -486,7 +486,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </summary>
         public SourceText GetSubText(int start)
         {
-            if (start < 0 || start > this.Length)
+            if ((start < 0) || (start > this.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(start));
             }
@@ -595,7 +595,7 @@ namespace Microsoft.CodeAnalysis.Text
             int position = Math.Max(Math.Min(span.Start, this.Length), 0);
             int length = Math.Min(span.End, this.Length) - position;
 
-            while (position < this.Length && length > 0)
+            while ((position < this.Length) && (length > 0))
             {
                 int copyLength = Math.Min(buffer.Length, length);
                 this.CopyTo(position, buffer, 0, copyLength);
@@ -639,7 +639,7 @@ namespace Microsoft.CodeAnalysis.Text
                 var newTextLength = change.NewText?.Length ?? 0;
 
                 // ignore changes that don't change anything
-                if (change.Span.Length == 0 && newTextLength == 0)
+                if ((change.Span.Length == 0) && (newTextLength == 0))
                     continue;
 
                 // if we've skipped a range, add
@@ -661,7 +661,7 @@ namespace Microsoft.CodeAnalysis.Text
             }
 
             // no changes actually happened?
-            if (position == 0 && segments.Count == 0)
+            if ((position == 0) && (segments.Count == 0))
             {
                 changeRanges.Free();
                 return this;
@@ -816,13 +816,13 @@ namespace Microsoft.CodeAnalysis.Text
             {
                 get
                 {
-                    if (index < 0 || index >= _lineStarts.Length)
+                    if ((index < 0) || (index >= _lineStarts.Length))
                     {
                         throw new ArgumentOutOfRangeException(nameof(index));
                     }
 
                     int start = _lineStarts[index];
-                    if (index == _lineStarts.Length - 1)
+                    if (index == (_lineStarts.Length - 1))
                     {
                         return TextLine.FromSpan(_text, TextSpan.FromBounds(start, _text.Length));
                     }
@@ -836,7 +836,7 @@ namespace Microsoft.CodeAnalysis.Text
 
             public override int IndexOf(int position)
             {
-                if (position < 0 || position > _text.Length)
+                if ((position < 0) || (position > _text.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(position));
                 }
@@ -920,7 +920,7 @@ namespace Microsoft.CodeAnalysis.Text
                 var index = 0;
                 if (lastWasCR)
                 {
-                    if (length > 0 && buffer[0] == '\n')
+                    if ((length > 0) && (buffer[0] == '\n'))
                     {
                         index++;
                     }
@@ -946,7 +946,7 @@ namespace Microsoft.CodeAnalysis.Text
                     // Assumes that the only 2-char line break sequence is CR+LF
                     if (c == '\r')
                     {
-                        if (index < length && buffer[index] == '\n')
+                        if ((index < length) && (buffer[index] == '\n'))
                         {
                             index++;
                         }
@@ -983,7 +983,7 @@ namespace Microsoft.CodeAnalysis.Text
             // Checksum may be provided by a subclass, which is thus responsible for passing us a true hash.
             ImmutableArray<byte> leftChecksum = _lazyChecksum;
             ImmutableArray<byte> rightChecksum = other._lazyChecksum;
-            if (!leftChecksum.IsDefault && !rightChecksum.IsDefault && this.Encoding == other.Encoding && this.ChecksumAlgorithm == other.ChecksumAlgorithm)
+            if (!leftChecksum.IsDefault && !rightChecksum.IsDefault && (this.Encoding == other.Encoding) && (this.ChecksumAlgorithm == other.ChecksumAlgorithm))
             {
                 return leftChecksum.SequenceEqual(rightChecksum);
             }
@@ -1077,7 +1077,7 @@ namespace Microsoft.CodeAnalysis.Text
                         break;
 
                     case 0xEF:
-                        if (source[1] == 0xBB && length >= 3 && source[2] == 0xBF)
+                        if ((source[1] == 0xBB) && (length >= 3) && (source[2] == 0xBF))
                         {
                             preambleLength = 3;
                             return Encoding.UTF8;

@@ -59,12 +59,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Telemetry
             OperationBlockEndActionsCount = operationBlockEndActionsCount;
             OperationBlockActionsCount = operationBlockActionsCount;
 
-            HasAnyExecutableCodeActions = CodeBlockActionsCount > 0 ||
-                CodeBlockStartActionsCount > 0 ||
-                SyntaxNodeActionsCount > 0 ||
-                OperationActionsCount > 0 ||
-                OperationBlockActionsCount > 0 ||
-                OperationBlockStartActionsCount > 0;
+            HasAnyExecutableCodeActions = (CodeBlockActionsCount > 0) ||
+                (CodeBlockStartActionsCount > 0) ||
+                (SyntaxNodeActionsCount > 0) ||
+                (OperationActionsCount > 0) ||
+                (OperationBlockActionsCount > 0) ||
+                (OperationBlockStartActionsCount > 0);
         }
 
         /// <summary>

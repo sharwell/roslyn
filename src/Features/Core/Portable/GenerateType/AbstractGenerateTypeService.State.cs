@@ -146,9 +146,9 @@ namespace Microsoft.CodeAnalysis.GenerateType
                     return false;
                 }
 
-                if (info.CandidateReason == CandidateReason.Inaccessible ||
-                    info.CandidateReason == CandidateReason.NotReferencable ||
-                    info.CandidateReason == CandidateReason.OverloadResolutionFailure)
+                if ((info.CandidateReason == CandidateReason.Inaccessible) ||
+                    (info.CandidateReason == CandidateReason.NotReferencable) ||
+                    (info.CandidateReason == CandidateReason.OverloadResolutionFailure))
                 {
                     // We bound to something inaccessible, or overload resolution on a 
                     // constructor call failed.  Don't want to offer GenerateType here.
@@ -171,8 +171,8 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 this.InferBaseType(service, document, cancellationToken);
                 this.IsInterface = GenerateInterface(service, cancellationToken);
                 this.IsStruct = GenerateStruct(service, semanticModel, cancellationToken);
-                this.IsAttribute = this.BaseTypeOrInterfaceOpt != null && this.BaseTypeOrInterfaceOpt.Equals(semanticModel.Compilation.AttributeType());
-                this.IsException = this.BaseTypeOrInterfaceOpt != null && this.BaseTypeOrInterfaceOpt.Equals(semanticModel.Compilation.ExceptionType());
+                this.IsAttribute = (this.BaseTypeOrInterfaceOpt != null) && this.BaseTypeOrInterfaceOpt.Equals(semanticModel.Compilation.AttributeType());
+                this.IsException = (this.BaseTypeOrInterfaceOpt != null) && this.BaseTypeOrInterfaceOpt.Equals(semanticModel.Compilation.ExceptionType());
                 this.IsMembersWithModule = generateTypeServiceStateOptions.IsMembersWithModule;
                 this.IsTypeGeneratedIntoNamespaceFromMemberAccess = generateTypeServiceStateOptions.IsTypeGeneratedIntoNamespaceFromMemberAccess;
                 this.IsInterfaceOrEnumNotAllowedInTypeContext = generateTypeServiceStateOptions.IsInterfaceOrEnumNotAllowedInTypeContext;
@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                     this.TypeToGenerateInOpt = null;
                 }
 
-                return this.TypeToGenerateInOpt != null || this.NamespaceToGenerateInOpt != null;
+                return (this.TypeToGenerateInOpt != null) || (this.NamespaceToGenerateInOpt != null);
             }
 
             private void InferBaseType(
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 else if (
                     service.IsArrayElementType(this.NameOrMemberAccessExpression) ||
                     service.IsInVariableTypeContext(this.NameOrMemberAccessExpression) ||
-                    this.ObjectCreationExpressionOpt != null)
+                    (this.ObjectCreationExpressionOpt != null))
                 {
                     var expr = this.ObjectCreationExpressionOpt ?? this.NameOrMemberAccessExpression;
                     var typeInference = document.Project.LanguageServices.GetService<ITypeInferenceService>();
@@ -235,12 +235,12 @@ namespace Microsoft.CodeAnalysis.GenerateType
 
                 // A base type need to be non class or interface type.  Also, being 'object' is
                 // redundant as the base type.  
-                if (baseType.IsSealed || baseType.IsStatic || baseType.SpecialType == SpecialType.System_Object)
+                if (baseType.IsSealed || baseType.IsStatic || (baseType.SpecialType == SpecialType.System_Object))
                 {
                     return;
                 }
 
-                if (baseType.TypeKind != TypeKind.Class && baseType.TypeKind != TypeKind.Interface)
+                if ((baseType.TypeKind != TypeKind.Class) && (baseType.TypeKind != TypeKind.Interface))
                 {
                     return;
                 }
@@ -260,8 +260,8 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 if (!this.IsAttribute &&
                     !this.IsException &&
                     this.Name.LooksLikeInterfaceName() &&
-                    this.ObjectCreationExpressionOpt == null &&
-                    (this.BaseTypeOrInterfaceOpt == null || this.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface))
+                    (this.ObjectCreationExpressionOpt == null) &&
+                    ((this.BaseTypeOrInterfaceOpt == null) || (this.BaseTypeOrInterfaceOpt.TypeKind == TypeKind.Interface)))
                 {
                     return true;
                 }
@@ -279,15 +279,15 @@ namespace Microsoft.CodeAnalysis.GenerateType
                 // Can only generate into a type if it's a class and it's from source.
                 if (this.TypeToGenerateInOpt != null)
                 {
-                    if (this.TypeToGenerateInOpt.TypeKind != TypeKind.Class &&
-                        this.TypeToGenerateInOpt.TypeKind != TypeKind.Module)
+                    if ((this.TypeToGenerateInOpt.TypeKind != TypeKind.Class) &&
+                        (this.TypeToGenerateInOpt.TypeKind != TypeKind.Module))
                     {
                         this.TypeToGenerateInOpt = null;
                     }
                     else
                     {
                         var symbol = await SymbolFinder.FindSourceDefinitionAsync(this.TypeToGenerateInOpt, document.Project.Solution, cancellationToken).ConfigureAwait(false);
-                        if (symbol == null ||
+                        if ((symbol == null) ||
                             !symbol.IsKind(SymbolKind.NamedType) ||
                             !symbol.Locations.Any(loc => loc.IsInSource))
                         {
@@ -307,7 +307,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                         // If the 2 documents are in different project then we must have Public Accessibility.
                         // If we are generating in a website project, we also want to type to be public so the 
                         // designer files can access the type.
-                        if (documentToBeGeneratedIn.Project != document.Project ||
+                        if ((documentToBeGeneratedIn.Project != document.Project) ||
                             service.GeneratedTypesMustBePublic(documentToBeGeneratedIn.Project))
                         {
                             this.IsPublicAccessibilityForTypeGeneration = true;

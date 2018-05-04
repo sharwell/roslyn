@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         public static bool IsMemberAccessExpressionName(this ExpressionSyntax expression)
         {
-            return (expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression) && ((MemberAccessExpressionSyntax)expression.Parent).Name == expression) ||
+            return (expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression) && (((MemberAccessExpressionSyntax)expression.Parent).Name == expression)) ||
                    IsMemberBindingExpressionName(expression);
         }
 
@@ -146,24 +146,24 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 return false;
             }
 
-            return expression == (expression.Parent as MemberAccessExpressionSyntax)?.Name ||
+            return (expression == (expression.Parent as MemberAccessExpressionSyntax)?.Name) ||
                 expression.IsMemberBindingExpressionName();
         }
 
         private static bool IsMemberBindingExpressionName(this ExpressionSyntax expression)
         {
             return expression.IsParentKind(SyntaxKind.MemberBindingExpression) &&
-                ((MemberBindingExpressionSyntax)expression.Parent).Name == expression;
+                (((MemberBindingExpressionSyntax)expression.Parent).Name == expression);
         }
 
         public static bool IsRightSideOfQualifiedName(this ExpressionSyntax expression)
         {
-            return expression.IsParentKind(SyntaxKind.QualifiedName) && ((QualifiedNameSyntax)expression.Parent).Right == expression;
+            return expression.IsParentKind(SyntaxKind.QualifiedName) && (((QualifiedNameSyntax)expression.Parent).Right == expression);
         }
 
         public static bool IsRightSideOfColonColon(this ExpressionSyntax expression)
         {
-            return expression.IsParentKind(SyntaxKind.AliasQualifiedName) && ((AliasQualifiedNameSyntax)expression.Parent).Name == expression;
+            return expression.IsParentKind(SyntaxKind.AliasQualifiedName) && (((AliasQualifiedNameSyntax)expression.Parent).Name == expression);
         }
 
         public static bool IsRightSideOfDot(this ExpressionSyntax name)
@@ -189,8 +189,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         public static bool IsRightOfCloseParen(this ExpressionSyntax expression)
         {
             var firstToken = expression.GetFirstToken();
-            return firstToken.Kind() != SyntaxKind.None
-                && firstToken.GetPreviousToken().Kind() == SyntaxKind.CloseParenToken;
+            return (firstToken.Kind() != SyntaxKind.None)
+                && (firstToken.GetPreviousToken().Kind() == SyntaxKind.CloseParenToken);
         }
 
         public static bool IsLeftSideOfDot(this ExpressionSyntax expression)
@@ -202,26 +202,26 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
             return
                 IsLeftSideOfQualifiedName(expression) ||
-                (expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression) && ((MemberAccessExpressionSyntax)expression.Parent).Expression == expression);
+                (expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression) && (((MemberAccessExpressionSyntax)expression.Parent).Expression == expression));
         }
 
         public static bool IsLeftSideOfDotOrArrow(this ExpressionSyntax expression)
         {
             return
                 IsLeftSideOfQualifiedName(expression) ||
-                (expression.Parent is MemberAccessExpressionSyntax && ((MemberAccessExpressionSyntax)expression.Parent).Expression == expression);
+                ((expression.Parent is MemberAccessExpressionSyntax) && (((MemberAccessExpressionSyntax)expression.Parent).Expression == expression));
         }
 
         public static bool IsLeftSideOfQualifiedName(this ExpressionSyntax expression)
         {
             return
-                expression.IsParentKind(SyntaxKind.QualifiedName) && ((QualifiedNameSyntax)expression.Parent).Left == expression;
+                expression.IsParentKind(SyntaxKind.QualifiedName) && (((QualifiedNameSyntax)expression.Parent).Left == expression);
         }
 
         public static bool IsExpressionOfInvocation(this ExpressionSyntax expression)
         {
             return
-                expression.IsParentKind(SyntaxKind.InvocationExpression) && ((InvocationExpressionSyntax)expression.Parent).Expression == expression;
+                expression.IsParentKind(SyntaxKind.InvocationExpression) && (((InvocationExpressionSyntax)expression.Parent).Expression == expression);
         }
 
         public static bool TryGetNameParts(this ExpressionSyntax expression, out IList<string> parts)
@@ -301,8 +301,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             var attributeArgument = expression.GetAncestor<AttributeArgumentSyntax>();
             if (attributeArgument != null)
             {
-                if (attributeArgument.NameEquals == null ||
-                    expression != attributeArgument.NameEquals.Name)
+                if ((attributeArgument.NameEquals == null) ||
+                    (expression != attributeArgument.NameEquals.Name))
                 {
                     return true;
                 }
@@ -316,14 +316,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         {
             var argument = expression.Parent as ArgumentSyntax;
             return
-                argument != null &&
-                argument.Expression == expression &&
-                argument.RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword;
+                (argument != null) &&
+                (argument.Expression == expression) &&
+                (argument.RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword);
         }
 
         public static bool IsInRefContext(this ExpressionSyntax expression)
             => expression.IsParentKind(SyntaxKind.RefExpression) ||
-               (expression?.Parent as ArgumentSyntax)?.RefOrOutKeyword.Kind() == SyntaxKind.RefKeyword;
+               ((expression?.Parent as ArgumentSyntax)?.RefOrOutKeyword.Kind() == SyntaxKind.RefKeyword);
 
         public static bool IsInInContext(this ExpressionSyntax expression)
             => (expression?.Parent as ArgumentSyntax)?.RefKindKeyword.Kind() == SyntaxKind.InKeyword;
@@ -479,7 +479,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         public static bool IsNamedArgumentIdentifier(this ExpressionSyntax expression)
         {
-            return expression is IdentifierNameSyntax && expression.Parent is NameColonSyntax;
+            return (expression is IdentifierNameSyntax) && (expression.Parent is NameColonSyntax);
         }
 
         public static bool IsInsideNameOf(this ExpressionSyntax expression)
@@ -507,7 +507,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             // An RValue can't be written into. 
             // i.e. you can't replace "a" in "a = b" with "Goo() = b".
             return
-                expression != null &&
+                (expression != null) &&
                 !expression.IsWrittenTo() &&
                 CanReplaceWithLValue(expression, semanticModel, cancellationToken);
         }
@@ -532,7 +532,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             }
 
             // literal can be always replaced.
-            if (expression is LiteralExpressionSyntax && !expression.IsParentKind(SyntaxKind.UnaryMinusExpression))
+            if ((expression is LiteralExpressionSyntax) && !expression.IsParentKind(SyntaxKind.UnaryMinusExpression))
             {
                 return true;
             }
@@ -573,7 +573,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                     // Technically, you could introduce an LValue for "Goo" in "Goo()" even if "Goo" binds
                     // to a method.  (i.e. by assigning to a Func<...> type).  However, this is so contrived
                     // and none of the features that use this extension consider this replaceable.
-                    if (expression.IsKind(SyntaxKind.IdentifierName) || expression is MemberAccessExpressionSyntax)
+                    if (expression.IsKind(SyntaxKind.IdentifierName) || (expression is MemberAccessExpressionSyntax))
                     {
                         // If it looks like a method then we don't allow it to be replaced if it is a
                         // method (or if it doesn't bind).
@@ -598,7 +598,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 // the parent is a conditional access expression. This case is already covered before the parent kind switch
                 case SyntaxKind.ConditionalAccessExpression:
                     var parentConditionalAccessExpression = (ConditionalAccessExpressionSyntax)expression.Parent;
-                    return expression != parentConditionalAccessExpression.WhenNotNull &&
+                    return (expression != parentConditionalAccessExpression.WhenNotNull) &&
                             !parentConditionalAccessExpression.Parent.IsKind(SyntaxKind.ConditionalAccessExpression);
 
                 case SyntaxKind.IsExpression:
@@ -638,7 +638,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
             if (expression.Parent is PrefixUnaryExpressionSyntax)
             {
-                if (!(expression is LiteralExpressionSyntax && expression.IsParentKind(SyntaxKind.UnaryMinusExpression)))
+                if (!((expression is LiteralExpressionSyntax) && expression.IsParentKind(SyntaxKind.UnaryMinusExpression)))
                 {
                     return true;
                 }
@@ -651,21 +651,21 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 topExpression = (TypeSyntax)topExpression.Parent;
             }
 
-            if (parentNonExpression != null &&
+            if ((parentNonExpression != null) &&
                 parentNonExpression.IsKind(SyntaxKind.FromClause) &&
-                topExpression != null &&
-                ((FromClauseSyntax)parentNonExpression).Type == topExpression)
+                (topExpression != null) &&
+                (((FromClauseSyntax)parentNonExpression).Type == topExpression))
             {
                 return false;
             }
 
             // Parent type checks.
-            if (expression.Parent is PostfixUnaryExpressionSyntax ||
-                expression.Parent is BinaryExpressionSyntax ||
-                expression.Parent is AssignmentExpressionSyntax ||
-                expression.Parent is QueryClauseSyntax ||
-                expression.Parent is SelectOrGroupClauseSyntax ||
-                expression.Parent is CheckedExpressionSyntax)
+            if ((expression.Parent is PostfixUnaryExpressionSyntax) ||
+                (expression.Parent is BinaryExpressionSyntax) ||
+                (expression.Parent is AssignmentExpressionSyntax) ||
+                (expression.Parent is QueryClauseSyntax) ||
+                (expression.Parent is SelectOrGroupClauseSyntax) ||
+                (expression.Parent is CheckedExpressionSyntax))
             {
                 return true;
             }
@@ -789,7 +789,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             replacementNode = null;
             issueSpan = default;
 
-            if (memberAccess.Name == null || memberAccess.Expression == null)
+            if ((memberAccess.Name == null) || (memberAccess.Expression == null))
             {
                 return false;
             }
@@ -857,7 +857,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 if (PreferPredefinedTypeKeywordInMemberAccess(memberAccess, optionSet, semanticModel))
                 {
                     var symbol = semanticModel.GetSymbolInfo(memberAccess, cancellationToken).Symbol;
-                    if (symbol != null && symbol.IsKind(SymbolKind.NamedType))
+                    if ((symbol != null) && symbol.IsKind(SymbolKind.NamedType))
                     {
                         var keywordKind = GetPredefinedKeywordKind(((INamedTypeSymbol)symbol).SpecialType);
                         if (keywordKind != SyntaxKind.None)
@@ -987,7 +987,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
             public bool Equals(ISymbol x, ISymbol y)
             {
-                if (x is null || y is null)
+                if ((x is null) || (y is null))
                 {
                     return x == y;
                 }
@@ -1059,9 +1059,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         public static bool IsAliasReplaceableExpression(this ExpressionSyntax expression)
         {
-            if (expression.Kind() == SyntaxKind.IdentifierName ||
-                expression.Kind() == SyntaxKind.QualifiedName ||
-                expression.Kind() == SyntaxKind.AliasQualifiedName)
+            if ((expression.Kind() == SyntaxKind.IdentifierName) ||
+                (expression.Kind() == SyntaxKind.QualifiedName) ||
+                (expression.Kind() == SyntaxKind.AliasQualifiedName))
             {
                 return true;
             }
@@ -1069,7 +1069,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             if (expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
             {
                 var memberAccess = (MemberAccessExpressionSyntax)expression;
-                return memberAccess.Expression != null && memberAccess.Expression.IsAliasReplaceableExpression();
+                return (memberAccess.Expression != null) && memberAccess.Expression.IsAliasReplaceableExpression();
             }
 
             return false;
@@ -1111,7 +1111,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 symbol = symbol.ContainingType;
             }
 
-            if (node is QualifiedNameSyntax || node is AliasQualifiedNameSyntax)
+            if ((node is QualifiedNameSyntax) || (node is AliasQualifiedNameSyntax))
             {
                 SyntaxAnnotation aliasAnnotationInfo = null;
 
@@ -1148,15 +1148,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 }
             }
 
-            if (node.Kind() == SyntaxKind.IdentifierName &&
-                semanticModel.GetAliasInfo((IdentifierNameSyntax)node, cancellationToken) != null)
+            if ((node.Kind() == SyntaxKind.IdentifierName) &&
+                (semanticModel.GetAliasInfo((IdentifierNameSyntax)node, cancellationToken) != null))
             {
                 return false;
             }
 
             // an alias can only replace a type or namespace
-            if (symbol == null ||
-                (symbol.Kind != SymbolKind.Namespace && symbol.Kind != SymbolKind.NamedType))
+            if ((symbol == null) ||
+                ((symbol.Kind != SymbolKind.Namespace) && (symbol.Kind != SymbolKind.NamedType)))
             {
                 return false;
             }
@@ -1194,7 +1194,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             }
 
             aliasReplacement = GetAliasForSymbol((INamespaceOrTypeSymbol)symbol, node.GetFirstToken(), semanticModel, cancellationToken);
-            if (aliasReplacement != null && preferAliasToQualifiedName)
+            if ((aliasReplacement != null) && preferAliasToQualifiedName)
             {
                 return ValidateAliasForTarget(aliasReplacement, semanticModel, node, symbol);
             }
@@ -1258,7 +1258,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 }
 
                 if (nameofValueOpt.Value is string existingVal &&
-                    existingVal != aliasName)
+                    (existingVal != aliasName))
                 {
                     return false;
                 }
@@ -1460,7 +1460,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 symbol = method.ContainingType;
             }
 
-            if (symbol.Kind == SymbolKind.Method && name.Kind() == SyntaxKind.GenericName)
+            if ((symbol.Kind == SymbolKind.Method) && (name.Kind() == SyntaxKind.GenericName))
             {
                 // The option wants the generic method invocation name to be explicit, then quit the reduction
                 if (!optionSet.GetOption(SimplificationOptions.PreferImplicitTypeInference))
@@ -1608,7 +1608,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
                     if (name is AliasQualifiedNameSyntax aliasQualifiedName)
                     {
-                        if (aliasQualifiedName.Name is SimpleNameSyntax &&
+                        if ((aliasQualifiedName.Name is SimpleNameSyntax) &&
                             !aliasQualifiedName.Name.Identifier.HasAnnotations(AliasAnnotation.Kind) &&
                             !aliasQualifiedName.Name.HasAnnotation(Simplifier.SpecialTypeAnnotation))
                         {
@@ -1617,7 +1617,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                     }
 
                     var aliasInfo = semanticModel.GetAliasInfo(name, cancellationToken);
-                    if (nameHasNoAlias && aliasInfo == null)
+                    if (nameHasNoAlias && (aliasInfo == null))
                     {
                         if (IsReplaceableByVar(name, semanticModel, out replacementNode, out issueSpan, optionSet, cancellationToken))
                         {
@@ -1665,7 +1665,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                     if (!name.IsVar && (symbol.Kind == SymbolKind.NamedType) && !name.IsLeftSideOfQualifiedName())
                     {
                         var type = (INamedTypeSymbol)symbol;
-                        if (aliasInfo == null && CanSimplifyNullable(type, name, semanticModel))
+                        if ((aliasInfo == null) && CanSimplifyNullable(type, name, semanticModel))
                         {
                             GenericNameSyntax genericName;
                             if (name.Kind() == SyntaxKind.QualifiedName)
@@ -1779,7 +1779,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             // - <see cref="SomeType.SomeMethod(Nullable{SomeType})"/>
 
             var argument = type.TypeArguments.SingleOrDefault();
-            if (argument == null || argument.IsErrorType())
+            if ((argument == null) || argument.IsErrorType())
             {
                 return false;
             }
@@ -1836,12 +1836,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             // we can try to remove the Attribute suffix if this is the attribute name
             if (SyntaxFacts.IsAttributeName(name))
             {
-                if (name.Parent.Kind() == SyntaxKind.Attribute || name.IsRightSideOfDotOrColonColon())
+                if ((name.Parent.Kind() == SyntaxKind.Attribute) || name.IsRightSideOfDotOrColonColon())
                 {
                     const string AttributeName = "Attribute";
 
                     // an attribute that should keep it (unnecessary "Attribute" suffix should be annotated with a DontSimplifyAnnotation
-                    if (identifierToken.ValueText != AttributeName && identifierToken.ValueText.EndsWith(AttributeName, StringComparison.Ordinal) && !identifierToken.HasAnnotation(SimplificationHelpers.DontSimplifyAnnotation))
+                    if ((identifierToken.ValueText != AttributeName) && identifierToken.ValueText.EndsWith(AttributeName, StringComparison.Ordinal) && !identifierToken.HasAnnotation(SimplificationHelpers.DontSimplifyAnnotation))
                     {
                         // weird. the semantic model is able to bind attribute syntax like "[as()]" although it's not valid code.
                         // so we need another check for keywords manually.
@@ -1979,13 +1979,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             replacementNode = null;
             issueSpan = default;
 
-            if (left != null && right != null)
+            if ((left != null) && (right != null))
             {
                 var leftSymbol = SimplificationHelpers.GetOriginalSymbolInfo(semanticModel, left);
-                if (leftSymbol != null && (leftSymbol.Kind == SymbolKind.NamedType))
+                if ((leftSymbol != null) && (leftSymbol.Kind == SymbolKind.NamedType))
                 {
                     var rightSymbol = SimplificationHelpers.GetOriginalSymbolInfo(semanticModel, right);
-                    if (rightSymbol != null && (rightSymbol.IsStatic || rightSymbol.Kind == SymbolKind.NamedType))
+                    if ((rightSymbol != null) && (rightSymbol.IsStatic || (rightSymbol.Kind == SymbolKind.NamedType)))
                     {
                         // Static member access or nested type member access.
                         var containingType = rightSymbol.ContainingType;
@@ -2014,14 +2014,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                             enclosingSymbol = enclosingSymbol.ContainingSymbol;
                         }
 
-                        if (containingType != null && !containingType.Equals(leftSymbol))
+                        if ((containingType != null) && !containingType.Equals(leftSymbol))
                         {
                             if (leftSymbol is INamedTypeSymbol namedType)
                             {
                                 if ((namedType.GetBaseTypes().Contains(containingType) &&
                                     !optionSet.GetOption(SimplificationOptions.AllowSimplificationToBaseType)) ||
                                     (!optionSet.GetOption(SimplificationOptions.AllowSimplificationToGenericType) &&
-                                    containingType.TypeArguments.Length != 0))
+                                    (containingType.TypeArguments.Length != 0)))
                                 {
                                     return false;
                                 }
@@ -2107,9 +2107,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             {
                 var enclosingNamedType = semanticModel.GetEnclosingNamedType(memberAccess.SpanStart, cancellationToken);
                 var symbol = semanticModel.GetSymbolInfo(memberAccess.Name, cancellationToken).Symbol;
-                if (enclosingNamedType != null &&
+                if ((enclosingNamedType != null) &&
                     !enclosingNamedType.IsSealed &&
-                    symbol != null &&
+                    (symbol != null) &&
                     symbol.IsOverridable())
                 {
                     return false;
@@ -2147,10 +2147,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             {
                 var nextToken = parent.Parent.GetLastToken().GetNextToken();
 
-                return nextToken.Kind() == SyntaxKind.OpenParenToken ||
-                    nextToken.Kind() == SyntaxKind.TildeToken ||
-                    nextToken.Kind() == SyntaxKind.ExclamationToken ||
-                    (SyntaxFacts.IsKeywordKind(nextToken.Kind()) && !(nextToken.Kind() == SyntaxKind.AsKeyword || nextToken.Kind() == SyntaxKind.IsKeyword));
+                return (nextToken.Kind() == SyntaxKind.OpenParenToken) ||
+                    (nextToken.Kind() == SyntaxKind.TildeToken) ||
+                    (nextToken.Kind() == SyntaxKind.ExclamationToken) ||
+                    (SyntaxFacts.IsKeywordKind(nextToken.Kind()) && !((nextToken.Kind() == SyntaxKind.AsKeyword) || (nextToken.Kind() == SyntaxKind.IsKeyword)));
             }
 
             return false;
@@ -2179,11 +2179,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         {
             var ancestorInvocation = memberAccess.FirstAncestorOrSelf<InvocationExpressionSyntax>();
 
-            if (ancestorInvocation != null && ancestorInvocation.SpanStart == memberAccess.SpanStart)
+            if ((ancestorInvocation != null) && (ancestorInvocation.SpanStart == memberAccess.SpanStart))
             {
                 var typeInfo = semanticModel.GetTypeInfo(ancestorInvocation);
-                if (typeInfo.Type != null &&
-                    typeInfo.Type.Kind == SymbolKind.DynamicType)
+                if ((typeInfo.Type != null) &&
+                    (typeInfo.Type.Kind == SymbolKind.DynamicType))
                 {
                     return true;
                 }
@@ -2201,7 +2201,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         {
             var constructor = memberAccess.Ancestors().OfType<ConstructorDeclarationSyntax>().SingleOrDefault();
 
-            if (constructor == null || constructor.Parent.Kind() != SyntaxKind.StructDeclaration)
+            if ((constructor == null) || (constructor.Parent.Kind() != SyntaxKind.StructDeclaration))
             {
                 return false;
             }
@@ -2248,7 +2248,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             }
 
             if (name.IsParentKind(SyntaxKind.UsingDirective) &&
-                ((UsingDirectiveSyntax)name.Parent).Alias == null)
+                (((UsingDirectiveSyntax)name.Parent).Alias == null))
             {
                 // We're a qualified name in a using.  We don't want to reduce this name as people like
                 // fully qualified names in usings so they can properly tell what the name is resolving
@@ -2307,11 +2307,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
                 var symbol = semanticModel.GetSymbolInfo(memberAccess.Name).Symbol;
 
-                if (previousToken.Kind() == SyntaxKind.OpenParenToken &&
+                if ((previousToken.Kind() == SyntaxKind.OpenParenToken) &&
                     previousToken.Parent.IsKind(SyntaxKind.ParenthesizedExpression) &&
                     !previousToken.Parent.IsParentKind(SyntaxKind.ParenthesizedExpression) &&
-                    ((ParenthesizedExpressionSyntax)previousToken.Parent).Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression &&
-                    symbol != null && symbol.Kind == SymbolKind.Method)
+                    (((ParenthesizedExpressionSyntax)previousToken.Parent).Expression.Kind() == SyntaxKind.SimpleMemberAccessExpression) &&
+                    (symbol != null) && (symbol.Kind == SymbolKind.Method))
                 {
                     return false;
                 }
@@ -2377,8 +2377,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             var type = semanticModel.GetTypeInfo(simpleName, cancellationToken).Type;
 
             // the variable cannot be initialized to a method group or an anonymous function
-            if (type != null &&
-                type.TypeKind == TypeKind.Delegate)
+            if ((type != null) &&
+                (type.TypeKind == TypeKind.Delegate))
             {
                 return true;
             }
@@ -2391,11 +2391,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             }
 
             // The assign expression in the initializer cannot be the same symbol as the i
-            var possibleSameLocals = equalsValueClause.DescendantNodesAndSelf().Where(n => n.Kind() == SyntaxKind.IdentifierName && ((IdentifierNameSyntax)n).Identifier.ValueText.Equals(identifier.ValueText));
+            var possibleSameLocals = equalsValueClause.DescendantNodesAndSelf().Where(n => (n.Kind() == SyntaxKind.IdentifierName) && ((IdentifierNameSyntax)n).Identifier.ValueText.Equals(identifier.ValueText));
             var anyUse = possibleSameLocals.Any(n =>
             {
                 var symbol = semanticModel.GetSymbolInfo(n, cancellationToken).Symbol;
-                if (symbol != null && symbol.Kind == SymbolKind.Local)
+                if ((symbol != null) && (symbol.Kind == SymbolKind.Local))
                 {
                     return true;
                 }
@@ -2430,7 +2430,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         private static bool IsNullableTypeInPointerExpression(ExpressionSyntax expression, ExpressionSyntax simplifiedNode)
         {
             // Note: nullable type syntax is not allowed in pointer type syntax
-            if (simplifiedNode.Kind() == SyntaxKind.NullableType &&
+            if ((simplifiedNode.Kind() == SyntaxKind.NullableType) &&
                 simplifiedNode.DescendantNodes().Any(n => n is PointerTypeSyntax))
             {
                 return true;
@@ -2448,12 +2448,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         private static bool WillConflictWithExistingLocal(ExpressionSyntax expression, ExpressionSyntax simplifiedNode)
         {
-            if (simplifiedNode.Kind() == SyntaxKind.IdentifierName && !SyntaxFacts.IsInNamespaceOrTypeContext(expression))
+            if ((simplifiedNode.Kind() == SyntaxKind.IdentifierName) && !SyntaxFacts.IsInNamespaceOrTypeContext(expression))
             {
                 var identifierName = (IdentifierNameSyntax)simplifiedNode;
                 var enclosingDeclarationSpace = FindImmediatelyEnclosingLocalVariableDeclarationSpace(expression);
                 var enclosingMemberDeclaration = expression.FirstAncestorOrSelf<MemberDeclarationSyntax>();
-                if (enclosingDeclarationSpace != null && enclosingMemberDeclaration != null)
+                if ((enclosingDeclarationSpace != null) && (enclosingMemberDeclaration != null))
                 {
                     var locals = enclosingMemberDeclaration.GetLocalDeclarationMap()[identifierName.Identifier.ValueText];
                     foreach (var token in locals)
@@ -2574,12 +2574,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         public static SimpleNameSyntax GetRightmostName(this ExpressionSyntax node)
         {
-            if (node is MemberAccessExpressionSyntax memberAccess && memberAccess.Name != null)
+            if (node is MemberAccessExpressionSyntax memberAccess && (memberAccess.Name != null))
             {
                 return memberAccess.Name;
             }
 
-            if (node is QualifiedNameSyntax qualified && qualified.Right != null)
+            if (node is QualifiedNameSyntax qualified && (qualified.Right != null))
             {
                 return qualified.Right;
             }
@@ -2599,7 +2599,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 return memberBinding.Name;
             }
 
-            if (node is AliasQualifiedNameSyntax aliasQualifiedName && aliasQualifiedName.Name != null)
+            if (node is AliasQualifiedNameSyntax aliasQualifiedName && (aliasQualifiedName.Name != null))
             {
                 return aliasQualifiedName.Name;
             }

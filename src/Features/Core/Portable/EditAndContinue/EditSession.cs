@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         private AsyncLazy<DocumentAnalysisResults> GetDocumentAnalysisNoLock(Document document)
         {
-            if (_analyses.TryGetValue(document.Id, out var analysis) && analysis.Document == document)
+            if (_analyses.TryGetValue(document.Id, out var analysis) && (analysis.Document == document))
             {
                 return analysis.Results;
             }

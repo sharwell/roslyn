@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
         private static string GetTaskTokenList(ITaskList taskList)
         {
             var commentTokens = taskList?.CommentTokens;
-            if (commentTokens == null || commentTokens.Count == 0)
+            if ((commentTokens == null) || (commentTokens.Count == 0))
             {
                 return string.Empty;
             }

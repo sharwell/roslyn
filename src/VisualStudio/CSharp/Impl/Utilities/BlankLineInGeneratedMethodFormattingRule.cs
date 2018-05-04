@@ -34,11 +34,11 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Utilities
         public AdjustNewLinesOperation GetAdjustNewLinesOperation(SyntaxToken previousToken, SyntaxToken currentToken, OptionSet optionSet, NextOperation<AdjustNewLinesOperation> nextOperation)
         {
             // case: insert blank line in empty method body.
-            if (previousToken.Kind() == SyntaxKind.OpenBraceToken &&
-                currentToken.Kind() == SyntaxKind.CloseBraceToken)
+            if ((previousToken.Kind() == SyntaxKind.OpenBraceToken) &&
+                (currentToken.Kind() == SyntaxKind.CloseBraceToken))
             {
-                if (currentToken.Parent.Kind() == SyntaxKind.Block &&
-                    currentToken.Parent.Parent.Kind() == SyntaxKind.MethodDeclaration)
+                if ((currentToken.Parent.Kind() == SyntaxKind.Block) &&
+                    (currentToken.Parent.Parent.Kind() == SyntaxKind.MethodDeclaration))
                 {
                     return FormattingOperations.CreateAdjustNewLinesOperation(2, AdjustNewLinesOption.ForceLines);
                 }

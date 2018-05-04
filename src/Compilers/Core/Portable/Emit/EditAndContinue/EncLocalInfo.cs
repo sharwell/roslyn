@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Emit
 
         public bool IsDefault
         {
-            get { return this.Type == null && this.Signature == null; }
+            get { return (this.Type == null) && (this.Signature == null); }
         }
 
         public bool IsUnused
@@ -56,13 +56,13 @@ namespace Microsoft.CodeAnalysis.Emit
 
             return this.SlotInfo.Equals(other.SlotInfo) &&
                    this.Type.Equals(other.Type) &&
-                   this.Constraints == other.Constraints &&
-                   this.isUnused == other.isUnused;
+                   (this.Constraints == other.Constraints) &&
+                   (this.isUnused == other.isUnused);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is EncLocalInfo && Equals((EncLocalInfo)obj);
+            return (obj is EncLocalInfo) && Equals((EncLocalInfo)obj);
         }
 
         public override int GetHashCode()

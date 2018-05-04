@@ -190,7 +190,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 int initHash = 0;
                 foreach (var property in anonymousType.Properties)
                 {
-                    initHash = unchecked(initHash * HASH_FACTOR + Hash.GetFNVHashCode(property.BackingField.Name));
+                    initHash = unchecked((initHash * HASH_FACTOR) + Hash.GetFNVHashCode(property.BackingField.Name));
                 }
 
                 //  Generate expression for return statement

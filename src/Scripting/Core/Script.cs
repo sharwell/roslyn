@@ -335,7 +335,7 @@ namespace Microsoft.CodeAnalysis.Scripting
             }
             catch (CompilationErrorException e)
             {
-                return ImmutableArray.CreateRange(e.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error || d.Severity == DiagnosticSeverity.Warning));
+                return ImmutableArray.CreateRange(e.Diagnostics.Where(d => (d.Severity == DiagnosticSeverity.Error) || (d.Severity == DiagnosticSeverity.Warning)));
             }
         }
 
@@ -386,13 +386,13 @@ namespace Microsoft.CodeAnalysis.Scripting
 
             var scriptsReversed = ArrayBuilder<Script>.GetInstance();
 
-            while (script != null && script != lastExecutedScriptInChainOpt)
+            while ((script != null) && (script != lastExecutedScriptInChainOpt))
             {
                 scriptsReversed.Add(script);
                 script = script.Previous;
             }
 
-            if (lastExecutedScriptInChainOpt != null && script != lastExecutedScriptInChainOpt)
+            if ((lastExecutedScriptInChainOpt != null) && (script != lastExecutedScriptInChainOpt))
             {
                 scriptsReversed.Free();
                 return default(ImmutableArray<Func<object[], Task>>);

@@ -14,7 +14,7 @@ namespace Roslyn.Utilities
             Debug.Assert(start >= 0);
             Debug.Assert(start <= array.Length);
 
-            if (start + length > array.Length)
+            if ((start + length) > array.Length)
             {
                 length = array.Length - start;
             }
@@ -31,7 +31,7 @@ namespace Roslyn.Utilities
                 return true;
             }
 
-            if (array == null || other == null || array.Length != other.Length)
+            if ((array == null) || (other == null) || (array.Length != other.Length))
             {
                 return false;
             }
@@ -98,7 +98,7 @@ namespace Roslyn.Utilities
 
         internal static T[] RemoveAt<T>(this T[] array, int position, int length)
         {
-            if (position + length > array.Length)
+            if ((position + length) > array.Length)
             {
                 length = array.Length - position;
             }

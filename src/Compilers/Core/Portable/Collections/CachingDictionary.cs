@@ -199,7 +199,7 @@ namespace Microsoft.CodeAnalysis.Collections
         /// <returns>true if the map is fully populated.</returns>
         private static bool IsNotFullyPopulatedMap(IDictionary<TKey, ImmutableArray<TElement>> existingMap)
         {
-            return existingMap == null || existingMap is ConcurrentDictionary<TKey, ImmutableArray<TElement>>;
+            return (existingMap == null) || (existingMap is ConcurrentDictionary<TKey, ImmutableArray<TElement>>);
         }
 
         /// <summary>

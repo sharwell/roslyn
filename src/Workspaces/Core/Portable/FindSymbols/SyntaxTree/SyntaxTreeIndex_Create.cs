@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
             var syntaxFacts = document.GetLanguageService<ISyntaxFactsService>();
             var infoFactory = document.GetLanguageService<IDeclaredSymbolInfoFactoryService>();
-            var ignoreCase = syntaxFacts != null && !syntaxFacts.IsCaseSensitive;
+            var ignoreCase = (syntaxFacts != null) && !syntaxFacts.IsCaseSensitive;
             var isCaseSensitive = !ignoreCase;
 
             GetIdentifierSet(ignoreCase, out var identifiers, out var escapedIdentifiers);

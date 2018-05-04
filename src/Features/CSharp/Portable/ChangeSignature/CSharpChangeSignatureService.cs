@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ChangeSignature
             var token = root.FindToken(position != tree.Length ? position : Math.Max(0, position - 1));
 
             // Allow the user to invoke Change-Sig if they've written:   Goo(a, b, c);$$ 
-            if (token.Kind() == SyntaxKind.SemicolonToken && token.Parent is StatementSyntax)
+            if ((token.Kind() == SyntaxKind.SemicolonToken) && (token.Parent is StatementSyntax))
             {
                 token = token.GetPreviousToken();
                 position = token.Span.End;
@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ChangeSignature
                 if (token.Parent.AncestorsAndSelf().Any(a => a == objectCreation.Type))
                 {
                     var typeSymbol = semanticModel.GetSymbolInfo(objectCreation.Type, cancellationToken).Symbol;
-                    if (typeSymbol != null && typeSymbol.IsKind(SymbolKind.NamedType) && (typeSymbol as ITypeSymbol).TypeKind == TypeKind.Delegate)
+                    if ((typeSymbol != null) && typeSymbol.IsKind(SymbolKind.NamedType) && ((typeSymbol as ITypeSymbol).TypeKind == TypeKind.Delegate))
                     {
                         return typeSymbol;
                     }
@@ -139,8 +139,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ChangeSignature
 
             for (var current = node; current != null; current = current.Parent)
             {
-                if (restrictToDeclarations &&
-                    current.Kind() == SyntaxKind.Block || current.Kind() == SyntaxKind.ArrowExpressionClause)
+                if ((restrictToDeclarations &&
+                    (current.Kind() == SyntaxKind.Block)) || (current.Kind() == SyntaxKind.ArrowExpressionClause))
                 {
                     return null;
                 }
@@ -340,7 +340,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ChangeSignature
                 var methodSymbol = symbolInfo.Symbol as IMethodSymbol;
                 var isReducedExtensionMethod = false;
 
-                if (methodSymbol != null && methodSymbol.MethodKind == MethodKind.ReducedExtension)
+                if ((methodSymbol != null) && (methodSymbol.MethodKind == MethodKind.ReducedExtension))
                 {
                     isReducedExtensionMethod = true;
                 }
@@ -384,7 +384,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ChangeSignature
             {
                 var nameMemberCref = (NameMemberCrefSyntax)updatedNode;
 
-                if (nameMemberCref.Parameters == null ||
+                if ((nameMemberCref.Parameters == null) ||
                     !nameMemberCref.Parameters.Parameters.Any())
                 {
                     return nameMemberCref;
@@ -485,7 +485,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ChangeSignature
                 }
 
                 var identifier = nameAttribute.DescendantNodes(descendIntoTrivia: true).OfType<IdentifierNameSyntax>().FirstOrDefault();
-                if (identifier == null || identifier.ToString() != declaredParameters.ElementAt(i).Name)
+                if ((identifier == null) || (identifier.ToString() != declaredParameters.ElementAt(i).Name))
                 {
                     return null;
                 }
@@ -569,7 +569,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ChangeSignature
         private static List<SyntaxToken> GetSeparators<T>(SeparatedSyntaxList<T> arguments, int numSeparatorsToSkip = 0) where T : SyntaxNode
         {
             var separators = new List<SyntaxToken>();
-            for (int i = 0; i < arguments.SeparatorCount - numSeparatorsToSkip; i++)
+            for (int i = 0; i < (arguments.SeparatorCount - numSeparatorsToSkip); i++)
             {
                 separators.Add(arguments.GetSeparator(i));
             }

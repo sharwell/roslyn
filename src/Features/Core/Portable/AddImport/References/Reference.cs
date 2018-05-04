@@ -84,8 +84,8 @@ namespace Microsoft.CodeAnalysis.AddImport
 
             public bool Equals(Reference other)
             {
-                return other != null &&
-                    other.SearchResult.NameParts != null &&
+                return (other != null) &&
+                    (other.SearchResult.NameParts != null) &&
                     this.SearchResult.NameParts.SequenceEqual(other.SearchResult.NameParts);
             }
 

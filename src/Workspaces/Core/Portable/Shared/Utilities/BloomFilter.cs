@@ -372,8 +372,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
         public bool IsEquivalent(BloomFilter filter)
         {
             return IsEquivalent(_bitArray, filter._bitArray)
-                && _hashFunctionCount == filter._hashFunctionCount
-                && _isCaseSensitive == filter._isCaseSensitive;
+                && (_hashFunctionCount == filter._hashFunctionCount)
+                && (_isCaseSensitive == filter._isCaseSensitive);
         }
 
         private bool IsEquivalent(BitArray array1, BitArray array2)

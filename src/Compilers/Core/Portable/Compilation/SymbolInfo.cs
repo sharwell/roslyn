@@ -91,14 +91,14 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is SymbolInfo && Equals((SymbolInfo)obj);
+            return (obj is SymbolInfo) && Equals((SymbolInfo)obj);
         }
 
         public bool Equals(SymbolInfo other)
         {
             return object.Equals(this.Symbol, other.Symbol)
                 && ((_candidateSymbols.IsDefault && other._candidateSymbols.IsDefault) || _candidateSymbols.SequenceEqual(other._candidateSymbols))
-                && this.CandidateReason == other.CandidateReason;
+                && (this.CandidateReason == other.CandidateReason);
         }
 
         public override int GetHashCode()
@@ -110,8 +110,8 @@ namespace Microsoft.CodeAnalysis
         {
             get
             {
-                return this.Symbol == null
-                    && this.CandidateSymbols.Length == 0;
+                return (this.Symbol == null)
+                    && (this.CandidateSymbols.Length == 0);
             }
         }
     }

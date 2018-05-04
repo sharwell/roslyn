@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         internal void StoreAnalysisResult(AnalysisScope analysisScope, AnalyzerDriver driver, Compilation compilation, Func<DiagnosticAnalyzer, AnalyzerActionCounts> getAnalyzerActionCounts, bool fullAnalysisResultForAnalyzersInScope)
         {
-            Debug.Assert(!fullAnalysisResultForAnalyzersInScope || analysisScope.FilterTreeOpt == null, "Full analysis result cannot come from partial (tree) analysis.");
+            Debug.Assert(!fullAnalysisResultForAnalyzersInScope || (analysisScope.FilterTreeOpt == null), "Full analysis result cannot come from partial (tree) analysis.");
 
             foreach (var analyzer in analysisScope.Analyzers)
             {
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                         continue;
                     }
 
-                    if (syntaxDiagnostics.Length > 0 || semanticDiagnostics.Length > 0 || compilationDiagnostics.Length > 0 || fullAnalysisResultForAnalyzersInScope)
+                    if ((syntaxDiagnostics.Length > 0) || (semanticDiagnostics.Length > 0) || (compilationDiagnostics.Length > 0) || fullAnalysisResultForAnalyzersInScope)
                     {
                         UpdateLocalDiagnostics_NoLock(analyzer, syntaxDiagnostics, fullAnalysisResultForAnalyzersInScope, ref _localSyntaxDiagnosticsOpt);
                         UpdateLocalDiagnostics_NoLock(analyzer, semanticDiagnostics, fullAnalysisResultForAnalyzersInScope, ref _localSemanticDiagnosticsOpt);
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 }
             }
 
-            if (getNonLocalDiagnostics && _nonLocalDiagnosticsOpt != null)
+            if (getNonLocalDiagnostics && (_nonLocalDiagnosticsOpt != null))
             {
                 AddDiagnostics_NoLock(_nonLocalDiagnosticsOpt, analysisScope, builder);
             }
@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             ImmutableArray<Diagnostic>.Builder builder)
         {
             Dictionary<DiagnosticAnalyzer, ImmutableArray<Diagnostic>.Builder> diagnosticsForTree;
-            if (localDiagnostics != null && localDiagnostics.TryGetValue(analysisScope.FilterTreeOpt, out diagnosticsForTree))
+            if ((localDiagnostics != null) && localDiagnostics.TryGetValue(analysisScope.FilterTreeOpt, out diagnosticsForTree))
             {
                 AddDiagnostics_NoLock(diagnosticsForTree, analysisScope, builder);
             }

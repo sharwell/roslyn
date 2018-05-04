@@ -52,12 +52,12 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 var firstToken = this.GetFirstTokenInSelection();
                 return firstToken.GetAncestors<SyntaxNode>().FirstOrDefault(n =>
                 {
-                    return n is BaseMethodDeclarationSyntax ||
-                           n is AccessorDeclarationSyntax ||
-                           n is ParenthesizedLambdaExpressionSyntax ||
-                           n is SimpleLambdaExpressionSyntax ||
-                           n is AnonymousMethodExpressionSyntax ||
-                           n is CompilationUnitSyntax;
+                    return (n is BaseMethodDeclarationSyntax) ||
+                           (n is AccessorDeclarationSyntax) ||
+                           (n is ParenthesizedLambdaExpressionSyntax) ||
+                           (n is SimpleLambdaExpressionSyntax) ||
+                           (n is AnonymousMethodExpressionSyntax) ||
+                           (n is CompilationUnitSyntax);
                 });
             }
 
@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 {
                     case AccessorDeclarationSyntax access:
                         // property or event case
-                        if (access.Parent == null || access.Parent.Parent == null)
+                        if ((access.Parent == null) || (access.Parent.Parent == null))
                         {
                             return null;
                         }

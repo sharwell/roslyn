@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ExtractInterfac
 
         private void SelectAllInTextBox(object sender, RoutedEventArgs e)
         {
-            if (e.OriginalSource is TextBox textbox && Mouse.LeftButton == MouseButtonState.Released)
+            if (e.OriginalSource is TextBox textbox && (Mouse.LeftButton == MouseButtonState.Released))
             {
                 textbox.SelectAll();
             }
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ExtractInterfac
 
         private void OnListViewPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+            if ((e.Key == Key.Space) && (e.KeyboardDevice.Modifiers == ModifierKeys.None))
             {
                 ToggleCheckSelection();
                 e.Handled = true;

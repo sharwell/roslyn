@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public bool IsAnalyzerSuppressed(DiagnosticAnalyzer analyzer, Project project)
         {
             var options = project.CompilationOptions;
-            if (options == null || IsCompilerDiagnosticAnalyzer(project.Language, analyzer))
+            if ((options == null) || IsCompilerDiagnosticAnalyzer(project.Language, analyzer))
             {
                 return false;
             }
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public bool IsCompilerDiagnosticAnalyzer(string language, DiagnosticAnalyzer analyzer)
         {
             var map = GetHostDiagnosticAnalyzersPerReference(language);
-            return _compilerDiagnosticAnalyzerMap.TryGetValue(language, out var compilerAnalyzer) && compilerAnalyzer == analyzer;
+            return _compilerDiagnosticAnalyzerMap.TryGetValue(language, out var compilerAnalyzer) && (compilerAnalyzer == analyzer);
         }
 
         /// <summary>
@@ -448,7 +448,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             HostAnalyzerReferenceDiagnosticReporter reporter,
             IAnalyzerAssemblyLoader hostAnalyzerAssemblyLoader)
         {
-            if (analyzerPackages == null || analyzerPackages.IsEmpty())
+            if ((analyzerPackages == null) || analyzerPackages.IsEmpty())
             {
                 return ImmutableArray<AnalyzerReference>.Empty;
             }

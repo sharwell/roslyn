@@ -18,7 +18,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
             var textBuffer = EditorAdaptersFactoryService.GetDataBuffer(pBuffer);
             var context = (IVsUserContext)pUC;
 
-            if (textBuffer == null || context == null)
+            if ((textBuffer == null) || (context == null))
             {
                 return VSConstants.E_UNEXPECTED;
             }

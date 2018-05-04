@@ -1180,13 +1180,13 @@ namespace Microsoft.CodeAnalysis
 
         private void CheckAllowedProjectChanges(ProjectChanges projectChanges)
         {
-            if (projectChanges.OldProject.CompilationOptions != projectChanges.NewProject.CompilationOptions
+            if ((projectChanges.OldProject.CompilationOptions != projectChanges.NewProject.CompilationOptions)
                 && !this.CanApplyChange(ApplyChangesKind.ChangeCompilationOptions))
             {
                 throw new NotSupportedException(WorkspacesResources.Changing_compilation_options_is_not_supported);
             }
 
-            if (projectChanges.OldProject.ParseOptions != projectChanges.NewProject.ParseOptions
+            if ((projectChanges.OldProject.ParseOptions != projectChanges.NewProject.ParseOptions)
                 && !this.CanApplyChange(ApplyChangesKind.ChangeParseOptions)
                 && !this.CanApplyParseOptionChange(
                     projectChanges.OldProject.ParseOptions, projectChanges.NewProject.ParseOptions, projectChanges.NewProject))

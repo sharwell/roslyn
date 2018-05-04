@@ -206,7 +206,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return false;
             }
 
-            if (ReferenceEquals(this, t2) || t2.TypeKind == TypeKind.Dynamic)
+            if (ReferenceEquals(this, t2) || (t2.TypeKind == TypeKind.Dynamic))
             {
                 return true;
             }
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((comparison & TypeCompareKind.IgnoreDynamic) != 0)
             {
                 var other = t2 as NamedTypeSymbol;
-                return (object)other != null && other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object;
+                return ((object)other != null) && (other.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object);
             }
 
             return false;

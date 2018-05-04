@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 return true;
             }
 
-            if (symbol1 == null || symbol2 == null)
+            if ((symbol1 == null) || (symbol2 == null))
             {
                 return false;
             }
@@ -62,8 +62,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
         public bool HaveSameSignature(IPropertySymbol property1, IPropertySymbol property2, bool caseSensitive)
         {
             if (!IdentifiersMatch(property1.Name, property2.Name, caseSensitive) ||
-                property1.Parameters.Length != property2.Parameters.Length ||
-                property1.IsIndexer != property2.IsIndexer)
+                (property1.Parameters.Length != property2.Parameters.Length) ||
+                (property1.IsIndexer != property2.IsIndexer))
             {
                 return false;
             }
@@ -75,8 +75,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private bool BadPropertyAccessor(IMethodSymbol method1, IMethodSymbol method2)
         {
-            return method1 != null &&
-                (method2 == null || method2.DeclaredAccessibility != Accessibility.Public);
+            return (method1 != null) &&
+                ((method2 == null) || (method2.DeclaredAccessibility != Accessibility.Public));
         }
 
         public bool HaveSameSignature(IMethodSymbol method1,
@@ -99,8 +99,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 }
             }
 
-            if (method1.MethodKind != method2.MethodKind ||
-                method1.Arity != method2.Arity)
+            if ((method1.MethodKind != method2.MethodKind) ||
+                (method1.Arity != method2.Arity))
             {
                 return false;
             }
@@ -186,8 +186,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private bool HaveSameAccessors(IPropertySymbol property1, IPropertySymbol property2)
         {
-            if (property1.ContainingType == null ||
-                property1.ContainingType.TypeKind == TypeKind.Interface)
+            if ((property1.ContainingType == null) ||
+                (property1.ContainingType.TypeKind == TypeKind.Interface))
             {
                 if (BadPropertyAccessor(property1.GetMethod, property2.GetMethod) ||
                     BadPropertyAccessor(property1.SetMethod, property2.SetMethod))
@@ -196,8 +196,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 }
             }
 
-            if (property2.ContainingType == null ||
-                property2.ContainingType.TypeKind == TypeKind.Interface)
+            if ((property2.ContainingType == null) ||
+                (property2.ContainingType.TypeKind == TypeKind.Interface))
             {
                 if (BadPropertyAccessor(property2.GetMethod, property1.GetMethod) ||
                     BadPropertyAccessor(property2.SetMethod, property1.SetMethod))
@@ -237,9 +237,9 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private bool HaveSameConstraints(ITypeParameterSymbol typeParameter1, ITypeParameterSymbol typeParameter2)
         {
-            if (typeParameter1.HasConstructorConstraint != typeParameter2.HasConstructorConstraint ||
-                typeParameter1.HasReferenceTypeConstraint != typeParameter2.HasReferenceTypeConstraint ||
-                typeParameter1.HasValueTypeConstraint != typeParameter2.HasValueTypeConstraint)
+            if ((typeParameter1.HasConstructorConstraint != typeParameter2.HasConstructorConstraint) ||
+                (typeParameter1.HasReferenceTypeConstraint != typeParameter2.HasReferenceTypeConstraint) ||
+                (typeParameter1.HasValueTypeConstraint != typeParameter2.HasValueTypeConstraint))
             {
                 return false;
             }

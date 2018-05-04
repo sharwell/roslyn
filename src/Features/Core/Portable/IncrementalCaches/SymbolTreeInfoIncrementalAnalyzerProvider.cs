@@ -117,7 +117,7 @@ namespace Microsoft.CodeAnalysis.IncrementalCaches
                 if (key != null)
                 {
                     if (_metadataPathToInfo.TryGetValue(key, out var metadataInfo) &&
-                        metadataInfo.SymbolTreeInfo.Checksum == checksum)
+                        (metadataInfo.SymbolTreeInfo.Checksum == checksum))
                     {
                         return metadataInfo.SymbolTreeInfo;
                     }
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.IncrementalCaches
                 Project project, CancellationToken cancellationToken)
             {
                 if (_projectToInfo.TryGetValue(project.Id, out var projectInfo) &&
-                    projectInfo.Checksum == await SymbolTreeInfo.GetSourceSymbolsChecksumAsync(project, cancellationToken).ConfigureAwait(false))
+                    (projectInfo.Checksum == await SymbolTreeInfo.GetSourceSymbolsChecksumAsync(project, cancellationToken).ConfigureAwait(false)))
                 {
                     return projectInfo;
                 }
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.IncrementalCaches
             {
                 var checksum = await SymbolTreeInfo.GetSourceSymbolsChecksumAsync(project, cancellationToken).ConfigureAwait(false);
                 if (!_projectToInfo.TryGetValue(project.Id, out var projectInfo) ||
-                    projectInfo.Checksum != checksum)
+                    (projectInfo.Checksum != checksum))
                 {
                     projectInfo = await SymbolTreeInfo.GetInfoForSourceAssemblyAsync(
                         project, checksum, cancellationToken).ConfigureAwait(false);
@@ -264,7 +264,7 @@ namespace Microsoft.CodeAnalysis.IncrementalCaches
 
                 var checksum = SymbolTreeInfo.GetMetadataChecksum(project.Solution, reference, cancellationToken);
                 if (!_metadataPathToInfo.TryGetValue(key, out var metadataInfo) ||
-                    metadataInfo.SymbolTreeInfo.Checksum != checksum)
+                    (metadataInfo.SymbolTreeInfo.Checksum != checksum))
                 {
                     var info = await SymbolTreeInfo.GetInfoForMetadataReferenceAsync(
                         project.Solution, reference, checksum, loadOnly: false, cancellationToken: cancellationToken).ConfigureAwait(false);

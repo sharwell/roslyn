@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.Editor.GoToDefinition
 
             using (context.WaitContext.AddScope(allowCancellation: true, EditorFeaturesResources.Navigating_to_definition))
             {
-                if (goToDefinitionService != null &&
+                if ((goToDefinitionService != null) &&
                     goToDefinitionService.TryGoToDefinition(document, caretPosition, context.WaitContext.UserCancellationToken))
                 {
                     return true;

@@ -117,7 +117,7 @@ namespace Roslyn.Utilities
 
             var text = arr[idx].Text;
 
-            if (text != null && arr[idx].HashCode == hashCode)
+            if ((text != null) && (arr[idx].HashCode == hashCode))
             {
                 var result = arr[idx].Text;
                 if (StringTable.TextEquals(result, chars, start, len))
@@ -151,7 +151,7 @@ namespace Roslyn.Utilities
 
             var text = arr[idx].Text;
 
-            if (text != null && arr[idx].HashCode == hashCode)
+            if ((text != null) && (arr[idx].HashCode == hashCode))
             {
                 var result = arr[idx].Text;
                 if (StringTable.TextEquals(result, chars, start, len))
@@ -188,7 +188,7 @@ namespace Roslyn.Utilities
             if (text != null)
             {
                 var result = arr[idx].Text;
-                if (text.Length == 1 && text[0] == chars)
+                if ((text.Length == 1) && (text[0] == chars))
                 {
                     return result;
                 }
@@ -219,7 +219,7 @@ namespace Roslyn.Utilities
 
             var text = arr[idx].Text;
 
-            if (text != null && arr[idx].HashCode == hashCode)
+            if ((text != null) && (arr[idx].HashCode == hashCode))
             {
                 var result = arr[idx].Text;
                 if (StringTable.TextEquals(result, chars))
@@ -253,7 +253,7 @@ namespace Roslyn.Utilities
 
             var text = arr[idx].Text;
 
-            if (text != null && arr[idx].HashCode == hashCode)
+            if ((text != null) && (arr[idx].HashCode == hashCode))
             {
                 var result = arr[idx].Text;
                 if (result == chars)
@@ -287,14 +287,14 @@ namespace Roslyn.Utilities
             string e = null;
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 e = arr[idx].Text;
                 int hash = arr[idx].HashCode;
 
                 if (e != null)
                 {
-                    if (hash == hashCode && TextEquals(e, chars, start, len))
+                    if ((hash == hashCode) && TextEquals(e, chars, start, len))
                     {
                         break;
                     }
@@ -322,14 +322,14 @@ namespace Roslyn.Utilities
             string e = null;
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 e = arr[idx].Text;
                 int hash = arr[idx].HashCode;
 
                 if (e != null)
                 {
-                    if (hash == hashCode && TextEquals(e, chars, start, len))
+                    if ((hash == hashCode) && TextEquals(e, chars, start, len))
                     {
                         break;
                     }
@@ -357,14 +357,14 @@ namespace Roslyn.Utilities
             string e = null;
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 e = arr[idx].Text;
                 int hash = arr[idx].HashCode;
 
                 if (e != null)
                 {
-                    if (hash == hashCode && TextEqualsASCII(e, asciiChars, length))
+                    if ((hash == hashCode) && TextEqualsASCII(e, asciiChars, length))
                     {
                         break;
                     }
@@ -392,13 +392,13 @@ namespace Roslyn.Utilities
             string e = null;
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 e = arr[idx].Text;
 
                 if (e != null)
                 {
-                    if (e.Length == 1 && e[0] == chars)
+                    if ((e.Length == 1) && (e[0] == chars))
                     {
                         break;
                     }
@@ -426,14 +426,14 @@ namespace Roslyn.Utilities
             string e = null;
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 e = arr[idx].Text;
                 int hash = arr[idx].HashCode;
 
                 if (e != null)
                 {
-                    if (hash == hashCode && TextEquals(e, chars))
+                    if ((hash == hashCode) && TextEquals(e, chars))
                     {
                         break;
                     }
@@ -461,14 +461,14 @@ namespace Roslyn.Utilities
             string e = null;
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 e = arr[idx].Text;
                 int hash = arr[idx].HashCode;
 
                 if (e != null)
                 {
-                    if (hash == hashCode && e == chars)
+                    if ((hash == hashCode) && (e == chars))
                     {
                         break;
                     }
@@ -539,7 +539,7 @@ namespace Roslyn.Utilities
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
             int curIdx = idx;
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 if (arr[curIdx].Text == null)
                 {
@@ -553,7 +553,7 @@ namespace Roslyn.Utilities
             // or pick a random victim within the bucket range
             // and replace with new entry
             var i1 = LocalNextRandom() & SharedBucketSizeMask;
-            idx = (idx + ((i1 * i1 + i1) / 2)) & SharedSizeMask;
+            idx = (idx + (((i1 * i1) + i1) / 2)) & SharedSizeMask;
 
         foundIdx:
             arr[idx].HashCode = hashCode;
@@ -624,7 +624,7 @@ namespace Roslyn.Utilities
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
             int curIdx = idx;
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 if (arr[curIdx].Text == null)
                 {
@@ -638,7 +638,7 @@ namespace Roslyn.Utilities
             // or pick a random victim within the bucket range
             // and replace with new entry
             var i1 = SharedNextRandom() & SharedBucketSizeMask;
-            idx = (idx + ((i1 * i1 + i1) / 2)) & SharedSizeMask;
+            idx = (idx + (((i1 * i1) + i1) / 2)) & SharedSizeMask;
 
         foundIdx:
             arr[idx].HashCode = hashCode;
@@ -732,7 +732,7 @@ namespace Roslyn.Utilities
 
         internal static bool TextEquals(string array, char[] text, int start, int length)
         {
-            return array.Length == length && TextEqualsCore(array, text, start);
+            return (array.Length == length) && TextEqualsCore(array, text, start);
         }
 
         private static bool TextEqualsCore(string array, char[] text, int start)

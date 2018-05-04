@@ -200,7 +200,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            return (object)other != null && _containingType == other._containingType && _underlyingMethod.ConstructedFrom == other._underlyingMethod.ConstructedFrom;
+            return ((object)other != null) && (_containingType == other._containingType) && (_underlyingMethod.ConstructedFrom == other._underlyingMethod.ConstructedFrom);
         }
     }
 }

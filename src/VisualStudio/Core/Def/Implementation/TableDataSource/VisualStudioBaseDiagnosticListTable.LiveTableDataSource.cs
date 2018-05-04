@@ -105,7 +105,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                     return true;
                 }
 
-                if (args?.DocumentId == null || args?.Solution == null)
+                if ((args?.DocumentId == null) || (args?.Solution == null))
                 {
                     return true;
                 }
@@ -117,7 +117,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             private object CreateAggregationKey(object data)
             {
                 var args = data as DiagnosticsUpdatedArgs;
-                if (args?.DocumentId == null || args?.Solution == null)
+                if ((args?.DocumentId == null) || (args?.Solution == null))
                 {
                     return GetItemKey(data);
                 }
@@ -436,13 +436,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 protected override bool IsEquivalent(DiagnosticData item1, DiagnosticData item2)
                 {
                     // everything same except location
-                    return item1.Id == item2.Id &&
-                           item1.ProjectId == item2.ProjectId &&
-                           item1.DocumentId == item2.DocumentId &&
-                           item1.Category == item2.Category &&
-                           item1.Severity == item2.Severity &&
-                           item1.WarningLevel == item2.WarningLevel &&
-                           item1.Message == item2.Message;
+                    return (item1.Id == item2.Id) &&
+                           (item1.ProjectId == item2.ProjectId) &&
+                           (item1.DocumentId == item2.DocumentId) &&
+                           (item1.Category == item2.Category) &&
+                           (item1.Severity == item2.Severity) &&
+                           (item1.WarningLevel == item2.WarningLevel) &&
+                           (item1.Message == item2.Message);
                 }
 
                 #region IWpfTableEntriesSnapshot

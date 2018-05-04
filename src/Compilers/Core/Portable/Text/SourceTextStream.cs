@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         public SourceTextStream(SourceText source, int bufferSize = 2048, bool useDefaultEncodingIfNull = false)
         {
-            Debug.Assert(source.Encoding != null || useDefaultEncodingIfNull);
+            Debug.Assert((source.Encoding != null) || useDefaultEncodingIfNull);
 
             _source = source;
             _encoding = source.Encoding ?? s_utf8EncodingWithNoBOM;
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.Text
                 count -= bytesWritten;
             }
 
-            while (count >= _minimumTargetBufferCount && _position < _source.Length)
+            while ((count >= _minimumTargetBufferCount) && (_position < _source.Length))
             {
                 if (_bufferUnreadChars == 0)
                 {

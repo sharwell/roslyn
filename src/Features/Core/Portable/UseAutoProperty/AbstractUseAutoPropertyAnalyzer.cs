@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.UseAutoProperty
                 return;
             }
 
-            if (!CanExplicitInterfaceImplementationsBeFixed() && property.ExplicitInterfaceImplementations.Length != 0)
+            if (!CanExplicitInterfaceImplementationsBeFixed() && (property.ExplicitInterfaceImplementations.Length != 0))
             {
                 return;
             }
@@ -201,7 +201,7 @@ namespace Microsoft.CodeAnalysis.UseAutoProperty
             }
 
             var initializer = GetFieldInitializer(variableDeclarator, cancellationToken);
-            if (initializer != null && !SupportsPropertyInitializer(semanticModel.Compilation))
+            if ((initializer != null) && !SupportsPropertyInitializer(semanticModel.Compilation))
             {
                 return;
             }
@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.UseAutoProperty
             }
 
             var symbolInfo = semanticModel.GetSymbolInfo(expression);
-            if (symbolInfo.Symbol == null || symbolInfo.Symbol.Kind != SymbolKind.Field)
+            if ((symbolInfo.Symbol == null) || (symbolInfo.Symbol.Kind != SymbolKind.Field))
             {
                 return null;
             }

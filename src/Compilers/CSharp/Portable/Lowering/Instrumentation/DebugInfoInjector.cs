@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             rewritten = base.InstrumentYieldBreakStatement(original, rewritten);
 
-            if (original.WasCompilerGenerated && original.Syntax.Kind() == SyntaxKind.Block)
+            if (original.WasCompilerGenerated && (original.Syntax.Kind() == SyntaxKind.Block))
             {
                 // implicit yield break added by the compiler
                 return new BoundSequencePointWithSpan(original.Syntax, rewritten, ((BlockSyntax)original.Syntax).CloseBraceToken.Span);
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public override BoundStatement CreateBlockPrologue(BoundBlock original, out Symbols.LocalSymbol synthesizedLocal)
         {
             var previous = base.CreateBlockPrologue(original, out synthesizedLocal);
-            if (original.Syntax.Kind() == SyntaxKind.Block && !original.WasCompilerGenerated)
+            if ((original.Syntax.Kind() == SyntaxKind.Block) && !original.WasCompilerGenerated)
             {
                 var oBspan = ((BlockSyntax)original.Syntax).OpenBraceToken.Span;
                 return new BoundSequencePointWithSpan(original.Syntax, previous, oBspan);
@@ -143,12 +143,12 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var previous = base.CreateBlockEpilogue(original);
 
-            if (original.Syntax.Kind() == SyntaxKind.Block && !original.WasCompilerGenerated)
+            if ((original.Syntax.Kind() == SyntaxKind.Block) && !original.WasCompilerGenerated)
             {
                 // no need to mark "}" on the outermost block
                 // as it cannot leave it normally. The block will have "return" at the end.
                 SyntaxNode parent = original.Syntax.Parent;
-                if (parent == null || !(parent.IsAnonymousFunction() || parent is BaseMethodDeclarationSyntax))
+                if ((parent == null) || !(parent.IsAnonymousFunction() || (parent is BaseMethodDeclarationSyntax)))
                 {
                     var cBspan = ((BlockSyntax)original.Syntax).CloseBraceToken.Span;
                     return new BoundSequencePointWithSpan(original.Syntax, previous, cBspan);
@@ -338,7 +338,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             rewritten = base.InstrumentReturnStatement(original, rewritten);
 
-            if (original.WasCompilerGenerated && original.ExpressionOpt == null && original.Syntax.Kind() == SyntaxKind.Block)
+            if (original.WasCompilerGenerated && (original.ExpressionOpt == null) && (original.Syntax.Kind() == SyntaxKind.Block))
             {
                 // implicit return added by the compiler
                 return new BoundSequencePointWithSpan(original.Syntax, rewritten, ((BlockSyntax)original.Syntax).CloseBraceToken.Span);

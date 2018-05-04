@@ -109,9 +109,9 @@ So we suppress this error until the reporting for CA3053 has been updated to acc
         {
             get
             {
-                return _xmlReader.Depth == 1
-                    && _xmlReader.NodeType == XmlNodeType.EndElement
-                    && _xmlReader.LocalName == Reader.CurrentElementName;
+                return (_xmlReader.Depth == 1)
+                    && (_xmlReader.NodeType == XmlNodeType.EndElement)
+                    && (_xmlReader.LocalName == Reader.CurrentElementName);
             }
         }
 
@@ -197,7 +197,7 @@ So we suppress this error until the reporting for CA3053 has been updated to acc
 
             private static int EncodeAndAdvance(string src, int srcIndex, char[] dest, ref int destIndex, ref int destCount)
             {
-                if (destCount == 0 || srcIndex < 0 || srcIndex >= src.Length)
+                if ((destCount == 0) || (srcIndex < 0) || (srcIndex >= src.Length))
                 {
                     return 0;
                 }

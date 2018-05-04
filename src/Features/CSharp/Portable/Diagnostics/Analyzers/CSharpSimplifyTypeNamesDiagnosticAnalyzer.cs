@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Diagnostics.SimplifyTypeNames
 
         private static bool IsRegularCandidate(SyntaxNode node)
         {
-            return node != null && s_kindsOfInterest.Contains(node.Kind());
+            return (node != null) && s_kindsOfInterest.Contains(node.Kind());
         }
 
         private static bool IsCrefCandidate(SyntaxNode node)
@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Diagnostics.SimplifyTypeNames
 
                 // in case of an As or Is expression we need to handle the binary expression, because it might be 
                 // required to add parenthesis around the expression. Adding the parenthesis is done in the CSharpNameSimplifier.Rewriter
-                var expressionToCheck = expression.Kind() == SyntaxKind.AsExpression || expression.Kind() == SyntaxKind.IsExpression
+                var expressionToCheck = (expression.Kind() == SyntaxKind.AsExpression) || (expression.Kind() == SyntaxKind.IsExpression)
                     ? ((BinaryExpressionSyntax)expression).Right
                     : expression;
                 if (!expressionToCheck.TryReduceOrSimplifyExplicitName(model, out var replacementSyntax, out issueSpan, optionSet, cancellationToken))

@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.MSBuild.UnitTests
                     var instance2 = (ISetupInstance2)instances[0];
                     var state = instance2.GetState();
 
-                    if (state == InstanceState.Complete &&
+                    if ((state == InstanceState.Complete) &&
                         instance2.GetPackages().Any(package => package.GetId() == "Microsoft.VisualStudio.Component.Roslyn.Compiler"))
                     {
                         var toolsPath = Path.Combine(instance2.GetInstallationPath(), "MSBuild", "15.0", "Bin");

@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             private static bool TryDequeue_NoLock(Dictionary<DiagnosticAnalyzer, SimpleDiagnosticQueue> lazyDiagnosticsMap, out Diagnostic d)
             {
                 Diagnostic diag = null;
-                if (lazyDiagnosticsMap != null && lazyDiagnosticsMap.Any(kvp => kvp.Value.TryDequeue(out diag)))
+                if ((lazyDiagnosticsMap != null) && lazyDiagnosticsMap.Any(kvp => kvp.Value.TryDequeue(out diag)))
                 {
                     d = diag;
                     return true;
@@ -220,7 +220,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                 lock (_gate)
                 {
-                    return diagnosticsMap != null && diagnosticsMap.TryGetValue(analyzer, out queue);
+                    return (diagnosticsMap != null) && diagnosticsMap.TryGetValue(analyzer, out queue);
                 }
             }
         }

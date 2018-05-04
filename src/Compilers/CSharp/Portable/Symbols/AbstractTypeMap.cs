@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 var oldArgument = hasModifiers ? new TypeWithModifiers(oldTypeArguments[i], previous.GetTypeArgumentCustomModifiers(i)) : new TypeWithModifiers(oldTypeArguments[i]);
                 var newArgument = oldArgument.SubstituteTypeWithTupleUnification(this);
 
-                if (!changed && oldArgument != newArgument)
+                if (!changed && (oldArgument != newArgument))
                 {
                     changed = true;
                 }
@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             TypeWithModifiers result = SubstituteType(previous);
 
             // Make it a tuple if it became compatible with one.
-            if ((object)result.Type != null && !previous.IsTupleCompatible())
+            if (((object)result.Type != null) && !previous.IsTupleCompatible())
             {
                 var possiblyTuple = TupleTypeSymbol.TransformToTupleIfCompatible(result.Type);
                 if ((object)result.Type != possiblyTuple)
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if (t.IsSZArray)
             {
                 ImmutableArray<NamedTypeSymbol> interfaces = t.InterfacesNoUseSiteDiagnostics();
-                Debug.Assert(0 <= interfaces.Length && interfaces.Length <= 2);
+                Debug.Assert((0 <= interfaces.Length) && (interfaces.Length <= 2));
 
                 if (interfaces.Length == 1)
                 {
@@ -335,7 +335,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             else if (original.Length == 1)
             {
                 var type = original[0];
-                if (ignoreTypesDependentOnTypeParametersOpt == null || !type.ContainsTypeParameters(ignoreTypesDependentOnTypeParametersOpt))
+                if ((ignoreTypesDependentOnTypeParametersOpt == null) || !type.ContainsTypeParameters(ignoreTypesDependentOnTypeParametersOpt))
                 {
                     result.Add(SubstituteType(type).Type);
                 }
@@ -345,7 +345,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 var set = new HashSet<TypeSymbol>();
                 foreach (var type in original)
                 {
-                    if (ignoreTypesDependentOnTypeParametersOpt == null || !type.ContainsTypeParameters(ignoreTypesDependentOnTypeParametersOpt))
+                    if ((ignoreTypesDependentOnTypeParametersOpt == null) || !type.ContainsTypeParameters(ignoreTypesDependentOnTypeParametersOpt))
                     {
                         var substituted = SubstituteType(type).Type;
                         if (set.Add(substituted))

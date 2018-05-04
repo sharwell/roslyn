@@ -856,7 +856,7 @@ public class Cls
         private static IEnumerable<DeclarationExpressionSyntax> GetOutVarDeclarations(SyntaxTree tree, string name)
         {
             return tree.GetRoot().DescendantNodes().OfType<DeclarationExpressionSyntax>()
-                    .Where(p => p.IsOutVarDeclaration() && p.Identifier().ValueText == name);
+                    .Where(p => p.IsOutVarDeclaration() && (p.Identifier().ValueText == name));
         }
 
         private static IEnumerable<DiscardDesignationSyntax> GetDiscardDesignations(SyntaxTree tree)
@@ -1201,7 +1201,7 @@ public class Cls
         {
             foreach (var reference in references)
             {
-                if (dataFlowParent.Span.Contains(reference.Span) && reference.SpanStart > decl.SpanStart)
+                if (dataFlowParent.Span.Contains(reference.Span) && (reference.SpanStart > decl.SpanStart))
                 {
                     if (IsRead(reference))
                     {
@@ -1268,7 +1268,7 @@ public class Cls
         {
             ForStatementSyntax forStatement;
 
-            if ((forStatement = decl.Ancestors().OfType<ForStatementSyntax>().FirstOrDefault()) != null &&
+            if (((forStatement = decl.Ancestors().OfType<ForStatementSyntax>().FirstOrDefault()) != null) &&
                  forStatement.Incrementors.Span.Contains(decl.Position) &&
                  forStatement.Statement.DescendantNodes().OfType<ForStatementSyntax>().Any(f => f.Condition == null))
             {
@@ -1276,13 +1276,13 @@ public class Cls
             }
 
             var containingStatement = decl.Ancestors().OfType<StatementSyntax>().FirstOrDefault();
-            var containingReturnOrThrow = containingStatement as ReturnStatementSyntax ?? (StatementSyntax)(containingStatement as ThrowStatementSyntax);
+            var containingReturnOrThrow = (containingStatement as ReturnStatementSyntax) ?? (StatementSyntax)(containingStatement as ThrowStatementSyntax);
 
             MethodDeclarationSyntax methodDeclParent;
 
-            if (containingReturnOrThrow != null && decl.Identifier().ValueText == "x1" &&
-                ((methodDeclParent = containingReturnOrThrow.Parent.Parent as MethodDeclarationSyntax) == null ||
-                  methodDeclParent.Body.Statements.First() != containingReturnOrThrow))
+            if ((containingReturnOrThrow != null) && (decl.Identifier().ValueText == "x1") &&
+                (((methodDeclParent = containingReturnOrThrow.Parent.Parent as MethodDeclarationSyntax) == null) ||
+                  (methodDeclParent.Body.Statements.First() != containingReturnOrThrow)))
             {
                 return false;
             }
@@ -1290,9 +1290,9 @@ public class Cls
             foreach (var reference in references)
             {
                 if (!dataFlowParent.Span.Contains(reference.Span) &&
-                    (containingReturnOrThrow == null || containingReturnOrThrow.Span.Contains(reference.SpanStart)) &&
-                    (reference.SpanStart > decl.SpanStart ||
-                     (containingReturnOrThrow == null &&
+                    ((containingReturnOrThrow == null) || containingReturnOrThrow.Span.Contains(reference.SpanStart)) &&
+                    ((reference.SpanStart > decl.SpanStart) ||
+                     ((containingReturnOrThrow == null) &&
                      reference.Ancestors().OfType<DoStatementSyntax>().Join(
                          decl.Ancestors().OfType<DoStatementSyntax>(), d => d, d => d, (d1, d2) => true).Any())))
                 {
@@ -13890,7 +13890,7 @@ public class X
             Assert.Equal(6, x1Ref.Length);
             for (int i = 0; i < x1Decl.Length; i++)
             {
-                VerifyModelForOutVar(model, x1Decl[i], x1Ref[i * 2], x1Ref[i * 2 + 1]);
+                VerifyModelForOutVar(model, x1Decl[i], x1Ref[i * 2], x1Ref[(i * 2) + 1]);
             }
 
             var x2Decl = GetOutVarDeclarations(tree, "x2").Single();
@@ -31419,7 +31419,7 @@ class Program
             var local = (FieldSymbol)symbol;
 
             var declarator = decl.Ancestors().OfType<VariableDeclaratorSyntax>().FirstOrDefault();
-            var inFieldDeclaratorArgumentlist = declarator != null && declarator.Parent.Parent.Kind() != SyntaxKind.LocalDeclarationStatement &&
+            var inFieldDeclaratorArgumentlist = (declarator != null) && (declarator.Parent.Parent.Kind() != SyntaxKind.LocalDeclarationStatement) &&
                                            (declarator.ArgumentList?.Contains(decl)).GetValueOrDefault();
 
             // We're not able to get type information at such location (out var argument in global code) at this point
@@ -32401,8 +32401,8 @@ class Test : System.Attribute
 }
 ";
             var compilation = CreateCompilationWithMscorlib45(source, options: TestOptions.DebugExe, parseOptions: TestOptions.Regular);
-            compilation.GetDiagnostics().Where(d => d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl &&
-                                                    d.Code != (int)ErrorCode.ERR_BadAttributeArgument).Verify(
+            compilation.GetDiagnostics().Where(d => (d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl) &&
+                                                    (d.Code != (int)ErrorCode.ERR_BadAttributeArgument)).Verify(
                 // (18,19): error CS0103: The name 'x7' does not exist in the current context
                 //             Dummy(x7, p1);
                 Diagnostic(ErrorCode.ERR_NameNotInContext, "x7").WithArguments("x7").WithLocation(18, 19),
@@ -32500,8 +32500,8 @@ class Test : System.Attribute
 }
 ";
             var compilation = CreateCompilationWithMscorlib45(source, options: TestOptions.DebugExe, parseOptions: TestOptions.Regular);
-            compilation.GetDiagnostics().Where(d => d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl &&
-                                                    d.Code != (int)ErrorCode.ERR_BadAttributeArgument).Verify(
+            compilation.GetDiagnostics().Where(d => (d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl) &&
+                                                    (d.Code != (int)ErrorCode.ERR_BadAttributeArgument)).Verify(
                 // (18,19): error CS0103: The name 'x7' does not exist in the current context
                 //             Dummy(x7, p1);
                 Diagnostic(ErrorCode.ERR_NameNotInContext, "x7").WithArguments("x7").WithLocation(18, 19),
@@ -32600,8 +32600,8 @@ class Test : System.Attribute
 }
 ";
             var compilation = CreateCompilationWithMscorlib45(source, options: TestOptions.DebugExe, parseOptions: TestOptions.Regular);
-            compilation.GetDiagnostics().Where(d => d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl &&
-                                                    d.Code != (int)ErrorCode.ERR_BadAttributeArgument).Verify(
+            compilation.GetDiagnostics().Where(d => (d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl) &&
+                                                    (d.Code != (int)ErrorCode.ERR_BadAttributeArgument)).Verify(
                 // (18,19): error CS0103: The name 'x7' does not exist in the current context
                 //             Dummy(x7, p1);
                 Diagnostic(ErrorCode.ERR_NameNotInContext, "x7").WithArguments("x7").WithLocation(18, 19),
@@ -32699,8 +32699,8 @@ class Test : System.Attribute
 }
 ";
             var compilation = CreateCompilationWithMscorlib45(source, options: TestOptions.DebugExe, parseOptions: TestOptions.Regular);
-            compilation.GetDiagnostics().Where(d => d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl &&
-                                                    d.Code != (int)ErrorCode.ERR_BadAttributeArgument).Verify(
+            compilation.GetDiagnostics().Where(d => (d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl) &&
+                                                    (d.Code != (int)ErrorCode.ERR_BadAttributeArgument)).Verify(
                 // (18,19): error CS0103: The name 'x7' does not exist in the current context
                 //             Dummy(x7, p1);
                 Diagnostic(ErrorCode.ERR_NameNotInContext, "x7").WithArguments("x7").WithLocation(18, 19),
@@ -32785,8 +32785,8 @@ class Test : System.Attribute
 }
 ";
             var compilation = CreateCompilationWithMscorlib45(source, options: TestOptions.DebugExe, parseOptions: TestOptions.Regular);
-            compilation.GetDiagnostics().Where(d => d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl &&
-                                                    d.Code != (int)ErrorCode.ERR_BadAttributeArgument).Verify(
+            compilation.GetDiagnostics().Where(d => (d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl) &&
+                                                    (d.Code != (int)ErrorCode.ERR_BadAttributeArgument)).Verify(
                 // (10,44): error CS0136: A local or parameter named 'x2' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter
                 //             [Test(p = TakeOutParam(out int x2) && x1 > 0 && x2 > 0)]
                 Diagnostic(ErrorCode.ERR_LocalIllegallyOverrides, "x2").WithArguments("x2").WithLocation(10, 44)
@@ -32842,8 +32842,8 @@ class Test : System.Attribute
 }
 ";
             var compilation = CreateCompilationWithMscorlib45(source, options: TestOptions.DebugExe, parseOptions: TestOptions.Regular);
-            compilation.GetDiagnostics().Where(d => d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl &&
-                                                    d.Code != (int)ErrorCode.ERR_BadAttributeArgument).Verify(
+            compilation.GetDiagnostics().Where(d => (d.Code != (int)ErrorCode.ERR_AttributesInLocalFuncDecl) &&
+                                                    (d.Code != (int)ErrorCode.ERR_BadAttributeArgument)).Verify(
                 // (10,40): error CS0136: A local or parameter named 'x2' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter
                 //             [Test(TakeOutParam(out int x2) && x1 > 0 && x2 > 0)]
                 Diagnostic(ErrorCode.ERR_LocalIllegallyOverrides, "x2").WithArguments("x2").WithLocation(10, 40)

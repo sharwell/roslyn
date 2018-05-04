@@ -43,8 +43,8 @@ namespace Microsoft.CodeAnalysis.CSharp.RemoveUnnecessaryParentheses
             var inner = parenthesizedExpression.Expression;
             var innerKind = inner.Kind();
             var innerPrecedence = inner.GetOperatorPrecedence();
-            var innerIsSimple = innerPrecedence == OperatorPrecedence.Primary ||
-                                innerPrecedence == OperatorPrecedence.None;
+            var innerIsSimple = (innerPrecedence == OperatorPrecedence.Primary) ||
+                                (innerPrecedence == OperatorPrecedence.None);
 
             ExpressionSyntax parentExpression;
             switch (parenthesizedExpression.Parent)
@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.CSharp.RemoveUnnecessaryParentheses
             //
             //      a + (b.Length)
             clarifiesPrecedence = !innerIsSimple &&
-                                  parentExpression.GetOperatorPrecedence() != innerPrecedence;
+                                  (parentExpression.GetOperatorPrecedence() != innerPrecedence);
             return true;
         }
 

@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
         internal override void OnModelUpdated(Model modelOpt)
         {
             AssertIsForeground();
-            if (modelOpt == null || modelOpt.TextVersion != this.SubjectBuffer.CurrentSnapshot.Version)
+            if ((modelOpt == null) || (modelOpt.TextVersion != this.SubjectBuffer.CurrentSnapshot.Version))
             {
                 this.StopModelComputation();
             }

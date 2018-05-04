@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool InvalidLevel(int? level)
         {
-            return level.HasValue && level.Value <= 0;
+            return level.HasValue && (level.Value <= 0);
         }
 
         private static int? DecrementLevel(int? level)
@@ -231,7 +231,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         codeBlocks = codeBlocks.Concat(t.Body);
 
                         var ctorDecl = t as ConstructorDeclarationSyntax;
-                        if (ctorDecl != null && ctorDecl.Initializer != null)
+                        if ((ctorDecl != null) && (ctorDecl.Initializer != null))
                         {
                             codeBlocks = codeBlocks.Concat(ctorDecl.Initializer);
                         }
@@ -244,7 +244,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                         codeBlocks = codeBlocks.Concat(GetAttributes(t.AttributeLists));
 
-                        if (node is MethodDeclarationSyntax methodDecl && methodDecl.TypeParameterList != null)
+                        if (node is MethodDeclarationSyntax methodDecl && (methodDecl.TypeParameterList != null))
                         {
                             codeBlocks = codeBlocks.Concat(GetTypeParameterListAttributes(methodDecl.TypeParameterList));
                         }

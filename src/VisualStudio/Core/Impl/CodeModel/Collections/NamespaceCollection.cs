@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             // Option statements
             var optionNodes = CodeModelService.GetOptionNodes(node);
             var optionNodeCount = optionNodes.Count();
-            if (index < currentIndex + optionNodeCount)
+            if (index < (currentIndex + optionNodeCount))
             {
                 var child = optionNodes.ElementAt(index - currentIndex);
                 element = CreateCodeOptionsStatement(child, node);
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             // Imports/using statements
             var importNodes = CodeModelService.GetImportNodes(node);
             var importNodeCount = importNodes.Count();
-            if (index < currentIndex + importNodeCount)
+            if (index < (currentIndex + importNodeCount))
             {
                 var child = importNodes.ElementAt(index - currentIndex);
                 element = CreateCodeImport(child, parentElement);
@@ -138,7 +138,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             // Attributes
             var attributeNodes = CodeModelService.GetAttributeNodes(node);
             var attributeNodeCount = attributeNodes.Count();
-            if (index < currentIndex + attributeNodeCount)
+            if (index < (currentIndex + attributeNodeCount))
             {
                 var child = attributeNodes.ElementAt(index - currentIndex);
                 element = CreateCodeAttribute(child, node, parentElement);
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             // Members
             var memberNodes = CodeModelService.GetLogicalSupportedMemberNodes(node);
             var memberNodeCount = memberNodes.Count();
-            if (index < currentIndex + memberNodeCount)
+            if (index < (currentIndex + memberNodeCount))
             {
                 var child = memberNodes.ElementAt(index - currentIndex);
                 element = FileCodeModel.GetOrCreateCodeElement<EnvDTE.CodeElement>(child);

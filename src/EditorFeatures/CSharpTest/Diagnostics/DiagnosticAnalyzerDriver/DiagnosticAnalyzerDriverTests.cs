@@ -65,10 +65,10 @@ class C
                 await DiagnosticProviderTestUtilities.GetAllDiagnosticsAsync(ideEngineAnalyzer, ideEngineDocument, new Text.TextSpan(0, ideEngineDocument.GetTextAsync().Result.Length));
                 foreach (var method in methodNames)
                 {
-                    Assert.False(ideEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.MethodKind == MethodKind.DelegateInvoke && e.ReturnsVoid));
-                    Assert.False(ideEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.MethodKind == MethodKind.DelegateInvoke && !e.ReturnsVoid));
-                    Assert.True(ideEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.SymbolKind == SymbolKind.NamedType));
-                    Assert.False(ideEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.SymbolKind == SymbolKind.Property));
+                    Assert.False(ideEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.MethodKind == MethodKind.DelegateInvoke) && e.ReturnsVoid));
+                    Assert.False(ideEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.MethodKind == MethodKind.DelegateInvoke) && !e.ReturnsVoid));
+                    Assert.True(ideEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.SymbolKind == SymbolKind.NamedType)));
+                    Assert.False(ideEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.SymbolKind == SymbolKind.Property)));
                 }
             }
 
@@ -79,10 +79,10 @@ class C
                 compilerEngineCompilation.GetAnalyzerDiagnostics(new[] { compilerEngineAnalyzer });
                 foreach (var method in methodNames)
                 {
-                    Assert.False(compilerEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.MethodKind == MethodKind.DelegateInvoke && e.ReturnsVoid));
-                    Assert.False(compilerEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.MethodKind == MethodKind.DelegateInvoke && !e.ReturnsVoid));
-                    Assert.True(compilerEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.SymbolKind == SymbolKind.NamedType));
-                    Assert.False(compilerEngineAnalyzer.CallLog.Any(e => e.CallerName == method && e.SymbolKind == SymbolKind.Property));
+                    Assert.False(compilerEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.MethodKind == MethodKind.DelegateInvoke) && e.ReturnsVoid));
+                    Assert.False(compilerEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.MethodKind == MethodKind.DelegateInvoke) && !e.ReturnsVoid));
+                    Assert.True(compilerEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.SymbolKind == SymbolKind.NamedType)));
+                    Assert.False(compilerEngineAnalyzer.CallLog.Any(e => (e.CallerName == method) && (e.SymbolKind == SymbolKind.Property)));
                 }
             }
         }

@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override bool Equals(object obj)
         {
-            return obj is AwaitExpressionInfo && Equals((AwaitExpressionInfo)obj);
+            return (obj is AwaitExpressionInfo) && Equals((AwaitExpressionInfo)obj);
         }
 
         public bool Equals(AwaitExpressionInfo other)
@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return object.Equals(this.GetAwaiterMethod, other.GetAwaiterMethod)
                 && object.Equals(this.IsCompletedProperty, other.IsCompletedProperty)
                 && object.Equals(this.GetResultMethod, other.GetResultMethod)
-                && this.IsDynamic == other.IsDynamic;
+                && (this.IsDynamic == other.IsDynamic);
         }
 
         public override int GetHashCode()

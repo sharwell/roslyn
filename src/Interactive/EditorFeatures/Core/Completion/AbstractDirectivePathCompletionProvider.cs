@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.Editor.Completion.FileSystem
     internal abstract class AbstractDirectivePathCompletionProvider : CompletionProvider
     {
         protected static bool IsDirectorySeparator(char ch) =>
-             ch == '/' || (ch == '\\' && !PathUtilities.IsUnixLikePlatform);
+             (ch == '/') || ((ch == '\\') && !PathUtilities.IsUnixLikePlatform);
 
         protected abstract bool TryGetStringLiteralToken(SyntaxTree tree, int position, out SyntaxToken stringLiteral, CancellationToken cancellationToken);
 
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Editor.Completion.FileSystem
 
         private static bool EndsWithQuote(string quotedPath)
         {
-            return quotedPath.Length >= 2 && quotedPath[quotedPath.Length - 1] == '"';
+            return (quotedPath.Length >= 2) && (quotedPath[quotedPath.Length - 1] == '"');
         }
 
         /// <summary>
@@ -116,8 +116,8 @@ namespace Microsoft.CodeAnalysis.Editor.Completion.FileSystem
             position = Math.Min(position, text.Length - 1);
 
             int index;
-            if ((index = text.LastIndexOf('/', position)) >= 0 ||
-                !PathUtilities.IsUnixLikePlatform && (index = text.LastIndexOf('\\', position)) >= 0)
+            if (((index = text.LastIndexOf('/', position)) >= 0) ||
+                (!PathUtilities.IsUnixLikePlatform && ((index = text.LastIndexOf('\\', position)) >= 0)))
             {
                 return index + 1;
             }
@@ -151,7 +151,7 @@ namespace Microsoft.CodeAnalysis.Editor.Completion.FileSystem
             if (!PathUtilities.IsAbsolute(result))
             {
                 result = environmentOpt?.BaseDirectory;
-                Contract.Requires(result == null || PathUtilities.IsAbsolute(result));
+                Contract.Requires((result == null) || PathUtilities.IsAbsolute(result));
             }
 
             return result;

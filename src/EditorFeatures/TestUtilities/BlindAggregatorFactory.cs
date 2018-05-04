@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
             private static unsafe int QueryInterface(BlindAggregator* pThis, [In] ref Guid riid, out IntPtr pvObject)
             {
-                if (riid == s_IUnknownInterfaceGuid || riid == s_IComWrapperGuid)
+                if ((riid == s_IUnknownInterfaceGuid) || (riid == s_IComWrapperGuid))
                 {
                     AddRef(pThis);
                     pvObject = (IntPtr)pThis;

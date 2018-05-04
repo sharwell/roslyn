@@ -420,7 +420,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
         // explicitly overriden.  So, if both ToolPath is unset and
         // ToolExe == ToolName, we know nothing is overridden, and
         // we can use our own csc.
-        private bool HasToolBeenOverridden => !(string.IsNullOrEmpty(ToolPath) && ToolExe == ToolName);
+        private bool HasToolBeenOverridden => !(string.IsNullOrEmpty(ToolPath) && (ToolExe == ToolName));
 
         protected sealed override bool IsManagedTool => !HasToolBeenOverridden;
 
@@ -930,7 +930,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
         /// <param name="log"></param>
         private static bool ListHasNoDuplicateItems(ITaskItem[] itemList, string parameterName, string disambiguatingMetadataName, TaskLoggingHelper log)
         {
-            if (itemList == null || itemList.Length == 0)
+            if ((itemList == null) || (itemList.Length == 0))
             {
                 return true;
             }
@@ -945,7 +945,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                     disambiguatingMetadataValue = item.GetMetadata(disambiguatingMetadataName);
                 }
 
-                if (disambiguatingMetadataName == null || string.IsNullOrEmpty(disambiguatingMetadataValue))
+                if ((disambiguatingMetadataName == null) || string.IsNullOrEmpty(disambiguatingMetadataValue))
                 {
                     key = item.ItemSpec;
                 }
@@ -956,7 +956,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
                 if (alreadySeen.ContainsKey(key))
                 {
-                    if (disambiguatingMetadataName == null || string.IsNullOrEmpty(disambiguatingMetadataValue))
+                    if ((disambiguatingMetadataName == null) || string.IsNullOrEmpty(disambiguatingMetadataValue))
                     {
                         log.LogErrorWithCodeFromResources("General_DuplicateItemsNotSupported", item.ItemSpec, parameterName);
                     }

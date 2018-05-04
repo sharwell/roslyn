@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected BoundNode(BoundKind kind, SyntaxNode syntax)
         {
-            Debug.Assert(kind == BoundKind.SequencePoint || kind == BoundKind.SequencePointExpression || syntax != null);
+            Debug.Assert((kind == BoundKind.SequencePoint) || (kind == BoundKind.SequencePointExpression) || (syntax != null));
 
             _kind = kind;
             this.Syntax = syntax;
@@ -57,12 +57,12 @@ namespace Microsoft.CodeAnalysis.CSharp
             get
             {
                 // NOTE: check Syntax rather than WasCompilerGenerated because sequence points can have null syntax.
-                if (this.HasErrors || this.Syntax != null && this.Syntax.HasErrors)
+                if (this.HasErrors || ((this.Syntax != null) && this.Syntax.HasErrors))
                 {
                     return true;
                 }
                 var expression = this as BoundExpression;
-                return expression != null && !ReferenceEquals(expression.Type, null) && expression.Type.IsErrorType();
+                return (expression != null) && !ReferenceEquals(expression.Type, null) && expression.Type.IsErrorType();
             }
         }
 

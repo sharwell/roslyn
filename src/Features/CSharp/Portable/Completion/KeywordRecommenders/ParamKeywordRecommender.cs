@@ -18,11 +18,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
         {
             var token = context.TargetToken;
 
-            if (token.Kind() == SyntaxKind.OpenBracketToken &&
+            if ((token.Kind() == SyntaxKind.OpenBracketToken) &&
                 token.Parent.IsKind(SyntaxKind.AttributeList))
             {
-                if (token.GetAncestor<PropertyDeclarationSyntax>() != null ||
-                    token.GetAncestor<EventDeclarationSyntax>() != null)
+                if ((token.GetAncestor<PropertyDeclarationSyntax>() != null) ||
+                    (token.GetAncestor<EventDeclarationSyntax>() != null))
                 {
                     return true;
                 }

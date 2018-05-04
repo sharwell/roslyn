@@ -238,8 +238,8 @@ System.Diagnostics.Process.GetCurrentProcess()
         private static Lazy<bool> s_isSystemV2AndV4Available = new Lazy<bool>(() =>
         {
             string path;
-            return GlobalAssemblyCache.Instance.ResolvePartialName("System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", out path) != null &&
-                   GlobalAssemblyCache.Instance.ResolvePartialName("System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", out path) != null;
+            return (GlobalAssemblyCache.Instance.ResolvePartialName("System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", out path) != null) &&
+                   (GlobalAssemblyCache.Instance.ResolvePartialName("System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", out path) != null);
         });
 
         [Fact]

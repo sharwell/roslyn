@@ -182,11 +182,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             // statement means that this constraint is not violated).
             // Dynamic type will be erased in emit phase. It is considered equivalent to Object in lowered bound trees.
             // Unused deconstructions are lowered to produce a return value that isn't a tuple type.
-            Debug.Assert(visited == null || visited.HasErrors || ReferenceEquals(visited.Type, node.Type) ||
+            Debug.Assert((visited == null) || visited.HasErrors || ReferenceEquals(visited.Type, node.Type) ||
                     visited.Type.Equals(node.Type, TypeCompareKind.IgnoreDynamicAndTupleNames) ||
                     IsUnusedDeconstruction(node));
 
-            if (visited != null && visited != node)
+            if ((visited != null) && (visited != node))
             {
                 if (!CanBePassedByReference(node) && CanBePassedByReference(visited))
                 {
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool IsUnusedDeconstruction(BoundExpression node)
         {
-            return node.Kind == BoundKind.DeconstructionAssignmentOperator && !((BoundDeconstructionAssignmentOperator)node).IsUsed;
+            return (node.Kind == BoundKind.DeconstructionAssignmentOperator) && !((BoundDeconstructionAssignmentOperator)node).IsUsed;
         }
 
         public override BoundNode VisitLambda(BoundLambda node)
@@ -455,7 +455,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             for (int i = 0; i < statements.Count; i++)
             {
-                if (statements[i] == null || (optimize && IsFieldOrPropertyInitializer(originalStatements[i]) && ShouldOptimizeOutInitializer(statements[i])))
+                if ((statements[i] == null) || (optimize && IsFieldOrPropertyInitializer(originalStatements[i]) && ShouldOptimizeOutInitializer(statements[i])))
                 {
                     optimizedInitializers++;
                     if (!_factory.CurrentFunction.IsStatic)
@@ -509,7 +509,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var syntax = initializer.Syntax;
 
-            if (syntax is ExpressionSyntax && syntax?.Parent.Kind() == SyntaxKind.EqualsValueClause) // Should be the initial value.
+            if ((syntax is ExpressionSyntax) && (syntax?.Parent.Kind() == SyntaxKind.EqualsValueClause)) // Should be the initial value.
             {
                 switch (syntax.Parent?.Parent.Kind())
                 {

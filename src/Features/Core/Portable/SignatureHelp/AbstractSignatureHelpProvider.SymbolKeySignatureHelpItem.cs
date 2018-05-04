@@ -34,8 +34,8 @@ namespace Microsoft.CodeAnalysis.SignatureHelp
             public bool Equals(SymbolKeySignatureHelpItem obj)
             {
                 return ReferenceEquals(this, obj) ||
-                    (obj?.SymbolKey != null &&
-                     this.SymbolKey != null &&
+                    ((obj?.SymbolKey != null) &&
+                     (this.SymbolKey != null) &&
                      CodeAnalysis.SymbolKey.GetComparer(ignoreCase: false, ignoreAssemblyKeys: false).Equals(this.SymbolKey.Value, obj.SymbolKey.Value));
             }
 

@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Classification
             {
                 using (Logger.LogBlock(FunctionId.Tagger_SyntacticClassification_TagComputer_GetTags, CancellationToken.None))
                 {
-                    if (spans.Count > 0 && _workspace != null)
+                    if ((spans.Count > 0) && (_workspace != null))
                     {
                         var firstSpan = spans[0];
                         var languageServices = _workspace.Services.GetLanguageServices(firstSpan.Snapshot.ContentType);
@@ -430,7 +430,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Classification
 
             private void OnDocumentActiveContextChanged(object sender, DocumentActiveContextChangedEventArgs args)
             {
-                if (_workspace != null && _workspace == args.Solution.Workspace)
+                if ((_workspace != null) && (_workspace == args.Solution.Workspace))
                 {
                     ParseIfThisDocument(args.Solution, args.NewActiveContextDocumentId);
                 }
@@ -459,7 +459,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Classification
                     case WorkspaceChangeKind.ProjectChanged:
                         {
                             var documentId = _workspace.GetDocumentIdInCurrentContext(_subjectBuffer.AsTextContainer());
-                            if (documentId == null || documentId.ProjectId != args.ProjectId)
+                            if ((documentId == null) || (documentId.ProjectId != args.ProjectId))
                             {
                                 break;
                             }

@@ -369,7 +369,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // See InternalsVisibleToAndStrongNameTests: IvtVirtualCall1, IvtVirtualCall2, IvtVirtual_ParamsAndDynamic.
                 MethodSymbol overridden = m.OverriddenMethod;
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                if ((object)overridden == null || !AccessCheck.IsSymbolAccessible(overridden, accessingType, ref useSiteDiagnostics))
+                if (((object)overridden == null) || !AccessCheck.IsSymbolAccessible(overridden, accessingType, ref useSiteDiagnostics))
                 {
                     break;
                 }
@@ -426,7 +426,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         internal virtual bool CallsAreOmitted(SyntaxTree syntaxTree)
         {
-            return syntaxTree != null && this.CallsAreConditionallyOmitted(syntaxTree);
+            return (syntaxTree != null) && this.CallsAreConditionallyOmitted(syntaxTree);
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 if (this.IsOverride)
                 {
                     var overriddenMethod = this.OverriddenMethod;
-                    if ((object)overriddenMethod != null && overriddenMethod.IsConditional)
+                    if (((object)overriddenMethod != null) && overriddenMethod.IsConditional)
                     {
                         return overriddenMethod.CallsAreConditionallyOmitted(syntaxTree);
                     }
@@ -557,7 +557,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                return MethodKind == MethodKind.Constructor && ContainingType.IsScriptClass;
+                return (MethodKind == MethodKind.Constructor) && ContainingType.IsScriptClass;
             }
         }
 
@@ -573,7 +573,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                return (MethodKind == MethodKind.Constructor || MethodKind == MethodKind.StaticConstructor) && IsImplicitlyDeclared;
+                return ((MethodKind == MethodKind.Constructor) || (MethodKind == MethodKind.StaticConstructor)) && IsImplicitlyDeclared;
             }
         }
 
@@ -584,7 +584,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                return MethodKind == MethodKind.Constructor && IsImplicitlyDeclared;
+                return (MethodKind == MethodKind.Constructor) && IsImplicitlyDeclared;
             }
         }
 
@@ -616,12 +616,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 if (this.IsPartialDefinition() &&
-                    this.PartialImplementationPart is null)
+                    (this.PartialImplementationPart is null))
                 {
                     return false;
                 }
 
-                return IsStatic && Name == WellKnownMemberNames.EntryPointMethodName;
+                return IsStatic && (Name == WellKnownMemberNames.EntryPointMethodName);
             }
         }
 
@@ -651,7 +651,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 throw new ArgumentNullException(nameof(receiverType));
             }
 
-            if (!this.IsExtensionMethod || this.MethodKind == MethodKind.ReducedExtension)
+            if (!this.IsExtensionMethod || (this.MethodKind == MethodKind.ReducedExtension))
             {
                 return null;
             }
@@ -668,7 +668,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         public MethodSymbol ReduceExtensionMethod()
         {
-            return (this.IsExtensionMethod && this.MethodKind != MethodKind.ReducedExtension) ? ReducedExtensionMethodSymbol.Create(this) : null;
+            return (this.IsExtensionMethod && (this.MethodKind != MethodKind.ReducedExtension)) ? ReducedExtensionMethodSymbol.Create(this) : null;
         }
 
         /// <summary>
@@ -751,7 +751,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// <returns></returns>
         public MethodSymbol Construct(ImmutableArray<TypeSymbol> typeArguments)
         {
-            if (!ReferenceEquals(this, ConstructedFrom) || this.Arity == 0)
+            if (!ReferenceEquals(this, ConstructedFrom) || (this.Arity == 0))
             {
                 throw new InvalidOperationException();
             }
@@ -905,7 +905,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 DiagnosticInfo info = GetUseSiteDiagnostic();
-                return (object)info != null && (info.Code == (int)ErrorCode.ERR_BindToBogus || info.Code == (int)ErrorCode.ERR_ByRefReturnUnsupported);
+                return ((object)info != null) && ((info.Code == (int)ErrorCode.ERR_BindToBogus) || (info.Code == (int)ErrorCode.ERR_ByRefReturnUnsupported));
             }
         }
 

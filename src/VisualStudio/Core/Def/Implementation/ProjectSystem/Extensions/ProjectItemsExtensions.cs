@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.E
             {
                 if (item is ProjectItem projectItem)
                 {
-                    if (projectItem.TryGetFullPath(out var filePath) && comparer.Compare(filePath, itemFilePath) == 0)
+                    if (projectItem.TryGetFullPath(out var filePath) && (comparer.Compare(filePath, itemFilePath) == 0))
                     {
                         return projectItem;
                     }

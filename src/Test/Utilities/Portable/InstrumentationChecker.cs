@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
         private static string GetTermination(int index, int length)
         {
-            return (index == length - 1) ? ";" : "";
+            return (index == (length - 1)) ? ";" : "";
         }
 
         public const string InstrumentationHelperSource = @"
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.Runtime
 
         private static string GetTermination(int index, int length)
         {
-            return (index == length - 1) ? "" : ".";
+            return (index == (length - 1)) ? "" : ".";
         }
 
         public static readonly XElement InstrumentationHelperSource = new XElement("file", new XAttribute("name", "c.vb"), InstrumentationHelperSourceStr);

@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.MetadataAsSource
 
                         // The member symbol name itself could contain a dot (e.g. '.ctor'), so make
                         // sure we don't cut that off
-                        while (lastDotIndex > 0 && symbolMetadataName[lastDotIndex - 1] == '.')
+                        while ((lastDotIndex > 0) && (symbolMetadataName[lastDotIndex - 1] == '.'))
                         {
                             --lastDotIndex;
                         }

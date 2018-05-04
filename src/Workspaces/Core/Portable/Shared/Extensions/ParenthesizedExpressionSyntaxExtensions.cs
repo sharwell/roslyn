@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.Extensions
             // Second, check the type and converted type of the binary expression.
             // Are they the same?
             var innerTypeInfo = semanticModel.GetTypeInfo(innerExpression);
-            if (innerTypeInfo.Type != null && innerTypeInfo.ConvertedType != null)
+            if ((innerTypeInfo.Type != null) && (innerTypeInfo.ConvertedType != null))
             {
                 if (!innerTypeInfo.Type.Equals(innerTypeInfo.ConvertedType))
                 {
@@ -83,12 +83,12 @@ namespace Microsoft.CodeAnalysis.Extensions
 
         private static bool IsUserDefinedOperator(ISymbol symbol)
             => symbol is IMethodSymbol methodSymbol &&
-               methodSymbol.MethodKind == MethodKind.UserDefinedOperator;
+               (methodSymbol.MethodKind == MethodKind.UserDefinedOperator);
 
         private static bool IsFloatingPoint(TypeInfo typeInfo)
             => IsFloatingPoint(typeInfo.Type) || IsFloatingPoint(typeInfo.ConvertedType);
 
         private static bool IsFloatingPoint(ITypeSymbol type)
-            => type?.SpecialType == SpecialType.System_Single || type?.SpecialType == SpecialType.System_Double;
+            => (type?.SpecialType == SpecialType.System_Single) || (type?.SpecialType == SpecialType.System_Double);
     }
 }

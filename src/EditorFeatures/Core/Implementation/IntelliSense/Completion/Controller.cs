@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
         {
             var service = GetCompletionService();
             var options = GetOptions();
-            if (service == null || options == null)
+            if ((service == null) || (options == null))
             {
                 return true;
             }
@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 
             var shouldBlock = ShouldBlockForCompletionItems();
             var model = sessionOpt.WaitForModel_DoNotCallDirectly(shouldBlock);
-            if (model == null && !shouldBlock)
+            if ((model == null) && !shouldBlock)
             {
                 // We didn't get a model back, and we're a language that doesn't want to block
                 // when this happens.  Essentially, the user typed something like a commit 

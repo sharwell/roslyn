@@ -39,13 +39,13 @@ namespace Microsoft.CodeAnalysis.Text.Shared.Extensions
 
         public static int? TryGetPosition(this ITextSnapshot snapshot, int lineNumber, int columnIndex)
         {
-            if (lineNumber < 0 || lineNumber >= snapshot.LineCount)
+            if ((lineNumber < 0) || (lineNumber >= snapshot.LineCount))
             {
                 return null;
             }
 
             int end = snapshot.GetLineFromLineNumber(lineNumber).Start.Position + columnIndex;
-            if (end < 0 || end > snapshot.Length)
+            if ((end < 0) || (end > snapshot.Length))
             {
                 return null;
             }
@@ -58,13 +58,13 @@ namespace Microsoft.CodeAnalysis.Text.Shared.Extensions
             int result = 0;
             position = new SnapshotPoint();
 
-            if (lineNumber < 0 || lineNumber >= snapshot.LineCount)
+            if ((lineNumber < 0) || (lineNumber >= snapshot.LineCount))
             {
                 return false;
             }
 
             var line = snapshot.GetLineFromLineNumber(lineNumber);
-            if (columnIndex < 0 || columnIndex >= line.Length)
+            if ((columnIndex < 0) || (columnIndex >= line.Length))
             {
                 return false;
             }
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Text.Shared.Extensions
         {
             var startPosition = snapshot.TryGetPosition(startLine, startIndex);
             var endPosition = snapshot.TryGetPosition(endLine, endIndex);
-            if (startPosition == null || endPosition == null)
+            if ((startPosition == null) || (endPosition == null))
             {
                 return null;
             }

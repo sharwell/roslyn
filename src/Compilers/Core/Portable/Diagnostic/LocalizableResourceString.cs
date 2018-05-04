@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis
 
         protected override string GetText(IFormatProvider formatProvider)
         {
-            var culture = formatProvider as CultureInfo ?? CultureInfo.CurrentUICulture;
+            var culture = (formatProvider as CultureInfo) ?? CultureInfo.CurrentUICulture;
             var resourceString = _resourceManager.GetString(_nameOfLocalizableResource, culture);
             return resourceString != null ?
                 (_formatArguments.Length > 0 ? string.Format(resourceString, _formatArguments) : resourceString) :
@@ -119,10 +119,10 @@ namespace Microsoft.CodeAnalysis
         protected override bool AreEqual(object other)
         {
             var otherResourceString = other as LocalizableResourceString;
-            return otherResourceString != null &&
-                _nameOfLocalizableResource == otherResourceString._nameOfLocalizableResource &&
-                _resourceManager == otherResourceString._resourceManager &&
-                _resourceSource == otherResourceString._resourceSource &&
+            return (otherResourceString != null) &&
+                (_nameOfLocalizableResource == otherResourceString._nameOfLocalizableResource) &&
+                (_resourceManager == otherResourceString._resourceManager) &&
+                (_resourceSource == otherResourceString._resourceSource) &&
                 _formatArguments.SequenceEqual(otherResourceString._formatArguments, (a, b) => a == b);
         }
 

@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             var thisEnd = GetEnd(value, Introspector);
             var thisStart = Introspector.GetStart(value);
 
-            return thisStart < otherStart && otherEnd < thisEnd;
+            return (thisStart < otherStart) && (otherEnd < thisEnd);
         }
 
         private bool ContainsEdgeInclusive(T value, int start, int length)
@@ -61,13 +61,13 @@ namespace Microsoft.CodeAnalysis.Formatting
             var thisEnd = GetEnd(value, Introspector);
             var thisStart = Introspector.GetStart(value);
 
-            return thisStart <= otherStart && otherEnd <= thisEnd;
+            return (thisStart <= otherStart) && (otherEnd <= thisEnd);
         }
 
         private T GetSmallestContainingIntervalWorker(int start, int length, Func<T, int, int, bool> predicate)
         {
             var result = default(T);
-            if (root == null || MaxEndValue(root) < start)
+            if ((root == null) || (MaxEndValue(root) < start))
             {
                 return result;
             }
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                     if (Introspector.GetStart(currentNode.Value) <= start)
                     {
                         var right = currentNode.Right;
-                        if (right != null && end < MaxEndValue(right))
+                        if ((right != null) && (end < MaxEndValue(right)))
                         {
                             spineNodes.Push(right);
                             continue;
@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                     // right side, sub tree doesn't contain the given span, put current node on
                     // stack, and move down to left sub tree
                     var left = currentNode.Left;
-                    if (left != null && end <= MaxEndValue(left))
+                    if ((left != null) && (end <= MaxEndValue(left)))
                     {
                         spineNodes.Push(left);
                         continue;
@@ -124,8 +124,8 @@ namespace Microsoft.CodeAnalysis.Formatting
                         {
                             // hold onto best answer
                             if (EqualityComparer<T>.Default.Equals(result, default) ||
-                                (Introspector.GetStart(result) <= Introspector.GetStart(currentNode.Value) &&
-                                 Introspector.GetLength(currentNode.Value) < Introspector.GetLength(result)))
+                                ((Introspector.GetStart(result) <= Introspector.GetStart(currentNode.Value)) &&
+                                 (Introspector.GetLength(currentNode.Value) < Introspector.GetLength(result))))
                             {
                                 result = currentNode.Value;
                             }
@@ -150,12 +150,12 @@ namespace Microsoft.CodeAnalysis.Formatting
                         if (parentNode.Right == currentNode)
                         {
                             // try left side of parent node if it can have better answer
-                            if (parentNode.Left != null && end <= MaxEndValue(parentNode.Left))
+                            if ((parentNode.Left != null) && (end <= MaxEndValue(parentNode.Left)))
                             {
                                 // right side tree doesn't have any answer or if the right side has
                                 // an answer but left side can have better answer then try left side
                                 if (EqualityComparer<T>.Default.Equals(result, default) ||
-                                    Introspector.GetStart(parentNode.Value) == Introspector.GetStart(currentNode.Value))
+                                    (Introspector.GetStart(parentNode.Value) == Introspector.GetStart(currentNode.Value)))
                                 {
                                     // put left as new root, and break out inner loop
                                     spineNodes.Push(parentNode.Left);

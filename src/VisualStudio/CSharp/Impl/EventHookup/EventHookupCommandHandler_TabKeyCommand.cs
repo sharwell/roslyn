@@ -87,8 +87,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
                 eventHandlerMethodName = EventHookupSessionManager.CurrentSession.GetEventNameTask.WaitAndGetResult(cancellationToken);
             }
 
-            if (eventHandlerMethodName == null ||
-                EventHookupSessionManager.CurrentSession.TextView != textView)
+            if ((eventHandlerMethodName == null) ||
+                (EventHookupSessionManager.CurrentSession.TextView != textView))
             {
                 nextHandler();
                 EventHookupSessionManager.CancelAndDismissExistingSessions();
@@ -260,14 +260,14 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
             var symbolInfo = semanticModel.GetSymbolInfo(eventHookupExpression.Left, cancellationToken);
 
             var symbol = symbolInfo.Symbol;
-            if (symbol == null || symbol.Kind != SymbolKind.Event)
+            if ((symbol == null) || (symbol.Kind != SymbolKind.Event))
             {
                 return null;
             }
 
             var typeInference = document.Project.LanguageServices.GetService<ITypeInferenceService>();
             var delegateType = typeInference.InferDelegateType(semanticModel, eventHookupExpression.Right, cancellationToken);
-            if (delegateType == null || delegateType.DelegateInvokeMethod == null)
+            if ((delegateType == null) || (delegateType.DelegateInvokeMethod == null))
             {
                 return null;
             }

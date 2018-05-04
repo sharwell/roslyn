@@ -30,13 +30,13 @@ namespace Microsoft.CodeAnalysis.Classification
 
         public override bool Equals(object obj)
         {
-            return obj is ClassifiedSpan &&
+            return (obj is ClassifiedSpan) &&
                 Equals((ClassifiedSpan)obj);
         }
 
         public bool Equals(ClassifiedSpan other)
         {
-            return this.ClassificationType == other.ClassificationType && this.TextSpan == other.TextSpan;
+            return (this.ClassificationType == other.ClassificationType) && (this.TextSpan == other.TextSpan);
         }
     }
 }

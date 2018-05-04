@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         public override bool Equals(object obj)
         {
-            return obj is LinePositionSpan && Equals((LinePositionSpan)obj);
+            return (obj is LinePositionSpan) && Equals((LinePositionSpan)obj);
         }
 
         public bool Equals(LinePositionSpan other)

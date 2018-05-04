@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var rewrittenType = VisitType(node.Type);
 
             bool wasInExpressionLambda = _inExpressionLambda;
-            _inExpressionLambda = _inExpressionLambda || (node.ConversionKind == ConversionKind.AnonymousFunction && !wasInExpressionLambda && rewrittenType.IsExpressionTree());
+            _inExpressionLambda = _inExpressionLambda || ((node.ConversionKind == ConversionKind.AnonymousFunction) && !wasInExpressionLambda && rewrittenType.IsExpressionTree());
             var rewrittenOperand = VisitExpression(node.Operand);
             _inExpressionLambda = wasInExpressionLambda;
 
@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var type = rewrittenNode.Type;
-            if (type.SpecialType != SpecialType.System_Double && type.SpecialType != SpecialType.System_Single)
+            if ((type.SpecialType != SpecialType.System_Double) && (type.SpecialType != SpecialType.System_Single))
             {
                 return false;
             }
@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case BoundKind.Conversion:
                     // lowered conversions have definite precision unless they are implicit identity casts
                     var conversion = (BoundConversion)rewrittenNode;
-                    return conversion.ConversionKind == ConversionKind.Identity && !conversion.ExplicitCastInCode;
+                    return (conversion.ConversionKind == ConversionKind.Identity) && !conversion.ExplicitCastInCode;
             }
 
             // it is a float/double expression and we have no idea ...
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ConstantValue constantValueOpt,
             TypeSymbol rewrittenType)
         {
-            Debug.Assert(oldNode == null || oldNode.Syntax == syntax);
+            Debug.Assert((oldNode == null) || (oldNode.Syntax == syntax));
             Debug.Assert((object)rewrittenType != null);
 
             if (_inExpressionLambda)
@@ -230,7 +230,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         return new BoundDefaultExpression(syntax, rewrittenType);
                     }
 
-                    if (rewrittenType.SpecialType == SpecialType.System_Decimal || rewrittenOperand.Type.SpecialType == SpecialType.System_Decimal)
+                    if ((rewrittenType.SpecialType == SpecialType.System_Decimal) || (rewrittenOperand.Type.SpecialType == SpecialType.System_Decimal))
                     {
                         return RewriteDecimalConversion(syntax, rewrittenOperand, rewrittenOperand.Type, rewrittenType, conversion.Kind.IsImplicitConversion(), constantValueOpt);
                     }
@@ -330,7 +330,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Debug.Assert((object)conversion.Method == null);
                     Debug.Assert(!conversion.IsExtensionMethod);
                     Debug.Assert(constantValueOpt == null);
-                    return _dynamicFactory.MakeDynamicConversion(rewrittenOperand, explicitCastInCode || conversion.Kind == ConversionKind.ExplicitDynamic, conversion.IsArrayIndex, @checked, rewrittenType).ToExpression();
+                    return _dynamicFactory.MakeDynamicConversion(rewrittenOperand, explicitCastInCode || (conversion.Kind == ConversionKind.ExplicitDynamic), conversion.IsArrayIndex, @checked, rewrittenType).ToExpression();
 
                 case ConversionKind.ImplicitTuple:
                 case ConversionKind.ExplicitTuple:
@@ -392,14 +392,14 @@ namespace Microsoft.CodeAnalysis.CSharp
                 type.StrippedType().EnumUnderlyingType().SpecialType;
 
             bool IsInRange(SpecialType type, SpecialType low, SpecialType high) =>
-                low <= type && type <= high;
+                (low <= type) && (type <= high);
 
             SpecialType sourceST = GetUnderlyingSpecialType(source);
             SpecialType targetST = GetUnderlyingSpecialType(target);
 
             // integral to double or float is never checked, but float/double to integral 
             // may be checked.
-            return (explicitCastInCode || sourceST != targetST) &&
+            return (explicitCastInCode || (sourceST != targetST)) &&
                 IsInRange(sourceST, SpecialType.System_Char, SpecialType.System_Double) &&
                 IsInRange(targetST, SpecialType.System_Char, SpecialType.System_UInt64);
         }
@@ -438,8 +438,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (!conversion.IsValid)
             {
                 if (!acceptFailingConversion ||
-                     rewrittenOperand.Type.SpecialType != SpecialType.System_Decimal &&
-                     rewrittenOperand.Type.SpecialType != SpecialType.System_DateTime)
+                     ((rewrittenOperand.Type.SpecialType != SpecialType.System_Decimal) &&
+                     (rewrittenOperand.Type.SpecialType != SpecialType.System_DateTime)))
                 {
                     // error CS0029: Cannot implicitly convert type '{0}' to '{1}'
                     diagnostics.Add(
@@ -700,7 +700,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         private static BoundExpression NullableAlwaysHasValue(BoundExpression expression)
         {
-            if (expression.Type.IsNullableType() && expression.Kind == BoundKind.ObjectCreationExpression)
+            if (expression.Type.IsNullableType() && (expression.Kind == BoundKind.ObjectCreationExpression))
             {
                 BoundObjectCreationExpression objectCreation = (BoundObjectCreationExpression)expression;
                 if (objectCreation.Arguments.Length == 1)
@@ -779,7 +779,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             TypeSymbol typeFrom = rewrittenOperandType.StrippedType();
             TypeSymbol typeTo = rewrittenType.StrippedType();
-            if (typeFrom != typeTo && (typeFrom.SpecialType == SpecialType.System_Decimal || typeTo.SpecialType == SpecialType.System_Decimal))
+            if ((typeFrom != typeTo) && ((typeFrom.SpecialType == SpecialType.System_Decimal) || (typeTo.SpecialType == SpecialType.System_Decimal)))
             {
                 // take special care if the underlying conversion is a decimal conversion
                 TypeSymbol typeFromUnderlying = typeFrom;
@@ -977,7 +977,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Debug.Assert(conditional.Type == conditional.Consequence.Type);
                     Debug.Assert(conditional.Type == conditional.Alternative.Type);
 
-                    if (NullableAlwaysHasValue(conditional.Consequence) != null && NullableNeverHasValue(conditional.Alternative))
+                    if ((NullableAlwaysHasValue(conditional.Consequence) != null) && NullableNeverHasValue(conditional.Alternative))
                     {
                         return new BoundSequence(
                             seq.Syntax,
@@ -1005,7 +1005,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Conversion conversion,
             TypeSymbol rewrittenType)
         {
-            Debug.Assert((object)conversion.Method != null && !conversion.Method.ReturnsVoid && conversion.Method.ParameterCount == 1);
+            Debug.Assert(((object)conversion.Method != null) && !conversion.Method.ReturnsVoid && (conversion.Method.ParameterCount == 1));
             if (rewrittenOperand.Type.IsNullableType())
             {
                 var parameterType = conversion.Method.ParameterTypes[0];
@@ -1021,7 +1021,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // - in expression trees or 
             // - special situations when converting from array to ReadOnlySpan, which has special support in codegen
             bool doNotLowerToCall = _inExpressionLambda ||
-                                    rewrittenOperand.Type.IsArray() && _compilation.IsReadOnlySpanType(rewrittenType);
+                                    (rewrittenOperand.Type.IsArray() && _compilation.IsReadOnlySpanType(rewrittenType));
 
             BoundExpression result =
                 doNotLowerToCall
@@ -1035,7 +1035,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             if (call.Method.ReturnType.IsNonNullableValueType())
             {
-                Debug.Assert(resultType.IsNullableType() && resultType.GetNullableUnderlyingType() == call.Method.ReturnType);
+                Debug.Assert(resultType.IsNullableType() && (resultType.GetNullableUnderlyingType() == call.Method.ReturnType));
                 MethodSymbol ctor = UnsafeGetNullableMethod(call.Syntax, resultType, SpecialMember.System_Nullable_T__ctor);
                 return new BoundObjectCreationExpression(call.Syntax, ctor, null, call);
             }
@@ -1342,7 +1342,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression RewriteDecimalConversion(SyntaxNode syntax, BoundExpression operand, TypeSymbol fromType, TypeSymbol toType, bool isImplicit, ConstantValue constantValueOpt)
         {
-            Debug.Assert(fromType.SpecialType == SpecialType.System_Decimal || toType.SpecialType == SpecialType.System_Decimal);
+            Debug.Assert((fromType.SpecialType == SpecialType.System_Decimal) || (toType.SpecialType == SpecialType.System_Decimal));
 
             // call the method
             SpecialMember member = DecimalConversionMethod(fromType, toType);
@@ -1386,7 +1386,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             return Conversion.NoConversion;
                         }
 
-                        if (fromConversion == conversion.UserDefinedFromConversion && toConversion == conversion.UserDefinedToConversion)
+                        if ((fromConversion == conversion.UserDefinedFromConversion) && (toConversion == conversion.UserDefinedToConversion))
                         {
                             return conversion;
                         }
@@ -1412,7 +1412,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case ConversionKind.ImplicitNumeric:
                 case ConversionKind.ExplicitNumeric:
                     // TODO: what about nullable?
-                    if (fromType.SpecialType == SpecialType.System_Decimal || toType.SpecialType == SpecialType.System_Decimal)
+                    if ((fromType.SpecialType == SpecialType.System_Decimal) || (toType.SpecialType == SpecialType.System_Decimal))
                     {
                         SpecialMember member = DecimalConversionMethod(fromType, toType);
                         MethodSymbol method;

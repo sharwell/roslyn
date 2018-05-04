@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // We only cache result equivalent to digging through type forwarders, which
                 // might produce an forwarder specific ErrorTypeSymbol. We don't want to 
                 // return that error symbol, unless digThroughForwardedTypes is true.
-                if (digThroughForwardedTypes || (!result.IsErrorType() && (object)result.ContainingAssembly == (object)this))
+                if (digThroughForwardedTypes || (!result.IsErrorType() && ((object)result.ContainingAssembly == (object)this)))
                 {
                     return result;
                 }
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 bool foundMatchInThisAssembly = i < count;
 
-                Debug.Assert(!foundMatchInThisAssembly || (object)result.ContainingAssembly == (object)this);
+                Debug.Assert(!foundMatchInThisAssembly || ((object)result.ContainingAssembly == (object)this));
 
                 if (!foundMatchInThisAssembly && digThroughForwardedTypes)
                 {

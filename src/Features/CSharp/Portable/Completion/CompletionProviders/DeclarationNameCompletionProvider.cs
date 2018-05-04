@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 return false;
             }
 
-            if (type.IsErrorType() && (type.Name == "var" || type.Name == string.Empty))
+            if (type.IsErrorType() && ((type.Name == "var") || (type.Name == string.Empty)))
             {
                 return false;
             }
@@ -174,7 +174,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 return UnwrapType(arrayType.ElementType, compilation, wasPlural: true, seenTypes: seenTypes);
             }
 
-            if (type is INamedTypeSymbol namedType && namedType.OriginalDefinition != null)
+            if (type is INamedTypeSymbol namedType && (namedType.OriginalDefinition != null))
             {
                 var originalDefinition = namedType.OriginalDefinition;
                 
@@ -198,10 +198,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 var valueTaskType = compilation.ValueTaskOfTType();
                 var lazyOfTType = compilation.LazyOfTType();
 
-                if (originalDefinition == taskOfTType ||
-                    originalDefinition == valueTaskType ||
-                    originalDefinition == lazyOfTType ||
-                    originalDefinition.SpecialType == SpecialType.System_Nullable_T)
+                if ((originalDefinition == taskOfTType) ||
+                    (originalDefinition == valueTaskType) ||
+                    (originalDefinition == lazyOfTType) ||
+                    (originalDefinition.SpecialType == SpecialType.System_Nullable_T))
                 {
                     return UnwrapType(namedType.TypeArguments[0], compilation, wasPlural: wasPlural, seenTypes: seenTypes);
                 }
@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                         foreach (var baseName in baseNames)
                         {
                             var name = rule.NamingStyle.CreateName(baseName).EscapeIdentifier(context.IsInQuery);
-                            if (name.Length > 1 && !result.ContainsKey(name)) // Don't add multiple items for the same name
+                            if ((name.Length > 1) && !result.ContainsKey(name)) // Don't add multiple items for the same name
                             {
                                 result.Add(name, symbolKind);
                             }

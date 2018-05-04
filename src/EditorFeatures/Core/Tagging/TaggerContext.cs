@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.Editor.Tagging
 
         public IEnumerable<ITagSpan<TTag>> GetExistingTags(SnapshotSpan span)
         {
-            return _existingTags != null && _existingTags.TryGetValue(span.Snapshot.TextBuffer, out var tree)
+            return (_existingTags != null) && _existingTags.TryGetValue(span.Snapshot.TextBuffer, out var tree)
                 ? tree.GetIntersectingSpans(span)
                 : SpecializedCollections.EmptyEnumerable<ITagSpan<TTag>>();
         }

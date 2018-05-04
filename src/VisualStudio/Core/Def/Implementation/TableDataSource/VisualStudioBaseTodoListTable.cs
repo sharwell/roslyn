@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         protected override void AddTableSourceIfNecessary(Solution solution)
         {
-            if (solution.ProjectIds.Count == 0 || this.TableManager.Sources.Any(s => s == _source))
+            if ((solution.ProjectIds.Count == 0) || this.TableManager.Sources.Any(s => s == _source))
             {
                 return;
             }
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         protected override void RemoveTableSourceIfNecessary(Solution solution)
         {
-            if (solution.ProjectIds.Count > 0 || !this.TableManager.Sources.Any(s => s == _source))
+            if ((solution.ProjectIds.Count > 0) || !this.TableManager.Sources.Any(s => s == _source))
             {
                 return;
             }
@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
             private bool CheckAggregateKey(ImmutableArray<DocumentId> key, TodoItemsUpdatedArgs args)
             {
-                if (args?.DocumentId == null || args?.Solution == null)
+                if ((args?.DocumentId == null) || (args?.Solution == null))
                 {
                     return true;
                 }
@@ -320,7 +320,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 protected override bool IsEquivalent(TodoItem item1, TodoItem item2)
                 {
                     // everything same except location
-                    return item1.DocumentId == item2.DocumentId && item1.Message == item2.Message;
+                    return (item1.DocumentId == item2.DocumentId) && (item1.Message == item2.Message);
                 }
             }
         }

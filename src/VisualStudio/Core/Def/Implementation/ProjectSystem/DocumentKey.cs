@@ -33,8 +33,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
         public bool Equals(DocumentKey other)
         {
-            return other != null &&
-                HostProject == other.HostProject &&
+            return (other != null) &&
+                (HostProject == other.HostProject) &&
                 Moniker.Equals(other.Moniker, StringComparison.OrdinalIgnoreCase);
         }
 

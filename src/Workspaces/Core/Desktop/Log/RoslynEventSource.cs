@@ -76,8 +76,8 @@ namespace Microsoft.CodeAnalysis.Internal.Log
         {
             base.OnEventCommand(command);
 
-            if (command.Command == EventCommand.SendManifest ||
-                command.Command != EventCommand.Disable ||
+            if ((command.Command == EventCommand.SendManifest) ||
+                (command.Command != EventCommand.Disable) ||
                 FunctionDefinitionRequested(command))
             {
                 if (!_initialized)
@@ -94,8 +94,8 @@ namespace Microsoft.CodeAnalysis.Internal.Log
         [NonEvent]
         private bool FunctionDefinitionRequested(EventCommandEventArgs command)
         {
-            return command.Arguments != null &&
-                   command.Arguments.Keys.FirstOrDefault() == "SendFunctionDefinitions";
+            return (command.Arguments != null) &&
+                   (command.Arguments.Keys.FirstOrDefault() == "SendFunctionDefinitions");
         }
 
         [NonEvent]

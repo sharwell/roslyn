@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Text
             if (c == '\r')
             {
                 var next = index + 1;
-                return (next < text.Length) && '\n' == text[next] ? 2 : 1;
+                return (next < text.Length) && ('\n' == text[next]) ? 2 : 1;
             }
             else if (IsAnyLineBreakCharacter(c))
             {
@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.Text
             char c = text[index];
             if (c == '\n')
             {
-                if (index > 0 && text[index - 1] == '\r')
+                if ((index > 0) && (text[index - 1] == '\r'))
                 {
                     // "\r\n" is the only 2-character line break.
                     startLinebreak = index - 1;
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </summary>
         internal static bool IsAnyLineBreakCharacter(char c)
         {
-            return c == '\n' || c == '\r' || c == '\u0085' || c == '\u2028' || c == '\u2029';
+            return (c == '\n') || (c == '\r') || (c == '\u0085') || (c == '\u2028') || (c == '\u2029');
         }
     }
 }

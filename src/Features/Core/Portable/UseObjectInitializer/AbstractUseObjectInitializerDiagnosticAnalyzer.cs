@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.UseObjectInitializer
             var matches = ObjectCreationExpressionAnalyzer<TExpressionSyntax, TStatementSyntax, TObjectCreationExpressionSyntax, TMemberAccessExpressionSyntax, TAssignmentStatementSyntax, TVariableDeclaratorSyntax>.Analyze(
                 context.SemanticModel, syntaxFacts, objectCreationExpression, context.CancellationToken);
 
-            if (matches == null || matches.Value.Length == 0)
+            if ((matches == null) || (matches.Value.Length == 0))
             {
                 return;
             }

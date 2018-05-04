@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         private ImmutableArray<SwitchBucket> GenerateSwitchBuckets(int startLabelIndex, int endLabelIndex)
         {
-            Debug.Assert(startLabelIndex >= 0 && startLabelIndex <= endLabelIndex);
+            Debug.Assert((startLabelIndex >= 0) && (startLabelIndex <= endLabelIndex));
             Debug.Assert(_sortedCaseLabels.Length > endLabelIndex);
 
             //  Start with empty stack of buckets.
@@ -249,7 +249,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         private SwitchBucket CreateNextBucket(int startLabelIndex, int endLabelIndex)
         {
-            Debug.Assert(startLabelIndex >= 0 && startLabelIndex <= endLabelIndex);
+            Debug.Assert((startLabelIndex >= 0) && (startLabelIndex <= endLabelIndex));
             return new SwitchBucket(_sortedCaseLabels, startLabelIndex);
         }
 
@@ -274,7 +274,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         private void EmitSwitchBuckets(ImmutableArray<SwitchBucket> switchBuckets, int low, int high)
         {
             // if (high - low + 1 <= LinearSearchThreshold)
-            if (high - low < LinearSearchThreshold)
+            if ((high - low) < LinearSearchThreshold)
             {
                 this.EmitSwitchBucketsLinearLeaf(switchBuckets, low, high);
                 return;
@@ -378,7 +378,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
                     if (nextCaseIndex >= switchBucket.LabelsCount)
                     {
-                        Debug.Assert(i == bucketSize - 1);
+                        Debug.Assert(i == (bucketSize - 1));
                         break;
                     }
 
@@ -413,7 +413,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         private void EmitCondBranchForSwitch(ILOpCode branchCode, ConstantValue constant, object targetLabel)
         {
             Debug.Assert(branchCode.IsBranch());
-            Debug.Assert(constant != null &&
+            Debug.Assert((constant != null) &&
                 SwitchConstantValueHelper.IsValidSwitchCaseLabelConstant(constant));
             Debug.Assert(targetLabel != null);
 
@@ -428,7 +428,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         private void EmitEqBranchForSwitch(ConstantValue constant, object targetLabel)
         {
-            Debug.Assert(constant != null &&
+            Debug.Assert((constant != null) &&
                 SwitchConstantValueHelper.IsValidSwitchCaseLabelConstant(constant));
             Debug.Assert(targetLabel != null);
 

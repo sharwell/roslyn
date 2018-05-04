@@ -89,19 +89,19 @@ namespace Microsoft.CodeAnalysis
                 VerifySealed(expected: true);
                 var result = _attributes;
 
-                if (_dllImportPreserveSig || _preserveSigIndex >= 0)
+                if (_dllImportPreserveSig || (_preserveSigIndex >= 0))
                 {
                     result |= MethodImplAttributes.PreserveSig;
                 }
 
-                if (_dllImportIndex >= 0 && !_dllImportPreserveSig)
+                if ((_dllImportIndex >= 0) && !_dllImportPreserveSig)
                 {
                     if (_preserveSigFirstWriteWins)
                     {
                         // VB:
                         // only DllImport(PreserveSig := false) can unset preserveSig if it is the first attribute applied.
-                        if ((_preserveSigIndex == -1 || _dllImportIndex < _preserveSigIndex) &&
-                            (_methodImplIndex == -1 || (_attributes & MethodImplAttributes.PreserveSig) == 0 || _dllImportIndex < _methodImplIndex))
+                        if (((_preserveSigIndex == -1) || (_dllImportIndex < _preserveSigIndex)) &&
+                            ((_methodImplIndex == -1) || ((_attributes & MethodImplAttributes.PreserveSig) == 0) || (_dllImportIndex < _methodImplIndex)))
                         {
                             result &= ~MethodImplAttributes.PreserveSig;
                         }
@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis
                     {
                         // C#:
                         // Last setter of PreserveSig flag wins. It is false only if the last one was DllImport(PreserveSig = false)
-                        if (_dllImportIndex > _preserveSigIndex && (_dllImportIndex > _methodImplIndex || (_attributes & MethodImplAttributes.PreserveSig) == 0))
+                        if ((_dllImportIndex > _preserveSigIndex) && ((_dllImportIndex > _methodImplIndex) || ((_attributes & MethodImplAttributes.PreserveSig) == 0)))
                         {
                             result &= ~MethodImplAttributes.PreserveSig;
                         }
@@ -197,7 +197,7 @@ namespace Microsoft.CodeAnalysis
             get
             {
                 VerifySealed(expected: true);
-                return _lazySecurityAttributeData != null || this.HasSuppressUnmanagedCodeSecurityAttribute;
+                return (_lazySecurityAttributeData != null) || this.HasSuppressUnmanagedCodeSecurityAttribute;
             }
         }
 

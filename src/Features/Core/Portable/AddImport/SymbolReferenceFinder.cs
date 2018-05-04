@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.AddImport
                 _searchReferenceAssemblies = searchReferenceAssemblies;
                 _packageSources = packageSources;
 
-                if (_searchReferenceAssemblies || packageSources.Length> 0)
+                if (_searchReferenceAssemblies || (packageSources.Length> 0))
                 {
                     Contract.ThrowIfNull(symbolSearchService);
                 }
@@ -253,12 +253,12 @@ namespace Microsoft.CodeAnalysis.AddImport
                     return false;
                 }
 
-                if (looksGeneric && symbol.GetTypeArguments().Length == 0)
+                if (looksGeneric && (symbol.GetTypeArguments().Length == 0))
                 {
                     return false;
                 }
 
-                return arity == 0 || symbol.GetArity() == arity || hasIncompleteParentMember;
+                return (arity == 0) || (symbol.GetArity() == arity) || hasIncompleteParentMember;
             }
 
             /// <summary>
@@ -273,7 +273,7 @@ namespace Microsoft.CodeAnalysis.AddImport
                 {
                     _syntaxFacts.GetNameAndArityOfSimpleName(nameNode, out var name, out var arity);
 
-                    if (arity == 0 &&
+                    if ((arity == 0) &&
                         !ExpressionBinds(nameNode, checkForExtensionMethods: false, cancellationToken: searchScope.CancellationToken))
                     {
                         var symbols = await searchScope.FindDeclarationsAsync(name, nameNode, SymbolFilter.Namespace).ConfigureAwait(false);
@@ -297,7 +297,7 @@ namespace Microsoft.CodeAnalysis.AddImport
             {
                 searchScope.CancellationToken.ThrowIfCancellationRequested();
                 if (_owner.CanAddImportForMethod(_diagnosticId, _syntaxFacts, _node, out var nameNode) &&
-                    nameNode != null)
+                    (nameNode != null))
                 {
                         // We have code like "Color.Black".  "Color" bound to a 'Color Color' property, and
                         // 'Black' did not bind.  We want to find a type called 'Color' that will actually
@@ -312,7 +312,7 @@ namespace Microsoft.CodeAnalysis.AddImport
                         {
                             // Check if the expression before the dot binds to a property or field.
                             var symbol = this._semanticModel.GetSymbolInfo(expression, searchScope.CancellationToken).GetAnySymbol();
-                            if (symbol?.Kind == SymbolKind.Property || symbol?.Kind == SymbolKind.Field)
+                            if ((symbol?.Kind == SymbolKind.Property) || (symbol?.Kind == SymbolKind.Field))
                             {
                                 // Check if we have the 'Color Color' case.
                                 var propertyOrFieldType = symbol.GetSymbolType();
@@ -343,7 +343,7 @@ namespace Microsoft.CodeAnalysis.AddImport
             private bool HasAccessibleStaticFieldOrProperty(INamedTypeSymbol namedType, string fieldOrPropertyName)
             {
                 return namedType.GetMembers(fieldOrPropertyName)
-                                .Any(m => (m is IFieldSymbol || m is IPropertySymbol) &&
+                                .Any(m => ((m is IFieldSymbol) || (m is IPropertySymbol)) &&
                                           m.IsStatic &&
                                           m.IsAccessibleWithin(_semanticModel.Compilation.Assembly));
             }
@@ -357,7 +357,7 @@ namespace Microsoft.CodeAnalysis.AddImport
             {
                 searchScope.CancellationToken.ThrowIfCancellationRequested();
                 if (_owner.CanAddImportForMethod(_diagnosticId, _syntaxFacts, _node, out var nameNode) &&
-                    nameNode != null)
+                    (nameNode != null))
                 {
                     searchScope.CancellationToken.ThrowIfCancellationRequested();
 
@@ -420,7 +420,7 @@ namespace Microsoft.CodeAnalysis.AddImport
                 }
 
                 _syntaxFacts.GetNameAndArityOfSimpleName(_node, out var name, out var arity);
-                if (name != null || !_owner.IsAddMethodContext(_node, _semanticModel))
+                if ((name != null) || !_owner.IsAddMethodContext(_node, _semanticModel))
                 {
                     return ImmutableArray<SymbolReference>.Empty;
                 }
@@ -520,7 +520,7 @@ namespace Microsoft.CodeAnalysis.AddImport
                 // For extension methods, however, we will continue to search if there exists any better matched method.
                 cancellationToken.ThrowIfCancellationRequested();
                 var symbolInfo = _semanticModel.GetSymbolInfo(nameNode, cancellationToken);
-                if (symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure && !checkForExtensionMethods)
+                if ((symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure) && !checkForExtensionMethods)
                 {
                     return true;
                 }

@@ -25,7 +25,7 @@ namespace Microsoft.Cci
         /// </summary>
         internal ManagedResource(string name, bool isPublic, Func<Stream> streamProvider, IFileReference fileReference, uint offset)
         {
-            Debug.Assert(streamProvider == null ^ fileReference == null);
+            Debug.Assert((streamProvider == null) ^ (fileReference == null));
 
             _streamProvider = streamProvider;
             _name = name;

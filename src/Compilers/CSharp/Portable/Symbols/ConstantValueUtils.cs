@@ -98,10 +98,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     var constantValue = boundValue.ConstantValue;
 
                     var unconvertedConstantValue = unconvertedBoundValue.ConstantValue;
-                    if (unconvertedConstantValue != null &&
+                    if ((unconvertedConstantValue != null) &&
                         !unconvertedConstantValue.IsNull &&
                         typeSymbol.IsReferenceType &&
-                        typeSymbol.SpecialType != SpecialType.System_String)
+                        (typeSymbol.SpecialType != SpecialType.System_String))
                     {
                         // Suppose we are in this case:
                         //
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         constantValue = constantValue ?? unconvertedConstantValue;
                     }
 
-                    if (constantValue != null && !hasDynamicConversion)
+                    if ((constantValue != null) && !hasDynamicConversion)
                     {
                         value = constantValue;
                     }

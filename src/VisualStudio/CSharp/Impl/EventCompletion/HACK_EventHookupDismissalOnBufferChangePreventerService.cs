@@ -37,7 +37,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.EventHookup
         private void HACK_SetShimQuickInfoSessionWorker(ITextView textView, IQuickInfoSession quickInfoSession)
         {
             var properties = textView.Properties.PropertyList;
-            var shimController = properties.Single(p => p.Value != null && p.Value.GetType().Name == "ShimQuickInfoController").Value;
+            var shimController = properties.Single(p => (p.Value != null) && (p.Value.GetType().Name == "ShimQuickInfoController")).Value;
             var sessionField = shimController.GetType().GetField("_session", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             sessionField.SetValue(shimController, quickInfoSession);
         }

@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         public override bool Equals(object obj)
         {
-            return obj is TextChange && this.Equals((TextChange)obj);
+            return (obj is TextChange) && this.Equals((TextChange)obj);
         }
 
         public bool Equals(TextChange other)

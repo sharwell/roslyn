@@ -252,7 +252,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.IncrementalParsing
             {
                 code = @"class C { " + code + @"}";
             }
-            else if (oldStyle == NameTypes.PointerName || newStyle == NameTypes.PointerName)
+            else if ((oldStyle == NameTypes.PointerName) || (newStyle == NameTypes.PointerName))
             {
                 code = "unsafe " + code;
             }

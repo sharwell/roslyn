@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                     // 2. if it doesn't, even if the cast itself wasn't included in the selection, we will treat it 
                     //    as it was in the selection
                     var regularType = GetRegularExpressionType(model, node);
-                    if (regularType != null && !regularType.IsObjectType())
+                    if ((regularType != null) && !regularType.IsObjectType())
                     {
                         return regularType;
                     }
@@ -95,14 +95,14 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 var info = semanticModel.GetTypeInfo(expression);
                 var conv = semanticModel.GetConversion(expression);
 
-                if (info.ConvertedType == null || info.ConvertedType.IsErrorType())
+                if ((info.ConvertedType == null) || info.ConvertedType.IsErrorType())
                 {
                     // there is no implicit conversion involved. no need to go further
                     return info.Type;
                 }
 
                 // always use converted type if method group
-                if ((!node.IsKind(SyntaxKind.ObjectCreationExpression) && semanticModel.GetMemberGroup(expression).Length > 0) ||
+                if ((!node.IsKind(SyntaxKind.ObjectCreationExpression) && (semanticModel.GetMemberGroup(expression).Length > 0)) ||
                     IsCoClassImplicitConversion(info, conv, semanticModel.Compilation.CoClassType()))
                 {
                     return info.ConvertedType;
@@ -115,8 +115,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 }
 
                 // use FormattableString if conversion between String and FormattableString
-                if (info.Type?.SpecialType == SpecialType.System_String &&
-                    info.ConvertedType?.IsFormattableString() == true)
+                if ((info.Type?.SpecialType == SpecialType.System_String) &&
+                    (info.ConvertedType?.IsFormattableString() == true))
                 {
                     return info.ConvertedType;
                 }
@@ -129,8 +129,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
         private static bool IsCoClassImplicitConversion(TypeInfo info, Conversion conversion, ISymbol coclassSymbol)
         {
             if (!conversion.IsImplicit ||
-                 info.ConvertedType == null ||
-                 info.ConvertedType.TypeKind != TypeKind.Interface)
+                 (info.ConvertedType == null) ||
+                 (info.ConvertedType.TypeKind != TypeKind.Interface))
             {
                 return false;
             }

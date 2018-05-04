@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if ((TryGetWellKnownTypeMember(lockSyntax, WellKnownMember.System_Threading_Monitor__Enter2, out enterMethod, isOptional: true) ||
                  TryGetWellKnownTypeMember(lockSyntax, WellKnownMember.System_Threading_Monitor__Enter, out enterMethod)) && // If we didn't find the overload introduced in .NET 4.0, then use the older one. 
-                enterMethod.ParameterCount == 2)
+                (enterMethod.ParameterCount == 2))
             {
                 // C# 4.0+ version
                 // L $lock = `argument`;                      // sequence point

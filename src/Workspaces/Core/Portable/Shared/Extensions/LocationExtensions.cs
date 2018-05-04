@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             }
 
             var tree = loc.SourceTree;
-            return !(tree == null || tree.IsHiddenPosition(loc.SourceSpan.Start));
+            return !((tree == null) || tree.IsHiddenPosition(loc.SourceSpan.Start));
         }
     }
 }

@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
             private static bool BitsAreUnsetOrSame(int bits, int mask)
             {
-                return (bits & mask) == 0 || (bits & mask) == mask;
+                return ((bits & mask) == 0) || ((bits & mask) == mask);
             }
 
             public void InitializeIsExtensionMethod(bool isExtensionMethod)
@@ -304,7 +304,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         private bool HasFlag(MethodAttributes flag)
         {
             // flag must be exactly one bit
-            Debug.Assert(flag != 0 && ((ushort)flag & ((ushort)flag - 1)) == 0);
+            Debug.Assert((flag != 0) && (((ushort)flag & ((ushort)flag - 1)) == 0));
             return ((ushort)flag & _flags) != 0;
         }
 
@@ -372,7 +372,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
         public override bool IsExtern => HasFlag(MethodAttributes.PinvokeImpl);
 
-        internal override bool IsExternal => IsExtern || (ImplementationAttributes & MethodImplAttributes.Runtime) != 0;
+        internal override bool IsExternal => IsExtern || ((ImplementationAttributes & MethodImplAttributes.Runtime) != 0);
 
         public override bool IsVararg => Signature.Header.CallingConvention == SignatureCallingConvention.VarArgs;
 
@@ -438,7 +438,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         // is a new virtual method and doesn't override anything.
         public override bool IsOverride =>
             this.IsMetadataVirtual() && !this.IsDestructor &&
-                       ((!this.IsMetadataNewSlot() && (object)_containingType.BaseTypeNoUseSiteDiagnostics != null) || this.IsExplicitClassOverride);
+                       ((!this.IsMetadataNewSlot() && ((object)_containingType.BaseTypeNoUseSiteDiagnostics != null)) || this.IsExplicitClassOverride);
 
         public override bool IsStatic => HasFlag(MethodAttributes.Static);
 
@@ -547,9 +547,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
                 // NOTE: may be overwriting an existing value.
                 Debug.Assert(
-                    _packedFlags.MethodKind == default(MethodKind) ||
-                    _packedFlags.MethodKind == MethodKind.Ordinary ||
-                    _packedFlags.MethodKind == MethodKind.ExplicitInterfaceImplementation);
+                    (_packedFlags.MethodKind == default(MethodKind)) ||
+                    (_packedFlags.MethodKind == MethodKind.Ordinary) ||
+                    (_packedFlags.MethodKind == MethodKind.ExplicitInterfaceImplementation));
 
                 _packedFlags.MethodKind = methodKind;
                 return true;
@@ -694,7 +694,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 if (!_packedFlags.IsExtensionMethodIsPopulated)
                 {
                     bool isExtensionMethod = false;
-                    if (this.MethodKind == MethodKind.Ordinary && IsValidExtensionMethodSignature()
+                    if ((this.MethodKind == MethodKind.Ordinary) && IsValidExtensionMethodSignature()
                         && this.ContainingType.MightContainExtensionMethods)
                     {
                         var moduleSymbol = _containingType.ContainingPEModule;
@@ -722,7 +722,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 bool alreadySet = _packedFlags.IsExtensionMethodIsPopulated;
                 bool checkForExtension = alreadySet
                     ? _packedFlags.IsExtensionMethod
-                    : this.MethodKind == MethodKind.Ordinary
+                    : (this.MethodKind == MethodKind.Ordinary)
                         && IsValidExtensionMethodSignature()
                         && _containingType.MightContainExtensionMethods;
 
@@ -813,7 +813,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
         private bool IsValidUserDefinedOperatorSignature(int parameterCount)
         {
-            if (this.ReturnsVoid || this.IsGenericMethod || this.IsVararg || this.ParameterCount != parameterCount || this.IsParams())
+            if (this.ReturnsVoid || this.IsGenericMethod || this.IsVararg || (this.ParameterCount != parameterCount) || this.IsParams())
             {
                 return false;
             }
@@ -857,9 +857,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     // This method shall be static, take no parameters, return no value,
                     // be marked with rtspecialname and specialname (§15.4.2.6), and be named .cctor.
 
-                    if ((Flags & (MethodAttributes.RTSpecialName | MethodAttributes.Virtual)) == MethodAttributes.RTSpecialName &&
+                    if (((Flags & (MethodAttributes.RTSpecialName | MethodAttributes.Virtual)) == MethodAttributes.RTSpecialName) &&
                         _name.Equals(this.IsStatic ? WellKnownMemberNames.StaticConstructorName : WellKnownMemberNames.InstanceConstructorName) &&
-                        this.ReturnsVoid && this.Arity == 0)
+                        this.ReturnsVoid && (this.Arity == 0))
                     {
                         if (this.IsStatic)
                         {
@@ -877,7 +877,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     return MethodKind.Ordinary;
                 }
 
-                if (!this.HasRuntimeSpecialName && this.IsStatic && this.DeclaredAccessibility == Accessibility.Public)
+                if (!this.HasRuntimeSpecialName && this.IsStatic && (this.DeclaredAccessibility == Accessibility.Public))
                 {
                     switch (_name)
                     {
@@ -928,7 +928,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 switch (_name)
                 {
                     case WellKnownMemberNames.DestructorName:
-                        if ((this.ContainingType.TypeKind == TypeKind.Class && this.IsRuntimeFinalizer(skipFirstMethodKindCheck: true)) ||
+                        if (((this.ContainingType.TypeKind == TypeKind.Class) && this.IsRuntimeFinalizer(skipFirstMethodKindCheck: true)) ||
                             this.IsExplicitFinalizerOverride)
                         {
                             return MethodKind.Destructor;
@@ -984,9 +984,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     {
                         anyToRemove = true;
                         sawObjectFinalize =
-                            method.ContainingType.SpecialType == SpecialType.System_Object &&
-                             method.Name == WellKnownMemberNames.DestructorName && // Cheaper than MethodKind.
-                             method.MethodKind == MethodKind.Destructor;
+                            (method.ContainingType.SpecialType == SpecialType.System_Object) &&
+                             (method.Name == WellKnownMemberNames.DestructorName) && // Cheaper than MethodKind.
+                             (method.MethodKind == MethodKind.Destructor);
                     }
 
                     if (anyToRemove && sawObjectFinalize)

@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices.TypeInferenceService
         private ImmutableArray<ITypeSymbol> InferTypeBasedOnNameIfEmpty(
             SemanticModel semanticModel, ImmutableArray<ITypeSymbol> result, string nameOpt)
         {
-            if (result.IsEmpty && nameOpt != null)
+            if (result.IsEmpty && (nameOpt != null))
             {
                 return InferTypeBasedOnName(semanticModel, nameOpt);
             }
@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices.TypeInferenceService
         private ImmutableArray<TypeInferenceInfo> InferTypeBasedOnNameIfEmpty(
             SemanticModel semanticModel, ImmutableArray<TypeInferenceInfo> result, string nameOpt)
         {
-            if (result.IsEmpty && nameOpt != null)
+            if (result.IsEmpty && (nameOpt != null))
             {
                 var types = InferTypeBasedOnName(semanticModel, nameOpt);
                 return types.SelectAsArray(t => new TypeInferenceInfo(t));

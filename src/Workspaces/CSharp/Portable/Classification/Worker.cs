@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification
 
         private bool ShouldAddSpan(TextSpan span)
         {
-            return span.Length > 0 && _textSpan.OverlapsWith(span);
+            return (span.Length > 0) && _textSpan.OverlapsWith(span);
         }
 
         private void AddClassification(SyntaxTrivia trivia, string type)
@@ -229,9 +229,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification
         private void ClassifyDisabledText(SyntaxTrivia trivia, SyntaxTriviaList triviaList)
         {
             var index = triviaList.IndexOf(trivia);
-            if (index >= 2 &&
-                triviaList[index - 1].Kind() == SyntaxKind.EndOfLineTrivia &&
-                triviaList[index - 2].Kind() == SyntaxKind.ConflictMarkerTrivia)
+            if ((index >= 2) &&
+                (triviaList[index - 1].Kind() == SyntaxKind.EndOfLineTrivia) &&
+                (triviaList[index - 2].Kind() == SyntaxKind.ConflictMarkerTrivia))
             {
                 // for the ======== add a comment for the first line, and then lex all
                 // subsequent lines up until the end of the conflict marker.

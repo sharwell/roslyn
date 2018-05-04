@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.PopulateSwitch
 
                         case CaseKind.SingleValue:
                             var value = ((ISingleValueCaseClauseOperation)clause).Value;
-                            if (value == null || !value.ConstantValue.HasValue)
+                            if ((value == null) || !value.ConstantValue.HasValue)
                             {
                                 // We had a case which didn't resolve properly.  
                                 // Assume the switch is complete.
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.PopulateSwitch
             {
                 // skip `.ctor` and `__value`
                 var fieldSymbol = member as IFieldSymbol;
-                if (fieldSymbol == null || fieldSymbol.Type.SpecialType != SpecialType.None)
+                if ((fieldSymbol == null) || (fieldSymbol.Type.SpecialType != SpecialType.None))
                 {
                     continue;
                 }

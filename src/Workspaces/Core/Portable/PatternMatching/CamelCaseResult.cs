@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.PatternMatching
                 MatchCount = matchCount;
                 MatchedSpansInReverse = matchedSpansInReverse;
 
-                Debug.Assert(matchedSpansInReverse == null || matchedSpansInReverse.Count == matchCount);
+                Debug.Assert((matchedSpansInReverse == null) || (matchedSpansInReverse.Count == matchCount));
             }
 
             public void Free()

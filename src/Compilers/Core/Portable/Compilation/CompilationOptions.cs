@@ -323,9 +323,9 @@ namespace Microsoft.CodeAnalysis
             // In addition, the assembly name is determined based upon output kind. It is special for netmodules.
             // Can't reuse when file resolver or identity comparers change.
             // Can reuse even if StrongNameProvider changes. When resolving a cyclic reference only the simple name is considered, not the strong name.
-            return this.MetadataImportOptions == other.MetadataImportOptions
-                && this.ReferencesSupersedeLowerVersions == other.ReferencesSupersedeLowerVersions
-                && this.OutputKind.IsNetModule() == other.OutputKind.IsNetModule()
+            return (this.MetadataImportOptions == other.MetadataImportOptions)
+                && (this.ReferencesSupersedeLowerVersions == other.ReferencesSupersedeLowerVersions)
+                && (this.OutputKind.IsNetModule() == other.OutputKind.IsNetModule())
                 && object.Equals(this.XmlReferenceResolver, other.XmlReferenceResolver)
                 && object.Equals(this.MetadataReferenceResolver, other.MetadataReferenceResolver)
                 && object.Equals(this.AssemblyIdentityComparer, other.AssemblyIdentityComparer);
@@ -558,7 +558,7 @@ namespace Microsoft.CodeAnalysis
 
             if (PublicSign)
             {
-                if (CryptoKeyFile != null && !PathUtilities.IsAbsolute(CryptoKeyFile))
+                if ((CryptoKeyFile != null) && !PathUtilities.IsAbsolute(CryptoKeyFile))
                 {
                     builder.Add(messageProvider.CreateDiagnostic(messageProvider.ERR_OptionMustBeAbsolutePath,
                         Location.None, nameof(CryptoKeyFile)));
@@ -598,33 +598,33 @@ namespace Microsoft.CodeAnalysis
             // NOTE: StringComparison.Ordinal is used for type name comparisons, even for VB.  That's because
             // a change in the canonical case should still change the option.
             bool equal =
-                   this.CheckOverflow == other.CheckOverflow &&
-                   this.ConcurrentBuild == other.ConcurrentBuild &&
-                   this.Deterministic == other.Deterministic &&
-                   this.CurrentLocalTime == other.CurrentLocalTime &&
-                   this.DebugPlusMode == other.DebugPlusMode &&
+                   (this.CheckOverflow == other.CheckOverflow) &&
+                   (this.ConcurrentBuild == other.ConcurrentBuild) &&
+                   (this.Deterministic == other.Deterministic) &&
+                   (this.CurrentLocalTime == other.CurrentLocalTime) &&
+                   (this.DebugPlusMode == other.DebugPlusMode) &&
                    string.Equals(this.CryptoKeyContainer, other.CryptoKeyContainer, StringComparison.Ordinal) &&
                    string.Equals(this.CryptoKeyFile, other.CryptoKeyFile, StringComparison.Ordinal) &&
                    this.CryptoPublicKey.SequenceEqual(other.CryptoPublicKey) &&
-                   this.DelaySign == other.DelaySign &&
-                   this.GeneralDiagnosticOption == other.GeneralDiagnosticOption &&
+                   (this.DelaySign == other.DelaySign) &&
+                   (this.GeneralDiagnosticOption == other.GeneralDiagnosticOption) &&
                    string.Equals(this.MainTypeName, other.MainTypeName, StringComparison.Ordinal) &&
-                   this.MetadataImportOptions == other.MetadataImportOptions &&
-                   this.ReferencesSupersedeLowerVersions == other.ReferencesSupersedeLowerVersions &&
+                   (this.MetadataImportOptions == other.MetadataImportOptions) &&
+                   (this.ReferencesSupersedeLowerVersions == other.ReferencesSupersedeLowerVersions) &&
                    string.Equals(this.ModuleName, other.ModuleName, StringComparison.Ordinal) &&
-                   this.OptimizationLevel == other.OptimizationLevel &&
-                   this.OutputKind == other.OutputKind &&
-                   this.Platform == other.Platform &&
-                   this.ReportSuppressedDiagnostics == other.ReportSuppressedDiagnostics &&
+                   (this.OptimizationLevel == other.OptimizationLevel) &&
+                   (this.OutputKind == other.OutputKind) &&
+                   (this.Platform == other.Platform) &&
+                   (this.ReportSuppressedDiagnostics == other.ReportSuppressedDiagnostics) &&
                    string.Equals(this.ScriptClassName, other.ScriptClassName, StringComparison.Ordinal) &&
                    this.SpecificDiagnosticOptions.SequenceEqual(other.SpecificDiagnosticOptions, (left, right) => (left.Key == right.Key) && (left.Value == right.Value)) &&
-                   this.WarningLevel == other.WarningLevel &&
+                   (this.WarningLevel == other.WarningLevel) &&
                    object.Equals(this.MetadataReferenceResolver, other.MetadataReferenceResolver) &&
                    object.Equals(this.XmlReferenceResolver, other.XmlReferenceResolver) &&
                    object.Equals(this.SourceReferenceResolver, other.SourceReferenceResolver) &&
                    object.Equals(this.StrongNameProvider, other.StrongNameProvider) &&
                    object.Equals(this.AssemblyIdentityComparer, other.AssemblyIdentityComparer) &&
-                   this.PublicSign == other.PublicSign;
+                   (this.PublicSign == other.PublicSign);
 
             return equal;
         }

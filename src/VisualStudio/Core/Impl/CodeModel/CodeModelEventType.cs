@@ -22,14 +22,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
     {
         public static bool IsChange(this CodeModelEventType eventType)
         {
-            if (eventType == CodeModelEventType.Add || eventType == CodeModelEventType.Remove)
+            if ((eventType == CodeModelEventType.Add) || (eventType == CodeModelEventType.Remove))
             {
                 return false;
             }
 
             // Check that Add and Remove are not set
-            if ((eventType & CodeModelEventType.Add) == 0 &&
-                (eventType & CodeModelEventType.Remove) == 0)
+            if (((eventType & CodeModelEventType.Add) == 0) &&
+                ((eventType & CodeModelEventType.Remove) == 0))
             {
                 // Check that one or more of the change flags are set
                 var allChanges =

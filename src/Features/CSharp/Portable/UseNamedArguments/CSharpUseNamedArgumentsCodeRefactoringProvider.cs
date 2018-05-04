@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseNamedArguments
                 => argument.Parent.Parent;
 
             protected sealed override bool IsLegalToAddNamedArguments(ImmutableArray<IParameterSymbol> parameters, int argumentCount)
-                => !parameters.Last().IsParams || parameters.Length >= argumentCount;
+                => !parameters.Last().IsParams || (parameters.Length >= argumentCount);
 
             protected sealed override bool IsCloseParenOrComma(SyntaxToken token)
                 => token.IsKind(SyntaxKind.CloseParenToken, SyntaxKind.CommaToken);
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseNamedArguments
             BaseAnalyzer<AttributeArgumentSyntax, AttributeArgumentListSyntax>
         {
             protected override bool IsPositionalArgument(AttributeArgumentSyntax argument)
-                => argument.NameColon == null && argument.NameEquals == null;
+                => (argument.NameColon == null) && (argument.NameEquals == null);
 
             protected override SeparatedSyntaxList<AttributeArgumentSyntax> GetArguments(AttributeArgumentListSyntax argumentList)
                 => argumentList.Arguments;

@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             SyntaxNode syntax = loweredBody.Syntax;
 
             // base constructor call:
-            Debug.Assert((object)constructor.ContainingType.BaseTypeNoUseSiteDiagnostics == null || constructor.ContainingType.BaseTypeNoUseSiteDiagnostics.SpecialType == SpecialType.System_Object);
+            Debug.Assert(((object)constructor.ContainingType.BaseTypeNoUseSiteDiagnostics == null) || (constructor.ContainingType.BaseTypeNoUseSiteDiagnostics.SpecialType == SpecialType.System_Object));
             var objectType = constructor.ContainingAssembly.GetSpecialType(SpecialType.System_Object);
 
             BoundExpression receiver = new BoundThisReference(syntax, constructor.ContainingType) { WasCompilerGenerated = true };
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         internal static BoundBlock ConstructAutoPropertyAccessorBody(SourceMemberMethodSymbol accessor)
         {
-            Debug.Assert(accessor.MethodKind == MethodKind.PropertyGet || accessor.MethodKind == MethodKind.PropertySet);
+            Debug.Assert((accessor.MethodKind == MethodKind.PropertyGet) || (accessor.MethodKind == MethodKind.PropertySet));
 
             var property = (SourcePropertySymbol)accessor.AssociatedSymbol;
             CSharpSyntaxNode syntax = property.CSharpSyntaxNode;
@@ -516,7 +516,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var syntax = block.Syntax;
 
             Debug.Assert(method.MethodKind == MethodKind.Destructor);
-            Debug.Assert(syntax.Kind() == SyntaxKind.Block || syntax.Kind() == SyntaxKind.ArrowExpressionClause);
+            Debug.Assert((syntax.Kind() == SyntaxKind.Block) || (syntax.Kind() == SyntaxKind.ArrowExpressionClause));
 
             // If this is a destructor and a base type has a Finalize method (see GetBaseTypeFinalizeMethod for exact 
             // requirements), then we need to call that method in a finally block.  Otherwise, just return block as-is.
@@ -586,9 +586,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                     {
                         MethodSymbol baseTypeMethod = (MethodSymbol)member;
                         Accessibility accessibility = baseTypeMethod.DeclaredAccessibility;
-                        if ((accessibility == Accessibility.ProtectedOrInternal || accessibility == Accessibility.Protected) &&
-                            baseTypeMethod.ParameterCount == 0 &&
-                            baseTypeMethod.Arity == 0 && // NOTE: the native compiler doesn't check this, so it broken IL.
+                        if (((accessibility == Accessibility.ProtectedOrInternal) || (accessibility == Accessibility.Protected)) &&
+                            (baseTypeMethod.ParameterCount == 0) &&
+                            (baseTypeMethod.Arity == 0) && // NOTE: the native compiler doesn't check this, so it broken IL.
                             baseTypeMethod.ReturnsVoid) // NOTE: not checking for virtual
                         {
                             return baseTypeMethod;

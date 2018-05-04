@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.PatternMatching
                     return null;
                 }
 
-                matchedSpans = _includeMatchedSpans && result.Value.MatchedSpansInReverse != null
+                matchedSpans = _includeMatchedSpans && (result.Value.MatchedSpansInReverse != null)
                     ? new NormalizedTextSpanCollection(result.Value.MatchedSpansInReverse).ToImmutableArray()
                     : ImmutableArray<TextSpan>.Empty;
 
@@ -152,7 +152,7 @@ namespace Microsoft.CodeAnalysis.PatternMatching
                 => v < 0x80;
 
             private static char ToLowerAsciiInvariant(char c)
-                => 'A' <= c && c <= 'Z'
+                => ('A' <= c) && (c <= 'Z')
                     ? (char)(c | 0x20)
                     : c;
 

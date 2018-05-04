@@ -124,12 +124,12 @@ namespace Roslyn.Utilities
                     return false;
                 }
 
-                if (other._handler == null && _handler == null)
+                if ((other._handler == null) && (_handler == null))
                 {
                     return true;
                 }
 
-                if (other._handler == null || _handler == null)
+                if ((other._handler == null) || (_handler == null))
                 {
                     return false;
                 }
@@ -160,7 +160,7 @@ namespace Roslyn.Utilities
 
             public bool HasHandlers
             {
-                get { return _registries != null && _registries.Length > 0; }
+                get { return (_registries != null) && (_registries.Length > 0); }
             }
 
             public void RaiseEvent(Action<TEventHandler> invoker)

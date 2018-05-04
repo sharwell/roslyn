@@ -31,6 +31,6 @@ namespace RepoUtil
         public bool Equals(FileName other) => this == other;
         public override int GetHashCode() => FullPath.GetHashCode();
         public override string ToString() => RelativePath;
-        public override bool Equals(object obj) => obj is FileName && Equals((FileName)obj);
+        public override bool Equals(object obj) => (obj is FileName) && Equals((FileName)obj);
     }
 }

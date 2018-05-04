@@ -340,7 +340,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// from completing successfully.</returns>
         internal static bool PreventsSuccessfulDelegateConversion(ErrorCode code)
         {
-            if (code == ErrorCode.Void || code == ErrorCode.Unknown)
+            if ((code == ErrorCode.Void) || (code == ErrorCode.Unknown))
             {
                 return false;
             }

@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis
                 // also never remove diagnostics, so the worst that happens is that we don't return
                 // an element that is added a split second after this is called.
                 ConcurrentQueue<Diagnostic> bag = _lazyBag;
-                return bag == null || bag.IsEmpty;
+                return (bag == null) || bag.IsEmpty;
             }
         }
 
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis
 
             foreach (Diagnostic diagnostic in Bag)
             {
-                if ((diagnostic as DiagnosticWithInfo)?.HasLazyInfo != true && diagnostic.Severity == DiagnosticSeverity.Error)
+                if (((diagnostic as DiagnosticWithInfo)?.HasLazyInfo != true) && (diagnostic.Severity == DiagnosticSeverity.Error))
                 {
                     return true;
                 }

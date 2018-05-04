@@ -93,7 +93,7 @@ class C7 : A<string>.B<object> { }";
             // Compare pairs of types. The only error types that
             // should compare equal are C6 and C7.
             const int n = 7;
-            for (int i = 0; i < n - 1; i++)
+            for (int i = 0; i < (n - 1); i++)
             {
                 var typeA = types[i];
                 for (int j = i + 1; j < n; j++)

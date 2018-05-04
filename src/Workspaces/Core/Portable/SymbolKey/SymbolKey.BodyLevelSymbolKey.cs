@@ -104,8 +104,8 @@ namespace Microsoft.CodeAnalysis
                     {
                         var symbol = semanticModel.GetDeclaredSymbol(token, cancellationToken);
 
-                        if (symbol != null &&
-                            symbol.Kind == kind &&
+                        if ((symbol != null) &&
+                            (symbol.Kind == kind) &&
                             SymbolKey.Equals(compilation, symbol.Name, localName))
                         {
                             yield return (symbol, ordinal++);

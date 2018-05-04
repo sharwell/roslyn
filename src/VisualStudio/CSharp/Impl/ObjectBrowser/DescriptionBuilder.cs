@@ -107,11 +107,11 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
                 var baseType = typeSymbol.BaseType;
                 if (baseType != null)
                 {
-                    if (baseType.SpecialType != SpecialType.System_Object &&
-                        baseType.SpecialType != SpecialType.System_Delegate &&
-                        baseType.SpecialType != SpecialType.System_MulticastDelegate &&
-                        baseType.SpecialType != SpecialType.System_Enum &&
-                        baseType.SpecialType != SpecialType.System_ValueType)
+                    if ((baseType.SpecialType != SpecialType.System_Object) &&
+                        (baseType.SpecialType != SpecialType.System_Delegate) &&
+                        (baseType.SpecialType != SpecialType.System_MulticastDelegate) &&
+                        (baseType.SpecialType != SpecialType.System_Enum) &&
+                        (baseType.SpecialType != SpecialType.System_ValueType))
                     {
                         AddText(" : ");
                         AddTypeLink(baseType, LinkFlags.None);
@@ -169,15 +169,15 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
             }
 
             if (typeSymbol.IsAbstract &&
-                typeSymbol.TypeKind != TypeKind.Interface)
+                (typeSymbol.TypeKind != TypeKind.Interface))
             {
                 AddText("abstract ");
             }
 
             if (typeSymbol.IsSealed &&
-                typeSymbol.TypeKind != TypeKind.Struct &&
-                typeSymbol.TypeKind != TypeKind.Enum &&
-                typeSymbol.TypeKind != TypeKind.Delegate)
+                (typeSymbol.TypeKind != TypeKind.Struct) &&
+                (typeSymbol.TypeKind != TypeKind.Enum) &&
+                (typeSymbol.TypeKind != TypeKind.Delegate))
             {
                 AddText("sealed ");
             }
@@ -187,10 +187,10 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
         {
             BuildMemberModifiers(methodSymbol);
 
-            if (methodSymbol.MethodKind != MethodKind.Constructor &&
-                methodSymbol.MethodKind != MethodKind.Destructor &&
-                methodSymbol.MethodKind != MethodKind.StaticConstructor &&
-                methodSymbol.MethodKind != MethodKind.Conversion)
+            if ((methodSymbol.MethodKind != MethodKind.Constructor) &&
+                (methodSymbol.MethodKind != MethodKind.Destructor) &&
+                (methodSymbol.MethodKind != MethodKind.StaticConstructor) &&
+                (methodSymbol.MethodKind != MethodKind.Conversion))
             {
                 AddTypeLink(methodSymbol.ReturnType, LinkFlags.None);
                 AddText(" ");
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
 
         private void BuildMemberModifiers(ISymbol memberSymbol)
         {
-            if (memberSymbol.ContainingType != null && memberSymbol.ContainingType.TypeKind == TypeKind.Interface)
+            if ((memberSymbol.ContainingType != null) && (memberSymbol.ContainingType.TypeKind == TypeKind.Interface))
             {
                 return;
             }
@@ -245,14 +245,14 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
             var methodSymbol = memberSymbol as IMethodSymbol;
             var fieldSymbol = memberSymbol as IFieldSymbol;
 
-            if (methodSymbol != null &&
-                methodSymbol.MethodKind == MethodKind.Destructor)
+            if ((methodSymbol != null) &&
+                (methodSymbol.MethodKind == MethodKind.Destructor))
             {
                 return;
             }
 
-            if (fieldSymbol != null &&
-                fieldSymbol.ContainingType.TypeKind == TypeKind.Enum)
+            if ((fieldSymbol != null) &&
+                (fieldSymbol.ContainingType.TypeKind == TypeKind.Enum))
             {
                 return;
             }
@@ -260,8 +260,8 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
             // TODO: 'new' modifier isn't exposed on symbols. Do we need it?
 
             // Note: we don't display the access modifier for static constructors
-            if (methodSymbol == null ||
-                methodSymbol.MethodKind != MethodKind.StaticConstructor)
+            if ((methodSymbol == null) ||
+                (methodSymbol.MethodKind != MethodKind.StaticConstructor))
             {
                 BuildAccessibility(memberSymbol);
             }
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
 
             // Note: we don't display 'static' for constant fields
             if (memberSymbol.IsStatic &&
-                (fieldSymbol == null || !fieldSymbol.IsConst))
+                ((fieldSymbol == null) || !fieldSymbol.IsConst))
             {
                 AddText("static ");
             }
@@ -283,17 +283,17 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
                 AddText("extern ");
             }
 
-            if (fieldSymbol != null && fieldSymbol.IsReadOnly)
+            if ((fieldSymbol != null) && fieldSymbol.IsReadOnly)
             {
                 AddText("readonly ");
             }
 
-            if (fieldSymbol != null && fieldSymbol.IsConst)
+            if ((fieldSymbol != null) && fieldSymbol.IsConst)
             {
                 AddText("const ");
             }
 
-            if (fieldSymbol != null && fieldSymbol.IsVolatile)
+            if ((fieldSymbol != null) && fieldSymbol.IsVolatile)
             {
                 AddText("volatile ");
             }
@@ -335,7 +335,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ObjectBrowser
 
         private void BuildConstraints(ITypeParameterSymbol typeParameterSymbol)
         {
-            if (typeParameterSymbol.ConstraintTypes.Length == 0 &&
+            if ((typeParameterSymbol.ConstraintTypes.Length == 0) &&
                 !typeParameterSymbol.HasConstructorConstraint &&
                 !typeParameterSymbol.HasReferenceTypeConstraint &&
                 !typeParameterSymbol.HasValueTypeConstraint)

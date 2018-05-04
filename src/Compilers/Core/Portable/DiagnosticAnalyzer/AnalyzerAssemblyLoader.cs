@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis
                 else
                 {
                     identity = identity ?? GetOrAddAssemblyIdentity(fullPath);
-                    if (identity != null && _loadedAssembliesByIdentity.TryGetValue(identity, out existingAssembly))
+                    if ((identity != null) && _loadedAssembliesByIdentity.TryGetValue(identity, out existingAssembly))
                     {
                         loadedAssembly = existingAssembly;
                     }
@@ -137,7 +137,7 @@ namespace Microsoft.CodeAnalysis
         {
             lock (_guard)
             {
-                if (_loadedAssemblyIdentitiesByPath.TryGetValue(fullPath, out var existingIdentity) && existingIdentity != null)
+                if (_loadedAssemblyIdentitiesByPath.TryGetValue(fullPath, out var existingIdentity) && (existingIdentity != null))
                 {
                     identity = existingIdentity;
                 }

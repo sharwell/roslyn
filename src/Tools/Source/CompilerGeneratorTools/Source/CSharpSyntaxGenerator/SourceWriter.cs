@@ -553,7 +553,7 @@ namespace CSharpSyntaxGenerator
             for (int f = 0; f < node.Fields.Count; f++)
             {
                 var field = node.Fields[f];
-                if (IsDerivedOrListOfDerived("SyntaxNode", field.Type) || IsDerivedOrListOfDerived("SyntaxToken", field.Type) || field.Type == "SyntaxNodeOrTokenList")
+                if (IsDerivedOrListOfDerived("SyntaxNode", field.Type) || IsDerivedOrListOfDerived("SyntaxToken", field.Type) || (field.Type == "SyntaxNodeOrTokenList"))
                 {
                     if (nCompared > 0)
                         Write(" || ");
@@ -695,7 +695,7 @@ namespace CSharpSyntaxGenerator
             {
                 var node = nodes[i];
                 this.WriteGreenFactory((Node)node, withSyntaxFactoryContext);
-                if (i < n - 1)
+                if (i < (n - 1))
                     WriteLine();
             }
         }
@@ -712,7 +712,7 @@ namespace CSharpSyntaxGenerator
             {
                 var node = nodes[i];
                 Write("           typeof({0})", node.Name);
-                if (i < n - 1)
+                if (i < (n - 1))
                     Write(",");
                 WriteLine();
             }
@@ -759,7 +759,7 @@ namespace CSharpSyntaxGenerator
                     WriteLine("      if ({0} == null)", CamelCase(field.Name));
                     WriteLine("        throw new ArgumentNullException(nameof({0}));", CamelCase(field.Name));
                 }
-                if (field.Type == "SyntaxToken" && field.Kinds != null && field.Kinds.Count > 0)
+                if ((field.Type == "SyntaxToken") && (field.Kinds != null) && (field.Kinds.Count > 0))
                 {
                     if (IsOptional(field))
                     {
@@ -790,10 +790,10 @@ namespace CSharpSyntaxGenerator
 
             WriteLine("#endif");
 
-            if (nd.Name != "SkippedTokensTriviaSyntax" &&
-                nd.Name != "DocumentationCommentTriviaSyntax" &&
-                nd.Name != "IncompleteMemberSyntax" &&
-                valueFields.Count + nodeFields.Count <= 3)
+            if ((nd.Name != "SkippedTokensTriviaSyntax") &&
+                (nd.Name != "DocumentationCommentTriviaSyntax") &&
+                (nd.Name != "IncompleteMemberSyntax") &&
+                ((valueFields.Count + nodeFields.Count) <= 3))
             {
                 //int hash;
                 //var cached = SyntaxNodeCache.TryGetNode((int)SyntaxKind.IdentifierName, identifier, this.context, out hash);
@@ -894,7 +894,7 @@ namespace CSharpSyntaxGenerator
             {
                 var field = nodeFields[i];
                 Write(", ");
-                if (field.Type == "SyntaxList<SyntaxToken>" || IsAnyList(field.Type))
+                if ((field.Type == "SyntaxList<SyntaxToken>") || IsAnyList(field.Type))
                 {
                     Write("{0}.Node", CamelCase(field.Name));
                 }
@@ -1059,11 +1059,11 @@ namespace CSharpSyntaxGenerator
                 for (int i = 0, n = nodeFields.Count; i < n; i++)
                 {
                     var field = nodeFields[i];
-                    if (field.Type != "SyntaxToken"
-                        && field.Type != "SyntaxList<SyntaxToken>"
+                    if ((field.Type != "SyntaxToken")
+                        && (field.Type != "SyntaxList<SyntaxToken>")
                         )
                     {
-                        if (IsSeparatedNodeList(field.Type) || field.Type == "SyntaxNodeOrTokenList")
+                        if (IsSeparatedNodeList(field.Type) || (field.Type == "SyntaxNodeOrTokenList"))
                         {
                             WriteLine("    private SyntaxNode {0};", CamelCase(field.Name));
                         }
@@ -1184,7 +1184,7 @@ namespace CSharpSyntaxGenerator
                 {
                     var field = nodeFields[i];
 
-                    if (field.Type != "SyntaxToken" && field.Type != "SyntaxList<SyntaxToken>")
+                    if ((field.Type != "SyntaxToken") && (field.Type != "SyntaxList<SyntaxToken>"))
                     {
                         if (i == 0)
                         {
@@ -1208,7 +1208,7 @@ namespace CSharpSyntaxGenerator
                 for (int i = 0, n = nodeFields.Count; i < n; i++)
                 {
                     var field = nodeFields[i];
-                    if (field.Type != "SyntaxToken" && field.Type != "SyntaxList<SyntaxToken>")
+                    if ((field.Type != "SyntaxToken") && (field.Type != "SyntaxList<SyntaxToken>"))
                     {
                         WriteLine("            case {0}: return this.{1};", i, CamelCase(field.Name));
                     }
@@ -1332,7 +1332,7 @@ namespace CSharpSyntaxGenerator
             for (int f = 0; f < node.Fields.Count; f++)
             {
                 var field = node.Fields[f];
-                if (IsDerivedOrListOfDerived("SyntaxNode", field.Type) || IsDerivedOrListOfDerived("SyntaxToken", field.Type) || field.Type == "SyntaxNodeOrTokenList")
+                if (IsDerivedOrListOfDerived("SyntaxNode", field.Type) || IsDerivedOrListOfDerived("SyntaxToken", field.Type) || (field.Type == "SyntaxNodeOrTokenList"))
                 {
                     if (nCompared > 0)
                         Write(" || ");
@@ -1380,7 +1380,7 @@ namespace CSharpSyntaxGenerator
                 var field = node.Fields[f];
                 var type = this.GetRedPropertyType(field);
                 Write("Optional<{0}> {1} = default(Optional<{0}>)", type, CamelCase(field.Name));
-                if (f < node.Fields.Count - 1)
+                if (f < (node.Fields.Count - 1))
                     Write(", ");
             }
             WriteLine(")");
@@ -1394,7 +1394,7 @@ namespace CSharpSyntaxGenerator
                 var parameterName = CamelCase(field.Name);
                 WriteLine();
                 Write("                    {0}.HasValue ? {0}.Value : this.{1}", parameterName, field.Name);
-                if (f < node.Fields.Count - 1)
+                if (f < (node.Fields.Count - 1))
                     Write(",");
             }
 
@@ -1506,7 +1506,7 @@ namespace CSharpSyntaxGenerator
         private Node TryGetNodeForNestedList(Field field)
         {
             Node referencedNode = GetNode(field.Type);
-            if (referencedNode != null && (!IsOptional(field) || RequiredFactoryArgumentCount(referencedNode) == 0))
+            if ((referencedNode != null) && (!IsOptional(field) || (RequiredFactoryArgumentCount(referencedNode) == 0)))
             {
                 return referencedNode;
             }
@@ -1662,15 +1662,15 @@ namespace CSharpSyntaxGenerator
 
         private bool IsAutoCreatableToken(Node node, Field field)
         {
-            return field.Type == "SyntaxToken"
-                && field.Kinds != null
-                && ((field.Kinds.Count == 1 && field.Kinds[0].Name != "IdentifierToken" && !field.Kinds[0].Name.EndsWith("LiteralToken", StringComparison.Ordinal)) || (field.Kinds.Count > 1 && field.Kinds.Count == node.Kinds.Count));
+            return (field.Type == "SyntaxToken")
+                && (field.Kinds != null)
+                && (((field.Kinds.Count == 1) && (field.Kinds[0].Name != "IdentifierToken") && !field.Kinds[0].Name.EndsWith("LiteralToken", StringComparison.Ordinal)) || ((field.Kinds.Count > 1) && (field.Kinds.Count == node.Kinds.Count)));
         }
 
         private bool IsAutoCreatableNode(Node node, Field field)
         {
             var referencedNode = GetNode(field.Type);
-            return referencedNode != null && RequiredFactoryArgumentCount(referencedNode) == 0;
+            return (referencedNode != null) && (RequiredFactoryArgumentCount(referencedNode) == 0);
         }
 
         private bool IsRequiredFactoryField(Node node, Field field)
@@ -1688,7 +1688,7 @@ namespace CSharpSyntaxGenerator
             int count = 0;
 
             // kind must be specified in factory
-            if (nd.Kinds.Count > 1 && includeKind)
+            if ((nd.Kinds.Count > 1) && includeKind)
             {
                 count++;
             }
@@ -1759,7 +1759,7 @@ namespace CSharpSyntaxGenerator
 
                 if (field.Type == "SyntaxToken")
                 {
-                    if (field.Kinds != null && field.Kinds.Count > 0)
+                    if ((field.Kinds != null) && (field.Kinds.Count > 0))
                     {
                         WriteLine("      switch ({0}.Kind())", pname);
                         WriteLine("      {");
@@ -1893,7 +1893,7 @@ namespace CSharpSyntaxGenerator
             {
                 var field = nd.Fields[f];
 
-                if (field.Type == "SyntaxToken" && CanBeAutoCreated(nd, field) && field.Kinds.Count > 1)
+                if ((field.Type == "SyntaxToken") && CanBeAutoCreated(nd, field) && (field.Kinds.Count > 1))
                 {
                     WriteLine();
                     WriteLine("    private static SyntaxKind Get{0}{1}Kind(SyntaxKind kind)", StripPost(nd.Name, "Syntax"), StripPost(field.Name, "Opt"));
@@ -1932,7 +1932,7 @@ namespace CSharpSyntaxGenerator
 
             var factoryWithNoAutoCreatableTokenFields = new HashSet<Field>(DetermineRedFactoryWithNoAutoCreatableTokenFields(nd));
             var minimalFactoryFields = DetermineMinimalFactoryFields(nd);
-            if (minimalFactoryFields != null && factoryWithNoAutoCreatableTokenFields.SetEquals(minimalFactoryFields))
+            if ((minimalFactoryFields != null) && factoryWithNoAutoCreatableTokenFields.SetEquals(minimalFactoryFields))
             {
                 return; // will be handled in minimal factory case
             }
@@ -2013,10 +2013,10 @@ namespace CSharpSyntaxGenerator
             else
             {
                 // otherwise, if there is a single optional node, use that..
-                int nodeCount = nd.Fields.Count(f => IsNode(f.Type) && f.Type != "SyntaxToken");
+                int nodeCount = nd.Fields.Count(f => IsNode(f.Type) && (f.Type != "SyntaxToken"));
                 if (nodeCount == 1)
                 {
-                    return nd.Fields.First(f => IsNode(f.Type) && f.Type != "SyntaxToken");
+                    return nd.Fields.First(f => IsNode(f.Type) && (f.Type != "SyntaxToken"));
                 }
                 else
                 {
@@ -2038,12 +2038,12 @@ namespace CSharpSyntaxGenerator
             }
 
             var requiredCount = RequiredFactoryArgumentCount(nd, includeKind: false);
-            if (requiredCount == 0 && optionalCount > 1)
+            if ((requiredCount == 0) && (optionalCount > 1))
             {
                 allowOptionalField = DetermineMinimalOptionalField(nd);
             }
 
-            return nd.Fields.Where(f => IsRequiredFactoryField(nd, f) || allowOptionalField == f);
+            return nd.Fields.Where(f => IsRequiredFactoryField(nd, f) || (allowOptionalField == f));
         }
 
         // creates a factory with only the required arguments (everything else is defaulted)
@@ -2055,7 +2055,7 @@ namespace CSharpSyntaxGenerator
 
             var minimalFactoryfields = new HashSet<Field>(DetermineMinimalFactoryFields(nd));
 
-            if (withStringNames && minimalFactoryfields.Count(f => IsRequiredFactoryField(nd, f) && CanAutoConvertFromString(f)) == 0)
+            if (withStringNames && (minimalFactoryfields.Count(f => IsRequiredFactoryField(nd, f) && CanAutoConvertFromString(f)) == 0))
                 return; // no string-name overload necessary
 
             this.WriteLine();
@@ -2169,7 +2169,7 @@ namespace CSharpSyntaxGenerator
 
         private bool IsIdentifierToken(Field field)
         {
-            return field.Type == "SyntaxToken" && field.Kinds != null && field.Kinds.Count == 1 && field.Kinds[0].Name == "IdentifierToken";
+            return (field.Type == "SyntaxToken") && (field.Kinds != null) && (field.Kinds.Count == 1) && (field.Kinds[0].Name == "IdentifierToken");
         }
 
         private bool IsIdentifierNameSyntax(Field field)

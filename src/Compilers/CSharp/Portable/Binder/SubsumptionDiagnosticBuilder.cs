@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var subsumedErrorCode = CheckSubsumed(label.Pattern, _subsumptionTree, inputCouldBeNull: inputCouldBeNull);
                 if (subsumedErrorCode != 0)
                 {
-                    if (!label.HasErrors && subsumedErrorCode != ErrorCode.ERR_NoImplicitConvCast)
+                    if (!label.HasErrors && (subsumedErrorCode != ErrorCode.ERR_NoImplicitConvCast))
                     {
                         diagnostics.Add(subsumedErrorCode, label.Pattern.Syntax.Location);
                     }
@@ -63,12 +63,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return false;
                 }
 
-                var guardAlwaysSatisfied = label.Guard == null || label.Guard.ConstantValue == ConstantValue.True;
+                var guardAlwaysSatisfied = (label.Guard == null) || (label.Guard.ConstantValue == ConstantValue.True);
 
                 if (guardAlwaysSatisfied)
                 {
                     // Only unconditional switch labels contribute to subsumption
-                    if (AddToDecisionTree(_subsumptionTree, null, label) == null && !label.Pattern.HasErrors)
+                    if ((AddToDecisionTree(_subsumptionTree, null, label) == null) && !label.Pattern.HasErrors)
                     {
                         // Since the pattern was not subsumed, we should be able to add it to the decision tree
                         throw ExceptionUtilities.Unreachable;
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case BoundKind.ConstantPattern:
                     {
                         var constantPattern = (BoundConstantPattern)pattern;
-                        if (constantPattern.Value.HasErrors || constantPattern.Value.ConstantValue == null || constantPattern.Value.ConstantValue.IsBad)
+                        if (constantPattern.Value.HasErrors || (constantPattern.Value.ConstantValue == null) || constantPattern.Value.ConstantValue.IsBad)
                         {
                             // since this will have been reported earlier, we use ErrorCode.ERR_NoImplicitConvCast
                             // as a flag to suppress errors in subsumption analysis.
@@ -226,8 +226,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                                     var byType = (DecisionTree.ByType)decisionTree;
                                     if (declarationPattern.IsVar &&
                                         inputCouldBeNull &&
-                                        (byType.WhenNull == null || CheckSubsumed(pattern, byType.WhenNull, inputCouldBeNull) == 0) &&
-                                        (byType.Default == null || CheckSubsumed(pattern, byType.Default, inputCouldBeNull) == 0))
+                                        ((byType.WhenNull == null) || (CheckSubsumed(pattern, byType.WhenNull, inputCouldBeNull) == 0)) &&
+                                        ((byType.Default == null) || (CheckSubsumed(pattern, byType.Default, inputCouldBeNull) == 0)))
                                     {
                                         return 0; // new pattern catches null if not caught by existing WhenNull or Default
                                     }
@@ -239,9 +239,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                                         var decision = td.Value;
                                         // if the pattern's type is already handled by the previous pattern
                                         // or the previous pattern handles all of the (non-null) input data...
-                                        if (ExpressionOfTypeMatchesPatternType(
-                                                declarationPattern.DeclaredType.Type.TupleUnderlyingTypeOrSelf(), type, ref _useSiteDiagnostics) == true ||
-                                            ExpressionOfTypeMatchesPatternType(byType.Type, type, ref _useSiteDiagnostics) == true)
+                                        if ((ExpressionOfTypeMatchesPatternType(
+                                                declarationPattern.DeclaredType.Type.TupleUnderlyingTypeOrSelf(), type, ref _useSiteDiagnostics) == true) ||
+                                            (ExpressionOfTypeMatchesPatternType(byType.Type, type, ref _useSiteDiagnostics) == true))
                                         {
                                             // then we check if the pattern is subsumed by the previous decision
                                             var error = CheckSubsumed(pattern, decision, inputCouldBeNull);

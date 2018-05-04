@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.SignatureHelp
         internal SignatureHelpTriggerInfo(SignatureHelpTriggerReason triggerReason, char? triggerCharacter = null)
             : this()
         {
-            Contract.ThrowIfTrue(triggerReason == SignatureHelpTriggerReason.TypeCharCommand && triggerCharacter == null);
+            Contract.ThrowIfTrue((triggerReason == SignatureHelpTriggerReason.TypeCharCommand) && (triggerCharacter == null));
             this.TriggerReason = triggerReason;
             this.TriggerCharacter = triggerCharacter;
         }

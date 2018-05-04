@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             const bool returnsVoid = false;
 
             var firstParam = syntax.ParameterList.Parameters.FirstOrDefault();
-            bool isExtensionMethod = firstParam != null &&
+            bool isExtensionMethod = (firstParam != null) &&
                 !firstParam.IsArgList &&
                 firstParam.Modifiers.Any(SyntaxKind.ThisKeyword);
 
@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             bool hasBlockBody = syntax.Body != null;
-            _isExpressionBodied = !hasBlockBody && syntax.ExpressionBody != null;
+            _isExpressionBodied = !hasBlockBody && (syntax.ExpressionBody != null);
             _hasAnyBody = hasBlockBody || _isExpressionBodied;
             _refKind = syntax.ReturnType.GetRefKind();
 
@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // implemented
             if (syntax.ConstraintClauses.Count > 0)
             {
-                if (syntax.ExplicitInterfaceSpecifier != null ||
+                if ((syntax.ExplicitInterfaceSpecifier != null) ||
                     syntax.Modifiers.Any(SyntaxKind.OverrideKeyword))
                 {
                     diagnostics.Add(
@@ -180,8 +180,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // span-like types are returnable in general
             if (_lazyReturnType.IsRestrictedType(ignoreSpanLikeTypes: true))
             {
-                if (_lazyReturnType.SpecialType == SpecialType.System_TypedReference &&
-                    (this.ContainingType.SpecialType == SpecialType.System_TypedReference || this.ContainingType.SpecialType == SpecialType.System_ArgIterator))
+                if ((_lazyReturnType.SpecialType == SpecialType.System_TypedReference) &&
+                    ((this.ContainingType.SpecialType == SpecialType.System_TypedReference) || (this.ContainingType.SpecialType == SpecialType.System_ArgIterator)))
                 {
                     // Two special cases: methods in the special types TypedReference and ArgIterator are allowed to return TypedReference
                 }
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var returnsVoid = _lazyReturnType.SpecialType == SpecialType.System_Void;
-            if (this.RefKind != RefKind.None && returnsVoid)
+            if ((this.RefKind != RefKind.None) && returnsVoid)
             {
                 Debug.Assert(returnTypeSyntax.HasErrors);
             }
@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             this.CheckEffectiveAccessibility(_lazyReturnType, _lazyParameters, diagnostics);
 
             // Checks taken from MemberDefiner::defineMethod
-            if (this.Name == WellKnownMemberNames.DestructorName && this.ParameterCount == 0 && this.Arity == 0 && this.ReturnsVoid)
+            if ((this.Name == WellKnownMemberNames.DestructorName) && (this.ParameterCount == 0) && (this.Arity == 0) && this.ReturnsVoid)
             {
                 diagnostics.Add(ErrorCode.WRN_FinalizeMethod, location);
             }
@@ -223,11 +223,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     var loc = parameterSyntax.Type.Location;
                     diagnostics.Add(ErrorCode.ERR_BadTypeforThis, loc, parameter0Type);
                 }
-                else if (parameter0RefKind == RefKind.Ref && !parameter0Type.IsValueType)
+                else if ((parameter0RefKind == RefKind.Ref) && !parameter0Type.IsValueType)
                 {
                     diagnostics.Add(ErrorCode.ERR_RefExtensionMustBeValueTypeOrConstrainedToOne, location, Name);
                 }
-                else if (parameter0RefKind == RefKind.In && parameter0Type.TypeKind != TypeKind.Struct)
+                else if ((parameter0RefKind == RefKind.In) && (parameter0Type.TypeKind != TypeKind.Struct))
                 {
                     diagnostics.Add(ErrorCode.ERR_InExtensionMustBeValueType, location, Name);
                 }
@@ -235,7 +235,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 {
                     diagnostics.Add(ErrorCode.ERR_ExtensionMethodsDecl, location, ContainingType.Name);
                 }
-                else if (!ContainingType.IsScriptClass && !(ContainingType.IsStatic && ContainingType.Arity == 0))
+                else if (!ContainingType.IsScriptClass && !(ContainingType.IsStatic && (ContainingType.Arity == 0)))
                 {
                     // Duplicate Dev10 behavior by selecting the containing type identifier. However if there
                     // is no containing type (in the interactive case for instance), select the method identifier.
@@ -424,7 +424,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             for (NamedTypeSymbol curr = this.ContainingType; (object)curr != null; curr = curr.ContainingType)
             {
                 var sourceNamedTypeSymbol = curr as SourceNamedTypeSymbol;
-                if ((object)sourceNamedTypeSymbol != null && sourceNamedTypeSymbol.HasSecurityCriticalAttributes)
+                if (((object)sourceNamedTypeSymbol != null) && sourceNamedTypeSymbol.HasSecurityCriticalAttributes)
                 {
                     diagnostics.Add(ErrorCode.ERR_SecurityCriticalOrSecuritySafeCriticalOnAsyncInClassOrStruct, errorLocation);
                     break;
@@ -612,7 +612,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                return this.IsPartialDefinition && (object)_otherPartOfPartial == null;
+                return this.IsPartialDefinition && ((object)_otherPartOfPartial == null);
             }
         }
 
@@ -729,7 +729,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var sourceContainer = this.ContainingType as SourceMemberContainerTypeSymbol;
-                if ((object)sourceContainer != null && sourceContainer.AnyMemberHasAttributes)
+                if (((object)sourceContainer != null) && sourceContainer.AnyMemberHasAttributes)
                 {
                     return this.GetSyntax().AttributeLists;
                 }
@@ -878,11 +878,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 diagnostics.Add(ErrorCode.ERR_PartialMethodMustReturnVoid, location);
             }
-            else if (IsPartial && !ContainingType.IsInterface && (DeclarationModifiers & partialMethodInvalidModifierMask) != 0)
+            else if (IsPartial && !ContainingType.IsInterface && ((DeclarationModifiers & partialMethodInvalidModifierMask) != 0))
             {
                 diagnostics.Add(ErrorCode.ERR_PartialMethodInvalidModifier, location);
             }
-            else if (this.DeclaredAccessibility == Accessibility.Private && (IsVirtual || IsAbstract || IsOverride))
+            else if ((this.DeclaredAccessibility == Accessibility.Private) && (IsVirtual || IsAbstract || IsOverride))
             {
                 diagnostics.Add(ErrorCode.ERR_VirtualPrivate, location, this);
             }
@@ -901,7 +901,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // '{0}' cannot be sealed because it is not an override
                 diagnostics.Add(ErrorCode.ERR_SealedNonOverride, location, this);
             }
-            else if (IsSealed && ContainingType.TypeKind == TypeKind.Struct)
+            else if (IsSealed && (ContainingType.TypeKind == TypeKind.Struct))
             {
                 // The modifier '{0}' is not valid for this item
                 diagnostics.Add(ErrorCode.ERR_BadMemberFlag, location, SyntaxFacts.GetText(SyntaxKind.SealedKeyword));
@@ -923,17 +923,17 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 diagnostics.Add(ErrorCode.ERR_AbstractNotVirtual, location, this.Kind.Localize(), this);
             }
-            else if (IsAbstract && ContainingType.TypeKind == TypeKind.Struct)
+            else if (IsAbstract && (ContainingType.TypeKind == TypeKind.Struct))
             {
                 // The modifier '{0}' is not valid for this item
                 diagnostics.Add(ErrorCode.ERR_BadMemberFlag, location, SyntaxFacts.GetText(SyntaxKind.AbstractKeyword));
             }
-            else if (IsVirtual && ContainingType.TypeKind == TypeKind.Struct)
+            else if (IsVirtual && (ContainingType.TypeKind == TypeKind.Struct))
             {
                 // The modifier '{0}' is not valid for this item
                 diagnostics.Add(ErrorCode.ERR_BadMemberFlag, location, SyntaxFacts.GetText(SyntaxKind.VirtualKeyword));
             }
-            else if (IsAbstract && !ContainingType.IsAbstract && (ContainingType.TypeKind == TypeKind.Class || ContainingType.TypeKind == TypeKind.Submission))
+            else if (IsAbstract && !ContainingType.IsAbstract && ((ContainingType.TypeKind == TypeKind.Class) || (ContainingType.TypeKind == TypeKind.Submission)))
             {
                 // '{0}' is abstract but it is contained in non-abstract class '{1}'
                 diagnostics.Add(ErrorCode.ERR_AbstractInConcreteClass, location, this, ContainingType);
@@ -959,7 +959,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 diagnostics.Add(ErrorCode.ERR_InstanceMemberInStaticClass, location, Name);
             }
-            else if (_lazyIsVararg && (IsGenericMethod || ContainingType.IsGenericType || _lazyParameters.Length > 0 && _lazyParameters[_lazyParameters.Length - 1].IsParams))
+            else if (_lazyIsVararg && (IsGenericMethod || ContainingType.IsGenericType || ((_lazyParameters.Length > 0) && _lazyParameters[_lazyParameters.Length - 1].IsParams)))
             {
                 diagnostics.Add(ErrorCode.ERR_BadVarargs, location);
             }
@@ -1004,7 +1004,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // list, we need to ensure we complete the implementation part when needed.
             return
                 base.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken) ||
-                this.SourcePartialImplementation?.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken) == true;
+                (this.SourcePartialImplementation?.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken) == true);
         }
 
         internal override void AfterAddingTypeMembersChecks(ConversionsBase conversions, DiagnosticBag diagnostics)
@@ -1060,7 +1060,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 diagnostics.Add(ErrorCode.ERR_PartialMethodExtensionDifference, implementation.Locations[0]);
             }
 
-            if (definition.IsUnsafe != implementation.IsUnsafe && definition.CompilationAllowsUnsafe()) // Don't cascade.
+            if ((definition.IsUnsafe != implementation.IsUnsafe) && definition.CompilationAllowsUnsafe()) // Don't cascade.
             {
                 diagnostics.Add(ErrorCode.ERR_PartialMethodUnsafeDifference, implementation.Locations[0]);
             }

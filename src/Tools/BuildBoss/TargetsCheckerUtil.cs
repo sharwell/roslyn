@@ -111,9 +111,9 @@ namespace BuildBoss
             }
 
             return
-                value[0] == '$' &&
-                value[1] == '(' &&
-                value[value.Length - 1] == ')';
+                (value[0] == '$') &&
+                (value[1] == '(') &&
+                (value[value.Length - 1] == ')');
         }
     }
 }

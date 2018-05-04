@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
         public override int Arity => this.TypeParameters.Length;
 
         public override bool ReturnsVoid
-            => this.ReturnType == null || this.ReturnType.SpecialType == SpecialType.System_Void;
+            => (this.ReturnType == null) || (this.ReturnType.SpecialType == SpecialType.System_Void);
 
         public override bool ReturnsByRef
         {

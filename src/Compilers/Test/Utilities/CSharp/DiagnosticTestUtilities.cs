@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                                              Line = lineSpan.IsValid ? lineSpan.StartLinePosition.Line + 1 : 0,
                                              Column = lineSpan.IsValid ? lineSpan.StartLinePosition.Character + 1 : 0,
                                              IsWarning = e.Severity == DiagnosticSeverity.Warning,
-                                             Parameters = (e.Arguments != null && e.Arguments.Count > 0 && e.Arguments[0] != null) ?
+                                             Parameters = ((e.Arguments != null) && (e.Arguments.Count > 0) && (e.Arguments[0] != null)) ?
                                                 e.Arguments.Select(x => x != null ? x.ToString() : null).ToArray() : Array.Empty<string>()
                                          }
                                     orderby ae.Code, ae.Line, ae.Column
@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             // actual >= expected
             foreach (var experr in expectedSortedDesp)
             {
-                while (idx < actualSortedDesp.Count && actualSortedDesp[idx].Code < experr.Code)
+                while ((idx < actualSortedDesp.Count) && (actualSortedDesp[idx].Code < experr.Code))
                 {
                     idx++;
                 }
@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                 var acterr = actualSortedDesp[idx];
 
                 Assert.Equal(experr.Code, acterr.Code);
-                if (experr.Line > 0 && experr.Column > 0)
+                if ((experr.Line > 0) && (experr.Column > 0))
                 {
                     Assert.True(experr.Line == acterr.Line, String.Format("Line {0}!={1}", experr.Line, acterr.Line));
                     Assert.True(experr.Column == acterr.Column, String.Format("Col {0}!={1}", experr.Column, acterr.Column));

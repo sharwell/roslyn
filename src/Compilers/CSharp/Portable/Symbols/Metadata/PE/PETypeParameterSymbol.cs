@@ -226,8 +226,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
                 // - presence of unmanaged pattern has to be matched with `valuetype`
                 // - IsUnmanagedAttribute is allowed iif there is an unmanaged pattern
-                if (hasUnmanagedModreqPattern && (_flags & GenericParameterAttributes.NotNullableValueTypeConstraint) == 0 ||
-                    hasUnmanagedModreqPattern != moduleSymbol.Module.HasIsUnmanagedAttribute(_handle))
+                if ((hasUnmanagedModreqPattern && ((_flags & GenericParameterAttributes.NotNullableValueTypeConstraint) == 0)) ||
+                    (hasUnmanagedModreqPattern != moduleSymbol.Module.HasIsUnmanagedAttribute(_handle)))
                 {
                     // we do not recognize these combinations as "unmanaged"
                     hasUnmanagedModreqPattern = false;
@@ -372,7 +372,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 {
                     errorInfo = diagnostics[0].DiagnosticInfo;
                 }
-                else if (useSiteDiagnosticsBuilder != null && useSiteDiagnosticsBuilder.Count > 0)
+                else if ((useSiteDiagnosticsBuilder != null) && (useSiteDiagnosticsBuilder.Count > 0))
                 {
                     foreach (var diag in useSiteDiagnosticsBuilder)
                     {

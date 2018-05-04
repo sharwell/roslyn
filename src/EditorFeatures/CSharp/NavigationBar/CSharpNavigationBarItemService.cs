@@ -58,14 +58,14 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.NavigationBar
                     foreach (var member in type.GetMembers())
                     {
                         if (member.IsImplicitlyDeclared ||
-                            member.Kind == SymbolKind.NamedType ||
+                            (member.Kind == SymbolKind.NamedType) ||
                             IsAccessor(member))
                         {
                             continue;
                         }
 
                         var method = member as IMethodSymbol;
-                        if (method != null && method.PartialImplementationPart != null)
+                        if ((method != null) && (method.PartialImplementationPart != null))
                         {
                             memberItems.Add(CreateItemForMember(
                                 method,
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.NavigationBar
                         }
                         else
                         {
-                            Debug.Assert(method == null || method.PartialDefinitionPart == null, "NavBar expected GetMembers to return partial method definition parts but the implementation part was returned.");
+                            Debug.Assert((method == null) || (method.PartialDefinitionPart == null), "NavBar expected GetMembers to return partial method definition parts but the implementation part was returned.");
 
                             memberItems.Add(CreateItemForMember(
                                 member,
@@ -144,11 +144,11 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.NavigationBar
                         types.Add((INamedTypeSymbol)type);
                     }
 
-                    if (node is BaseMethodDeclarationSyntax ||
-                        node is BasePropertyDeclarationSyntax ||
-                        node is BaseFieldDeclarationSyntax ||
-                        node is StatementSyntax ||
-                        node is ExpressionSyntax)
+                    if ((node is BaseMethodDeclarationSyntax) ||
+                        (node is BasePropertyDeclarationSyntax) ||
+                        (node is BaseFieldDeclarationSyntax) ||
+                        (node is StatementSyntax) ||
+                        (node is ExpressionSyntax))
                     {
                         // quick bail out to prevent us from creating every nodes exist in current file
                         continue;
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.NavigationBar
             {
                 var method = (IMethodSymbol)member;
 
-                return method.MethodKind == MethodKind.PropertyGet || method.MethodKind == MethodKind.PropertySet;
+                return (method.MethodKind == MethodKind.PropertyGet) || (method.MethodKind == MethodKind.PropertySet);
             }
 
             return false;
@@ -289,7 +289,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.NavigationBar
                 if (enumDeclaration != null)
                 {
                     var index = enumDeclaration.Members.IndexOf(enumMember);
-                    if (index != -1 && index < enumDeclaration.Members.SeparatorCount)
+                    if ((index != -1) && (index < enumDeclaration.Members.SeparatorCount))
                     {
                         // Cool, we have a comma, so do it
                         var start = enumMember.SpanStart;
@@ -342,7 +342,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.NavigationBar
         [Conditional("DEBUG")]
         private static void ValidateSpanFromBounds(ITextSnapshot snapshot, int start, int end)
         {
-            Contract.Requires(start >= 0 && end <= snapshot.Length && start <= end);
+            Contract.Requires((start >= 0) && (end <= snapshot.Length) && (start <= end));
         }
 
         [Conditional("DEBUG")]

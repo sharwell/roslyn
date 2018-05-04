@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             _isImplicitlyDeclared = isImplicitlyDeclared;
 
             Debug.Assert(correspondingDefaultFieldOpt == null == this.IsDefaultTupleElement);
-            Debug.Assert(correspondingDefaultFieldOpt == null || correspondingDefaultFieldOpt.IsDefaultTupleElement);
+            Debug.Assert((correspondingDefaultFieldOpt == null) || correspondingDefaultFieldOpt.IsDefaultTupleElement);
 
             _correspondingDefaultField = correspondingDefaultFieldOpt ?? this;
         }
@@ -169,9 +169,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            return (object)other != null &&
-                _tupleElementIndex == other._tupleElementIndex &&
-                ContainingType == other.ContainingType;
+            return ((object)other != null) &&
+                (_tupleElementIndex == other._tupleElementIndex) &&
+                (ContainingType == other.ContainingType);
         }
     }
 }

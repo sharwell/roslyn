@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         //                    ~
         private void AddCollectionInitializers(ref ArrayBuilder<BoundExpression> dynamicSiteInitializers, ArrayBuilder<BoundExpression> result, BoundExpression rewrittenReceiver, ImmutableArray<BoundExpression> initializers)
         {
-            Debug.Assert(rewrittenReceiver != null || _inExpressionLambda);
+            Debug.Assert((rewrittenReceiver != null) || _inExpressionLambda);
 
             foreach (var initializer in initializers)
             {
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             Debug.Assert(initializer.AddMethod.Name == "Add");
             Debug.Assert(initializer.Arguments.Any());
-            Debug.Assert(rewrittenReceiver != null || _inExpressionLambda);
+            Debug.Assert((rewrittenReceiver != null) || _inExpressionLambda);
 
             var syntax = initializer.Syntax;
             MethodSymbol addMethod = initializer.AddMethod;
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             BoundKind rhsKind = assignment.Right.Kind;
-            bool isRhsNestedInitializer = rhsKind == BoundKind.ObjectInitializerExpression || rhsKind == BoundKind.CollectionInitializerExpression;
+            bool isRhsNestedInitializer = (rhsKind == BoundKind.ObjectInitializerExpression) || (rhsKind == BoundKind.CollectionInitializerExpression);
 
             BoundExpression rewrittenAccess;
             switch ((rewrittenLeft ?? assignment.Left).Kind)
@@ -244,7 +244,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                 memberInit.Type);
                         }
 
-                        if (memberInit.MemberSymbol == null && memberInit.Type.IsDynamic())
+                        if ((memberInit.MemberSymbol == null) && memberInit.Type.IsDynamic())
                         {
                             if (dynamicSiteInitializers == null)
                             {
@@ -418,7 +418,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var memberSymbol = rewrittenLeft.MemberSymbol;
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-            Debug.Assert(memberSymbol != null && _compilation.Conversions.ClassifyConversionFromType(rewrittenReceiver.Type, memberSymbol.ContainingType, ref useSiteDiagnostics).IsImplicit);
+            Debug.Assert((memberSymbol != null) && _compilation.Conversions.ClassifyConversionFromType(rewrittenReceiver.Type, memberSymbol.ContainingType, ref useSiteDiagnostics).IsImplicit);
             // It is possible there are use site diagnostics from the above, but none that we need report as we aren't generating code for the conversion
 
             switch (memberSymbol.Kind)

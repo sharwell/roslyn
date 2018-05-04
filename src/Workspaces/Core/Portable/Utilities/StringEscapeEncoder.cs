@@ -16,7 +16,7 @@ namespace Roslyn.Utilities
             {
                 var prefixIndex = text.IndexOf(escapePrefix, startIndex);
                 var prohibitIndex = text.IndexOfAny(prohibitedCharacters, startIndex);
-                var index = prefixIndex >= 0 && prohibitIndex >= 0 ? Math.Min(prefixIndex, prohibitIndex)
+                var index = (prefixIndex >= 0) && (prohibitIndex >= 0) ? Math.Min(prefixIndex, prohibitIndex)
                         : prefixIndex >= 0 ? prefixIndex
                         : prohibitIndex >= 0 ? prohibitIndex
                         : -1;
@@ -124,22 +124,22 @@ namespace Roslyn.Utilities
 
         private static bool IsHexDigit(char ch)
         {
-            return (ch >= '0' && ch <= '9')
-                || (ch >= 'A' && ch <= 'F')
-                || (ch >= 'a' && ch <= 'f');
+            return ((ch >= '0') && (ch <= '9'))
+                || ((ch >= 'A') && (ch <= 'F'))
+                || ((ch >= 'a') && (ch <= 'f'));
         }
 
         private static int GetHexValue(char ch)
         {
-            if (ch >= '0' && ch <= '9')
+            if ((ch >= '0') && (ch <= '9'))
             {
                 return (int)ch - (int)'0';
             }
-            else if (ch >= 'A' && ch <= 'F')
+            else if ((ch >= 'A') && (ch <= 'F'))
             {
                 return (int)ch - (int)'A' + 10;
             }
-            else if (ch >= 'a' && ch <= 'f')
+            else if ((ch >= 'a') && (ch <= 'f'))
             {
                 return (int)ch - (int)'a' + 10;
             }

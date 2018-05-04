@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.PickMembers
                 }
                 
                 var index = SelectedIndex.Value;
-                return index < MemberContainers.Count - 1;
+                return index < (MemberContainers.Count - 1);
             }
         }
 

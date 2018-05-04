@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis
 
         public TypeLayout(LayoutKind kind, int size, byte alignment)
         {
-            Debug.Assert(size >= 0 && (int)kind >= 0 && (int)kind <= 3);
+            Debug.Assert((size >= 0) && ((int)kind >= 0) && ((int)kind <= 3));
 
             // we want LayoutKind.Auto to be the default layout for default(TypeLayout):
             Debug.Assert(LayoutKind.Sequential == 0);
@@ -58,14 +58,14 @@ namespace Microsoft.CodeAnalysis
 
         public bool Equals(TypeLayout other)
         {
-            return _size == other._size
-                && _alignment == other._alignment
-                && _kind == other._kind;
+            return (_size == other._size)
+                && (_alignment == other._alignment)
+                && (_kind == other._kind);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is TypeLayout && Equals((TypeLayout)obj);
+            return (obj is TypeLayout) && Equals((TypeLayout)obj);
         }
 
         public override int GetHashCode()

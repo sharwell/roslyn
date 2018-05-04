@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 SyntaxToken token = (SyntaxToken)_locations[0].SourceTree.GetRoot().FindToken(_locations[0].SourceSpan.Start);
                 Debug.Assert(token.Kind() == SyntaxKind.IdentifierToken);
                 CSharpSyntaxNode node = (CSharpSyntaxNode)token.Parent;
-                Debug.Assert(node is QueryClauseSyntax || node is QueryContinuationSyntax || node is JoinIntoClauseSyntax);
+                Debug.Assert((node is QueryClauseSyntax) || (node is QueryContinuationSyntax) || (node is JoinIntoClauseSyntax));
                 return ImmutableArray.Create<SyntaxReference>(node.GetReference());
             }
         }
@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var symbol = obj as RangeVariableSymbol;
-            return (object)symbol != null
+            return ((object)symbol != null)
                 && symbol._locations[0].Equals(_locations[0])
                 && Equals(_containingSymbol, symbol.ContainingSymbol);
         }

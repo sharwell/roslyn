@@ -288,7 +288,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
         private MetadataShadowCopy GetMetadataShadowCopyNoCheck(string fullPath, MetadataImageKind kind)
         {
-            if (kind < MetadataImageKind.Assembly || kind > MetadataImageKind.Module)
+            if ((kind < MetadataImageKind.Assembly) || (kind > MetadataImageKind.Module))
             {
                 throw new ArgumentOutOfRangeException(nameof(kind));
             }
@@ -338,7 +338,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
         private bool CopyExistsOrIsSuppressed(FileKey key, out CacheEntry<MetadataShadowCopy> existing)
         {
-            if (_lazySuppressedFiles != null && _lazySuppressedFiles.Contains(key.FullPath))
+            if ((_lazySuppressedFiles != null) && _lazySuppressedFiles.Contains(key.FullPath))
             {
                 existing = default(CacheEntry<MetadataShadowCopy>);
                 return true;
@@ -385,7 +385,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
             // do not shadow-copy shadow-copies:
             string referencesDir = ShadowCopyDirectory;
-            if (referencesDir != null && directory.StartsWith(referencesDir, StringComparison.Ordinal))
+            if ((referencesDir != null) && directory.StartsWith(referencesDir, StringComparison.Ordinal))
             {
                 return false;
             }
@@ -552,7 +552,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
             string xmlSubdirectory;
             string xmlFileName;
-            if (docCultureOpt == null ||
+            if ((docCultureOpt == null) ||
                 !TryFindCollocatedDocumentationFile(assemblyDirectory, assemblyFileName, docCultureOpt, out xmlSubdirectory, out xmlFileName))
             {
                 return null;
@@ -622,7 +622,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                 StripReadOnlyAttributeFromFile(new FileInfo(shadowCopyPath));
                 return new FileStream(shadowCopyPath, FileMode.Open, FileAccess.Read, FileShare.Read);
             }
-            catch (Exception e) when (fileMayNotExist && (e is FileNotFoundException || e is DirectoryNotFoundException))
+            catch (Exception e) when (fileMayNotExist && ((e is FileNotFoundException) || (e is DirectoryNotFoundException)))
             {
                 return null;
             }

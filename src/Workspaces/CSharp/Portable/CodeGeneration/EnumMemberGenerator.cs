@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 {
                     // Don't generate an initializer if no other members have them, and our value
                     // would be correctly inferred from our position.
-                    if (destinationOpt.Members.Count == value &&
+                    if ((destinationOpt.Members.Count == value) &&
                         destinationOpt.Members.All(m => m.EqualsValue == null))
                     {
                         return null;
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                     if (lastMember != null)
                     {
                         var lastExpression = lastMember.EqualsValue.Value;
-                        if (lastExpression.Kind() == SyntaxKind.LeftShiftExpression &&
+                        if ((lastExpression.Kind() == SyntaxKind.LeftShiftExpression) &&
                             IntegerUtilities.HasOneBitSet(value))
                         {
                             var binaryExpression = (BinaryExpressionSyntax)lastExpression;

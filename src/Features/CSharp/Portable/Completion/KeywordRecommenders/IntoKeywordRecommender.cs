@@ -67,8 +67,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 return false;
             }
 
-            if (group.ByExpression.Width() == 0 ||
-                group.GroupExpression.Width() == 0)
+            if ((group.ByExpression.Width() == 0) ||
+                (group.GroupExpression.Width() == 0))
             {
                 return false;
             }
@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             var lastToken = join.RightExpression.GetLastToken(includeSkipped: true);
 
             // join a in expr on o1 equals o2 |
-            if (token == lastToken &&
+            if ((token == lastToken) &&
                 !lastToken.IntersectsWith(context.Position))
             {
                 return true;

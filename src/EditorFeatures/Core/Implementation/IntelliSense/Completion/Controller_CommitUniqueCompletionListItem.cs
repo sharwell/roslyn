@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 }
             }
 
-            if (sessionOpt.InitialUnfilteredModel == null && !ShouldBlockForCompletionItems())
+            if ((sessionOpt.InitialUnfilteredModel == null) && !ShouldBlockForCompletionItems())
             {
                 // We're in a language that doesn't want to block, but hasn't computed the initial
                 // set of completion items.  In this case, we asynchronously wait for the items to
@@ -77,8 +77,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             {
                 this.AssertIsForeground();
 
-                if (this.sessionOpt == currentSession &&
-                    this.sessionOpt.Computation.ModelTask == currentTask)
+                if ((this.sessionOpt == currentSession) &&
+                    (this.sessionOpt.Computation.ModelTask == currentTask))
                 {
                     // Nothing happened between when we were invoked and now.
                     CommitIfUnique(t.Result);
@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             // we do want it through, it would be easy to get again simply by asking the model
             // computation to remove all filtering.
 
-            if (model.IsUnique && model.SelectedItemOpt != null)
+            if (model.IsUnique && (model.SelectedItemOpt != null))
             {
                 // We had a unique item in the list.  Commit it and dismiss this session.
                 this.CommitOnNonTypeChar(model.SelectedItemOpt, model);

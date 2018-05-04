@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // cannot emit hash method if have no access to Chars.
             var charsMember = _compilation.GetSpecialTypeMember(SpecialMember.System_String__Chars);
-            if ((object)charsMember == null || charsMember.GetUseSiteDiagnostic() != null)
+            if (((object)charsMember == null) || (charsMember.GetUseSiteDiagnostic() != null))
             {
                 return;
             }

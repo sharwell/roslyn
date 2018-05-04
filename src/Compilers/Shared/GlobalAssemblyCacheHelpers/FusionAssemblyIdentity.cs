@@ -196,7 +196,7 @@ namespace Microsoft.CodeAnalysis
 
         internal static unsafe bool IsKeyOrTokenEmpty(IAssemblyName nameObject, PropertyId propertyId)
         {
-            Debug.Assert(propertyId == PropertyId.NULL_PUBLIC_KEY_TOKEN || propertyId == PropertyId.NULL_PUBLIC_KEY);
+            Debug.Assert((propertyId == PropertyId.NULL_PUBLIC_KEY_TOKEN) || (propertyId == PropertyId.NULL_PUBLIC_KEY));
             uint size = 0;
             int hr = nameObject.GetProperty(propertyId, null, ref size);
             return hr == 0;
@@ -378,7 +378,7 @@ namespace Microsoft.CodeAnalysis
         private static unsafe void SetPublicKeyToken(IAssemblyName nameObject, byte[] value)
         {
             // An empty public key token is set via NULL_PUBLIC_KEY_TOKEN property.
-            if (value != null && value.Length == 0)
+            if ((value != null) && (value.Length == 0))
             {
                 nameObject.SetProperty(PropertyId.NULL_PUBLIC_KEY_TOKEN, null, 0);
             }
@@ -406,7 +406,7 @@ namespace Microsoft.CodeAnalysis
             AssemblyNameFlags flags = GetFlags(nameObject);
 
             byte[] publicKey = GetPublicKey(nameObject);
-            bool hasPublicKey = publicKey != null && publicKey.Length != 0;
+            bool hasPublicKey = (publicKey != null) && (publicKey.Length != 0);
 
             AssemblyIdentityParts versionParts;
             return new AssemblyIdentity(
@@ -561,7 +561,7 @@ namespace Microsoft.CodeAnalysis
                             // we have exactly the preferred culture or 
                             // we have neutral culture and the best candidate's culture isn't the preferred one:
                             if (StringComparer.OrdinalIgnoreCase.Equals(candidateCulture, preferredCultureOpt) ||
-                                candidateCulture.Length == 0 && !StringComparer.OrdinalIgnoreCase.Equals(bestCulture, preferredCultureOpt))
+                                ((candidateCulture.Length == 0) && !StringComparer.OrdinalIgnoreCase.Equals(bestCulture, preferredCultureOpt)))
                             {
                                 bestCandidate = candidate;
                                 bestVersion = candidateVersion;

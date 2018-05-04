@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 // Some tokens may be either unary or binary operators (e.g. +, -).
                 if (SyntaxFacts.IsPrefixUnaryExpressionOperatorToken(opTokenKind) &&
-                    declaration.ParameterList.Parameters.Count == 1)
+                    (declaration.ParameterList.Parameters.Count == 1))
                 {
                     return OperatorFacts.UnaryOperatorNameFromSyntaxKind(opTokenKind);
                 }

@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
         {
             var token = await GetTokenAtPositionAsync(semanticModel, position, workspace, cancellationToken).ConfigureAwait(false);
 
-            if (token != default &&
+            if ((token != default) &&
                 token.Span.IntersectsWith(position))
             {
                 return semanticModel.GetSemanticInfo(token, workspace, cancellationToken);
@@ -164,13 +164,13 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             }
 
             var project = solution.GetProject(symbol.ContainingAssembly, cancellationToken);
-            if (project != null && project.SupportsCompilation)
+            if ((project != null) && project.SupportsCompilation)
             {
                 var symbolId = symbol.GetSymbolKey();
                 var compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
                 var result = symbolId.Resolve(compilation, ignoreAssemblyKey: true, cancellationToken: cancellationToken);
 
-                if (result.Symbol != null && InSource(result.Symbol))
+                if ((result.Symbol != null) && InSource(result.Symbol))
                 {
                     return SymbolAndProjectId.Create(result.Symbol, project.Id);
                 }

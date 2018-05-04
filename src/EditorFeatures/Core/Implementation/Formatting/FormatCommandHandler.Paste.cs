@@ -57,13 +57,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
             }
 
             var formattingRuleService = document.Project.Solution.Workspace.Services.GetService<IHostDependentFormattingRuleFactoryService>();
-            if (formattingRuleService != null && formattingRuleService.ShouldNotFormatOrCommitOnPaste(document))
+            if ((formattingRuleService != null) && formattingRuleService.ShouldNotFormatOrCommitOnPaste(document))
             {
                 return;
             }
 
             var formattingService = document.GetLanguageService<IEditorFormattingService>();
-            if (formattingService == null || !formattingService.SupportsFormatOnPaste)
+            if ((formattingService == null) || !formattingService.SupportsFormatOnPaste)
             {
                 return;
             }

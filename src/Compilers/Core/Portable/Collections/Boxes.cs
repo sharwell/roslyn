@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis
             // There are many representation of zero in System.Decimal
             // Use the boxed value only if the bit pattern is all zeros.
             ulong* ptr = (ulong*)&d;
-            return ptr[0] == 0 && ptr[1] == 0 ? BoxedDecimalZero : d;
+            return (ptr[0] == 0) && (ptr[1] == 0) ? BoxedDecimalZero : d;
         }
     }
 }

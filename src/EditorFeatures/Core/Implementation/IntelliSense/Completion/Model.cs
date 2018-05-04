@@ -184,15 +184,15 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             var newSuggestionModeItem = suggestionModeItem.HasValue ? suggestionModeItem.Value : SuggestionModeItem;
             var newCommitTrackingSpanEndPoint = commitTrackingSpanEndPoint.HasValue ? commitTrackingSpanEndPoint.Value : CommitTrackingSpanEndPoint;
 
-            if (newFilteredItems == FilteredItems &&
-                newSelectedItem == SelectedItemOpt &&
-                newFilterState == FilterState &&
-                newFilterText == FilterText &&
-                newIsHardSelection == IsHardSelection &&
-                newIsUnique == IsUnique &&
-                newUseSuggestionMode == UseSuggestionMode &&
-                newSuggestionModeItem == SuggestionModeItem &&
-                newCommitTrackingSpanEndPoint == CommitTrackingSpanEndPoint)
+            if ((newFilteredItems == FilteredItems) &&
+                (newSelectedItem == SelectedItemOpt) &&
+                (newFilterState == FilterState) &&
+                (newFilterText == FilterText) &&
+                (newIsHardSelection == IsHardSelection) &&
+                (newIsUnique == IsUnique) &&
+                (newUseSuggestionMode == UseSuggestionMode) &&
+                (newSuggestionModeItem == SuggestionModeItem) &&
+                (newCommitTrackingSpanEndPoint == CommitTrackingSpanEndPoint))
             {
                 return this;
             }

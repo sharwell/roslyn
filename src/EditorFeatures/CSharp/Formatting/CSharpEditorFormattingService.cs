@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting
             // TODO(cyrusn): Should we expose an option for this?  Personally, i don't think so.
             // If a user doesn't want this behavior, they can turn off 'smart indent' and control
             // everything themselves.  
-            if (ch == '}' && smartIndentOn)
+            if ((ch == '}') && smartIndentOn)
             {
                 return true;
             }
@@ -71,18 +71,18 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting
                 return false;
             }
             
-            if (ch == '}' && !options.GetOption(FeatureOnOffOptions.AutoFormattingOnCloseBrace, LanguageNames.CSharp))
+            if ((ch == '}') && !options.GetOption(FeatureOnOffOptions.AutoFormattingOnCloseBrace, LanguageNames.CSharp))
             {
                 return false;
             }
 
-            if (ch == ';' && !options.GetOption(FeatureOnOffOptions.AutoFormattingOnSemicolon, LanguageNames.CSharp))
+            if ((ch == ';') && !options.GetOption(FeatureOnOffOptions.AutoFormattingOnSemicolon, LanguageNames.CSharp))
             {
                 return false;
             }
 
             // don't auto format after these keys if smart indenting is not on.
-            if ((ch == '#' || ch == 'n') && !smartIndentOn)
+            if (((ch == '#') || (ch == 'n')) && !smartIndentOn)
             {
                 return false;
             }
@@ -187,7 +187,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting
             // If the token is a :  we only want to format if it's a labeled statement
             // or case.  When the colon is typed we'll want ot immediately have those
             // statements snap to their appropriate indentation level.
-            if (token.IsKind(SyntaxKind.ColonToken) && !(token.Parent.IsKind(SyntaxKind.LabeledStatement) || token.Parent is SwitchLabelSyntax))
+            if (token.IsKind(SyntaxKind.ColonToken) && !(token.Parent.IsKind(SyntaxKind.LabeledStatement) || (token.Parent is SwitchLabelSyntax)))
             {
                 return true;
             }
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting
             }
 
             var service = document.GetLanguageService<ISyntaxFactsService>();
-            if (service != null && service.IsInNonUserCode(token.SyntaxTree, caretPosition, cancellationToken))
+            if ((service != null) && service.IsInNonUserCode(token.SyntaxTree, caretPosition, cancellationToken))
             {
                 return null;
             }
@@ -295,7 +295,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting
             }
 
             var tokenRange = FormattingRangeHelper.FindAppropriateRange(endToken);
-            if (tokenRange == null || tokenRange.Value.Item1.Equals(tokenRange.Value.Item2))
+            if ((tokenRange == null) || tokenRange.Value.Item1.Equals(tokenRange.Value.Item2))
             {
                 return SpecializedCollections.EmptyList<TextChange>();
             }
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting
             switch (typedChar)
             {
                 case 'n':
-                    return kind == SyntaxKind.RegionKeyword || kind == SyntaxKind.EndRegionKeyword;
+                    return (kind == SyntaxKind.RegionKeyword) || (kind == SyntaxKind.EndRegionKeyword);
                 case 't':
                     return kind == SyntaxKind.SelectKeyword;
                 case 'e':

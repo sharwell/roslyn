@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis
 
                 public override bool Equals(object obj)
                 {
-                    return obj is Key && Equals((Key)obj);
+                    return (obj is Key) && Equals((Key)obj);
                 }
 
                 public override int GetHashCode()
@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis
                             return true;
                         }
                     }
-                    else if (version >= value.VersionLow && version <= value.VersionHigh)
+                    else if ((version >= value.VersionLow) && (version <= value.VersionHigh))
                     {
                         return true;
                     }

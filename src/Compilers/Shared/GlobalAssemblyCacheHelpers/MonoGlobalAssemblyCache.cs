@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis
                 }
 
                 var name = new AssemblyName(path);
-                if (version != null && name.Version != version)
+                if ((version != null) && (name.Version != version))
                 {
                     continue;
                 }
@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis
 
         private static IEnumerable<string> GetGacAssemblyPaths(string gacPath, string name, Version version, string publicKeyToken)
         {
-            if (version != null && publicKeyToken != null)
+            if ((version != null) && (publicKeyToken != null))
             {
                 yield return Path.Combine(gacPath, name, version + "__" + publicKeyToken, name + ".dll");
                 yield break;
@@ -73,12 +73,12 @@ namespace Microsoft.CodeAnalysis
 
             foreach (var assemblyDir in gacAssemblyRootDir.GetDirectories())
             {
-                if (version != null && !assemblyDir.Name.StartsWith(version.ToString(), StringComparison.Ordinal))
+                if ((version != null) && !assemblyDir.Name.StartsWith(version.ToString(), StringComparison.Ordinal))
                 {
                     continue;
                 }
 
-                if (publicKeyToken != null && !assemblyDir.Name.EndsWith(publicKeyToken, StringComparison.Ordinal))
+                if ((publicKeyToken != null) && !assemblyDir.Name.EndsWith(publicKeyToken, StringComparison.Ordinal))
                 {
                     continue;
                 }
@@ -130,9 +130,9 @@ namespace Microsoft.CodeAnalysis
 
                     var gacAssemblyName = new AssemblyName(assemblyPath);
 
-                    if (gacAssemblyName.ProcessorArchitecture != ProcessorArchitecture.None &&
-                        architectureFilter != default(ImmutableArray<ProcessorArchitecture>) &&
-                        architectureFilter.Length > 0 &&
+                    if ((gacAssemblyName.ProcessorArchitecture != ProcessorArchitecture.None) &&
+                        (architectureFilter != default(ImmutableArray<ProcessorArchitecture>)) &&
+                        (architectureFilter.Length > 0) &&
                         !architectureFilter.Contains(gacAssemblyName.ProcessorArchitecture))
                     {
                         continue;
@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(displayName));
             }
 
-            string cultureName = (preferredCulture != null && !preferredCulture.IsNeutralCulture) ? preferredCulture.Name : null;
+            string cultureName = ((preferredCulture != null) && !preferredCulture.IsNeutralCulture) ? preferredCulture.Name : null;
 
             var assemblyName = new AssemblyName(displayName);
             AssemblyIdentity assemblyIdentity = null;
@@ -205,8 +205,8 @@ namespace Microsoft.CodeAnalysis
 
                 var gacAssemblyName = new AssemblyName(assemblyPath);
 
-                isBestMatch = cultureName == null || gacAssemblyName.CultureName == cultureName;
-                bool isBetterMatch = location == null || isBestMatch;
+                isBestMatch = (cultureName == null) || (gacAssemblyName.CultureName == cultureName);
+                bool isBetterMatch = (location == null) || isBestMatch;
 
                 if (isBetterMatch)
                 {

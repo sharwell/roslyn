@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.AddImport
 
         private void AnalyzeNode(SyntaxNodeAnalysisContext context)
         {
-            if (IsBrokenLambda(context) || context.Node is TIncompleteMemberSyntax)
+            if (IsBrokenLambda(context) || (context.Node is TIncompleteMemberSyntax))
             {
                 ReportUnboundIdentifierNames(context, context.Node);
             }
@@ -66,12 +66,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics.AddImport
 
         private void ReportUnboundIdentifierNames(SyntaxNodeAnalysisContext context, SyntaxNode member)
         {
-            bool isQualifiedOrSimpleName(SyntaxNode n) => n is TQualifiedNameSyntax || n is TSimpleNameSyntax;
+            bool isQualifiedOrSimpleName(SyntaxNode n) => (n is TQualifiedNameSyntax) || (n is TSimpleNameSyntax);
             var typeNames = member.DescendantNodes().Where(n => isQualifiedOrSimpleName(n) && !n.Span.IsEmpty);
             foreach (var typeName in typeNames)
             {
                 var info = context.SemanticModel.GetSymbolInfo(typeName);
-                if (info.Symbol == null && info.CandidateSymbols.Length == 0)
+                if ((info.Symbol == null) && (info.CandidateSymbols.Length == 0))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(DiagnosticDescriptor, typeName.GetLocation(), typeName.ToString()));
                 }

@@ -38,8 +38,8 @@ namespace Microsoft.CodeAnalysis.Emit
 
         public bool Equals(AnonymousTypeKeyField other)
         {
-            return IsKey == other.IsKey &&
-                   IgnoreCase == other.IgnoreCase &&
+            return (IsKey == other.IsKey) &&
+                   (IgnoreCase == other.IgnoreCase) &&
                    (IgnoreCase ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal).Equals(Name, other.Name);
         }
 

@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
                 var xParamType = GetNamedType(xParam.Type);
                 var yParamType = GetNamedType(yParam.Type);
-                if (xParamType != null && yParamType != null)
+                if ((xParamType != null) && (yParamType != null))
                 {
                     diff = CompareNamedTypes(xParamType, yParamType);
                     if (diff != 0)
@@ -157,28 +157,28 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
             // Order named types before methods and properties, and methods before properties.
 
-            if (s1.Kind == SymbolKind.NamedType || s2.Kind == SymbolKind.NamedType)
+            if ((s1.Kind == SymbolKind.NamedType) || (s2.Kind == SymbolKind.NamedType))
             {
                 return s1.Kind == s2.Kind
                     ? CompareNamedTypes((INamedTypeSymbol)s1, (INamedTypeSymbol)s2)
                     : s1.Kind == SymbolKind.NamedType ? -1 : 1;
             }
 
-            if (s1.Kind == SymbolKind.Method || s2.Kind == SymbolKind.Method)
+            if ((s1.Kind == SymbolKind.Method) || (s2.Kind == SymbolKind.Method))
             {
                 return s1.Kind == s2.Kind
                     ? CompareMethods((IMethodSymbol)s1, symbol1ParameterTypeNames, (IMethodSymbol)s2, symbol2ParameterTypeNames)
                     : s1.Kind == SymbolKind.Method ? -1 : 1;
             }
 
-            if (s1.Kind == SymbolKind.Property || s2.Kind == SymbolKind.Property)
+            if ((s1.Kind == SymbolKind.Property) || (s2.Kind == SymbolKind.Property))
             {
                 return s1.Kind == s2.Kind
                     ? CompareProperties((IPropertySymbol)s1, symbol1ParameterTypeNames, (IPropertySymbol)s2, symbol2ParameterTypeNames)
                     : s1.Kind == SymbolKind.Property ? -1 : 1;
             }
 
-            if (s1.Kind == SymbolKind.Event || s2.Kind == SymbolKind.Event)
+            if ((s1.Kind == SymbolKind.Event) || (s2.Kind == SymbolKind.Event))
             {
                 return s1.Kind == s2.Kind
                     ? CompareEvents((IEventSymbol)s1, symbol1ParameterTypeNames, (IEventSymbol)s2, symbol2ParameterTypeNames)

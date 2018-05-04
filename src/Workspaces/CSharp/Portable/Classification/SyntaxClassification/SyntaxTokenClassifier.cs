@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification.Classifiers
     {
         public override ImmutableArray<int> SyntaxTokenKinds { get; } = ImmutableArray.Create((int)SyntaxKind.LessThanToken);
 
-        private static readonly Func<ITypeSymbol, bool> s_shouldInclude = t => t.TypeKind != TypeKind.Error && t.GetArity() > 0;
+        private static readonly Func<ITypeSymbol, bool> s_shouldInclude = t => (t.TypeKind != TypeKind.Error) && (t.GetArity() > 0);
 
         public override void AddClassifications(
             SyntaxToken lessThanToken,

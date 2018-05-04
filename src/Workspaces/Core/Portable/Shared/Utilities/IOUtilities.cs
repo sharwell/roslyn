@@ -46,12 +46,12 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         public static bool IsNormalIOException(Exception e)
         {
-            return e is IOException ||
-                   e is SecurityException ||
-                   e is ArgumentException ||
-                   e is UnauthorizedAccessException ||
-                   e is NotSupportedException ||
-                   e is InvalidOperationException;
+            return (e is IOException) ||
+                   (e is SecurityException) ||
+                   (e is ArgumentException) ||
+                   (e is UnauthorizedAccessException) ||
+                   (e is NotSupportedException) ||
+                   (e is InvalidOperationException);
         }
     }
 }

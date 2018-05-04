@@ -230,7 +230,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 MethodSymbol accessor = GetMethod ?? SetMethod;
 
                 // false is a reasonable default if there are no accessors (e.g. not done typing).
-                return (object)accessor != null && accessor.HidesBaseMethodsByName;
+                return ((object)accessor != null) && accessor.HidesBaseMethodsByName;
             }
         }
 
@@ -263,7 +263,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // See InternalsVisibleToAndStrongNameTests: IvtVirtualCall1, IvtVirtualCall2, IvtVirtual_ParamsAndDynamic.
                 PropertySymbol overridden = p.OverriddenProperty;
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                if ((object)overridden == null || !AccessCheck.IsSymbolAccessible(overridden, accessingType, ref useSiteDiagnostics))
+                if (((object)overridden == null) || !AccessCheck.IsSymbolAccessible(overridden, accessingType, ref useSiteDiagnostics))
                 {
                     break;
                 }
@@ -389,7 +389,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 DiagnosticInfo info = GetUseSiteDiagnostic();
-                return (object)info != null && (info.Code == (int)ErrorCode.ERR_BindToBogus || info.Code == (int)ErrorCode.ERR_ByRefReturnUnsupported);
+                return ((object)info != null) && ((info.Code == (int)ErrorCode.ERR_BindToBogus) || (info.Code == (int)ErrorCode.ERR_ByRefReturnUnsupported));
             }
         }
 
@@ -519,7 +519,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             // This checks if the property have the same definition and the type parameters on the containing types have been
             // substituted in the same way.
-            return this.ContainingType == other.ContainingType && ReferenceEquals(this.OriginalDefinition, other.OriginalDefinition);
+            return (this.ContainingType == other.ContainingType) && ReferenceEquals(this.OriginalDefinition, other.OriginalDefinition);
         }
 
         public override int GetHashCode()

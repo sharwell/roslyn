@@ -100,10 +100,10 @@ namespace Roslyn.Test.Utilities
             foreach (var attribute in parameter.CustomAttributes)
             {
                 // these are pseudo-custom attributes that are added by Reflection but don't appear in metadata as custom attributes:
-                if (attribute.AttributeType != typeof(OptionalAttribute) &&
-                    attribute.AttributeType != typeof(InAttribute) &&
-                    attribute.AttributeType != typeof(OutAttribute) &&
-                    attribute.AttributeType != typeof(MarshalAsAttribute))
+                if ((attribute.AttributeType != typeof(OptionalAttribute)) &&
+                    (attribute.AttributeType != typeof(InAttribute)) &&
+                    (attribute.AttributeType != typeof(OutAttribute)) &&
+                    (attribute.AttributeType != typeof(MarshalAsAttribute)))
                 {
                     AppendCustomAttributeData(attribute, sb);
                     sb.Append(" ");

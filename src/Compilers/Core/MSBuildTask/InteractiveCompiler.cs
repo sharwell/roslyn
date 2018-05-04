@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
         #region Tool Members
 
         // See ManagedCompiler.cs on the logic of this property
-        private bool HasToolBeenOverridden => !(string.IsNullOrEmpty(ToolPath) && ToolExe == ToolName);
+        private bool HasToolBeenOverridden => !(string.IsNullOrEmpty(ToolPath) && (ToolExe == ToolName));
 
         protected sealed override bool IsManagedTool => !HasToolBeenOverridden;
 

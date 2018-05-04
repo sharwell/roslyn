@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             bool hasBlockBody = syntax.Body != null;
-            _isExpressionBodied = !hasBlockBody && syntax.ExpressionBody != null;
+            _isExpressionBodied = !hasBlockBody && (syntax.ExpressionBody != null);
 
             if (hasBlockBody || _isExpressionBodied)
             {

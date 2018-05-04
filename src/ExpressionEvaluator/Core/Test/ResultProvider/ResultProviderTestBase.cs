@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         internal static DkmClrCustomTypeInfo MakeCustomTypeInfo(params bool[] dynamicFlags)
         {
-            if (dynamicFlags == null || dynamicFlags.Length == 0)
+            if ((dynamicFlags == null) || (dynamicFlags.Length == 0))
             {
                 return null;
             }
@@ -496,7 +496,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 Assert.Equal(expectedSuccess.EditableValue, actualSuccess.EditableValue);
                 Assert.True(
                     (expectedSuccess.CustomUIVisualizers == actualSuccess.CustomUIVisualizers) ||
-                    (expectedSuccess.CustomUIVisualizers != null && actualSuccess.CustomUIVisualizers != null &&
+                    ((expectedSuccess.CustomUIVisualizers != null) && (actualSuccess.CustomUIVisualizers != null) &&
                     expectedSuccess.CustomUIVisualizers.SequenceEqual(actualSuccess.CustomUIVisualizers, CustomUIVisualizerInfoComparer.Instance)));
             }
             else if (expectedIntermediate != null)
@@ -524,17 +524,17 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
             bool IEqualityComparer<DkmCustomUIVisualizerInfo>.Equals(DkmCustomUIVisualizerInfo x, DkmCustomUIVisualizerInfo y)
             {
-                return x == y ||
-                    (x != null && y != null &&
-                    x.Id == y.Id &&
-                    x.MenuName == y.MenuName &&
-                    x.Description == y.Description &&
-                    x.Metric == y.Metric &&
-                    x.UISideVisualizerTypeName == y.UISideVisualizerTypeName &&
-                    x.UISideVisualizerAssemblyName == y.UISideVisualizerAssemblyName &&
-                    x.UISideVisualizerAssemblyLocation == y.UISideVisualizerAssemblyLocation &&
-                    x.DebuggeeSideVisualizerTypeName == y.DebuggeeSideVisualizerTypeName &&
-                    x.DebuggeeSideVisualizerAssemblyName == y.DebuggeeSideVisualizerAssemblyName);
+                return (x == y) ||
+                    ((x != null) && (y != null) &&
+                    (x.Id == y.Id) &&
+                    (x.MenuName == y.MenuName) &&
+                    (x.Description == y.Description) &&
+                    (x.Metric == y.Metric) &&
+                    (x.UISideVisualizerTypeName == y.UISideVisualizerTypeName) &&
+                    (x.UISideVisualizerAssemblyName == y.UISideVisualizerAssemblyName) &&
+                    (x.UISideVisualizerAssemblyLocation == y.UISideVisualizerAssemblyLocation) &&
+                    (x.DebuggeeSideVisualizerTypeName == y.DebuggeeSideVisualizerTypeName) &&
+                    (x.DebuggeeSideVisualizerAssemblyName == y.DebuggeeSideVisualizerAssemblyName));
             }
 
             int IEqualityComparer<DkmCustomUIVisualizerInfo>.GetHashCode(DkmCustomUIVisualizerInfo obj)

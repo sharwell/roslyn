@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// <param name="other">The object to compare.</param>
         public bool Equals(LinePosition other)
         {
-            return other.Line == this.Line && other.Character == this.Character;
+            return (other.Line == this.Line) && (other.Character == this.Character);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// <param name="obj">The object to compare.</param>
         public override bool Equals(object obj)
         {
-            return obj is LinePosition && Equals((LinePosition)obj);
+            return (obj is LinePosition) && Equals((LinePosition)obj);
         }
 
         /// <summary>

@@ -43,7 +43,7 @@ namespace Microsoft.DiaSymReader
                 return HResult.E_INVALIDARG;
             }
 
-            if (qualifiedNameLength != null || qualifiedName != null)
+            if ((qualifiedNameLength != null) || (qualifiedName != null))
             {
                 InteropUtilities.CopyQualifiedTypeName(
                     qualifiedName,
@@ -100,7 +100,7 @@ namespace Microsoft.DiaSymReader
                 return HResult.E_INVALIDARG;
             }
 
-            if (name != null || nameLength != null)
+            if ((name != null) || (nameLength != null))
             {
                 // if the buffer is too small to fit the name, truncate the name.
                 // -1 to account for a NUL terminator.
@@ -112,7 +112,7 @@ namespace Microsoft.DiaSymReader
                     *nameLength = adjustedLength;
                 }
 
-                if (name != null && nameBufferLength > 0)
+                if ((name != null) && (nameBufferLength > 0))
                 {
                     char* dst = name;
 

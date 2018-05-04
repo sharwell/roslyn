@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
         {
             get
             {
-                if (index < 0 || index >= _nodes.Length)
+                if ((index < 0) || (index >= _nodes.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(index));
                 }

@@ -51,8 +51,8 @@ namespace Microsoft.CodeAnalysis.Emit
         {
             const int maxReportedLength = 1024;
 
-            int start = Math.Max(0, offset - maxReportedLength / 2);
-            int end = Math.Min(data.Length, offset + maxReportedLength / 2);
+            int start = Math.Max(0, offset - (maxReportedLength / 2));
+            int end = Math.Min(data.Length, offset + (maxReportedLength / 2));
 
             byte[] left = new byte[offset - start];
             data.CopyTo(start, left, 0, left.Length);

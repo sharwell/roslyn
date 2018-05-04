@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public static void WriteDocumentationCommentXml(CSharpCompilation compilation, string assemblyName, Stream xmlDocStream, DiagnosticBag diagnostics, CancellationToken cancellationToken, SyntaxTree filterTree = null, TextSpan? filterSpanWithinTree = null)
         {
             StreamWriter writer = null;
-            if (xmlDocStream != null && xmlDocStream.CanWrite)
+            if ((xmlDocStream != null) && xmlDocStream.CanWrite)
             {
                 writer = new StreamWriter(
                     stream: xmlDocStream,
@@ -129,11 +129,11 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal static string GetDocumentationCommentXml(Symbol symbol, bool processIncludes, CancellationToken cancellationToken)
         {
             Debug.Assert(
-                symbol.Kind == SymbolKind.Event ||
-                symbol.Kind == SymbolKind.Field ||
-                symbol.Kind == SymbolKind.Method ||
-                symbol.Kind == SymbolKind.NamedType ||
-                symbol.Kind == SymbolKind.Property);
+                (symbol.Kind == SymbolKind.Event) ||
+                (symbol.Kind == SymbolKind.Field) ||
+                (symbol.Kind == SymbolKind.Method) ||
+                (symbol.Kind == SymbolKind.NamedType) ||
+                (symbol.Kind == SymbolKind.Property));
 
             CSharpCompilation compilation = symbol.DeclaringCompilation;
             Debug.Assert(compilation != null);
@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             _cancellationToken.ThrowIfCancellationRequested();
 
-            if (_filterTree != null && !symbol.IsDefinedInSourceTree(_filterTree, _filterSpanWithinTree))
+            if ((_filterTree != null) && !symbol.IsDefinedInSourceTree(_filterTree, _filterSpanWithinTree))
             {
                 return;
             }
@@ -240,7 +240,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return;
             }
 
-            if (_filterTree != null && !symbol.IsDefinedInSourceTree(_filterTree, _filterSpanWithinTree))
+            if ((_filterTree != null) && !symbol.IsDefinedInSourceTree(_filterTree, _filterSpanWithinTree))
             {
                 return;
             }
@@ -269,7 +269,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // If there are no doc comments, then no further work is required (other than to report a diagnostic if one is required).
             if (docCommentNodes.IsEmpty)
             {
-                if (maxDocumentationMode >= DocumentationMode.Diagnose && RequiresDocumentationComment(symbol))
+                if ((maxDocumentationMode >= DocumentationMode.Diagnose) && RequiresDocumentationComment(symbol))
                 {
                     // Report the error at a location in the tree that was parsing doc comments.
                     Location location = GetLocationInTreeReportingDocumentationCommentDiagnostics(symbol);
@@ -325,7 +325,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 IncludeElementExpander.ProcessIncludes(withUnprocessedIncludes, symbol, includeElementNodes,
                     _compilation, ref documentedParameters, ref documentedTypeParameters, ref _includedFileCache, expanderWriter, _diagnostics, _cancellationToken);
             }
-            else if (_writer != null && !isPartialMethodDefinitionPart)
+            else if ((_writer != null) && !isPartialMethodDefinitionPart)
             {
                 // CONSIDER: The output would look a little different if we ran the XDocument through an XmlWriter.  In particular, 
                 // formatting inside tags (e.g. <__tag___attr__=__"value"__>) would be normalized.  Whitespace in elements would
@@ -748,7 +748,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 switch (str[start])
                 {
                     case '\r':
-                        if ((start + 1) < str.Length && str[start + 1] == '\n')
+                        if (((start + 1) < str.Length) && (str[start + 1] == '\n'))
                         {
                             newLineLength = 2;
                         }
@@ -782,7 +782,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 int end = IndexOfNewLine(text, start, out newLineLength);
                 int trimStart = GetIndexOfFirstNonWhitespaceChar(text, start, end);
                 int trimmedLength = end - trimStart;
-                if (trimmedLength < 4 || !SyntaxFacts.IsWhitespace(text[trimStart + 3]))
+                if ((trimmedLength < 4) || !SyntaxFacts.IsWhitespace(text[trimStart + 3]))
                 {
                     skipSpace = false;
                     break;
@@ -849,7 +849,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (!skipFirstLine)
             {
                 string trimmed = lines[0].TrimStart(null);
-                if (!skipLastLine && numLines == 1)
+                if (!skipLastLine && (numLines == 1))
                 {
                     trimmed = TrimEndOfMultiLineComment(trimmed);
                 }
@@ -861,7 +861,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 string trimmed = lines[i].Substring(skipLength);
 
                 // If we've already skipped the last line, this can't happen.
-                if (!skipLastLine && i == numLines - 1)
+                if (!skipLastLine && (i == (numLines - 1)))
                 {
                     trimmed = TrimEndOfMultiLineComment(trimmed);
                 }
@@ -897,7 +897,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     length++;
                 }
-                else if (!seenStar && ch == '*')
+                else if (!seenStar && (ch == '*'))
                 {
                     length++;
                     seenStar = true;
@@ -919,7 +919,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             int pos = 0;
             int minLength = Math.Min(str1.Length, str2.Length);
 
-            for (; pos < minLength && str1[pos] == str2[pos]; pos++)
+            for (; (pos < minLength) && (str1[pos] == str2[pos]); pos++)
             {
             }
 
@@ -1117,7 +1117,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private void Write(string indentedAndWrappedString)
         {
-            if (_temporaryStringBuilders != null && _temporaryStringBuilders.Count > 0)
+            if ((_temporaryStringBuilders != null) && (_temporaryStringBuilders.Count > 0))
             {
                 StringBuilder builder = _temporaryStringBuilders.Peek().Pooled.Builder;
                 builder.Append(indentedAndWrappedString);

@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis
             private static AssemblyIdentity TryGetIdentity(MetadataReference metadataReference)
             {
                 var peReference = metadataReference as PortableExecutableReference;
-                if (peReference == null || peReference.Properties.Kind != MetadataImageKind.Assembly)
+                if ((peReference == null) || (peReference.Properties.Kind != MetadataImageKind.Assembly))
                 {
                     return null;
                 }
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     return ((AssemblyMetadata)peReference.GetMetadataNoCopy()).GetAssembly().Identity;
                 }
-                catch (Exception e) when (e is BadImageFormatException || e is IOException)
+                catch (Exception e) when ((e is BadImageFormatException) || (e is IOException))
                 {
                     // ignore, metadata reading errors are reported by the compiler for the existing references
                     return null;

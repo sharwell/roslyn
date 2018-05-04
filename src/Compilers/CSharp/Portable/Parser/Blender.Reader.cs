@@ -125,7 +125,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             private void SkipPastChanges()
             {
                 var oldPosition = _oldTreeCursor.CurrentNodeOrToken.Position;
-                while (!_changes.IsEmpty && oldPosition >= _changes.Peek().Span.End)
+                while (!_changes.IsEmpty && (oldPosition >= _changes.Peek().Span.End))
                 {
                     var change = _changes.Peek();
 
@@ -136,7 +136,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
             private BlendedNode ReadNewToken(LexerMode mode)
             {
-                Debug.Assert(_changeDelta > 0 || _oldTreeCursor.IsFinished);
+                Debug.Assert((_changeDelta > 0) || _oldTreeCursor.IsFinished);
 
                 // The new text is either behind the cursor, or the cursor is done.  In either event,
                 // we need to lex a real token from the stream.

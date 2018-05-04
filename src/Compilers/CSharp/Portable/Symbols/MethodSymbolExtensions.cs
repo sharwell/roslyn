@@ -14,7 +14,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
     {
         public static bool IsParams(this MethodSymbol method)
         {
-            return method.ParameterCount != 0 && method.Parameters[method.ParameterCount - 1].IsParams;
+            return (method.ParameterCount != 0) && method.Parameters[method.ParameterCount - 1].IsParams;
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(method.IsExtensionMethod);
             Debug.Assert((object)thisType != null);
 
-            if (!method.IsGenericMethod || method != method.ConstructedFrom)
+            if (!method.IsGenericMethod || (method != method.ConstructedFrom))
             {
                 return method;
             }
@@ -117,7 +117,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             diagnosticsBuilder.Free();
             notInferredTypeParameters.Free();
 
-            if (useSiteDiagnosticsBuilder != null && useSiteDiagnosticsBuilder.Count > 0)
+            if ((useSiteDiagnosticsBuilder != null) && (useSiteDiagnosticsBuilder.Count > 0))
             {
                 if (useSiteDiagnostics == null)
                 {
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal static bool IsSynthesizedLambda(this MethodSymbol method)
         {
             Debug.Assert((object)method != null);
-            return method.IsImplicitlyDeclared && method.MethodKind == MethodKind.AnonymousFunction;
+            return method.IsImplicitlyDeclared && (method.MethodKind == MethodKind.AnonymousFunction);
         }
 
         /// <summary>
@@ -177,15 +177,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // to runtime-finalizer (since it will also be marked newslot), so it is safe to use
             // IsMetadataVirtualIgnoringInterfaceImplementationChanges.  This also has the advantage of making
             // this method safe to call before declaration diagnostics have been computed.
-            if ((object)method == null || method.Name != WellKnownMemberNames.DestructorName ||
-                method.ParameterCount != 0 || method.Arity != 0 || !method.IsMetadataVirtual(ignoreInterfaceImplementationChanges: true))
+            if (((object)method == null) || (method.Name != WellKnownMemberNames.DestructorName) ||
+                (method.ParameterCount != 0) || (method.Arity != 0) || !method.IsMetadataVirtual(ignoreInterfaceImplementationChanges: true))
             {
                 return false;
             }
 
             while ((object)method != null)
             {
-                if (!skipFirstMethodKindCheck && method.MethodKind == MethodKind.Destructor)
+                if (!skipFirstMethodKindCheck && (method.MethodKind == MethodKind.Destructor))
                 {
                     // For metadata symbols (and symbols that wrap them), having MethodKind
                     // Destructor guarantees that the method is a runtime finalizer.

@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
 
         private EnvDTE.Project GetProject(string nameOrFileName)
             => GetDTE().Solution.Projects.OfType<EnvDTE.Project>().First(p =>
-               string.Compare(p.FileName, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0
-                || string.Compare(p.Name, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0);
+               (string.Compare(p.FileName, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0)
+                || (string.Compare(p.Name, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0));
 
         public bool IsUseSuggestionModeOn()
             => _visualStudioWorkspace.Options.GetOption(EditorCompletionOptions.UseSuggestionMode);
@@ -107,7 +107,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
 
         private static IOption GetOption(string optionName, string feature, IOptionService optionService)
         {
-            var option = optionService.GetRegisteredOptions().FirstOrDefault(o => o.Feature == feature && o.Name == optionName);
+            var option = optionService.GetRegisteredOptions().FirstOrDefault(o => (o.Feature == feature) && (o.Name == optionName));
             if (option == null)
             {
                 throw new Exception($"Failed to find option with feature name '{feature}' and option name '{optionName}'");
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
             => InvokeOnUIThread(() =>
             {
                 var optionService = _visualStudioWorkspace.Services.GetService<IOptionService>();
-                var option = optionService.GetRegisteredOptions().FirstOrDefault(o => o.Feature == feature && o.Name == optionName);
+                var option = optionService.GetRegisteredOptions().FirstOrDefault(o => (o.Feature == feature) && (o.Name == optionName));
                 if (option == null)
                 {
                     throw new InvalidOperationException($"Failed to find option with feature name '{feature}' and option name '{optionName}'");

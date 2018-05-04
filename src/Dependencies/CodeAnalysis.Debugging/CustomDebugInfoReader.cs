@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.Debugging
                 yield break;
             }
 
-            while (offset <= customDebugInfo.Length - CustomDebugInfoConstants.RecordHeaderSize)
+            while (offset <= (customDebugInfo.Length - CustomDebugInfoConstants.RecordHeaderSize))
             {
                 ReadRecordHeader(customDebugInfo, ref offset, out var version, out var kind, out var size, out var alignmentSize);
                 if (size < CustomDebugInfoConstants.RecordHeaderSize)
@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.Debugging
                 }
 
                 int bodySize = size - CustomDebugInfoConstants.RecordHeaderSize;
-                if (offset > customDebugInfo.Length - bodySize || alignmentSize > 3 || alignmentSize > bodySize)
+                if ((offset > (customDebugInfo.Length - bodySize)) || (alignmentSize > 3) || (alignmentSize > bodySize))
                 {
                     throw new InvalidOperationException("Invalid header.");
                 }
@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.Debugging
                 // It means either a user defined local with range [0, 1) or a synthesized local.
                 // It is unlikely that a user local scope spans just 1B from the start of the method. 
                 // Assume therefore that [0,0] means a synthesized local.
-                if (startOffset != 0 || endOffset != 0)
+                if ((startOffset != 0) || (endOffset != 0))
                 {
                     endOffset++;
                 }
@@ -507,10 +507,10 @@ namespace Microsoft.CodeAnalysis.Debugging
             // As in PdbUtil::GetRawNamespaceListCore, we consider only the first string when
             // checking for forwarding.
             string importString = importStrings[0];
-            if (importString.Length >= 2 && importString[0] == '@')
+            if ((importString.Length >= 2) && (importString[0] == '@'))
             {
                 char ch1 = importString[1];
-                if ('0' <= ch1 && ch1 <= '9')
+                if (('0' <= ch1) && (ch1 <= '9'))
                 {
                     if (int.TryParse(importString.Substring(1), NumberStyles.None, CultureInfo.InvariantCulture, out var tempMethodToken))
                     {
@@ -534,7 +534,7 @@ namespace Microsoft.CodeAnalysis.Debugging
         private static int ReadInt32(ImmutableArray<byte> bytes, ref int offset)
         {
             int i = offset;
-            if (i + sizeof(int) > bytes.Length)
+            if ((i + sizeof(int)) > bytes.Length)
             {
                 throw new InvalidOperationException("Read out of buffer.");
             }
@@ -546,7 +546,7 @@ namespace Microsoft.CodeAnalysis.Debugging
         private static short ReadInt16(ImmutableArray<byte> bytes, ref int offset)
         {
             int i = offset;
-            if (i + sizeof(short) > bytes.Length)
+            if ((i + sizeof(short)) > bytes.Length)
             {
                 throw new InvalidOperationException("Read out of buffer.");
             }
@@ -558,7 +558,7 @@ namespace Microsoft.CodeAnalysis.Debugging
         private static byte ReadByte(ImmutableArray<byte> bytes, ref int offset)
         {
             int i = offset;
-            if (i + sizeof(byte) > bytes.Length)
+            if ((i + sizeof(byte)) > bytes.Length)
             {
                 throw new InvalidOperationException("Read out of buffer.");
             }
@@ -569,7 +569,7 @@ namespace Microsoft.CodeAnalysis.Debugging
 
         private static bool IsCSharpExternAliasInfo(string import)
         {
-            return import.Length > 0 && import[0] == 'Z';
+            return (import.Length > 0) && (import[0] == 'Z');
         }
 
         /// <summary>
@@ -842,10 +842,10 @@ namespace Microsoft.CodeAnalysis.Debugging
 
             // Allow zero-length before for the global namespace (empty string).
             // Allow zero-length after for an XML alias in VB ("@PX:=").  Not sure what it means.
-            if (offset <= separatorPos && separatorPos < input.Length)
+            if ((offset <= separatorPos) && (separatorPos < input.Length))
             {
                 before = input.Substring(offset, separatorPos - offset);
-                after = separatorPos + 1 == input.Length
+                after = (separatorPos + 1) == input.Length
                     ? ""
                     : input.Substring(separatorPos + 1);
                 return true;

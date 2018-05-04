@@ -64,7 +64,7 @@ public class TestClass
             s_dotnetSdkVersion = typeof(DotNetSdkTests).Assembly.GetCustomAttribute<DotNetSdkVersionAttribute>().Version;
 
             bool isMatchingDotNetInstance(string dotnetDir)
-                => dotnetDir != null && File.Exists(Path.Combine(dotnetDir, s_dotnetExeName)) && Directory.Exists(GetSdkPath(dotnetDir, s_dotnetSdkVersion));
+                => (dotnetDir != null) && File.Exists(Path.Combine(dotnetDir, s_dotnetExeName)) && Directory.Exists(GetSdkPath(dotnetDir, s_dotnetSdkVersion));
 
             var dotnetInstallDir = Environment.GetEnvironmentVariable("DOTNET_INSTALL_DIR");
             if (!isMatchingDotNetInstance(dotnetInstallDir))

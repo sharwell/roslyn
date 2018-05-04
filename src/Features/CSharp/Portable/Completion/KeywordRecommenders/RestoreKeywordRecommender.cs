@@ -21,9 +21,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             var previousToken3 = previousToken2.GetPreviousToken(includeSkipped: true);
 
             return
-               previousToken1.Kind() == SyntaxKind.WarningKeyword &&
-               previousToken2.Kind() == SyntaxKind.PragmaKeyword &&
-               previousToken3.Kind() == SyntaxKind.HashToken;
+               (previousToken1.Kind() == SyntaxKind.WarningKeyword) &&
+               (previousToken2.Kind() == SyntaxKind.PragmaKeyword) &&
+               (previousToken3.Kind() == SyntaxKind.HashToken);
         }
     }
 }

@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.SignatureHelp
             int currentParameterIndex = -1;
             if (expectedTestItem.CurrentParameterIndex != null)
             {
-                if (expectedTestItem.CurrentParameterIndex.Value >= 0 && expectedTestItem.CurrentParameterIndex.Value < actualSignatureHelpItem.Parameters.Length)
+                if ((expectedTestItem.CurrentParameterIndex.Value >= 0) && (expectedTestItem.CurrentParameterIndex.Value < actualSignatureHelpItem.Parameters.Length))
                 {
                     currentParameterIndex = expectedTestItem.CurrentParameterIndex.Value;
                 }
@@ -267,7 +267,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.SignatureHelp
             IEnumerable<SignatureHelpTestItem> expectedOrderedItemsSameSolution,
             string sourceLanguage, string referencedLanguage, bool hideAdvancedMembers = false)
         {
-            if (expectedOrderedItemsMetadataReference == null || expectedOrderedItemsSameSolution == null)
+            if ((expectedOrderedItemsMetadataReference == null) || (expectedOrderedItemsSameSolution == null))
             {
                 AssertEx.Fail("Expected signature help items must be provided for EditorBrowsable tests. If there are no expected items, provide an empty IEnumerable rather than null.");
             }
@@ -364,7 +364,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.SignatureHelp
                 }
 
                 TextSpan? textSpan = null;
-                if (textSpans != null && textSpans.Any())
+                if ((textSpans != null) && textSpans.Any())
                 {
                     textSpan = textSpans.First();
                 }
@@ -400,7 +400,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.SignatureHelp
             var items = await signatureHelpProvider.GetItemsAsync(document, cursorPosition, triggerInfo, CancellationToken.None);
 
             // If we're expecting 0 items, then there's no need to compare them
-            if ((expectedOrderedItemsOrNull == null || !expectedOrderedItemsOrNull.Any()) && items == null)
+            if (((expectedOrderedItemsOrNull == null) || !expectedOrderedItemsOrNull.Any()) && (items == null))
             {
                 return;
             }
@@ -449,7 +449,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.SignatureHelp
                 }
 
                 TextSpan? textSpan = null;
-                if (textSpans != null && textSpans.Any())
+                if ((textSpans != null) && textSpans.Any())
                 {
                     textSpan = textSpans.First();
                 }

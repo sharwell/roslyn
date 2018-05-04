@@ -17,7 +17,7 @@ namespace BuildBoss
         internal XmlNamespaceManager Manager { get; }
         internal XNamespace Namespace { get; }
 
-        public bool IsNewSdk => GetTargetFramework() != null || GetTargetFrameworks() != null;
+        public bool IsNewSdk => (GetTargetFramework() != null) || (GetTargetFrameworks() != null);
 
         public bool IsDesktopProject => Document.XPathSelectElements("//mb:TargetFrameworkVersion", Manager).FirstOrDefault() != null;
 

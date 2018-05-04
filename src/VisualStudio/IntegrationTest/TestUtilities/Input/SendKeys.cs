@@ -124,9 +124,9 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Input
         }
 
         private static bool IsExtendedKey(VirtualKey virtualKey)
-            => (virtualKey >= VirtualKey.PageUp && virtualKey <= VirtualKey.Down)
-            || virtualKey == VirtualKey.Insert
-            || virtualKey == VirtualKey.Delete;
+            => ((virtualKey >= VirtualKey.PageUp) && (virtualKey <= VirtualKey.Down))
+            || (virtualKey == VirtualKey.Insert)
+            || (virtualKey == VirtualKey.Delete);
 
         private static void AddInputs(List<NativeMethods.INPUT> inputs, KeyPress keyPress)
             => AddInputs(inputs, keyPress.VirtualKey, keyPress.ShiftState);

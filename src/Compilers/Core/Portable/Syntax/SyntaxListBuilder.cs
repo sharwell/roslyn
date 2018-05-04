@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Syntax
                 throw new ArgumentNullException();
             }
 
-            if (_nodes == null || Count >= _nodes.Length)
+            if ((_nodes == null) || (Count >= _nodes.Length))
             {
                 this.Grow(Count == 0 ? 8 : _nodes.Length * 2);
             }
@@ -47,12 +47,12 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public void AddRange(SyntaxNode[] items, int offset, int length)
         {
-            if (_nodes == null || Count + length > _nodes.Length)
+            if ((_nodes == null) || ((Count + length) > _nodes.Length))
             {
                 this.Grow(Count + length);
             }
 
-            for (int i = offset, j = Count; i < offset + length; ++i, ++j)
+            for (int i = offset, j = Count; i < (offset + length); ++i, ++j)
             {
                 _nodes[j].Value = items[i].Green;
             }
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public void AddRange(SyntaxList<SyntaxNode> list, int offset, int count)
         {
-            if (_nodes == null || this.Count + count > _nodes.Length)
+            if ((_nodes == null) || ((this.Count + count) > _nodes.Length))
             {
                 this.Grow(Count + count);
             }
@@ -115,7 +115,7 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public void AddRange(SyntaxNodeOrTokenList list, int offset, int count)
         {
-            if (_nodes == null || this.Count + count > _nodes.Length)
+            if ((_nodes == null) || ((this.Count + count) > _nodes.Length))
             {
                 this.Grow(Count + count);
             }

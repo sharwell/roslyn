@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 }
 
                 var propertyDeclNode = node as PropertyDeclarationSyntax;
-                if (propertyDeclNode?.Initializer != null && propertyDeclNode?.AccessorList != null)
+                if ((propertyDeclNode?.Initializer != null) && (propertyDeclNode?.AccessorList != null))
                 {
                     AddSuppressWrappingIfOnSingleLineOperation(list, tokens.Item1, propertyDeclNode.AccessorList.GetLastToken());
                 }
@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 else
                 {
                     // Add Separate suppression for each Label and for the last label, add the <> 
-                    for (int i = 0; i < switchSection.Labels.Count - 1; ++i)
+                    for (int i = 0; i < (switchSection.Labels.Count - 1); ++i)
                     {
                         if (switchSection.Labels[i] != null)
                         {
@@ -124,8 +124,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 }
             }
 
-            if (node is AnonymousFunctionExpressionSyntax ||
-                node is LocalFunctionStatementSyntax)
+            if ((node is AnonymousFunctionExpressionSyntax) ||
+                (node is LocalFunctionStatementSyntax))
             {
                 AddSuppressWrappingIfOnSingleLineOperation(list,
                     node.GetFirstToken(includeZeroWidth: true),
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             if (node is TryStatementSyntax tryStatement)
             {
                 // Add a suppression operation if the try keyword and the block are in the same line
-                if (!tryStatement.TryKeyword.IsMissing && tryStatement.Block != null && !tryStatement.Block.CloseBraceToken.IsMissing)
+                if (!tryStatement.TryKeyword.IsMissing && (tryStatement.Block != null) && !tryStatement.Block.CloseBraceToken.IsMissing)
                 {
                     AddSuppressWrappingIfOnSingleLineOperation(list, tryStatement.TryKeyword, tryStatement.Block.CloseBraceToken);
                 }
@@ -155,7 +155,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             if (node is CatchClauseSyntax catchClause)
             {
                 // Add a suppression operation if the catch keyword and the corresponding block are in the same line
-                if (!catchClause.CatchKeyword.IsMissing && catchClause.Block != null && !catchClause.Block.CloseBraceToken.IsMissing)
+                if (!catchClause.CatchKeyword.IsMissing && (catchClause.Block != null) && !catchClause.Block.CloseBraceToken.IsMissing)
                 {
                     AddSuppressWrappingIfOnSingleLineOperation(list, catchClause.CatchKeyword, catchClause.Block.CloseBraceToken);
                 }
@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             if (node is FinallyClauseSyntax finallyClause)
             {
                 // Add a suppression operation if the finally keyword and the corresponding block are in the same line
-                if (!finallyClause.FinallyKeyword.IsMissing && finallyClause.Block != null && !finallyClause.Block.CloseBraceToken.IsMissing)
+                if (!finallyClause.FinallyKeyword.IsMissing && (finallyClause.Block != null) && !finallyClause.Block.CloseBraceToken.IsMissing)
                 {
                     AddSuppressWrappingIfOnSingleLineOperation(list, finallyClause.FinallyKeyword, finallyClause.Block.CloseBraceToken);
                 }
@@ -179,7 +179,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         private void AddStatementExceptBlockSuppressOperations(List<SuppressOperation> list, SyntaxNode node)
         {
             var statementNode = node as StatementSyntax;
-            if (statementNode == null || statementNode.Kind() == SyntaxKind.Block)
+            if ((statementNode == null) || (statementNode.Kind() == SyntaxKind.Block))
             {
                 return;
             }

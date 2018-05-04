@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.Packaging
             => Equals((PackageSource)obj);
 
         public bool Equals(PackageSource other)
-            => Name == other.Name && Source == other.Source;
+            => (Name == other.Name) && (Source == other.Source);
 
         public override int GetHashCode()
             => Hash.Combine(Name, Source.GetHashCode());

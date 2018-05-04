@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                if (this.ReceiverOpt == null || this.ReceiverOpt.Kind == BoundKind.TypeExpression)
+                if ((this.ReceiverOpt == null) || (this.ReceiverOpt.Kind == BoundKind.TypeExpression))
                 {
                     return null;
                 }

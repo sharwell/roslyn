@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             NamedTypeSymbol baseType = this.BaseTypeNoUseSiteDiagnostics;
 
-            if (this.IsAbstract || (object)baseType == null || !baseType.IsAbstract)
+            if (this.IsAbstract || ((object)baseType == null) || !baseType.IsAbstract)
             {
                 return;
             }
@@ -153,7 +153,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         }
                     }
 
-                    if (wasImplementingMemberFound && interfaceMemberKind == SymbolKind.Event)
+                    if (wasImplementingMemberFound && (interfaceMemberKind == SymbolKind.Event))
                     {
                         // NOTE: unlike dev11, we're including a related location for the implementing type, because
                         // otherwise the only error location will be in the containing type of the implementing event
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     // is missing, report just the accessor.
 
                     var associatedPropertyOrEvent = interfaceMemberKind == SymbolKind.Method ? ((MethodSymbol)interfaceMember).AssociatedSymbol : null;
-                    if ((object)associatedPropertyOrEvent == null ||
+                    if (((object)associatedPropertyOrEvent == null) ||
                         ReportAccessorOfInterfacePropertyOrEvent(associatedPropertyOrEvent) ||
                         (wasImplementingMemberFound && !implementingMember.IsAccessor()))
                     {
@@ -222,7 +222,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                                 {
                                     DiagnosticInfo useSiteDiagnostic = interfaceMember.GetUseSiteDiagnostic();
 
-                                    if (useSiteDiagnostic != null && useSiteDiagnostic.DefaultSeverity == DiagnosticSeverity.Error)
+                                    if ((useSiteDiagnostic != null) && (useSiteDiagnostic.DefaultSeverity == DiagnosticSeverity.Error))
                                     {
                                         diagnostics.Add(useSiteDiagnostic, GetImplementsLocation(@interface));
                                     }
@@ -241,14 +241,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             // a synthesized implementation is needed that invokes the base method.
                             // We can do so only if there are no use-site errors.
 
-                            if ((object)synthesizedImplementation != null || implementingMember.ContainingType == this)
+                            if (((object)synthesizedImplementation != null) || (implementingMember.ContainingType == this))
                             {
                                 DiagnosticInfo useSiteDiagnostic = interfaceMember.GetUseSiteDiagnostic();
                                 // CAVEAT: don't report ERR_ByRefReturnUnsupported since by-ref return types are 
                                 // specifically allowed for the purposes of interface implementation (for C++ interop).
                                 // However, if there's a reference to the interface member in source, then we do want
                                 // to produce a use site error.
-                                if (useSiteDiagnostic != null && (ErrorCode)useSiteDiagnostic.Code != ErrorCode.ERR_ByRefReturnUnsupported)
+                                if ((useSiteDiagnostic != null) && ((ErrorCode)useSiteDiagnostic.Code != ErrorCode.ERR_ByRefReturnUnsupported))
                                 {
                                     // Don't report a use site error with a location in another compilation.  For example,
                                     // if the error is that a base type in another assembly implemented an interface member
@@ -287,7 +287,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     directInterface = iface;
                     break;
                 }
-                else if ((object)directInterface == null && iface.ImplementsInterface(implementedInterface, ref unuseddiagnostics))
+                else if (((object)directInterface == null) && iface.ImplementsInterface(implementedInterface, ref unuseddiagnostics))
                 {
                     directInterface = iface;
                 }
@@ -325,8 +325,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             // If the property or event was an event and was implemented, but the WinRT-ness didn't agree,
             // then we'd prefer to report diagnostics about that.
-            if (interfacePropertyOrEvent.Kind == SymbolKind.Event && implementingPropertyOrEvent.Kind == SymbolKind.Event &&
-                ((EventSymbol)interfacePropertyOrEvent).IsWindowsRuntimeEvent != ((EventSymbol)implementingPropertyOrEvent).IsWindowsRuntimeEvent)
+            if ((interfacePropertyOrEvent.Kind == SymbolKind.Event) && (implementingPropertyOrEvent.Kind == SymbolKind.Event) &&
+                (((EventSymbol)interfacePropertyOrEvent).IsWindowsRuntimeEvent != ((EventSymbol)implementingPropertyOrEvent).IsWindowsRuntimeEvent))
             {
                 return false;
             }
@@ -404,7 +404,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             // checks.  Roslyn can't, since the language says they are not virtual/override and that's what we need to expose
                             // in the symbol model.  Having said that, Dev11 doesn't seem to produce override errors other than this one
                             // (see SymbolPreparer::prepareOperator).
-                            if ((object)overridden != null && overridden.IsMetadataFinal)
+                            if (((object)overridden != null) && overridden.IsMetadataFinal)
                             {
                                 diagnostics.Add(ErrorCode.ERR_CantOverrideSealed, method.Locations[0], method, overridden);
                             }
@@ -494,12 +494,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         break;
                     case SymbolKind.Field:
                         var sourceField = member as SourceFieldSymbol;
-                        var isNewField = (object)sourceField != null && sourceField.IsNew;
+                        var isNewField = ((object)sourceField != null) && sourceField.IsNew;
 
                         // We don't want to report diagnostics for field-like event backing fields (redundant),
                         // but that shouldn't be an issue since they shouldn't be in the member list.
-                        Debug.Assert((object)sourceField == null || (object)sourceField.AssociatedSymbol == null ||
-                            sourceField.AssociatedSymbol.Kind != SymbolKind.Event);
+                        Debug.Assert(((object)sourceField == null) || ((object)sourceField.AssociatedSymbol == null) ||
+                            (sourceField.AssociatedSymbol.Kind != SymbolKind.Event));
 
                         CheckNewModifier(member, isNewField, diagnostics);
                         break;
@@ -534,7 +534,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 foreach (var hiddenMember in currType.GetMembers(symbol.Name))
                 {
-                    if (hiddenMember.Kind == SymbolKind.Method && !((MethodSymbol)hiddenMember).CanBeHiddenByMemberKind(symbol.Kind))
+                    if ((hiddenMember.Kind == SymbolKind.Method) && !((MethodSymbol)hiddenMember).CanBeHiddenByMemberKind(symbol.Kind))
                     {
                         continue;
                     }
@@ -543,7 +543,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     bool isAccessible = AccessCheck.IsSymbolAccessible(hiddenMember, this, ref useSiteDiagnostics);
                     diagnostics.Add(symbolLocation, useSiteDiagnostics);
 
-                    if (isAccessible && hiddenMember.GetMemberArity() == symbolArity)
+                    if (isAccessible && (hiddenMember.GetMemberArity() == symbolArity))
                     {
                         if (!isNew)
                         {
@@ -619,11 +619,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         {
                             //skip remaining checks
                         }
-                        else if (associatedProperty.GetMethod == overridingMember && (object)overriddenProperty.GetMethod == null)
+                        else if ((associatedProperty.GetMethod == overridingMember) && ((object)overriddenProperty.GetMethod == null))
                         {
                             diagnostics.Add(ErrorCode.ERR_NoGetToOverride, overridingMemberLocation, overridingMember, overriddenProperty);
                         }
-                        else if (associatedProperty.SetMethod == overridingMember && (object)overriddenProperty.SetMethod == null)
+                        else if ((associatedProperty.SetMethod == overridingMember) && ((object)overriddenProperty.SetMethod == null))
                         {
                             diagnostics.Add(ErrorCode.ERR_NoSetToOverride, overridingMemberLocation, overridingMember, overriddenProperty);
                         }
@@ -659,7 +659,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         suppressAccessors = true;
                     }
                     else if (!overriddenMember.IsVirtual && !overriddenMember.IsAbstract && !overriddenMember.IsOverride &&
-                        !(overridingMemberIsMethod && ((MethodSymbol)overriddenMember).MethodKind == MethodKind.Destructor)) //destructors are metadata virtual
+                        !(overridingMemberIsMethod && (((MethodSymbol)overriddenMember).MethodKind == MethodKind.Destructor))) //destructors are metadata virtual
                     {
                         // CONSIDER: To match Dev10, skip the error for properties, and don't suppressAccessors
                         diagnostics.Add(ErrorCode.ERR_CantOverrideNonVirtual, overridingMemberLocation, overridingMember, overriddenMember);
@@ -735,13 +735,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             {
                                 MethodSymbol ownOrInheritedGetMethod = overridingProperty.GetOwnOrInheritedGetMethod();
                                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                                if (overridingProperty.GetMethod != ownOrInheritedGetMethod && !AccessCheck.IsSymbolAccessible(ownOrInheritedGetMethod, overridingType, ref useSiteDiagnostics))
+                                if ((overridingProperty.GetMethod != ownOrInheritedGetMethod) && !AccessCheck.IsSymbolAccessible(ownOrInheritedGetMethod, overridingType, ref useSiteDiagnostics))
                                 {
                                     diagnostics.Add(ErrorCode.ERR_NoGetToOverride, overridingMemberLocation, overridingProperty, overriddenProperty);
                                 }
 
                                 MethodSymbol ownOrInheritedSetMethod = overridingProperty.GetOwnOrInheritedSetMethod();
-                                if (overridingProperty.SetMethod != ownOrInheritedSetMethod && !AccessCheck.IsSymbolAccessible(ownOrInheritedSetMethod, overridingType, ref useSiteDiagnostics))
+                                if ((overridingProperty.SetMethod != ownOrInheritedSetMethod) && !AccessCheck.IsSymbolAccessible(ownOrInheritedSetMethod, overridingType, ref useSiteDiagnostics))
                                 {
                                     diagnostics.Add(ErrorCode.ERR_NoSetToOverride, overridingMemberLocation, overridingProperty, overriddenProperty);
                                 }
@@ -816,7 +816,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // parameters are generic.
             var runtimeOverriddenMembers = overriddenOrHiddenMembers.RuntimeOverriddenMembers;
             Debug.Assert(!runtimeOverriddenMembers.IsDefault);
-            if (runtimeOverriddenMembers.Length > 1 && overridingMember.Kind == SymbolKind.Method) // The runtime doesn't define overriding for properties or events.
+            if ((runtimeOverriddenMembers.Length > 1) && (overridingMember.Kind == SymbolKind.Method)) // The runtime doesn't define overriding for properties or events.
             {
                 // CONSIDER: Dev10 doesn't seem to report this warning for indexers.
                 var ambiguousMethod = runtimeOverriddenMembers[0];
@@ -862,7 +862,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         diagnosticAdded |= AddHidingAbstractDiagnostic(hidingMember, hidingMemberLocation, hiddenMember, diagnostics, ref suppressAccessors);
 
                         //can actually get both, so don't use else if
-                        if (!hidingMemberIsNew && hiddenMember.Kind == hidingMember.Kind &&
+                        if (!hidingMemberIsNew && (hiddenMember.Kind == hidingMember.Kind) &&
                             !hidingMember.IsAccessor() &&
                             (hiddenMember.IsAbstract || hiddenMember.IsVirtual || hiddenMember.IsOverride))
                         {
@@ -959,7 +959,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // Check declared accessibility rather than effective accessibility since there's a different
             // check (CS0560) that determines whether the containing types have compatible accessibility.
             if (!overriding.ContainingAssembly.HasInternalAccessTo(overridden.ContainingAssembly) &&
-                overridden.DeclaredAccessibility == Accessibility.ProtectedOrInternal)
+                (overridden.DeclaredAccessibility == Accessibility.ProtectedOrInternal))
             {
                 return overriding.DeclaredAccessibility == Accessibility.Protected;
             }
@@ -1008,7 +1008,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                     // CanUnifyWith is the real check - the others just short-circuit
                     if (interface1.IsGenericType && interface2.IsGenericType &&
-                        interface1.OriginalDefinition == interface2.OriginalDefinition &&
+                        (interface1.OriginalDefinition == interface2.OriginalDefinition) &&
                         interface1.CanUnifyWith(interface2))
                     {
                         if (GetImplementsLocation(interface1).SourceSpan.Start > GetImplementsLocation(interface2).SourceSpan.Start)
@@ -1049,7 +1049,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Symbol implementingMember = implementingMemberAndDiagnostics.Symbol;
 
             //don't worry about properties or events - we'll catch them through their accessors
-            if ((object)implementingMember == null || implementingMember.Kind != SymbolKind.Method)
+            if (((object)implementingMember == null) || (implementingMember.Kind != SymbolKind.Method))
             {
                 return null;
             }
@@ -1127,7 +1127,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             NamedTypeSymbol baseType = type.BaseTypeNoUseSiteDiagnostics;
-            return (object)baseType == null || !baseType.AllInterfacesNoUseSiteDiagnostics.Contains(@interface);
+            return ((object)baseType == null) || !baseType.AllInterfacesNoUseSiteDiagnostics.Contains(@interface);
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             HandlePossibleTypingCommand(args, nextHandler, span =>
                 {
                     var caretPoint = args.TextView.GetCaretPoint(args.SubjectBuffer);
-                    if (!args.TextView.Selection.IsEmpty || caretPoint.Value != span.Start)
+                    if (!args.TextView.Selection.IsEmpty || (caretPoint.Value != span.Start))
                     {
                         nextHandler();
                     }
@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             HandlePossibleTypingCommand(args, nextHandler, span =>
                 {
                     var caretPoint = args.TextView.GetCaretPoint(args.SubjectBuffer);
-                    if (!args.TextView.Selection.IsEmpty || caretPoint.Value != span.End)
+                    if (!args.TextView.Selection.IsEmpty || (caretPoint.Value != span.End))
                     {
                         nextHandler();
                     }

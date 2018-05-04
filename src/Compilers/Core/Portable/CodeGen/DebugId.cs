@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         public DebugId(int ordinal, int generation)
         {
-            Debug.Assert(ordinal >= 0 || ordinal == UndefinedOrdinal);
+            Debug.Assert((ordinal >= 0) || (ordinal == UndefinedOrdinal));
             Debug.Assert(generation >= 0);
 
             this.Ordinal = ordinal;
@@ -39,13 +39,13 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         public bool Equals(DebugId other)
         {
-            return this.Ordinal == other.Ordinal
-                && this.Generation == other.Generation;
+            return (this.Ordinal == other.Ordinal)
+                && (this.Generation == other.Generation);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is DebugId && Equals((DebugId)obj);
+            return (obj is DebugId) && Equals((DebugId)obj);
         }
 
         public override int GetHashCode()

@@ -67,14 +67,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TextStructureNavigation
                 }
 
                 // If at the end of the file, go back one character so stuff works
-                if (position == textLength && position > 0)
+                if ((position == textLength) && (position > 0))
                 {
                     position = position - 1;
                 }
 
                 // If we're at the EOL position, return the line break's extent
                 var line = position.Snapshot.GetLineFromPosition(position);
-                if (position >= line.End && position < line.EndIncludingLineBreak)
+                if ((position >= line.End) && (position < line.EndIncludingLineBreak))
                 {
                     return new TextExtent(new SnapshotSpan(line.End, line.EndIncludingLineBreak - line.End), isSignificant: false);
                 }
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TextStructureNavigation
 
                     if (trivia != default)
                     {
-                        if (trivia.Span.Start == position && _provider.ShouldSelectEntireTriviaFromStart(trivia))
+                        if ((trivia.Span.Start == position) && _provider.ShouldSelectEntireTriviaFromStart(trivia))
                         {
                             // We want to select the entire comment
                             return new TextExtent(trivia.Span.ToSnapshotSpan(position.Snapshot), isSignificant: true);
@@ -97,12 +97,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TextStructureNavigation
                     var token = root.FindToken(position, findInsideTrivia: true);
 
                     // If end of file, go back a token
-                    if (token.Span.Length == 0 && token.Span.Start == textLength)
+                    if ((token.Span.Length == 0) && (token.Span.Start == textLength))
                     {
                         token = token.GetPreviousToken();
                     }
 
-                    if (token.Span.Length > 0 && token.Span.Contains(position) && !_provider.IsWithinNaturalLanguage(token, position))
+                    if ((token.Span.Length > 0) && token.Span.Contains(position) && !_provider.IsWithinNaturalLanguage(token, position))
                     {
                         // Cursor position is in our domain - handle it.
                         return _provider.GetExtentOfWordFromToken(token, position);
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TextStructureNavigation
             {
                 // Find node that covers the entire span.
                 var node = FindLeafNode(activeSpan, cancellationToken);
-                if (node != null && activeSpan.Length == node.Value.Span.Length)
+                if ((node != null) && (activeSpan.Length == node.Value.Span.Length))
                 {
                     // Go one level up so the span widens.
                     node = GetEnclosingNode(node.Value);
@@ -304,7 +304,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TextStructureNavigation
                 }
 
                 SyntaxNodeOrToken? node = token;
-                while (node != null && (span.End.Position > node.Value.Span.End))
+                while ((node != null) && (span.End.Position > node.Value.Span.End))
                 {
                     node = GetEnclosingNode(node.Value);
                 }
@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TextStructureNavigation
             /// </summary>
             private SyntaxNodeOrToken SkipSameSpanParents(SyntaxNodeOrToken node)
             {
-                while (node.Parent != null && node.Parent.Span == node.Span)
+                while ((node.Parent != null) && (node.Parent.Span == node.Span))
                 {
                     node = node.Parent;
                 }

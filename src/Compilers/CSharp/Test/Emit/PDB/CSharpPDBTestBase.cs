@@ -47,10 +47,10 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.PDB
             {
                 foreach (XmlElement item in entry.ChildNodes)
                 {
-                    if (startRow.ToString() == item.GetAttribute("startLine") &&
-                        startColumn.ToString() == item.GetAttribute("startColumn") &&
-                        endRow.ToString() == item.GetAttribute("endLine") &&
-                        endColumn.ToString() == item.GetAttribute("endColumn"))
+                    if ((startRow.ToString() == item.GetAttribute("startLine")) &&
+                        (startColumn.ToString() == item.GetAttribute("startColumn")) &&
+                        (endRow.ToString() == item.GetAttribute("endLine")) &&
+                        (endColumn.ToString() == item.GetAttribute("endColumn")))
                     {
                         return true;
                     }

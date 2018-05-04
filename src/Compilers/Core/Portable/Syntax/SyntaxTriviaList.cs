@@ -296,7 +296,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxTriviaList InsertRange(int index, IEnumerable<SyntaxTrivia> trivia)
         {
             var thisCount = this.Count;
-            if (index < 0 || index > thisCount)
+            if ((index < 0) || (index > thisCount))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -308,7 +308,7 @@ namespace Microsoft.CodeAnalysis
 
             // Just return ourselves if we're not being asked to add anything.
             var triviaCollection = trivia as ICollection<SyntaxTrivia>;
-            if (triviaCollection != null && triviaCollection.Count == 0)
+            if ((triviaCollection != null) && (triviaCollection.Count == 0))
             {
                 return this;
             }
@@ -342,7 +342,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="index">The index identifying the element to remove.</param>
         public SyntaxTriviaList RemoveAt(int index)
         {
-            if (index < 0 || index >= this.Count)
+            if ((index < 0) || (index >= this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -359,7 +359,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxTriviaList Remove(SyntaxTrivia triviaInList)
         {
             var index = this.IndexOf(triviaInList);
-            if (index >= 0 && index < this.Count)
+            if ((index >= 0) && (index < this.Count))
             {
                 return this.RemoveAt(index);
             }
@@ -390,7 +390,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxTriviaList ReplaceRange(SyntaxTrivia triviaInList, IEnumerable<SyntaxTrivia> newTrivia)
         {
             var index = this.IndexOf(triviaInList);
-            if (index >= 0 && index < this.Count)
+            if ((index >= 0) && (index < this.Count))
             {
                 var list = this.ToList();
                 list.RemoveAt(index);
@@ -434,13 +434,13 @@ namespace Microsoft.CodeAnalysis
 
         private static GreenNode GetGreenNodeAt(GreenNode node, int i)
         {
-            Debug.Assert(node.IsList || (i == 0 && !node.IsList));
+            Debug.Assert(node.IsList || ((i == 0) && !node.IsList));
             return node.IsList ? node.GetSlot(i) : node;
         }
 
         public bool Equals(SyntaxTriviaList other)
         {
-            return Node == other.Node && Index == other.Index && Token.Equals(other.Token);
+            return (Node == other.Node) && (Index == other.Index) && Token.Equals(other.Token);
         }
 
         public static bool operator ==(SyntaxTriviaList left, SyntaxTriviaList right)
@@ -468,7 +468,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         internal void CopyTo(int offset, SyntaxTrivia[] array, int arrayOffset, int count)
         {
-            if (offset < 0 || count < 0 || this.Count < offset + count)
+            if ((offset < 0) || (count < 0) || (this.Count < (offset + count)))
             {
                 throw new IndexOutOfRangeException();
             }

@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // EnC: We need to insert a hidden sequence point to handle function remapping in case 
             // the containing method is edited while methods invoked in the condition are being executed.
-            if (rewrittenCondition != null && this.Instrument)
+            if ((rewrittenCondition != null) && this.Instrument)
             {
                 rewrittenCondition = _instrumenter.InstrumentForStatementCondition(node, rewrittenCondition, _factory);
             }
@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             GeneratedLabelSymbol continueLabel,
             bool hasErrors)
         {
-            Debug.Assert(original.Kind == BoundKind.ForStatement || original.Kind == BoundKind.ForEachStatement);
+            Debug.Assert((original.Kind == BoundKind.ForStatement) || (original.Kind == BoundKind.ForEachStatement));
             Debug.Assert(rewrittenBody != null);
 
             // The sequence point behavior exhibited here is different from that of the native compiler.  In the native

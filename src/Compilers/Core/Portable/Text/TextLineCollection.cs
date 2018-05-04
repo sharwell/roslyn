@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.Text
                 get
                 {
                     var ndx = _index;
-                    if (ndx >= 0 && ndx < _lines.Count)
+                    if ((ndx >= 0) && (ndx < _lines.Count))
                     {
                         return _lines[ndx];
                     }
@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis.Text
 
             public bool MoveNext()
             {
-                if (_index < _lines.Count - 1)
+                if (_index < (_lines.Count - 1))
                 {
                     _index = _index + 1;
                     return true;

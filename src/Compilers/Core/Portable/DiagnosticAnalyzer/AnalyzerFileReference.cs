@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             if (argsReader.Length > 4)
             {
                 // Arguments are present--check prologue.
-                if (argsReader.ReadByte() == 1 && argsReader.ReadByte() == 0)
+                if ((argsReader.ReadByte() == 1) && (argsReader.ReadByte() == 0))
                 {
                     string firstLanguageName;
                     if (!PEModule.CrackStringInAttributeValue(out firstLanguageName, ref argsReader))
@@ -349,7 +349,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                 // If there were types with the attribute but weren't an analyzer, generate a diagnostic.
                 // If we've reported errors already while trying to instantiate types, don't complain that there are no analyzers.
-                if (builder.Count == initialCount && !reportedError)
+                if ((builder.Count == initialCount) && !reportedError)
                 {
                     _reference.AnalyzerLoadFailed?.Invoke(_reference, new AnalyzerLoadFailureEventArgs(AnalyzerLoadFailureEventArgs.FailureErrorCode.NoAnalyzers, CodeAnalysisResources.NoAnalyzersFound));
                 }
@@ -392,7 +392,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                 // If there were types with the attribute but weren't an analyzer, generate a diagnostic.
                 // If we've reported errors already while trying to instantiate types, don't complain that there are no analyzers.
-                if (builder.Count == initialCount && !reportedError)
+                if ((builder.Count == initialCount) && !reportedError)
                 {
                     _reference.AnalyzerLoadFailed?.Invoke(_reference, new AnalyzerLoadFailureEventArgs(AnalyzerLoadFailureEventArgs.FailureErrorCode.NoAnalyzers, CodeAnalysisResources.NoAnalyzersFound));
                 }
@@ -462,8 +462,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         {
             if (other != null)
             {
-                return other.Display == this.Display &&
-                       other.FullPath == this.FullPath;
+                return (other.Display == this.Display) &&
+                       (other.FullPath == this.FullPath);
             }
 
             return base.Equals(other);

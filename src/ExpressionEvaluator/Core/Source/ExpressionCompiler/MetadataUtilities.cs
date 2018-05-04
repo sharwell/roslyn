@@ -28,8 +28,8 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             MakeAssemblyReferencesKind kind,
             out IReadOnlyDictionary<string, ImmutableArray<(AssemblyIdentity, MetadataReference)>> referencesBySimpleName)
         {
-            Debug.Assert(kind == MakeAssemblyReferencesKind.AllAssemblies || moduleVersionId != default(Guid));
-            Debug.Assert(moduleVersionId == default(Guid) || identityComparer != null);
+            Debug.Assert((kind == MakeAssemblyReferencesKind.AllAssemblies) || (moduleVersionId != default(Guid)));
+            Debug.Assert((moduleVersionId == default(Guid)) || (identityComparer != null));
 
             // Get metadata for each module.
             var metadataBuilder = ArrayBuilder<ModuleMetadata>.GetInstance();
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             // We don't walk the references of winmd assemblies currently. (That would require walking
             // references from the current module and also the winmd assemblies.) So if there are any
             // winmd assemblies, we'll use all assemblies. See https://github.com/dotnet/roslyn/issues/26157.
-            if (kind == MakeAssemblyReferencesKind.AllReferences && runtimeWinMdBuilder.Any())
+            if ((kind == MakeAssemblyReferencesKind.AllReferences) && runtimeWinMdBuilder.Any())
             {
                 kind = MakeAssemblyReferencesKind.AllAssemblies;
             }
@@ -137,8 +137,8 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                         refs = ImmutableArray<(AssemblyIdentity, MetadataReference)>.Empty;
                     }
                     refsBySimpleName[identity.Name] = refs.Add((identity, reference));
-                    if (targetReference == null &&
-                        reader.GetModuleVersionIdOrThrow() == moduleVersionId)
+                    if ((targetReference == null) &&
+                        (reader.GetModuleVersionIdOrThrow() == moduleVersionId))
                     {
                         targetReference = reference;
                     }
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 // CommonReferenceManager<TCompilation, TAssemblySymbol>.Bind()
                 // expects COR library to be included in the explicit assemblies.
                 Debug.Assert(corLibrary != null);
-                if (corLibrary != null && refsBySimpleName.TryGetValue(corLibrary.Name, out var corLibraryReferences))
+                if ((corLibrary != null) && refsBySimpleName.TryGetValue(corLibrary.Name, out var corLibraryReferences))
                 {
                     referencesBuilder.Add(corLibraryReferences[0].Item2);
                 }
@@ -183,12 +183,12 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                         var reader = metadata.MetadataReader;
                         var identity = reader.ReadAssemblyIdentityOrThrow();
                         identitiesBuilder.Add(identity);
-                        if (targetModule == null &&
-                            reader.GetModuleVersionIdOrThrow() == moduleVersionId)
+                        if ((targetModule == null) &&
+                            (reader.GetModuleVersionIdOrThrow() == moduleVersionId))
                         {
                             targetModule = metadata;
                         }
-                        if (intrinsicsAssembly == null &&
+                        if ((intrinsicsAssembly == null) &&
                             reader.DeclaresType((r, t) => r.IsPublicNonInterfaceType(t, ExpressionCompilerConstants.IntrinsicAssemblyNamespace, ExpressionCompilerConstants.IntrinsicAssemblyTypeName)))
                         {
                             intrinsicsAssembly = identity;
@@ -439,7 +439,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
         internal static bool IsWindowsAssemblyIdentity(this AssemblyIdentity assemblyIdentity)
         {
             return IsWindowsAssemblyName(assemblyIdentity.Name) &&
-                assemblyIdentity.ContentType == System.Reflection.AssemblyContentType.WindowsRuntime;
+                (assemblyIdentity.ContentType == System.Reflection.AssemblyContentType.WindowsRuntime);
         }
 
         internal static ImmutableArray<string> GetLocalNames(this ArrayBuilder<ISymUnmanagedScope> scopes)

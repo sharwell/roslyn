@@ -63,14 +63,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
             {
                 return ContainedLanguageRenameType.CLRT_NAMESPACE;
             }
-            else if (symbol is INamedTypeSymbol && (symbol as INamedTypeSymbol).TypeKind == TypeKind.Class)
+            else if ((symbol is INamedTypeSymbol) && ((symbol as INamedTypeSymbol).TypeKind == TypeKind.Class))
             {
                 return ContainedLanguageRenameType.CLRT_CLASS;
             }
-            else if (symbol.Kind == SymbolKind.Event ||
-                symbol.Kind == SymbolKind.Field ||
-                symbol.Kind == SymbolKind.Method ||
-                symbol.Kind == SymbolKind.Property)
+            else if ((symbol.Kind == SymbolKind.Event) ||
+                (symbol.Kind == SymbolKind.Field) ||
+                (symbol.Kind == SymbolKind.Method) ||
+                (symbol.Kind == SymbolKind.Property))
             {
                 return ContainedLanguageRenameType.CLRT_CLASSMEMBER;
             }

@@ -42,11 +42,11 @@ namespace Microsoft.CodeAnalysis.CSharp
         public bool Equals(BinaryOperatorSignature other)
         {
             return
-                this.Kind == other.Kind &&
-                this.LeftType == other.LeftType &&
-                this.RightType == other.RightType &&
-                this.ReturnType == other.ReturnType &&
-                this.Method == other.Method;
+                (this.Kind == other.Kind) &&
+                (this.LeftType == other.LeftType) &&
+                (this.RightType == other.RightType) &&
+                (this.ReturnType == other.ReturnType) &&
+                (this.Method == other.Method);
         }
 
         public static bool operator ==(BinaryOperatorSignature x, BinaryOperatorSignature y)
@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override bool Equals(object obj)
         {
-            return obj is BinaryOperatorSignature && Equals((BinaryOperatorSignature)obj);
+            return (obj is BinaryOperatorSignature) && Equals((BinaryOperatorSignature)obj);
         }
 
         public override int GetHashCode()

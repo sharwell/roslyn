@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         private static OverriddenOrHiddenMembersResult MakeOverriddenOrHiddenMembersWorker(Symbol member)
         {
-            Debug.Assert(member.Kind == SymbolKind.Method || member.Kind == SymbolKind.Property || member.Kind == SymbolKind.Event);
+            Debug.Assert((member.Kind == SymbolKind.Method) || (member.Kind == SymbolKind.Property) || (member.Kind == SymbolKind.Event));
 
             if (!CanOverrideOrHide(member))
             {
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             ArrayBuilder<Symbol> hiddenBuilder = null;
 
             for (NamedTypeSymbol currType = containingType.BaseTypeNoUseSiteDiagnostics;
-                (object)currType != null && (object)bestMatch == null && hiddenBuilder == null;
+                ((object)currType != null) && ((object)bestMatch == null) && (hiddenBuilder == null);
                 currType = currType.BaseTypeNoUseSiteDiagnostics)
             {
                 bool unused;
@@ -235,7 +235,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             bool accessorIsFromSomeCompilation = accessor.Dangerous_IsFromSomeCompilation;
             ImmutableArray<Symbol> overriddenAccessors = ImmutableArray<Symbol>.Empty;
             ImmutableArray<Symbol> runtimeOverriddenAccessors = ImmutableArray<Symbol>.Empty;
-            if ((object)overriddenAccessor != null && IsOverriddenSymbolAccessible(overriddenAccessor, accessor.ContainingType) &&
+            if (((object)overriddenAccessor != null) && IsOverriddenSymbolAccessible(overriddenAccessor, accessor.ContainingType) &&
                     (accessorIsFromSomeCompilation
                         ? MemberSignatureComparer.CSharpAccessorOverrideComparer.Equals(accessor, overriddenAccessor) //NB: custom comparer
                         : MemberSignatureComparer.RuntimeSignatureComparer.Equals(accessor, overriddenAccessor)))
@@ -313,7 +313,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             bool accessorIsFromSomeCompilation = accessor.Dangerous_IsFromSomeCompilation;
             ImmutableArray<Symbol> overriddenAccessors = ImmutableArray<Symbol>.Empty;
             ImmutableArray<Symbol> runtimeOverriddenAccessors = ImmutableArray<Symbol>.Empty;
-            if ((object)overriddenAccessor != null && IsOverriddenSymbolAccessible(overriddenAccessor, accessor.ContainingType) &&
+            if (((object)overriddenAccessor != null) && IsOverriddenSymbolAccessible(overriddenAccessor, accessor.ContainingType) &&
                     (accessorIsFromSomeCompilation
                         ? MemberSignatureComparer.CSharpAccessorOverrideComparer.Equals(accessor, overriddenAccessor) //NB: custom comparer
                         : MemberSignatureComparer.RuntimeSignatureComparer.Equals(accessor, overriddenAccessor)))
@@ -515,7 +515,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     // NOTE: generic methods can hide things with arity 0.
                     // From CSemanticChecker::FindSymHiddenByMethPropAgg
                     int otherMemberArity = otherMember.GetMemberArity();
-                    if (otherMemberArity == memberArity || (memberKind == SymbolKind.Method && otherMemberArity == 0))
+                    if ((otherMemberArity == memberArity) || ((memberKind == SymbolKind.Method) && (otherMemberArity == 0)))
                     {
                         AddHiddenMemberIfApplicable(ref hiddenBuilder, member.Kind, otherMember);
                     }
@@ -535,7 +535,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         int methodCustomModifierCount = CustomModifierCount(otherMember);
                         if (methodCustomModifierCount < minCustomModifierCount)
                         {
-                            Debug.Assert(memberIsFromSomeCompilation || minCustomModifierCount == int.MaxValue, "Metadata members require exact custom modifier matches.");
+                            Debug.Assert(memberIsFromSomeCompilation || (minCustomModifierCount == int.MaxValue), "Metadata members require exact custom modifier matches.");
                             minCustomModifierCount = methodCustomModifierCount;
                             currTypeBestMatch = otherMember;
                         }
@@ -580,7 +580,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 foreach (Symbol otherMember in currType.GetMembers(member.Name))
                 {
-                    if (otherMember.Kind == currTypeBestMatch.Kind && !ReferenceEquals(otherMember, currTypeBestMatch))
+                    if ((otherMember.Kind == currTypeBestMatch.Kind) && !ReferenceEquals(otherMember, currTypeBestMatch))
                     {
                         if (MemberSignatureComparer.CSharpOverrideComparer.Equals(otherMember, currTypeBestMatch))
                         {
@@ -661,7 +661,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private static void AddHiddenMemberIfApplicable(ref ArrayBuilder<Symbol> hiddenBuilder, SymbolKind hidingMemberKind, Symbol hiddenMember)
         {
             Debug.Assert((object)hiddenMember != null);
-            if (hiddenMember.Kind != SymbolKind.Method || ((MethodSymbol)hiddenMember).CanBeHiddenByMemberKind(hidingMemberKind))
+            if ((hiddenMember.Kind != SymbolKind.Method) || ((MethodSymbol)hiddenMember).CanBeHiddenByMemberKind(hidingMemberKind))
             {
                 AccessOrGetInstance(ref hiddenBuilder).Add(hiddenMember);
             }
@@ -714,7 +714,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private static void FindOtherOverriddenMethodsInContainingType(Symbol representativeMember, bool overridingMemberIsFromSomeCompilation, ArrayBuilder<Symbol> overriddenBuilder, ArrayBuilder<Symbol> runtimeOverriddenBuilder)
         {
             Debug.Assert((object)representativeMember != null);
-            Debug.Assert(representativeMember.Kind == SymbolKind.Property || !representativeMember.ContainingType.IsDefinition);
+            Debug.Assert((representativeMember.Kind == SymbolKind.Property) || !representativeMember.ContainingType.IsDefinition);
 
             int representativeCustomModifierCount = -1;
 
@@ -735,7 +735,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             }
 
                             if (MemberSignatureComparer.CSharpOverrideComparer.Equals(otherMember, representativeMember) &&
-                                otherMember.CustomModifierCount() == representativeCustomModifierCount)
+                                (otherMember.CustomModifierCount() == representativeCustomModifierCount))
                             {
                                 overriddenBuilder.Add(otherMember);
                             }
@@ -787,14 +787,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private static void FindOtherHiddenMembersInContainingType(SymbolKind hidingMemberKind, Symbol representativeMember, ref ArrayBuilder<Symbol> hiddenBuilder)
         {
             Debug.Assert((object)representativeMember != null);
-            Debug.Assert(representativeMember.Kind == SymbolKind.Property || !representativeMember.ContainingType.IsDefinition);
+            Debug.Assert((representativeMember.Kind == SymbolKind.Property) || !representativeMember.ContainingType.IsDefinition);
 
             IEqualityComparer<Symbol> comparer = MemberSignatureComparer.CSharpCustomModifierOverrideComparer;
             foreach (Symbol otherMember in representativeMember.ContainingType.GetMembers(representativeMember.Name))
             {
                 if (otherMember.Kind == representativeMember.Kind)
                 {
-                    if (otherMember != representativeMember && comparer.Equals(otherMember, representativeMember))
+                    if ((otherMember != representativeMember) && comparer.Equals(otherMember, representativeMember))
                     {
                         AddHiddenMemberIfApplicable(ref hiddenBuilder, hidingMemberKind, otherMember);
                     }
@@ -870,8 +870,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // We can ignore interface implementation changes since the method is already metadata virtual (since override).
                 // TODO: do we want to add more sophisticated handling for the case where there are multiple runtime-overridden methods?
                 MethodSymbol runtimeOverriddenMethod = method.GetFirstRuntimeOverriddenMethodIgnoringNewSlot(ignoreInterfaceImplementationChanges: true);
-                return csharpOverriddenMethod != runtimeOverriddenMethod &&
-                    method.IsAccessor() != runtimeOverriddenMethod.IsAccessor();
+                return (csharpOverriddenMethod != runtimeOverriddenMethod) &&
+                    (method.IsAccessor() != runtimeOverriddenMethod.IsAccessor());
             }
 
             return false;
@@ -903,7 +903,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 foreach (Symbol otherMember in currType.GetMembers(method.Name))
                 {
-                    if (otherMember.Kind == SymbolKind.Method &&
+                    if ((otherMember.Kind == SymbolKind.Method) &&
                         IsOverriddenSymbolAccessible(otherMember, containingType) &&
                         MemberSignatureComparer.RuntimeSignatureComparer.Equals(method, otherMember))
                     {

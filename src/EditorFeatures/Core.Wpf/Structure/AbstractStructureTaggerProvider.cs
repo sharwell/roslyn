@@ -189,8 +189,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Structure
                 {
                     var spanToCollapse = new SnapshotSpan(snapshot, region.TextSpan.ToSpan());
 
-                    while (tagSpanStack.Count > 0 &&
-                           tagSpanStack.Peek().Span.End <= spanToCollapse.Span.Start)
+                    while ((tagSpanStack.Count > 0) &&
+                           (tagSpanStack.Peek().Span.End <= spanToCollapse.Span.Start))
                     {
                         tagSpanStack.Pop();
                     }

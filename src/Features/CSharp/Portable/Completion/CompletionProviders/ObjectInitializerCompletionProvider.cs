@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
         internal override bool IsInsertionTrigger(SourceText text, int characterPosition, OptionSet options)
         {
-            return CompletionUtilities.IsTriggerCharacter(text, characterPosition, options) || text[characterPosition] == ' ';
+            return CompletionUtilities.IsTriggerCharacter(text, characterPosition, options) || (text[characterPosition] == ' ');
         }
 
         protected override Tuple<ITypeSymbol, Location> GetInitializedType(
@@ -99,19 +99,19 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             var token = tree.FindTokenOnLeftOfPosition(position, cancellationToken);
             token = token.GetPreviousTokenIfTouchingWord(position);
 
-            if (token.Kind() != SyntaxKind.CommaToken && token.Kind() != SyntaxKind.OpenBraceToken)
+            if ((token.Kind() != SyntaxKind.CommaToken) && (token.Kind() != SyntaxKind.OpenBraceToken))
             {
                 return null;
             }
 
-            if (token.Parent == null || token.Parent.Parent == null)
+            if ((token.Parent == null) || (token.Parent.Parent == null))
             {
                 return null;
             }
 
             // If we got a comma, we can syntactically find out if we're in an ObjectInitializerExpression
-            if (token.Kind() == SyntaxKind.CommaToken &&
-                token.Parent.Kind() != SyntaxKind.ObjectInitializerExpression)
+            if ((token.Kind() == SyntaxKind.CommaToken) &&
+                (token.Parent.Kind() != SyntaxKind.ObjectInitializerExpression))
             {
                 return null;
             }
@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                             .GetPreviousTokenIfTouchingWord(position);
 
             // We should have gotten back a { or ,
-            if (token.Kind() == SyntaxKind.CommaToken || token.Kind() == SyntaxKind.OpenBraceToken)
+            if ((token.Kind() == SyntaxKind.CommaToken) || (token.Kind() == SyntaxKind.OpenBraceToken))
             {
                 if (token.Parent != null)
                 {
@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
         protected override bool IsInitializable(ISymbol member, INamedTypeSymbol containingType)
         {
-            if (member is IPropertySymbol && ((IPropertySymbol)member).Parameters.Any(p => !p.IsOptional))
+            if ((member is IPropertySymbol) && ((IPropertySymbol)member).Parameters.Any(p => !p.IsOptional))
             {
                 return false;
             }

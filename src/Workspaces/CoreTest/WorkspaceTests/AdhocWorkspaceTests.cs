@@ -510,8 +510,8 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 var tcs = new TaskCompletionSource<bool>();
                 ws.WorkspaceChanged += (s, args) =>
                 {
-                    if (args.Kind == WorkspaceChangeKind.DocumentInfoChanged
-                        && args.DocumentId == originalDoc.Id)
+                    if ((args.Kind == WorkspaceChangeKind.DocumentInfoChanged)
+                        && (args.DocumentId == originalDoc.Id))
                     {
                         tcs.SetResult(true);
                     }
@@ -545,8 +545,8 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 var tcs = new TaskCompletionSource<bool>();
                 ws.WorkspaceChanged += (s, args) =>
                 {
-                    if (args.Kind == WorkspaceChangeKind.DocumentInfoChanged
-                        && args.DocumentId == originalDoc.Id)
+                    if ((args.Kind == WorkspaceChangeKind.DocumentInfoChanged)
+                        && (args.DocumentId == originalDoc.Id))
                     {
                         tcs.SetResult(true);
                     }
@@ -581,8 +581,8 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 var tcs = new TaskCompletionSource<bool>();
                 ws.WorkspaceChanged += (s, args) =>
                 {
-                    if (args.Kind == WorkspaceChangeKind.DocumentInfoChanged
-                        && args.DocumentId == originalDoc.Id)
+                    if ((args.Kind == WorkspaceChangeKind.DocumentInfoChanged)
+                        && (args.DocumentId == originalDoc.Id))
                     {
                         tcs.SetResult(true);
                     }
@@ -614,8 +614,8 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 var tcs = new TaskCompletionSource<bool>();
                 ws.WorkspaceChanged += (s, args) =>
                 {
-                    if (args.Kind == WorkspaceChangeKind.DocumentInfoChanged
-                        && args.DocumentId == originalDoc.Id)
+                    if ((args.Kind == WorkspaceChangeKind.DocumentInfoChanged)
+                        && (args.DocumentId == originalDoc.Id))
                     {
                         tcs.SetResult(true);
                     }

@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
                 return;
             }
 
-            if (originalSpan.Start != originalLineInfo.StartLinePosition || originalSpan.End != originalLineInfo.EndLinePosition)
+            if ((originalSpan.Start != originalLineInfo.StartLinePosition) || (originalSpan.End != originalLineInfo.EndLinePosition))
             {
                 originalLineInfo = new FileLinePositionSpan(originalLineInfo.Path, originalSpan.Start, originalSpan.End);
 
@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
                 }
             }
 
-            if (mappedSpan.Start != mappedLineInfo.StartLinePosition || mappedSpan.End != mappedLineInfo.EndLinePosition)
+            if ((mappedSpan.Start != mappedLineInfo.StartLinePosition) || (mappedSpan.End != mappedLineInfo.EndLinePosition))
             {
                 mappedLineInfo = new FileLinePositionSpan(mappedLineInfo.Path, mappedSpan.Start, mappedSpan.End);
             }
@@ -186,8 +186,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
             }
 
             // we can't directly map span in subject buffer to surface buffer. see whether there is any visible span we can use from the subject buffer span
-            if (containedLanguageHost != null &&
-                VSConstants.S_OK != containedLanguageHost.GetNearestVisibleToken(originalSpanOnSecondaryBuffer, spansOnPrimaryBuffer))
+            if ((containedLanguageHost != null) &&
+                (VSConstants.S_OK != containedLanguageHost.GetNearestVisibleToken(originalSpanOnSecondaryBuffer, spansOnPrimaryBuffer)))
             {
                 // no visible span we can use.
                 return false;
@@ -245,8 +245,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
 
             if (originalLine > 1)
             {
-                if (VSConstants.S_OK == bufferCoordinator.GetSecondaryBuffer(out var secondaryBuffer) &&
-                    VSConstants.S_OK == secondaryBuffer.GetLengthOfLine(originalLine - 1, out var length))
+                if ((VSConstants.S_OK == bufferCoordinator.GetSecondaryBuffer(out var secondaryBuffer)) &&
+                    (VSConstants.S_OK == secondaryBuffer.GetLengthOfLine(originalLine - 1, out var length)))
                 {
                     adjustedPosition = new LinePosition(originalLine - 1, length);
                     return true;
@@ -264,7 +264,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
                 return true;
             }
 
-            if (movedLine == originalLine && movedColumn < originalColumn)
+            if ((movedLine == originalLine) && (movedColumn < originalColumn))
             {
                 return true;
             }

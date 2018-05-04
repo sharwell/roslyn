@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.AddRequiredParentheses
 
             var binaryLike = (TBinaryLikeExpressionSyntax)context.Node;
             var parent = TryGetParentExpression(binaryLike);
-            if (parent == null || !IsBinaryLike(parent))
+            if ((parent == null) || !IsBinaryLike(parent))
             {
                 return;
             }
@@ -84,9 +84,9 @@ namespace Microsoft.CodeAnalysis.AddRequiredParentheses
             SyntaxNodeAnalysisContext context, TBinaryLikeExpressionSyntax binaryLikeOpt,
             int precedence, DiagnosticSeverity severity, ImmutableArray<Location> additionalLocations)
         {
-            if (binaryLikeOpt != null && 
+            if ((binaryLikeOpt != null) && 
                 IsBinaryLike(binaryLikeOpt) &&
-                GetPrecedence(binaryLikeOpt) == precedence)
+                (GetPrecedence(binaryLikeOpt) == precedence))
             {
                 var (left, operatorToken, right) = GetPartsOfBinaryLike(binaryLikeOpt);
 

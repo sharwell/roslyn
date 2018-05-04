@@ -22,9 +22,9 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             EndOffsetExclusive = end;
         }
 
-        public bool Contains(int offset) => offset >= StartOffset && offset < EndOffsetExclusive;
-        public bool Equals(ILSpan other) => StartOffset == other.StartOffset && EndOffsetExclusive == other.EndOffsetExclusive;
-        public override bool Equals(object obj) => obj is ILSpan && Equals((ILSpan)obj);
+        public bool Contains(int offset) => (offset >= StartOffset) && (offset < EndOffsetExclusive);
+        public bool Equals(ILSpan other) => (StartOffset == other.StartOffset) && (EndOffsetExclusive == other.EndOffsetExclusive);
+        public override bool Equals(object obj) => (obj is ILSpan) && Equals((ILSpan)obj);
         public override int GetHashCode() => Hash.Combine(StartOffset.GetHashCode(), EndOffsetExclusive.GetHashCode());
         public override string ToString() => $"[{StartOffset}, {EndOffsetExclusive})";
     }

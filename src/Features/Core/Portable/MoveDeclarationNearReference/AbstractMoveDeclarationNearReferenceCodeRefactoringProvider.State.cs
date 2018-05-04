@@ -132,8 +132,8 @@ namespace Microsoft.CodeAnalysis.MoveDeclarationNearReference
 
                 var originalIndexInBlock = this.InnermostBlockStatements.IndexOf(this.DeclarationStatement);
                 var firstStatementIndexAffectedInBlock = this.InnermostBlockStatements.IndexOf(this.FirstStatementAffectedInInnermostBlock);
-                if (originalIndexInBlock >= 0 &&
-                    originalIndexInBlock < firstStatementIndexAffectedInBlock)
+                if ((originalIndexInBlock >= 0) &&
+                    (originalIndexInBlock < firstStatementIndexAffectedInBlock))
                 {
                     // Don't want to move a decl past other decls in order to move it to the first
                     // affected statement.  If we do we can end up in the following situation: 

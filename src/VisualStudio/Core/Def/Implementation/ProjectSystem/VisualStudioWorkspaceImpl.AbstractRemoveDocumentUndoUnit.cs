@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 var currentSolution = Workspace.CurrentSolution;
                 var fromProject = currentSolution.GetProject(FromProjectId);
 
-                if (fromProject != null &&
+                if ((fromProject != null) &&
                     GetDocumentIds(fromProject).Contains(DocumentId))
                 {
                     var updatedProject = fromProject.RemoveDocument(DocumentId);

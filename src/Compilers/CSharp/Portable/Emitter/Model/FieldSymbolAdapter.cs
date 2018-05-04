@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                                                   syntaxNodeOpt: (CSharpSyntaxNode)context.SyntaxNodeOpt,
                                                   diagnostics: context.Diagnostics);
 
-            if (isFixed || customModifiers.Length == 0)
+            if (isFixed || (customModifiers.Length == 0))
             {
                 return type;
             }
@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(this.IsDefinitionOrDistinct());
 
             if (this.IsDefinition &&
-                this.ContainingModule == moduleBeingBuilt.SourceModule)
+                (this.ContainingModule == moduleBeingBuilt.SourceModule))
             {
                 return this;
             }

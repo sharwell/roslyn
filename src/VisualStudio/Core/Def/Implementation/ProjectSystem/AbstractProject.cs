@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
             this.RunningDocumentTable = (IVsRunningDocumentTable4)serviceProvider.GetService(typeof(SVsRunningDocumentTable));
 
-            var displayName = hierarchy != null && hierarchy.TryGetName(out var name) ? name : projectSystemName;
+            var displayName = (hierarchy != null) && hierarchy.TryGetName(out var name) ? name : projectSystemName;
             this.DisplayName = displayName;
 
             this.ProjectTracker = projectTracker;
@@ -165,7 +165,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
             if (visualStudioWorkspaceOpt != null)
             {
-                if (Language == LanguageNames.CSharp || Language == LanguageNames.VisualBasic)
+                if ((Language == LanguageNames.CSharp) || (Language == LanguageNames.VisualBasic))
                 {
                     this.EditAndContinueImplOpt = new VsENCRebuildableProjectImpl(this);
                 }
@@ -343,7 +343,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         {
             var outputPath = this.ObjOutputPath;
 
-            if (this.ContainingDirectoryPathOpt == null && outputPath == null)
+            if ((this.ContainingDirectoryPathOpt == null) && (outputPath == null))
             {
                 return ImmutableArray<string>.Empty;
             }
@@ -798,9 +798,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 // This causes problems because if we then try to create a compilation, we'll fail even though it would have worked with
                 // a metadata reference. If neither supports compilation, we'll let the reference go through on the assumption the
                 // language (TypeScript/F#, etc.) is doing that intentionally.
-                if (this.Language != project.Language && 
-                    this.ProjectTracker.WorkspaceServices.GetLanguageServices(this.Language).GetService<ICompilationFactoryService>() != null &&
-                    this.ProjectTracker.WorkspaceServices.GetLanguageServices(project.Language).GetService<ICompilationFactoryService>() == null)
+                if ((this.Language != project.Language) && 
+                    (this.ProjectTracker.WorkspaceServices.GetLanguageServices(this.Language).GetService<ICompilationFactoryService>() != null) &&
+                    (this.ProjectTracker.WorkspaceServices.GetLanguageServices(project.Language).GetService<ICompilationFactoryService>() == null))
                 {
                     return false;
                 }
@@ -1294,7 +1294,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
             // Is this a project with converted references? If so, make sure we track it
             string referenceBinPath = referencedProject.BinOutputPath;
-            if (referenceBinPath != null && _metadataFileNameToConvertedProjectReference.ContainsKey(referenceBinPath))
+            if ((referenceBinPath != null) && _metadataFileNameToConvertedProjectReference.ContainsKey(referenceBinPath))
             {
                 _metadataFileNameToConvertedProjectReference[referenceBinPath]= newProjectReference;
             }
@@ -1364,8 +1364,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 return;
             }
 
-            if (ruleSetFile == null ||
-                ruleSetFile.GetException() == null)
+            if ((ruleSetFile == null) ||
+                (ruleSetFile.GetException() == null))
             {
                 this.HostDiagnosticUpdateSource.ClearDiagnosticsForProject(this.Id, RuleSetErrorId);
             }
@@ -1435,7 +1435,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
             // refresh final output path
             var currentBinOutputPath = this.BinOutputPath;
-            if (binOutputPath != null && !string.Equals(currentBinOutputPath, binOutputPath, StringComparison.OrdinalIgnoreCase))
+            if ((binOutputPath != null) && !string.Equals(currentBinOutputPath, binOutputPath, StringComparison.OrdinalIgnoreCase))
             {
                 this.BinOutputPath = binOutputPath;
 
@@ -1463,13 +1463,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
             bool updateMade = false;
 
-            if (newDisplayName != null && this.DisplayName != newDisplayName)
+            if ((newDisplayName != null) && (this.DisplayName != newDisplayName))
             {
                 this.DisplayName = newDisplayName;
                 updateMade = true;
             }
 
-            if (newFilePath != null && File.Exists(newFilePath) && this.ProjectFilePath != newFilePath)
+            if ((newFilePath != null) && File.Exists(newFilePath) && (this.ProjectFilePath != newFilePath))
             {
                 Debug.Assert(PathUtilities.IsAbsolute(newFilePath));
                 this.ProjectFilePath = newFilePath;
@@ -1498,7 +1498,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         private static MetadataReferenceResolver CreateMetadataReferenceResolver(IMetadataService metadataService, string projectDirectory, string outputDirectory)
         {
             ImmutableArray<string> assemblySearchPaths;
-            if (projectDirectory != null && outputDirectory != null)
+            if ((projectDirectory != null) && (outputDirectory != null))
             {
                 assemblySearchPaths = ImmutableArray.Create(projectDirectory, outputDirectory);
             }
@@ -1542,10 +1542,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         {
             AssertIsForeground();
 
-            if (documentItemID != (uint)VSConstants.VSITEMID.Nil && Hierarchy.GetProperty(documentItemID, (int)VsHierarchyPropID.Parent, out var parentObj) == VSConstants.S_OK)
+            if ((documentItemID != (uint)VSConstants.VSITEMID.Nil) && (Hierarchy.GetProperty(documentItemID, (int)VsHierarchyPropID.Parent, out var parentObj) == VSConstants.S_OK))
             {
                 var parentID = UnboxVSItemId(parentObj);
-                if (parentID != (uint)VSConstants.VSITEMID.Nil && parentID != (uint)VSConstants.VSITEMID.Root)
+                if ((parentID != (uint)VSConstants.VSITEMID.Nil) && (parentID != (uint)VSConstants.VSITEMID.Root))
                 {
                     return GetFolderNamesForFolder(parentID);
                 }
@@ -1611,7 +1611,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             if (hierarchy.GetProperty((uint)folderItemID, (int)VsHierarchyPropID.Parent, out var parentObj) == VSConstants.S_OK)
             {
                 var parentID = UnboxVSItemId(parentObj);
-                if (parentID != (uint)VSConstants.VSITEMID.Nil && parentID != (uint)VSConstants.VSITEMID.Root)
+                if ((parentID != (uint)VSConstants.VSITEMID.Nil) && (parentID != (uint)VSConstants.VSITEMID.Root))
                 {
                     ComputeFolderNames(parentID, names, hierarchy);
                 }

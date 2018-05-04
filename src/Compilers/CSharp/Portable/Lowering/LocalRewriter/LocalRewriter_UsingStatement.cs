@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             BoundAssignmentOperator tempAssignment;
             BoundLocal boundTemp;
-            if ((object)expressionType == null || expressionType.IsDynamic())
+            if (((object)expressionType == null) || expressionType.IsDynamic())
             {
                 // IDisposable temp = (IDisposable) expr;
                 BoundExpression tempInit = MakeConversionNode(

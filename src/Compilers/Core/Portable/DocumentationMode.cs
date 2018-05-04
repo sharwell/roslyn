@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsValid(this DocumentationMode value)
         {
-            return value >= DocumentationMode.None && value <= DocumentationMode.Diagnose;
+            return (value >= DocumentationMode.None) && (value <= DocumentationMode.Diagnose);
         }
     }
 }

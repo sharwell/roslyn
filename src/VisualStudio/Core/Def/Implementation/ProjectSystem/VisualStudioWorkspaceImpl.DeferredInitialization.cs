@@ -59,7 +59,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 var solution = (IVsSolution3)DeferredState.ServiceProvider.GetService(typeof(SVsSolution));
                 if (solution != null)
                 {
-                    if (ErrorHandler.Succeeded(solution.GetUniqueUINameOfProject(hierarchy, out string name)) && name != null)
+                    if (ErrorHandler.Succeeded(solution.GetUniqueUINameOfProject(hierarchy, out string name)) && (name != null))
                     {
                         return name;
                     }

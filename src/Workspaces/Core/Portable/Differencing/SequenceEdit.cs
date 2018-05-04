@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis.Differencing
         {
             Debug.Assert(oldIndex >= -1);
             Debug.Assert(newIndex >= -1);
-            Debug.Assert(newIndex != -1 || oldIndex != -1);
+            Debug.Assert((newIndex != -1) || (oldIndex != -1));
 
             _oldIndex = oldIndex;
             _newIndex = newIndex;
@@ -58,13 +58,13 @@ namespace Microsoft.CodeAnalysis.Differencing
 
         public bool Equals(SequenceEdit other)
         {
-            return _oldIndex == other._oldIndex
-                && _newIndex == other._newIndex;
+            return (_oldIndex == other._oldIndex)
+                && (_newIndex == other._newIndex);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is SequenceEdit && Equals((SequenceEdit)obj);
+            return (obj is SequenceEdit) && Equals((SequenceEdit)obj);
         }
 
         public override int GetHashCode()

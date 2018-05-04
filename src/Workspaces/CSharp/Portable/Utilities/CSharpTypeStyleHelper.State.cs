@@ -142,9 +142,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
             {
                 var typeSyntax = GetTypeSyntaxFromDeclaration(declarationStatement);
 
-                return typeSyntax != null &&
+                return (typeSyntax != null) &&
                     typeSyntax.IsTypeInferred(semanticModel) &&
-                    semanticModel.GetTypeInfo(typeSyntax).Type?.IsSpecialType() == true;
+                    (semanticModel.GetTypeInfo(typeSyntax).Type?.IsSpecialType() == true);
             }
 
             private TypeSyntax GetTypeSyntaxFromDeclaration(SyntaxNode declarationStatement)

@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         private void NoteDeclaredPatternVariables(BoundPattern pattern)
         {
-            if (IsInside && pattern.Kind == BoundKind.DeclarationPattern)
+            if (IsInside && (pattern.Kind == BoundKind.DeclarationPattern))
             {
                 var decl = (BoundDeclarationPattern)pattern;
                 // The variable may be null if it is a discard designation `_`.

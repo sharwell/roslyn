@@ -41,23 +41,23 @@ namespace Microsoft.CodeAnalysis.UnitTests
             Array.Reverse(expectedQ);
             AssertEx.Equal(expectedQ, privKey.Q);
 
-            var expectedDP = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 2).Take(HALF_LEN).ToArray();
+            var expectedDP = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 2)).Take(HALF_LEN).ToArray();
             Array.Reverse(expectedDP);
             AssertEx.Equal(expectedDP, privKey.DP);
 
-            var expectedDQ = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 3).Take(HALF_LEN).ToArray();
+            var expectedDQ = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 3)).Take(HALF_LEN).ToArray();
             Array.Reverse(expectedDQ);
             AssertEx.Equal(expectedDQ, privKey.DQ);
 
-            var expectedInverseQ = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 4).Take(HALF_LEN).ToArray();
+            var expectedInverseQ = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 4)).Take(HALF_LEN).ToArray();
             Array.Reverse(expectedInverseQ);
             AssertEx.Equal(expectedInverseQ, privKey.InverseQ);
 
-            var expectedD = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 5).Take(MOD_LEN).ToArray();
+            var expectedD = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 5)).Take(MOD_LEN).ToArray();
             Array.Reverse(expectedD);
             AssertEx.Equal(expectedD, privKey.D);
 
-            Assert.True(key.Skip(HEADER_LEN + MOD_LEN * 2 + HALF_LEN * 5).ToArray().Length == 0);
+            Assert.True(key.Skip(HEADER_LEN + (MOD_LEN * 2) + (HALF_LEN * 5)).ToArray().Length == 0);
         }
 
         [Fact]
@@ -84,23 +84,23 @@ namespace Microsoft.CodeAnalysis.UnitTests
             Array.Reverse(expectedQ);
             AssertEx.Equal(expectedQ, privKey.Q);
 
-            var expectedDP = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 2).Take(HALF_LEN).ToArray();
+            var expectedDP = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 2)).Take(HALF_LEN).ToArray();
             Array.Reverse(expectedDP);
             AssertEx.Equal(expectedDP, privKey.DP);
 
-            var expectedDQ = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 3).Take(HALF_LEN).ToArray();
+            var expectedDQ = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 3)).Take(HALF_LEN).ToArray();
             Array.Reverse(expectedDQ);
             AssertEx.Equal(expectedDQ, privKey.DQ);
 
-            var expectedInverseQ = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 4).Take(HALF_LEN).ToArray();
+            var expectedInverseQ = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 4)).Take(HALF_LEN).ToArray();
             Array.Reverse(expectedInverseQ);
             AssertEx.Equal(expectedInverseQ, privKey.InverseQ);
 
-            var expectedD = key.Skip(HEADER_LEN + MOD_LEN + HALF_LEN * 5).Take(MOD_LEN).ToArray();
+            var expectedD = key.Skip(HEADER_LEN + MOD_LEN + (HALF_LEN * 5)).Take(MOD_LEN).ToArray();
             Array.Reverse(expectedD);
             AssertEx.Equal(expectedD, privKey.D);
 
-            Assert.True(key.Skip(HEADER_LEN + MOD_LEN * 2 + HALF_LEN * 5).ToArray().Length == 0);
+            Assert.True(key.Skip(HEADER_LEN + (MOD_LEN * 2) + (HALF_LEN * 5)).ToArray().Length == 0);
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
         private static ImmutableArray<byte> HexToBin(string input)
         {
-            Assert.True(input != null && (input.Length & 1) == 0, "invalid input string.");
+            Assert.True((input != null) && ((input.Length & 1) == 0), "invalid input string.");
 
             var result = new byte[input.Length >> 1];
 

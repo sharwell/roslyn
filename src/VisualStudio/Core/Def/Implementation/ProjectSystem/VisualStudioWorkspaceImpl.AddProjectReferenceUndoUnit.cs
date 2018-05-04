@@ -29,8 +29,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 var fromProject = currentSolution.GetProject(FromProjectId);
                 var toProject = currentSolution.GetProject(_toProjectId);
 
-                if (fromProject != null &&
-                    toProject != null &&
+                if ((fromProject != null) &&
+                    (toProject != null) &&
                     !fromProject.ProjectReferences.Any(p => p.ProjectId == _toProjectId))
                 {
                     var updatedProject = fromProject.AddProjectReference(new ProjectReference(_toProjectId));

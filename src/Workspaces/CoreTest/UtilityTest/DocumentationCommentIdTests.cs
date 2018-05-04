@@ -152,8 +152,8 @@ namespace Acme
 ");
 
             CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.#cctor", compilation, s => s.MethodKind == MethodKind.StaticConstructor);
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.#ctor", compilation, s => s.MethodKind == MethodKind.Constructor && s.Parameters.Length == 0);
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.#ctor(System.String)", compilation, s => s.MethodKind == MethodKind.Constructor && s.Parameters.Length == 1);
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.#ctor", compilation, s => (s.MethodKind == MethodKind.Constructor) && (s.Parameters.Length == 0));
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.#ctor(System.String)", compilation, s => (s.MethodKind == MethodKind.Constructor) && (s.Parameters.Length == 1));
         }
 
         [Fact]
@@ -212,9 +212,9 @@ namespace Acme
 }
 ");
 
-            CheckDeclarationId<IMethodSymbol>("M:Acme.ValueType.M(System.Int32)", compilation, s => s.Name == "M" && s.Parameters.Length == 1 && s.Parameters[0].Type.Name == "Int32");
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.NestedClass.M(System.Int32)", compilation, s => s.Name == "M" && s.Parameters.Length == 1 && s.Parameters[0].Type.Name == "Int32");
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.M0", compilation, s => s.Name == "M0" && s.Parameters.Length == 0);
+            CheckDeclarationId<IMethodSymbol>("M:Acme.ValueType.M(System.Int32)", compilation, s => (s.Name == "M") && (s.Parameters.Length == 1) && (s.Parameters[0].Type.Name == "Int32"));
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.NestedClass.M(System.Int32)", compilation, s => (s.Name == "M") && (s.Parameters.Length == 1) && (s.Parameters[0].Type.Name == "Int32"));
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.M0", compilation, s => (s.Name == "M0") && (s.Parameters.Length == 0));
             CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.M1(System.Char,System.Single@,Acme.ValueType@)", compilation, s => s.Name == "M1");
             CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.M2(System.Int16[],System.Int32[0:,0:],System.Int64[][])", compilation, s => s.Name == "M2");
             CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.M3(System.Int64[][],Acme.Widget[0:,0:,0:][])", compilation, s => s.Name == "M3");
@@ -277,7 +277,7 @@ namespace Acme
 }
 ");
 
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_UnaryPlus(Acme.Widget)", compilation, m => m.MethodKind == MethodKind.UserDefinedOperator && m.Parameters.Length == 1);
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_UnaryPlus(Acme.Widget)", compilation, m => (m.MethodKind == MethodKind.UserDefinedOperator) && (m.Parameters.Length == 1));
         }
 
         [Fact]
@@ -293,7 +293,7 @@ namespace Acme
 }
 ");
 
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_Addition(Acme.Widget,Acme.Widget)", compilation, m => m.MethodKind == MethodKind.UserDefinedOperator && m.Parameters.Length == 2);
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_Addition(Acme.Widget,Acme.Widget)", compilation, m => (m.MethodKind == MethodKind.UserDefinedOperator) && (m.Parameters.Length == 2));
         }
 
         [Fact]
@@ -310,8 +310,8 @@ namespace Acme
 }
 ");
 
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_Explicit(Acme.Widget)~System.Int32", compilation, m => m.MethodKind == MethodKind.Conversion && m.Parameters.Length == 1 && m.ReturnType.Name == "Int32");
-            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_Implicit(Acme.Widget)~System.Int64", compilation, m => m.MethodKind == MethodKind.Conversion && m.Parameters.Length == 1 && m.ReturnType.Name == "Int64");
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_Explicit(Acme.Widget)~System.Int32", compilation, m => (m.MethodKind == MethodKind.Conversion) && (m.Parameters.Length == 1) && (m.ReturnType.Name == "Int32"));
+            CheckDeclarationId<IMethodSymbol>("M:Acme.Widget.op_Implicit(Acme.Widget)~System.Int64", compilation, m => (m.MethodKind == MethodKind.Conversion) && (m.Parameters.Length == 1) && (m.ReturnType.Name == "Int64"));
         }
 
         [Fact]

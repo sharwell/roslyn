@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 return false;
             }
 
-            return newTypeInfo.Type == null ||
+            return (newTypeInfo.Type == null) ||
                 (newTypeInfo.Type.IsErrorType() && !originalTypeInfo.Type.IsErrorType());
         }
 
@@ -272,7 +272,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         public static bool SymbolInfosAreCompatible(SymbolInfo originalSymbolInfo, SymbolInfo newSymbolInfo, bool performEquivalenceCheck, bool requireNonNullSymbols = false)
         {
-            return originalSymbolInfo.CandidateReason == newSymbolInfo.CandidateReason &&
+            return (originalSymbolInfo.CandidateReason == newSymbolInfo.CandidateReason) &&
                 SymbolsAreCompatibleCore(originalSymbolInfo.Symbol, newSymbolInfo.Symbol, performEquivalenceCheck, requireNonNullSymbols);
         }
 
@@ -288,12 +288,12 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private static bool SymbolsAreCompatibleCore(ISymbol symbol, ISymbol newSymbol, bool performEquivalenceCheck, bool requireNonNullSymbols = false)
         {
-            if (symbol == null && newSymbol == null)
+            if ((symbol == null) && (newSymbol == null))
             {
                 return !requireNonNullSymbols;
             }
 
-            if (symbol == null || newSymbol == null)
+            if ((symbol == null) || (newSymbol == null))
             {
                 return false;
             }
@@ -326,22 +326,22 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                     // As we are comparing symbols from different semantic models, locations will differ.
                     // Hence perform minimal checks for these symbol kinds.
                     case SymbolKind.Local:
-                        return newSymbol.Kind == SymbolKind.Local &&
-                            newSymbol.IsImplicitlyDeclared == symbol.IsImplicitlyDeclared &&
+                        return (newSymbol.Kind == SymbolKind.Local) &&
+                            (newSymbol.IsImplicitlyDeclared == symbol.IsImplicitlyDeclared) &&
                             string.Equals(symbol.Name, newSymbol.Name, StringComparison.Ordinal) &&
                             ((ILocalSymbol)newSymbol).Type.Equals(((ILocalSymbol)symbol).Type);
 
                     case SymbolKind.Label:
                     case SymbolKind.RangeVariable:
-                        return newSymbol.Kind == symbol.Kind && string.Equals(newSymbol.Name, symbol.Name, StringComparison.Ordinal);
+                        return (newSymbol.Kind == symbol.Kind) && string.Equals(newSymbol.Name, symbol.Name, StringComparison.Ordinal);
 
                     case SymbolKind.Parameter:
-                        if (newSymbol.Kind == SymbolKind.Parameter && symbol.ContainingSymbol.IsAnonymousFunction())
+                        if ((newSymbol.Kind == SymbolKind.Parameter) && symbol.ContainingSymbol.IsAnonymousFunction())
                         {
                             var param = (IParameterSymbol)symbol;
                             var newParam = (IParameterSymbol)newSymbol;
-                            return param.IsRefOrOut() == newParam.IsRefOrOut() &&
-                                param.Name == newParam.Name &&
+                            return (param.IsRefOrOut() == newParam.IsRefOrOut()) &&
+                                (param.Name == newParam.Name) &&
                                 SymbolEquivalenceComparer.Instance.Equals(param.Type, newParam.Type) &&
                                 newSymbol.ContainingSymbol.IsAnonymousFunction();
                         }
@@ -360,17 +360,17 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
             // Handle equivalence of special built-in comparison operators between enum types and 
             // it's underlying enum type.
-            if (symbol.Kind == SymbolKind.Method && newSymbol.Kind == SymbolKind.Method)
+            if ((symbol.Kind == SymbolKind.Method) && (newSymbol.Kind == SymbolKind.Method))
             {
                 var methodSymbol = (IMethodSymbol)symbol;
                 var newMethodSymbol = (IMethodSymbol)newSymbol;
                 if (methodSymbol.TryGetPredefinedComparisonOperator(out var originalOp) &&
                     newMethodSymbol.TryGetPredefinedComparisonOperator(out var newOp) &&
-                    originalOp == newOp)
+                    (originalOp == newOp))
                 {
                     var type = methodSymbol.ContainingType;
                     var newType = newMethodSymbol.ContainingType;
-                    if (type != null && newType != null)
+                    if ((type != null) && (newType != null))
                     {
                         if (EnumTypesAreCompatible(type, newType) ||
                             EnumTypesAreCompatible(newType, type))
@@ -386,7 +386,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private static bool EnumTypesAreCompatible(INamedTypeSymbol type1, INamedTypeSymbol type2)
             => type1.IsEnumType() &&
-               type1.EnumUnderlyingType?.SpecialType == type2.SpecialType;
+               (type1.EnumUnderlyingType?.SpecialType == type2.SpecialType);
 
         #endregion
 
@@ -468,8 +468,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private bool ReplacementChangesSemanticsForNode(SyntaxNode currentOriginalNode, SyntaxNode currentReplacedNode, SyntaxNode previousOriginalNode, SyntaxNode previousReplacedNode)
         {
-            Debug.Assert(previousOriginalNode == null || previousOriginalNode.Parent == currentOriginalNode);
-            Debug.Assert(previousReplacedNode == null || previousReplacedNode.Parent == currentReplacedNode);
+            Debug.Assert((previousOriginalNode == null) || (previousOriginalNode.Parent == currentOriginalNode));
+            Debug.Assert((previousReplacedNode == null) || (previousReplacedNode.Parent == currentReplacedNode));
 
             if (IsInvocableExpression(currentOriginalNode))
             {
@@ -573,12 +573,12 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private bool ReplacementBreaksForEachGetEnumerator(IMethodSymbol getEnumerator, IMethodSymbol newGetEnumerator, TExpressionSyntax newForEachStatementExpression)
         {
-            if (getEnumerator == null && newGetEnumerator == null)
+            if ((getEnumerator == null) && (newGetEnumerator == null))
             {
                 return false;
             }
 
-            if (getEnumerator == null || newGetEnumerator == null)
+            if ((getEnumerator == null) || (newGetEnumerator == null))
             {
                 return true;
             }
@@ -640,28 +640,28 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 newSymbol = this.OriginalSemanticModel.GetSpeculativeSymbolInfo(type.SpanStart, newType, bindingOption).Symbol;
             }
 
-            return symbol != null && !SymbolsAreCompatible(symbol, newSymbol);
+            return (symbol != null) && !SymbolsAreCompatible(symbol, newSymbol);
         }
 
         protected abstract bool IsInvocableExpression(SyntaxNode node);
 
         private static bool IsDelegateInvoke(ISymbol symbol)
         {
-            return symbol.Kind == SymbolKind.Method &&
-                ((IMethodSymbol)symbol).MethodKind == MethodKind.DelegateInvoke;
+            return (symbol.Kind == SymbolKind.Method) &&
+                (((IMethodSymbol)symbol).MethodKind == MethodKind.DelegateInvoke);
         }
 
         private static bool IsAnonymousDelegateInvoke(ISymbol symbol)
         {
             return IsDelegateInvoke(symbol) &&
-                symbol.ContainingType != null &&
+                (symbol.ContainingType != null) &&
                 symbol.ContainingType.IsAnonymousType();
         }
 
         private bool ReplacementBreaksInvocableExpression(TExpressionSyntax expression, TExpressionSyntax newExpression)
         {
             var originalSymbolInfo = _semanticModel.GetSymbolInfo(expression);
-            if (_failOnOverloadResolutionFailuresInOriginalCode && originalSymbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
+            if (_failOnOverloadResolutionFailuresInOriginalCode && (originalSymbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure))
             {
                 return true;
             }
@@ -687,7 +687,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 return false;
             }
 
-            if (symbol == null || newSymbol == null || originalSymbolInfo.CandidateReason != newSymbolInfo.CandidateReason)
+            if ((symbol == null) || (newSymbol == null) || (originalSymbolInfo.CandidateReason != newSymbolInfo.CandidateReason))
             {
                 return true;
             }
@@ -795,17 +795,17 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
             if (newReceiverType.IsReferenceType &&
                 !IsEffectivelySealedClass(newReceiverType) &&
-                newSymbolContainingType.SpecialType != SpecialType.System_Array &&
-                newSymbolContainingType.SpecialType != SpecialType.System_Delegate &&
-                newSymbolContainingType.SpecialType != SpecialType.System_Enum &&
+                (newSymbolContainingType.SpecialType != SpecialType.System_Array) &&
+                (newSymbolContainingType.SpecialType != SpecialType.System_Delegate) &&
+                (newSymbolContainingType.SpecialType != SpecialType.System_Enum) &&
                 !IsReceiverUniqueInstance(newReceiver, speculativeSemanticModel))
             {
                 return false;
             }
 
-            if (newReceiverType.IsValueType && newReceiverType.SpecialType == SpecialType.None)
+            if (newReceiverType.IsValueType && (newReceiverType.SpecialType == SpecialType.None))
             {
-                if (newReceiver == null ||
+                if ((newReceiver == null) ||
                     !IsReceiverUniqueInstance(newReceiver, speculativeSemanticModel))
                 {
                     return false;
@@ -850,9 +850,9 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 }
 
                 // A private class with no nested or sibling classes is effectively sealed.
-                if (namedType.DeclaredAccessibility == Accessibility.Private &&
-                    namedType.ContainingType != null &&
-                    !namedType.ContainingType.GetTypeMembers().Any(nestedType => nestedType.TypeKind == TypeKind.Class && namedType != nestedType))
+                if ((namedType.DeclaredAccessibility == Accessibility.Private) &&
+                    (namedType.ContainingType != null) &&
+                    !namedType.ContainingType.GetTypeMembers().Any(nestedType => (nestedType.TypeKind == TypeKind.Class) && (namedType != nestedType)))
                 {
                     return true;
                 }
@@ -921,8 +921,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             ImmutableArray<IParameterSymbol> signature2Parameters)
         {
             Debug.Assert(signature1Parameters.Length == signature2Parameters.Length);
-            Debug.Assert(specifiedArguments.Length <= signature1Parameters.Length ||
-                        (signature1Parameters.Length > 0 && !signature1Parameters.Last().IsParams));
+            Debug.Assert((specifiedArguments.Length <= signature1Parameters.Length) ||
+                        ((signature1Parameters.Length > 0) && !signature1Parameters.Last().IsParams));
 
             if (signature1Parameters.Length != signature2Parameters.Length)
             {
@@ -1041,8 +1041,8 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             originalConversion = null;
             newConversion = null;
 
-            if (this.OriginalSemanticModel.GetTypeInfo(originalExpression).Type != null &&
-                this.SpeculativeSemanticModel.GetTypeInfo(newExpression).Type != null)
+            if ((this.OriginalSemanticModel.GetTypeInfo(originalExpression).Type != null) &&
+                (this.SpeculativeSemanticModel.GetTypeInfo(newExpression).Type != null))
             {
                 originalConversion = ClassifyConversion(this.OriginalSemanticModel, originalExpression, originalTargetType);
                 newConversion = ClassifyConversion(this.SpeculativeSemanticModel, newExpression, newTargetType);

@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             var result = _lazyUncommonProperties;
             if (result != null)
             {
-                Debug.Assert(result != s_noUncommonProperties || result.IsDefaultValue(), "default value was modified");
+                Debug.Assert((result != s_noUncommonProperties) || result.IsDefaultValue(), "default value was modified");
                 return result;
             }
 
@@ -139,14 +139,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             internal bool IsDefaultValue()
             {
                 return lazyInstanceEnumFields.IsDefault &&
-                    (object)lazyEnumUnderlyingType == null &&
+                    ((object)lazyEnumUnderlyingType == null) &&
                     lazyCustomAttributes.IsDefault &&
                     lazyConditionalAttributeSymbols.IsDefault &&
-                    lazyObsoleteAttributeData == ObsoleteAttributeData.Uninitialized &&
+                    (lazyObsoleteAttributeData == ObsoleteAttributeData.Uninitialized) &&
                     lazyAttributeUsageInfo.IsNull &&
                     !lazyContainsExtensionMethods.HasValue() &&
-                    lazyDefaultMemberName == null &&
-                    (object)lazyComImportCoClassType == (object)ErrorTypeSymbol.UnknownResultType &&
+                    (lazyDefaultMemberName == null) &&
+                    ((object)lazyComImportCoClassType == (object)ErrorTypeSymbol.UnknownResultType) &&
                     !lazyHasEmbeddedAttribute.HasValue();
             }
         }
@@ -246,7 +246,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     out mangleName);
             }
 
-            if (mrEx != null || metadataArity < containerMetadataArity)
+            if ((mrEx != null) || (metadataArity < containerMetadataArity))
             {
                 result._lazyUseSiteDiagnostic = new CSDiagnosticInfo(ErrorCode.ERR_BogusType, result);
             }
@@ -264,7 +264,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         {
             Debug.Assert(!handle.IsNil);
             Debug.Assert((object)container != null);
-            Debug.Assert(arity == 0 || this is PENamedTypeSymbolGeneric);
+            Debug.Assert((arity == 0) || (this is PENamedTypeSymbolGeneric));
 
             string metadataName;
             bool makeBad = false;
@@ -305,9 +305,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             }
 
             // check if this is one of the COR library types
-            if (emittedNamespaceName != null &&
+            if ((emittedNamespaceName != null) &&
                 moduleSymbol.ContainingAssembly.KeepLookingForDeclaredSpecialTypes &&
-                this.DeclaredAccessibility == Accessibility.Public) // NB: this.flags was set above.
+                (this.DeclaredAccessibility == Accessibility.Public)) // NB: this.flags was set above.
             {
                 _corTypeId = SpecialTypes.GetTypeFromMetadataName(MetadataHelpers.BuildQualifiedName(emittedNamespaceName, metadataName));
             }
@@ -607,7 +607,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     MightContainExtensionMethods ? AttributeDescription.CaseSensitiveExtensionAttribute : default,
                     out _,
                     // Filter out [Obsolete], unless it was user defined
-                    (IsByRefLikeType && ObsoleteAttributeData is null) ? AttributeDescription.ObsoleteAttribute : default,
+                    (IsByRefLikeType && (ObsoleteAttributeData is null)) ? AttributeDescription.ObsoleteAttribute : default,
                     out _,
                     // Filter out [IsReadOnly]
                     IsReadOnly ? AttributeDescription.IsReadOnlyAttribute : default,
@@ -795,7 +795,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     try
                     {
                         FieldAttributes fieldFlags = module.GetFieldDefFlagsOrThrow(fieldDef);
-                        if ((fieldFlags & FieldAttributes.Static) == 0 && ModuleExtensions.ShouldImportField(fieldFlags, moduleSymbol.ImportOptions))
+                        if (((fieldFlags & FieldAttributes.Static) == 0) && ModuleExtensions.ShouldImportField(fieldFlags, moduleSymbol.ImportOptions))
                         {
                             builder.Add(new PEFieldSymbol(moduleSymbol, this, fieldDef));
                         }
@@ -813,14 +813,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
             foreach (var fieldDef in fieldDefs)
             {
-                if (instanceIndex < uncommon.lazyInstanceEnumFields.Length && uncommon.lazyInstanceEnumFields[instanceIndex].Handle == fieldDef)
+                if ((instanceIndex < uncommon.lazyInstanceEnumFields.Length) && (uncommon.lazyInstanceEnumFields[instanceIndex].Handle == fieldDef))
                 {
                     yield return uncommon.lazyInstanceEnumFields[instanceIndex];
                     instanceIndex++;
                     continue;
                 }
 
-                if (staticIndex < staticFields.Length && staticFields[staticIndex].Kind == SymbolKind.Field)
+                if ((staticIndex < staticFields.Length) && (staticFields[staticIndex].Kind == SymbolKind.Field))
                 {
                     var field = (PEFieldSymbol)staticFields[staticIndex];
 
@@ -836,7 +836,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             fieldDefs.Free();
 
             Debug.Assert(instanceIndex == uncommon.lazyInstanceEnumFields.Length);
-            Debug.Assert(staticIndex == staticFields.Length || staticFields[staticIndex].Kind != SymbolKind.Field);
+            Debug.Assert((staticIndex == staticFields.Length) || (staticFields[staticIndex].Kind != SymbolKind.Field));
         }
 
         internal override IEnumerable<FieldSymbol> GetFieldsToEmit()
@@ -945,7 +945,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             {
                 // We do not create symbols for v-table gap methods, let's figure out where the gaps go.
 
-                if (index >= members.Length || members[index].Kind != SymbolKind.Method)
+                if ((index >= members.Length) || (members[index].Kind != SymbolKind.Method))
                 {
                     // We didn't import any methods, it is Ok to return an empty set.
                     yield break;
@@ -973,7 +973,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                         yield return method;
                         index++;
 
-                        if (index == members.Length || members[index].Kind != SymbolKind.Method)
+                        if ((index == members.Length) || (members[index].Kind != SymbolKind.Method))
                         {
                             // no need to return any gaps at the end.
                             methodDefs.Free();
@@ -1046,8 +1046,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
         private void EnsureEnumUnderlyingTypeIsLoaded(UncommonProperties uncommon)
         {
-            if ((object)uncommon.lazyEnumUnderlyingType == null
-                && this.TypeKind == TypeKind.Enum)
+            if (((object)uncommon.lazyEnumUnderlyingType == null)
+                && (this.TypeKind == TypeKind.Enum))
             {
                 // From §8.5.2
                 // An enum is considerably more restricted than a true type, as
@@ -1377,7 +1377,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 FieldSymbol result = null;
 
                 var candidates = this.GetMembers(FixedFieldImplementationType.FixedElementFieldName);
-                if (!candidates.IsDefault && candidates.Length == 1)
+                if (!candidates.IsDefault && (candidates.Length == 1))
                 {
                     result = candidates[0] as FieldSymbol;
                 }
@@ -1520,8 +1520,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             get
             {
                 return
-                    (_flags & TypeAttributes.Sealed) != 0 &&
-                    (_flags & TypeAttributes.Abstract) != 0;
+                    ((_flags & TypeAttributes.Sealed) != 0) &&
+                    ((_flags & TypeAttributes.Abstract) != 0);
             }
         }
 
@@ -1530,8 +1530,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             get
             {
                 return
-                    (_flags & TypeAttributes.Abstract) != 0 &&
-                    (_flags & TypeAttributes.Sealed) == 0;
+                    ((_flags & TypeAttributes.Abstract) != 0) &&
+                    ((_flags & TypeAttributes.Sealed) == 0);
             }
         }
 
@@ -1548,8 +1548,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             get
             {
                 return
-                    (_flags & TypeAttributes.Sealed) != 0 &&
-                    (_flags & TypeAttributes.Abstract) == 0;
+                    ((_flags & TypeAttributes.Sealed) != 0) &&
+                    ((_flags & TypeAttributes.Abstract) == 0);
             }
         }
 
@@ -1774,7 +1774,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     try
                     {
                         if (!(isOrdinaryEmbeddableStruct ||
-                            (isOrdinaryStruct && (module.GetFieldDefFlagsOrThrow(fieldRid) & FieldAttributes.Static) == 0) ||
+                            (isOrdinaryStruct && ((module.GetFieldDefFlagsOrThrow(fieldRid) & FieldAttributes.Static) == 0)) ||
                             module.ShouldImportField(fieldRid, moduleSymbol.ImportOptions)))
                         {
                             continue;
@@ -1945,13 +1945,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 {
                     diagnostic = new CSDiagnosticInfo(ErrorCode.ERR_BogusType, this);
                 }
-                else if (TypeKind == TypeKind.Class && SpecialType != SpecialType.System_Enum)
+                else if ((TypeKind == TypeKind.Class) && (SpecialType != SpecialType.System_Enum))
                 {
                     TypeSymbol @base = GetDeclaredBaseType(null);
-                    if (@base?.SpecialType == SpecialType.None && @base.ContainingAssembly?.IsMissing == true)
+                    if ((@base?.SpecialType == SpecialType.None) && (@base.ContainingAssembly?.IsMissing == true))
                     {
                         var missingType = @base as MissingMetadataTypeSymbol.TopLevel;
-                        if ((object)missingType != null && missingType.Arity == 0)
+                        if (((object)missingType != null) && (missingType.Arity == 0))
                         {
                             string emittedName = MetadataHelpers.BuildQualifiedName(missingType.NamespaceName, missingType.MetadataName);
                             switch (SpecialTypes.GetTypeFromMetadataName(emittedName))
@@ -2135,7 +2135,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 if (ReferenceEquals(uncommon.lazyComImportCoClassType, ErrorTypeSymbol.UnknownResultType))
                 {
                     var type = this.ContainingPEModule.TryDecodeAttributeWithTypeArgument(this.Handle, AttributeDescription.CoClassAttribute);
-                    var coClassType = ((object)type != null && (type.TypeKind == TypeKind.Class || type.IsErrorType())) ? (NamedTypeSymbol)type : null;
+                    var coClassType = (((object)type != null) && ((type.TypeKind == TypeKind.Class) || type.IsErrorType())) ? (NamedTypeSymbol)type : null;
 
                     Interlocked.CompareExchange(ref uncommon.lazyComImportCoClassType, coClassType, ErrorTypeSymbol.UnknownResultType);
                 }

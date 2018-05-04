@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return false;
             }
 
-            return Kind == other.Kind && Equals(Key, other.Key) && base.Equals(obj);
+            return (Kind == other.Kind) && Equals(Key, other.Key) && base.Equals(obj);
         }
 
         public override int GetHashCode()

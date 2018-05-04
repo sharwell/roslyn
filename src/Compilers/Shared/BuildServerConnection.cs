@@ -323,7 +323,7 @@ namespace Microsoft.CodeAnalysis.CommandLine
                 {
                     await pipeStream.ConnectAsync(timeoutMs, cancellationToken).ConfigureAwait(false);
                 }
-                catch (Exception e) when (e is IOException || e is TimeoutException)
+                catch (Exception e) when ((e is IOException) || (e is TimeoutException))
                 {
                     // Note: IOException can also indicate timeout. From docs:
                     // TimeoutException: Could not connect to the server within the
@@ -347,7 +347,7 @@ namespace Microsoft.CodeAnalysis.CommandLine
 
                 return pipeStream;
             }
-            catch (Exception e) when (!(e is TaskCanceledException || e is OperationCanceledException))
+            catch (Exception e) when (!((e is TaskCanceledException) || (e is OperationCanceledException)))
             {
                 LogException(e, "Exception while connecting to process");
                 return null;

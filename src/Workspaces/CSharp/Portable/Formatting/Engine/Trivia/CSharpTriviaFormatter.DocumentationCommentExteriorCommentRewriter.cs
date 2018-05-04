@@ -68,11 +68,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
                 while (currentParent != null)
                 {
-                    if (currentParent.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia ||
-                        currentParent.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia)
+                    if ((currentParent.Kind() == SyntaxKind.SingleLineDocumentationCommentTrivia) ||
+                        (currentParent.Kind() == SyntaxKind.MultiLineDocumentationCommentTrivia))
                     {
-                        if (trivia.Span.End == currentParent.SpanStart ||
-                            trivia.Span.End == currentParent.Span.End)
+                        if ((trivia.Span.End == currentParent.SpanStart) ||
+                            (trivia.Span.End == currentParent.Span.End))
                         {
                             return true;
                         }

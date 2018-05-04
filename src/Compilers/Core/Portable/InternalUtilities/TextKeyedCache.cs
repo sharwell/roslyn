@@ -116,7 +116,7 @@ namespace Roslyn.Utilities
 
             var text = localSlot.Text;
 
-            if (text != null && localSlot.HashCode == hashCode)
+            if ((text != null) && (localSlot.HashCode == hashCode))
             {
                 if (StringTable.TextEquals(text, chars, start, len))
                 {
@@ -149,13 +149,13 @@ namespace Roslyn.Utilities
 
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 (hash, e) = arr[idx];
 
                 if (e != null)
                 {
-                    if (hash == hashCode && StringTable.TextEquals(e.Text, chars, start, len))
+                    if ((hash == hashCode) && StringTable.TextEquals(e.Text, chars, start, len))
                     {
                         break;
                     }
@@ -199,7 +199,7 @@ namespace Roslyn.Utilities
             // we use quadratic probing here
             // bucket positions are (n^2 + n)/2 relative to the masked hashcode
             int curIdx = idx;
-            for (int i = 1; i < SharedBucketSize + 1; i++)
+            for (int i = 1; i < (SharedBucketSize + 1); i++)
             {
                 if (arr[curIdx].Entry == null)
                 {
@@ -213,7 +213,7 @@ namespace Roslyn.Utilities
             // or pick a random victim within the bucket range
             // and replace with new entry
             var i1 = NextRandom() & SharedBucketSizeMask;
-            idx = (idx + ((i1 * i1 + i1) / 2)) & SharedSizeMask;
+            idx = (idx + (((i1 * i1) + i1) / 2)) & SharedSizeMask;
 
         foundIdx:
             arr[idx].HashCode = hashCode;

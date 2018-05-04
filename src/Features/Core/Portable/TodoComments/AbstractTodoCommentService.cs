@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.TodoComments
             // same service run in both inproc and remote host, but remote host will not have RemoteHostClient service, 
             // so inproc one will always run
             var client = await document.Project.Solution.Workspace.TryGetRemoteHostClientAsync(cancellationToken).ConfigureAwait(false);
-            if (client != null && !document.IsOpen())
+            if ((client != null) && !document.IsOpen())
             {
                 // run todo scanner on remote host. 
                 // we only run closed files to make open document to have better responsiveness. 
@@ -115,7 +115,7 @@ namespace Microsoft.CodeAnalysis.TodoComments
                     continue;
                 }
 
-                if ((message.Length > index + token.Length) && IsIdentifierCharacter(message[index + token.Length]))
+                if ((message.Length > (index + token.Length)) && IsIdentifierCharacter(message[index + token.Length]))
                 {
                     // they wrote something like:
                     // todoboo

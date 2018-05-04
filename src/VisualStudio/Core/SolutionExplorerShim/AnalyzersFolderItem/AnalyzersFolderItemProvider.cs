@@ -47,10 +47,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
 
         protected override IAttachedCollectionSource CreateCollectionSource(IVsHierarchyItem item, string relationshipName)
         {
-            if (item != null &&
-                item.HierarchyIdentity != null &&
-                item.HierarchyIdentity.NestedHierarchy != null &&
-                relationshipName == KnownRelationships.Contains)
+            if ((item != null) &&
+                (item.HierarchyIdentity != null) &&
+                (item.HierarchyIdentity.NestedHierarchy != null) &&
+                (relationshipName == KnownRelationships.Contains))
             {
                 var hierarchy = item.HierarchyIdentity.NestedHierarchy;
                 var itemId = item.HierarchyIdentity.NestedItemID;
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
         private IAttachedCollectionSource CreateCollectionSourceCore(IVsHierarchyItem parentItem, IVsHierarchyItem item)
         {
             var hierarchyMapper = TryGetProjectMap();
-            if (hierarchyMapper != null &&
+            if ((hierarchyMapper != null) &&
                 hierarchyMapper.TryGetProjectId(parentItem, targetFrameworkMoniker: null, projectId: out var projectId))
             {
                 var workspace = TryGetWorkspace();

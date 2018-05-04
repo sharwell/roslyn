@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 ? propertySyntax.ExpressionBody
                 : ((IndexerDeclarationSyntax)syntax).ExpressionBody;
             bool hasExpressionBody = arrowExpression != null;
-            bool hasInitializer = !isIndexer && propertySyntax.Initializer != null;
+            bool hasInitializer = !isIndexer && (propertySyntax.Initializer != null);
 
             bool notRegularProperty = !IsAbstract && !IsExtern && !isIndexer && hasAccessorList;
             AccessorDeclarationSyntax getSyntax = null;
@@ -157,7 +157,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             throw ExceptionUtilities.UnexpectedValue(accessor.Kind());
                     }
 
-                    if (accessor.Body != null || accessor.ExpressionBody != null)
+                    if ((accessor.Body != null) || (accessor.ExpressionBody != null))
                     {
                         notRegularProperty = false;
                     }
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 var hasGetSyntax = getSyntax != null;
                 _isAutoProperty = notRegularProperty && hasGetSyntax;
-                bool isReadOnly = hasGetSyntax && setSyntax == null;
+                bool isReadOnly = hasGetSyntax && (setSyntax == null);
 
                 if (_isAutoProperty && !isReadOnly && !IsStatic && ContainingType.IsReadOnly)
                 {
@@ -192,7 +192,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         Binder.ReportUseSiteDiagnosticForSynthesizedAttribute(bodyBinder.Compilation,
                         WellKnownMember.System_Runtime_CompilerServices_CompilerGeneratedAttribute__ctor, diagnostics, syntax: syntax);
 
-                        if (this._refKind != RefKind.None && !_containingType.IsInterface)
+                        if ((this._refKind != RefKind.None) && !_containingType.IsInterface)
                         {
                             diagnostics.Add(ErrorCode.ERR_AutoPropertyCannotBeRefReturning, location, this);
                         }
@@ -388,7 +388,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     ImmutableArray.Create(explicitlyImplementedProperty);
 
             // get-only auto property should not override settable properties
-            if (_isAutoProperty && (object)_setMethod == null && !this.IsReadOnly)
+            if (_isAutoProperty && ((object)_setMethod == null) && !this.IsReadOnly)
             {
                 diagnostics.Add(ErrorCode.ERR_AutoPropertyMustOverrideSet, location, this);
             }
@@ -841,7 +841,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             // There is a special warning for an indexer with exactly one parameter, which is optional.
             // ParameterHelpers already warns for default values on explicit interface implementations.
-            if (parameters.Length == 1 && !owner.IsExplicitInterfaceImplementation)
+            if ((parameters.Length == 1) && !owner.IsExplicitInterfaceImplementation)
             {
                 ParameterSyntax parameterSyntax = parameterSyntaxOpt.Parameters[0];
                 if (parameterSyntax.Default != null)
@@ -856,7 +856,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private void CheckModifiers(Location location, bool isIndexer, DiagnosticBag diagnostics)
         {
-            if (this.DeclaredAccessibility == Accessibility.Private && (IsVirtual || IsAbstract || IsOverride))
+            if ((this.DeclaredAccessibility == Accessibility.Private) && (IsVirtual || IsAbstract || IsOverride))
             {
                 diagnostics.Add(ErrorCode.ERR_VirtualPrivate, location, this);
             }
@@ -875,12 +875,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // '{0}' cannot be sealed because it is not an override
                 diagnostics.Add(ErrorCode.ERR_SealedNonOverride, location, this);
             }
-            else if (IsAbstract && ContainingType.TypeKind == TypeKind.Struct)
+            else if (IsAbstract && (ContainingType.TypeKind == TypeKind.Struct))
             {
                 // The modifier '{0}' is not valid for this item
                 diagnostics.Add(ErrorCode.ERR_BadMemberFlag, location, SyntaxFacts.GetText(SyntaxKind.AbstractKeyword));
             }
-            else if (IsVirtual && ContainingType.TypeKind == TypeKind.Struct)
+            else if (IsVirtual && (ContainingType.TypeKind == TypeKind.Struct))
             {
                 // The modifier '{0}' is not valid for this item
                 diagnostics.Add(ErrorCode.ERR_BadMemberFlag, location, SyntaxFacts.GetText(SyntaxKind.VirtualKeyword));
@@ -1016,7 +1016,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         private SynthesizedSealedPropertyAccessor MakeSynthesizedSealedAccessor()
         {
-            Debug.Assert(this.IsSealed && ((object)_getMethod == null || (object)_setMethod == null));
+            Debug.Assert(this.IsSealed && (((object)_getMethod == null) || ((object)_setMethod == null)));
 
             if ((object)_getMethod != null)
             {
@@ -1070,7 +1070,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private CustomAttributesBag<CSharpAttributeData> GetAttributesBag()
         {
             var bag = _lazyCustomAttributesBag;
-            if (bag != null && bag.IsSealed)
+            if ((bag != null) && bag.IsSealed)
             {
                 return bag;
             }
@@ -1110,7 +1110,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private CommonPropertyWellKnownAttributeData GetDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -1127,7 +1127,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal PropertyEarlyWellKnownAttributeData GetEarlyDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -1165,7 +1165,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                return data != null && data.HasSpecialNameAttribute;
+                return (data != null) && data.HasSpecialNameAttribute;
             }
         }
 
@@ -1223,7 +1223,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 var lazyCustomAttributesBag = _lazyCustomAttributesBag;
-                if (lazyCustomAttributesBag != null && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+                if ((lazyCustomAttributesBag != null) && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
                 {
                     return ((PropertyEarlyWellKnownAttributeData)lazyCustomAttributesBag.EarlyDecodedWellKnownAttributeData)?.ObsoleteAttributeData;
                 }
@@ -1300,7 +1300,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             else
             {
                 string indexerName = attribute.CommonConstructorArguments[0].DecodeValue<string>(SpecialType.System_String);
-                if (indexerName == null || !SyntaxFacts.IsValidIdentifier(indexerName))
+                if ((indexerName == null) || !SyntaxFacts.IsValidIdentifier(indexerName))
                 {
                     diagnostics.Add(ErrorCode.ERR_BadArgumentToAttribute, node.ArgumentList.Arguments[0].Location, node.GetErrorDisplayName());
                 }
@@ -1449,7 +1449,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 {
                     diagnostics.Add(ErrorCode.ERR_BadVisIndexerParam, _location, this, param.Type);
                 }
-                else if ((object)_setMethod != null && param.Name == ParameterSymbol.ValueParameterName)
+                else if (((object)_setMethod != null) && (param.Name == ParameterSymbol.ValueParameterName))
                 {
                     diagnostics.Add(ErrorCode.ERR_DuplicateGeneratedName, param.Locations.FirstOrDefault() ?? _location, param.Name);
                 }

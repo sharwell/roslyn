@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseExpressionBody
             }
 
             var containingLambda = node.FirstAncestorOrSelf<LambdaExpressionSyntax>();
-            if (containingLambda != null &&
+            if ((containingLambda != null) &&
                 node.AncestorsAndSelf().Contains(containingLambda.Body))
             {
                 // don't offer inside a lambda.  Lambdas can be quite large, and it will be very noisy

@@ -58,18 +58,18 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             PENamedTypeSymbol peType = _containingType as PENamedTypeSymbol;
             if ((object)peType != null)
             {
-                while ((object)peType != null && (peType.MetadataArity - peType.Arity) > position)
+                while (((object)peType != null) && ((peType.MetadataArity - peType.Arity) > position))
                 {
                     peType = peType.ContainingSymbol as PENamedTypeSymbol;
                 }
 
-                if ((object)peType == null || peType.MetadataArity <= position)
+                if (((object)peType == null) || (peType.MetadataArity <= position))
                 {
                     return new UnsupportedMetadataTypeSymbol(); // position of type parameter too large
                 }
 
                 position -= peType.MetadataArity - peType.Arity;
-                Debug.Assert(position >= 0 && position < peType.Arity);
+                Debug.Assert((position >= 0) && (position < peType.Arity));
 
                 return peType.TypeArgumentsNoUseSiteDiagnostics[position]; //NB: args, not params
             }
@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 arityOffset = containingTypeCumulativeArity;
             }
 
-            if (arityOffset <= position && position < cumulativeArity)
+            if ((arityOffset <= position) && (position < cumulativeArity))
             {
                 Debug.Assert((object)typeArgument == null);
 
@@ -177,8 +177,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             foreach (Symbol member in targetTypeSymbol.GetMembers(targetMemberName))
             {
                 var field = member as FieldSymbol;
-                if ((object)field != null &&
-                    field.Type == type &&
+                if (((object)field != null) &&
+                    (field.Type == type) &&
                     CustomModifiersMatch(field.CustomModifiers, customModifiers))
                 {
                     // Behavior in the face of multiple matching signatures is
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             foreach (Symbol member in targetTypeSymbol.GetMembers(targetMemberName))
             {
                 var method = member as MethodSymbol;
-                if ((object)method != null &&
+                if (((object)method != null) &&
                     ((byte)method.CallingConvention == targetMemberSignatureHeader.RawValue) &&
                     (targetMemberTypeParamCount == method.Arity) &&
                     MethodSymbolMatchesParamInfo(method, targetParamInfo))
@@ -318,7 +318,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 var targetCustomModifier = targetCustomModifiers[i];
                 CustomModifier candidateCustomModifier = candidateCustomModifiers[i];
 
-                if (targetCustomModifier.IsOptional != candidateCustomModifier.IsOptional ||
+                if ((targetCustomModifier.IsOptional != candidateCustomModifier.IsOptional) ||
                     !object.Equals(targetCustomModifier.Modifier, candidateCustomModifier.Modifier))
                 {
                     return false;

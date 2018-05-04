@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
             var distanceX = Distance(x.ApplicableToSpan, _targetPoint);
             var distanceY = Distance(y.ApplicableToSpan, _targetPoint);
 
-            if (distanceX != 0 || distanceY != 0)
+            if ((distanceX != 0) || (distanceY != 0))
             {
                 return distanceX.CompareTo(distanceY);
             }

@@ -61,8 +61,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
             var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
             var localDeclarationStatement = (LocalDeclarationStatementSyntax)variableDeclaration.Parent;
 
-            if (variableDeclarator.Identifier != token ||
-                variableDeclarator.Initializer == null ||
+            if ((variableDeclarator.Identifier != token) ||
+                (variableDeclarator.Initializer == null) ||
                 variableDeclarator.Initializer.Value.IsMissing ||
                 variableDeclarator.Initializer.Value.IsKind(SyntaxKind.StackAllocArrayCreationExpression))
             {
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
 
             var identifierNode = identifier
                 .Ancestors()
-                .TakeWhile(n => n.Kind() == SyntaxKind.ParenthesizedExpression || n.Kind() == SyntaxKind.CastExpression)
+                .TakeWhile(n => (n.Kind() == SyntaxKind.ParenthesizedExpression) || (n.Kind() == SyntaxKind.CastExpression))
                 .LastOrDefault();
 
             if (identifierNode == null)
@@ -400,7 +400,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
             while (expression.IsKind(SyntaxKind.ParenthesizedExpression))
             {
                 var parenthesized = (ParenthesizedExpressionSyntax)expression;
-                if (parenthesized.Expression == null ||
+                if ((parenthesized.Expression == null) ||
                     parenthesized.Expression.IsMissing)
                 {
                     break;

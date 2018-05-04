@@ -2460,7 +2460,7 @@ class Program
             {
                 if (code >= 1000)
                 {
-                    return code % 4 + 1;
+                    return (code % 4) + 1;
                 }
                 else
                 {

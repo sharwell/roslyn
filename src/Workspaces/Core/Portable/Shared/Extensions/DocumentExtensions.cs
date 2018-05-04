@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         public static bool IsOpen(this Document document)
         {
             var workspace = document.Project.Solution.Workspace as Workspace;
-            return workspace != null && workspace.IsDocumentOpen(document.Id);
+            return (workspace != null) && workspace.IsDocumentOpen(document.Id);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             {
                 var syntaxFactService = document.Project.LanguageServices.GetService<ISyntaxFactsService>();
                 var semanticModelService = document.Project.Solution.Workspace.Services.GetService<ISemanticModelService>();
-                if (semanticModelService == null || syntaxFactService == null)
+                if ((semanticModelService == null) || (syntaxFactService == null))
                 {
                     return await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
                 }
@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         {
             var syntaxFactService = document.Project.LanguageServices.GetService<ISyntaxFactsService>();
             var semanticModelService = document.Project.Solution.Workspace.Services.GetService<ISemanticModelService>();
-            if (semanticModelService == null || syntaxFactService == null || node == null)
+            if ((semanticModelService == null) || (syntaxFactService == null) || (node == null))
             {
                 return document.GetSemanticModelAsync(cancellationToken);
             }

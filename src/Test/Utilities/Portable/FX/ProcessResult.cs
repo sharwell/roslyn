@@ -37,7 +37,7 @@ namespace Roslyn.Test.Utilities
 
         public bool ContainsErrors
         {
-            get { return this.ExitCode != 0 || !string.IsNullOrEmpty(this.Errors); }
+            get { return (this.ExitCode != 0) || !string.IsNullOrEmpty(this.Errors); }
         }
     }
 }

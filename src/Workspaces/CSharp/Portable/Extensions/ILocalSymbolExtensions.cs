@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                     .FirstOrDefault(node => node.IsKind(SyntaxKind.LocalFunctionStatement) || node.IsKind(SyntaxKind.MethodDeclaration));
                 var localFunctionStatement = destinationBlock.FirstAncestorOrSelf<LocalFunctionStatementSyntax>();
 
-                if (localFunctionOrMethodDeclaration != localFunctionStatement &&
+                if ((localFunctionOrMethodDeclaration != localFunctionStatement) &&
                     HasTypeParameterWithName(localFunctionOrMethodDeclaration, localSymbol.Type.Name) &&
                     HasTypeParameterWithName(localFunctionStatement, localSymbol.Type.Name))
                 {

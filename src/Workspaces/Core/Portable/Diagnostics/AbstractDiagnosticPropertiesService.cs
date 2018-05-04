@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         {
             var assemblyIds = compilation.GetUnreferencedAssemblyIdentities(diagnostic);
             var requiredVersion = Compilation.GetRequiredLanguageVersion(diagnostic);
-            if (assemblyIds.IsDefaultOrEmpty && requiredVersion == null)
+            if (assemblyIds.IsDefaultOrEmpty && (requiredVersion == null))
             {
                 return null;
             }

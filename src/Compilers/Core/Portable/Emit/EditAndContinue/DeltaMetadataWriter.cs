@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.Emit
             foreach (var def in _methodDefs.GetRows())
             {
                 // The debugger tries to remap all modified methods, which requires presence of sequence points.
-                if (!_methodDefs.IsAddedNotChanged(def) && def.GetBody(Context)?.SequencePoints.Length > 0)
+                if (!_methodDefs.IsAddedNotChanged(def) && (def.GetBody(Context)?.SequencePoints.Length > 0))
                 {
                     methods.Add(MetadataTokens.MethodDefinitionHandle(_methodDefs[def]));
                 }
@@ -617,7 +617,7 @@ namespace Microsoft.CodeAnalysis.Emit
 
         private void ReportReferencesToAddedSymbol(ISymbol symbolOpt)
         {
-            if (symbolOpt != null && _changes.IsAdded(symbolOpt))
+            if ((symbolOpt != null) && _changes.IsAdded(symbolOpt))
             {
                 this.Context.Diagnostics.Add(this.messageProvider.CreateDiagnostic(
                     this.messageProvider.ERR_EncReferenceToAddedMember,

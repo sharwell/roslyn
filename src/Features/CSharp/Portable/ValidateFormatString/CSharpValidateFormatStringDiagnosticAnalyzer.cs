@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ValidateFormatString
         {
             foreach (var argument in arguments.Cast<ArgumentSyntax>())
             {
-                if (argument.NameColon != null && argument.NameColon.Name.Identifier.ValueText.Equals(searchArgumentName))
+                if ((argument.NameColon != null) && argument.NameColon.Name.Identifier.ValueText.Equals(searchArgumentName))
                 {
                     return argument;
                 }

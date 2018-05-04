@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public static async Task<IList<Location>> ConvertLocationsAsync(
             this IReadOnlyCollection<DiagnosticDataLocation> locations, Project project, CancellationToken cancellationToken)
         {
-            if (locations == null || locations.Count == 0)
+            if ((locations == null) || (locations.Count == 0))
             {
                 return SpecializedCollections.EmptyList<Location>();
             }
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
             if (document == null)
             {
-                if (dataLocation?.OriginalFilePath == null || dataLocation.SourceSpan == null)
+                if ((dataLocation?.OriginalFilePath == null) || (dataLocation.SourceSpan == null))
                 {
                     return Location.None;
                 }

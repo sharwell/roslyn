@@ -94,7 +94,7 @@ namespace Microsoft.Cci
             var marshalling = fieldDefinition.MarshallingInformation;
 
             Debug.Assert(constant != null == fieldDefinition.IsCompileTimeConstant);
-            Debug.Assert((marshalling != null || !fieldDefinition.MarshallingDescriptor.IsDefaultOrEmpty) == fieldDefinition.IsMarshalledExplicitly);
+            Debug.Assert(((marshalling != null) || !fieldDefinition.MarshallingDescriptor.IsDefaultOrEmpty) == fieldDefinition.IsMarshalledExplicitly);
 
             if (constant != null)
             {
@@ -410,7 +410,7 @@ namespace Microsoft.Cci
         {
             var marshalling = parameterDefinition.MarshallingInformation;
 
-            Debug.Assert((marshalling != null || !parameterDefinition.MarshallingDescriptor.IsDefaultOrEmpty) == parameterDefinition.IsMarshalledExplicitly);
+            Debug.Assert(((marshalling != null) || !parameterDefinition.MarshallingDescriptor.IsDefaultOrEmpty) == parameterDefinition.IsMarshalledExplicitly);
 
             this.Visit(parameterDefinition.GetAttributes(Context));
             this.Visit(parameterDefinition.RefCustomModifiers);

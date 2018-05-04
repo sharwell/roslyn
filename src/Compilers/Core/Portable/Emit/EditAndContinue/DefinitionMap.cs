@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.Emit
                 // to a class that has field/property initializers with lambdas. These lambdas get "copied" into the constructor
                 // (assuming it doesn't have "this" constructor initializer) and thus their generated names need to be preserved. 
 
-                if (edit.Kind == SemanticEditKind.Update && edit.PreserveLocalVariables)
+                if ((edit.Kind == SemanticEditKind.Update) && edit.PreserveLocalVariables)
                 {
                     var method = edit.NewSymbol as IMethodSymbol;
                     if (method != null)
@@ -233,7 +233,7 @@ namespace Microsoft.CodeAnalysis.Emit
                     debugInfo = baseline.DebugInformationProvider(previousHandle);
                     localSignature = baseline.LocalSignatureProvider(previousHandle);
                 }
-                catch (Exception e) when (e is InvalidDataException || e is IOException)
+                catch (Exception e) when ((e is InvalidDataException) || (e is IOException))
                 {
                     diagnostics.Add(MessageProvider.CreateDiagnostic(
                         MessageProvider.ERR_InvalidDebugInfo,
@@ -299,7 +299,7 @@ namespace Microsoft.CodeAnalysis.Emit
                         previousLocals = localSignature.IsNil ? ImmutableArray<EncLocalInfo>.Empty : 
                             GetLocalSlotMapFromMetadata(localSignature, debugInfo);
                     }
-                    catch (Exception e) when (e is UnsupportedSignatureContent || e is BadImageFormatException || e is IOException)
+                    catch (Exception e) when ((e is UnsupportedSignatureContent) || (e is BadImageFormatException) || (e is IOException))
                     {
                         diagnostics.Add(MessageProvider.CreateDiagnostic(
                             MessageProvider.ERR_InvalidDebugInfo,

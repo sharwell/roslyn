@@ -56,14 +56,14 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Progression
                     var node = nodes.Pop();
                     if (!cancellationToken.IsCancellationRequested)
                     {
-                        if (node.Kind() == SyntaxKind.ClassDeclaration ||
-                            node.Kind() == SyntaxKind.DelegateDeclaration ||
-                            node.Kind() == SyntaxKind.EnumDeclaration ||
-                            node.Kind() == SyntaxKind.InterfaceDeclaration ||
-                            node.Kind() == SyntaxKind.StructDeclaration ||
-                            node.Kind() == SyntaxKind.VariableDeclarator ||
-                            node.Kind() == SyntaxKind.MethodDeclaration ||
-                            node.Kind() == SyntaxKind.PropertyDeclaration)
+                        if ((node.Kind() == SyntaxKind.ClassDeclaration) ||
+                            (node.Kind() == SyntaxKind.DelegateDeclaration) ||
+                            (node.Kind() == SyntaxKind.EnumDeclaration) ||
+                            (node.Kind() == SyntaxKind.InterfaceDeclaration) ||
+                            (node.Kind() == SyntaxKind.StructDeclaration) ||
+                            (node.Kind() == SyntaxKind.VariableDeclarator) ||
+                            (node.Kind() == SyntaxKind.MethodDeclaration) ||
+                            (node.Kind() == SyntaxKind.PropertyDeclaration))
                         {
                             yield return node;
                         }
@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Progression
                 label += " : " + typeToShow.ToDisplayString(s_labelFormat);
             }
 
-            if (includeContainingSymbol && symbol.ContainingSymbol != null)
+            if (includeContainingSymbol && (symbol.ContainingSymbol != null))
             {
                 label += " (" + symbol.ContainingSymbol.ToDisplayString(s_labelFormat) + ")";
             }
@@ -123,7 +123,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Progression
 
         private static bool IncludeReturnType(IMethodSymbol f)
         {
-            return f.MethodKind == MethodKind.Ordinary || f.MethodKind == MethodKind.ExplicitInterfaceImplementation;
+            return (f.MethodKind == MethodKind.Ordinary) || (f.MethodKind == MethodKind.ExplicitInterfaceImplementation);
         }
     }
 }

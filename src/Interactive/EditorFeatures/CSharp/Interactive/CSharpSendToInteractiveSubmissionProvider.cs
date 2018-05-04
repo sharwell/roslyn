@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Interactive
 
             // Ensure that the first token comes before the last token.
             // Otherwise selection did not contain any tokens.
-            if (startToken != endToken && startToken.Span.End > endToken.SpanStart)
+            if ((startToken != endToken) && (startToken.Span.End > endToken.SpanStart))
             {
                 return null;
             }
@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Interactive
             var endNode = GetSyntaxNodeForSubmission(endToken.Parent);
 
             // If there is no SyntaxNode worth sending to the REPL return null.
-            if (startNode == null || endNode == null)
+            if ((startNode == null) || (endNode == null))
             {
                 return null;
             }

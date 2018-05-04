@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             string cultureName = culture.IsNil ? null : reader.GetString(culture);
-            if (cultureName != null && !MetadataHelpers.IsValidMetadataIdentifier(cultureName))
+            if ((cultureName != null) && !MetadataHelpers.IsValidMetadataIdentifier(cultureName))
             {
                 throw new BadImageFormatException(string.Format(CodeAnalysisResources.InvalidCultureName, cultureName));
             }
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis
                 else
                 {
                     if (!publicKeyOrToken.IsEmpty &&
-                        publicKeyOrToken.Length != AssemblyIdentity.PublicKeyTokenSize)
+                        (publicKeyOrToken.Length != AssemblyIdentity.PublicKeyTokenSize))
                     {
                         throw new BadImageFormatException(CodeAnalysisResources.InvalidPublicKeyToken);
                     }
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis
         /// <exception cref="BadImageFormatException">An exception from metadata reader.</exception>
         internal static bool IsPublicNonInterfaceType(this MetadataReader reader, TypeDefinition typeDef, string namespaceName, string typeName)
         {
-            return (typeDef.Attributes & (TypeAttributes.Public | TypeAttributes.Interface)) == TypeAttributes.Public &&
+            return ((typeDef.Attributes & (TypeAttributes.Public | TypeAttributes.Interface)) == TypeAttributes.Public) &&
                 reader.StringComparer.Equals(typeDef.Name, typeName) &&
                 reader.StringComparer.Equals(typeDef.Namespace, namespaceName);
         }

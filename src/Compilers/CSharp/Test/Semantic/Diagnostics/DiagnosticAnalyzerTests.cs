@@ -1481,7 +1481,7 @@ class TypeInGeneratedFile { }
                 context.RegisterSyntaxNodeAction(
                      (nodeContext) =>
                      {
-                         if (nodeContext.ContainingSymbol.Name.StartsWith("Funky") && nodeContext.Compilation.Language == "C#")
+                         if (nodeContext.ContainingSymbol.Name.StartsWith("Funky") && (nodeContext.Compilation.Language == "C#"))
                          {
                              nodeContext.ReportDiagnostic(CodeAnalysis.Diagnostic.Create(ExpressionDescriptor, nodeContext.Node.GetLocation()));
                          }
@@ -1588,7 +1588,7 @@ class C
 
                 // Compilation end summary diagnostic (verify callbacks into analyzer)
                 // Analyzer always called for generated code, unless generated code analysis is explicitly disabled.
-                if (generatedCodeAnalysisFlagsOpt == null || (generatedCodeAnalysisFlagsOpt & GeneratedCodeAnalysisFlags.Analyze) != 0)
+                if ((generatedCodeAnalysisFlagsOpt == null) || ((generatedCodeAnalysisFlagsOpt & GeneratedCodeAnalysisFlags.Analyze) != 0))
                 {
                     sortedCallbackSymbolNames.Add(string.Format("GeneratedCode{0}", i));
                     sortedCallbackSymbolNames.Add(string.Format("Nested{0}", i));
@@ -1634,9 +1634,9 @@ class C
             params string[] arguments)
         {
             // Always report diagnostics in generated code, unless explicitly suppressed or we are not even analyzing generated code.
-            var reportInGeneratedCode = generatedCodeAnalysisFlagsOpt == null ||
-                ((generatedCodeAnalysisFlagsOpt & GeneratedCodeAnalysisFlags.ReportDiagnostics) != 0 &&
-                 (generatedCodeAnalysisFlagsOpt & GeneratedCodeAnalysisFlags.Analyze) != 0);
+            var reportInGeneratedCode = (generatedCodeAnalysisFlagsOpt == null) ||
+                (((generatedCodeAnalysisFlagsOpt & GeneratedCodeAnalysisFlags.ReportDiagnostics) != 0) &&
+                 ((generatedCodeAnalysisFlagsOpt & GeneratedCodeAnalysisFlags.Analyze) != 0));
 
             if (!isGeneratedCode || reportInGeneratedCode)
             {

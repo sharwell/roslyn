@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                     // If we don't have an item that can take that number of parameters, then just pick
                     // the last item.  Or stick with the current item if the last item isn't any better.
                     var lastItem = filteredItems.Last();
-                    if (currentItem.IsVariadic || currentItem.Parameters.Length == lastItem.Parameters.Length)
+                    if (currentItem.IsVariadic || (currentItem.Parameters.Length == lastItem.Parameters.Length))
                     {
                         return currentItem;
                     }

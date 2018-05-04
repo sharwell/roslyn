@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis
 
         internal static bool IsValidCharSet(CharSet value)
         {
-            return value >= Cci.Constants.CharSet_None && value <= Cci.Constants.CharSet_Auto;
+            return (value >= Cci.Constants.CharSet_None) && (value <= Cci.Constants.CharSet_Auto);
         }
         #endregion
     }

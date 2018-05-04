@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             int saveRecursionDepth = recursionDepth;
 #endif
 
-            if (recursionDepth > 1 || !ConvertInsufficientExecutionStackExceptionToCancelledByStackGuardException())
+            if ((recursionDepth > 1) || !ConvertInsufficientExecutionStackExceptionToCancelledByStackGuardException())
             {
                 StackGuard.EnsureSufficientExecutionStack(recursionDepth);
 

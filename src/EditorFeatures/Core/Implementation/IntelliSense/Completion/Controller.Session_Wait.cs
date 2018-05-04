@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             {
                 AssertIsForeground();
 
-                if (!blockForInitialItems && this.InitialUnfilteredModel == null)
+                if (!blockForInitialItems && (this.InitialUnfilteredModel == null))
                 {
                     // If we don't have our initial completion items, and the caller doesn't want
                     // us to block, then just return nothing here.

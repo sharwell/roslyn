@@ -348,7 +348,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                     var other = memberOfArity[arity];
 
-                    if ((object)other == null && (object)mergedAssemblyNamespace != null)
+                    if (((object)other == null) && ((object)mergedAssemblyNamespace != null))
                     {
                         // Check for collision with declarations from added modules.
                         foreach (NamespaceSymbol constituent in mergedAssemblyNamespace.ConstituentNamespaces)
@@ -374,7 +374,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                     if ((object)other != null)
                     {
-                        if ((nts as SourceNamedTypeSymbol)?.IsPartial == true && (other as SourceNamedTypeSymbol)?.IsPartial == true)
+                        if (((nts as SourceNamedTypeSymbol)?.IsPartial == true) && ((other as SourceNamedTypeSymbol)?.IsPartial == true))
                         {
                             diagnostics.Add(ErrorCode.ERR_PartialTypeKindConflict, symbol.Locations[0], symbol);
                         }
@@ -390,7 +390,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     {
                         //types declared at the namespace level may only have declared accessibility of public or internal (Section 3.5.1)
                         Accessibility declaredAccessibility = nts.DeclaredAccessibility;
-                        if (declaredAccessibility != Accessibility.Public && declaredAccessibility != Accessibility.Internal)
+                        if ((declaredAccessibility != Accessibility.Public) && (declaredAccessibility != Accessibility.Internal))
                         {
                             diagnostics.Add(ErrorCode.ERR_NoNamespacePrivate, symbol.Locations[0]);
                         }
@@ -441,7 +441,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     {
                         var type = member as NamedTypeSymbol;
 
-                        if ((object)type != null && type.SpecialType != SpecialType.None)
+                        if (((object)type != null) && (type.SpecialType != SpecialType.None))
                         {
                             containingAssembly.RegisterDeclaredSpecialType(type);
 

@@ -140,7 +140,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                 throw new InvalidOperationException("Unexpected symbol kind");
             }
 
-            if (sym is NamespaceOrTypeSymbol && ((NamespaceOrTypeSymbol)sym).GetMembers().Any())
+            if ((sym is NamespaceOrTypeSymbol) && ((NamespaceOrTypeSymbol)sym).GetMembers().Any())
             {
                 builder.AppendLine(" { ");
                 var q = from c in ((NamespaceOrTypeSymbol)sym).GetMembers()

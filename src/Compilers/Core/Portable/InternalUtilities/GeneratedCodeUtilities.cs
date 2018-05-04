@@ -39,7 +39,7 @@ namespace Roslyn.Utilities
                 }
             }
 
-            return symbol.ContainingSymbol != null && IsGeneratedSymbolWithGeneratedCodeAttribute(symbol.ContainingSymbol, generatedCodeAttribute);
+            return (symbol.ContainingSymbol != null) && IsGeneratedSymbolWithGeneratedCodeAttribute(symbol.ContainingSymbol, generatedCodeAttribute);
         }
 
         internal static bool IsGeneratedCode(

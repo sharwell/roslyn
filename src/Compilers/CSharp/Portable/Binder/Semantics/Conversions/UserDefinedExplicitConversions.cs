@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis.CSharp
            TypeSymbol target,
            ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(sourceExpression != null || (object)source != null);
+            Debug.Assert((sourceExpression != null) || ((object)source != null));
             Debug.Assert((object)target != null);
 
             // SPEC: A user-defined explicit conversion from type S to type T is processed
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ArrayBuilder<UserDefinedConversionAnalysis> u,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(sourceExpression != null || (object)source != null);
+            Debug.Assert((sourceExpression != null) || ((object)source != null));
             Debug.Assert((object)target != null);
             Debug.Assert(d != null);
             Debug.Assert(u != null);
@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             string operatorName,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(sourceExpression != null || (object)source != null);
+            Debug.Assert((sourceExpression != null) || ((object)source != null));
             Debug.Assert((object)target != null);
             Debug.Assert(u != null);
             Debug.Assert((object)declaringType != null);
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // DELIBERATE SPEC VIOLATION: See the comment regarding bug 17021 in 
             // UserDefinedImplicitConversions.cs.
 
-            if ((object)source != null && source.IsInterfaceType() || target.IsInterfaceType())
+            if ((((object)source != null) && source.IsInterfaceType()) || target.IsInterfaceType())
             {
                 return;
             }
@@ -174,7 +174,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             foreach (MethodSymbol op in declaringType.GetOperators(operatorName))
             {
                 // We might have a bad operator and be in an error recovery situation. Ignore it.
-                if (op.ReturnsVoid || op.ParameterCount != 1 || op.ReturnType.TypeKind == TypeKind.Error)
+                if (op.ReturnsVoid || (op.ParameterCount != 1) || (op.ReturnType.TypeKind == TypeKind.Error))
                 {
                     continue;
                 }
@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // We accept candidates for which the parameter type encompasses the *underlying* source type.
                 if (!fromConversion.Exists &&
-                    (object)source != null &&
+                    ((object)source != null) &&
                     source.IsNullableType() &&
                     EncompassingExplicitConversion(null, source.GetNullableUnderlyingType(), convertsFrom, ref useSiteDiagnostics).Exists)
                 {
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // As in dev11 (and the revised spec), we also accept candidates for which the return type is encompassed by the *stripped* target type.
                 if (!toConversion.Exists &&
-                    (object)target != null &&
+                    ((object)target != null) &&
                     target.IsNullableType() &&
                     EncompassingExplicitConversion(null, convertsTo, target.GetNullableUnderlyingType(), ref useSiteDiagnostics).Exists)
                 {
@@ -229,7 +229,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 if (fromConversion.Exists && toConversion.Exists)
                 {
-                    if ((object)source != null && source.IsNullableType() && convertsFrom.IsNonNullableValueType() && target.CanBeAssignedNull())
+                    if (((object)source != null) && source.IsNullableType() && convertsFrom.IsNonNullableValueType() && target.CanBeAssignedNull())
                     {
                         TypeSymbol nullableFrom = MakeNullableType(convertsFrom);
                         TypeSymbol nullableTo = convertsTo.IsNonNullableValueType() ? MakeNullableType(convertsTo) : convertsTo;
@@ -262,7 +262,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             toConversion = EncompassingExplicitConversion(null, convertsTo, target, ref useSiteDiagnostics);
                         }
 
-                        if ((object)source != null && source.IsNullableType() && convertsFrom.IsNonNullableValueType())
+                        if (((object)source != null) && source.IsNullableType() && convertsFrom.IsNonNullableValueType())
                         {
                             convertsFrom = MakeNullableType(convertsFrom);
                             fromConversion = EncompassingExplicitConversion(null, convertsFrom, source, ref useSiteDiagnostics);
@@ -387,7 +387,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private Conversion EncompassingExplicitConversion(BoundExpression expr, TypeSymbol a, TypeSymbol b, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(expr != null || (object)a != null);
+            Debug.Assert((expr != null) || ((object)a != null));
             Debug.Assert((object)b != null);
 
             // SPEC: If a standard implicit conversion exists from a type A to a type B

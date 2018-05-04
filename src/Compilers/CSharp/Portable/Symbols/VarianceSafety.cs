@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         internal static void CheckInterfaceVarianceSafety(this NamedTypeSymbol interfaceType, DiagnosticBag diagnostics)
         {
-            Debug.Assert((object)interfaceType != null && interfaceType.IsInterface);
+            Debug.Assert(((object)interfaceType != null) && interfaceType.IsInterface);
 
             foreach (NamedTypeSymbol baseInterface in interfaceType.InterfacesNoUseSiteDiagnostics())
             {
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 case SymbolKind.TypeParameter:
                     // 1) T is a contravariant [covariant] type parameter
                     TypeParameterSymbol typeParam = (TypeParameterSymbol)type;
-                    if (requireInputSafety && requireOutputSafety && typeParam.Variance != VarianceKind.None)
+                    if (requireInputSafety && requireOutputSafety && (typeParam.Variance != VarianceKind.None))
                     {
                         // This sub-case isn't mentioned in the spec, because it's not required for
                         // the definition.  It just allows us to give a better error message for
@@ -225,13 +225,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         diagnostics.AddVarianceError(typeParam, context, locationProvider, locationArg, MessageID.IDS_Invariantly);
                         return true;
                     }
-                    else if (requireOutputSafety && typeParam.Variance == VarianceKind.In)
+                    else if (requireOutputSafety && (typeParam.Variance == VarianceKind.In))
                     {
                         // The is output-unsafe case (1) from the spec.
                         diagnostics.AddVarianceError(typeParam, context, locationProvider, locationArg, MessageID.IDS_Covariantly);
                         return true;
                     }
-                    else if (requireInputSafety && typeParam.Variance == VarianceKind.Out)
+                    else if (requireInputSafety && (typeParam.Variance == VarianceKind.Out))
                     {
                         // The is input-unsafe case (1) from the spec.
                         diagnostics.AddVarianceError(typeParam, context, locationProvider, locationArg, MessageID.IDS_Contravariantly);

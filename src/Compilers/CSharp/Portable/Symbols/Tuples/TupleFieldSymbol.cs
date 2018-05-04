@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public TupleFieldSymbol(TupleTypeSymbol container, FieldSymbol underlyingField, int tupleElementIndex)
             : base(underlyingField)
         {
-            Debug.Assert(container.UnderlyingNamedType.Equals(underlyingField.ContainingType, TypeCompareKind.IgnoreDynamicAndTupleNames) || this is TupleVirtualElementFieldSymbol,
+            Debug.Assert(container.UnderlyingNamedType.Equals(underlyingField.ContainingType, TypeCompareKind.IgnoreDynamicAndTupleNames) || (this is TupleVirtualElementFieldSymbol),
                                             "virtual fields should be represented by " + nameof(TupleVirtualElementFieldSymbol));
 
             _containingTuple = container;
@@ -133,9 +133,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // note we have to compare both index and name because 
             // in nameless tuple there could be fields that differ only by index
             // and in named tuples there could be fields that differ only by name
-            return (object)other != null &&
-                _tupleElementIndex == other._tupleElementIndex &&
-                _containingTuple == other._containingTuple;
+            return ((object)other != null) &&
+                (_tupleElementIndex == other._tupleElementIndex) &&
+                (_containingTuple == other._containingTuple);
         }
     }
 
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             _isImplicitlyDeclared = isImplicitlyDeclared;
 
             Debug.Assert(correspondingDefaultFieldOpt == null == this.IsDefaultTupleElement);
-            Debug.Assert(correspondingDefaultFieldOpt == null || correspondingDefaultFieldOpt.IsDefaultTupleElement);
+            Debug.Assert((correspondingDefaultFieldOpt == null) || correspondingDefaultFieldOpt.IsDefaultTupleElement);
 
             _correspondingDefaultField = correspondingDefaultFieldOpt ?? this;
         }
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             : base(container, underlyingField, tupleElementIndex, location, isImplicitlyDeclared, correspondingDefaultFieldOpt)
         {
             Debug.Assert(name != null);
-            Debug.Assert(name != underlyingField.Name || !container.UnderlyingNamedType.Equals(underlyingField.ContainingType, TypeCompareKind.IgnoreDynamicAndTupleNames),
+            Debug.Assert((name != underlyingField.Name) || !container.UnderlyingNamedType.Equals(underlyingField.ContainingType, TypeCompareKind.IgnoreDynamicAndTupleNames),
                                 "fields that map directly to underlying should not be represented by " + nameof(TupleVirtualElementFieldSymbol));
 
             _name = name;

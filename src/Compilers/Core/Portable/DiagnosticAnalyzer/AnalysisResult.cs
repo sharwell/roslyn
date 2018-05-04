@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         private ImmutableArray<Diagnostic> GetDiagnostics(ImmutableHashSet<DiagnosticAnalyzer> excludedAnalyzers, bool getLocalSyntaxDiagnostics, bool getLocalSemanticDiagnostics, bool getNonLocalDiagnostics)
         {
-            if (SyntaxDiagnostics.Count > 0 || SemanticDiagnostics.Count > 0 || CompilationDiagnostics.Count > 0)
+            if ((SyntaxDiagnostics.Count > 0) || (SemanticDiagnostics.Count > 0) || (CompilationDiagnostics.Count > 0))
             {
                 var builder = ImmutableArray.CreateBuilder<Diagnostic>();
                 if (getLocalSyntaxDiagnostics)

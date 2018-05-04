@@ -159,7 +159,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            return (object)other != null && _containingType == other._containingType && _underlyingProperty == other._underlyingProperty;
+            return ((object)other != null) && (_containingType == other._containingType) && (_underlyingProperty == other._underlyingProperty);
         }
 
         public override ImmutableArray<CSharpAttributeData> GetAttributes()

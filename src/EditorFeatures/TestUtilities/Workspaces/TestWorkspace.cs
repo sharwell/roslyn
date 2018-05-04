@@ -482,9 +482,9 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 
                     // If the caret is in the markup and in this substring, calculate the final
                     // caret location
-                    if (mappedCaretLocation == null &&
-                        markupCaretLocation != null &&
-                        currentPositionInInertText + textToAdd.Length >= markupCaretLocation)
+                    if ((mappedCaretLocation == null) &&
+                        (markupCaretLocation != null) &&
+                        ((currentPositionInInertText + textToAdd.Length) >= markupCaretLocation))
                     {
                         var caretOffsetInCurrentText = markupCaretLocation.Value - currentPositionInInertText;
                         mappedCaretLocation = currentPositionInProjectionBuffer + caretOffsetInCurrentText;
@@ -515,10 +515,10 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
                 // we DO want to map it up, even if it's at the end of the span for this document.
                 // This is not ambiguous for us, since we have explicit delimiters between the buffer
                 // so it's clear which document the caret is in.
-                if (mappedCaretLocation == null &&
-                    markupCaretLocation == null &&
+                if ((mappedCaretLocation == null) &&
+                    (markupCaretLocation == null) &&
                     documentWithSpan.CursorPosition.HasValue &&
-                    (matchingSpan.Contains(documentWithSpan.CursorPosition.Value) || matchingSpan.End == documentWithSpan.CursorPosition.Value))
+                    (matchingSpan.Contains(documentWithSpan.CursorPosition.Value) || (matchingSpan.End == documentWithSpan.CursorPosition.Value)))
                 {
                     var caretOffsetInSpan = documentWithSpan.CursorPosition.Value - matchingSpan.Start;
                     mappedCaretLocation = currentPositionInProjectionBuffer + caretOffsetInSpan;
@@ -528,12 +528,12 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             }
 
             // Handle any inert text after the final projected span
-            if (currentPositionInInertText < inertText.Length - 1)
+            if (currentPositionInInertText < (inertText.Length - 1))
             {
                 projectionBufferSpans.Add(inertText.Substring(currentPositionInInertText));
                 projectionBufferSpanStartingPositions.Add(currentPositionInProjectionBuffer);
 
-                if (mappedCaretLocation == null && markupCaretLocation != null && markupCaretLocation >= currentPositionInInertText)
+                if ((mappedCaretLocation == null) && (markupCaretLocation != null) && (markupCaretLocation >= currentPositionInInertText))
                 {
                     var caretOffsetInCurrentText = markupCaretLocation.Value - currentPositionInInertText;
                     mappedCaretLocation = currentPositionInProjectionBuffer + caretOffsetInCurrentText;
@@ -567,13 +567,13 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 
                         if (projectionSpan is string text)
                         {
-                            if (spanStartLocation == null && positionInMarkup <= markupSpanStart && markupSpanStart <= positionInMarkup + text.Length)
+                            if ((spanStartLocation == null) && (positionInMarkup <= markupSpanStart) && (markupSpanStart <= (positionInMarkup + text.Length)))
                             {
                                 var offsetInText = markupSpanStart - positionInMarkup;
                                 spanStartLocation = projectionBufferSpanStartingPositions[spanIndex] + offsetInText;
                             }
 
-                            if (spanEndLocationExclusive == null && positionInMarkup <= markupSpanEndExclusive && markupSpanEndExclusive <= positionInMarkup + text.Length)
+                            if ((spanEndLocationExclusive == null) && (positionInMarkup <= markupSpanEndExclusive) && (markupSpanEndExclusive <= (positionInMarkup + text.Length)))
                             {
                                 var offsetInText = markupSpanEndExclusive - positionInMarkup;
                                 spanEndLocationExclusive = projectionBufferSpanStartingPositions[spanIndex] + offsetInText;

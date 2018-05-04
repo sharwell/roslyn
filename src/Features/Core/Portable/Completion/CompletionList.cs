@@ -110,10 +110,10 @@ namespace Microsoft.CodeAnalysis.Completion
             var newRules = rules.HasValue ? rules.Value : this.Rules;
             var newSuggestionModeItem = suggestionModeItem.HasValue ? suggestionModeItem.Value : this.SuggestionModeItem;
 
-            if (newSpan == this.Span &&
-                newItems == this.Items &&
-                newRules == this.Rules &&
-                newSuggestionModeItem == this.SuggestionModeItem)
+            if ((newSpan == this.Span) &&
+                (newItems == this.Items) &&
+                (newRules == this.Rules) &&
+                (newSuggestionModeItem == this.SuggestionModeItem))
             {
                 return this;
             }

@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.UseCoalesceExpression
             var semanticModel = context.SemanticModel;
             var conditionType = semanticModel.GetTypeInfo(
                 conditionLeftIsNull ? conditionRightLow : conditionLeftLow, cancellationToken).Type;
-            if (conditionType != null &&
+            if ((conditionType != null) &&
                 !conditionType.IsReferenceType)
             {
                 // Note: it is intentional that we do not support nullable types here.  If you have:

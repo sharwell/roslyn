@@ -103,7 +103,7 @@ namespace Roslyn.Compilers.Extension
                     parentDirectory.Create();
 
                     // If we already know the file has the same contents, then we can skip
-                    if (File.Exists(fileAndContents.Key) && File.ReadAllText(fileAndContents.Key) == fileAndContents.Value)
+                    if (File.Exists(fileAndContents.Key) && (File.ReadAllText(fileAndContents.Key) == fileAndContents.Value))
                     {
                         continue;
                     }

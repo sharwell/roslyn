@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         private bool IsDiagnosticSuppressed(Diagnostic diagnostic, out SuppressMessageInfo info, ISymbol symbolOpt = null)
         {
-            if (symbolOpt != null && IsDiagnosticSuppressed(diagnostic.Id, symbolOpt, out info))
+            if ((symbolOpt != null) && IsDiagnosticSuppressed(diagnostic.Id, symbolOpt, out info))
             {
                 return true;
             }
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             if (symbol.Kind == SymbolKind.Method)
             {
                 var associated = ((IMethodSymbol)symbol).AssociatedSymbol;
-                if (associated != null &&
+                if ((associated != null) &&
                     (IsDiagnosticLocallySuppressed(id, associated, out info) || IsDiagnosticGloballySuppressed(id, associated, out info)))
                 {
                     return true;
@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
             // Check for suppression on parent symbol
             var parent = symbol.ContainingSymbol;
-            return parent != null && IsDiagnosticSuppressed(id, parent, out info);
+            return (parent != null) && IsDiagnosticSuppressed(id, parent, out info);
         }
 
         private bool IsDiagnosticSuppressed(string id, Location location, out SuppressMessageInfo info)
@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         {
             this.DecodeGlobalSuppressMessageAttributes();
             return _lazyGlobalSuppressions.HasCompilationWideSuppression(id, out info) ||
-                symbolOpt != null && _lazyGlobalSuppressions.HasGlobalSymbolSuppression(symbolOpt, id, out info);
+                ((symbolOpt != null) && _lazyGlobalSuppressions.HasGlobalSymbolSuppression(symbolOpt, id, out info));
         }
 
         private bool IsDiagnosticLocallySuppressed(string id, ISymbol symbol, out SuppressMessageInfo info)
@@ -276,7 +276,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         private void DecodeGlobalSuppressMessageAttributes(Compilation compilation, ISymbol symbol, GlobalSuppressions globalSuppressions)
         {
-            Debug.Assert(symbol is IAssemblySymbol || symbol is IModuleSymbol);
+            Debug.Assert((symbol is IAssemblySymbol) || (symbol is IModuleSymbol));
 
             var attributes = symbol.GetAttributes().Where(a => a.AttributeClass == this.SuppressMessageAttribute);
             DecodeGlobalSuppressMessageAttributes(compilation, symbol, globalSuppressions, attributes);
@@ -297,7 +297,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                 if (s_suppressMessageScopeTypes.TryGetValue(scopeString, out scope))
                 {
-                    if ((scope == TargetScope.Module || scope == TargetScope.None) && info.Target == null)
+                    if (((scope == TargetScope.Module) || (scope == TargetScope.None)) && (info.Target == null))
                     {
                         // This suppression is applies to the entire compilation
                         globalSuppressions.AddCompilationWideSuppression(info);

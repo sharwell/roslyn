@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.Text
             : base(checksumAlgorithm: oldText.ChecksumAlgorithm)
         {
             Debug.Assert(newText != null);
-            Debug.Assert(newText is CompositeText || newText is SubText || newText is StringText || newText is LargeText);
+            Debug.Assert((newText is CompositeText) || (newText is SubText) || (newText is StringText) || (newText is LargeText));
             Debug.Assert(oldText != null);
             Debug.Assert(oldText != newText);
             Debug.Assert(!changeRanges.IsDefault);
@@ -153,7 +153,7 @@ namespace Microsoft.CodeAnalysis.Text
 
             // try this quick check first
             SourceText actualOldText;
-            if (_info.WeakOldText.TryGetTarget(out actualOldText) && actualOldText == oldText)
+            if (_info.WeakOldText.TryGetTarget(out actualOldText) && (actualOldText == oldText))
             {
                 // the supplied old text is the one we directly reference, so the changes must be the ones we have.
                 return _info.ChangeRanges;
@@ -170,7 +170,7 @@ namespace Microsoft.CodeAnalysis.Text
             }
 
             // the SourceText subtype for editor snapshots knows when two snapshots from the same buffer have the same contents
-            if (actualOldText != null && actualOldText.GetChangeRanges(oldText).Count == 0)
+            if ((actualOldText != null) && (actualOldText.GetChangeRanges(oldText).Count == 0))
             {
                 // the texts are different instances, but the contents are considered to be the same.
                 return _info.ChangeRanges;
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.Text
             for (var info = _info; info != null; info = info.Previous)
             {
                 SourceText text;
-                if (info.WeakOldText.TryGetTarget(out text) && text == oldText)
+                if (info.WeakOldText.TryGetTarget(out text) && (text == oldText))
                 {
                     return true;
                 }
@@ -254,13 +254,13 @@ namespace Microsoft.CodeAnalysis.Text
                     var oldChange = oldChanges[oldIndex];
 
                 tryAgain:
-                    if (oldChange.Span.Length == 0 && oldChange.NewLength == 0)
+                    if ((oldChange.Span.Length == 0) && (oldChange.NewLength == 0))
                     {
                         // old change is a non-change, just ignore it and move on
                         oldIndex++;
                         goto nextOldChange;
                     }
-                    else if (newChange.Span.Length == 0 && newChange.NewLength == 0)
+                    else if ((newChange.Span.Length == 0) && (newChange.NewLength == 0))
                     {
                         // new change is a non-change, just ignore it and move on
                         newIndex++;
@@ -274,7 +274,7 @@ namespace Microsoft.CodeAnalysis.Text
                         newIndex++;
                         goto nextNewChange;
                     }
-                    else if (newChange.Span.Start > oldChange.Span.Start + oldDelta + oldChange.NewLength)
+                    else if (newChange.Span.Start > ((oldChange.Span.Start + oldDelta + oldChange.NewLength)))
                     {
                         // new change occurs entirely after old change
                         AddRange(list, oldChange);
@@ -282,7 +282,7 @@ namespace Microsoft.CodeAnalysis.Text
                         oldIndex++;
                         goto nextOldChange;
                     }
-                    else if (newChange.Span.Start < oldChange.Span.Start + oldDelta)
+                    else if (newChange.Span.Start < (oldChange.Span.Start + oldDelta))
                     {
                         // new change starts before old change, but overlaps
                         // add as much of new change deletion as possible and try again
@@ -291,7 +291,7 @@ namespace Microsoft.CodeAnalysis.Text
                         newChange = new TextChangeRange(new TextSpan(oldChange.Span.Start + oldDelta, newChange.Span.Length - newChangeLeadingDeletion), newChange.NewLength);
                         goto tryAgain;
                     }
-                    else if (newChange.Span.Start > oldChange.Span.Start + oldDelta)
+                    else if (newChange.Span.Start > (oldChange.Span.Start + oldDelta))
                     {
                         // new change starts after old change, but overlaps
                         // add as much of the old change as possible and try again
@@ -302,7 +302,7 @@ namespace Microsoft.CodeAnalysis.Text
                         newChange = new TextChangeRange(new TextSpan(oldChange.Span.Start + oldDelta, newChange.Span.Length), newChange.NewLength);
                         goto tryAgain;
                     }
-                    else if (newChange.Span.Start == oldChange.Span.Start + oldDelta)
+                    else if (newChange.Span.Start == (oldChange.Span.Start + oldDelta))
                     {
                         // new change and old change start at same position
                         if (oldChange.NewLength == 0)
@@ -411,7 +411,7 @@ namespace Microsoft.CodeAnalysis.Text
                 // include existing line starts that occur before this change
                 if (change.Span.Start > position)
                 {
-                    if (endsWithCR && _newText[position + delta] == '\n')
+                    if (endsWithCR && (_newText[position + delta] == '\n'))
                     {
                         // remove last added line start (it was due to previous CR)
                         // a new line start including the LF will be added next
@@ -428,7 +428,7 @@ namespace Microsoft.CodeAnalysis.Text
 
                     // in case change is inserted between CR+LF we treat CR as line break alone, 
                     // but this line break might be retracted and replaced with new one in case LF is inserted  
-                    if (endsWithCR && change.Span.Start < oldText.Length && oldText[change.Span.Start] == '\n')
+                    if (endsWithCR && (change.Span.Start < oldText.Length) && (oldText[change.Span.Start] == '\n'))
                     {
                         lineStarts.Add(change.Span.Start + delta);
                     }
@@ -440,7 +440,7 @@ namespace Microsoft.CodeAnalysis.Text
                     var changeStart = change.Span.Start + delta;
                     var text = GetSubText(new TextSpan(changeStart, change.NewLength));
 
-                    if (endsWithCR && text[0] == '\n')
+                    if (endsWithCR && (text[0] == '\n'))
                     {
                         // remove last added line start (it was due to previous CR)
                         // a new line start including the LF will be added next
@@ -463,7 +463,7 @@ namespace Microsoft.CodeAnalysis.Text
             // include existing line starts that occur after all changes
             if (position < oldText.Length)
             {
-                if (endsWithCR && _newText[position + delta] == '\n')
+                if (endsWithCR && (_newText[position + delta] == '\n'))
                 {
                     // remove last added line start (it was due to previous CR)
                     // a new line start including the LF will be added next

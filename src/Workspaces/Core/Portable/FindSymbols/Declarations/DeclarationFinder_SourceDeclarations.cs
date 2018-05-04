@@ -241,7 +241,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 var symbolAndProjectIds = await SymbolFinder.FindSourceDeclarationsWithCustomQueryAsync(
                     project, query, criteria, cancellationToken).ConfigureAwait(false);
 
-                if (symbolAndProjectIds.Length == 0 ||
+                if ((symbolAndProjectIds.Length == 0) ||
                     !isDottedPattern)
                 {
                     // If it wasn't a dotted pattern, or we didn't get anything back, then we're done.

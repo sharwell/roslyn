@@ -20,7 +20,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
                     return true;
                 }
 
-                if (DateTimeOffset.Now > startTime + Helper.HangMitigatingTimeout)
+                if (DateTimeOffset.Now > (startTime + Helper.HangMitigatingTimeout))
                 {
                     throw new InvalidOperationException("Expected a light bulb session to appear.");
                 }

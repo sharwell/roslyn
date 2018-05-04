@@ -255,7 +255,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             AnalysisScope analysisScope,
             AnalysisState analysisStateOpt)
         {
-            Debug.Assert(compilationEvent is CompilationStartedEvent || compilationEvent is CompilationCompletedEvent);
+            Debug.Assert((compilationEvent is CompilationStartedEvent) || (compilationEvent is CompilationCompletedEvent));
 
             AnalyzerStateData analyzerStateOpt = null;
 
@@ -500,7 +500,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     return true;
                 }
 
-                return analysisStateOpt == null || !analysisStateOpt.HasPendingSyntaxAnalysis(analysisScope);
+                return (analysisStateOpt == null) || !analysisStateOpt.HasPendingSyntaxAnalysis(analysisScope);
             }
             finally
             {
@@ -553,7 +553,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             SyntaxNodeAnalyzerStateData analyzerStateOpt)
             where TLanguageKindEnum : struct
         {
-            Debug.Assert(analyzerStateOpt == null || analyzerStateOpt.CurrentNode == node);
+            Debug.Assert((analyzerStateOpt == null) || (analyzerStateOpt.CurrentNode == node));
 
             if (ShouldExecuteAction(analyzerStateOpt, syntaxNodeAction))
             {
@@ -579,7 +579,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             Func<Diagnostic, bool> isSupportedDiagnostic,
             OperationAnalyzerStateData analyzerStateOpt)
         {
-            Debug.Assert(analyzerStateOpt == null || analyzerStateOpt.CurrentOperation == operation);
+            Debug.Assert((analyzerStateOpt == null) || (analyzerStateOpt.CurrentOperation == operation));
 
             if (ShouldExecuteAction(analyzerStateOpt, operationAction))
             {
@@ -881,7 +881,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             IEnumerable<SyntaxNodeAnalyzerAction<TLanguageKindEnum>> nodeActions)
             where TLanguageKindEnum : struct
         {
-            Debug.Assert(nodeActions != null && nodeActions.Any());
+            Debug.Assert((nodeActions != null) && nodeActions.Any());
 
             var nodeActionsByKind = PooledDictionary<TLanguageKindEnum, ArrayBuilder<SyntaxNodeAnalyzerAction<TLanguageKindEnum>>>.GetInstance();
             foreach (var nodeAction in nodeActions)
@@ -1023,7 +1023,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         internal static ImmutableDictionary<OperationKind, ImmutableArray<OperationAnalyzerAction>> GetOperationActionsByKind(IEnumerable<OperationAnalyzerAction> operationActions)
         {
-            Debug.Assert(operationActions != null && operationActions.Any());
+            Debug.Assert((operationActions != null) && operationActions.Any());
 
             var operationActionsByKind = PooledDictionary<OperationKind, ArrayBuilder<OperationAnalyzerAction>>.GetInstance();
             foreach (var operationAction in operationActions)
@@ -1314,7 +1314,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         internal static bool IsAnalyzerExceptionDiagnostic(Diagnostic diagnostic)
         {
-            if (diagnostic.Id == AnalyzerExceptionDiagnosticId || diagnostic.Id == AnalyzerDriverExceptionDiagnosticId)
+            if ((diagnostic.Id == AnalyzerExceptionDiagnosticId) || (diagnostic.Id == AnalyzerDriverExceptionDiagnosticId))
             {
 #pragma warning disable RS0013 // Its ok to realize the Descriptor for analyzer exception diagnostics, which are descriptor based and also rare.
                 foreach (var tag in diagnostic.Descriptor.CustomTags)
@@ -1345,9 +1345,9 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return false;
             }
 
-            return exceptionDiagnostic.Id == other.Id &&
-                exceptionDiagnostic.Severity == other.Severity &&
-                exceptionDiagnostic.GetMessage() == other.GetMessage();
+            return (exceptionDiagnostic.Id == other.Id) &&
+                (exceptionDiagnostic.Severity == other.Severity) &&
+                (exceptionDiagnostic.GetMessage() == other.GetMessage());
         }
 
         private bool IsSupportedDiagnostic(DiagnosticAnalyzer analyzer, Diagnostic diagnostic)
@@ -1482,7 +1482,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 Debug.Assert(addCategorizedNonLocalDiagnosticOpt != null);
 
                 if (diagnostic.Location.IsInSource &&
-                    contextTree == diagnostic.Location.SourceTree &&
+                    (contextTree == diagnostic.Location.SourceTree) &&
                     (!span.HasValue || span.Value.IntersectsWith(diagnostic.Location.SourceSpan)))
                 {
                     addCategorizedLocalDiagnosticOpt(diagnostic, analyzer, isSyntaxDiagnostic);
@@ -1496,13 +1496,13 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         private static bool ShouldExecuteAction(AnalyzerStateData analyzerStateOpt, AnalyzerAction action)
         {
-            return analyzerStateOpt == null || !analyzerStateOpt.ProcessedActions.Contains(action);
+            return (analyzerStateOpt == null) || !analyzerStateOpt.ProcessedActions.Contains(action);
         }
 
         private bool ShouldExecuteNode(SyntaxNodeAnalyzerStateData analyzerStateOpt, SyntaxNode node, DiagnosticAnalyzer analyzer)
         {
             // Check if the node has already been processed.
-            if (analyzerStateOpt != null && analyzerStateOpt.ProcessedNodes.Contains(node))
+            if ((analyzerStateOpt != null) && analyzerStateOpt.ProcessedNodes.Contains(node))
             {
                 return false;
             }
@@ -1520,13 +1520,13 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         private bool ShouldExecuteOperation(OperationAnalyzerStateData analyzerStateOpt, IOperation operation, DiagnosticAnalyzer analyzer)
         {
             // Check if the operation has already been processed.
-            if (analyzerStateOpt != null && analyzerStateOpt.ProcessedOperations.Contains(operation))
+            if ((analyzerStateOpt != null) && analyzerStateOpt.ProcessedOperations.Contains(operation))
             {
                 return false;
             }
 
             // Check if the operation syntax is generated code that must be skipped.
-            if (operation.Syntax != null && _shouldSkipAnalysisOnGeneratedCode(analyzer) &&
+            if ((operation.Syntax != null) && _shouldSkipAnalysisOnGeneratedCode(analyzer) &&
                 _isGeneratedCodeLocation(operation.Syntax.SyntaxTree, operation.Syntax.Span))
             {
                 return false;
@@ -1559,7 +1559,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             Debug.Assert(analysisScope.Analyzers.Contains(analyzer));
 
             analyzerStateOpt = null;
-            return analysisStateOpt == null || analysisStateOpt.TryStartProcessingEvent(nonSymbolCompilationEvent, analyzer, out analyzerStateOpt);
+            return (analysisStateOpt == null) || analysisStateOpt.TryStartProcessingEvent(nonSymbolCompilationEvent, analyzer, out analyzerStateOpt);
         }
 
         private static bool TryStartSyntaxAnalysis(SyntaxTree tree, DiagnosticAnalyzer analyzer, AnalysisScope analysisScope, AnalysisState analysisStateOpt, out AnalyzerStateData analyzerStateOpt)
@@ -1567,7 +1567,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             Debug.Assert(analysisScope.Analyzers.Contains(analyzer));
 
             analyzerStateOpt = null;
-            return analysisStateOpt == null || analysisStateOpt.TryStartSyntaxAnalysis(tree, analyzer, out analyzerStateOpt);
+            return (analysisStateOpt == null) || analysisStateOpt.TryStartSyntaxAnalysis(tree, analyzer, out analyzerStateOpt);
         }
 
         private static bool TryStartAnalyzingSymbol(ISymbol symbol, DiagnosticAnalyzer analyzer, AnalysisScope analysisScope, AnalysisState analysisStateOpt, out AnalyzerStateData analyzerStateOpt)
@@ -1575,7 +1575,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             Debug.Assert(analysisScope.Analyzers.Contains(analyzer));
 
             analyzerStateOpt = null;
-            return analysisStateOpt == null || analysisStateOpt.TryStartAnalyzingSymbol(symbol, analyzer, out analyzerStateOpt);
+            return (analysisStateOpt == null) || analysisStateOpt.TryStartAnalyzingSymbol(symbol, analyzer, out analyzerStateOpt);
         }
 
         private static bool TryStartAnalyzingDeclaration(ISymbol symbol, int declarationIndex, DiagnosticAnalyzer analyzer, AnalysisScope analysisScope, AnalysisState analysisStateOpt, out DeclarationAnalyzerStateData analyzerStateOpt)
@@ -1583,7 +1583,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             Debug.Assert(analysisScope.Analyzers.Contains(analyzer));
 
             analyzerStateOpt = null;
-            return analysisStateOpt == null || analysisStateOpt.TryStartAnalyzingDeclaration(symbol, declarationIndex, analyzer, out analyzerStateOpt);
+            return (analysisStateOpt == null) || analysisStateOpt.TryStartAnalyzingDeclaration(symbol, declarationIndex, analyzer, out analyzerStateOpt);
         }
 
         private static bool TryStartAnalyzingOperationReference(ISymbol symbol, int declarationIndex, DiagnosticAnalyzer analyzer, AnalysisScope analysisScope, AnalysisState analysisStateOpt, out OperationAnalyzerStateData analyzerStateOpt)
@@ -1609,12 +1609,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         private static bool IsEventComplete(CompilationEvent compilationEvent, DiagnosticAnalyzer analyzer, AnalysisState analysisStateOpt)
         {
-            return analysisStateOpt == null || analysisStateOpt.IsEventComplete(compilationEvent, analyzer);
+            return (analysisStateOpt == null) || analysisStateOpt.IsEventComplete(compilationEvent, analyzer);
         }
 
         private static bool IsDeclarationComplete(ISymbol symbol, int declarationIndex, DiagnosticAnalyzer analyzer, AnalysisState analysisStateOpt)
         {
-            return analysisStateOpt == null || analysisStateOpt.IsDeclarationComplete(symbol, declarationIndex, analyzer);
+            return (analysisStateOpt == null) || analysisStateOpt.IsDeclarationComplete(symbol, declarationIndex, analyzer);
         }
 
         internal TimeSpan ResetAnalyzerExecutionTime(DiagnosticAnalyzer analyzer)

@@ -52,8 +52,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     // TODO (https://github.com/dotnet/roslyn/issues/5107): Enable in Interactive.
                     var workspace = document.Project.Solution.Workspace;
                     if (!workspace.CanApplyChange(ApplyChangesKind.ChangeDocument) ||
-                         workspace.Kind == WorkspaceKind.Debugger ||
-                         workspace.Kind == WorkspaceKind.Interactive)
+                         (workspace.Kind == WorkspaceKind.Debugger) ||
+                         (workspace.Kind == WorkspaceKind.Interactive))
                     {
                         return;
                     }
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
             if (syntaxFacts.IsInNonUserCode(syntaxTree, position, cancellationToken) ||
                 syntaxTree.IsRightOfDotOrArrowOrColonColon(position, cancellationToken) ||
-                syntaxFacts.GetContainingTypeDeclaration(await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false), position) is EnumDeclarationSyntax)
+                (syntaxFacts.GetContainingTypeDeclaration(await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false), position) is EnumDeclarationSyntax))
             {
                 return SpecializedCollections.EmptyEnumerable<CompletionItem>();
             }

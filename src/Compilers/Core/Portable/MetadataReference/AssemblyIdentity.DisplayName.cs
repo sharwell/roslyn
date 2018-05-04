@@ -215,7 +215,7 @@ namespace Microsoft.CodeAnalysis
                     return false;
                 }
 
-                if (position >= displayName.Length || displayName[position] != '=')
+                if ((position >= displayName.Length) || (displayName[position] != '='))
                 {
                     return false;
                 }
@@ -382,7 +382,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // incompatible values:
-            if (isRetargetable && contentType == AssemblyContentType.WindowsRuntime)
+            if (isRetargetable && (contentType == AssemblyContentType.WindowsRuntime))
             {
                 return false;
             }
@@ -479,7 +479,7 @@ namespace Microsoft.CodeAnalysis
             if (quote == '\0')
             {
                 int j = i - 1;
-                while (j >= valueStart && IsWhiteSpace(displayName[j]))
+                while ((j >= valueStart) && IsWhiteSpace(displayName[j]))
                 {
                     j--;
                 }
@@ -506,7 +506,7 @@ namespace Microsoft.CodeAnalysis
                 }
             }
 
-            Debug.Assert(i == displayName.Length || IsNameTokenTerminator(displayName[i]));
+            Debug.Assert((i == displayName.Length) || IsNameTokenTerminator(displayName[i]));
             position = i;
 
             // empty
@@ -529,12 +529,12 @@ namespace Microsoft.CodeAnalysis
 
         private static bool IsNameTokenTerminator(char c)
         {
-            return c == '=' || c == ',';
+            return (c == '=') || (c == ',');
         }
 
         private static bool IsQuote(char c)
         {
-            return c == '"' || c == '\'';
+            return (c == '"') || (c == '\'');
         }
 
         internal static Version ToVersion(ulong version)
@@ -575,9 +575,9 @@ namespace Microsoft.CodeAnalysis
             {
                 char c = (i < str.Length) ? str[i++] : '\0';
 
-                if (c == '.' || c == 0)
+                if ((c == '.') || (c == 0))
                 {
-                    if (partIndex == MaxVersionParts || partHasValue && partHasWildcard)
+                    if ((partIndex == MaxVersionParts) || (partHasValue && partHasWildcard))
                     {
                         return false;
                     }
@@ -600,10 +600,10 @@ namespace Microsoft.CodeAnalysis
                     partIndex++;
                     partHasWildcard = partHasValue = false;
                 }
-                else if (c >= '0' && c <= '9')
+                else if ((c >= '0') && (c <= '9'))
                 {
                     partHasValue = true;
-                    partValue = partValue * 10 + c - '0';
+                    partValue = (partValue * 10) + c - '0';
                     if (partValue > ushort.MaxValue)
                     {
                         return false;
@@ -644,7 +644,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             ImmutableArray<byte> result;
-            if (value.Length != (PublicKeyTokenBytes * 2) || !TryParseHexBytes(value, out result))
+            if ((value.Length != (PublicKeyTokenBytes * 2)) || !TryParseHexBytes(value, out result))
             {
                 token = default(ImmutableArray<byte>);
                 return false;
@@ -656,7 +656,7 @@ namespace Microsoft.CodeAnalysis
 
         private static bool TryParseHexBytes(string value, out ImmutableArray<byte> result)
         {
-            if (value.Length == 0 || (value.Length % 2) != 0)
+            if ((value.Length == 0) || ((value.Length % 2) != 0))
             {
                 result = default(ImmutableArray<byte>);
                 return false;
@@ -667,9 +667,9 @@ namespace Microsoft.CodeAnalysis
             for (int i = 0; i < length; i++)
             {
                 int hi = HexValue(value[i * 2]);
-                int lo = HexValue(value[i * 2 + 1]);
+                int lo = HexValue(value[(i * 2) + 1]);
 
-                if (hi < 0 || lo < 0)
+                if ((hi < 0) || (lo < 0))
                 {
                     result = default(ImmutableArray<byte>);
                     bytes.Free();
@@ -685,17 +685,17 @@ namespace Microsoft.CodeAnalysis
 
         internal static int HexValue(char c)
         {
-            if (c >= '0' && c <= '9')
+            if ((c >= '0') && (c <= '9'))
             {
                 return c - '0';
             }
 
-            if (c >= 'a' && c <= 'f')
+            if ((c >= 'a') && (c <= 'f'))
             {
                 return c - 'a' + 10;
             }
 
-            if (c >= 'A' && c <= 'F')
+            if ((c >= 'A') && (c <= 'F'))
             {
                 return c - 'A' + 10;
             }
@@ -705,7 +705,7 @@ namespace Microsoft.CodeAnalysis
 
         private static bool IsWhiteSpace(char c)
         {
-            return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+            return (c == ' ') || (c == '\t') || (c == '\r') || (c == '\n');
         }
 
         private static void EscapeName(StringBuilder result, string name)

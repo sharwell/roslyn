@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         public bool Equals(LineSpan other)
         {
-            return this.Start == other.Start && this.End == other.End;
+            return (this.Start == other.Start) && (this.End == other.End);
         }
 
         public override bool Equals(object obj)

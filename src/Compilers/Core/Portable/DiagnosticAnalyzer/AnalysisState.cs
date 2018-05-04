@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                         RemovePendingSourceEvent_NoLock(tree, compilationEvent);
                     }
                 }
-                else if (compilationEvent is CompilationStartedEvent || compilationEvent is CompilationCompletedEvent)
+                else if ((compilationEvent is CompilationStartedEvent) || (compilationEvent is CompilationCompletedEvent))
                 {
                     // Add/remove compilation events.
                     if (add)
@@ -385,7 +385,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             HashSet<CompilationEvent> currentEvents;
             if (_pendingSourceEvents.TryGetValue(tree, out currentEvents))
             {
-                if (currentEvents.Remove(compilationEvent) && currentEvents.Count == 0)
+                if (currentEvents.Remove(compilationEvent) && (currentEvents.Count == 0))
                 {
                     _pendingSourceEvents.Remove(tree);
                     _compilationData.RemoveCachedSemanticModel(tree);
@@ -424,8 +424,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         {
             if (compilationEvent is CompilationStartedEvent)
             {
-                return actionCounts.CompilationActionsCount > 0 ||
-                    actionCounts.SyntaxTreeActionsCount > 0;
+                return (actionCounts.CompilationActionsCount > 0) ||
+                    (actionCounts.SyntaxTreeActionsCount > 0);
             }
             else if (compilationEvent is CompilationCompletedEvent)
             {
@@ -433,7 +433,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             }
             else if (compilationEvent is SymbolDeclaredCompilationEvent)
             {
-                return actionCounts.SymbolActionsCount > 0 || actionCounts.HasAnyExecutableCodeActions;
+                return (actionCounts.SymbolActionsCount > 0) || actionCounts.HasAnyExecutableCodeActions;
             }
             else
             {

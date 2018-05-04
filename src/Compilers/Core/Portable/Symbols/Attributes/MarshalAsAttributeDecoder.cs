@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis
                     break;
 
                 default:
-                    if ((int)unmanagedType < 0 || (int)unmanagedType > MarshalPseudoCustomAttributeData.MaxMarshalInteger)
+                    if (((int)unmanagedType < 0) || ((int)unmanagedType > MarshalPseudoCustomAttributeData.MaxMarshalInteger))
                     {
                         // Dev10 reports CS0647: "Error emitting attribute ..."
                         messageProvider.ReportInvalidAttributeArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, 0, arguments.Attribute);
@@ -180,7 +180,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     case "IidParameterIndex":
                         parameterIndex = namedArg.Value.DecodeValue<int>(SpecialType.System_Int32);
-                        if (parameterIndex < 0 || parameterIndex > MarshalPseudoCustomAttributeData.MaxMarshalInteger)
+                        if ((parameterIndex < 0) || (parameterIndex > MarshalPseudoCustomAttributeData.MaxMarshalInteger))
                         {
                             messageProvider.ReportInvalidNamedArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, position, arguments.Attribute.AttributeClass, namedArg.Key);
                             hasErrors = true;
@@ -218,9 +218,9 @@ namespace Microsoft.CodeAnalysis
                         elementType = namedArg.Value.DecodeValue<UnmanagedType>(SpecialType.System_Enum);
 
                         // for some reason, Dev10 metadata writer disallows CustomMarshaler type as an element type of non-fixed arrays
-                        if (!isFixed && elementType == Cci.Constants.UnmanagedType_CustomMarshaler ||
-                            (int)elementType < 0 ||
-                            (int)elementType > MarshalPseudoCustomAttributeData.MaxMarshalInteger)
+                        if ((!isFixed && (elementType == Cci.Constants.UnmanagedType_CustomMarshaler)) ||
+                            ((int)elementType < 0) ||
+                            ((int)elementType > MarshalPseudoCustomAttributeData.MaxMarshalInteger))
                         {
                             messageProvider.ReportInvalidNamedArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, position, arguments.Attribute.AttributeClass, namedArg.Key);
                             hasErrors = true;
@@ -230,7 +230,7 @@ namespace Microsoft.CodeAnalysis
 
                     case "SizeConst":
                         elementCount = namedArg.Value.DecodeValue<int>(SpecialType.System_Int32);
-                        if (elementCount < 0 || elementCount > MarshalPseudoCustomAttributeData.MaxMarshalInteger)
+                        if ((elementCount < 0) || (elementCount > MarshalPseudoCustomAttributeData.MaxMarshalInteger))
                         {
                             messageProvider.ReportInvalidNamedArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, position, arguments.Attribute.AttributeClass, namedArg.Key);
                             hasErrors = true;
@@ -293,7 +293,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     case "SafeArraySubType":
                         elementTypeVariant = namedArg.Value.DecodeValue<Cci.VarEnum>(SpecialType.System_Enum);
-                        if (elementTypeVariant < 0 || (int)elementTypeVariant > MarshalPseudoCustomAttributeData.MaxMarshalInteger)
+                        if ((elementTypeVariant < 0) || ((int)elementTypeVariant > MarshalPseudoCustomAttributeData.MaxMarshalInteger))
                         {
                             messageProvider.ReportInvalidNamedArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, position, arguments.Attribute.AttributeClass, namedArg.Key);
                             hasErrors = true;
@@ -327,7 +327,7 @@ namespace Microsoft.CodeAnalysis
                     break;
 
                 default:
-                    if (elementTypeVariant != null && symbolIndex >= 0)
+                    if ((elementTypeVariant != null) && (symbolIndex >= 0))
                     {
                         messageProvider.ReportParameterNotValidForType(arguments.Diagnostics, arguments.AttributeSyntaxOpt, symbolIndex);
                         hasErrors = true;
@@ -361,7 +361,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     case "SizeConst":
                         elementCount = namedArg.Value.DecodeValue<int>(SpecialType.System_Int32);
-                        if (elementCount < 0 || elementCount > MarshalPseudoCustomAttributeData.MaxMarshalInteger)
+                        if ((elementCount < 0) || (elementCount > MarshalPseudoCustomAttributeData.MaxMarshalInteger))
                         {
                             messageProvider.ReportInvalidNamedArgument(arguments.Diagnostics, arguments.AttributeSyntaxOpt, position, arguments.Attribute.AttributeClass, namedArg.Key);
                             hasErrors = true;

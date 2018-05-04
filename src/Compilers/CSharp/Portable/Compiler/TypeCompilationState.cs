@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public MethodSymbol GetMethodWrapper(MethodSymbol method)
         {
             MethodSymbol wrapper = null;
-            return _wrappers != null && _wrappers.TryGetValue(method, out wrapper) ? wrapper : null;
+            return (_wrappers != null) && _wrappers.TryGetValue(method, out wrapper) ? wrapper : null;
         }
 
         /// <summary> Free resources allocated for this method collection </summary>

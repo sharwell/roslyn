@@ -33,8 +33,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
             //  expr ? throw : ...
             //  expr ? ... : throw
-            if (context.TargetToken.Kind() == SyntaxKind.QuestionToken ||
-                context.TargetToken.Kind() == SyntaxKind.ColonToken)
+            if ((context.TargetToken.Kind() == SyntaxKind.QuestionToken) ||
+                (context.TargetToken.Kind() == SyntaxKind.ColonToken))
             {
                 return context.TargetToken.Parent.Kind() == SyntaxKind.ConditionalExpression;
             }

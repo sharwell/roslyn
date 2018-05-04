@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     var argument = Arguments[i];
 
                     // By-ref dynamic arguments don't make the invocation dynamic.
-                    if ((object)argument.Type != null && argument.Type.IsDynamic() && (!hasRefKinds || RefKinds[i] == Microsoft.CodeAnalysis.RefKind.None))
+                    if (((object)argument.Type != null) && argument.Type.IsDynamic() && (!hasRefKinds || (RefKinds[i] == Microsoft.CodeAnalysis.RefKind.None)))
                     {
                         _lazyHasDynamicArgument = ThreeState.True;
                         return true;

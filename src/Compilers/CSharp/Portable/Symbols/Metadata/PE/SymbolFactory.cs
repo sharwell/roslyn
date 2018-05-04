@@ -96,8 +96,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             // Let's return unsupported metadata type if any argument is unsupported metadata type 
             foreach (var arg in arguments)
             {
-                if (arg.Key.Kind == SymbolKind.ErrorType &&
-                    arg.Key is UnsupportedMetadataTypeSymbol)
+                if ((arg.Key.Kind == SymbolKind.ErrorType) &&
+                    (arg.Key is UnsupportedMetadataTypeSymbol))
                 {
                     return new UnsupportedMetadataTypeSymbol();
                 }
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         internal override TypeSymbol MakeUnboundIfGeneric(PEModuleSymbol moduleSymbol, TypeSymbol type)
         {
             var namedType = type as NamedTypeSymbol;
-            return ((object)namedType != null && namedType.IsGenericType) ? namedType.AsUnboundGenericType() : type;
+            return (((object)namedType != null) && namedType.IsGenericType) ? namedType.AsUnboundGenericType() : type;
         }
     }
 }

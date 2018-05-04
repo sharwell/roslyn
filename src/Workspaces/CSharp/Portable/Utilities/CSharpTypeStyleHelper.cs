@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
                 SyntaxKind.UsingStatement);
 
             return isSupportedParentKind &&
-                variableDeclaration.Variables.Count == 1 &&
+                (variableDeclaration.Variables.Count == 1) &&
                 variableDeclaration.Variables.Single().Initializer.IsKind(SyntaxKind.EqualsValueClause);
         }
 

@@ -137,8 +137,8 @@ namespace Microsoft.CodeAnalysis
             }
 
             return
-                this.SpecifiedKind == other.SpecifiedKind &&
-                this.DocumentationMode == other.DocumentationMode &&
+                (this.SpecifiedKind == other.SpecifiedKind) &&
+                (this.DocumentationMode == other.DocumentationMode) &&
                 this.Features.SequenceEqual(other.Features) &&
                 (this.PreprocessorSymbolNames == null ? other.PreprocessorSymbolNames == null : this.PreprocessorSymbolNames.SequenceEqual(other.PreprocessorSymbolNames, StringComparer.Ordinal));
         }

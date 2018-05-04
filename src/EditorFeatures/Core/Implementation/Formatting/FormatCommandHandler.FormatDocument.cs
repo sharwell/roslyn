@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
             }
 
             var formattingService = document.GetLanguageService<IEditorFormattingService>();
-            if (formattingService == null || !formattingService.SupportsFormatDocument)
+            if ((formattingService == null) || !formattingService.SupportsFormatDocument)
             {
                 return false;
             }

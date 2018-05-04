@@ -144,9 +144,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // and only for ref.
                 RefKind refKind;
                 return !IsParams && IsMetadataOptional &&
-                       ((refKind = RefKind) == RefKind.None ||
+                       (((refKind = RefKind) == RefKind.None) ||
                         (refKind == RefKind.In) ||
-                        (refKind == RefKind.Ref && ContainingSymbol.ContainingType.IsComImport));
+                        ((refKind == RefKind.Ref) && ContainingSymbol.ContainingType.IsComImport));
             }
         }
 
@@ -192,7 +192,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // default values (e.g. if the params-ness is inherited from an
                 // overridden method, but the current method declares the parameter
                 // as optional).  In such cases, dev11 emits the default value.
-                return IsOptional && ExplicitDefaultConstantValue != null;
+                return IsOptional && (ExplicitDefaultConstantValue != null);
             }
         }
 
@@ -395,7 +395,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 DiagnosticInfo info = null;
                 DeriveUseSiteDiagnosticFromParameter(ref info, this);
-                return (object)info != null && info.Code == (int)ErrorCode.ERR_BogusType;
+                return ((object)info != null) && (info.Code == (int)ErrorCode.ERR_BogusType);
             }
         }
 

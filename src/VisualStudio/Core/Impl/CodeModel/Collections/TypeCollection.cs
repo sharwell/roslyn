@@ -70,7 +70,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             var node = LookupNode();
 
             var memberNodes = CodeModelService.GetLogicalSupportedMemberNodes(node);
-            if (index >= 0 && index < memberNodes.Count())
+            if ((index >= 0) && (index < memberNodes.Count()))
             {
                 var child = memberNodes.ElementAt(index);
                 element = FileCodeModel.GetOrCreateCodeElement<EnvDTE.CodeElement>(child);

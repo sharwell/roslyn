@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 case decimal val: return GenerateLiteralExpression(type, val, LiteralSpecialValues.DecimalSpecialValues, null, canUseFieldReference, SyntaxFactory.Literal, x => x < 0, x => -x);
             }
 
-            return type == null || type.IsReferenceType || type.IsPointerType() || type.IsNullable()
+            return (type == null) || type.IsReferenceType || type.IsPointerType() || type.IsNullable()
                 ? GenerateNullLiteral()
                 : (ExpressionSyntax)CSharpSyntaxGenerator.Instance.DefaultExpression(type);
         }
@@ -135,22 +135,22 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 }
             }
 
-            if (value is double && !IsSpecialType(type, SpecialType.System_Double))
+            if ((value is double) && !IsSpecialType(type, SpecialType.System_Double))
             {
                 return "D";
             }
 
-            if (value is uint && !IsSpecialType(type, SpecialType.System_UInt32))
+            if ((value is uint) && !IsSpecialType(type, SpecialType.System_UInt32))
             {
                 return "U";
             }
 
-            if (value is long && !IsSpecialType(type, SpecialType.System_Int64))
+            if ((value is long) && !IsSpecialType(type, SpecialType.System_Int64))
             {
                 return "L";
             }
 
-            if (value is ulong && !IsSpecialType(type, SpecialType.System_UInt64))
+            if ((value is ulong) && !IsSpecialType(type, SpecialType.System_UInt64))
             {
                 return "UL";
             }
@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 var scale = d.GetScale();
 
                 var isNotDecimal = !IsSpecialType(type, SpecialType.System_Decimal);
-                var isOutOfRange = d < long.MinValue || d > long.MaxValue;
+                var isOutOfRange = (d < long.MinValue) || (d > long.MaxValue);
                 var scaleIsNotZero = scale != 0;
 
                 if (isNotDecimal || isOutOfRange || scaleIsNotZero)
@@ -279,7 +279,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 if (constant.Key.Equals(value))
                 {
                     var memberAccess = GenerateMemberAccess("System", typeof(T).Name);
-                    if (type != null && !(type is IErrorTypeSymbol))
+                    if ((type != null) && !(type is IErrorTypeSymbol))
                     {
                         memberAccess = memberAccess.WithAdditionalAnnotations(SpecialTypeAnnotation.Create(type.SpecialType));
                     }

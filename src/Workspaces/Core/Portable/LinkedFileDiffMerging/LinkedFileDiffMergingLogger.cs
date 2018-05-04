@@ -37,8 +37,8 @@ namespace Microsoft.CodeAnalysis
                     LogNumberOfInsertedMergeConflictComments(groupInfo.InsertedMergeConflictComments);
                     LogNumberOfInsertedMergeConflictCommentsAtAdjustedLocation(groupInfo.InsertedMergeConflictCommentsAtAdjustedLocation);
 
-                    if (groupInfo.InsertedMergeConflictComments > 0 ||
-                        groupInfo.InsertedMergeConflictCommentsAtAdjustedLocation > 0)
+                    if ((groupInfo.InsertedMergeConflictComments > 0) ||
+                        (groupInfo.InsertedMergeConflictCommentsAtAdjustedLocation > 0))
                     {
                         Logger.Log(FunctionId.Workspace_Solution_LinkedFileDiffMergingSession_LinkedFileGroup, SessionLogMessage.Create(groupInfo));
                     }

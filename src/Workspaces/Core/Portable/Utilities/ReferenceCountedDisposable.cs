@@ -245,7 +245,7 @@ namespace Roslyn.Utilities
             public ReferenceCountedDisposable<T> TryAddReference()
             {
                 var weakInstance = _weakInstance;
-                if (weakInstance == null || !_weakInstance.TryGetTarget(out var target))
+                if ((weakInstance == null) || !_weakInstance.TryGetTarget(out var target))
                 {
                     return null;
                 }

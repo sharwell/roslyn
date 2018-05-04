@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.EventHookup
 
         internal void AssertNotShowing()
         {
-            Assert.True(_commandHandler.EventHookupSessionManager.QuickInfoSession == null || _commandHandler.EventHookupSessionManager.QuickInfoSession.IsDismissed);
+            Assert.True((_commandHandler.EventHookupSessionManager.QuickInfoSession == null) || _commandHandler.EventHookupSessionManager.QuickInfoSession.IsDismissed);
             Assert.Null(_commandHandler.EventHookupSessionManager.TEST_MostRecentQuickInfoContent);
         }
 

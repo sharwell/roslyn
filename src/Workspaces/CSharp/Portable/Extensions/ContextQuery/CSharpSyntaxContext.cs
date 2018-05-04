@@ -272,8 +272,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions.ContextQuery
             // Note that we pass the token.SpanStart to IsTypeDeclarationContext below. This is a bit subtle,
             // but we want to be sure that the attribute itself (i.e. the open square bracket, '[') is in a
             // type declaration context.
-            if (token.Kind() == SyntaxKind.OpenBracketToken &&
-                token.Parent.Kind() == SyntaxKind.AttributeList &&
+            if ((token.Kind() == SyntaxKind.OpenBracketToken) &&
+                (token.Parent.Kind() == SyntaxKind.AttributeList) &&
                 this.SyntaxTree.IsTypeDeclarationContext(
                     token.SpanStart, contextOpt: null, validModifiers: null, validTypeDeclarations: SyntaxKindSet.ClassStructTypeDeclarations, canBePartial: false, cancellationToken: cancellationToken))
             {
@@ -298,8 +298,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions.ContextQuery
             //   class C { [ |
             var token = this.TargetToken;
 
-            if (token.Kind() == SyntaxKind.OpenBracketToken &&
-                token.Parent.Kind() == SyntaxKind.AttributeList &&
+            if ((token.Kind() == SyntaxKind.OpenBracketToken) &&
+                (token.Parent.Kind() == SyntaxKind.AttributeList) &&
                 this.SyntaxTree.IsMemberDeclarationContext(
                     token.SpanStart, contextOpt: null, validModifiers: null, validTypeDeclarations: validTypeDeclarations, canBePartial: false, cancellationToken: cancellationToken))
             {
@@ -325,7 +325,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions.ContextQuery
             if (usingDirective != null)
             {
                 // No = token: 
-                if (usingDirective.Alias == null || usingDirective.Alias.EqualsToken.IsMissing)
+                if ((usingDirective.Alias == null) || usingDirective.Alias.EqualsToken.IsMissing)
                 {
                     return true;
                 }

@@ -335,7 +335,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            if ((object)member1 == null || (object)member2 == null || member1.Kind != member2.Kind)
+            if (((object)member1 == null) || ((object)member2 == null) || (member1.Kind != member2.Kind))
             {
                 return false;
             }
@@ -374,7 +374,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return false;
             }
 
-            if (member1.GetParameterCount() > 0 && !HaveSameParameterTypes(member1.GetParameters(), typeMap1, member2.GetParameters(), typeMap2,
+            if ((member1.GetParameterCount() > 0) && !HaveSameParameterTypes(member1.GetParameters(), typeMap1, member2.GetParameters(), typeMap2,
                                                                            _considerRefKindDifferences, _considerCustomModifiers, _ignoreDynamic, _ignoreTupleNames))
             {
                 return false;
@@ -460,7 +460,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                     hash = Hash.Combine((int)refKind, hash);
 
-                    if (member.GetMemberArity() == 0 && !_considerCustomModifiers) // If it is generic, then type argument might be in return type.
+                    if ((member.GetMemberArity() == 0) && !_considerCustomModifiers) // If it is generic, then type argument might be in return type.
                     {
                         hash = Hash.Combine(returnType, hash);
                     }
@@ -719,7 +719,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private static bool IsVarargMethod(Symbol member)
         {
-            return member.Kind == SymbolKind.Method && ((MethodSymbol)member).IsVararg;
+            return (member.Kind == SymbolKind.Method) && ((MethodSymbol)member).IsVararg;
         }
 
         /// <summary>

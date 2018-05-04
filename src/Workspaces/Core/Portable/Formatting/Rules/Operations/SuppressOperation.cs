@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
     {
         internal SuppressOperation(SyntaxToken startToken, SyntaxToken endToken, TextSpan textSpan, SuppressOption option)
         {
-            Contract.ThrowIfTrue(textSpan.Start < 0 || textSpan.Length < 0);
+            Contract.ThrowIfTrue((textSpan.Start < 0) || (textSpan.Length < 0));
             Contract.ThrowIfTrue(startToken.RawKind == 0);
             Contract.ThrowIfTrue(endToken.RawKind == 0);
 

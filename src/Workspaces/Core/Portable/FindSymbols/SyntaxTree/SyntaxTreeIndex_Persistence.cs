@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             ObjectReader reader, string formatVersion, Checksum checksum)
         {
             return TryReadFormatAndChecksum(reader, formatVersion, out var persistChecksum) &&
-                   persistChecksum == checksum;
+                   (persistChecksum == checksum);
         }
 
         public static async Task<Checksum> GetChecksumAsync(
@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             var contextInfo = ContextInfo.TryReadFrom(reader);
             var declarationInfo = DeclarationInfo.TryReadFrom(stringTable, reader);
 
-            if (literalInfo == null || identifierInfo == null || contextInfo == null || declarationInfo == null)
+            if ((literalInfo == null) || (identifierInfo == null) || (contextInfo == null) || (declarationInfo == null))
             {
                 return null;
             }

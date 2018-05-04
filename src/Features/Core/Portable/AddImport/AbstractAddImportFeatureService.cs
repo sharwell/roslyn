@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.AddImport
         {
             var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
             var node = root.FindToken(span.Start, findInsideTrivia: true)
-                           .GetAncestor(n => n.Span.Contains(span) && n != root);
+                           .GetAncestor(n => n.Span.Contains(span) && (n != root));
 
             var result = ArrayBuilder<AddImportFixData>.GetInstance();
             if (node != null)
@@ -167,9 +167,9 @@ namespace Microsoft.CodeAnalysis.AddImport
 
         private static bool IsHostOrTestOrRemoteWorkspace(Project project)
         {
-            return project.Solution.Workspace.Kind == WorkspaceKind.Host ||
-                   project.Solution.Workspace.Kind == WorkspaceKind.Test ||
-                   project.Solution.Workspace.Kind == WorkspaceKind.RemoteWorkspace;
+            return (project.Solution.Workspace.Kind == WorkspaceKind.Host) ||
+                   (project.Solution.Workspace.Kind == WorkspaceKind.Test) ||
+                   (project.Solution.Workspace.Kind == WorkspaceKind.RemoteWorkspace);
         }
 
         private async Task<ImmutableArray<Reference>> FindResultsAsync(
@@ -442,7 +442,7 @@ namespace Microsoft.CodeAnalysis.AddImport
 
         protected bool IsViableExtensionMethod(IMethodSymbol method, ITypeSymbol receiver)
         {
-            if (receiver == null || method == null)
+            if ((receiver == null) || (method == null))
             {
                 return false;
             }

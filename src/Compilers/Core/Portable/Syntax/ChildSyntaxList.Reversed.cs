@@ -61,8 +61,8 @@ namespace Microsoft.CodeAnalysis
 
             public bool Equals(Reversed other)
             {
-                return _node == other._node
-                    && _count == other._count;
+                return (_node == other._node)
+                    && (_count == other._count);
             }
 
             public struct Enumerator

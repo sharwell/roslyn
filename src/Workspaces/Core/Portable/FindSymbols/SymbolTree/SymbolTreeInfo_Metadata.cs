@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             {
                 return reference.GetMetadataId();
             }
-            catch (Exception e) when (e is BadImageFormatException || e is IOException)
+            catch (Exception e) when ((e is BadImageFormatException) || (e is IOException))
             {
                 return null;
             }
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             {
                 return reference.GetMetadata();
             }
-            catch (Exception e) when (e is BadImageFormatException || e is IOException)
+            catch (Exception e) when ((e is BadImageFormatException) || (e is IOException))
             {
                 return null;
             }
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
                 var info = await TryLoadOrCreateMetadataSymbolTreeInfoAsync(
                     solution, reference, checksum, loadOnly, cancellationToken).ConfigureAwait(false);
-                if (info == null && loadOnly)
+                if ((info == null) && loadOnly)
                 {
                     return CreateEmpty(checksum);
                 }
@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 keySuffix: "_Metadata_" + filePath,
                 tryReadObject: reader => TryReadSymbolTreeInfo(reader, (names, nodes) => GetSpellCheckerTask(solution, checksum, filePath, names, nodes)),
                 cancellationToken: cancellationToken);
-            Contract.ThrowIfFalse(result != null || loadOnly == true, "Result can only be null if 'loadOnly: true' was passed.");
+            Contract.ThrowIfFalse((result != null) || (loadOnly == true), "Result can only be null if 'loadOnly: true' was passed.");
             return result;
         }
 
@@ -370,14 +370,14 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 OrderPreservingMultiDictionary<string, MetadataDefinition> definitionMap)
             {
                 // Only bother looking for extension methods in static types.
-                if ((typeDefinition.Attributes & TypeAttributes.Abstract) != 0 &&
-                    (typeDefinition.Attributes & TypeAttributes.Sealed) != 0)
+                if (((typeDefinition.Attributes & TypeAttributes.Abstract) != 0) &&
+                    ((typeDefinition.Attributes & TypeAttributes.Sealed) != 0))
                 {
                     foreach (var child in typeDefinition.GetMethods())
                     {
                         var method = _metadataReader.GetMethodDefinition(child);
-                        if ((method.Attributes & MethodAttributes.SpecialName) != 0 ||
-                            (method.Attributes & MethodAttributes.RTSpecialName) != 0)
+                        if (((method.Attributes & MethodAttributes.SpecialName) != 0) ||
+                            ((method.Attributes & MethodAttributes.RTSpecialName) != 0))
                         {
                             continue;
                         }
@@ -385,9 +385,9 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                         // SymbolTreeInfo is only searched for types and extension methods.
                         // So we don't want to pull in all methods here.  As a simple approximation
                         // we just pull in methods that have attributes on them.
-                        if ((method.Attributes & MethodAttributes.MemberAccessMask) == MethodAttributes.Public &&
-                            (method.Attributes & MethodAttributes.Static) != 0 &&
-                            method.GetCustomAttributes().Count > 0)
+                        if (((method.Attributes & MethodAttributes.MemberAccessMask) == MethodAttributes.Public) &&
+                            ((method.Attributes & MethodAttributes.Static) != 0) &&
+                            (method.GetCustomAttributes().Count > 0))
                         {
                             var definition = new MetadataDefinition(
                                 MetadataDefinitionKind.Member, _metadataReader.GetString(method.Name));
@@ -439,7 +439,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             private static bool IsPublic(TypeAttributes attributes)
             {
                 var masked = attributes & TypeAttributes.VisibilityMask;
-                return masked == TypeAttributes.Public || masked == TypeAttributes.NestedPublic;
+                return (masked == TypeAttributes.Public) || (masked == TypeAttributes.NestedPublic);
             }
 
             private void PopulateInheritanceMap()
@@ -457,7 +457,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 var interfaceImplHandles = derivedTypeDefinition.GetInterfaceImplementations();
 
                 if (derivedTypeDefinition.BaseType.IsNil &&
-                    interfaceImplHandles.Count == 0)
+                    (interfaceImplHandles.Count == 0))
                 {
                     return;
                 }
@@ -489,7 +489,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 try
                 {
                     AddBaseTypeNameParts(baseTypeOrInterfaceHandle, baseTypeNameParts);
-                    if (baseTypeNameParts.Count > 0 &&
+                    if ((baseTypeNameParts.Count > 0) &&
                         baseTypeNameParts.TrueForAll(s_isNotNullOrEmpty))
                     {
                         var lastPart = baseTypeNameParts.Last();

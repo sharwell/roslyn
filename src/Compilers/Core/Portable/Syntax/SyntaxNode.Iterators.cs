@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis
         {
             return span.OverlapsWith(childSpan)
                 // special case for zero-width tokens (OverlapsWith never returns true for these)
-                || (childSpan.Length == 0 && span.IntersectsWith(childSpan));
+                || ((childSpan.Length == 0) && span.IntersectsWith(childSpan));
         }
 
         private struct ChildSyntaxListEnumeratorStack : IDisposable
@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis
 
             public ChildSyntaxListEnumeratorStack(SyntaxNode startingNode, Func<SyntaxNode, bool> descendIntoChildren)
             {
-                if (descendIntoChildren == null || descendIntoChildren(startingNode))
+                if ((descendIntoChildren == null) || descendIntoChildren(startingNode))
                 {
                     _stack = s_stackPool.Allocate();
                     _stackPtr = 0;
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis
 
             public void PushChildren(SyntaxNode node, Func<SyntaxNode, bool> descendIntoChildren)
             {
-                if (descendIntoChildren == null || descendIntoChildren(node))
+                if ((descendIntoChildren == null) || descendIntoChildren(node))
                 {
                     PushChildren(node);
                 }
@@ -236,7 +236,7 @@ namespace Microsoft.CodeAnalysis
 
             public void PushChildren(SyntaxNode node, Func<SyntaxNode, bool> descendIntoChildren)
             {
-                if (descendIntoChildren == null || descendIntoChildren(node))
+                if ((descendIntoChildren == null) || descendIntoChildren(node))
                 {
                     _nodeStack.PushChildren(node);
                     _discriminatorStack.Push(Which.Node);
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis
 
             public void PushChildren(SyntaxNode node, Func<SyntaxNode, bool> descendIntoChildren)
             {
-                if (descendIntoChildren == null || descendIntoChildren(node))
+                if ((descendIntoChildren == null) || descendIntoChildren(node))
                 {
                     _nodeStack.PushChildren(node);
                     _discriminatorStack.Push(Which.Node);

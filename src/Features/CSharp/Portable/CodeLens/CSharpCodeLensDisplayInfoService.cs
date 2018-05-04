@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeLens
         private static string GetEnclosingScopeString(SyntaxNode node, SemanticModel semanticModel, SymbolDisplayFormat symbolDisplayFormat)
         {
             var scopeNode = node;
-            while (scopeNode != null && !SyntaxFacts.IsNamespaceMemberDeclaration(scopeNode.Kind()))
+            while ((scopeNode != null) && !SyntaxFacts.IsNamespaceMemberDeclaration(scopeNode.Kind()))
             {
                 scopeNode = scopeNode.Parent;
             }

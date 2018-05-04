@@ -143,7 +143,7 @@ namespace Roslyn.Hosting.Diagnostics.PerfMargin
                 return;
             }
 
-            if (selectedItem.Tag is ActivityLevel context && context.Children != null && context.Children.Any())
+            if (selectedItem.Tag is ActivityLevel context && (context.Children != null) && context.Children.Any())
             {
                 _detailsListView = CreateContent(context.Children, useWrapPanel: false);
                 _mainGrid.Children.Add(_detailsListView);

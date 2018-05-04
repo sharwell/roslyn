@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.RemoveUnnecessaryImports
             var nodesContainingUnnecessaryUsings = new HashSet<SyntaxNode>();
             foreach (var node in nodes)
             {
-                var nodeContainingUnnecessaryUsings = node.GetAncestors().First(n => n is NamespaceDeclarationSyntax || n is CompilationUnitSyntax);
+                var nodeContainingUnnecessaryUsings = node.GetAncestors().First(n => (n is NamespaceDeclarationSyntax) || (n is CompilationUnitSyntax));
                 if (!nodesContainingUnnecessaryUsings.Add(nodeContainingUnnecessaryUsings))
                 {
                     continue;

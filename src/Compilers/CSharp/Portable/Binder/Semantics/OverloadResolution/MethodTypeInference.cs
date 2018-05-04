@@ -216,7 +216,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(!methodTypeParameters.IsDefault);
             Debug.Assert(methodTypeParameters.Length > 0);
             Debug.Assert(!formalParameterTypes.IsDefault);
-            Debug.Assert(formalParameterRefKinds.IsDefault || formalParameterRefKinds.Length == formalParameterTypes.Length);
+            Debug.Assert(formalParameterRefKinds.IsDefault || (formalParameterRefKinds.Length == formalParameterTypes.Length));
             Debug.Assert(!arguments.IsDefault);
 
             // Early out: if the method has no formal parameters then we know that inference will fail.
@@ -353,7 +353,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private RefKind GetRefKind(int index)
         {
-            Debug.Assert(0 <= index && index < _formalParameterTypes.Length);
+            Debug.Assert((0 <= index) && (index < _formalParameterTypes.Length));
             return _formalParameterRefKinds.IsDefault ? RefKind.None : _formalParameterRefKinds[index];
         }
 
@@ -397,7 +397,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private bool ValidIndex(int index)
         {
-            return 0 <= index && index < _methodTypeParameters.Length;
+            return (0 <= index) && (index < _methodTypeParameters.Length);
         }
 
         private bool IsUnfixed(int methodTypeParameterIndex)
@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeParameterSymbol typeParameter = (TypeParameterSymbol)type;
             int ordinal = typeParameter.Ordinal;
             return ValidIndex(ordinal) &&
-                typeParameter == _methodTypeParameters[ordinal] &&
+                (typeParameter == _methodTypeParameters[ordinal]) &&
                 IsUnfixed(ordinal);
         }
 
@@ -462,9 +462,9 @@ namespace Microsoft.CodeAnalysis.CSharp
         private bool HasBound(int methodTypeParameterIndex)
         {
             Debug.Assert(ValidIndex(methodTypeParameterIndex));
-            return _lowerBounds[methodTypeParameterIndex] != null ||
-                _upperBounds[methodTypeParameterIndex] != null ||
-                _exactBounds[methodTypeParameterIndex] != null;
+            return (_lowerBounds[methodTypeParameterIndex] != null) ||
+                (_upperBounds[methodTypeParameterIndex] != null) ||
+                (_exactBounds[methodTypeParameterIndex] != null);
         }
 
         private NamedTypeSymbol GetFixedDelegate(NamedTypeSymbol delegateType)
@@ -578,7 +578,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 ExplicitParameterTypeInference(argument, target, ref useSiteDiagnostics);
             }
-            else if (argument.Kind != BoundKind.TupleLiteral ||
+            else if ((argument.Kind != BoundKind.TupleLiteral) ||
                 !MakeExplicitParameterTypeInferences(binder, (BoundTupleLiteral)argument, target, isExactInference, ref useSiteDiagnostics))
             {
                 // Either the argument is not a tuple literal, or we were unable to do the inference from its elements, let's try to infer from argument type
@@ -755,7 +755,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private void MakeOutputTypeInferences(Binder binder, BoundExpression argument, TypeSymbol formalType, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            if (argument.Kind == BoundKind.TupleLiteral && (object)argument.Type == null)
+            if ((argument.Kind == BoundKind.TupleLiteral) && ((object)argument.Type == null))
             {
                 MakeOutputTypeInferences(binder, (BoundTupleLiteral)argument, formalType, ref useSiteDiagnostics);
             }
@@ -892,7 +892,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false; // No input types.
             }
 
-            if (argument.Kind != BoundKind.UnboundLambda && argument.Kind != BoundKind.MethodGroup)
+            if ((argument.Kind != BoundKind.UnboundLambda) && (argument.Kind != BoundKind.MethodGroup))
             {
                 return false; // No input types.
             }
@@ -946,13 +946,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false;
             }
 
-            if (argument.Kind != BoundKind.UnboundLambda && argument.Kind != BoundKind.MethodGroup)
+            if ((argument.Kind != BoundKind.UnboundLambda) && (argument.Kind != BoundKind.MethodGroup))
             {
                 return false;
             }
 
             MethodSymbol delegateInvoke = delegateType.DelegateInvokeMethod;
-            if ((object)delegateInvoke == null || delegateInvoke.HasUseSiteError)
+            if (((object)delegateInvoke == null) || delegateInvoke.HasUseSiteError)
             {
                 return false;
             }
@@ -1081,8 +1081,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             // SPEC: directly on Xk and Xk depends on Xj. Thus "depends on" is the
             // SPEC: transitive but not reflexive closure of "depends directly on".
 
-            Debug.Assert(0 <= iParam && iParam < _methodTypeParameters.Length);
-            Debug.Assert(0 <= jParam && jParam < _methodTypeParameters.Length);
+            Debug.Assert((0 <= iParam) && (iParam < _methodTypeParameters.Length));
+            Debug.Assert((0 <= jParam) && (jParam < _methodTypeParameters.Length));
 
             if (_dependenciesDirty)
             {
@@ -1108,8 +1108,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             for (int kParam = 0; kParam < _methodTypeParameters.Length; ++kParam)
             {
-                if (((_dependencies[iParam, kParam]) & Dependency.DependsMask) != 0 &&
-                    ((_dependencies[kParam, jParam]) & Dependency.DependsMask) != 0)
+                if ((((_dependencies[iParam, kParam]) & Dependency.DependsMask) != 0) &&
+                    (((_dependencies[kParam, jParam]) & Dependency.DependsMask) != 0))
                 {
                     return true;
                 }
@@ -1278,10 +1278,10 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // cannot be hit, because an invalid delegate does not have an unfixed return type
             // this will be checked earlier.
-            Debug.Assert((object)delegateType.DelegateInvokeMethod != null && !delegateType.DelegateInvokeMethod.HasUseSiteError,
+            Debug.Assert(((object)delegateType.DelegateInvokeMethod != null) && !delegateType.DelegateInvokeMethod.HasUseSiteError,
                          "This method should only be called for valid delegate types.");
             var returnType = delegateType.DelegateInvokeMethod.ReturnType;
-            if ((object)returnType == null || returnType.SpecialType == SpecialType.System_Void)
+            if (((object)returnType == null) || (returnType.SpecialType == SpecialType.System_Void))
             {
                 return false;
             }
@@ -1320,11 +1320,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             // this part of the code is only called if the targetType has an unfixed type argument in the output 
             // type, which is not the case for invalid delegate invoke methods.
             var delegateInvokeMethod = delegateType.DelegateInvokeMethod;
-            Debug.Assert((object)delegateInvokeMethod != null && !delegateType.DelegateInvokeMethod.HasUseSiteError,
+            Debug.Assert(((object)delegateInvokeMethod != null) && !delegateType.DelegateInvokeMethod.HasUseSiteError,
                          "This method should only be called for valid delegate types");
 
             TypeSymbol delegateReturnType = delegateInvokeMethod.ReturnType;
-            if ((object)delegateReturnType == null || delegateReturnType.SpecialType == SpecialType.System_Void)
+            if (((object)delegateReturnType == null) || (delegateReturnType.SpecialType == SpecialType.System_Void))
             {
                 return false;
             }
@@ -1338,7 +1338,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var returnType = MethodGroupReturnType(binder, (BoundMethodGroup)source, fixedDelegateParameters, delegateInvokeMethod.RefKind, ref useSiteDiagnostics);
-            if ((object)returnType == null || returnType.SpecialType == SpecialType.System_Void)
+            if (((object)returnType == null) || (returnType.SpecialType == SpecialType.System_Void))
             {
                 return false;
             }
@@ -1560,7 +1560,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (!source.TryGetElementTypesIfTupleOrCompatible(out sourceTypes) ||
                 !target.TryGetElementTypesIfTupleOrCompatible(out targetTypes) ||
-                sourceTypes.Length != targetTypes.Length)
+                (sourceTypes.Length != targetTypes.Length))
             {
                 return false;
             }
@@ -1605,7 +1605,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private bool ExactPointerInference(TypeSymbol source, TypeSymbol target, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            if (source.TypeKind == TypeKind.Pointer && target.TypeKind == TypeKind.Pointer)
+            if ((source.TypeKind == TypeKind.Pointer) && (target.TypeKind == TypeKind.Pointer))
             {
                 ExactInference(((PointerTypeSymbol)source).PointedAtType, ((PointerTypeSymbol)target).PointedAtType, ref useSiteDiagnostics);
                 return true;
@@ -1839,7 +1839,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (!source.TryGetElementTypesIfTupleOrCompatible(out sourceTypes) ||
                 !target.TryGetElementTypesIfTupleOrCompatible(out targetTypes) ||
-                sourceTypes.Length != targetTypes.Length)
+                (sourceTypes.Length != targetTypes.Length))
             {
                 return false;
             }
@@ -1881,8 +1881,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             // SPEC:   is made from each Ui to the corresponding Vi.
 
             var constructedSource = source as NamedTypeSymbol;
-            if ((object)constructedSource != null &&
-                constructedSource.OriginalDefinition == constructedTarget.OriginalDefinition)
+            if (((object)constructedSource != null) &&
+                (constructedSource.OriginalDefinition == constructedTarget.OriginalDefinition))
             {
                 if (constructedSource.IsInterface || constructedSource.IsDelegateType())
                 {
@@ -2043,11 +2043,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var sourceTypeArgument = sourceTypeArguments[arg];
                 var targetTypeArgument = targetTypeArguments[arg];
 
-                if (sourceTypeArgument.IsReferenceType && typeParameter.Variance == VarianceKind.Out)
+                if (sourceTypeArgument.IsReferenceType && (typeParameter.Variance == VarianceKind.Out))
                 {
                     LowerBoundInference(sourceTypeArgument, targetTypeArgument, ref useSiteDiagnostics);
                 }
-                else if (sourceTypeArgument.IsReferenceType && typeParameter.Variance == VarianceKind.In)
+                else if (sourceTypeArgument.IsReferenceType && (typeParameter.Variance == VarianceKind.In))
                 {
                     UpperBoundInference(sourceTypeArgument, targetTypeArgument, ref useSiteDiagnostics);
                 }
@@ -2198,8 +2198,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var constructedTarget = target as NamedTypeSymbol;
 
-            if ((object)constructedTarget != null &&
-                constructedSource.OriginalDefinition == target.OriginalDefinition)
+            if (((object)constructedTarget != null) &&
+                (constructedSource.OriginalDefinition == target.OriginalDefinition))
             {
                 if (constructedTarget.IsInterface || constructedTarget.IsDelegateType())
                 {
@@ -2238,7 +2238,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert((object)source != null);
             Debug.Assert((object)target != null);
 
-            if (source.TypeKind != TypeKind.Class || target.TypeKind != TypeKind.Class)
+            if ((source.TypeKind != TypeKind.Class) || (target.TypeKind != TypeKind.Class))
             {
                 return false;
             }
@@ -2330,11 +2330,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var sourceTypeArgument = sourceTypeArguments[arg];
                 var targetTypeArgument = targetTypeArguments[arg];
 
-                if (sourceTypeArgument.IsReferenceType && typeParameter.Variance == VarianceKind.Out)
+                if (sourceTypeArgument.IsReferenceType && (typeParameter.Variance == VarianceKind.Out))
                 {
                     UpperBoundInference(sourceTypeArgument, targetTypeArgument, ref useSiteDiagnostics);
                 }
-                else if (sourceTypeArgument.IsReferenceType && typeParameter.Variance == VarianceKind.In)
+                else if (sourceTypeArgument.IsReferenceType && (typeParameter.Variance == VarianceKind.In))
                 {
                     LowerBoundInference(sourceTypeArgument, targetTypeArgument, ref useSiteDiagnostics);
                 }
@@ -2589,7 +2589,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             Debug.Assert((object)target != null);
             Debug.Assert(target.IsDelegateType());
-            Debug.Assert((object)target.DelegateInvokeMethod != null && !target.DelegateInvokeMethod.HasUseSiteError,
+            Debug.Assert(((object)target.DelegateInvokeMethod != null) && !target.DelegateInvokeMethod.HasUseSiteError,
                          "This method should only be called for legal delegate types.");
             Debug.Assert(!target.DelegateInvokeMethod.ReturnsVoid);
 
@@ -2801,7 +2801,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool IsReallyAType(TypeSymbol type)
         {
-            return (object)type != null &&
+            return ((object)type != null) &&
                 !type.IsErrorType() &&
                 (type.SpecialType != SpecialType.System_Void);
         }

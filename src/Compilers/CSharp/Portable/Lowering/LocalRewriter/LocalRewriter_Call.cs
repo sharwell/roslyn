@@ -38,13 +38,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                     hasImplicitReceiver = (methodGroup.Flags & BoundMethodGroupFlags.HasImplicitReceiver) != 0;
 
                     // Should have been eliminated during binding of dynamic invocation:
-                    Debug.Assert(methodGroup.ReceiverOpt == null || methodGroup.ReceiverOpt.Kind != BoundKind.TypeOrValueExpression);
+                    Debug.Assert((methodGroup.ReceiverOpt == null) || (methodGroup.ReceiverOpt.Kind != BoundKind.TypeOrValueExpression));
 
                     if (methodGroup.ReceiverOpt == null)
                     {
                         // Calling a static method defined on an outer class via its simple name.
                         NamedTypeSymbol firstContainer = node.ApplicableMethods.First().ContainingType;
-                        Debug.Assert(node.ApplicableMethods.All(m => m.IsStatic && m.ContainingType == firstContainer));
+                        Debug.Assert(node.ApplicableMethods.All(m => m.IsStatic && (m.ContainingType == firstContainer)));
 
                         loweredReceiver = new BoundTypeExpression(node.Syntax, null, firstContainer);
                     }
@@ -96,11 +96,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             // If we are calling a method on a NoPIA type, we need to embed all methods/properties
             // with the matching name of this dynamic invocation.
             var module = this.EmitModule;
-            if (module != null && receiver != null && (object)receiver.Type != null)
+            if ((module != null) && (receiver != null) && ((object)receiver.Type != null))
             {
                 var assembly = receiver.Type.ContainingAssembly;
 
-                if ((object)assembly != null && assembly.IsLinked)
+                if (((object)assembly != null) && assembly.IsLinked)
                 {
                     foreach (var m in methods)
                     {
@@ -115,11 +115,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             // If we are calling a method on a NoPIA type, we need to embed all methods/properties
             // with the matching name of this dynamic invocation.
             var module = this.EmitModule;
-            if (module != null && receiver != null && (object)receiver.Type != null)
+            if ((module != null) && (receiver != null) && ((object)receiver.Type != null))
             {
                 var assembly = receiver.Type.ContainingAssembly;
 
-                if ((object)assembly != null && assembly.IsLinked)
+                if (((object)assembly != null) && assembly.IsLinked)
                 {
                     foreach (var p in properties)
                     {
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (method.IsStatic &&
                 method.ContainingType.IsObjectType() &&
                 !_inExpressionLambda &&
-                (object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_Object__ReferenceEquals))
+                ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_Object__ReferenceEquals)))
             {
                 Debug.Assert(rewrittenArguments.Length == 2);
 
@@ -547,7 +547,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // NOTE: we may have more arguments than parameters in a case of arglist. That is ok.
-            Debug.Assert(argumentRefKindsOpt.IsDefault || argumentRefKindsOpt.Length >= parameters.Length);
+            Debug.Assert(argumentRefKindsOpt.IsDefault || (argumentRefKindsOpt.Length >= parameters.Length));
             return argumentRefKindsOpt;
         }
 
@@ -568,7 +568,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(((methodOrIndexer.Kind == SymbolKind.Property) && 
                 (optionalParametersMethod.IsAccessor() || 
                  ((PropertySymbol)methodOrIndexer).MustCallMethodsDirectly)) || // This condition is a temporary workaround for https://github.com/dotnet/roslyn/issues/23852
-                (object)methodOrIndexer == optionalParametersMethod);
+                ((object)methodOrIndexer == optionalParametersMethod));
 
             // We need to do a fancy rewrite under the following circumstances:
             // (1) a params array is being used; we need to generate the array. 
@@ -598,7 +598,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     argumentsBuilder.Add(operationFactory.CreateArgumentOperation(ArgumentKind.Explicit, null, arguments[i]));
                 }
 
-                Debug.Assert(methodOrIndexer.GetIsVararg() ^ parameters.Length == arguments.Length);
+                Debug.Assert(methodOrIndexer.GetIsVararg() ^ (parameters.Length == arguments.Length));
 
                 return argumentsBuilder.ToImmutableAndFree();
             }
@@ -634,7 +634,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (methodOrIndexer.GetIsVararg())
             {
-                Debug.Assert(rewrittenArguments.Length == methodOrIndexer.GetParameterCount() + 1);
+                Debug.Assert(rewrittenArguments.Length == (methodOrIndexer.GetParameterCount() + 1));
                 Debug.Assert(argsToParamsOpt.IsDefault);
                 Debug.Assert(!expanded);
                 return true;
@@ -646,10 +646,10 @@ namespace Microsoft.CodeAnalysis.CSharp
                                         ((MethodSymbol)methodOrIndexer).Parameters[0].Type as NamedTypeSymbol :
                                         methodOrIndexer.ContainingType;
 
-                isComReceiver = (object)receiverNamedType != null && receiverNamedType.IsComImport;
+                isComReceiver = ((object)receiverNamedType != null) && receiverNamedType.IsComImport;
             }
 
-            return rewrittenArguments.Length == methodOrIndexer.GetParameterCount() &&
+            return (rewrittenArguments.Length == methodOrIndexer.GetParameterCount()) &&
                 argsToParamsOpt.IsDefault &&
                 !expanded &&
                 !isComReceiver;
@@ -724,7 +724,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // produces the parameter array will need to deal with that
                 // eventuality.
                 if (IsBeginningOfParamArray(p, a, expanded, arguments.Length, rewrittenArguments, argsToParamsOpt, out int paramArrayArgumentCount)
-                    && a + paramArrayArgumentCount == rewrittenArguments.Length)
+                    && ((a + paramArrayArgumentCount) == rewrittenArguments.Length))
                 {
                     return;
                 }
@@ -747,7 +747,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return;
 
             bool isLambdaConversion(BoundExpression expr)
-                => expr is BoundConversion conv && conv.ConversionKind == ConversionKind.AnonymousFunction;
+                => expr is BoundConversion conv && (conv.ConversionKind == ConversionKind.AnonymousFunction);
         }
 
         // This fills in the arguments and parameters arrays in evaluation order.
@@ -838,13 +838,13 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             numberOfParamArrayArguments = 0;
 
-            if (expanded && parameterIndex == parameterCount - 1)
+            if (expanded && (parameterIndex == (parameterCount - 1)))
             {
                 int remainingArgument = argumentIndex + 1;
                 for (; remainingArgument < arguments.Length; ++remainingArgument)
                 {
                     int remainingParameter = (!argsToParamsOpt.IsDefault) ? argsToParamsOpt[remainingArgument] : remainingArgument;
-                    if (remainingParameter != parameterCount - 1)
+                    if (remainingParameter != (parameterCount - 1))
                     {
                         break;
                     }
@@ -894,7 +894,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // if it's available.  However, we also disable the optimization if we're in an expression lambda, the 
             // point of which is just to represent the semantics of an operation, and we don't know that all consumers
             // of expression lambdas will appropriately understand Array.Empty<T>().
-            if (arrayArgs.Length == 0 && !_inExpressionLambda)
+            if ((arrayArgs.Length == 0) && !_inExpressionLambda)
             {
                 ArrayTypeSymbol ats = paramArrayType as ArrayTypeSymbol;
                 if (ats != null) // could be null if there's a semantic error, e.g. the params parameter type isn't an array
@@ -931,7 +931,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             LocalRewriter localRewriter,
             Binder binder)
         {
-            Debug.Assert(localRewriter == null ^ binder == null);
+            Debug.Assert((localRewriter == null) ^ (binder == null));
 
             TypeSymbol int32Type = (localRewriter != null ? localRewriter._compilation : binder.Compilation).GetSpecialType(SpecialType.System_Int32);
             BoundExpression arraySize = MakeLiteral(syntax, ConstantValue.Create(arrayArgs.Length), int32Type, localRewriter);
@@ -1127,7 +1127,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // to the indexer parameter.)
                 ParameterSymbol parameterOfOptionalParametersMethod = parametersOfOptionalParametersMethod[parameter.Ordinal];
 
-                if (expanded && parameterOfOptionalParametersMethod.Ordinal == parameters.Length - 1)
+                if (expanded && (parameterOfOptionalParametersMethod.Ordinal == (parameters.Length - 1)))
                 {
                     Debug.Assert(parameterOfOptionalParametersMethod.IsParams);
 
@@ -1234,7 +1234,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Binder binder,
             DiagnosticBag diagnostics)
         {
-            Debug.Assert(localRewriter == null ^ binder == null);
+            Debug.Assert((localRewriter == null) ^ (binder == null));
             Debug.Assert(diagnostics != null);
 
             bool isLowering;
@@ -1265,7 +1265,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // For compatibility with the native compiler we treat all bad imported constant
             // values as default(T). However, we don't do this for IOperation purpose, in which case
             // we will expose the bad node.
-            if (defaultConstantValue != null && defaultConstantValue.IsBad && isLowering)
+            if ((defaultConstantValue != null) && defaultConstantValue.IsBad && isLowering)
             {
                 defaultConstantValue = ConstantValue.Null;
             }
@@ -1322,7 +1322,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                     var propDecl = (PropertyDeclarationSyntax)memberDecl;
                                     EqualsValueClauseSyntax initializer = propDecl.Initializer;
 
-                                    if (initializer != null && initializer.Span.Contains(syntax.Span))
+                                    if ((initializer != null) && initializer.Span.Contains(syntax.Span))
                                     {
                                         memberName = propDecl.Identifier.ValueText;
                                         break;
@@ -1336,7 +1336,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                     {
                                         EqualsValueClauseSyntax initializer = varDecl.Initializer;
 
-                                        if (initializer != null && initializer.Span.Contains(syntax.Span))
+                                        if ((initializer != null) && initializer.Span.Contains(syntax.Span))
                                         {
                                             memberName = varDecl.Identifier.ValueText;
                                             break;
@@ -1368,7 +1368,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             else if (defaultConstantValue == ConstantValue.NotAvailable)
             {
                 // There is no constant value given for the parameter in source/metadata.
-                if (parameterType.IsDynamic() || parameterType.SpecialType == SpecialType.System_Object)
+                if (parameterType.IsDynamic() || (parameterType.SpecialType == SpecialType.System_Object))
                 {
                     // We have something like M([Optional] object x). We have special handling for such situations.
                     defaultValue = isLowering
@@ -1508,7 +1508,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(actualArguments != null);
             Debug.Assert(actualArguments.Length == parameters.Length);
 
-            Debug.Assert(argsRefKindsBuilder == null || argsRefKindsBuilder.Count == parameters.Length);
+            Debug.Assert((argsRefKindsBuilder == null) || (argsRefKindsBuilder.Count == parameters.Length));
 
             var argsCount = actualArguments.Length;
 
@@ -1519,7 +1519,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // Rewrite only if the argument was passed with no ref/out and the
                 // parameter was declared ref. 
-                if (argRefKind != RefKind.None || paramRefKind != RefKind.Ref)
+                if ((argRefKind != RefKind.None) || (paramRefKind != RefKind.Ref))
                 {
                     continue;
                 }

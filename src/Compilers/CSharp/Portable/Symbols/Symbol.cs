@@ -547,7 +547,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // this part is expected to disappear when inlining "someSymbol == null"
-            return (object)left == (object)right || right.Equals(left);
+            return ((object)left == (object)right) || right.Equals(left);
         }
 
         /// <summary>
@@ -572,7 +572,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // this part is expected to disappear when inlining "someSymbol != null"
-            return (object)left != (object)right && !right.Equals(left);
+            return ((object)left != (object)right) && !right.Equals(left);
         }
 
         // By default, we do reference equality. This can be overridden.
@@ -651,7 +651,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </remarks>
         internal CharSet? GetEffectiveDefaultMarshallingCharSet()
         {
-            Debug.Assert(this.Kind == SymbolKind.NamedType || this.Kind == SymbolKind.Method);
+            Debug.Assert((this.Kind == SymbolKind.NamedType) || (this.Kind == SymbolKind.Method));
             return this.ContainingModule.DefaultMarshallingCharSet;
         }
 
@@ -685,7 +685,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal virtual bool IsDefinedInSourceTree(SyntaxTree tree, TextSpan? definedWithinSpan, CancellationToken cancellationToken = default(CancellationToken))
         {
             var declaringReferences = this.DeclaringSyntaxReferences;
-            if (this.IsImplicitlyDeclared && declaringReferences.Length == 0)
+            if (this.IsImplicitlyDeclared && (declaringReferences.Length == 0))
             {
                 return this.ContainingSymbol.IsDefinedInSourceTree(tree, definedWithinSpan, cancellationToken);
             }
@@ -694,7 +694,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (syntaxRef.SyntaxTree == tree &&
+                if ((syntaxRef.SyntaxTree == tree) &&
                     (!definedWithinSpan.HasValue || syntaxRef.Span.IntersectsWith(definedWithinSpan.Value)))
                 {
                     return true;
@@ -706,7 +706,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static void ForceCompleteMemberByLocation(SourceLocation locationOpt, Symbol member, CancellationToken cancellationToken)
         {
-            if (locationOpt == null || member.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
+            if ((locationOpt == null) || member.IsDefinedInSourceTree(locationOpt.SourceTree, locationOpt.SourceSpan, cancellationToken))
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 member.ForceComplete(locationOpt, cancellationToken);
@@ -776,7 +776,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             get
             {
                 var diagnostic = GetUseSiteDiagnostic();
-                return diagnostic != null && diagnostic.Severity == DiagnosticSeverity.Error;
+                return (diagnostic != null) && (diagnostic.Severity == DiagnosticSeverity.Error);
             }
         }
 
@@ -830,7 +830,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal DiagnosticInfo GetUseSiteDiagnosticForSymbolOrContainingType()
         {
             var info = this.GetUseSiteDiagnostic();
-            if (info != null && info.Severity == DiagnosticSeverity.Error)
+            if ((info != null) && (info.Severity == DiagnosticSeverity.Error))
             {
                 return info;
             }
@@ -848,14 +848,14 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false;
             }
 
-            if (info.Severity == DiagnosticSeverity.Error && (info.Code == HighestPriorityUseSiteError || HighestPriorityUseSiteError == Int32.MaxValue))
+            if ((info.Severity == DiagnosticSeverity.Error) && ((info.Code == HighestPriorityUseSiteError) || (HighestPriorityUseSiteError == Int32.MaxValue)))
             {
                 // this error is final, no other error can override it:
                 result = info;
                 return true;
             }
 
-            if (result == null || result.Severity == DiagnosticSeverity.Warning && info.Severity == DiagnosticSeverity.Error)
+            if ((result == null) || ((result.Severity == DiagnosticSeverity.Warning) && (info.Severity == DiagnosticSeverity.Error)))
             {
                 // there could be an error of higher-priority
                 result = info;
@@ -880,9 +880,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Unlike VB the C# Dev11 compiler reports only a single unification error/warning.
             // By dropping the location we effectively merge all unification use-site errors that have the same error code into a single error.
             // The error message clearly explains how to fix the problem and reporting the error for each location wouldn't add much value. 
-            if (info.Code == (int)ErrorCode.WRN_UnifyReferenceBldRev ||
-                info.Code == (int)ErrorCode.WRN_UnifyReferenceMajMin ||
-                info.Code == (int)ErrorCode.ERR_AssemblyMatchBadVersion)
+            if ((info.Code == (int)ErrorCode.WRN_UnifyReferenceBldRev) ||
+                (info.Code == (int)ErrorCode.WRN_UnifyReferenceMajMin) ||
+                (info.Code == (int)ErrorCode.ERR_AssemblyMatchBadVersion))
             {
                 location = NoLocation.Singleton;
             }
@@ -1115,7 +1115,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             CSharpSyntaxNode syntax,
             DiagnosticBag diagnostics)
         {
-            if (block != null && expression != null)
+            if ((block != null) && (expression != null))
             {
                 diagnostics.Add(ErrorCode.ERR_BlockBodyAndExpressionBody, syntax.GetLocation());
             }

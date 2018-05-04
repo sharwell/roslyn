@@ -58,8 +58,8 @@ namespace Microsoft.CodeAnalysis
                 return true;
             }
 
-            return obj != null
-                && _sourceSpan == obj._sourceSpan
+            return (obj != null)
+                && (_sourceSpan == obj._sourceSpan)
                 && _lineSpan.Equals(obj._lineSpan);
         }
 

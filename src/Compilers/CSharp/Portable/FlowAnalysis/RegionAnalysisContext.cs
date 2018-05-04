@@ -35,10 +35,10 @@ namespace Microsoft.CodeAnalysis.CSharp
             this.FirstInRegion = firstInRegion;
             this.LastInRegion = lastInRegion;
             this.Failed =
-                boundNode == null ||
-                firstInRegion == null ||
-                lastInRegion == null ||
-                firstInRegion.Syntax.SpanStart > lastInRegion.Syntax.Span.End;
+                (boundNode == null) ||
+                (firstInRegion == null) ||
+                (lastInRegion == null) ||
+                (firstInRegion.Syntax.SpanStart > lastInRegion.Syntax.Span.End);
 
             if (!this.Failed && ReferenceEquals(firstInRegion, lastInRegion))
             {

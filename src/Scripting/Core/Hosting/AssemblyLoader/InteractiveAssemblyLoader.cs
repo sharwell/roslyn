@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
             public AssemblyIdentityAndLocation(AssemblyIdentity identity, string location)
             {
-                Debug.Assert(identity != null && location != null);
+                Debug.Assert((identity != null) && (location != null));
 
                 Identity = identity;
                 Location = location;
@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
             public LoadedAssemblyInfo(Assembly assembly, AssemblyIdentity identity, string locationOpt)
             {
-                Debug.Assert(assembly != null && identity != null);
+                Debug.Assert((assembly != null) && (identity != null));
 
                 Assembly = assembly;
                 Identity = identity;
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
                 var result = _runtimeAssemblyLoader.LoadFromPath((copy != null) ? copy.PrimaryModule.FullPath : reference);
 
-                if (_shadowCopyProvider != null && result.GlobalAssemblyCache)
+                if ((_shadowCopyProvider != null) && result.GlobalAssemblyCache)
                 {
                     _shadowCopyProvider.SuppressShadowCopy(reference);
                 }
@@ -243,7 +243,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
             lock (_referencesLock)
             {
                 LoadedAssembly loadedAssembly;
-                if (requestingAssemblyOpt != null &&
+                if ((requestingAssemblyOpt != null) &&
                     _assembliesLoadedFromLocation.TryGetValue(requestingAssemblyOpt, out loadedAssembly))
                 {
                     loadDirectoryOpt = Path.GetDirectoryName(loadedAssembly.OriginalPath);
@@ -290,7 +290,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
                         loadedAssemblyWithEqualNameAndVersionOpt = loadedInfos.FirstOrDefault(info =>
                             AssemblyIdentityComparer.SimpleNameComparer.Equals(info.Identity.Name, identity.Name) &&
-                            info.Identity.Version == identity.Version);
+                            (info.Identity.Version == identity.Version));
                     }
                 }
 
@@ -302,7 +302,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                     {
                         Guid mvid;
                         if (TryReadMvid(assemblyFilePathOpt, out mvid) &&
-                            CorLightup.Desktop.GetModuleVersionId(loadedAssemblyWithEqualNameAndVersionOpt.Assembly.ManifestModule) == mvid)
+                            (CorLightup.Desktop.GetModuleVersionId(loadedAssemblyWithEqualNameAndVersionOpt.Assembly.ManifestModule) == mvid))
                         {
                             return loadedAssemblyWithEqualNameAndVersionOpt.Assembly;
                         }
@@ -473,7 +473,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
             {
                 if (DesktopAssemblyIdentityComparer.Default.ReferenceMatchesDefinition(identity, info.Identity))
                 {
-                    if (candidate == null || candidateVersion < info.Identity.Version)
+                    if ((candidate == null) || (candidateVersion < info.Identity.Version))
                     {
                         candidate = info.Assembly;
                         candidateVersion = info.Identity.Version;
@@ -491,7 +491,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
             {
                 if (DesktopAssemblyIdentityComparer.Default.ReferenceMatchesDefinition(identity, assembly.Identity))
                 {
-                    if (candidate.Identity == null || candidate.Identity.Version < assembly.Identity.Version)
+                    if ((candidate.Identity == null) || (candidate.Identity.Version < assembly.Identity.Version))
                     {
                         candidate = assembly;
                     }

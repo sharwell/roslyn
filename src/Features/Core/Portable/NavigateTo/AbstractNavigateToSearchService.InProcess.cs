@@ -153,7 +153,7 @@ namespace Microsoft.CodeAnalysis.NavigateTo
             var result = ArrayBuilder<SearchResult>.GetInstance();
             foreach (var document in project.Documents)
             {
-                if (searchDocument != null && document != searchDocument)
+                if ((searchDocument != null) && (document != searchDocument))
                 {
                     continue;
                 }
@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.NavigateTo
 
             cancellationToken.ThrowIfCancellationRequested();
             if (nameMatcher.AddMatches(declaredSymbolInfo.Name, nameMatches) &&
-                containerMatcherOpt?.AddMatches(declaredSymbolInfo.FullyQualifiedContainerName, containerMatches) != false)
+                (containerMatcherOpt?.AddMatches(declaredSymbolInfo.FullyQualifiedContainerName, containerMatches) != false))
             {
                 result.Add(ConvertResult(
                     declaredSymbolInfo, document, nameMatches, containerMatches));

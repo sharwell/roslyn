@@ -351,7 +351,7 @@ namespace Microsoft.CodeAnalysis
             Debug.Assert(!_lazyUnifiedAssemblies.IsDefault);
 
             // lazyCorLibrary is null if the compilation is corlib
-            Debug.Assert(_lazyReferencedAssemblies.Length == 0 || _lazyCorLibraryOpt != null);
+            Debug.Assert((_lazyReferencedAssemblies.Length == 0) || (_lazyCorLibraryOpt != null));
         }
 
         [Conditional("DEBUG")]
@@ -507,7 +507,7 @@ namespace Microsoft.CodeAnalysis
 
                 if ((object)versionPattern != null)
                 {
-                    Debug.Assert(versionPattern.Build == ushort.MaxValue || versionPattern.Revision == ushort.MaxValue);
+                    Debug.Assert((versionPattern.Build == ushort.MaxValue) || (versionPattern.Revision == ushort.MaxValue));
 
                     lazyBuilder = lazyBuilder ?? ImmutableDictionary.CreateBuilder<AssemblyIdentity, AssemblyIdentity>();
 
@@ -535,21 +535,21 @@ namespace Microsoft.CodeAnalysis
         {
             // major and minor parts must match exactly
 
-            if (version.Major != candidateVersion.Major || version.Minor != candidateVersion.Minor)
+            if ((version.Major != candidateVersion.Major) || (version.Minor != candidateVersion.Minor))
             {
                 return false;
             }
 
             // build and revision parts can differ only if the corresponding source versions were auto-generated:
             var versionPattern = candidateSymbol.AssemblyVersionPattern;
-            Debug.Assert((object)versionPattern == null || versionPattern.Build == ushort.MaxValue || versionPattern.Revision == ushort.MaxValue);
+            Debug.Assert(((object)versionPattern == null) || (versionPattern.Build == ushort.MaxValue) || (versionPattern.Revision == ushort.MaxValue));
 
-            if (((object)versionPattern == null || versionPattern.Build < ushort.MaxValue) && version.Build != candidateVersion.Build)
+            if ((((object)versionPattern == null) || (versionPattern.Build < ushort.MaxValue)) && (version.Build != candidateVersion.Build))
             {
                 return false;
             }
 
-            if ((object)versionPattern == null && version.Revision != candidateVersion.Revision)
+            if (((object)versionPattern == null) && (version.Revision != candidateVersion.Revision))
             {
                 return false;
             }
@@ -574,7 +574,7 @@ namespace Microsoft.CodeAnalysis
             var visitedAssemblies = BitVector.Create(bindingResult.Length);
 
             // +1 for assembly being built
-            Debug.Assert(bindingResult.Length == aliasesOfReferencedAssembliesBuilder.Count + 1);
+            Debug.Assert(bindingResult.Length == (aliasesOfReferencedAssembliesBuilder.Count + 1));
 
             foreach (ResolvedReference reference in referenceMap)
             {
@@ -674,7 +674,7 @@ namespace Microsoft.CodeAnalysis
         public bool DeclarationsAccessibleWithoutAlias(int referencedAssemblyIndex)
         {
             var aliases = AliasesOfReferencedAssemblies[referencedAssemblyIndex];
-            return aliases.Length == 0 || aliases.IndexOf(MetadataReferenceProperties.GlobalAlias, StringComparer.Ordinal) >= 0;
+            return (aliases.Length == 0) || (aliases.IndexOf(MetadataReferenceProperties.GlobalAlias, StringComparer.Ordinal) >= 0);
         }
 
         internal override IEnumerable<KeyValuePair<AssemblyIdentity, PortableExecutableReference>> GetImplicitlyResolvedAssemblyReferences()

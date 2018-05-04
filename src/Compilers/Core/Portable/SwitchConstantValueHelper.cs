@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis
         {
             public override bool Equals(object first, object second)
             {
-                Debug.Assert(first != null && second != null);
+                Debug.Assert((first != null) && (second != null));
 
                 var firstConstant = first as ConstantValue;
                 if (firstConstant != null)

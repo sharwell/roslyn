@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
                 }
 
                 var info = this.Document.SemanticModel.GetTypeInfo(this.Expression, cancellationToken);
-                if (info.Type == null || info.Type.SpecialType == SpecialType.System_Void)
+                if ((info.Type == null) || (info.Type.SpecialType == SpecialType.System_Void))
                 {
                     return false;
                 }

@@ -290,13 +290,13 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             }
 
             int currentParamsCount = currentParameterList.Parameters.Count;
-            bool seenOptional = currentParamsCount > 0 && currentParameterList.Parameters[currentParamsCount - 1].Default != null;
+            bool seenOptional = (currentParamsCount > 0) && (currentParameterList.Parameters[currentParamsCount - 1].Default != null);
             bool isFirstParam = currentParamsCount == 0;
 
             var parameterNodesAndTokens = currentParameterList.Parameters.GetWithSeparators().ToList();
             foreach (var parameter in parameters)
             {
-                if (parameterNodesAndTokens.Count > 0 && parameterNodesAndTokens.Last().Kind() != SyntaxKind.CommaToken)
+                if ((parameterNodesAndTokens.Count > 0) && (parameterNodesAndTokens.Last().Kind() != SyntaxKind.CommaToken))
                 {
                     parameterNodesAndTokens.Add(SyntaxFactory.Token(SyntaxKind.CommaToken));
                 }
@@ -304,7 +304,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 var parameterSyntax = ParameterGenerator.GetParameter(parameter, options, isExplicit: false, isFirstParam: isFirstParam, seenOptional: seenOptional);
                 parameterNodesAndTokens.Add(parameterSyntax);
                 isFirstParam = false;
-                seenOptional = seenOptional || parameterSyntax.Default != null;
+                seenOptional = seenOptional || (parameterSyntax.Default != null);
             }
 
             var finalParameterList = currentParameterList.WithParameters(SyntaxFactory.SeparatedList<ParameterSyntax>(parameterNodesAndTokens));

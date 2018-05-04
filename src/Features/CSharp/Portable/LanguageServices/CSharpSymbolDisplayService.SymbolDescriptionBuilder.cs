@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LanguageServices
             private async Task<ImmutableArray<SymbolDisplayPart>> GetInitializerSourcePartsAsync(
                 EqualsValueClauseSyntax equalsValue)
             {
-                if (equalsValue != null && equalsValue.Value != null)
+                if ((equalsValue != null) && (equalsValue.Value != null))
                 {
                     var semanticModel = GetSemanticModel(equalsValue.SyntaxTree);
                     if (semanticModel != null)
@@ -190,7 +190,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LanguageServices
                 if (symbol is IMethodSymbol method && method.ContainingSymbol.IsKind(SymbolKind.Method))
                 {
                     var syntax = method.DeclaringSyntaxReferences.FirstOrDefault()?.GetSyntax();
-                    if (syntax.IsKind(SyntaxKind.LocalFunctionStatement) || syntax is AnonymousFunctionExpressionSyntax)
+                    if (syntax.IsKind(SyntaxKind.LocalFunctionStatement) || (syntax is AnonymousFunctionExpressionSyntax))
                     {
                         AddCaptures(syntax);
                     }

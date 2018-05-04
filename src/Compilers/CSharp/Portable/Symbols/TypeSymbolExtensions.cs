@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             foreach (NamedTypeSymbol @interface in subType.AllInterfacesWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics))
             {
-                if (@interface.IsInterface && @interface == superInterface)
+                if (@interface.IsInterface && (@interface == superInterface))
                 {
                     return true;
                 }
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     return TypedConstantKind.Error;
 
                 default:
-                    if (kind == TypedConstantKind.Array || kind == TypedConstantKind.Enum)
+                    if ((kind == TypedConstantKind.Array) || (kind == TypedConstantKind.Enum))
                     {
                         // Array/Enum type with valid element/underlying type
                         return kind;
@@ -234,7 +234,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public static bool IsInterfaceType(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.Kind == SymbolKind.NamedType && ((NamedTypeSymbol)type).IsInterface;
+            return (type.Kind == SymbolKind.NamedType) && ((NamedTypeSymbol)type).IsInterface;
         }
 
         public static bool IsClassType(this TypeSymbol type)
@@ -280,7 +280,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public static bool IsSZArray(this TypeSymbol type)
         {
             Debug.Assert((object)type != null);
-            return type.TypeKind == TypeKind.Array && ((ArrayTypeSymbol)type).IsSZArray;
+            return (type.TypeKind == TypeKind.Array) && ((ArrayTypeSymbol)type).IsSZArray;
         }
 
         // If the type is a delegate type, it returns it. If the type is an
@@ -305,10 +305,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // TODO: there must be a better way!
             var type = _type.OriginalDefinition as NamedTypeSymbol;
             return
-                (object)type != null &&
-                type.Arity == 1 &&
+                ((object)type != null) &&
+                (type.Arity == 1) &&
                 type.MangleName &&
-                type.Name == "Expression" &&
+                (type.Name == "Expression") &&
                 CheckFullName(type.ContainingSymbol, s_expressionsNamespaceName);
         }
 
@@ -329,11 +329,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             SpecialType st = t.SpecialType;
 
-            if (st == SpecialType.System_Collections_Generic_IList_T ||
-                st == SpecialType.System_Collections_Generic_ICollection_T ||
-                st == SpecialType.System_Collections_Generic_IEnumerable_T ||
-                st == SpecialType.System_Collections_Generic_IReadOnlyList_T ||
-                st == SpecialType.System_Collections_Generic_IReadOnlyCollection_T)
+            if ((st == SpecialType.System_Collections_Generic_IList_T) ||
+                (st == SpecialType.System_Collections_Generic_ICollection_T) ||
+                (st == SpecialType.System_Collections_Generic_IEnumerable_T) ||
+                (st == SpecialType.System_Collections_Generic_IReadOnlyList_T) ||
+                (st == SpecialType.System_Collections_Generic_IReadOnlyCollection_T))
             {
                 return true;
             }
@@ -347,7 +347,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             for (int i = 0; i < names.Length; i++)
             {
-                if ((object)symbol == null || symbol.Name != names[i]) return false;
+                if (((object)symbol == null) || (symbol.Name != names[i])) return false;
                 symbol = symbol.ContainingSymbol;
             }
 
@@ -627,7 +627,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         {
                             // If s2 is private or internal, and within the same assembly as s1,
                             // then this is at least as restrictive as s1's internal.
-                            if ((acc2 == Accessibility.Private || acc2 == Accessibility.Internal || acc2 == Accessibility.ProtectedAndInternal) && s2.ContainingAssembly.HasInternalAccessTo(s1.ContainingAssembly))
+                            if (((acc2 == Accessibility.Private) || (acc2 == Accessibility.Internal) || (acc2 == Accessibility.ProtectedAndInternal)) && s2.ContainingAssembly.HasInternalAccessTo(s1.ContainingAssembly))
                             {
                                 return true;
                             }
@@ -639,7 +639,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         // Since s1 is private protected, s2 must pass the test for being both more restrictive than internal and more restrictive than protected.
                         // We first do the "internal" test (copied from above), then if it passes we continue with the "protected" test.
 
-                        if ((acc2 == Accessibility.Private || acc2 == Accessibility.Internal || acc2 == Accessibility.ProtectedAndInternal) && s2.ContainingAssembly.HasInternalAccessTo(s1.ContainingAssembly))
+                        if (((acc2 == Accessibility.Private) || (acc2 == Accessibility.Internal) || (acc2 == Accessibility.ProtectedAndInternal)) && s2.ContainingAssembly.HasInternalAccessTo(s1.ContainingAssembly))
                         {
                             // passed the internal test; now do the test for the protected case
                             goto case Accessibility.Protected;
@@ -667,12 +667,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                                     }
                                 }
                             }
-                            else if (acc2 == Accessibility.Protected || acc2 == Accessibility.ProtectedAndInternal)
+                            else if ((acc2 == Accessibility.Protected) || (acc2 == Accessibility.ProtectedAndInternal))
                             {
                                 // if s2 is protected, and it's parent is a subclass (or the same as) s1's parent
                                 // then this is at least as restrictive as s1's protected
                                 var parent2 = s2.ContainingType;
-                                if ((object)parent2 != null && parent1.IsAccessibleViaInheritance(parent2, ref useSiteDiagnostics))
+                                if (((object)parent2 != null) && parent1.IsAccessibleViaInheritance(parent2, ref useSiteDiagnostics))
                                 {
                                     return true;
                                 }
@@ -771,7 +771,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             var parent1OriginalDefinition = parent1.OriginalDefinition;
                             for (var parent2 = s2.ContainingType; (object)parent2 != null; parent2 = parent2.ContainingType)
                             {
-                                if (ReferenceEquals(parent2.OriginalDefinition, parent1OriginalDefinition) || parent1OriginalDefinition.TypeKind == TypeKind.Submission && parent2.TypeKind == TypeKind.Submission)
+                                if (ReferenceEquals(parent2.OriginalDefinition, parent1OriginalDefinition) || ((parent1OriginalDefinition.TypeKind == TypeKind.Submission) && (parent2.TypeKind == TypeKind.Submission)))
                                 {
                                     return true;
                                 }
@@ -791,7 +791,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public static bool IsUnboundGenericType(this TypeSymbol type)
         {
             var namedType = type as NamedTypeSymbol;
-            return (object)namedType != null && namedType.IsUnboundGenericType;
+            return ((object)namedType != null) && namedType.IsUnboundGenericType;
         }
 
         public static bool IsTopLevelType(this NamedTypeSymbol type)
@@ -812,7 +812,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         }
 
         private static readonly Func<TypeSymbol, TypeParameterSymbol, bool, bool> s_containsTypeParameterPredicate =
-            (type, parameter, unused) => type.TypeKind == TypeKind.TypeParameter && ((object)parameter == null || type == parameter);
+            (type, parameter, unused) => (type.TypeKind == TypeKind.TypeParameter) && (((object)parameter == null) || (type == parameter));
 
         public static bool ContainsTypeParameter(this TypeSymbol type, MethodSymbol parameterContainer)
         {
@@ -823,7 +823,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         }
 
         private static readonly Func<TypeSymbol, Symbol, bool, bool> s_isTypeParameterWithSpecificContainerPredicate =
-             (type, parameterContainer, unused) => type.TypeKind == TypeKind.TypeParameter && (object)type.ContainingSymbol == (object)parameterContainer;
+             (type, parameterContainer, unused) => (type.TypeKind == TypeKind.TypeParameter) && ((object)type.ContainingSymbol == (object)parameterContainer);
 
         public static bool ContainsTypeParameters(this TypeSymbol type, HashSet<TypeParameterSymbol> parameters)
         {
@@ -832,7 +832,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         }
 
         private static readonly Func<TypeSymbol, HashSet<TypeParameterSymbol>, bool, bool> s_containsTypeParametersPredicate =
-            (type, parameters, unused) => type.TypeKind == TypeKind.TypeParameter && parameters.Contains((TypeParameterSymbol)type);
+            (type, parameters, unused) => (type.TypeKind == TypeKind.TypeParameter) && parameters.Contains((TypeParameterSymbol)type);
 
         /// <summary>
         /// Return true if the type contains any dynamic type reference.
@@ -875,7 +875,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal static TypeSymbol GetNonErrorGuess(this TypeSymbol type)
         {
             var result = ExtendedErrorTypeSymbol.ExtractNonErrorType(type);
-            Debug.Assert((object)result == null || !result.IsErrorType());
+            Debug.Assert(((object)result == null) || !result.IsErrorType());
             return result;
         }
 
@@ -971,7 +971,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public static bool IsPartial(this TypeSymbol type)
         {
             var nt = type as SourceNamedTypeSymbol;
-            return (object)nt != null && nt.IsPartial;
+            return ((object)nt != null) && nt.IsPartial;
         }
 
         public static bool IsPointerType(this TypeSymbol type)
@@ -1050,7 +1050,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal static bool IsVoidPointer(this TypeSymbol type)
         {
-            return type.IsPointerType() && ((PointerTypeSymbol)type).PointedAtType.SpecialType == SpecialType.System_Void;
+            return type.IsPointerType() && (((PointerTypeSymbol)type).PointedAtType.SpecialType == SpecialType.System_Void);
         }
 
         /// <summary>
@@ -1112,7 +1112,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if (type.SpecialType == SpecialType.System_Object)
             {
                 AssemblySymbol assembly = containingType.ContainingAssembly;
-                if ((object)assembly != null &&
+                if (((object)assembly != null) &&
                     assembly.IsLinked &&
                     containingType.IsComImport)
                 {
@@ -1127,7 +1127,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         internal static bool IsVerifierReference(this TypeSymbol type)
         {
-            return type.IsReferenceType && type.TypeKind != TypeKind.TypeParameter;
+            return type.IsReferenceType && (type.TypeKind != TypeKind.TypeParameter);
         }
 
         /// <summary>
@@ -1135,7 +1135,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         internal static bool IsVerifierValue(this TypeSymbol type)
         {
-            return type.IsValueType && type.TypeKind != TypeKind.TypeParameter;
+            return type.IsValueType && (type.TypeKind != TypeKind.TypeParameter);
         }
 
         internal static void AddUseSiteDiagnostics(
@@ -1306,7 +1306,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal static bool IsNonGenericTaskType(this TypeSymbol type, CSharpCompilation compilation)
         {
             var namedType = type as NamedTypeSymbol;
-            if ((object)namedType == null || namedType.Arity != 0)
+            if (((object)namedType == null) || (namedType.Arity != 0))
             {
                 return false;
             }
@@ -1325,7 +1325,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal static bool IsGenericTaskType(this TypeSymbol type, CSharpCompilation compilation)
         {
             var namedType = type as NamedTypeSymbol;
-            if ((object)namedType == null || namedType.Arity != 1)
+            if (((object)namedType == null) || (namedType.Arity != 1))
             {
                 return false;
             }
@@ -1358,8 +1358,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 foreach (var attr in type.GetAttributes())
                 {
                     if (attr.IsTargetAttribute(type, AttributeDescription.AsyncMethodBuilderAttribute)
-                        && attr.CommonConstructorArguments.Length == 1
-                        && attr.CommonConstructorArguments[0].Kind == TypedConstantKind.Type)
+                        && (attr.CommonConstructorArguments.Length == 1)
+                        && (attr.CommonConstructorArguments[0].Kind == TypedConstantKind.Type))
                     {
                         builderArgument = attr.CommonConstructorArguments[0].Value;
                         return true;
@@ -1534,7 +1534,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private static bool IsWellKnownInteropServicesTopLevelType(this ITypeSymbol typeSymbol, string name)
         {
-            if (typeSymbol.Name != name || typeSymbol.ContainingType != null)
+            if ((typeSymbol.Name != name) || (typeSymbol.ContainingType != null))
             {
                 return false;
             }
@@ -1559,7 +1559,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             var globalNamespace = systemNamespace.ContainingNamespace;
 
-            return globalNamespace != null && globalNamespace.IsGlobalNamespace;
+            return (globalNamespace != null) && globalNamespace.IsGlobalNamespace;
         }
     }
 }

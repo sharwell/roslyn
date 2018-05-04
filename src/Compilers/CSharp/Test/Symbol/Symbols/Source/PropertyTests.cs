@@ -598,7 +598,7 @@ class C : B<string>
             Assert.NotNull(method);
             Assert.Equal(accessor, method);
 
-            Assert.True(accessor.MethodKind == MethodKind.PropertyGet || accessor.MethodKind == MethodKind.PropertySet,
+            Assert.True((accessor.MethodKind == MethodKind.PropertyGet) || (accessor.MethodKind == MethodKind.PropertySet),
                 "Accessor kind: " + accessor.MethodKind.ToString());
             Assert.Equal(accessor.AssociatedSymbol, property);
         }
@@ -1866,9 +1866,9 @@ class Program
                 Assert.True(getters.Any(getter => getter.Parameters[0].Type.SpecialType == SpecialType.System_Int32));
                 Assert.True(getters.Any(getter => getter.Parameters[0].Type.SpecialType == SpecialType.System_String));
                 Assert.True(getters.Any(getter =>
-                    getter.Parameters.Length == 2 &&
-                    getter.Parameters[0].Type.SpecialType == SpecialType.System_Int32 &&
-                    getter.Parameters[1].Type.SpecialType == SpecialType.System_String));
+                    (getter.Parameters.Length == 2) &&
+                    (getter.Parameters[0].Type.SpecialType == SpecialType.System_Int32) &&
+                    (getter.Parameters[1].Type.SpecialType == SpecialType.System_String)));
             };
             // TODO: it would be nice to validate the emitted symbols, but CompileAndVerify currently has a limitation
             // where it won't pick up the referenced assemblies from the compilation when it creates the ModuleSymbol

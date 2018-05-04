@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo.Pr
 
                 // It's a new list of items.  Either create the editor session if this is the first time, or ask the
                 // editor session that we already have to recalculate.
-                if (_editorSessionOpt == null || _editorSessionOpt.IsDismissed)
+                if ((_editorSessionOpt == null) || _editorSessionOpt.IsDismissed)
                 {
                     // We're tracking the caret.  Don't have the editor do it.
                     var triggerPoint = triggerSpan.GetStartTrackingPoint(PointTrackingMode.Negative);

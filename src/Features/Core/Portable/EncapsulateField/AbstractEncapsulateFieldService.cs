@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.EncapsulateField
         public async Task<EncapsulateFieldResult> EncapsulateFieldAsync(Document document, TextSpan span, bool useDefaultBehavior, CancellationToken cancellationToken)
         {
             var fields = await GetFieldsAsync(document, span, cancellationToken).ConfigureAwait(false);
-            if (fields == null || !fields.Any())
+            if ((fields == null) || !fields.Any())
             {
                 return null;
             }
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.EncapsulateField
             {
                 // Inside the constructor we want to rename references the field to the final field name.
                 var constructorSyntaxes = GetConstructorNodes(field.ContainingType).ToSet();
-                if (finalFieldName != field.Name && constructorSyntaxes.Count > 0)
+                if ((finalFieldName != field.Name) && (constructorSyntaxes.Count > 0))
                 {
                     solution = await Renamer.RenameSymbolAsync(solution,
                         SymbolAndProjectId.Create(field, projectId), 
@@ -322,7 +322,7 @@ namespace Microsoft.CodeAnalysis.EncapsulateField
         protected Accessibility ComputeAccessibility(Accessibility accessibility, ITypeSymbol type)
         {
             var computedAccessibility = accessibility;
-            if (accessibility == Accessibility.NotApplicable || accessibility == Accessibility.Private)
+            if ((accessibility == Accessibility.NotApplicable) || (accessibility == Accessibility.Private))
             {
                 computedAccessibility = Accessibility.Public;
             }
@@ -376,7 +376,7 @@ namespace Microsoft.CodeAnalysis.EncapsulateField
             var baseName = fieldName.TrimStart(s_underscoreCharArray);
 
             // Trim leading "m_"
-            if (baseName.Length >= 2 && baseName[0] == 'm' && baseName[1] == '_')
+            if ((baseName.Length >= 2) && (baseName[0] == 'm') && (baseName[1] == '_'))
             {
                 baseName = baseName.Substring(2);
             }

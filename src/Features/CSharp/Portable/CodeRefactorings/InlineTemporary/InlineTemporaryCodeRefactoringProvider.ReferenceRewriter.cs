@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
                 }
 
                 var symbol = _semanticModel.GetSymbolInfo(name).Symbol;
-                return symbol != null
+                return (symbol != null)
                     && symbol.Equals(_localSymbol);
             }
 
@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
                 var expression = node.Expression;
                 var identifier = expression as IdentifierNameSyntax;
 
-                if (nameEquals != null || identifier == null || !IsReference(identifier) || HasConflict(identifier, _variableDeclarator))
+                if ((nameEquals != null) || (identifier == null) || !IsReference(identifier) || HasConflict(identifier, _variableDeclarator))
                 {
                     return base.VisitAnonymousObjectMemberDeclarator(node);
                 }

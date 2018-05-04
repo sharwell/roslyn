@@ -59,11 +59,11 @@ namespace Microsoft.CodeAnalysis.Editor.Structure
         public bool Equals(RoslynBlockTag tag)
         {
             return _state.Equals(tag._state) &&
-                   IsCollapsible == tag.IsCollapsible &&
-                   Level == tag.Level &&
-                   Type == tag.Type &&
-                   StatementSpan == tag.StatementSpan &&
-                   Span == tag.Span;
+                   (IsCollapsible == tag.IsCollapsible) &&
+                   (Level == tag.Level) &&
+                   (Type == tag.Type) &&
+                   (StatementSpan == tag.StatementSpan) &&
+                   (Span == tag.Span);
         }
 
         public override int GetHashCode()

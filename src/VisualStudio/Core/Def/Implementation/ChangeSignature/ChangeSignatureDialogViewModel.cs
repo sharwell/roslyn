@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
 
                 var index = SelectedIndex.Value;
 
-                if (index == 0 && _thisParameter != null)
+                if ((index == 0) && (_thisParameter != null))
                 {
                     return false;
                 }
@@ -113,7 +113,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
 
                 var index = SelectedIndex.Value;
 
-                if (index == 0 && _thisParameter != null)
+                if ((index == 0) && (_thisParameter != null))
                 {
                     return false;
                 }
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
                 _originalParameterConfiguration.ThisParameter,
                 _parameterGroup1.Where(p => !p.IsRemoved).Select(p => p.ParameterSymbol).ToList(),
                 _parameterGroup2.Where(p => !p.IsRemoved).Select(p => p.ParameterSymbol).ToList(),
-                (_paramsParameter == null || _paramsParameter.IsRemoved) ? null : _paramsParameter.ParameterSymbol);
+                ((_paramsParameter == null) || _paramsParameter.IsRemoved) ? null : _paramsParameter.ParameterSymbol);
         }
 
         private static SymbolDisplayFormat s_symbolDeclarationDisplayFormat = new SymbolDisplayFormat(
@@ -269,7 +269,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
 
                 var index = SelectedIndex.Value;
                 index = _thisParameter == null ? index : index - 1;
-                if (index <= 0 || index == _parameterGroup1.Count || index >= _parameterGroup1.Count + _parameterGroup2.Count)
+                if ((index <= 0) || (index == _parameterGroup1.Count) || (index >= (_parameterGroup1.Count + _parameterGroup2.Count)))
                 {
                     return false;
                 }
@@ -289,7 +289,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
 
                 var index = SelectedIndex.Value;
                 index = _thisParameter == null ? index : index - 1;
-                if (index < 0 || index == _parameterGroup1.Count - 1 || index >= _parameterGroup1.Count + _parameterGroup2.Count - 1)
+                if ((index < 0) || (index == (_parameterGroup1.Count - 1)) || (index >= ((_parameterGroup1.Count + _parameterGroup2.Count - 1))))
                 {
                     return false;
                 }
@@ -344,7 +344,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
         {
             var index = SelectedIndex;
             index = _thisParameter == null ? index : index - 1;
-            return index < _parameterGroup1.Count ? _parameterGroup1 : index < _parameterGroup1.Count + _parameterGroup2.Count ? _parameterGroup2 : SpecializedCollections.EmptyList<ParameterViewModel>();
+            return index < _parameterGroup1.Count ? _parameterGroup1 : index < (_parameterGroup1.Count + _parameterGroup2.Count) ? _parameterGroup2 : SpecializedCollections.EmptyList<ParameterViewModel>();
         }
 
         public bool IsOkButtonEnabled
@@ -479,8 +479,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
                         return "params";
                     }
 
-                    if (_changeSignatureDialogViewModel._thisParameter != null &&
-                        _parameter == _changeSignatureDialogViewModel._thisParameter._parameter)
+                    if ((_changeSignatureDialogViewModel._thisParameter != null) &&
+                        (_parameter == _changeSignatureDialogViewModel._thisParameter._parameter))
                     {
                         return "this";
                     }
@@ -533,14 +533,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
                         return true;
                     }
 
-                    if (this == _changeSignatureDialogViewModel._parameterGroup1.LastOrDefault() &&
-                        (_changeSignatureDialogViewModel._parameterGroup2.Any() || _changeSignatureDialogViewModel._paramsParameter != null))
+                    if ((this == _changeSignatureDialogViewModel._parameterGroup1.LastOrDefault()) &&
+                        (_changeSignatureDialogViewModel._parameterGroup2.Any() || (_changeSignatureDialogViewModel._paramsParameter != null)))
                     {
                         return true;
                     }
 
-                    if (this == _changeSignatureDialogViewModel._parameterGroup2.LastOrDefault() &&
-                        _changeSignatureDialogViewModel._paramsParameter != null)
+                    if ((this == _changeSignatureDialogViewModel._parameterGroup2.LastOrDefault()) &&
+                        (_changeSignatureDialogViewModel._paramsParameter != null))
                     {
                         return true;
                     }

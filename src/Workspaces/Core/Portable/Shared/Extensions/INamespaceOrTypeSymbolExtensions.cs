@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 var name1 = names1[i];
                 var name2 = names2[i];
 
-                if (i == 0 && placeSystemNamespaceFirst)
+                if ((i == 0) && placeSystemNamespaceFirst)
                 {
                     var name1IsSystem = name1 == nameof(System);
                     var name2IsSystem = name2 == nameof(System);
@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         private static void GetNameParts(INamespaceOrTypeSymbol namespaceOrTypeSymbol, List<string> result)
         {
-            if (namespaceOrTypeSymbol == null || (namespaceOrTypeSymbol.IsNamespace && ((INamespaceSymbol)namespaceOrTypeSymbol).IsGlobalNamespace))
+            if ((namespaceOrTypeSymbol == null) || (namespaceOrTypeSymbol.IsNamespace && ((INamespaceSymbol)namespaceOrTypeSymbol).IsGlobalNamespace))
             {
                 return;
             }

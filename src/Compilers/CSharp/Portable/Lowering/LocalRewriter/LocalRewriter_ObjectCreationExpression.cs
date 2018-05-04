@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var loweredArguments = VisitList(node.Arguments);
             var constructorInvocation = _dynamicFactory.MakeDynamicConstructorInvocation(node.Syntax, node.Type, loweredArguments, node.ArgumentNamesOpt, node.ArgumentRefKindsOpt).ToExpression();
 
-            if (node.InitializerExpressionOpt == null || node.InitializerExpressionOpt.HasErrors)
+            if ((node.InitializerExpressionOpt == null) || node.InitializerExpressionOpt.HasErrors)
             {
                 return constructorInvocation;
             }
@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 rewrittenObjectCreation = MakeConversionNode(rewrittenObjectCreation, node.Type, false, false);
             }
 
-            if (node.InitializerExpressionOpt == null || node.InitializerExpressionOpt.HasErrors)
+            if ((node.InitializerExpressionOpt == null) || node.InitializerExpressionOpt.HasErrors)
             {
                 return rewrittenObjectCreation;
             }
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression MakeObjectCreationInitializerForExpressionTree(BoundExpression initializerExpressionOpt)
         {
-            if (initializerExpressionOpt != null && !initializerExpressionOpt.HasErrors)
+            if ((initializerExpressionOpt != null) && !initializerExpressionOpt.HasErrors)
             {
                 // We may need to MakeArguments for collection initializer add method call if the method has a param array parameter.
                 var rewrittenInitializers = MakeObjectOrCollectionInitializersForExpressionTree(initializerExpressionOpt);
@@ -111,7 +111,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeSymbol type)
         {
             Debug.Assert(!_inExpressionLambda);
-            Debug.Assert(initializerExpression != null && !initializerExpression.HasErrors);
+            Debug.Assert((initializerExpression != null) && !initializerExpression.HasErrors);
 
             // Create a temp and assign it with the object creation expression.
             BoundAssignmentOperator boundAssignmentToTemp;
@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var rewrittenNewT = MakeNewT(node.Syntax, (TypeParameterSymbol)node.Type);
-            if (node.InitializerExpressionOpt == null || node.InitializerExpressionOpt.HasErrors)
+            if ((node.InitializerExpressionOpt == null) || node.InitializerExpressionOpt.HasErrors)
             {
                 return rewrittenNewT;
             }
@@ -269,7 +269,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             _factory.Syntax = oldSyntax;
 
-            if (node.InitializerExpressionOpt == null || node.InitializerExpressionOpt.HasErrors)
+            if ((node.InitializerExpressionOpt == null) || node.InitializerExpressionOpt.HasErrors)
             {
                 return rewrittenObjectCreation;
             }

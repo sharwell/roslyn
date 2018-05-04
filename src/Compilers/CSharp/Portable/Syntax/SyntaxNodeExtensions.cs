@@ -63,17 +63,17 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             SyntaxKind kind;
             return syntax.IsAnonymousFunction() ||
-                syntax is StatementSyntax ||
-                (kind = syntax.Kind()) == SyntaxKind.CatchClause ||
-                kind == SyntaxKind.CatchFilterClause ||
-                kind == SyntaxKind.SwitchSection ||
-                kind == SyntaxKind.EqualsValueClause ||
-                kind == SyntaxKind.Attribute ||
-                kind == SyntaxKind.ArgumentList ||
-                kind == SyntaxKind.BaseConstructorInitializer ||
-                kind == SyntaxKind.ThisConstructorInitializer ||
-                kind == SyntaxKind.ConstructorDeclaration ||
-                kind == SyntaxKind.ArrowExpressionClause ||
+                (syntax is StatementSyntax) ||
+                ((kind = syntax.Kind()) == SyntaxKind.CatchClause) ||
+                (kind == SyntaxKind.CatchFilterClause) ||
+                (kind == SyntaxKind.SwitchSection) ||
+                (kind == SyntaxKind.EqualsValueClause) ||
+                (kind == SyntaxKind.Attribute) ||
+                (kind == SyntaxKind.ArgumentList) ||
+                (kind == SyntaxKind.BaseConstructorInitializer) ||
+                (kind == SyntaxKind.ThisConstructorInitializer) ||
+                (kind == SyntaxKind.ConstructorDeclaration) ||
+                (kind == SyntaxKind.ArrowExpressionClause) ||
                 IsValidScopeDesignator(syntax as ExpressionSyntax);
         }
 
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 case SyntaxKind.ForStatement:
                     var forStmt = (ForStatementSyntax)parent;
-                    return forStmt.Condition == expression || forStmt.Incrementors.FirstOrDefault() == expression;
+                    return (forStmt.Condition == expression) || (forStmt.Incrementors.FirstOrDefault() == expression);
 
                 case SyntaxKind.ForEachStatement:
                 case SyntaxKind.ForEachVariableStatement:
@@ -290,7 +290,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var invocation = (InvocationExpressionSyntax)expression;
                 var invocationTarget = invocation.Expression;
 
-                return invocationTarget.Kind() == SyntaxKind.IdentifierName &&
+                return (invocationTarget.Kind() == SyntaxKind.IdentifierName) &&
                     ((IdentifierNameSyntax)invocationTarget).IsVar;
             }
 

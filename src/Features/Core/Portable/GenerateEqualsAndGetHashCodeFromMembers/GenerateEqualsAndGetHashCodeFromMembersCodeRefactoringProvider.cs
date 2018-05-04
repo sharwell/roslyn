@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.GenerateEqualsAndGetHashCodeFromMembers
 
             // Only supported on classes/structs.
             var containingType = GetEnclosingNamedType(semanticModel, root, textSpan.Start, cancellationToken);
-            if (containingType?.TypeKind != TypeKind.Class && containingType?.TypeKind != TypeKind.Struct)
+            if ((containingType?.TypeKind != TypeKind.Class) && (containingType?.TypeKind != TypeKind.Struct))
             {
                 return;
             }
@@ -148,8 +148,8 @@ namespace Microsoft.CodeAnalysis.GenerateEqualsAndGetHashCodeFromMembers
         private bool HasOperator(INamedTypeSymbol containingType, string operatorName)
             => containingType.GetMembers(operatorName)
                              .OfType<IMethodSymbol>()
-                             .Any(m => m.MethodKind == MethodKind.UserDefinedOperator &&
-                                       m.Parameters.Length == 2 &&
+                             .Any(m => (m.MethodKind == MethodKind.UserDefinedOperator) &&
+                                       (m.Parameters.Length == 2) &&
                                        containingType.Equals(m.Parameters[0].Type) &&
                                        containingType.Equals(m.Parameters[1].Type));
 
@@ -157,11 +157,11 @@ namespace Microsoft.CodeAnalysis.GenerateEqualsAndGetHashCodeFromMembers
         {
             hasEquals = containingType.GetMembers(EqualsName)
                                       .OfType<IMethodSymbol>()
-                                      .Any(m => m.Parameters.Length == 1 && !m.IsStatic);
+                                      .Any(m => (m.Parameters.Length == 1) && !m.IsStatic);
 
             hasGetHashCode = containingType.GetMembers(GetHashCodeName)
                                            .OfType<IMethodSymbol>()
-                                           .Any(m => m.Parameters.Length == 0 && !m.IsStatic);
+                                           .Any(m => (m.Parameters.Length == 0) && !m.IsStatic);
         }
 
         public async Task<ImmutableArray<CodeAction>> GenerateEqualsAndGetHashCodeFromMembersAsync(
@@ -172,10 +172,10 @@ namespace Microsoft.CodeAnalysis.GenerateEqualsAndGetHashCodeFromMembers
             using (Logger.LogBlock(FunctionId.Refactoring_GenerateFromMembers_GenerateEqualsAndGetHashCode, cancellationToken))
             {
                 var info = await this.GetSelectedMemberInfoAsync(document, textSpan, cancellationToken).ConfigureAwait(false);
-                if (info != null &&
+                if ((info != null) &&
                     info.SelectedMembers.All(IsReadableInstanceFieldOrProperty))
                 {
-                    if (info.ContainingType != null && info.ContainingType.TypeKind != TypeKind.Interface)
+                    if ((info.ContainingType != null) && (info.ContainingType.TypeKind != TypeKind.Interface))
                     {
                         GetExistingMemberInfo(
                             info.ContainingType, out var hasEquals, out var hasGetHashCode);

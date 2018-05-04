@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.RemoveUnnecessaryImports
             {
                 var unnecessaryImports = await GetCommonUnnecessaryImportsOfAllContextAsync(
                     document, predicate, cancellationToken).ConfigureAwait(false);
-                if (unnecessaryImports == null || unnecessaryImports.Any(import => import.OverlapsHiddenPosition(cancellationToken)))
+                if ((unnecessaryImports == null) || unnecessaryImports.Any(import => import.OverlapsHiddenPosition(cancellationToken)))
                 {
                     return document;
                 }

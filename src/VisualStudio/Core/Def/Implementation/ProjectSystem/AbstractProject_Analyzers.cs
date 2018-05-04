@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 ruleSetFileFullPath = Path.GetFullPath(ruleSetFileFullPath);
             }
 
-            if (this.RuleSetFile != null &&
+            if ((this.RuleSetFile != null) &&
                 this.RuleSetFile.FilePath.Equals(ruleSetFileFullPath, StringComparison.OrdinalIgnoreCase))
             {
                 return;

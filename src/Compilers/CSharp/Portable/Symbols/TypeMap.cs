@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             MethodSymbol stopAt = null)
         {
             Debug.Assert(oldOwner.ConstructedFrom == oldOwner);
-            Debug.Assert(stopAt == null || stopAt.ConstructedFrom == stopAt);
+            Debug.Assert((stopAt == null) || (stopAt.ConstructedFrom == stopAt));
 
             // Build the array up backwards, then reverse it.
             // The following example goes through the do-loop in order M3, M2, M1
@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // That is, stopAt's type parameters are excluded - the parameters are in the range (stopAt, oldOwner]
             // A null stopAt means "include everything"
             var parameters = ArrayBuilder<TypeParameterSymbol>.GetInstance();
-            while (oldOwner != null && oldOwner != stopAt)
+            while ((oldOwner != null) && (oldOwner != stopAt))
             {
                 var currentParameters = oldOwner.OriginalDefinition.TypeParameters;
 
@@ -168,9 +168,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // Alternately, we were inside a field initializer, in which case we were to stop at the constructor,
             // but never made it that far because we encountered the field in the ContainingSymbol chain.
             Debug.Assert(
-                stopAt == oldOwner ||
-                stopAt?.MethodKind == MethodKind.StaticConstructor ||
-                stopAt?.MethodKind == MethodKind.Constructor);
+                (stopAt == oldOwner) ||
+                (stopAt?.MethodKind == MethodKind.StaticConstructor) ||
+                (stopAt?.MethodKind == MethodKind.Constructor));
 
             oldTypeParameters = parameters.ToImmutableAndFree();
             return WithAlphaRename(oldTypeParameters, newOwner, out newTypeParameters);

@@ -9,7 +9,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         internal static bool DetermineIfSpaceOptionIsSet(string value, SpacingWithinParenthesesOption parenthesesSpacingOption)
             => (from v in value.Split(',').Select(v => v.Trim())
                 let option = ConvertToSpacingOption(v)
-                where option.HasValue && option.Value == parenthesesSpacingOption
+                where option.HasValue && (option.Value == parenthesesSpacingOption)
                 select option)
                 .Any();
 
@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
             return (from v in values
                     let option = ConvertToNewLineOption(v)
-                    where option.HasValue && option.Value == optionName
+                    where option.HasValue && (option.Value == optionName)
                     select option)
                     .Any();
         }

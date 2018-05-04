@@ -327,7 +327,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
         private bool GeneratingEnum(IEnumerable<ISymbol> members)
         {
             var field = members.OfType<IFieldSymbol>().FirstOrDefault();
-            return field != null && field.ContainingType.IsEnumType();
+            return (field != null) && field.ContainingType.IsEnumType();
         }
 
         protected abstract IComparer<SyntaxNode> GetMemberComparer();
@@ -475,7 +475,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             positionOfRemovedNode = attributeList.FullSpan.Start;
             var leading = attributeList.GetLeadingTrivia();
             var trailing = attributeList.GetTrailingTrivia();
-            if (trailing.Count >= 1 && isEndOfLineTrivia(trailing.Last()))
+            if ((trailing.Count >= 1) && isEndOfLineTrivia(trailing.Last()))
             {
                 // Remove redundant trailing trivia as we are removing the entire attribute list.
                 triviaOfRemovedNode = leading;

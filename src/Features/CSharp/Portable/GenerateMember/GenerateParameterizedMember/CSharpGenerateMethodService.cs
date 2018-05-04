@@ -51,13 +51,13 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateMethod
             var methodDeclaration = (MethodDeclarationSyntax)node;
             identifierToken = methodDeclaration.Identifier;
 
-            if (methodDeclaration.ExplicitInterfaceSpecifier != null &&
+            if ((methodDeclaration.ExplicitInterfaceSpecifier != null) &&
                 !methodDeclaration.ParameterList.OpenParenToken.IsMissing &&
                 !methodDeclaration.ParameterList.CloseParenToken.IsMissing)
             {
                 var semanticModel = document.SemanticModel;
                 methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken) as IMethodSymbol;
-                if (methodSymbol != null && !methodSymbol.ExplicitInterfaceImplementations.Any())
+                if ((methodSymbol != null) && !methodSymbol.ExplicitInterfaceImplementations.Any())
                 {
                     var semanticInfo = semanticModel.GetTypeInfo(methodDeclaration.ExplicitInterfaceSpecifier.Name, cancellationToken);
                     typeToGenerateIn = semanticInfo.Type as INamedTypeSymbol;
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateMethod
                 simpleNameOrMemberAccessExpression = simpleName;
             }
 
-            if (memberAccess == null || memberAccess.Name == simpleName)
+            if ((memberAccess == null) || (memberAccess.Name == simpleName))
             {
                 if (simpleNameOrMemberAccessExpression.IsParentKind(SyntaxKind.InvocationExpression))
                 {

@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             TypeSymbol type2 = expr2.Type;
 
-            if ((object)type2 != null && type2 != type1)
+            if (((object)type2 != null) && (type2 != type1))
             {
                 if (type2.IsErrorType())
                 {
@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return type2;
             }
 
-            if ((object)type2 == null || type2.IsErrorType())
+            if (((object)type2 == null) || type2.IsErrorType())
             {
                 return type1;
             }

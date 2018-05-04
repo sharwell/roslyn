@@ -216,14 +216,14 @@ namespace Microsoft.CodeAnalysis.CodeCleanup
             Contract.ThrowIfFalse(hasMultiplePreviousToken || hasMultipleNextToken);
 
             // Check whether it is one of special cases or not
-            if (hasMultiplePreviousToken && previousTokenMarker.Type == SpanMarkerType.BeginningOfFile)
+            if (hasMultiplePreviousToken && (previousTokenMarker.Type == SpanMarkerType.BeginningOfFile))
             {
                 // Okay, it is an edge case. Let's use the start of the node as the beginning of the span
                 span = TextSpan.FromBounds(node.SpanStart, GetNextTokenEndPosition(nextTokenMarker.Type, nextToken));
                 return true;
             }
 
-            if (hasMultipleNextToken && nextTokenMarker.Type == SpanMarkerType.EndOfFile)
+            if (hasMultipleNextToken && (nextTokenMarker.Type == SpanMarkerType.EndOfFile))
             {
                 // Okay, it is an edge case. Let's use the end of the node as the end of the span
                 span = TextSpan.FromBounds(GetPreviousTokenStartPosition(previousTokenMarker.Type, previousToken), node.Span.End);
@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis.CodeCleanup
             endToken = root.FindTokenFromEnd(span.End, findInsideTrivia: true);
 
             // There must be tokens at each edge
-            Contract.ThrowIfTrue(startToken.RawKind == 0 || endToken.RawKind == 0);
+            Contract.ThrowIfTrue((startToken.RawKind == 0) || (endToken.RawKind == 0));
 
             // Get the previous and next tokens around span
             previousToken = startToken.GetPreviousToken(includeZeroWidth: true, includeSkipped: true, includeDirectives: true, includeDocumentationComments: true);
@@ -439,7 +439,7 @@ namespace Microsoft.CodeAnalysis.CodeCleanup
             var startMarker = SpanMarker.FromAnnotation(annotations[0].previous);
             var endMarker = SpanMarker.FromAnnotation(annotations[0].next);
 
-            return startMarker.Type == SpanMarkerType.BeginningOfFile && endMarker.Type == SpanMarkerType.EndOfFile;
+            return (startMarker.Type == SpanMarkerType.BeginningOfFile) && (endMarker.Type == SpanMarkerType.EndOfFile);
         }
 
         private bool CleanupWholeNode(TextSpan nodeSpan, ImmutableArray<TextSpan> spans)
@@ -486,7 +486,7 @@ namespace Microsoft.CodeAnalysis.CodeCleanup
                     }
 
                     // If we are at the end and there were no changes to the document, use the original document for the cleanup.
-                    if (current == count && currentDocument == annotatedDocument)
+                    if ((current == count) && (currentDocument == annotatedDocument))
                     {
                         currentDocument = originalDocument;
                     }
@@ -562,7 +562,7 @@ namespace Microsoft.CodeAnalysis.CodeCleanup
                     }
 
                     // If we are at the end and there were no changes to the document, use the original document for the cleanup.
-                    if (current == count && currentRoot == annotatedRoot)
+                    if ((current == count) && (currentRoot == annotatedRoot))
                     {
                         currentRoot = originalRoot;
                     }
@@ -601,7 +601,7 @@ namespace Microsoft.CodeAnalysis.CodeCleanup
         {
             span = default;
 
-            if (start < 0 || end < start)
+            if ((start < 0) || (end < start))
             {
                 return false;
             }

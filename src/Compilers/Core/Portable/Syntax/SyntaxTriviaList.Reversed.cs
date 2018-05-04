@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(object obj)
             {
-                return obj is Reversed && Equals((Reversed)obj);
+                return (obj is Reversed) && Equals((Reversed)obj);
             }
 
             public bool Equals(Reversed other)
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis
 
                 public bool MoveNext()
                 {
-                    if (_count == 0 || _index <= 0)
+                    if ((_count == 0) || (_index <= 0))
                     {
                         _current = null;
                         return false;

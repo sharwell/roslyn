@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 if (hideNonPublic)
                 {
                     var moduleInstance = appDomain.FindClrModuleInstance(type.Module.ModuleVersionId);
-                    if (moduleInstance == null || moduleInstance.Module == null)
+                    if ((moduleInstance == null) || (moduleInstance.Module == null))
                     {
                         // Synthetic module or no symbols loaded.
                         hideNonPublicBehavior = DeclarationInfo.HideNonPublic;
@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 {
                     // The native EE shows proxy members regardless of accessibility if they have a
                     // DebuggerBrowsable attribute of any value. Match that behaviour here.
-                    if (!isProxyType || browsableState == null || !browsableState.ContainsKey(member.Name))
+                    if (!isProxyType || (browsableState == null) || !browsableState.ContainsKey(member.Name))
                     {
                         if (!predicate(member))
                         {

@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         protected override void ResolveBranch(PendingBranch pending, LabelSymbol label, BoundStatement target, ref bool labelStateChanged)
         {
             // branches into a region are considered entry points
-            if (IsInside && pending.Branch != null && !RegionContains(pending.Branch.Syntax.Span))
+            if (IsInside && (pending.Branch != null) && !RegionContains(pending.Branch.Syntax.Span))
             {
                 pending.State = pending.State.Reachable ? ReachableState() : UnreachableState();
             }
@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private void ResolveLabel(BoundNode node, LabelSymbol label)
         {
-            if (node.Syntax != null && RegionContains(node.Syntax.Span)) _labelsInside.Add(label);
+            if ((node.Syntax != null) && RegionContains(node.Syntax.Span)) _labelsInside.Add(label);
         }
 
         protected override void EnterRegion()
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             foreach (var branch in base.PendingBranches)
             {
-                if (branch.Branch != null && RegionContains(branch.Branch.Syntax.Span) && !_labelsInside.Contains(branch.Label))
+                if ((branch.Branch != null) && RegionContains(branch.Branch.Syntax.Span) && !_labelsInside.Contains(branch.Label))
                 {
                     IntersectWith(ref _endOfRegionState, ref branch.State);
                 }

@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 return reusableSyntax;
             }
 
-            var declaration = !options.GenerateMethodBodies || @event.IsAbstract || @event.AddMethod == null || @event.RemoveMethod == null
+            var declaration = !options.GenerateMethodBodies || @event.IsAbstract || (@event.AddMethod == null) || (@event.RemoveMethod == null)
                 ? GenerateEventFieldDeclaration(@event, destination, options)
                 : GenerateEventDeclarationWorker(@event, destination, options);
 
@@ -176,9 +176,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             CodeGenerationDestination destination,
             IMethodSymbol accessor)
         {
-            return destination != CodeGenerationDestination.InterfaceType &&
+            return (destination != CodeGenerationDestination.InterfaceType) &&
                 !@event.IsAbstract &&
-                accessor != null &&
+                (accessor != null) &&
                 !accessor.IsAbstract;
         }
 

@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TodoComments
 
                 var pair = tuple.Split(':');
 
-                if (pair.Length != 2 || string.IsNullOrWhiteSpace(pair[0]))
+                if ((pair.Length != 2) || string.IsNullOrWhiteSpace(pair[0]))
                 {
                     continue;
                 }
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.TodoComments
             var optionText = document.Project.Solution.Options.GetOption(TodoCommentOptions.TokenList);
 
             var lastInfo = _lastTokenInfo;
-            if (lastInfo != null && lastInfo.OptionText == optionText)
+            if ((lastInfo != null) && (lastInfo.OptionText == optionText))
             {
                 return lastInfo.Tokens;
             }

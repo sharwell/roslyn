@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             uint rightEscape = GetValEscape(boundRHS, this.LocalScopeDepth);
 
-            if ((object)boundRHS.Type == null || boundRHS.Type.IsErrorType())
+            if (((object)boundRHS.Type == null) || boundRHS.Type.IsErrorType())
             {
                 // we could still not infer a type for the RHS
                 FailRemainingInferencesAndSetValEscape(checkedVariables, diagnostics, rightEscape);
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static bool IsDeconstructionResultUsed(ExpressionSyntax left)
         {
             var parent = left.Parent;
-            if (parent is null || parent.Kind() == SyntaxKind.ForEachVariableStatement)
+            if ((parent is null) || (parent.Kind() == SyntaxKind.ForEachVariableStatement))
             {
                 return false;
             }
@@ -725,7 +725,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         AliasSymbol alias;
                         TypeSymbol declType = BindVariableType(component.Designation, diagnostics, component.Type, ref isConst, out isVar, out alias);
                         Debug.Assert(isVar == ((object)declType == null));
-                        if (component.Designation.Kind() == SyntaxKind.ParenthesizedVariableDesignation && !isVar)
+                        if ((component.Designation.Kind() == SyntaxKind.ParenthesizedVariableDesignation) && !isVar)
                         {
                             // An explicit is not allowed with a parenthesized designation
                             Error(diagnostics, ErrorCode.ERR_DeconstructionVarFormDisallowsSpecificType, component.Designation);
@@ -752,7 +752,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 default:
                     var boundVariable = BindExpression(node, diagnostics, invoked: false, indexed: false);
                     var checkedVariable = CheckValue(boundVariable, BindValueKind.Assignable, diagnostics);
-                    if (expression == null && checkedVariable.Kind != BoundKind.DiscardExpression)
+                    if ((expression == null) && (checkedVariable.Kind != BoundKind.DiscardExpression))
                     {
                         expression = node;
                     }

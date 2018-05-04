@@ -58,7 +58,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Debugging
             // no longer need.
             if (expressions != null)
             {
-                if (cachedExpressionLists.Count == 0 ||
+                if ((cachedExpressionLists.Count == 0) ||
                     !cachedExpressionLists.First.Value.SetEquals(expressions))
                 {
                     cachedExpressionLists.AddFirst(expressions);

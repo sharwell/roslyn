@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     var containingAssembly1 = unwrappedSymbol1.ContainingAssembly;
 
                     // May not be the case if there are error types.
-                    if ((object)containingAssembly0 != null && (object)containingAssembly1 != null)
+                    if (((object)containingAssembly0 != null) && ((object)containingAssembly1 != null))
                     {
                         // Use the assembly identities rather than locations. Note that the
                         // assembly identities may be identical as well. (For instance, the
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return containingAssembly.Identity.ToString();
             }
 
-            Debug.Assert(unwrappedSymbol.Kind == SymbolKind.DynamicType || unwrappedSymbol.Kind == SymbolKind.ErrorType);
+            Debug.Assert((unwrappedSymbol.Kind == SymbolKind.DynamicType) || (unwrappedSymbol.Kind == SymbolKind.ErrorType));
             return null;
         }
 
@@ -217,9 +217,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             public override bool Equals(object obj)
             {
                 var other = obj as Description;
-                return other != null &&
-                    _distinguisher._compilation == other._distinguisher._compilation &&
-                    GetSymbol() == other.GetSymbol();
+                return (other != null) &&
+                    (_distinguisher._compilation == other._distinguisher._compilation) &&
+                    (GetSymbol() == other.GetSymbol());
             }
 
             public override int GetHashCode()

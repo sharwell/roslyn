@@ -175,9 +175,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                         customBuilder,
                         out taskProperty);
                 }
-                if ((object)builderType == null ||
-                    (object)createBuilderMethod == null ||
-                    (object)taskProperty == null)
+                if (((object)builderType == null) ||
+                    ((object)createBuilderMethod == null) ||
+                    ((object)taskProperty == null))
                 {
                     collection = default(AsyncMethodBuilderMemberCollection);
                     return false;
@@ -245,9 +245,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                         customBuilder,
                         out taskProperty);
                 }
-                if ((object)builderType == null ||
-                    (object)taskProperty == null ||
-                    (object)createBuilderMethod == null)
+                if (((object)builderType == null) ||
+                    ((object)taskProperty == null) ||
+                    ((object)createBuilderMethod == null))
                 {
                     collection = default(AsyncMethodBuilderMemberCollection);
                     return false;
@@ -275,13 +275,13 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var builderType = builderAttributeArgument as NamedTypeSymbol;
 
-            if ((object)builderType != null &&
+            if (((object)builderType != null) &&
                  !builderType.IsErrorType() &&
-                 builderType.SpecialType != SpecialType.System_Void &&
-                 builderType.DeclaredAccessibility == desiredAccessibility)
+                 (builderType.SpecialType != SpecialType.System_Void) &&
+                 (builderType.DeclaredAccessibility == desiredAccessibility))
             {
                 bool isArityOk = isGeneric
-                                 ? builderType.IsUnboundGenericType && builderType.ContainingType?.IsGenericType != true && builderType.Arity == 1
+                                 ? builderType.IsUnboundGenericType && (builderType.ContainingType?.IsGenericType != true) && (builderType.Arity == 1)
                                  : !builderType.IsGenericType;
                 if (isArityOk)
                 {
@@ -401,7 +401,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var method = (MethodSymbol)member;
                 if ((method.DeclaredAccessibility == Accessibility.Public) &&
                     method.IsStatic &&
-                    method.ParameterCount == 0 &&
+                    (method.ParameterCount == 0) &&
                     !method.IsGenericMethod &&
                     method.ReturnType.Equals(builderType, TypeCompareKind.AllIgnoreOptions))
                 {

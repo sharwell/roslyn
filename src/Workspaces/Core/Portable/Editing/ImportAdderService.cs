@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editing
             bool isInSpan(SyntaxNodeOrToken nodeOrToken) =>
                 spansTree.HasIntervalThatOverlapsWith(nodeOrToken.FullSpan.Start, nodeOrToken.FullSpan.Length);
 
-            var nodesWithExplicitNamespaces = root.DescendantNodesAndSelf().Where(n => isInSpan(n) && GetExplicitNamespaceSymbol(n, model) != null).ToList();
+            var nodesWithExplicitNamespaces = root.DescendantNodesAndSelf().Where(n => isInSpan(n) && (GetExplicitNamespaceSymbol(n, model) != null)).ToList();
 
             var namespacesToAdd = new HashSet<INamespaceSymbol>();
             namespacesToAdd.AddRange(nodesWithExplicitNamespaces.Select(

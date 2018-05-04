@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             // to see if there's anywhere we can generate into here.
 
             availableIndices = GetAvailableInsertionIndices(destination, cancellationToken);
-            return availableIndices != null && availableIndices.Any(b => b);
+            return (availableIndices != null) && availableIndices.Any(b => b);
         }
 
         private async Task<(SyntaxNode declaration, IList<bool> availableIndices)> FindMostRelevantDeclarationAsync(
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             var declarations = _symbolDeclarationService.GetDeclarations(symbol);
 
             var fallbackDeclaration = default(SyntaxNode);
-            if (locationOpt != null && locationOpt.IsInSource)
+            if ((locationOpt != null) && locationOpt.IsInSource)
             {
                 var token = locationOpt.FindToken(cancellationToken);
 

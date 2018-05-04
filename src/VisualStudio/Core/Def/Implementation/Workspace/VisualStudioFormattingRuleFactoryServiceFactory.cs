@@ -88,7 +88,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                     for (var i = 0; i < spans.Count; i++)
                     {
                         var visibleSpan = spans[i];
-                        if (visibleSpan.IntersectsWith(position) || visibleSpan.End == position)
+                        if (visibleSpan.IntersectsWith(position) || (visibleSpan.End == position))
                         {
                             return containedDocument.GetBaseIndentationRule(root, text, spans, i);
                         }

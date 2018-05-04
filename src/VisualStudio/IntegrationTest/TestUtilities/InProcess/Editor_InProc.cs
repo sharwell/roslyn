@@ -255,10 +255,10 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
             {
                 var caret = view.Caret;
 
-                return caret.Left >= view.ViewportLeft
-                    && caret.Right <= view.ViewportRight
-                    && caret.Top >= view.ViewportTop
-                    && caret.Bottom <= view.ViewportBottom;
+                return (caret.Left >= view.ViewportLeft)
+                    && (caret.Right <= view.ViewportRight)
+                    && (caret.Top >= view.ViewportTop)
+                    && (caret.Bottom <= view.ViewportBottom);
             });
 
         public ClassifiedToken[] GetLightbulbPreviewClassifications(string menuText)
@@ -293,7 +293,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
             }
 
             var activeSession = broker.GetSession(view);
-            if (activeSession == null || !activeSession.IsExpanded)
+            if ((activeSession == null) || !activeSession.IsExpanded)
             {
                 throw new InvalidOperationException(string.Format("No expanded light bulb session found after View.ShowSmartTag.  Buffer content type={0}", bufferType));
             }
@@ -344,7 +344,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
                 {
                     DependencyObject child = VisualTreeHelper.GetChild(rootObject, i);
 
-                    if (child != null && child is T)
+                    if ((child != null) && (child is T))
                         yield return (T)child;
 
                     foreach (T descendant in FindDescendants<T>(child))
@@ -360,8 +360,8 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
         {
             var dialogAutomationElement = DialogHelpers.FindDialogByAutomationId((IntPtr)GetDTE().MainWindow.HWnd, dialogAutomationId, isOpen);
 
-            if ((isOpen && dialogAutomationElement == null) ||
-                (!isOpen && dialogAutomationElement != null))
+            if ((isOpen && (dialogAutomationElement == null)) ||
+                (!isOpen && (dialogAutomationElement != null)))
             {
                 throw new InvalidOperationException($"Expected the {dialogAutomationId} dialog to be {(isOpen ? "open" : "closed")}, but it is not.");
             }
@@ -546,7 +546,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
 
                 void ComponentChanged(object sender, ComponentChangedEventArgs e)
                 {
-                    if (e.Member.Name == propertyName && EqualToPropertyValue(e.NewValue))
+                    if ((e.Member.Name == propertyName) && EqualToPropertyValue(e.NewValue))
                     {
                         waitHandle.Set();
                     }

@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis
 
         internal static void Merge(ArrayBuilder<string> aliases, ImmutableArray<string> newAliases)
         {
-            if (aliases.Count == 0 ^ newAliases.IsEmpty)
+            if ((aliases.Count == 0) ^ newAliases.IsEmpty)
             {
                 AddNonIncluded(aliases, MetadataReferenceProperties.GlobalAlias);
             }

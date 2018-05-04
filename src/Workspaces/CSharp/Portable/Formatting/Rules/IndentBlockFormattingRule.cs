@@ -54,8 +54,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             }
 
             // can this ever happen?
-            if (section.Labels.Count == 0 &&
-                section.Statements.Count == 0)
+            if ((section.Labels.Count == 0) &&
+                (section.Statements.Count == 0))
             {
                 return;
             }
@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 Debug.Assert(indentSwitchCase != indentSwitchCaseWhenBlock);
 
                 var firstStatementIsBlock =
-                    section.Statements.Count > 0 &&
+                    (section.Statements.Count > 0) &&
                     section.Statements[0].IsKind(SyntaxKind.Block);
 
                 if (indentSwitchCaseWhenBlock != firstStatementIsBlock)
@@ -184,18 +184,18 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             }
 
             // For ArrayInitializationExpression, set indent to relative to the open brace so the content is properly indented
-            if (node.IsKind(SyntaxKind.ArrayInitializerExpression) && node.Parent != null && node.Parent.IsKind(SyntaxKind.ArrayCreationExpression))
+            if (node.IsKind(SyntaxKind.ArrayInitializerExpression) && (node.Parent != null) && node.Parent.IsKind(SyntaxKind.ArrayCreationExpression))
             {
                 AddAlignmentBlockOperationRelativeToFirstTokenOnBaseTokenLine(list, bracePair);
             }
 
-            if (node is BlockSyntax && !optionSet.GetOption(CSharpFormattingOptions.IndentBlock))
+            if ((node is BlockSyntax) && !optionSet.GetOption(CSharpFormattingOptions.IndentBlock))
             {
                 // do not add indent operation for block
                 return;
             }
 
-            if (node is SwitchStatementSyntax && !optionSet.GetOption(CSharpFormattingOptions.IndentSwitchSection))
+            if ((node is SwitchStatementSyntax) && !optionSet.GetOption(CSharpFormattingOptions.IndentSwitchSection))
             {
                 // do not add indent operation for switch statement
                 return;
@@ -213,15 +213,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         private void AddEmbeddedStatementsIndentationOperation(List<IndentBlockOperation> list, SyntaxNode node)
         {
             // increase indentation - embedded statement cases
-            if (node is IfStatementSyntax ifStatement && ifStatement.Statement != null && !(ifStatement.Statement is BlockSyntax))
+            if (node is IfStatementSyntax ifStatement && (ifStatement.Statement != null) && !(ifStatement.Statement is BlockSyntax))
             {
                 AddEmbeddedStatementsIndentationOperation(list, ifStatement.Statement);
                 return;
             }
 
-            if (node is ElseClauseSyntax elseClause && elseClause.Statement != null)
+            if (node is ElseClauseSyntax elseClause && (elseClause.Statement != null))
             {
-                if (!(elseClause.Statement is BlockSyntax || elseClause.Statement is IfStatementSyntax))
+                if (!((elseClause.Statement is BlockSyntax) || (elseClause.Statement is IfStatementSyntax)))
                 {
                     AddEmbeddedStatementsIndentationOperation(list, elseClause.Statement);
                 }
@@ -229,43 +229,43 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 return;
             }
 
-            if (node is WhileStatementSyntax whileStatement && whileStatement.Statement != null && !(whileStatement.Statement is BlockSyntax))
+            if (node is WhileStatementSyntax whileStatement && (whileStatement.Statement != null) && !(whileStatement.Statement is BlockSyntax))
             {
                 AddEmbeddedStatementsIndentationOperation(list, whileStatement.Statement);
                 return;
             }
 
-            if (node is ForStatementSyntax forStatement && forStatement.Statement != null && !(forStatement.Statement is BlockSyntax))
+            if (node is ForStatementSyntax forStatement && (forStatement.Statement != null) && !(forStatement.Statement is BlockSyntax))
             {
                 AddEmbeddedStatementsIndentationOperation(list, forStatement.Statement);
                 return;
             }
 
-            if (node is CommonForEachStatementSyntax foreachStatement && foreachStatement.Statement != null && !(foreachStatement.Statement is BlockSyntax))
+            if (node is CommonForEachStatementSyntax foreachStatement && (foreachStatement.Statement != null) && !(foreachStatement.Statement is BlockSyntax))
             {
                 AddEmbeddedStatementsIndentationOperation(list, foreachStatement.Statement);
                 return;
             }
 
-            if (node is UsingStatementSyntax usingStatement && usingStatement.Statement != null && !(usingStatement.Statement is BlockSyntax || usingStatement.Statement is UsingStatementSyntax))
+            if (node is UsingStatementSyntax usingStatement && (usingStatement.Statement != null) && !((usingStatement.Statement is BlockSyntax) || (usingStatement.Statement is UsingStatementSyntax)))
             {
                 AddEmbeddedStatementsIndentationOperation(list, usingStatement.Statement);
                 return;
             }
 
-            if (node is FixedStatementSyntax fixedStatement && fixedStatement.Statement != null && !(fixedStatement.Statement is BlockSyntax || fixedStatement.Statement is FixedStatementSyntax))
+            if (node is FixedStatementSyntax fixedStatement && (fixedStatement.Statement != null) && !((fixedStatement.Statement is BlockSyntax) || (fixedStatement.Statement is FixedStatementSyntax)))
             {
                 AddEmbeddedStatementsIndentationOperation(list, fixedStatement.Statement);
                 return;
             }
 
-            if (node is DoStatementSyntax doStatement && doStatement.Statement != null && !(doStatement.Statement is BlockSyntax))
+            if (node is DoStatementSyntax doStatement && (doStatement.Statement != null) && !(doStatement.Statement is BlockSyntax))
             {
                 AddEmbeddedStatementsIndentationOperation(list, doStatement.Statement);
                 return;
             }
 
-            if (node is LockStatementSyntax lockStatement && lockStatement.Statement != null && !(lockStatement.Statement is BlockSyntax))
+            if (node is LockStatementSyntax lockStatement && (lockStatement.Statement != null) && !(lockStatement.Statement is BlockSyntax))
             {
                 AddEmbeddedStatementsIndentationOperation(list, lockStatement.Statement);
                 return;

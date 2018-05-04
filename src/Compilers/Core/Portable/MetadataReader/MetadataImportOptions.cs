@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsValid(this MetadataImportOptions value)
         {
-            return value >= MetadataImportOptions.Public && value <= MetadataImportOptions.All;
+            return (value >= MetadataImportOptions.Public) && (value <= MetadataImportOptions.All);
         }
     }
 }

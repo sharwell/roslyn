@@ -101,7 +101,7 @@ namespace Microsoft.CodeAnalysis.Emit.NoPia
                         int signatureIndex = TypeManager.GetTargetAttributeSignatureIndex(UnderlyingParameter, attrData, AttributeDescription.DecimalConstantAttribute);
                         if (signatureIndex != -1)
                         {
-                            Debug.Assert(signatureIndex == 0 || signatureIndex == 1);
+                            Debug.Assert((signatureIndex == 0) || (signatureIndex == 1));
 
                             if (attrData.CommonConstructorArguments.Length == 5)
                             {

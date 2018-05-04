@@ -25,13 +25,13 @@ namespace Microsoft.CodeAnalysis
 
         public bool Equals(LoadDirective other)
         {
-            return this.ResolvedPath == other.ResolvedPath &&
+            return (this.ResolvedPath == other.ResolvedPath) &&
                 this.Diagnostics.SequenceEqual(other.Diagnostics);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is LoadDirective && Equals((LoadDirective)obj);
+            return (obj is LoadDirective) && Equals((LoadDirective)obj);
         }
 
         public override int GetHashCode()

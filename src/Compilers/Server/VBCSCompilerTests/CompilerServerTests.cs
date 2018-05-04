@@ -943,7 +943,7 @@ End Module";
 
                 for (int i = 0; i < numberOfCompiles; ++i)
                 {
-                    var language = i % 2 == 0 ? RequestLanguage.CSharpCompile : RequestLanguage.VisualBasicCompile;
+                    var language = (i % 2) == 0 ? RequestLanguage.CSharpCompile : RequestLanguage.VisualBasicCompile;
                     var compilationDir = Temp.CreateDirectory();
                     tasks[i] = RunCompilationAsync(language, serverData.PipeName, i, compilationDir);
                 }

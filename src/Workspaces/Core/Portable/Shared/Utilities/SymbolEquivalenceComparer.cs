@@ -191,13 +191,13 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private static bool IsObjectType(ISymbol symbol)
         {
-            return symbol.Kind == SymbolKind.NamedType && ((ITypeSymbol)symbol).SpecialType == SpecialType.System_Object;
+            return (symbol.Kind == SymbolKind.NamedType) && (((ITypeSymbol)symbol).SpecialType == SpecialType.System_Object);
         }
 
         private static bool CheckContainingType(IMethodSymbol x)
         {
-            if (x.MethodKind == MethodKind.DelegateInvoke &&
-                x.ContainingType != null &&
+            if ((x.MethodKind == MethodKind.DelegateInvoke) &&
+                (x.ContainingType != null) &&
                 x.ContainingType.IsAnonymousType)
             {
                 return false;

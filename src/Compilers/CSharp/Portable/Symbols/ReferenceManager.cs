@@ -329,7 +329,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 var assemblyModules = assemblySymbol.Modules;
                 var referencedModulesReferences = this.ReferencedModulesReferences;
-                Debug.Assert(assemblyModules.Length == referencedModulesReferences.Length + 1);
+                Debug.Assert(assemblyModules.Length == (referencedModulesReferences.Length + 1));
 
                 for (int i = 1; i < assemblyModules.Length; i++)
                 {
@@ -743,7 +743,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 out ImmutableArray<ModuleReferences<AssemblySymbol>> moduleReferences)
             {
                 var moduleSymbols = sourceAssembly.Modules;
-                Debug.Assert(moduleSymbols.Length == 1 + modules.Length);
+                Debug.Assert(moduleSymbols.Length == (1 + modules.Length));
 
                 var moduleReferencesBuilder = (moduleSymbols.Length > 1) ? ArrayBuilder<ModuleReferences<AssemblySymbol>>.GetInstance() : null;
 
@@ -975,7 +975,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     get
                     {
                         // We need to import internal members if they might be visible to the compilation being compiled:
-                        if (InternalsMayBeVisibleToCompilation && _compilationImportOptions == MetadataImportOptions.Public)
+                        if (InternalsMayBeVisibleToCompilation && (_compilationImportOptions == MetadataImportOptions.Public))
                         {
                             return MetadataImportOptions.Internal;
                         }

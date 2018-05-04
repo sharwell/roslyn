@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
                 }
                 catch (OperationCanceledException)
                 {
-                    if (onCapped != null && progress.SearchCapReached)
+                    if ((onCapped != null) && progress.SearchCapReached)
                     {
                         // search was cancelled, and it was cancelled by us because a cap was reached.
                         return await onCapped(progress).ConfigureAwait(false);
@@ -114,13 +114,13 @@ namespace Microsoft.CodeAnalysis.CodeLens
             var line = textLine.ToString();
 
             var beforeLine1 = textLine.LineNumber > 0 ? text.Lines[textLine.LineNumber - 1].ToString() : string.Empty;
-            var beforeLine2 = textLine.LineNumber - 1 > 0
+            var beforeLine2 = (textLine.LineNumber - 1) > 0
                 ? text.Lines[textLine.LineNumber - 2].ToString()
                 : string.Empty;
-            var afterLine1 = textLine.LineNumber < text.Lines.Count - 1
+            var afterLine1 = textLine.LineNumber < (text.Lines.Count - 1)
                 ? text.Lines[textLine.LineNumber + 1].ToString()
                 : string.Empty;
-            var afterLine2 = textLine.LineNumber + 1 < text.Lines.Count - 1
+            var afterLine2 = (textLine.LineNumber + 1) < (text.Lines.Count - 1)
                 ? text.Lines[textLine.LineNumber + 2].ToString()
                 : string.Empty;
             var referenceSpan = new TextSpan(spanStart, token.Span.Length);
@@ -282,8 +282,8 @@ namespace Microsoft.CodeAnalysis.CodeLens
                     {
                         var part = parts[index];
                         if (previousWasClass &&
-                            part.Kind == SymbolDisplayPartKind.Punctuation &&
-                            index < parts.Length - 1)
+                            (part.Kind == SymbolDisplayPartKind.Punctuation) &&
+                            (index < (parts.Length - 1)))
                         {
                             switch (parts[index + 1].Kind)
                             {
@@ -306,9 +306,9 @@ namespace Microsoft.CodeAnalysis.CodeLens
                             actualBuilder.Append(part);
                         }
 
-                        previousWasClass = part.Kind == SymbolDisplayPartKind.ClassName ||
-                                           part.Kind == SymbolDisplayPartKind.InterfaceName ||
-                                           part.Kind == SymbolDisplayPartKind.StructName;
+                        previousWasClass = (part.Kind == SymbolDisplayPartKind.ClassName) ||
+                                           (part.Kind == SymbolDisplayPartKind.InterfaceName) ||
+                                           (part.Kind == SymbolDisplayPartKind.StructName);
                     }
 
                     return actualBuilder.ToString();

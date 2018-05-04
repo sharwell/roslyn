@@ -612,22 +612,22 @@ namespace Microsoft.CodeAnalysis.CSharp
                 builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_BadCompilationOptionValue, nameof(OptimizationLevel), OptimizationLevel.ToString()));
             }
 
-            if (ScriptClassName == null || !ScriptClassName.IsValidClrTypeName())
+            if ((ScriptClassName == null) || !ScriptClassName.IsValidClrTypeName())
             {
                 builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_BadCompilationOptionValue, nameof(ScriptClassName), ScriptClassName ?? "null"));
             }
 
-            if (WarningLevel < 0 || WarningLevel > 4)
+            if ((WarningLevel < 0) || (WarningLevel > 4))
             {
                 builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_BadCompilationOptionValue, nameof(WarningLevel), WarningLevel));
             }
 
-            if (Usings != null && Usings.Any(u => !u.IsValidClrNamespaceName()))
+            if ((Usings != null) && Usings.Any(u => !u.IsValidClrNamespaceName()))
             {
                 builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_BadCompilationOptionValue, nameof(Usings), Usings.Where(u => !u.IsValidClrNamespaceName()).First() ?? "null"));
             }
 
-            if (Platform == Platform.AnyCpu32BitPreferred && OutputKind.IsValid() && !(OutputKind == OutputKind.ConsoleApplication || OutputKind == OutputKind.WindowsApplication || OutputKind == OutputKind.WindowsRuntimeApplication))
+            if ((Platform == Platform.AnyCpu32BitPreferred) && OutputKind.IsValid() && !((OutputKind == OutputKind.ConsoleApplication) || (OutputKind == OutputKind.WindowsApplication) || (OutputKind == OutputKind.WindowsRuntimeApplication)))
             {
                 builder.Add(Diagnostic.Create(MessageProvider.Instance, (int)ErrorCode.ERR_BadPrefer32OnLib));
             }
@@ -654,8 +654,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false;
             }
 
-            return this.AllowUnsafe == other.AllowUnsafe &&
-                   this.TopLevelBinderFlags == other.TopLevelBinderFlags &&
+            return (this.AllowUnsafe == other.AllowUnsafe) &&
+                   (this.TopLevelBinderFlags == other.TopLevelBinderFlags) &&
                    (this.Usings == null ? other.Usings == null : this.Usings.SequenceEqual(other.Usings, StringComparer.Ordinal));
         }
 

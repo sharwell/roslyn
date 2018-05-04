@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
             FileKey? fileKey = GetUniqueFileKey(fullPath);
 
             Metadata metadata;
-            if (fileKey.HasValue && _metadataCache.TryGetValue(fileKey.Value, out metadata) && metadata != null)
+            if (fileKey.HasValue && _metadataCache.TryGetValue(fileKey.Value, out metadata) && (metadata != null))
             {
                 return metadata;
             }

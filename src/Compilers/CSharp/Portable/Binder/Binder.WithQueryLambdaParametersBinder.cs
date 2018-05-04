@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             private BoundExpression SelectField(SimpleNameSyntax node, BoundExpression receiver, string name, DiagnosticBag diagnostics)
             {
                 var receiverType = receiver.Type as NamedTypeSymbol;
-                if ((object)receiverType == null || !receiverType.IsAnonymousType)
+                if (((object)receiverType == null) || !receiverType.IsAnonymousType)
                 {
                     // We only construct transparent query variables using anonymous types, so if we're trying to navigate through
                     // some other type, we must have some query API where the types don't match up as expected.

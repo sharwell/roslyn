@@ -612,7 +612,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                     {
                         Log.LogError(null, "CS" + errorCode.ToString("D4", CultureInfo.InvariantCulture), null, null, 0, 0, 0, 0, errorMessage);
                     }
-                    else if (errorMessage != null && errorMessage.Length > 0)
+                    else if ((errorMessage != null) && (errorMessage.Length > 0))
                     {
                         Log.LogWarning(null, "CS" + errorCode.ToString("D4", CultureInfo.InvariantCulture), null, null, 0, 0, 0, 0, errorMessage);
                     }

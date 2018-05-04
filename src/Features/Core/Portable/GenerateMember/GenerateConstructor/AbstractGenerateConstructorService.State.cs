@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
                 {
                     var ctorParameter = ctor.Parameters[i];
                     var result = SymbolEquivalenceComparer.Instance.Equals(ctorParameter.Type, this.ParameterTypes[i]) &&
-                        ctorParameter.RefKind == this.ParameterRefKinds[i];
+                        (ctorParameter.RefKind == this.ParameterRefKinds[i]);
 
                     string parameterName = GetParameterName(service, i);
                     if (!string.IsNullOrEmpty(parameterName))
@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
 
             private string GetParameterName(ISyntaxFactsService service, int index)
             {
-                if (this.Arguments.IsDefault || index >= this.Arguments.Length)
+                if (this.Arguments.IsDefault || (index >= this.Arguments.Length))
                 {
                     return string.Empty;
                 }
@@ -207,7 +207,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
                     this.Arguments = arguments;
 
                     //// Attribute parameters are restricted to be constant values (simple types or string, etc).
-                    if (this.AttributeArguments != null && GetParameterTypes(service, document, cancellationToken).Any(t => !IsValidAttributeParameterType(t)))
+                    if ((this.AttributeArguments != null) && GetParameterTypes(service, document, cancellationToken).Any(t => !IsValidAttributeParameterType(t)))
                     {
                         return false;
                     }
@@ -270,9 +270,9 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
                 var definition = await SymbolFinder.FindSourceDefinitionAsync(original, document.Project.Solution, cancellationToken).ConfigureAwait(false);
                 this.TypeToGenerateIn = definition as INamedTypeSymbol;
 
-                return this.TypeToGenerateIn != null &&
-                    (this.TypeToGenerateIn.TypeKind == TypeKind.Class ||
-                     this.TypeToGenerateIn.TypeKind == TypeKind.Struct);
+                return (this.TypeToGenerateIn != null) &&
+                    ((this.TypeToGenerateIn.TypeKind == TypeKind.Class) ||
+                     (this.TypeToGenerateIn.TypeKind == TypeKind.Struct));
             }
         }
     }

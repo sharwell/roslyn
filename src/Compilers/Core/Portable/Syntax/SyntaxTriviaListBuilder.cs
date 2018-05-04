@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Syntax
         {
             get
             {
-                if (index < 0 || index > _count)
+                if ((index < 0) || (index > _count))
                 {
                     throw new IndexOutOfRangeException();
                 }
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public SyntaxTriviaListBuilder Add(SyntaxTrivia item)
         {
-            if (_nodes == null || _count >= _nodes.Length)
+            if ((_nodes == null) || (_count >= _nodes.Length))
             {
                 this.Grow(_count == 0 ? 8 : _nodes.Length * 2);
             }
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public void Add(SyntaxTrivia[] items, int offset, int length)
         {
-            if (_nodes == null || _count + length > _nodes.Length)
+            if ((_nodes == null) || ((_count + length) > _nodes.Length))
             {
                 this.Grow(_count + length);
             }
@@ -101,7 +101,7 @@ namespace Microsoft.CodeAnalysis.Syntax
 
         public void Add(in SyntaxTriviaList list, int offset, int length)
         {
-            if (_nodes == null || _count + length > _nodes.Length)
+            if ((_nodes == null) || ((_count + length) > _nodes.Length))
             {
                 this.Grow(_count + length);
             }

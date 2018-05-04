@@ -384,7 +384,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library
                 return VSConstants.E_INVALIDARG;
             }
 
-            if (pData == null || pData.Length != 1)
+            if ((pData == null) || (pData.Length != 1))
             {
                 return VSConstants.E_INVALIDARG;
             }
@@ -406,7 +406,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library
                 return VSConstants.E_NOTIMPL;
             }
 
-            if (pData == null || pData.Length != 1)
+            if ((pData == null) || (pData.Length != 1))
             {
                 return VSConstants.E_INVALIDARG;
             }

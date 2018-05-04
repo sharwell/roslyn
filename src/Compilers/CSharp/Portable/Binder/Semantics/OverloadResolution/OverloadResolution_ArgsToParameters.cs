@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             public ParameterMap(int[] parameters, int length)
             {
-                Debug.Assert(parameters == null || parameters.Length == length);
+                Debug.Assert((parameters == null) || (parameters.Length == length));
                 _parameters = parameters;
                 _length = length;
             }
@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 get
                 {
-                    Debug.Assert(0 <= argument && argument < _length);
+                    Debug.Assert((0 <= argument) && (argument < _length));
                     return _parameters == null ? argument : _parameters[argument];
                 }
             }
@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             bool isVararg = symbol.GetIsVararg();
 
             // The easy out is that we have no named arguments and are in normal form.
-            if (!expanded && arguments.Names.Count == 0)
+            if (!expanded && (arguments.Names.Count == 0))
             {
                 return AnalyzeArgumentsForNormalFormNoNamedArguments(parameters, arguments, isMethodGroupConversion, isVararg);
             }
@@ -89,13 +89,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 int parameterPosition = CorrespondsToAnyParameter(parameters, expanded, arguments, argumentPosition,
                     isValidParams, isVararg, out isNamedArgument, ref seenNamedParams, ref seenOutOfPositionNamedArgument) ?? -1;
 
-                if (parameterPosition == -1 && unmatchedArgumentIndex == null)
+                if ((parameterPosition == -1) && (unmatchedArgumentIndex == null))
                 {
                     unmatchedArgumentIndex = argumentPosition;
                     unmatchedArgumentIsNamed = isNamedArgument;
                 }
 
-                if (parameterPosition != argumentPosition && parametersPositions == null)
+                if ((parameterPosition != argumentPosition) && (parametersPositions == null))
                 {
                     parametersPositions = new int[argumentCount];
                     for (int i = 0; i < argumentPosition; ++i)
@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // __arglist cannot be used with named arguments (as it doesn't have a name)
-            if (arguments.Names.Any() && arguments.Names.Last() != null && isVararg)
+            if (arguments.Names.Any() && (arguments.Names.Last() != null) && isVararg)
             {
                 return ArgumentAnalysisResult.RequiredParameterMissing(parameters.Length);
             }
@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             for (int i = 0; i < length;  i++)
             {
                 int parameter = argsToParameters[i];
-                if (parameter != -1 && parameter != i && arguments.Name(i) != null)
+                if ((parameter != -1) && (parameter != i) && (arguments.Name(i) != null))
                 {
                     foundPosition = i;
                     break;
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // 
             // Arguments in the argument-list of instance constructors, methods, indexers and delegates:
 
-            isNamedArgument = arguments.Names.Count > argumentPosition && arguments.Names[argumentPosition] != null;
+            isNamedArgument = (arguments.Names.Count > argumentPosition) && (arguments.Names[argumentPosition] != null);
 
             if (!isNamedArgument)
             {
@@ -315,7 +315,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // _any_ parameter (not just the parameters past the point of positional arguments)
                     if (memberParameters[p].Name == name.Identifier.ValueText)
                     {
-                        if (isValidParams && p == memberParameters.Length - 1)
+                        if (isValidParams && (p == (memberParameters.Length - 1)))
                         {
                             seenNamedParams = true;
                         }
@@ -358,7 +358,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 for (int parameterPosition = argumentCount; parameterPosition < parameterCount; ++parameterPosition)
                 {
-                    if (parameters.Length == parameterPosition || !CanBeOptional(parameters[parameterPosition], isMethodGroupConversion))
+                    if ((parameters.Length == parameterPosition) || !CanBeOptional(parameters[parameterPosition], isMethodGroupConversion))
                     {
                         return ArgumentAnalysisResult.RequiredParameterMissing(parameterPosition);
                     }
@@ -442,7 +442,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // and there are as many arguments as parameters in that map, then clearly no 
             // required parameter is missing.
 
-            if (argsToParameters.IsTrivial && count <= argsToParameters.Length)
+            if (argsToParameters.IsTrivial && (count <= argsToParameters.Length))
             {
                 return null;
             }

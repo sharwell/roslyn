@@ -20,11 +20,11 @@ namespace Microsoft.CodeAnalysis.Differencing
 
         internal Edit(EditKind kind, TreeComparer<TNode> comparer, TNode oldNode, TNode newNode)
         {
-            Debug.Assert((oldNode == null || oldNode.Equals(default)) == (kind == EditKind.Insert));
-            Debug.Assert((newNode == null || newNode.Equals(default)) == (kind == EditKind.Delete));
+            Debug.Assert(((oldNode == null) || oldNode.Equals(default)) == (kind == EditKind.Insert));
+            Debug.Assert(((newNode == null) || newNode.Equals(default)) == (kind == EditKind.Delete));
 
-            Debug.Assert(oldNode == null || oldNode.Equals(default) ||
-                         newNode == null || newNode.Equals(default) ||
+            Debug.Assert((oldNode == null) || oldNode.Equals(default) ||
+                         (newNode == null) || newNode.Equals(default) ||
                          !comparer.TreesEqual(oldNode, newNode));
 
             _comparer = comparer;
@@ -61,12 +61,12 @@ namespace Microsoft.CodeAnalysis.Differencing
 
         public override bool Equals(object obj)
         {
-            return obj is Edit<TNode> && Equals((Edit<TNode>)obj);
+            return (obj is Edit<TNode>) && Equals((Edit<TNode>)obj);
         }
 
         public bool Equals(Edit<TNode> other)
         {
-            return _kind == other._kind
+            return (_kind == other._kind)
                 && (_oldNode == null) ? other._oldNode == null : _oldNode.Equals(other._oldNode)
                 && (_newNode == null) ? other._newNode == null : _newNode.Equals(other._newNode);
         }

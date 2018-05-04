@@ -142,7 +142,7 @@ public class App
             // ---------------------------
             // Source symbols
             var originalSymbols = GetSourceSymbols(comp1, SymbolCategory.NonTypeMember | SymbolCategory.Parameter).ToList();
-            originalSymbols = originalSymbols.Where(s => !s.IsAccessor() && s.Kind != SymbolKind.Parameter).OrderBy(s => s.Name).Select(s => s).ToList();
+            originalSymbols = originalSymbols.Where(s => !s.IsAccessor() && (s.Kind != SymbolKind.Parameter)).OrderBy(s => s.Name).Select(s => s).ToList();
             Assert.Equal(8, originalSymbols.Count);
 
             // ---------------------------
@@ -325,7 +325,7 @@ class Test
             var comp40 = CreateCompilation(src2, new[] { new CSharpCompilationReference(comp20) });
 
             var originals = GetSourceSymbols(comp20, SymbolCategory.NonTypeMember | SymbolCategory.Parameter);
-            var originalSymbols = originals.Where(s => !s.IsAccessor() && s.Kind != SymbolKind.Parameter).OrderBy(s => s.Name).ToList();
+            var originalSymbols = originals.Where(s => !s.IsAccessor() && (s.Kind != SymbolKind.Parameter)).OrderBy(s => s.Name).ToList();
 
             // IGoo.Prop, CGoo.Prop, Event, Field, IGoo.This, CGoo.This
             Assert.Equal(6, originalSymbols.Count);
@@ -407,7 +407,7 @@ class Test
             var comp40 = CreateCompilation(src2, new[] { new CSharpCompilationReference(comp20) });
 
             var originals = GetSourceSymbols(comp20, SymbolCategory.NonTypeMember | SymbolCategory.Parameter);
-            var originalSymbols = originals.Where(s => !s.IsAccessor() && s.Kind != SymbolKind.Parameter).OrderBy(s => s.Name).ToList();
+            var originalSymbols = originals.Where(s => !s.IsAccessor() && (s.Kind != SymbolKind.Parameter)).OrderBy(s => s.Name).ToList();
 
             // CGoo.Prop, CGoo.This, IGoo.Prop, IGoo.This
             Assert.Equal(4, originalSymbols.Count);

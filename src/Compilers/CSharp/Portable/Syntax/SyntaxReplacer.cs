@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     _tokenSet.Any(t => t.IsPartOfStructuredTrivia()) ||
                     _triviaSet.Any(t => t.IsPartOfStructuredTrivia());
 
-                _shouldVisitTrivia = _triviaSet.Count > 0 || _visitIntoStructuredTrivia;
+                _shouldVisitTrivia = (_triviaSet.Count > 0) || _visitIntoStructuredTrivia;
             }
 
             private static readonly HashSet<SyntaxNode> s_noNodes = new HashSet<SyntaxNode>();
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             {
                 get
                 {
-                    return _nodeSet.Count + _tokenSet.Count + _triviaSet.Count > 0;
+                    return ((_nodeSet.Count + _tokenSet.Count + _triviaSet.Count)) > 0;
                 }
             }
 
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                         rewritten = base.Visit(node);
                     }
 
-                    if (_nodeSet.Contains(node) && _computeReplacementNode != null)
+                    if (_nodeSet.Contains(node) && (_computeReplacementNode != null))
                     {
                         rewritten = _computeReplacementNode((TNode)node, (TNode)rewritten);
                     }
@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     rewritten = base.VisitToken(token);
                 }
 
-                if (_tokenSet.Contains(token) && _computeReplacementToken != null)
+                if (_tokenSet.Contains(token) && (_computeReplacementToken != null))
                 {
                     rewritten = _computeReplacementToken(token, rewritten);
                 }
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     rewritten = this.VisitTrivia(trivia);
                 }
 
-                if (_triviaSet.Contains(trivia) && _computeReplacementTrivia != null)
+                if (_triviaSet.Contains(trivia) && (_computeReplacementTrivia != null))
                 {
                     rewritten = _computeReplacementTrivia(trivia, rewritten);
                 }
@@ -390,7 +390,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 if (_originalNode is TNode)
                 {
                     var index = list.IndexOf((TNode)_originalNode);
-                    if (index >= 0 && index < list.Count)
+                    if ((index >= 0) && (index < list.Count))
                     {
                         switch (this.editKind)
                         {
@@ -414,7 +414,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 if (_originalNode is TNode)
                 {
                     var index = list.IndexOf((TNode)_originalNode);
-                    if (index >= 0 && index < list.Count)
+                    if ((index >= 0) && (index < list.Count))
                     {
                         switch (this.editKind)
                         {
@@ -462,7 +462,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             public override SyntaxTokenList VisitList(SyntaxTokenList list)
             {
                 var index = list.IndexOf(_originalToken);
-                if (index >= 0 && index < list.Count)
+                if ((index >= 0) && (index < list.Count))
                 {
                     switch (this.editKind)
                     {
@@ -499,7 +499,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             public override SyntaxTriviaList VisitList(SyntaxTriviaList list)
             {
                 var index = list.IndexOf(_originalTrivia);
-                if (index >= 0 && index < list.Count)
+                if ((index >= 0) && (index < list.Count))
                 {
                     switch (this.editKind)
                     {

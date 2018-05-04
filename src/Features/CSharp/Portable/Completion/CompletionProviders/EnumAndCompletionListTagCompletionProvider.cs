@@ -30,10 +30,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             // then.
             var ch = text[characterPosition];
             return
-                ch == ' ' ||
-                ch == '[' ||
-                ch == '(' ||
-                ch == '~' ||
+                (ch == ' ') ||
+                (ch == '[') ||
+                (ch == '(') ||
+                (ch == '~') ||
                 (options.GetOption(CompletionOptions.TriggerOnTypingLetters, LanguageNames.CSharp) && CompletionUtilities.IsStartingNewWord(text, characterPosition));
         }
 
@@ -144,13 +144,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             // as an 'int' type, not the enum type.
 
             // See if we're after a common enum-combining operator.
-            if (token.Kind() == SyntaxKind.BarToken ||
-                token.Kind() == SyntaxKind.AmpersandToken ||
-                token.Kind() == SyntaxKind.CaretToken)
+            if ((token.Kind() == SyntaxKind.BarToken) ||
+                (token.Kind() == SyntaxKind.AmpersandToken) ||
+                (token.Kind() == SyntaxKind.CaretToken))
             {
                 // See if the type we're looking at is the underlying type for the enum we're contained in.
                 var containingType = semanticModel.GetEnclosingNamedType(token.SpanStart, cancellationToken);
-                if (containingType?.TypeKind == TypeKind.Enum &&
+                if ((containingType?.TypeKind == TypeKind.Enum) &&
                     type.Equals(containingType.EnumUnderlyingType))
                 {
                     // If so, walk back to the token before the operator token and see if it binds to a member
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     var previousToken = token.GetPreviousToken();
                     var symbol = semanticModel.GetSymbolInfo(previousToken.Parent, cancellationToken).Symbol;
 
-                    if (symbol?.Kind == SymbolKind.Field &&
+                    if ((symbol?.Kind == SymbolKind.Field) &&
                         containingType.Equals(symbol.ContainingType))
                     {
                         // If so, then offer this as a place for enum completion for the enum we're currently 
@@ -190,7 +190,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
             // PERF: Avoid parsing XML unless the text contains the word "completionlist".
             string xmlText = type.GetDocumentationCommentXml();
-            if (xmlText == null || !xmlText.Contains(DocumentationCommentXmlNames.CompletionListElementName))
+            if ((xmlText == null) || !xmlText.Contains(DocumentationCommentXmlNames.CompletionListElementName))
             {
                 return null;
             }
@@ -201,7 +201,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 ? DocumentationCommentId.GetSymbolsForDeclarationId(documentation.CompletionListCref, compilation).OfType<INamedTypeSymbol>().FirstOrDefault()
                 : null;
 
-            return completionListType != null && completionListType.IsAccessibleWithin(within)
+            return (completionListType != null) && completionListType.IsAccessibleWithin(within)
                 ? completionListType
                 : null;
         }

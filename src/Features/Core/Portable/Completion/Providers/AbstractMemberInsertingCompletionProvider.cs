@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
 
                     // Something weird happened and we failed to get a valid position.
                     // Bail on moving the caret.
-                    if (targetPosition > 0 && targetPosition <= newText.Length)
+                    if ((targetPosition > 0) && (targetPosition <= newText.Length))
                     {
                         newPosition = targetPosition;
                     }

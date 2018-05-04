@@ -256,15 +256,15 @@ namespace Microsoft.CodeAnalysis
             var newAdditionalDocuments = additionalDocuments ?? AdditionalDocuments;
             var newHostObjectType = hostObjectType.HasValue ? hostObjectType.Value : HostObjectType;
 
-            if (newAttributes == Attributes &&
-                newCompilationOptions == CompilationOptions &&
-                newParseOptions == ParseOptions &&
-                newDocuments == Documents &&
-                newProjectReferences == ProjectReferences &&
-                newMetadataReferences == MetadataReferences &&
-                newAnalyzerReferences == AnalyzerReferences &&
-                newAdditionalDocuments == AdditionalDocuments &&
-                newHostObjectType == HostObjectType)
+            if ((newAttributes == Attributes) &&
+                (newCompilationOptions == CompilationOptions) &&
+                (newParseOptions == ParseOptions) &&
+                (newDocuments == Documents) &&
+                (newProjectReferences == ProjectReferences) &&
+                (newMetadataReferences == MetadataReferences) &&
+                (newAnalyzerReferences == AnalyzerReferences) &&
+                (newAdditionalDocuments == AdditionalDocuments) &&
+                (newHostObjectType == HostObjectType))
             {
                 return this;
             }
@@ -460,15 +460,15 @@ namespace Microsoft.CodeAnalysis
                 var newIsSubmission = isSubmission.HasValue ? isSubmission.Value : IsSubmission;
                 var newHasAllInformation = hasAllInformation.HasValue ? hasAllInformation.Value : HasAllInformation;
 
-                if (newVersion == Version &&
-                    newName == Name &&
-                    newAssemblyName == AssemblyName &&
-                    newLanguage == Language &&
-                    newFilepath == FilePath &&
-                    newOutputPath == OutputFilePath &&
-                    newOutputRefPath == OutputRefFilePath &&
-                    newIsSubmission == IsSubmission &&
-                    newHasAllInformation == HasAllInformation)
+                if ((newVersion == Version) &&
+                    (newName == Name) &&
+                    (newAssemblyName == AssemblyName) &&
+                    (newLanguage == Language) &&
+                    (newFilepath == FilePath) &&
+                    (newOutputPath == OutputFilePath) &&
+                    (newOutputRefPath == OutputRefFilePath) &&
+                    (newIsSubmission == IsSubmission) &&
+                    (newHasAllInformation == HasAllInformation))
                 {
                     return this;
                 }

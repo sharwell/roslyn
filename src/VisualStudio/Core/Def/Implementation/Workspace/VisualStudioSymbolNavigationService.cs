@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
 
         public bool TryNavigateToSymbol(ISymbol symbol, Project project, OptionSet options, CancellationToken cancellationToken)
         {
-            if (project == null || symbol == null)
+            if ((project == null) || (symbol == null))
             {
                 return false;
             }
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
             // We don't have a source document, so show the Metadata as Source view in a preview tab.
 
             var metadataLocation = symbol.Locations.Where(loc => loc.IsInMetadata).FirstOrDefault();
-            if (metadataLocation == null || !_metadataAsSourceFileService.IsNavigableMetadataSymbol(symbol))
+            if ((metadataLocation == null) || !_metadataAsSourceFileService.IsNavigableMetadataSymbol(symbol))
             {
                 return false;
             }
@@ -190,7 +190,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                 rqName,
                 out var navigationHandled);
 
-            return returnCode == VSConstants.S_OK && navigationHandled == 1;
+            return (returnCode == VSConstants.S_OK) && (navigationHandled == 1);
         }
 
         public bool WouldNavigateToSymbol(
@@ -245,7 +245,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                 navigateToTextSpan,
                 out var wouldNavigate);
 
-            if (queryNavigateStatusCode == VSConstants.S_OK && wouldNavigate == 1)
+            if ((queryNavigateStatusCode == VSConstants.S_OK) && (wouldNavigate == 1))
             {
                 navigateToHierarchy.GetCanonicalName(navigateToItem, out filePath);
                 lineNumber = navigateToTextSpan[0].iStartLine;

@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (convertedType is null)
             {
-                if (@operator.InfoKind == TupleBinaryOperatorInfoKind.Multiple && expr.Kind == BoundKind.TupleLiteral)
+                if ((@operator.InfoKind == TupleBinaryOperatorInfoKind.Multiple) && (expr.Kind == BoundKind.TupleLiteral))
                 {
                     // Although the tuple will remain typeless, we'll give elements converted types as possible
                     var multiple = (TupleBinaryOperatorInfo.Multiple)@operator;
@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeSymbol leftType = left.Type;
             TypeSymbol rightType = right.Type;
 
-            if ((object)leftType != null && leftType.IsDynamic() || (object)rightType != null && rightType.IsDynamic())
+            if ((((object)leftType != null) && leftType.IsDynamic()) || (((object)rightType != null) && rightType.IsDynamic()))
             {
                 return BindTupleDynamicBinaryOperatorSingleInfo(node, kind, left, right, diagnostics);
             }
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundExpression left, BoundExpression right, DiagnosticBag diagnostics)
         {
             // This method binds binary == and != operators where one or both of the operands are dynamic.
-            Debug.Assert((object)left.Type != null && left.Type.IsDynamic() || (object)right.Type != null && right.Type.IsDynamic());
+            Debug.Assert((((object)left.Type != null) && left.Type.IsDynamic()) || (((object)right.Type != null) && right.Type.IsDynamic()));
 
             bool hasError = false;
             if (!IsLegalDynamicOperand(left) || !IsLegalDynamicOperand(right))
@@ -203,8 +203,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             left = GiveTupleTypeToDefaultLiteralIfNeeded(left, right.Type);
             right = GiveTupleTypeToDefaultLiteralIfNeeded(right, left.Type);
 
-            if ((left.Type is null && left.IsLiteralDefault()) ||
-                (right.Type is null && right.IsLiteralDefault()))
+            if (((left.Type is null) && left.IsLiteralDefault()) ||
+                ((right.Type is null) && right.IsLiteralDefault()))
             {
                 Error(diagnostics, ErrorCode.ERR_AmbigBinaryOps, node, node.OperatorToken.Text, left.Display, right.Display);
                 return TupleBinaryOperatorInfo.Multiple.ErrorInstance;
@@ -212,8 +212,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // Aside from default (which we fixed or ruled out above) and tuple literals,
             // we must have typed expressions at this point
-            Debug.Assert(left.Type != null || left.Kind == BoundKind.TupleLiteral);
-            Debug.Assert(right.Type != null || right.Kind == BoundKind.TupleLiteral);
+            Debug.Assert((left.Type != null) || (left.Kind == BoundKind.TupleLiteral));
+            Debug.Assert((right.Type != null) || (right.Kind == BoundKind.TupleLiteral));
 
             int leftCardinality = GetTupleCardinality(left);
             int rightCardinality = GetTupleCardinality(right);
@@ -279,7 +279,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return;
             }
 
-            Debug.Assert(leftNoNames || rightNoNames || leftNames.Length == rightNames.Length);
+            Debug.Assert(leftNoNames || rightNoNames || (leftNames.Length == rightNames.Length));
 
             ImmutableArray<bool> leftInferred = leftIsTupleLiteral ? ((BoundTupleLiteral)left).InferredNamesOpt : default;
             bool leftNoInferredNames = leftInferred.IsDefault;
@@ -302,8 +302,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 bool leftWasInferred = leftNoInferredNames ? false : leftInferred[i];
                 bool rightWasInferred = rightNoInferredNames ? false : rightInferred[i];
 
-                bool leftComplaint = leftIsTupleLiteral && leftName != null && !leftWasInferred;
-                bool rightComplaint = rightIsTupleLiteral && rightName != null && !rightWasInferred;
+                bool leftComplaint = leftIsTupleLiteral && (leftName != null) && !leftWasInferred;
+                bool rightComplaint = rightIsTupleLiteral && (rightName != null) && !rightWasInferred;
 
                 if (!leftComplaint && !rightComplaint)
                 {
@@ -322,7 +322,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static BoundExpression GiveTupleTypeToDefaultLiteralIfNeeded(BoundExpression expr, TypeSymbol targetType)
         {
-            if (!expr.IsLiteralDefault() || targetType is null)
+            if (!expr.IsLiteralDefault() || (targetType is null))
             {
                 return expr;
             }
@@ -340,7 +340,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false;
             }
 
-            return (GetTupleCardinality(left) > 1 || leftDefault) && (GetTupleCardinality(right) > 1 || rightDefault);
+            return ((GetTupleCardinality(left) > 1) || leftDefault) && ((GetTupleCardinality(right) > 1) || rightDefault);
         }
 
         private static int GetTupleCardinality(BoundExpression expr)

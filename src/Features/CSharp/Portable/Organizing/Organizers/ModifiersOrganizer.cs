@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Organizing.Organizers
     {
         public static SyntaxTokenList Organize(SyntaxTokenList modifiers)
         {
-            if (modifiers.Count > 1 && !modifiers.SpansPreprocessorDirective())
+            if ((modifiers.Count > 1) && !modifiers.SpansPreprocessorDirective())
             {
                 var initialList = new List<SyntaxToken>(modifiers);
                 var leadingTrivia = initialList.First().LeadingTrivia;

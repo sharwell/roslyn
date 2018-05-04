@@ -43,8 +43,8 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         internal bool HasInfoChanged(Document otherDocument)
         {
-            return DocumentState.Info != otherDocument.DocumentState.Info
-                || DocumentState.SourceCodeKind != otherDocument.SourceCodeKind;
+            return (DocumentState.Info != otherDocument.DocumentState.Info)
+                || (DocumentState.SourceCodeKind != otherDocument.SourceCodeKind);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace Microsoft.CodeAnalysis
         public bool TryGetSyntaxRoot(out SyntaxNode root)
         {
             root = null;
-            return this.TryGetSyntaxTree(out var tree) && tree.TryGetRoot(out root) && root != null;
+            return this.TryGetSyntaxTree(out var tree) && tree.TryGetRoot(out root) && (root != null);
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis
         public bool TryGetSemanticModel(out SemanticModel semanticModel)
         {
             semanticModel = null;
-            return _model != null && _model.TryGetTarget(out semanticModel);
+            return (_model != null) && _model.TryGetTarget(out semanticModel);
         }
 
         /// <summary>
@@ -376,7 +376,7 @@ namespace Microsoft.CodeAnalysis
                             textChanges = text.GetTextChanges(oldText).ToList();
 
                             // if changes are significant (not the whole document being replaced) then use these changes
-                            if (textChanges.Count > 1 || (textChanges.Count == 1 && textChanges[0].Span != new TextSpan(0, oldText.Length)))
+                            if ((textChanges.Count > 1) || ((textChanges.Count == 1) && (textChanges[0].Span != new TextSpan(0, oldText.Length))))
                             {
                                 return textChanges;
                             }
@@ -434,7 +434,7 @@ namespace Microsoft.CodeAnalysis
             // background compilation the semantics won't be moving toward completeness.  Also,
             // ensure that the project that this document is part of actually supports compilations,
             // as partial semantics don't make sense otherwise.
-            if (solution.BranchId == workspace.PrimaryBranchId &&
+            if ((solution.BranchId == workspace.PrimaryBranchId) &&
                 workspace.PartialSemanticsEnabled &&
                 this.Project.SupportsCompilation)
             {

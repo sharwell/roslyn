@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 var sourceMethod = this.ContainingSymbol as SourceOrdinaryMethodSymbol;
-                if ((object)sourceMethod != null && sourceMethod.IsPartial)
+                if (((object)sourceMethod != null) && sourceMethod.IsPartial)
                 {
                     var implementingPart = sourceMethod.SourcePartialImplementation;
                     if ((object)implementingPart != null)
@@ -170,12 +170,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         internal virtual CustomAttributesBag<CSharpAttributeData> GetAttributesBag()
         {
-            if (_lazyCustomAttributesBag == null || !_lazyCustomAttributesBag.IsSealed)
+            if ((_lazyCustomAttributesBag == null) || !_lazyCustomAttributesBag.IsSealed)
             {
                 bool lazyAttributesStored = false;
 
                 var sourceMethod = this.ContainingSymbol as SourceOrdinaryMethodSymbol;
-                if ((object)sourceMethod == null || (object)sourceMethod.SourcePartialDefinition == null)
+                if (((object)sourceMethod == null) || ((object)sourceMethod.SourcePartialDefinition == null))
                 {
                     lazyAttributesStored = LoadAndValidateAttributes(
                         OneOrMany.Create(this.MergedAttributeDeclarationSyntaxLists),

@@ -187,7 +187,7 @@ namespace RunTests
 
                 // Our space for saving dump files is limited. Skip dumping for processes that won't contribute
                 // to bug investigations.
-                if (name == "procdump" || name == "conhost")
+                if ((name == "procdump") || (name == "conhost"))
                 {
                     return;
                 }
@@ -293,12 +293,12 @@ namespace RunTests
 
                 // As a starting point we will just schedule the items we know to be a performance
                 // bottleneck.  Can adjust as we get real data.
-                if (name == "Roslyn.Compilers.CSharp.Emit.UnitTests.dll" ||
-                    name == "Roslyn.Services.Editor.UnitTests.dll" ||
-                    name == "Roslyn.Services.Editor.UnitTests2.dll" ||
-                    name == "Roslyn.VisualStudio.Services.UnitTests.dll" ||
-                    name == "Roslyn.Services.Editor.CSharp.UnitTests.dll" ||
-                    name == "Roslyn.Services.Editor.VisualBasic.UnitTests.dll")
+                if ((name == "Roslyn.Compilers.CSharp.Emit.UnitTests.dll") ||
+                    (name == "Roslyn.Services.Editor.UnitTests.dll") ||
+                    (name == "Roslyn.Services.Editor.UnitTests2.dll") ||
+                    (name == "Roslyn.VisualStudio.Services.UnitTests.dll") ||
+                    (name == "Roslyn.Services.Editor.CSharp.UnitTests.dll") ||
+                    (name == "Roslyn.Services.Editor.VisualBasic.UnitTests.dll"))
                 {
                     list.AddRange(scheduler.Schedule(assemblyPath));
                 }

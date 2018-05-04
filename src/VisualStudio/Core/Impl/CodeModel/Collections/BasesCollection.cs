@@ -72,7 +72,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
                 throw Exceptions.ThrowEFail();
             }
 
-            if (symbol.TypeKind == TypeKind.Interface || _interfaces)
+            if ((symbol.TypeKind == TypeKind.Interface) || _interfaces)
             {
                 return symbol.Interfaces;
             }
@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
                     throw Exceptions.ThrowEFail();
                 }
 
-                if (symbol.TypeKind == TypeKind.Interface || _interfaces)
+                if ((symbol.TypeKind == TypeKind.Interface) || _interfaces)
                 {
                     return symbol.Interfaces.Length;
                 }

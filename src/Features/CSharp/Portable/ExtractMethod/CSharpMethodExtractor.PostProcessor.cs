@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                     return false;
                 }
 
-                if (declarationStatement.Modifiers.Count > 0 ||
+                if ((declarationStatement.Modifiers.Count > 0) ||
                     declarationStatement.IsConst ||
                     declarationStatement.IsMissing)
                 {
@@ -184,9 +184,9 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 }
 
                 var semanticInfo = _semanticModel.GetSpeculativeTypeInfo(_contextPosition, declarationStatement.Declaration.Type, SpeculativeBindingOption.BindAsTypeOrNamespace).Type;
-                if (semanticInfo == null ||
-                    semanticInfo.TypeKind == TypeKind.Error ||
-                    semanticInfo.TypeKind == TypeKind.Unknown)
+                if ((semanticInfo == null) ||
+                    (semanticInfo.TypeKind == TypeKind.Error) ||
+                    (semanticInfo.TypeKind == TypeKind.Unknown))
                 {
                     return false;
                 }
@@ -213,8 +213,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 {
                     foreach (var trivia in token.LeadingTrivia.Concat(token.TrailingTrivia))
                     {
-                        if (trivia.Kind() != SyntaxKind.WhitespaceTrivia &&
-                            trivia.Kind() != SyntaxKind.EndOfLineTrivia)
+                        if ((trivia.Kind() != SyntaxKind.WhitespaceTrivia) &&
+                            (trivia.Kind() != SyntaxKind.EndOfLineTrivia))
                         {
                             return false;
                         }
@@ -235,17 +235,17 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
                 var declaration = statements.ElementAtOrDefault(0) as LocalDeclarationStatementSyntax;
                 var returnStatement = statements.ElementAtOrDefault(1) as ReturnStatementSyntax;
-                if (declaration == null || returnStatement == null)
+                if ((declaration == null) || (returnStatement == null))
                 {
                     return statements;
                 }
 
-                if (declaration.Declaration == null ||
-                    declaration.Declaration.Variables.Count != 1 ||
-                    declaration.Declaration.Variables[0].Initializer == null ||
-                    declaration.Declaration.Variables[0].Initializer.Value == null ||
-                    declaration.Declaration.Variables[0].Initializer.Value is StackAllocArrayCreationExpressionSyntax ||
-                    returnStatement.Expression == null)
+                if ((declaration.Declaration == null) ||
+                    (declaration.Declaration.Variables.Count != 1) ||
+                    (declaration.Declaration.Variables[0].Initializer == null) ||
+                    (declaration.Declaration.Variables[0].Initializer.Value == null) ||
+                    (declaration.Declaration.Variables[0].Initializer.Value is StackAllocArrayCreationExpressionSyntax) ||
+                    (returnStatement.Expression == null))
                 {
                     return statements;
                 }
@@ -271,16 +271,16 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 // since it is not a service right now, do very simple clean up
                 var declaration = statements.ElementAtOrDefault(0) as LocalDeclarationStatementSyntax;
                 var assignment = statements.ElementAtOrDefault(1) as ExpressionStatementSyntax;
-                if (declaration == null || assignment == null)
+                if ((declaration == null) || (assignment == null))
                 {
                     return statements;
                 }
 
                 if (ContainsAnyInitialization(declaration) ||
-                    declaration.Declaration == null ||
-                    declaration.Declaration.Variables.Count != 1 ||
-                    assignment.Expression == null ||
-                    assignment.Expression.Kind() != SyntaxKind.SimpleAssignmentExpression)
+                    (declaration.Declaration == null) ||
+                    (declaration.Declaration.Variables.Count != 1) ||
+                    (assignment.Expression == null) ||
+                    (assignment.Expression.Kind() != SyntaxKind.SimpleAssignmentExpression))
                 {
                     return statements;
                 }
@@ -294,9 +294,9 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 var variableName = declaration.Declaration.Variables[0].Identifier.ToString();
 
                 var assignmentExpression = assignment.Expression as AssignmentExpressionSyntax;
-                if (assignmentExpression.Left == null ||
-                    assignmentExpression.Right == null ||
-                    assignmentExpression.Left.ToString() != variableName)
+                if ((assignmentExpression.Left == null) ||
+                    (assignmentExpression.Right == null) ||
+                    (assignmentExpression.Left.ToString() != variableName))
                 {
                     return statements;
                 }

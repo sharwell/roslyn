@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.GenerateConstructorFromMembers
 
             // Only supported on classes/structs.
             var containingType = GetEnclosingNamedType(semanticModel, root, textSpan.Start, cancellationToken);
-            if (containingType?.TypeKind != TypeKind.Class && containingType?.TypeKind != TypeKind.Struct)
+            if ((containingType?.TypeKind != TypeKind.Class) && (containingType?.TypeKind != TypeKind.Struct))
             {
                 return;
             }
@@ -144,7 +144,7 @@ namespace Microsoft.CodeAnalysis.GenerateConstructorFromMembers
                 if (info != null)
                 {
                     var state = State.TryGenerate(this, document, textSpan, info.ContainingType, info.SelectedMembers, cancellationToken);
-                    if (state != null && state.MatchingConstructor == null)
+                    if ((state != null) && (state.MatchingConstructor == null))
                     {
                         return GetCodeActions(document, state, addNullChecks);
                     }

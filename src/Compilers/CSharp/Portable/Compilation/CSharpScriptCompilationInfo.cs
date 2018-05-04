@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal CSharpScriptCompilationInfo(CSharpCompilation previousCompilationOpt, Type returnType, Type globalsType)
             : base(returnType, globalsType)
         {
-            Debug.Assert(previousCompilationOpt == null || previousCompilationOpt.HostObjectType == globalsType);
+            Debug.Assert((previousCompilationOpt == null) || (previousCompilationOpt.HostObjectType == globalsType));
 
             PreviousScriptCompilation = previousCompilationOpt;
         }

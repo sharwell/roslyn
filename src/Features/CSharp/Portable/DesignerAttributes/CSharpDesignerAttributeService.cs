@@ -57,8 +57,8 @@ namespace Microsoft.CodeAnalysis.CSharp.DesignerAttributes
         {
             if (typeNode is ClassDeclarationSyntax classNode)
             {
-                return classNode.AttributeLists.Count > 0 ||
-                    classNode.BaseList != null ||
+                return (classNode.AttributeLists.Count > 0) ||
+                    (classNode.BaseList != null) ||
                     classNode.Modifiers.Any(SyntaxKind.PartialKeyword);
             }
 

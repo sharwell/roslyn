@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal ImmutableArray<CustomModifier> GetEmptyTypeArgumentCustomModifiers(int ordinal)
         {
-            if (ordinal < 0 || ordinal >= Arity)
+            if ((ordinal < 0) || (ordinal >= Arity))
             {
                 throw new System.IndexOutOfRangeException();
             }
@@ -222,7 +222,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             ArrayBuilder<MethodSymbol> operators = ArrayBuilder<MethodSymbol>.GetInstance();
             foreach (MethodSymbol candidate in candidates.OfType<MethodSymbol>())
             {
-                if (candidate.MethodKind == MethodKind.UserDefinedOperator || candidate.MethodKind == MethodKind.Conversion)
+                if ((candidate.MethodKind == MethodKind.UserDefinedOperator) || (candidate.MethodKind == MethodKind.Conversion))
                 {
                     operators.Add(candidate);
                 }
@@ -365,12 +365,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 {
                     var method = (MethodSymbol)member;
                     if (method.IsExtensionMethod &&
-                        ((options & LookupOptions.AllMethodsOnArityZero) != 0 || arity == method.Arity))
+                        (((options & LookupOptions.AllMethodsOnArityZero) != 0) || (arity == method.Arity)))
                     {
                         var thisParam = method.Parameters.First();
 
-                        if ((thisParam.RefKind == RefKind.Ref && !thisParam.Type.IsValueType) ||
-                            (thisParam.RefKind == RefKind.In && thisParam.Type.TypeKind != TypeKind.Struct))
+                        if (((thisParam.RefKind == RefKind.Ref) && !thisParam.Type.IsValueType) ||
+                            ((thisParam.RefKind == RefKind.In) && (thisParam.Type.TypeKind != TypeKind.Struct)))
                         {
                             // For ref and ref-readonly extension methods, receivers need to be of the correct types to be considered in lookup
                             continue;
@@ -396,7 +396,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var kind = TypeKind;
-                return kind != TypeKind.Enum && kind != TypeKind.Struct && kind != TypeKind.Error;
+                return (kind != TypeKind.Enum) && (kind != TypeKind.Struct) && (kind != TypeKind.Error);
             }
         }
 
@@ -410,7 +410,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var kind = TypeKind;
-                return kind == TypeKind.Struct || kind == TypeKind.Enum;
+                return (kind == TypeKind.Struct) || (kind == TypeKind.Enum);
             }
         }
 
@@ -693,8 +693,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             var thisOriginalDefinition = this.OriginalDefinition;
             var otherOriginalDefinition = other.OriginalDefinition;
 
-            if (((object)this == (object)thisOriginalDefinition || (object)other == (object)otherOriginalDefinition) &&
-                !((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) != 0 && (this.HasTypeArgumentsCustomModifiers || other.HasTypeArgumentsCustomModifiers)))
+            if ((((object)this == (object)thisOriginalDefinition) || ((object)other == (object)otherOriginalDefinition)) &&
+                !(((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) != 0) && (this.HasTypeArgumentsCustomModifiers || other.HasTypeArgumentsCustomModifiers)))
             {
                 return false;
             }
@@ -718,7 +718,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         private bool EqualsComplicatedCases(NamedTypeSymbol other, TypeCompareKind comparison)
         {
-            if ((object)this.ContainingType != null &&
+            if (((object)this.ContainingType != null) &&
                 !this.ContainingType.Equals(other.ContainingType, comparison))
             {
                 return false;
@@ -738,15 +738,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             if (((thisIsNotConstructed || otherIsNotConstructed) &&
-                 !((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) != 0 && (this.HasTypeArgumentsCustomModifiers || other.HasTypeArgumentsCustomModifiers))) ||
-                this.IsUnboundGenericType != other.IsUnboundGenericType)
+                 !(((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) != 0) && (this.HasTypeArgumentsCustomModifiers || other.HasTypeArgumentsCustomModifiers))) ||
+                (this.IsUnboundGenericType != other.IsUnboundGenericType))
             {
                 return false;
             }
 
             bool hasTypeArgumentsCustomModifiers = this.HasTypeArgumentsCustomModifiers;
 
-            if ((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) == 0 && hasTypeArgumentsCustomModifiers != other.HasTypeArgumentsCustomModifiers)
+            if (((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) == 0) && (hasTypeArgumentsCustomModifiers != other.HasTypeArgumentsCustomModifiers))
             {
                 return false;
             }
@@ -763,7 +763,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 if (!typeArguments[i].Equals(otherTypeArguments[i], comparison)) return false;
             }
 
-            if ((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) == 0 && hasTypeArgumentsCustomModifiers)
+            if (((comparison & TypeCompareKind.IgnoreCustomModifiersAndArraySizesAndLowerBounds) == 0) && hasTypeArgumentsCustomModifiers)
             {
                 Debug.Assert(other.HasTypeArgumentsCustomModifiers);
 
@@ -833,7 +833,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal static readonly Func<TypeWithModifiers, bool> TypeSymbolIsNullFunction = type => (object)type.Type == null;
 
-        internal static readonly Func<TypeWithModifiers, bool> TypeSymbolIsErrorType = type => (object)type.Type != null && type.Type.IsErrorType();
+        internal static readonly Func<TypeWithModifiers, bool> TypeSymbolIsErrorType = type => ((object)type.Type != null) && type.Type.IsErrorType();
 
         internal NamedTypeSymbol ConstructWithoutModifiers(ImmutableArray<TypeSymbol> arguments, bool unbound)
         {
@@ -863,7 +863,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal NamedTypeSymbol Construct(ImmutableArray<TypeWithModifiers> arguments, bool unbound)
         {
-            if (!ReferenceEquals(this, ConstructedFrom) || this.Arity == 0)
+            if (!ReferenceEquals(this, ConstructedFrom) || (this.Arity == 0))
             {
                 throw new InvalidOperationException();
             }
@@ -1104,7 +1104,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             while ((object)@base != null)
             {
-                if (@base.IsErrorType() && @base is NoPiaIllegalGenericInstantiationSymbol)
+                if (@base.IsErrorType() && (@base is NoPiaIllegalGenericInstantiationSymbol))
                 {
                     return @base.GetUseSiteDiagnostic();
                 }
@@ -1138,7 +1138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // being reported twice if Goo is bad.
 
             var @base = this.BaseTypeNoUseSiteDiagnostics;
-            if ((object)@base != null && @base.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
+            if (((object)@base != null) && @base.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes))
             {
                 return true;
             }
@@ -1310,19 +1310,19 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             // Should this be optimized for perf (caching for VT<0> to VT<7>, etc.)?
             if (!IsUnboundGenericType &&
-                ContainingSymbol?.Kind == SymbolKind.Namespace &&
-                ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true &&
-                Name == TupleTypeSymbol.TupleTypeName &&
-                ContainingNamespace.Name == MetadataHelpers.SystemString)
+                (ContainingSymbol?.Kind == SymbolKind.Namespace) &&
+                (ContainingNamespace.ContainingNamespace?.IsGlobalNamespace == true) &&
+                (Name == TupleTypeSymbol.TupleTypeName) &&
+                (ContainingNamespace.Name == MetadataHelpers.SystemString))
             {
                 int arity = Arity;
 
-                if (arity > 0 && arity < TupleTypeSymbol.RestPosition)
+                if ((arity > 0) && (arity < TupleTypeSymbol.RestPosition))
                 {
                     tupleCardinality = arity;
                     return true;
                 }
-                else if (arity == TupleTypeSymbol.RestPosition && !IsDefinition)
+                else if ((arity == TupleTypeSymbol.RestPosition) && !IsDefinition)
                 {
                     // Skip through "Rest" extensions
                     TypeSymbol typeToCheck = this;
@@ -1333,24 +1333,24 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         levelsOfNesting++;
                         typeToCheck = ((NamedTypeSymbol)typeToCheck).TypeArgumentsNoUseSiteDiagnostics[TupleTypeSymbol.RestPosition - 1];
                     }
-                    while (typeToCheck.OriginalDefinition == this.OriginalDefinition && !typeToCheck.IsDefinition);
+                    while ((typeToCheck.OriginalDefinition == this.OriginalDefinition) && !typeToCheck.IsDefinition);
 
                     if (typeToCheck.IsTupleType)
                     {
                         var underlying = typeToCheck.TupleUnderlyingType;
-                        if (underlying.Arity == TupleTypeSymbol.RestPosition && underlying.OriginalDefinition != this.OriginalDefinition)
+                        if ((underlying.Arity == TupleTypeSymbol.RestPosition) && (underlying.OriginalDefinition != this.OriginalDefinition))
                         {
                             tupleCardinality = 0;
                             return false;
                         }
 
-                        tupleCardinality = (TupleTypeSymbol.RestPosition - 1) * levelsOfNesting + typeToCheck.TupleElementTypes.Length;
+                        tupleCardinality = ((TupleTypeSymbol.RestPosition - 1) * levelsOfNesting) + typeToCheck.TupleElementTypes.Length;
                         return true;
                     }
 
                     arity = (typeToCheck as NamedTypeSymbol)?.Arity ?? 0;
 
-                    if (arity > 0 && arity < TupleTypeSymbol.RestPosition && typeToCheck.IsTupleCompatible(out tupleCardinality))
+                    if ((arity > 0) && (arity < TupleTypeSymbol.RestPosition) && typeToCheck.IsTupleCompatible(out tupleCardinality))
                     {
                         Debug.Assert(tupleCardinality < TupleTypeSymbol.RestPosition);
                         tupleCardinality += (TupleTypeSymbol.RestPosition - 1) * levelsOfNesting;

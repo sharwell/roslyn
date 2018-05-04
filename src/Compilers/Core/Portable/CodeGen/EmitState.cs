@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 }
                 private set
                 {
-                    Debug.Assert(value >= 0 && value <= ushort.MaxValue);
+                    Debug.Assert((value >= 0) && (value <= ushort.MaxValue));
                     _maxStack = value;
                 }
             }
@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 }
                 private set
                 {
-                    Debug.Assert(value >= 0 && value <= ushort.MaxValue);
+                    Debug.Assert((value >= 0) && (value <= ushort.MaxValue));
                     _curStack = value;
                 }
             }

@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             Accessibility defaultAccessibility)
         {
             options = options ?? CodeGenerationOptions.Default;
-            if (!options.GenerateDefaultAccessibility && accessibility == defaultAccessibility)
+            if (!options.GenerateDefaultAccessibility && (accessibility == defaultAccessibility))
             {
                 return;
             }
@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             if (token.IsVerbatimStringLiteral())
             {
                 var tokenText = token.ToString();
-                if (tokenText.Length <= 2 || tokenText.Last() != '"')
+                if ((tokenText.Length <= 2) || (tokenText.Last() != '"'))
                 {
                     tokenText += '"';
                     return SyntaxFactory.Literal(token.LeadingTrivia, tokenText, token.ValueText, token.TrailingTrivia);
@@ -127,7 +127,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             else if (token.IsRegularStringLiteral())
             {
                 var tokenText = token.ToString();
-                if (tokenText.Length <= 1 || tokenText.Last() != '"')
+                if ((tokenText.Length <= 1) || (tokenText.Last() != '"'))
                 {
                     tokenText += '"';
                     return SyntaxFactory.Literal(token.LeadingTrivia, tokenText, token.ValueText, token.TrailingTrivia);
@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
 
         public static MemberDeclarationSyntax LastOperator(SyntaxList<MemberDeclarationSyntax> members)
         {
-            return members.LastOrDefault(m => m is OperatorDeclarationSyntax || m is ConversionOperatorDeclarationSyntax);
+            return members.LastOrDefault(m => (m is OperatorDeclarationSyntax) || (m is ConversionOperatorDeclarationSyntax));
         }
 
         public static SyntaxList<TDeclaration> Insert<TDeclaration>(
@@ -187,7 +187,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 availableIndices.Insert(index, true);
             }
 
-            if (index != 0 && declarationList[index - 1].ContainsDiagnostics && AreBracesMissing(declarationList[index - 1]))
+            if ((index != 0) && declarationList[index - 1].ContainsDiagnostics && AreBracesMissing(declarationList[index - 1]))
             {
                 return declarationList.Insert(index, declaration.WithLeadingTrivia(SyntaxFactory.ElasticCarriageReturnLineFeed));
             }
@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
         {
             var contextLocation = location as Location;
 
-            var contextTree = contextLocation != null && contextLocation.IsInSource
+            var contextTree = (contextLocation != null) && contextLocation.IsInSource
                 ? contextLocation.SourceTree
                 : null;
 

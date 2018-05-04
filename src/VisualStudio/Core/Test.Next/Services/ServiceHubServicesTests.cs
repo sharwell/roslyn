@@ -450,7 +450,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
         private static void SetEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual)
         {
             var expectedSet = new HashSet<T>(expected);
-            var result = expected.Count() == actual.Count() && expectedSet.SetEquals(actual);
+            var result = (expected.Count() == actual.Count()) && expectedSet.SetEquals(actual);
             if (!result)
             {
                 Assert.True(result);

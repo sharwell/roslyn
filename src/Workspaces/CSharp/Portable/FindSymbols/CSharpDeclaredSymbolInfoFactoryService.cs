@@ -486,7 +486,7 @@ namespace Microsoft.CodeAnalysis.CSharp.FindSymbols
             => name.Identifier.ValueText;
 
         private bool IsExtensionMethod(MethodDeclarationSyntax method)
-            => method.ParameterList.Parameters.Count > 0 &&
+            => (method.ParameterList.Parameters.Count > 0) &&
                method.ParameterList.Parameters[0].Modifiers.Any(SyntaxKind.ThisKeyword);
     }
 }

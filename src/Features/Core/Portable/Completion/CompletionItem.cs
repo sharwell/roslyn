@@ -148,13 +148,13 @@ namespace Microsoft.CodeAnalysis.Completion
             var newTags = tags.HasValue ? tags.Value : this.Tags;
             var newRules = rules.HasValue ? rules.Value : this.Rules;
 
-            if (newSpan == this.Span &&
-                newDisplayText == this.DisplayText &&
-                newFilterText == this.FilterText &&
-                newSortText == this.SortText &&
-                newProperties == this.Properties &&
-                newTags == this.Tags &&
-                newRules == this.Rules)
+            if ((newSpan == this.Span) &&
+                (newDisplayText == this.DisplayText) &&
+                (newFilterText == this.FilterText) &&
+                (newSortText == this.SortText) &&
+                (newProperties == this.Properties) &&
+                (newTags == this.Tags) &&
+                (newRules == this.Rules))
             {
                 return this;
             }

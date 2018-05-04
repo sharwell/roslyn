@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
             IList<ITypeSymbol> parameterTypes)
         {
             var symbol = symbolInfo.Symbol as IMethodSymbol;
-            if (symbol == null && symbolInfo.CandidateSymbols.Length == 1)
+            if ((symbol == null) && (symbolInfo.CandidateSymbols.Length == 1))
             {
                 // Even though the symbol info has a non-viable candidate symbol, we are trying 
                 // to speculate a base constructor invocation from a different position then 
@@ -30,8 +30,8 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
                 // the parameter types we have to the constructor parameter types.  This way we
                 // don't accidentally think we delegate to a constructor in an abstract base class
                 // when the parameter types don't match.
-                if (symbolInfo.CandidateReason == CandidateReason.Inaccessible ||
-                    (symbolInfo.CandidateReason == CandidateReason.NotCreatable && containingType.IsAbstract))
+                if ((symbolInfo.CandidateReason == CandidateReason.Inaccessible) ||
+                    ((symbolInfo.CandidateReason == CandidateReason.NotCreatable) && containingType.IsAbstract))
                 {
                     var method = symbolInfo.CandidateSymbols.Single() as IMethodSymbol;
                     if (ParameterTypesMatch(document, parameterTypes, method))
@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
                 }
             }
 
-            if (symbol != null && candidateInstanceConstructors.Contains(symbol))
+            if ((symbol != null) && candidateInstanceConstructors.Contains(symbol))
             {
                 return symbol;
             }

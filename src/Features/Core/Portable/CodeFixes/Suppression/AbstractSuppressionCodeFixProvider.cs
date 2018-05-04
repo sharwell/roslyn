@@ -132,7 +132,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
             {
                 var compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
                 var suppressMessageAttribute = compilation.SuppressMessageAttributeType();
-                skipSuppressMessage = suppressMessageAttribute == null || !suppressMessageAttribute.IsAttribute();
+                skipSuppressMessage = (suppressMessageAttribute == null) || !suppressMessageAttribute.IsAttribute();
             }
 
             var result = ArrayBuilder<CodeFix>.GetInstance();
@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
                 if (!diagnostic.IsSuppressed)
                 {
                     var nestedActions = ArrayBuilder<NestedSuppressionCodeAction>.GetInstance();
-                    if (diagnostic.Location.IsInSource && documentOpt != null)
+                    if (diagnostic.Location.IsInSource && (documentOpt != null))
                     {
                         // pragma warning disable.
                         nestedActions.Add(PragmaWarningCodeAction.Create(suppressionTargetInfo, documentOpt, diagnostic, this));

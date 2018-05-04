@@ -131,8 +131,8 @@ namespace Roslyn.VisualStudio.IntegrationTests
 
             public virtual uint RetryRejectedCall(IntPtr htaskCallee, uint dwTickCount, uint dwRejectType)
             {
-                if ((SERVERCALL)dwRejectType != SERVERCALL.SERVERCALL_RETRYLATER
-                    && (SERVERCALL)dwRejectType != SERVERCALL.SERVERCALL_REJECTED)
+                if (((SERVERCALL)dwRejectType != SERVERCALL.SERVERCALL_RETRYLATER)
+                    && ((SERVERCALL)dwRejectType != SERVERCALL.SERVERCALL_REJECTED))
                 {
                     return CancelCall;
                 }

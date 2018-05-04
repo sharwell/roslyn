@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.GenerateConstructorFromMembers
                 this.SelectedMembers = selectedMembers;
                 this.ContainingType = containingType;
                 this.TextSpan = textSpan;
-                if (this.ContainingType == null || this.ContainingType.TypeKind == TypeKind.Interface)
+                if ((this.ContainingType == null) || (this.ContainingType.TypeKind == TypeKind.Interface))
                 {
                     return false;
                 }

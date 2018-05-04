@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.UseNamedArguments
 
                 var position = context.Span.Start;
                 var token = root.FindToken(position);
-                if (token.Span.Start == position &&
+                if ((token.Span.Start == position) &&
                     IsCloseParenOrComma(token))
                 {
                     token = token.GetPreviousToken();
@@ -125,7 +125,7 @@ namespace Microsoft.CodeAnalysis.UseNamedArguments
                 var argumentName = parameters[argumentIndex].Name;
 
                 if (this.SupportsNonTrailingNamedArguments(root.SyntaxTree.Options) &&
-                    argumentIndex < argumentCount - 1)
+                    (argumentIndex < (argumentCount - 1)))
                 {
                     context.RegisterRefactoring(
                         new MyCodeAction(
@@ -176,12 +176,12 @@ namespace Microsoft.CodeAnalysis.UseNamedArguments
 
                 bool ShouldAddName(TBaseArgumentSyntax argument, int currentIndex)
                 {
-                    if (currentIndex > index && !includingTrailingArguments)
+                    if ((currentIndex > index) && !includingTrailingArguments)
                     {
                         return false;
                     }
 
-                    return currentIndex >= index && argument is TSimpleArgumentSyntax s && IsPositionalArgument(s);
+                    return (currentIndex >= index) && argument is TSimpleArgumentSyntax s && IsPositionalArgument(s);
                 }
             }
 

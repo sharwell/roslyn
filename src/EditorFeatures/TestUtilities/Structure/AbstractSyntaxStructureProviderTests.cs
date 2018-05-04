@@ -86,8 +86,8 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Structure
             var autoCollapse = regionData.Item4;
             var isDefaultCollapsed = regionData.Item5;
 
-            Assert.True(spans.ContainsKey(textSpanName) && spans[textSpanName].Length == 1, $"Test did not specify '{textSpanName}' span.");
-            Assert.True(spans.ContainsKey(hintSpanName) && spans[hintSpanName].Length == 1, $"Test did not specify '{hintSpanName}' span.");
+            Assert.True(spans.ContainsKey(textSpanName) && (spans[textSpanName].Length == 1), $"Test did not specify '{textSpanName}' span.");
+            Assert.True(spans.ContainsKey(hintSpanName) && (spans[hintSpanName].Length == 1), $"Test did not specify '{hintSpanName}' span.");
 
             var textSpan = spans[textSpanName][0];
             var hintSpan = spans[hintSpanName][0];

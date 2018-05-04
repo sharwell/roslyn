@@ -201,7 +201,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
         /// </summary>
         public static void KillProcess(Process process)
         {
-            if (process != null && !process.HasExited)
+            if ((process != null) && !process.HasExited)
             {
                 process.Kill();
             }
@@ -235,7 +235,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
             try
             {
                 // No need to re-attach threads in case when VS initializaed an UI thread for a debugged application.
-                if (!skipAttachingThread && activeThreadId != currentThreadId)
+                if (!skipAttachingThread && (activeThreadId != currentThreadId))
                 {
                     // Attach the thread inputs so that 'SetActiveWindow' and 'SetFocus' work
                     threadInputsAttached = AttachThreadInput(currentThreadId, activeThreadId);
@@ -317,7 +317,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
             var isUnicode = (input.dwFlags & NativeMethods.KEYEVENTF_UNICODE) != 0;
             var isScanCode = (input.dwFlags & NativeMethods.KEYEVENTF_SCANCODE) != 0;
 
-            if (isUnicode && input.wVk != 0)
+            if (isUnicode && (input.wVk != 0))
             {
                 Debug.WriteLine("UNEXPECTED: if KEYEVENTF_UNICODE flag is specified then wVk must be 0.");
                 return;
@@ -343,7 +343,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
             builder.Append(' ');
             AppendPrintableChar(ch, builder);
 
-            if (!isUnicode && !isScanCode && input.wVk <= byte.MaxValue)
+            if (!isUnicode && !isScanCode && (input.wVk <= byte.MaxValue))
             {
                 AppendVirtualKey((byte)input.wVk, builder);
             }
@@ -431,7 +431,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
         [Conditional("DEBUG")]
         private static void AppendFlag(string flagText, StringBuilder builder)
         {
-            if (builder.Length > 0 && builder[builder.Length - 1] != '[')
+            if ((builder.Length > 0) && (builder[builder.Length - 1] != '['))
             {
                 builder.Append(", ");
             }
@@ -491,7 +491,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
                 }
 
                 if (displayNameParts[0].StartsWith("!VisualStudio.DTE", StringComparison.OrdinalIgnoreCase) &&
-                    displayNameProcessId == process.Id)
+                    (displayNameProcessId == process.Id))
                 {
                     runningObjectTable.GetObject(moniker, out dte);
                 }

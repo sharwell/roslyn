@@ -58,7 +58,7 @@ namespace Roslyn.Utilities
             illegalChar = null;
             while (i < commandLine.Length)
             {
-                while (i < commandLine.Length && char.IsWhiteSpace(commandLine[i]))
+                while ((i < commandLine.Length) && char.IsWhiteSpace(commandLine[i]))
                 {
                     i++;
                 }
@@ -68,14 +68,14 @@ namespace Roslyn.Utilities
                     break;
                 }
 
-                if (commandLine[i] == '#' && removeHashComments)
+                if ((commandLine[i] == '#') && removeHashComments)
                 {
                     break;
                 }
 
                 var quoteCount = 0;
                 builder.Length = 0;
-                while (i < commandLine.Length && (!char.IsWhiteSpace(commandLine[i]) || (quoteCount % 2 != 0)))
+                while ((i < commandLine.Length) && (!char.IsWhiteSpace(commandLine[i]) || ((quoteCount % 2) != 0)))
                 {
                     var current = commandLine[i];
                     switch (current)
@@ -88,17 +88,17 @@ namespace Roslyn.Utilities
                                     builder.Append(commandLine[i]);
                                     i++;
                                     slashCount++;
-                                } while (i < commandLine.Length && commandLine[i] == '\\');
+                                } while ((i < commandLine.Length) && (commandLine[i] == '\\'));
 
                                 // Slashes not followed by a quote character can be ignored for now
-                                if (i >= commandLine.Length || commandLine[i] != '"')
+                                if ((i >= commandLine.Length) || (commandLine[i] != '"'))
                                 {
                                     break;
                                 }
 
                                 // If there is an odd number of slashes then it is escaping the quote
                                 // otherwise it is just a quote.
-                                if (slashCount % 2 == 0)
+                                if ((slashCount % 2) == 0)
                                 {
                                     quoteCount++;
                                 }
@@ -115,7 +115,7 @@ namespace Roslyn.Utilities
                             break;
 
                         default:
-                            if ((current >= 0x1 && current <= 0x1f) || current == '|')
+                            if (((current >= 0x1) && (current <= 0x1f)) || (current == '|'))
                             {
                                 if (illegalChar == null)
                                 {
@@ -134,7 +134,7 @@ namespace Roslyn.Utilities
 
                 // If the quote string is surrounded by quotes with no interior quotes then 
                 // remove the quotes here. 
-                if (quoteCount == 2 && builder[0] == '"' && builder[builder.Length - 1] == '"')
+                if ((quoteCount == 2) && (builder[0] == '"') && (builder[builder.Length - 1] == '"'))
                 {
                     builder.Remove(0, length: 1);
                     builder.Remove(builder.Length - 1, length: 1);

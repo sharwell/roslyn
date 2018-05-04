@@ -14,7 +14,7 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
         {
             Contract.ThrowIfFalse(option.IsMaskOn(IndentBlockOption.PositionMask));
 
-            Contract.ThrowIfTrue(textSpan.Start < 0 || textSpan.Length < 0);
+            Contract.ThrowIfTrue((textSpan.Start < 0) || (textSpan.Length < 0));
             Contract.ThrowIfTrue(startToken.RawKind == 0);
             Contract.ThrowIfTrue(endToken.RawKind == 0);
 
@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
             Contract.ThrowIfFalse(option.IsMaskOn(IndentBlockOption.RelativePositionMask));
             Contract.ThrowIfFalse(baseToken.Span.End <= textSpan.Start);
 
-            Contract.ThrowIfTrue(textSpan.Start < 0 || textSpan.Length < 0);
+            Contract.ThrowIfTrue((textSpan.Start < 0) || (textSpan.Length < 0));
             Contract.ThrowIfTrue(startToken.RawKind == 0);
             Contract.ThrowIfTrue(endToken.RawKind == 0);
 

@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
         {
             var q = from u in namespaceDeclaration.Usings
                     let symbol = semanticModel.GetSymbolInfo(u.Name, cancellationToken).Symbol as INamespaceSymbol
-                    where symbol != null && !symbol.IsGlobalNamespace
+                    where (symbol != null) && !symbol.IsGlobalNamespace
                     select symbol;
 
             var usingImports = q.ToList();
@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
         {
             var q = from u in compilationUnit.Usings
                     let symbol = semanticModel.GetSymbolInfo(u.Name, cancellationToken).Symbol as INamespaceSymbol
-                    where symbol != null && !symbol.IsGlobalNamespace
+                    where (symbol != null) && !symbol.IsGlobalNamespace
                     select symbol;
 
             return q.ToList();

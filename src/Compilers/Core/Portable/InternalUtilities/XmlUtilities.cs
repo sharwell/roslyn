@@ -39,7 +39,7 @@ namespace Roslyn.Utilities
 
             // We also need to preserve line position annotations for all attributes
             // since we report errors with attribute locations.
-            if (copyAttributeAnnotations && node.NodeType == XmlNodeType.Element)
+            if (copyAttributeAnnotations && (node.NodeType == XmlNodeType.Element))
             {
                 var sourceElement = (XElement)(object)node;
                 var targetElement = (XElement)copy;

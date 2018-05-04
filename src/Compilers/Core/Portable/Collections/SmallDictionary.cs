@@ -532,7 +532,7 @@ namespace Microsoft.CodeAnalysis
                         return true;
                     }
 
-                    if (_stack == null || _stack.Count == 0)
+                    if ((_stack == null) || (_stack.Count == 0))
                     {
                         return false;
                     }
@@ -649,7 +649,7 @@ namespace Microsoft.CodeAnalysis
                         return true;
                     }
 
-                    if (_stack == null || _stack.Count == 0)
+                    if ((_stack == null) || (_stack.Count == 0))
                     {
                         return false;
                     }
@@ -755,7 +755,7 @@ namespace Microsoft.CodeAnalysis
                     return true;
                 }
 
-                if (_stack == null || _stack.Count == 0)
+                if ((_stack == null) || (_stack.Count == 0))
                 {
                     return false;
                 }
@@ -833,7 +833,7 @@ namespace Microsoft.CodeAnalysis
                 cur = cur.Left;
             }
 
-            h = h + h / 2;
+            h = h + (h / 2);
             return h;
         }
     }

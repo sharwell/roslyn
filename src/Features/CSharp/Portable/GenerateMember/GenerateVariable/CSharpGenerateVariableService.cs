@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateVariable
             {
                 var semanticModel = document.SemanticModel;
                 propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken) as IPropertySymbol;
-                if (propertySymbol != null && !propertySymbol.ExplicitInterfaceImplementations.Any())
+                if ((propertySymbol != null) && !propertySymbol.ExplicitInterfaceImplementations.Any())
                 {
                     var info = semanticModel.GetTypeInfo(propertyDeclaration.ExplicitInterfaceSpecifier.Name, cancellationToken);
                     typeToGenerateIn = info.Type as INamedTypeSymbol;
@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateVariable
             out SyntaxToken identifierToken, out ExpressionSyntax simpleNameOrMemberAccessExpression, out bool isInExecutableBlock, out bool isConditionalAccessExpression)
         {
             identifierToken = identifierName.Identifier;
-            if (identifierToken.ValueText != string.Empty &&
+            if ((identifierToken.ValueText != string.Empty) &&
                 !identifierName.IsVar &&
                 !IsProbablyGeneric(identifierName, cancellationToken))
             {
@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateVariable
                 }
 
                 var block = identifierName.GetAncestor<BlockSyntax>();
-                isInExecutableBlock = block != null && !block.OverlapsHiddenPosition(cancellationToken);
+                isInExecutableBlock = (block != null) && !block.OverlapsHiddenPosition(cancellationToken);
                 isConditionalAccessExpression = conditionalMemberAccess != null;
                 return true;
             }

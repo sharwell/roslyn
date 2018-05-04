@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
         /// </summary>
         public CancellationToken CancellationToken => _aggregateCancellationTokenSource.Token;
 
-        public bool SearchCapReached => SearchCap != 0 && ReferencesCount > SearchCap;
+        public bool SearchCapReached => (SearchCap != 0) && (ReferencesCount > SearchCap);
 
         public int ReferencesCount => _locations.Count;
 
@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
         private static bool FilterDefinition(ISymbol definition)
         {
             return definition.IsImplicitlyDeclared ||
-                   (definition as IMethodSymbol)?.AssociatedSymbol != null;
+                   ((definition as IMethodSymbol)?.AssociatedSymbol != null);
         }
 
         // Returns partial symbol locations whose node does not match the queried syntaxNode
@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
             // Returns nodes from source not equal to actual location
             return from syntaxReference in symbol.DeclaringSyntaxReferences
                    let candidateSyntaxNode = syntaxReference.GetSyntax(cancellationToken)
-                   where !(_queriedNode.Span == candidateSyntaxNode.Span &&
+                   where !((_queriedNode.Span == candidateSyntaxNode.Span) &&
                            _queriedNode.SyntaxTree.FilePath.Equals(candidateSyntaxNode.SyntaxTree.FilePath,
                                StringComparison.OrdinalIgnoreCase))
                    select candidateSyntaxNode.GetLocation();
@@ -125,8 +125,8 @@ namespace Microsoft.CodeAnalysis.CodeLens
             // FindRefs treats a constructor invocation as a reference to the constructor symbol and to the named type symbol that defines it.
             // While we need to count the cascaded symbol definition from the named type to its constructor, we should not double count the
             // reference location for the invocation while computing references count for the named type symbol. 
-            var isImplicitReference = _queriedSymbol.Kind == SymbolKind.NamedType &&
-                                      (definition as IMethodSymbol)?.MethodKind == MethodKind.Constructor;
+            var isImplicitReference = (_queriedSymbol.Kind == SymbolKind.NamedType) &&
+                                      ((definition as IMethodSymbol)?.MethodKind == MethodKind.Constructor);
             return isImplicitlyDeclared ||
                    isImplicitReference ||
                    !reference.Location.IsInSource ||

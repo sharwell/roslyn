@@ -42,12 +42,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 #endif
 
-            if (_lazySpecialTypes == null || (object)_lazySpecialTypes[(int)type] == null)
+            if ((_lazySpecialTypes == null) || ((object)_lazySpecialTypes[(int)type] == null))
             {
                 MetadataTypeName emittedName = MetadataTypeName.FromFullName(type.GetMetadataName(), useCLSCompliantNameArityEncoding: true);
                 ModuleSymbol module = this.Modules[0];
                 NamedTypeSymbol result = module.LookupTopLevelMetadataType(ref emittedName);
-                if (result.Kind != SymbolKind.ErrorType && result.DeclaredAccessibility != Accessibility.Public)
+                if ((result.Kind != SymbolKind.ErrorType) && (result.DeclaredAccessibility != Accessibility.Public))
                 {
                     result = new MissingMetadataTypeSymbol.TopLevel(module, ref emittedName, type);
                 }
@@ -78,13 +78,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((object)Interlocked.CompareExchange(ref _lazySpecialTypes[(int)typeId], corType, null) != null)
             {
                 Debug.Assert(ReferenceEquals(corType, _lazySpecialTypes[(int)typeId]) ||
-                                        (corType.Kind == SymbolKind.ErrorType &&
-                                        _lazySpecialTypes[(int)typeId].Kind == SymbolKind.ErrorType));
+                                        ((corType.Kind == SymbolKind.ErrorType) &&
+                                        (_lazySpecialTypes[(int)typeId].Kind == SymbolKind.ErrorType)));
             }
             else
             {
                 Interlocked.Increment(ref _cachedSpecialTypes);
-                Debug.Assert(_cachedSpecialTypes > 0 && _cachedSpecialTypes <= (int)SpecialType.Count);
+                Debug.Assert((_cachedSpecialTypes > 0) && (_cachedSpecialTypes <= (int)SpecialType.Count));
             }
         }
 
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                return ReferenceEquals(this.CorLibrary, this) && _cachedSpecialTypes < (int)SpecialType.Count;
+                return ReferenceEquals(this.CorLibrary, this) && (_cachedSpecialTypes < (int)SpecialType.Count);
             }
         }
 
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 #endif
 
-            if (_lazySpecialTypeMembers == null || ReferenceEquals(_lazySpecialTypeMembers[(int)member], ErrorTypeSymbol.UnknownResultType))
+            if ((_lazySpecialTypeMembers == null) || ReferenceEquals(_lazySpecialTypeMembers[(int)member], ErrorTypeSymbol.UnknownResultType))
             {
                 if (_lazySpecialTypeMembers == null)
                 {
@@ -199,7 +199,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             //EDMAURER look for one that works, if none work, then return the failure for the last one examined.
             foreach (var key in publicKeys)
             {
-                if (result == IVTConclusion.Match || result == IVTConclusion.OneSignedOneNot)
+                if ((result == IVTConclusion.Match) || (result == IVTConclusion.OneSignedOneNot))
                 {
                     break;
                 }

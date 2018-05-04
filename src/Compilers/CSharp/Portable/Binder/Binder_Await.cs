@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var call = (BoundCall)expression;
 
             // First check if the target method is async.
-            if ((object)call.Method != null && call.Method.IsAsync)
+            if (((object)call.Method != null) && call.Method.IsAsync)
             {
                 return true;
             }
@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // Finally, if we're in an async method, and the expression could be awaited, report that it is instead discarded.
             var containingMethod = this.ContainingMemberOrLambda as MethodSymbol;
-            if ((object)containingMethod == null || !containingMethod.IsAsync)
+            if (((object)containingMethod == null) || !containingMethod.IsAsync)
             {
                 return false;
             }
@@ -188,13 +188,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return true;
             }
             else if (this.Flags.Includes(BinderFlags.InFinallyBlock) &&
-                (node.SyntaxTree as CSharpSyntaxTree)?.Options?.IsFeatureEnabled(MessageID.IDS_AwaitInCatchAndFinally) == false)
+                ((node.SyntaxTree as CSharpSyntaxTree)?.Options?.IsFeatureEnabled(MessageID.IDS_AwaitInCatchAndFinally) == false))
             {
                 Error(diagnostics, ErrorCode.ERR_BadAwaitInFinally, node);
                 return true;
             }
             else if (this.Flags.Includes(BinderFlags.InCatchBlock) &&
-                (node.SyntaxTree as CSharpSyntaxTree)?.Options?.IsFeatureEnabled(MessageID.IDS_AwaitInCatchAndFinally) == false)
+                ((node.SyntaxTree as CSharpSyntaxTree)?.Options?.IsFeatureEnabled(MessageID.IDS_AwaitInCatchAndFinally) == false))
             {
                 Error(diagnostics, ErrorCode.ERR_BadAwaitInCatch, node);
                 return true;
@@ -303,7 +303,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             getAwaiterMethod = ((BoundCall)getAwaiterCall).Method;
-            if (getAwaiterMethod is ErrorMethodSymbol ||
+            if ((getAwaiterMethod is ErrorMethodSymbol) ||
                 HasOptionalOrVariableParameters(getAwaiterMethod) || // We might have been able to resolve a GetAwaiter overload with optional parameters, so check for that here
                 getAwaiterMethod.ReturnsVoid) // If GetAwaiter returns void, don't bother checking that it returns an Awaiter.
             {

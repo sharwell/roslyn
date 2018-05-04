@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
                 ? formattingService.GetFormattingChangesOnReturnAsync(document, position, cancellationToken).WaitAndGetResult(cancellationToken)
                 : formattingService.GetFormattingChangesAsync(document, typedChar, position, cancellationToken).WaitAndGetResult(cancellationToken);
 
-            if (changes == null || changes.Count == 0)
+            if ((changes == null) || (changes.Count == 0))
             {
                 return false;
             }

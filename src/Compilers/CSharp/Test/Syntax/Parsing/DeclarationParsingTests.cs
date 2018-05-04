@@ -4227,7 +4227,7 @@ class Class1<T>{
 
         private void TestClassPropertyWithValue(SyntaxKind accessorKind, SyntaxKind accessorKeyword, SyntaxKind tokenKind)
         {
-            bool isEvent = accessorKeyword == SyntaxKind.AddKeyword || accessorKeyword == SyntaxKind.RemoveKeyword;
+            bool isEvent = (accessorKeyword == SyntaxKind.AddKeyword) || (accessorKeyword == SyntaxKind.RemoveKeyword);
             var text = "class a { " + (isEvent ? "event" : string.Empty) + " b c { " + SyntaxFacts.GetText(accessorKeyword) + " { x = value; } } }";
             var file = this.ParseFile(text);
 

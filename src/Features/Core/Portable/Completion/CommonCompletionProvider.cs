@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.Completion
                     new TextChange(item.Span, item.DisplayText);
                 var insertionText = change.NewText;
 
-                if (snippetService != null && snippetService.SnippetShortcutExists_NonBlocking(insertionText))
+                if ((snippetService != null) && snippetService.SnippetShortcutExists_NonBlocking(insertionText))
                 {
                     var note = string.Format(FeaturesResources.Note_colon_Tab_twice_to_insert_the_0_snippet, insertionText);
 

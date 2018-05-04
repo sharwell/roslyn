@@ -60,12 +60,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             }
 
             if (parentNode.IsKind(SyntaxKind.ConditionalExpression) &&
-                ((ConditionalExpressionSyntax)parentNode).Condition == expression)
+                (((ConditionalExpressionSyntax)parentNode).Condition == expression))
             {
                 return semanticModel.Compilation.GetSpecialType(SpecialType.System_Boolean);
             }
 
-            if ((parentNode is PrefixUnaryExpressionSyntax || parentNode is PostfixUnaryExpressionSyntax) &&
+            if (((parentNode is PrefixUnaryExpressionSyntax) || (parentNode is PostfixUnaryExpressionSyntax)) &&
                 !semanticModel.GetConversion(expression).IsUserDefined)
             {
                 var parentExpression = (ExpressionSyntax)parentNode;
@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
                     // Explicit cast not required if we are comparing with type parameter with a class constraint.
                     var otherType = semanticModel.GetTypeInfo(other).Type;
-                    if (otherType != null && otherType.TypeKind != TypeKind.TypeParameter)
+                    if ((otherType != null) && (otherType.TypeKind != TypeKind.TypeParameter))
                     {
                         return !other.WalkDownParentheses().IsKind(SyntaxKind.CastExpression);
                     }
@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 if (argument.Parent is BaseArgumentListSyntax argumentList)
                 {
                     var argumentIndex = argumentList.Arguments.IndexOf(argument);
-                    if (argumentIndex < argumentList.Arguments.Count - 1)
+                    if (argumentIndex < (argumentList.Arguments.Count - 1))
                     {
                         return false;
                     }
@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         private static bool EnumCastDefinitelyCantBeRemoved(CastExpressionSyntax cast, ITypeSymbol expressionType)
         {
-            if (expressionType != null
+            if ((expressionType != null)
                 && expressionType.IsEnumType()
                 && cast.WalkUpParentheses().IsParentKind(SyntaxKind.UnaryMinusExpression, SyntaxKind.UnaryPlusExpression))
             {
@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         {
             return conversion1.IsUserDefined
                 && conversion2.IsUserDefined
-                && conversion1.MethodSymbol == conversion2.MethodSymbol;
+                && (conversion1.MethodSymbol == conversion2.MethodSymbol);
         }
 
         private static bool IsInDelegateCreationExpression(ExpressionSyntax expression, SemanticModel semanticModel)
@@ -276,7 +276,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
             var typeSymbol = semanticModel.GetSymbolInfo(objectCreation.Type).Symbol;
 
-            return typeSymbol != null
+            return (typeSymbol != null)
                 && typeSymbol.IsDelegateType();
         }
 
@@ -298,7 +298,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                     typeInfo = semanticModel.GetTypeInfo((ElementAccessExpressionSyntax)castExpression.Parent.Parent.Parent, cancellationToken);
                 }
 
-                if (typeInfo.Type != null && typeInfo.Type.Kind == SymbolKind.DynamicType)
+                if ((typeInfo.Type != null) && (typeInfo.Type.Kind == SymbolKind.DynamicType))
                 {
                     return true;
                 }
@@ -338,7 +338,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
             // Case:
             // 1 . Console.WriteLine(await (dynamic)task); Any Dynamic Cast will not be removed.
-            if (castType == null || castType.Kind == SymbolKind.DynamicType || castType.IsErrorType())
+            if ((castType == null) || (castType.Kind == SymbolKind.DynamicType) || castType.IsErrorType())
             {
                 return false;
             }
@@ -356,9 +356,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             // 2. If there is any other argument which is dynamic
             // 3. Dynamic Invocation
             // 4. Assignment to dynamic
-            if ((expressionType != null &&
+            if (((expressionType != null) &&
                 (expressionType.IsErrorType() ||
-                 expressionType.Kind == SymbolKind.DynamicType)) ||
+                 (expressionType.Kind == SymbolKind.DynamicType))) ||
                 IsDynamicInvocation(cast, semanticModel, cancellationToken) ||
                 IsDynamicAssignment(cast, semanticModel, cancellationToken))
             {
@@ -377,7 +377,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
             // A casts to object can always be removed from an expression inside of an interpolation, since it'll be converted to object
             // in order to call string.Format(...) anyway.
-            if (castType?.SpecialType == SpecialType.System_Object &&
+            if ((castType?.SpecialType == SpecialType.System_Object) &&
                 cast.WalkUpParentheses().IsParentKind(SyntaxKind.Interpolation))
             {
                 return true;
@@ -436,7 +436,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             {
                 // Don't remove any non-identity pointer conversions.
                 // https://github.com/dotnet/roslyn/issues/2987 tracks improving on this conservative approach.
-                return expressionType != null && expressionType.Equals(outerType);
+                return (expressionType != null) && expressionType.Equals(outerType);
             }
 
             if (parentIsOrAsExpression)
@@ -500,7 +500,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 }
 
                 if (!castToOuterType.IsBoxing &&
-                    castToOuterType == expressionToOuterType)
+                    (castToOuterType == expressionToOuterType))
                 {
                     if (castToOuterType.IsNullable)
                     {
@@ -528,7 +528,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
                 if (castToOuterType.IsIdentity &&
                     !expressionToCastType.IsUnboxing &&
-                    expressionToCastType == expressionToOuterType)
+                    (expressionToCastType == expressionToOuterType))
                 {
                     return true;
                 }

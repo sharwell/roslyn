@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.CSharp.QualifyMemberAccess
 
         private bool IsInPropertyOrFieldInitialization(ISymbol containingSymbol, SyntaxNode node)
         {
-            return (containingSymbol.Kind == SymbolKind.Field || containingSymbol.Kind == SymbolKind.Property) &&
+            return ((containingSymbol.Kind == SymbolKind.Field) || (containingSymbol.Kind == SymbolKind.Property)) &&
                 containingSymbol.DeclaringSyntaxReferences
                     .Select(declaringSyntaxReferences => declaringSyntaxReferences.GetSyntax())
                     .Any(declaringSyntax => IsInPropertyInitialization(declaringSyntax, node) || IsInFieldInitialization(declaringSyntax, node));

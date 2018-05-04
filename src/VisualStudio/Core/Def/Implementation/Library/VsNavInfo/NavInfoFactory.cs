@@ -47,10 +47,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.VsNavIn
                     return CreateForType(typeSymbol, project, compilation, useExpandedHierarchy);
             }
 
-            if (symbol.Kind == SymbolKind.Event ||
-                symbol.Kind == SymbolKind.Field ||
-                symbol.Kind == SymbolKind.Method ||
-                symbol.Kind == SymbolKind.Property)
+            if ((symbol.Kind == SymbolKind.Event) ||
+                (symbol.Kind == SymbolKind.Field) ||
+                (symbol.Kind == SymbolKind.Method) ||
+                (symbol.Kind == SymbolKind.Property))
             {
                 return CreateForMember(symbol, project, compilation, useExpandedHierarchy);
             }
@@ -97,10 +97,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.VsNavIn
 
             typeSymbol = typeSymbol.OriginalDefinition;
 
-            if (typeSymbol.TypeKind == TypeKind.Error ||
-                typeSymbol.TypeKind == TypeKind.Unknown ||
-                typeSymbol.TypeKind == TypeKind.Dynamic ||
-                typeSymbol.TypeKind == TypeKind.TypeParameter)
+            if ((typeSymbol.TypeKind == TypeKind.Error) ||
+                (typeSymbol.TypeKind == TypeKind.Unknown) ||
+                (typeSymbol.TypeKind == TypeKind.Dynamic) ||
+                (typeSymbol.TypeKind == TypeKind.TypeParameter))
             {
                 return null;
             }
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.VsNavIn
                 var builder = SharedPools.Default<StringBuilder>().AllocateAndClear();
                 builder.Append(result);
 
-                while (parentHierarchy != null && !(parentHierarchy is IVsSolution))
+                while ((parentHierarchy != null) && !(parentHierarchy is IVsSolution))
                 {
                     if (parentHierarchy.TryGetName(out var parentName))
                     {

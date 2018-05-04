@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Experimentation
         public static void LogInstallationStatus(Workspace workspace, LiveCodeAnalysisInstallStatus installStatus)
         {
             var vsixInstalled = workspace.Options.GetOption(AnalyzerABTestOptions.VsixInstalled);
-            if (!vsixInstalled && installStatus == LiveCodeAnalysisInstallStatus.Installed)
+            if (!vsixInstalled && (installStatus == LiveCodeAnalysisInstallStatus.Installed))
             {
                 // first time after vsix installed
                 workspace.Options = workspace.Options.WithChangedOption(AnalyzerABTestOptions.VsixInstalled, true);
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Experimentation
                 s_reportErrors = true;
             }
 
-            if (vsixInstalled && installStatus == LiveCodeAnalysisInstallStatus.NotInstalled)
+            if (vsixInstalled && (installStatus == LiveCodeAnalysisInstallStatus.NotInstalled))
             {
                 // first time after vsix is uninstalled
                 workspace.Options = workspace.Options.WithChangedOption(AnalyzerABTestOptions.VsixInstalled, false);

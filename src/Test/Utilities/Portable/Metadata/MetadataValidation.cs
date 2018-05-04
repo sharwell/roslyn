@@ -167,8 +167,8 @@ namespace Roslyn.Test.Utilities
             var mvidIndex1 = mdReader1.GetModuleDefinition().Mvid;
             var mvidIndex2 = mdReader2.GetModuleDefinition().Mvid;
 
-            var mvidOffset1 = mdReader1.GetHeapMetadataOffset(HeapIndex.Guid) + 16 * (MetadataTokens.GetHeapOffset(mvidIndex1) - 1);
-            var mvidOffset2 = mdReader2.GetHeapMetadataOffset(HeapIndex.Guid) + 16 * (MetadataTokens.GetHeapOffset(mvidIndex2) - 1);
+            var mvidOffset1 = mdReader1.GetHeapMetadataOffset(HeapIndex.Guid) + (16 * (MetadataTokens.GetHeapOffset(mvidIndex1) - 1));
+            var mvidOffset2 = mdReader2.GetHeapMetadataOffset(HeapIndex.Guid) + (16 * (MetadataTokens.GetHeapOffset(mvidIndex2) - 1));
 
             if (!md1.RemoveRange(mvidOffset1, 16).SequenceEqual(md1.RemoveRange(mvidOffset2, 16)))
             {

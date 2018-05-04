@@ -33,15 +33,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
             // group e |
             if (!token.IntersectsWith(position) &&
-                token == lastToken)
+                (token == lastToken))
             {
                 return true;
             }
 
             // group e b|
             if (token.IntersectsWith(position) &&
-                token.Kind() == SyntaxKind.IdentifierToken &&
-                token.GetPreviousToken(includeSkipped: true) == lastToken)
+                (token.Kind() == SyntaxKind.IdentifierToken) &&
+                (token.GetPreviousToken(includeSkipped: true) == lastToken))
             {
                 return true;
             }

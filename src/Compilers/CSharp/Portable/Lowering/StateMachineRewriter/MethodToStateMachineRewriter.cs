@@ -155,10 +155,10 @@ namespace Microsoft.CodeAnalysis.CSharp
             // create cache local for reference type "this" in Release
             var thisParameter = originalMethod.ThisParameter;
             CapturedSymbolReplacement thisProxy;
-            if ((object)thisParameter != null && 
+            if (((object)thisParameter != null) && 
                 thisParameter.Type.IsReferenceType &&
                 proxies.TryGetValue(thisParameter, out thisProxy) &&
-                F.Compilation.Options.OptimizationLevel == OptimizationLevel.Release)
+                (F.Compilation.Options.OptimizationLevel == OptimizationLevel.Release))
             {
                 BoundExpression thisProxyReplacement = thisProxy.Replacement(F.Syntax, frameType => F.This());
                 this.cachedThis = F.SynthesizedLocal(thisProxyReplacement.Type, syntax: F.Syntax, kind: SynthesizedLocalKind.FrameCache);
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected override bool NeedsProxy(Symbol localOrParameter)
         {
-            Debug.Assert(localOrParameter.Kind == SymbolKind.Local || localOrParameter.Kind == SymbolKind.Parameter);
+            Debug.Assert((localOrParameter.Kind == SymbolKind.Local) || (localOrParameter.Kind == SymbolKind.Parameter));
             return _hoistedVariables.Contains(localOrParameter);
         }
 
@@ -293,8 +293,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // We need to produce hoisted local scope debug information for user locals as well as 
                 // lambda display classes, since Dev12 EE uses them to determine which variables are displayed 
                 // in Locals window.
-                if ((local.SynthesizedKind == SynthesizedLocalKind.UserDefined && local.ScopeDesignatorOpt?.Kind() != SyntaxKind.SwitchSection) ||
-                    local.SynthesizedKind == SynthesizedLocalKind.LambdaDisplayClass)
+                if (((local.SynthesizedKind == SynthesizedLocalKind.UserDefined) && (local.ScopeDesignatorOpt?.Kind() != SyntaxKind.SwitchSection)) ||
+                    (local.SynthesizedKind == SynthesizedLocalKind.LambdaDisplayClass))
                 {
                     // NB: This is the case when the local backed by recycled field will not be visible in debugger.
                     //     It may be possible in the future, but for now a backing field can be mapped only to a single local.
@@ -379,7 +379,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var rewrittenBlock = (BoundBlock)statement;
                 var rewrittenStatements = rewrittenBlock.Statements;
-                if (rewrittenStatements.Length == 1 && rewrittenStatements[0].Kind == BoundKind.StateMachineScope)
+                if ((rewrittenStatements.Length == 1) && (rewrittenStatements[0].Kind == BoundKind.StateMachineScope))
                 {
                     var stateMachineScope = (BoundStateMachineScope)rewrittenStatements[0];
                     statement = stateMachineScope.Statement;
@@ -407,7 +407,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         private bool MightContainReferences(TypeSymbol type)
         {
-            if (type.IsReferenceType || type.TypeKind == TypeKind.TypeParameter) return true; // type parameter or reference type
+            if (type.IsReferenceType || (type.TypeKind == TypeKind.TypeParameter)) return true; // type parameter or reference type
             if (type.TypeKind != TypeKind.Struct) return false; // enums, etc
             if (type.SpecialType == SpecialType.System_TypedReference) return true;
             if (type.SpecialType != SpecialType.None) return false; // int, etc
@@ -425,7 +425,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(F.Compilation.Options.OptimizationLevel == OptimizationLevel.Release);
 
             ArrayBuilder<StateMachineFieldSymbol> fields;
-            if (_lazyAvailableReusableHoistedFields != null && _lazyAvailableReusableHoistedFields.TryGetValue(type, out fields) && fields.Count > 0)
+            if ((_lazyAvailableReusableHoistedFields != null) && _lazyAvailableReusableHoistedFields.TryGetValue(type, out fields) && (fields.Count > 0))
             {
                 var field = fields.Last();
                 fields.RemoveLast();
@@ -448,7 +448,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private void FreeReusableHoistedField(StateMachineFieldSymbol field)
         {
             ArrayBuilder<StateMachineFieldSymbol> fields;
-            if (_lazyAvailableReusableHoistedFields == null || !_lazyAvailableReusableHoistedFields.TryGetValue(field.Type, out fields))
+            if ((_lazyAvailableReusableHoistedFields == null) || !_lazyAvailableReusableHoistedFields.TryGetValue(field.Type, out fields))
             {
                 if (_lazyAvailableReusableHoistedFields == null)
                 {
@@ -554,7 +554,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         var isFieldOfStruct = !field.FieldSymbol.ContainingType.IsReferenceType;
 
                         var receiver = HoistExpression(field.ReceiverOpt, awaitSyntaxOpt, syntaxOffset, isFieldOfStruct, sideEffects, hoistedFields, ref needsSacrificialEvaluation);
-                        if (receiver.Kind != BoundKind.ThisReference && !isFieldOfStruct)
+                        if ((receiver.Kind != BoundKind.ThisReference) && !isFieldOfStruct)
                         {
                             needsSacrificialEvaluation = true; // need the null check in field receiver
                         }
@@ -612,7 +612,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // Editing await expression is not allowed. Thus all spilled fields will be present in the previous state machine.
                         // However, it may happen that the type changes, in which case we need to allocate a new slot.
                         int slotIndex;
-                        if (slotAllocatorOpt == null || 
+                        if ((slotAllocatorOpt == null) || 
                             !slotAllocatorOpt.TryGetPreviousHoistedLocalSlotIndex(
                                 awaitSyntaxOpt, 
                                 F.ModuleBuilderOpt.Translate(fieldType, awaitSyntaxOpt, Diagnostics), 
@@ -665,8 +665,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             bool localsRewritten = false;
             foreach (var local in node.Locals)
             {
-                Debug.Assert(local.SynthesizedKind == SynthesizedLocalKind.UserDefined &&
-                    local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection);
+                Debug.Assert((local.SynthesizedKind == SynthesizedLocalKind.UserDefined) &&
+                    (local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection));
 
                 LocalSymbol localToUse;
                 if (TryRewriteLocal(local, out localToUse))
@@ -885,7 +885,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var thisParameter = this.OriginalMethod.ThisParameter;
             CapturedSymbolReplacement proxy;
-            if ((object)thisParameter == null || !proxies.TryGetValue(thisParameter, out proxy))
+            if (((object)thisParameter == null) || !proxies.TryGetValue(thisParameter, out proxy))
             {
                 // This can occur in a delegate creation expression because the method group
                 // in the argument can have a "this" receiver even when "this"

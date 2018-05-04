@@ -23,8 +23,8 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateParameterizedMemb
     {
         protected override bool IsImplicitConversionGeneration(SyntaxNode node)
         {
-            return node is ExpressionSyntax &&
-                    (node.Parent is AssignmentExpressionSyntax || node.Parent is EqualsValueClauseSyntax) &&
+            return (node is ExpressionSyntax) &&
+                    ((node.Parent is AssignmentExpressionSyntax) || (node.Parent is EqualsValueClauseSyntax)) &&
                     !(node is CastExpressionSyntax) &&
                     !(node is MemberAccessExpressionSyntax);
         }
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateParameterizedMemb
             methodSymbol = null;
             typeToGenerateIn = document.SemanticModel.GetTypeInfo(castExpression.Type, cancellationToken).Type as INamedTypeSymbol;
             var parameterSymbol = document.SemanticModel.GetTypeInfo(castExpression.Expression, cancellationToken).Type as INamedTypeSymbol;
-            if (typeToGenerateIn == null || parameterSymbol == null || typeToGenerateIn.IsErrorType() || parameterSymbol.IsErrorType())
+            if ((typeToGenerateIn == null) || (parameterSymbol == null) || typeToGenerateIn.IsErrorType() || parameterSymbol.IsErrorType())
             {
                 return false;
             }
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateParameterizedMemb
             methodSymbol = null;
             typeToGenerateIn = document.SemanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType as INamedTypeSymbol;
             var parameterSymbol = document.SemanticModel.GetTypeInfo(expression, cancellationToken).Type as INamedTypeSymbol;
-            if (typeToGenerateIn == null || parameterSymbol == null || typeToGenerateIn.IsErrorType() || parameterSymbol.IsErrorType())
+            if ((typeToGenerateIn == null) || (parameterSymbol == null) || typeToGenerateIn.IsErrorType() || parameterSymbol.IsErrorType())
             {
                 return false;
             }

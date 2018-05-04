@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
             }
 
             char c = path[path.Length - 1];
-            return c == Path.DirectorySeparatorChar || c == Path.AltDirectorySeparatorChar;
+            return (c == Path.DirectorySeparatorChar) || (c == Path.AltDirectorySeparatorChar);
         }
 
         private void MergeSourceRootMetadata(ITaskItem left, ITaskItem right)
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
                         // The value of ContainingRoot metadata is a file path that is compared with ItemSpec values of SourceRoot items.
                         // Since the paths in ItemSpec have backslashes replaced with slashes on non-Windows platforms we need to do the same for ContainingRoot.
-                        if (containingRoot != null && topLevelMappedPaths.TryGetValue(Utilities.FixFilePath(containingRoot), out var mappedTopLevelPath))
+                        if ((containingRoot != null) && topLevelMappedPaths.TryGetValue(Utilities.FixFilePath(containingRoot), out var mappedTopLevelPath))
                         {
                             Debug.Assert(mappedTopLevelPath.EndsWith("/", StringComparison.Ordinal));
                             root.SetMetadata(Names.MappedPath, mappedTopLevelPath + EnsureEndsWithSlash(nestedRoot.Replace('\\', '/')));
@@ -222,7 +222,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                 var leftValue = left.GetMetadata(metadataName);
                 var rightValue = right.GetMetadata(metadataName);
 
-                if (!string.IsNullOrEmpty(leftValue) && !string.IsNullOrEmpty(rightValue) && leftValue != rightValue)
+                if (!string.IsNullOrEmpty(leftValue) && !string.IsNullOrEmpty(rightValue) && (leftValue != rightValue))
                 {
                     Log.LogWarningFromResources("MapSourceRoots.ContainsDuplicate", Names.SourceRoot, left.ItemSpec, metadataName, leftValue, rightValue);
                 }

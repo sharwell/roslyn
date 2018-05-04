@@ -31,7 +31,7 @@ namespace BuildBoss
         public bool Check(TextWriter textWriter)
         {
             var allGood = true;
-            if (ProjectType == ProjectFileType.CSharp || ProjectType == ProjectFileType.Basic)
+            if ((ProjectType == ProjectFileType.CSharp) || (ProjectType == ProjectFileType.Basic))
             {
                 // Properties that aren't related to build but instead artifacts of Visual Studio.
                 allGood &= CheckForProperty(textWriter, "RestorePackages");
@@ -133,7 +133,7 @@ namespace BuildBoss
                 }
 
                 var guid = Guid.Parse(value);
-                if (guid == ProjectEntryUtil.VsixProjectType && data.EffectiveKind != RoslynProjectKind.Vsix)
+                if ((guid == ProjectEntryUtil.VsixProjectType) && (data.EffectiveKind != RoslynProjectKind.Vsix))
                 {
                     textWriter.WriteLine("Vsix projects must specify <RoslynProjectType>Vsix</RoslynProjectType>");
                     return false;
@@ -220,7 +220,7 @@ namespace BuildBoss
                 var name = packageRef.Name.Replace(".", "").Replace("-", "");
                 var floatingName = $"$({name}Version)";
                 var fixedName = $"$({name}FixedVersion)";
-                if (packageRef.Version != floatingName && packageRef.Version != fixedName)
+                if ((packageRef.Version != floatingName) && (packageRef.Version != fixedName))
                 {
                     textWriter.WriteLine($"PackageReference {packageRef.Name} has incorrect version {packageRef.Version}");
                     textWriter.WriteLine($"Allowed values are {floatingName} or {fixedName}");
@@ -371,7 +371,7 @@ namespace BuildBoss
         /// </summary>
         private bool IsUnitTestNameCorrectlySpecified(TextWriter textWriter, RoslynProjectData data)
         {
-            if (ProjectType != ProjectFileType.CSharp && ProjectType != ProjectFileType.Basic)
+            if ((ProjectType != ProjectFileType.CSharp) && (ProjectType != ProjectFileType.Basic))
             {
                 return true;
             }
@@ -419,7 +419,7 @@ namespace BuildBoss
                 return true;
             }
 
-            if (data.EffectiveKind == RoslynProjectKind.UnitTest && _projectUtil.GetTargetFrameworks() != null)
+            if ((data.EffectiveKind == RoslynProjectKind.UnitTest) && (_projectUtil.GetTargetFrameworks() != null))
             {
                 textWriter.WriteLine($"UnitTestPortable needs to be specified when using TargetFrameworks on a unit test project");
                 return false;

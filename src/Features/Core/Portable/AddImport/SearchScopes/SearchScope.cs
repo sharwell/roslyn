@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.AddImport
             public async Task<ImmutableArray<SymbolResult<ISymbol>>> FindDeclarationsAsync(
                 string name, TSimpleNameSyntax nameNode, SymbolFilter filter)
             {
-                if (name != null && string.IsNullOrWhiteSpace(name))
+                if ((name != null) && string.IsNullOrWhiteSpace(name))
                 {
                     return ImmutableArray<SymbolResult<ISymbol>>.Empty;
                 }

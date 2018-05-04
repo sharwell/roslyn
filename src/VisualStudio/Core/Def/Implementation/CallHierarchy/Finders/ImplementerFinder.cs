@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy.Finders
             foreach (var implementation in implementations)
             {
                 var sourceLocations = implementation.DeclaringSyntaxReferences.Select(d => project.Solution.GetDocument(d.SyntaxTree)).WhereNotNull();
-                var bestLocation = sourceLocations.FirstOrDefault(d => documents == null || documents.Contains(d));
+                var bestLocation = sourceLocations.FirstOrDefault(d => (documents == null) || documents.Contains(d));
                 if (bestLocation != null)
                 {
                     var item = await Provider.CreateItem(implementation, bestLocation.Project, SpecializedCollections.EmptyEnumerable<Location>(), cancellationToken).ConfigureAwait(false);

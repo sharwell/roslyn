@@ -115,7 +115,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             if (containingType.IsInterfaceType())
             {
-                if (addSyntax == null && removeSyntax == null) //NOTE: AND - different error code produced if one is present
+                if ((addSyntax == null) && (removeSyntax == null)) //NOTE: AND - different error code produced if one is present
                 {
                     // CONSIDER: we're matching dev10, but it would probably be more helpful to give
                     // an error like ERR_EventPropertyInInterface.
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
             else
             {
-                if (addSyntax == null || removeSyntax == null)
+                if ((addSyntax == null) || (removeSyntax == null))
                 {
                     diagnostics.Add(ErrorCode.ERR_EventNeedsBothAccessors, this.Locations[0], this);
                 }

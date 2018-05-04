@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.Remote
 
                 SetGlobalContext(uiCultureLCID, cultureLCID, serializedSession);
 
-                if (existing != null && existing != host)
+                if ((existing != null) && (existing != host))
                 {
                     LogError($"{host} is given for {existing}");
                 }
@@ -225,7 +225,7 @@ namespace Microsoft.CodeAnalysis.Remote
             WatsonReporter.Report(ex);
 
             // ignore expected exception
-            return ex is ArgumentOutOfRangeException || ex is CultureNotFoundException;
+            return (ex is ArgumentOutOfRangeException) || (ex is CultureNotFoundException);
         }
 
         private static TelemetrySession GetTelemetrySession(string serializedSession)

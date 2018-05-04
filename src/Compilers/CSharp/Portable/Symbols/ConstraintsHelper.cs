@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             ArrayBuilder<TypeParameterDiagnosticInfo> diagnosticsBuilder,
             ref ArrayBuilder<TypeParameterDiagnosticInfo> useSiteDiagnosticsBuilder)
         {
-            Debug.Assert(currentCompilation == null || typeParameter.IsFromCompilation(currentCompilation));
+            Debug.Assert((currentCompilation == null) || typeParameter.IsFromCompilation(currentCompilation));
 
             ImmutableArray<NamedTypeSymbol> interfaces;
 
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     switch (constraintType.TypeKind)
                     {
                         case TypeKind.Dynamic:
-                            Debug.Assert(inherited || currentCompilation == null);
+                            Debug.Assert(inherited || (currentCompilation == null));
                             continue;
 
                         case TypeKind.TypeParameter:
@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                                 constraintDeducedBase = constraintTypeParameter.GetDeducedBaseType(constraintsInProgress);
                                 AddInterfaces(interfacesBuilder, constraintTypeParameter.GetInterfaces(constraintsInProgress));
 
-                                if (!inherited && currentCompilation != null && constraintTypeParameter.IsFromCompilation(currentCompilation))
+                                if (!inherited && (currentCompilation != null) && constraintTypeParameter.IsFromCompilation(currentCompilation))
                                 {
                                     ErrorCode errorCode;
                                     if (constraintTypeParameter.HasUnmanagedTypeConstraint)
@@ -191,7 +191,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         case TypeKind.Delegate:
                             NamedTypeSymbol erasedConstraintType;
 
-                            if (inherited || currentCompilation == null)
+                            if (inherited || (currentCompilation == null))
                             {
                                 // only inherited constraints may contain dynamic
                                 if (dynamicEraser == null)
@@ -223,19 +223,19 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             }
 
                         case TypeKind.Struct:
-                            Debug.Assert(inherited || currentCompilation == null);
+                            Debug.Assert(inherited || (currentCompilation == null));
                             constraintEffectiveBase = corLibrary.GetSpecialType(SpecialType.System_ValueType);
                             constraintDeducedBase = constraintType;
                             break;
 
                         case TypeKind.Enum:
-                            Debug.Assert(inherited || currentCompilation == null);
+                            Debug.Assert(inherited || (currentCompilation == null));
                             constraintEffectiveBase = corLibrary.GetSpecialType(SpecialType.System_Enum);
                             constraintDeducedBase = constraintType;
                             break;
 
                         case TypeKind.Array:
-                            Debug.Assert(inherited || currentCompilation == null);
+                            Debug.Assert(inherited || (currentCompilation == null));
                             constraintEffectiveBase = corLibrary.GetSpecialType(SpecialType.System_Array);
                             constraintDeducedBase = constraintType;
                             break;
@@ -345,7 +345,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Location location,
             DiagnosticBag diagnostics)
         {
-            if (typeParameters.Length == 0 || constraintClauses.Count == 0)
+            if ((typeParameters.Length == 0) || (constraintClauses.Count == 0))
             {
                 return ImmutableArray<TypeParameterConstraintClause>.Empty;
             }
@@ -495,7 +495,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             DiagnosticBag diagnostics)
         {
             Debug.Assert(!type.IsTupleType);
-            Debug.Assert(typeArgumentsSyntax.Count == 0 /*omitted*/ || typeArgumentsSyntax.Count == type.Arity);
+            Debug.Assert((typeArgumentsSyntax.Count == 0) /*omitted*/ || (typeArgumentsSyntax.Count == type.Arity));
             if (!RequiresChecking(type))
             {
                 return true;
@@ -565,7 +565,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // we only check for distinct interfaces when the type is not from source, as we
             // trust that types that are from source have already been checked by the compiler
             // to prevent this from happening in the first place.
-            if (!(currentCompilation != null && type.IsFromCompilation(currentCompilation)) && HasDuplicateInterfaces(type, null))
+            if (!((currentCompilation != null) && type.IsFromCompilation(currentCompilation)) && HasDuplicateInterfaces(type, null))
             {
                 result = false;
                 diagnostics.Add(ErrorCode.ERR_BogusType, location, type);
@@ -796,7 +796,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            if (typeArgument.IsPointerType() || typeArgument.IsRestrictedType() || typeArgument.SpecialType == SpecialType.System_Void)
+            if (typeArgument.IsPointerType() || typeArgument.IsRestrictedType() || (typeArgument.SpecialType == SpecialType.System_Void))
             {
                 // "The type '{0}' may not be used as a type argument"
                 diagnosticsBuilder.Add(new TypeParameterDiagnosticInfo(typeParameter, new CSDiagnosticInfo(ErrorCode.ERR_BadTypeArgument, typeArgument)));

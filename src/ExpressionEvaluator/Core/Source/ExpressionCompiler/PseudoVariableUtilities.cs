@@ -60,11 +60,11 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         internal static bool IsReturnValueWithoutIndex(this Alias alias)
         {
-            Debug.Assert(alias.Kind != DkmClrAliasKind.ReturnValue ||
+            Debug.Assert((alias.Kind != DkmClrAliasKind.ReturnValue) ||
                 alias.FullName.StartsWith("$ReturnValue", StringComparison.OrdinalIgnoreCase));
             return
-                alias.Kind == DkmClrAliasKind.ReturnValue &&
-                alias.FullName.Length == ReturnValuePrefixLength;
+                (alias.Kind == DkmClrAliasKind.ReturnValue) &&
+                (alias.FullName.Length == ReturnValuePrefixLength);
         }
     }
 }

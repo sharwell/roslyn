@@ -118,13 +118,13 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var typeMap = stateMachineType.TypeMap;
             bool isDebugBuild = F.Compilation.Options.OptimizationLevel == OptimizationLevel.Debug;
-            bool mapToPreviousFields = isDebugBuild && slotAllocatorOpt != null;
+            bool mapToPreviousFields = isDebugBuild && (slotAllocatorOpt != null);
 
             nextFreeHoistedLocalSlot = mapToPreviousFields ? slotAllocatorOpt.PreviousHoistedLocalSlotCount : 0;
 
             foreach (var variable in variablesToHoist)
             {
-                Debug.Assert(variable.Kind == SymbolKind.Local || variable.Kind == SymbolKind.Parameter);
+                Debug.Assert((variable.Kind == SymbolKind.Local) || (variable.Kind == SymbolKind.Parameter));
 
                 if (variable.Kind == SymbolKind.Local)
                 {
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // do not preallocate proxiy fields for user defined locals in release
             // otherwise we will be allocating fields for all locals even when fields can be reused
             // see https://github.com/dotnet/roslyn/issues/15290
-            if (optimizationLevel == OptimizationLevel.Release && synthesizedKind == SynthesizedLocalKind.UserDefined)
+            if ((optimizationLevel == OptimizationLevel.Release) && (synthesizedKind == SynthesizedLocalKind.UserDefined))
             {
                 return false;
             }

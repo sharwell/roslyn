@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.Text
         {
             _encoding = encoding;
             _checksumAlgorithm = checksumAlgorithm;
-            _chunks = ArrayBuilder<char[]>.GetInstance(1 + length / LargeText.ChunkSize);
+            _chunks = ArrayBuilder<char[]>.GetInstance(1 + (length / LargeText.ChunkSize));
             _bufferSize = Math.Min(LargeText.ChunkSize, length);
         }
 
@@ -38,12 +38,12 @@ namespace Microsoft.CodeAnalysis.Text
 
         public bool CanFitInAllocatedBuffer(int chars)
         {
-            return _buffer != null && chars <= (_buffer.Length - _currentUsed);
+            return (_buffer != null) && (chars <= (_buffer.Length - _currentUsed));
         }
 
         public override void Write(char value)
         {
-            if (_buffer != null && _currentUsed < _buffer.Length)
+            if ((_buffer != null) && (_currentUsed < _buffer.Length))
             {
                 _buffer[_currentUsed] = value;
                 _currentUsed++;
@@ -84,12 +84,12 @@ namespace Microsoft.CodeAnalysis.Text
 
         public override void Write(char[] chars, int index, int count)
         {
-            if (index < 0 || index >= chars.Length)
+            if ((index < 0) || (index >= chars.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
 
-            if (count < 0 || count > chars.Length - index)
+            if ((count < 0) || (count > (chars.Length - index)))
             {
                 throw new ArgumentOutOfRangeException(nameof(count));
             }
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         public override void Flush()
         {
-            if (_buffer != null && _currentUsed > 0)
+            if ((_buffer != null) && (_currentUsed > 0))
             {
                 if (_currentUsed < _buffer.Length)
                 {

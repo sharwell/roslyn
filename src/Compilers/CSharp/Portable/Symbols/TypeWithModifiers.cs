@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public bool Is(TypeSymbol other)
         {
-            return this.Type == other && this.CustomModifiers.IsEmpty;
+            return (this.Type == other) && this.CustomModifiers.IsEmpty;
         }
 
         [Obsolete("Use Is method.", true)]
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             var newCustomModifiers = typeMap.SubstituteCustomModifiers(this.CustomModifiers);
             var newTypeWithModifiers = typeMap.SubstituteType(this.Type);
-            if (!newTypeWithModifiers.Is(this.Type) || newCustomModifiers != this.CustomModifiers)
+            if (!newTypeWithModifiers.Is(this.Type) || (newCustomModifiers != this.CustomModifiers))
             {
                 return new TypeWithModifiers(newTypeWithModifiers.Type, newCustomModifiers.Concat(newTypeWithModifiers.CustomModifiers));
             }
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             var newCustomModifiers = typeMap.SubstituteCustomModifiers(this.CustomModifiers);
             var newTypeWithModifiers = typeMap.SubstituteTypeWithTupleUnification(this.Type);
-            if (!newTypeWithModifiers.Is(this.Type) || newCustomModifiers != this.CustomModifiers)
+            if (!newTypeWithModifiers.Is(this.Type) || (newCustomModifiers != this.CustomModifiers))
             {
                 return new TypeWithModifiers(newTypeWithModifiers.Type, newCustomModifiers.Concat(newTypeWithModifiers.CustomModifiers));
             }

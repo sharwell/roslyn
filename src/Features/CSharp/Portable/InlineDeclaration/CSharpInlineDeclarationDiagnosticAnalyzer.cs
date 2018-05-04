@@ -274,7 +274,7 @@ namespace Microsoft.CodeAnalysis.CSharp.InlineDeclaration
             for (var current = argumentExpression; current != null; current = current.Parent)
             {
                 if (current.Parent is LambdaExpressionSyntax lambda &&
-                    current == lambda.Body)
+                    (current == lambda.Body))
                 {
                     // We were in a lambda.  The lambda body will be the new scope of the 
                     // out var.

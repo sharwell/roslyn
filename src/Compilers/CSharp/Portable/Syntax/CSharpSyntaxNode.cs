@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             if (tr.IsDirective)
                             {
                                 var d = (DirectiveTriviaSyntax)tr.GetStructure();
-                                if (predicate == null || predicate(d))
+                                if ((predicate == null) || predicate(d))
                                 {
                                     return d;
                                 }
@@ -308,7 +308,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             if (tr.IsDirective)
                             {
                                 var d = (DirectiveTriviaSyntax)tr.GetStructure();
-                                if (predicate == null || predicate(d))
+                                if ((predicate == null) || predicate(d))
                                 {
                                     return d;
                                 }
@@ -414,7 +414,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             while (curr != null)
             {
                 // Don't return a trivia token unless we're in the scope of a cref or name attribute.
-                if (curr.Kind() == SyntaxKind.XmlCrefAttribute || curr.Kind() == SyntaxKind.XmlNameAttribute)
+                if ((curr.Kind() == SyntaxKind.XmlCrefAttribute) || (curr.Kind() == SyntaxKind.XmlNameAttribute))
                 {
                     return LookupPosition.IsInXmlAttributeValue(position, (XmlAttributeSyntax)curr)
                         ? triviaToken
@@ -539,7 +539,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (this.Kind() == SyntaxKind.Block)
             {
                 var parent = this.Parent;
-                if (parent is MemberDeclarationSyntax || parent is AccessorDeclarationSyntax)
+                if ((parent is MemberDeclarationSyntax) || (parent is AccessorDeclarationSyntax))
                 {
                     return true;
                 }

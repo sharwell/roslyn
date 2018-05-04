@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 {
                     var workspaceProject = _visualStudioWorkspace.CurrentSolution.GetProject(_projectId);
                     var hostProject = _visualStudioWorkspace.GetHostProject(_projectId);
-                    if (workspaceProject == null && !hostProject.PushingChangesToWorkspace)
+                    if ((workspaceProject == null) && !hostProject.PushingChangesToWorkspace)
                     {
                         // if this project hasn't been pushed yet, push it now so that the user gets a useful experience here.
                         hostProject.StartPushingToWorkspaceAndNotifyOfOpenDocuments();

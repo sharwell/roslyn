@@ -111,7 +111,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                 telemetryId = default;
 
                 var workspace = _workspace;
-                if (workspace == null || _subjectBuffer == null)
+                if ((workspace == null) || (_subjectBuffer == null))
                 {
                     return false;
                 }
@@ -294,7 +294,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
             {
                 this.AssertIsForeground();
 
-                if (_owner._codeFixService != null &&
+                if ((_owner._codeFixService != null) &&
                     supportsFeatureService.SupportsCodeFixes(document) &&
                     requestedActionCategories.Contains(PredefinedSuggestedActionCategoryNames.CodeFix))
                 {
@@ -502,7 +502,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                     return null;
                 }
 
-                if (actionCount > 1 && action.EquivalenceKey == null)
+                if ((actionCount > 1) && (action.EquivalenceKey == null))
                 {
                     return null;
                 }
@@ -605,7 +605,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                 var selection = selectionOpt.Value;
 
                 if (workspace.Options.GetOption(EditorComponentOnOffOptions.CodeRefactorings) &&
-                    _owner._codeRefactoringService != null &&
+                    (_owner._codeRefactoringService != null) &&
                     supportsFeatureService.SupportsRefactorings(document) &&
                     requestedActionCategories.Contains(PredefinedSuggestedActionCategoryNames.Refactoring))
                 {
@@ -749,7 +749,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                 var workspace = document.Project.Solution.Workspace;
                 var supportsFeatureService = workspace.Services.GetService<IDocumentSupportsFeatureService>();
 
-                if (provider._codeFixService != null &&
+                if ((provider._codeFixService != null) &&
                     supportsFeatureService.SupportsCodeFixes(document))
                 {
                     var result = await provider._codeFixService.GetMostSevereFixableDiagnostic(
@@ -789,7 +789,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                 var supportsFeatureService = workspace.Services.GetService<IDocumentSupportsFeatureService>();
 
                 if (document.Project.Solution.Options.GetOption(EditorComponentOnOffOptions.CodeRefactorings) &&
-                    provider._codeRefactoringService != null &&
+                    (provider._codeRefactoringService != null) &&
                     supportsFeatureService.SupportsRefactorings(document))
                 {
                     if (await provider._codeRefactoringService.HasRefactoringsAsync(
@@ -886,13 +886,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                 var workspace = buffer.GetWorkspace();
 
                 // workspace is not ready, nothing to do.
-                if (workspace == null || workspace != currentWorkspace)
+                if ((workspace == null) || (workspace != currentWorkspace))
                 {
                     return;
                 }
 
-                if (currentDocumentId != workspace.GetDocumentIdInCurrentContext(buffer.AsTextContainer()) ||
-                    solutionVersion == Volatile.Read(ref _lastSolutionVersionReported))
+                if ((currentDocumentId != workspace.GetDocumentIdInCurrentContext(buffer.AsTextContainer())) ||
+                    (solutionVersion == Volatile.Read(ref _lastSolutionVersionReported)))
                 {
                     return;
                 }
@@ -922,7 +922,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                         var selection = await GetSpanAsync(range, linkedToken).ConfigureAwait(false);
 
                         Task<string> refactoringTask = Task.FromResult((string)null);
-                        if (selection != null && requestedActionCategories.Contains(PredefinedSuggestedActionCategoryNames.Refactoring))
+                        if ((selection != null) && requestedActionCategories.Contains(PredefinedSuggestedActionCategoryNames.Refactoring))
                         {
                             refactoringTask = Task.Run(
                                 () => TryGetRefactoringSuggestedActionCategoryAsync(provider, document, selection, linkedToken), linkedToken);

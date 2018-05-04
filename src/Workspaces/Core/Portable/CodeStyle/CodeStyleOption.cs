@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
             {
                 return nameof(String);
             }
-            if (typeof(T) == typeof(bool) || IsZeroOrOneValueOfEnum())
+            if ((typeof(T) == typeof(bool)) || IsZeroOrOneValueOfEnum())
             {
                 return nameof(Boolean);
             }
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
         private bool IsZeroOrOneValueOfEnum()
         {
             var intVal = EnumValueAsInt32;
-            return intVal == 0 || intVal == 1;
+            return (intVal == 0) || (intVal == 1);
         }
 
         public static CodeStyleOption<T> FromXElement(XElement element)
@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
             var severityAttribute = element.Attribute(nameof(DiagnosticSeverity));
             var version = (int)element.Attribute(nameof(SerializationVersion));
 
-            if (typeAttribute == null || valueAttribute == null || severityAttribute == null)
+            if ((typeAttribute == null) || (valueAttribute == null) || (severityAttribute == null))
             {
                 // data from storage is corrupt, or nothing has been stored yet.
                 return Default;
@@ -181,7 +181,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
 
         public bool Equals(CodeStyleOption<T> other)
             => EqualityComparer<T>.Default.Equals(Value, other.Value) &&
-               Notification == other.Notification;
+               (Notification == other.Notification);
 
         public override bool Equals(object obj)
             => obj is CodeStyleOption<T> option &&

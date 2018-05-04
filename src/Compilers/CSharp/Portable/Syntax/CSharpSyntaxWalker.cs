@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public virtual void VisitTrivia(SyntaxTrivia trivia)
         {
-            if (this.Depth >= SyntaxWalkerDepth.StructuredTrivia && trivia.HasStructure)
+            if ((this.Depth >= SyntaxWalkerDepth.StructuredTrivia) && trivia.HasStructure)
             {
                 this.Visit((CSharpSyntaxNode)trivia.GetStructure());
             }

@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
             for (int i = 1; i <= totalPoints; ++i)
             {
-                if (i == totalPoints || seqPointBuilder[i].SyntaxTree != seqPointBuilder[i - 1].SyntaxTree)
+                if ((i == totalPoints) || (seqPointBuilder[i].SyntaxTree != seqPointBuilder[i - 1].SyntaxTree))
                 {
                     // Create a new list
                     SequencePointList next = new SequencePointList(seqPointBuilder[i - 1].SyntaxTree, GetSubArray(seqPointBuilder, last, i - last, builder));
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
         {
             get
             {
-                return _next == null && _points.Length == 0;
+                return (_next == null) && (_points.Length == 0);
             }
         }
 
@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                     }
                     else
                     {
-                        if (lastPath != fileLinePositionSpan.Path || lastPathIsMapped != fileLinePositionSpan.HasMappedPath)
+                        if ((lastPath != fileLinePositionSpan.Path) || (lastPathIsMapped != fileLinePositionSpan.HasMappedPath))
                         {
                             lastPath = fileLinePositionSpan.Path;
                             lastPathIsMapped = fileLinePositionSpan.HasMappedPath;

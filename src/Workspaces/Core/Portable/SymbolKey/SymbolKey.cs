@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis
             int arity,
             ImmutableArray<SymbolKeyResolution> typeArgumentKeys)
         {
-            if (arity == 0 || typeArgumentKeys.IsDefault || typeArgumentKeys.IsEmpty)
+            if ((arity == 0) || typeArgumentKeys.IsDefault || typeArgumentKeys.IsEmpty)
             {
                 return types;
             }

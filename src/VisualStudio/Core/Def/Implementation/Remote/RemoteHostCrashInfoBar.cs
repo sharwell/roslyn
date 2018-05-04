@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
         public static void ShowInfoBar(Workspace workspace)
         {
             // use info bar to show warning to users
-            if (workspace == null || s_infoBarReported)
+            if ((workspace == null) || s_infoBarReported)
             {
                 return;
             }
@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
 
             var service = workspace.Services.GetService<IRemoteHostClientService>();
             var allowRestarting = workspace.Options.GetOption(RemoteHostOptions.RestartRemoteHostAllowed);
-            if (allowRestarting && service != null)
+            if (allowRestarting && (service != null))
             {
                 // this is hidden restart option. by default, user can't restart remote host that got killed
                 // by users

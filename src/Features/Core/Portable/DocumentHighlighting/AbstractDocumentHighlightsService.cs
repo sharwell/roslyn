@@ -201,8 +201,8 @@ namespace Microsoft.CodeAnalysis.DocumentHighlighting
 
             // Add definitions
             // Filter out definitions that cannot be highlighted. e.g: alias symbols defined via project property pages.
-            if (symbol.Kind == SymbolKind.Alias &&
-                symbol.Locations.Length > 0)
+            if ((symbol.Kind == SymbolKind.Alias) &&
+                (symbol.Locations.Length > 0))
             {
                 addAllDefinitions = false;
 
@@ -229,7 +229,7 @@ namespace Microsoft.CodeAnalysis.DocumentHighlighting
                             // Document once https://github.com/dotnet/roslyn/issues/5260 is fixed.
                             if (document == null)
                             {
-                                Debug.Assert(solution.Workspace.Kind == WorkspaceKind.Interactive || solution.Workspace.Kind == WorkspaceKind.MiscellaneousFiles);
+                                Debug.Assert((solution.Workspace.Kind == WorkspaceKind.Interactive) || (solution.Workspace.Kind == WorkspaceKind.MiscellaneousFiles));
                                 continue;
                             }
 
@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis.DocumentHighlighting
                     // If it's an indexer parameter, we will have also cascaded to the accessor
                     // one that actually receives the references
                     var containingProperty = symbol.ContainingSymbol as IPropertySymbol;
-                    if (containingProperty != null && containingProperty.IsIndexer)
+                    if ((containingProperty != null) && containingProperty.IsIndexer)
                     {
                         return false;
                     }
@@ -298,7 +298,7 @@ namespace Microsoft.CodeAnalysis.DocumentHighlighting
         private static async Task AddLocationSpan(Location location, Solution solution, HashSet<DocumentSpan> spanSet, MultiDictionary<Document, HighlightSpan> tagList, HighlightSpanKind kind, CancellationToken cancellationToken)
         {
             var span = await GetLocationSpanAsync(solution, location, cancellationToken).ConfigureAwait(false);
-            if (span != null && !spanSet.Contains(span.Value))
+            if ((span != null) && !spanSet.Contains(span.Value))
             {
                 spanSet.Add(span.Value);
                 tagList.Add(span.Value.Document, new HighlightSpan(span.Value.SourceSpan, kind));
@@ -310,7 +310,7 @@ namespace Microsoft.CodeAnalysis.DocumentHighlighting
         {
             try
             {
-                if (location != null && location.IsInSource)
+                if ((location != null) && location.IsInSource)
                 {
                     var tree = location.SourceTree;
 

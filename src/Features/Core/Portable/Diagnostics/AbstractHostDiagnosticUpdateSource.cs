@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             var project = projectIdOpt != null ? workspace.CurrentSolution.GetProject(projectIdOpt) : null;
 
             // check whether project the diagnostic belong to still exist
-            if (projectIdOpt != null && project == null)
+            if ((projectIdOpt != null) && (project == null))
             {
                 // project the diagnostic belong to already removed from the solution.
                 // ignore the diagnostic
@@ -114,11 +114,11 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             }
 
             // Check if analyzer is shared by analyzer references from different projects.
-            var sharedAnalyzer = existing.Contains(d => d.ProjectId != null && d.ProjectId != projectId);
+            var sharedAnalyzer = existing.Contains(d => (d.ProjectId != null) && (d.ProjectId != projectId));
             if (sharedAnalyzer)
             {
                 var newDiags = existing.Where(d => d.ProjectId != projectId).ToImmutableHashSet();
-                if (newDiags.Count < existing.Count &&
+                if ((newDiags.Count < existing.Count) &&
                     ImmutableInterlocked.TryUpdate(ref _analyzerHostDiagnosticsMap, analyzer, newDiags, existing))
                 {
                     var project = this.Workspace.CurrentSolution.GetProject(projectId);
@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     return false;
                 }
 
-                return _source == other._source && _projectIdOpt == other._projectIdOpt && base.Equals(obj);
+                return (_source == other._source) && (_projectIdOpt == other._projectIdOpt) && base.Equals(obj);
             }
 
             public override int GetHashCode()

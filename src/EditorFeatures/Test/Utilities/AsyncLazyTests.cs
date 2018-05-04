@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 });
 
             // Assert it's either cancellation or aggregate exception
-            Assert.True(thrownException is OperationCanceledException || ((AggregateException)thrownException).Flatten().InnerException is OperationCanceledException);
+            Assert.True((thrownException is OperationCanceledException) || (((AggregateException)thrownException).Flatten().InnerException is OperationCanceledException));
 
             // And a second request. We'll let this one complete normally.
             var secondRequestResult = doGetValue(lazy, CancellationToken.None);

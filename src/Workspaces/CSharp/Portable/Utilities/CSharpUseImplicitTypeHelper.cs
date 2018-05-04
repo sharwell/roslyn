@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
         protected override bool ShouldAnalyzeForEachStatement(ForEachStatementSyntax forEachStatement, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             var type = forEachStatement.Type;
-            if (type.IsVar || (type.Kind() == SyntaxKind.RefType && ((RefTypeSyntax)type).Type.IsVar))
+            if (type.IsVar || ((type.Kind() == SyntaxKind.RefType) && ((RefTypeSyntax)type).Type.IsVar))
             {
                 // If the type is already 'var', this analyze has no work to do
                 return false;
@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
                 // that affects overload resolution.  And if the method is generic, then
                 // switching to 'var' may mean that inference might not work properly.
                 var memberGroup = semanticModel.GetMemberGroup(invocationExpression.Expression, cancellationToken);
-                if (memberGroup.Length == 1 &&
+                if ((memberGroup.Length == 1) &&
                     memberGroup[0].GetTypeParameters().IsEmpty)
                 {
                     return true;
@@ -252,7 +252,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
 
             // cannot use implicit typing on method group or on dynamic
             var declaredType = semanticModel.GetTypeInfo(typeName, cancellationToken).Type;
-            if (declaredType != null && declaredType.TypeKind == TypeKind.Dynamic)
+            if ((declaredType != null) && (declaredType.TypeKind == TypeKind.Dynamic))
             {
                 return false;
             }

@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.Differencing
             Debug.Assert(Comparer.TreesEqual(x, Root2));
 
             IEnumerable<TNode> wChildren, xChildren;
-            if ((wChildren = Comparer.GetChildren(w)) == null || (xChildren = Comparer.GetChildren(x)) == null)
+            if (((wChildren = Comparer.GetChildren(w)) == null) || ((xChildren = Comparer.GetChildren(x)) == null))
             {
                 return;
             }
@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis.Differencing
                 }
             }
 
-            if (s1 == null || s2 == null)
+            if ((s1 == null) || (s2 == null))
             {
                 return;
             }

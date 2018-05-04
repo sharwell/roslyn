@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.Diagnostics.Suppression
             await TestSuppressionWithAttributeAsync(
                 TestResource.AllInOneCSharpCode,
                 CSharpParseOptions.Default,
-                digInto: n => !(n is StatementSyntax) || n is BlockSyntax,
+                digInto: n => !(n is StatementSyntax) || (n is BlockSyntax),
                 verifier: t => t.IndexOf("SuppressMessage", StringComparison.Ordinal) >= 0);
         }
     }

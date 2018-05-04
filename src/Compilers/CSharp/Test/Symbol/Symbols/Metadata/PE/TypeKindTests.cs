@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.Symbols.Metadata.PE
             Assert.Equal(TypeKind.Struct, int32.TypeKind);
 
             var func = (from t in system.GetTypeMembers()
-                        where t.Name.Equals("Func") && t.Arity == 1
+                        where t.Name.Equals("Func") && (t.Arity == 1)
                         select t).Single();
 
             Assert.Equal(TypeKind.Delegate, func.TypeKind);

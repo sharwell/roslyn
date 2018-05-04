@@ -26,14 +26,14 @@ namespace Microsoft.CodeAnalysis.CSharp.ReplaceDocCommentTextWithTag
             SyntaxFacts.GetText(SyntaxKind.AwaitKeyword));
 
         protected override bool IsXmlTextToken(SyntaxToken token)
-            => token.Kind() == SyntaxKind.XmlTextLiteralToken ||
-               token.Kind() == SyntaxKind.XmlTextLiteralNewLineToken;
+            => (token.Kind() == SyntaxKind.XmlTextLiteralToken) ||
+               (token.Kind() == SyntaxKind.XmlTextLiteralNewLineToken);
 
         protected override bool IsInXMLAttribute(SyntaxToken token)
         {
-            return token.Parent.Kind() == SyntaxKind.XmlCrefAttribute
-                || token.Parent.Kind() == SyntaxKind.XmlNameAttribute
-                || token.Parent.Kind() == SyntaxKind.XmlTextAttribute;
+            return (token.Parent.Kind() == SyntaxKind.XmlCrefAttribute)
+                || (token.Parent.Kind() == SyntaxKind.XmlNameAttribute)
+                || (token.Parent.Kind() == SyntaxKind.XmlTextAttribute);
         }
 
         protected override bool IsKeyword(string text)

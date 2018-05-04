@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 Debug.Assert(HasCompilationUnitRoot);
 
-                return Options.Kind == SourceCodeKind.Script && GetCompilationUnitRoot().GetReferenceDirectives().Count > 0;
+                return (Options.Kind == SourceCodeKind.Script) && (GetCompilationUnitRoot().GetReferenceDirectives().Count > 0);
             }
         }
 
@@ -119,7 +119,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (Options.Kind == SourceCodeKind.Script)
                 {
                     var compilationUnitRoot = GetCompilationUnitRoot();
-                    return compilationUnitRoot.GetReferenceDirectives().Count > 0 || compilationUnitRoot.GetLoadDirectives().Count > 0;
+                    return (compilationUnitRoot.GetReferenceDirectives().Count > 0) || (compilationUnitRoot.GetLoadDirectives().Count > 0);
                 }
 
                 return false;
@@ -418,7 +418,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var changes = newText.GetChangeRanges(oldText);
 
-                if (changes.Count == 0 && newText == oldText)
+                if ((changes.Count == 0) && (newText == oldText))
                 {
                     return this;
                 }
@@ -440,7 +440,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var oldTree = this;
 
             // if changes is entire text do a full reparse
-            if (changes.Count == 1 && changes[0].Span == new TextSpan(0, this.Length) && changes[0].NewLength == newText.Length)
+            if ((changes.Count == 1) && (changes[0].Span == new TextSpan(0, this.Length)) && (changes[0].NewLength == newText.Length))
             {
                 // parser will do a full parse if we give it no changes
                 changes = null;

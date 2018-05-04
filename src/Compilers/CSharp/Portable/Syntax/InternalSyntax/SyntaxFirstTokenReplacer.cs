@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         private static TSyntax UpdateDiagnosticOffset<TSyntax>(TSyntax node, int diagnosticOffsetDelta) where TSyntax : CSharpSyntaxNode
         {
             DiagnosticInfo[] oldDiagnostics = node.GetDiagnostics();
-            if (oldDiagnostics == null || oldDiagnostics.Length == 0)
+            if ((oldDiagnostics == null) || (oldDiagnostics.Length == 0))
             {
                 return node;
             }

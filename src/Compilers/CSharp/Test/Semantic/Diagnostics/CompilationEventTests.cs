@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             }
 
             var actual = ArrayBuilder<CompilationEvent>.GetInstance();
-            while (queue.Count > 0 || !queue.IsCompleted)
+            while ((queue.Count > 0) || !queue.IsCompleted)
             {
                 var te = queue.DequeueAsync(CancellationToken.None);
                 Assert.True(te.IsCompleted);
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             {
                 Console.WriteLine(e);
             }
-            if (unexpected || expected.Count != 0)
+            if (unexpected || (expected.Count != 0))
             {
                 bool first = true;
                 Console.WriteLine("ACTUAL EVENTS:");

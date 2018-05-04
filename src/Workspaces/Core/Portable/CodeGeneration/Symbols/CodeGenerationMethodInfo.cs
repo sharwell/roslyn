@@ -77,15 +77,15 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             => info?._handlesExpressions ?? ImmutableArray<SyntaxNode>.Empty;
 
         private static bool GetIsNew(CodeGenerationMethodInfo info)
-            => info != null && info._isNew;
+            => (info != null) && info._isNew;
 
         private static bool GetIsUnsafe(CodeGenerationMethodInfo info)
-            => info != null && info._isUnsafe;
+            => (info != null) && info._isUnsafe;
 
         private static bool GetIsPartial(CodeGenerationMethodInfo info)
-            => info != null && info._isPartial;
+            => (info != null) && info._isPartial;
 
         private static bool GetIsAsync(CodeGenerationMethodInfo info)
-            => info != null && info._isAsync;
+            => (info != null) && info._isAsync;
     }
 }

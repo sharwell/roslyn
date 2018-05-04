@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.UtilityTest
             {
                 // If we transpose any characters in a string, we should still 
                 // be able to find it.
-                for (var i = 0; i < value.Length - 1; i++)
+                for (var i = 0; i < (value.Length - 1); i++)
                 {
                     var items = tree.Find(Transpose(value, i), threshold: null);
                     Assert.Contains(value.ToLower(), items);

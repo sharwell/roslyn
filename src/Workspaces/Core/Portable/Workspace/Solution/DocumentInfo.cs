@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis
             var newAttributes = attributes ?? Attributes;
             var newLoader = loader.HasValue ? loader.Value : TextLoader;
 
-            if (newAttributes == Attributes && newLoader == TextLoader)
+            if ((newAttributes == Attributes) && (newLoader == TextLoader))
             {
                 return this;
             }
@@ -191,12 +191,12 @@ namespace Microsoft.CodeAnalysis
                 var newFilePath = filePath.HasValue ? filePath.Value : FilePath;
                 var newIsGenerated = isGenerated.HasValue ? isGenerated.Value : IsGenerated;
 
-                if (newId == Id &&
-                    newName == Name &&
-                    newFolders == Folders &&
-                    newSourceCodeKind == SourceCodeKind &&
-                    newFilePath == FilePath &&
-                    newIsGenerated == IsGenerated)
+                if ((newId == Id) &&
+                    (newName == Name) &&
+                    (newFolders == Folders) &&
+                    (newSourceCodeKind == SourceCodeKind) &&
+                    (newFilePath == FilePath) &&
+                    (newIsGenerated == IsGenerated))
                 {
                     return this;
                 }

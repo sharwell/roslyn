@@ -35,9 +35,9 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             Debug.Assert(methodVersion >= 1);
             Debug.Assert(ilOffset >= 0);
 
-            return moduleVersionId == _moduleVersionId &&
-                methodToken == _methodToken &&
-                methodVersion == _methodVersion &&
+            return (moduleVersionId == _moduleVersionId) &&
+                (methodToken == _methodToken) &&
+                (methodVersion == _methodVersion) &&
                 _span.Contains(ilOffset);
         }
 

@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Structure
             => Equals(obj as RoslynOutliningRegionTag);
 
         public bool Equals(RoslynOutliningRegionTag tag)
-            => tag != null && _state.Equals(tag._state);
+            => (tag != null) && _state.Equals(tag._state);
 
         public override int GetHashCode()
             => _state.GetHashCode();

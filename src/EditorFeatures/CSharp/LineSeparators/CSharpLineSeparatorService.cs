@@ -87,9 +87,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
         /// <summary>Node types that may contain separable blocks.</summary>
         private static bool IsSeparableContainer(SyntaxNode node)
         {
-            return node is TypeDeclarationSyntax ||
-                node is NamespaceDeclarationSyntax ||
-                node is CompilationUnitSyntax;
+            return (node is TypeDeclarationSyntax) ||
+                (node is NamespaceDeclarationSyntax) ||
+                (node is CompilationUnitSyntax);
         }
 
         private static bool IsBadType(SyntaxNode node)
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
         {
             if (node is MethodDeclarationSyntax methodDecl)
             {
-                if (methodDecl.Body != null &&
+                if ((methodDecl.Body != null) &&
                    (methodDecl.Body.OpenBraceToken.IsMissing ||
                     methodDecl.Body.CloseBraceToken.IsMissing))
                 {
@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
         {
             if (node is ConstructorDeclarationSyntax constructorDecl)
             {
-                if (constructorDecl.Body != null &&
+                if ((constructorDecl.Body != null) &&
                    (constructorDecl.Body.OpenBraceToken.IsMissing ||
                     constructorDecl.Body.CloseBraceToken.IsMissing))
                 {
@@ -180,7 +180,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
         {
             if (node is DestructorDeclarationSyntax destructorDecl)
             {
-                if (destructorDecl.Body != null &&
+                if ((destructorDecl.Body != null) &&
                    (destructorDecl.Body.OpenBraceToken.IsMissing ||
                     destructorDecl.Body.CloseBraceToken.IsMissing))
                 {
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
         {
             if (node is OperatorDeclarationSyntax operatorDecl)
             {
-                if (operatorDecl.Body != null &&
+                if ((operatorDecl.Body != null) &&
                    (operatorDecl.Body.OpenBraceToken.IsMissing ||
                     operatorDecl.Body.CloseBraceToken.IsMissing))
                 {
@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
         {
             if (node is ConversionOperatorDeclarationSyntax conversionDecl)
             {
-                if (conversionDecl.Body != null &&
+                if ((conversionDecl.Body != null) &&
                    (conversionDecl.Body.OpenBraceToken.IsMissing ||
                     conversionDecl.Body.CloseBraceToken.IsMissing))
                 {
@@ -272,7 +272,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
 
             // first child needs no separator
             var seenSeparator = true;
-            for (int i = 0; i < children.Count - 1; i++)
+            for (int i = 0; i < (children.Count - 1); i++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.LineSeparator
             // contains only whitespace or the span is the last line in the buffer.
 
             var line = syntaxTree.GetText(cancellationToken).Lines.IndexOf(textSpan.End);
-            if (line == syntaxTree.GetText(cancellationToken).Lines.Count - 1)
+            if (line == (syntaxTree.GetText(cancellationToken).Lines.Count - 1))
             {
                 return true;
             }

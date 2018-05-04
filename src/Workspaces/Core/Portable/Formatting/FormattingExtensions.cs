@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
             // add first line and append new line iff it is not a single line xml doc comment
             builder.Append(lines[0].Trim(s_trimChars));
-            if (0 < lines.Length - 1)
+            if (0 < (lines.Length - 1))
             {
                 builder.Append(newLine);
             }
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                     builder.Append(line, nonWhitespaceCharIndex, line.Length - nonWhitespaceCharIndex);
                 }
 
-                if (i < lines.Length - 1)
+                if (i < (lines.Length - 1))
                 {
                     builder.Append(newLine);
                 }
@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         {
             for (int i = 0; i < text.Length; i++)
             {
-                if (text[i] != ' ' && text[i] != '\t')
+                if ((text[i] != ' ') && (text[i] != '\t'))
                 {
                     return i;
                 }
@@ -268,14 +268,14 @@ namespace Microsoft.CodeAnalysis.Formatting
             int i = 0;
             for (; i < span.Length; i++)
             {
-                if (i >= newText.Length || text[i] != newText[i])
+                if ((i >= newText.Length) || (text[i] != newText[i]))
                 {
                     break;
                 }
             }
 
             // two texts are exactly same
-            if (i == span.Length && text.Length == newText.Length)
+            if ((i == span.Length) && (text.Length == newText.Length))
             {
                 // don't do anything
                 return textChange;

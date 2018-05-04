@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
         private static Guid ReadAssemblyMvidOrEmpty(BinaryReader reader)
         {
             // DOS Header: Magic number (2)
-            if (!ReadUInt16(reader, out ushort magicNumber) || magicNumber != 0x5a4d) // "MZ"
+            if (!ReadUInt16(reader, out ushort magicNumber) || (magicNumber != 0x5a4d)) // "MZ"
             {
                 return s_empty;
             }
@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
             }
 
             // PE Signature ('P' 'E' null null)
-            if (!ReadUInt32(reader, out uint peSig) || peSig != 0x00004550)
+            if (!ReadUInt32(reader, out uint peSig) || (peSig != 0x00004550))
             {
                 return s_empty;
             }
@@ -95,11 +95,11 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                     return s_empty;
                 }
 
-                if (name.Length == 8 && name[0] == '.' &&
-                    name[1] == 'm' && name[2] == 'v' && name[3] == 'i' && name[4] == 'd' && name[5] == '\0')
+                if ((name.Length == 8) && (name[0] == '.') &&
+                    (name[1] == 'm') && (name[2] == 'v') && (name[3] == 'i') && (name[4] == 'd') && (name[5] == '\0'))
                 {
                     // Section: VirtualSize (4)
-                    if (!ReadUInt32(reader, out uint virtualSize) || virtualSize != 16)
+                    if (!ReadUInt32(reader, out uint virtualSize) || (virtualSize != 16))
                     {
                         // The .mvid section only stores a Guid
                         return s_empty;
@@ -151,7 +151,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
         private static bool ReadUInt16(BinaryReader reader, out ushort output)
         {
-            if (reader.BaseStream.Position + 2 >= reader.BaseStream.Length)
+            if ((reader.BaseStream.Position + 2) >= reader.BaseStream.Length)
             {
                 output = 0;
                 return false;
@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
         private static bool ReadUInt32(BinaryReader reader, out uint output)
         {
-            if (reader.BaseStream.Position + 4 >= reader.BaseStream.Length)
+            if ((reader.BaseStream.Position + 4) >= reader.BaseStream.Length)
             {
                 output = 0;
                 return false;
@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
         private static bool ReadBytes(BinaryReader reader, int count, out byte[] output)
         {
-            if (reader.BaseStream.Position + count >= reader.BaseStream.Length)
+            if ((reader.BaseStream.Position + count) >= reader.BaseStream.Length)
             {
                 output = null;
                 return false;
@@ -187,7 +187,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
         private static bool Skip(int bytes, BinaryReader reader)
         {
-            if (reader.BaseStream.Position + bytes >= reader.BaseStream.Length)
+            if ((reader.BaseStream.Position + bytes) >= reader.BaseStream.Length)
             {
                 return false;
             }

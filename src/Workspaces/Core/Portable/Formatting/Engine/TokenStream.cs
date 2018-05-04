@@ -139,7 +139,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         public SyntaxToken GetToken(int index)
         {
-            Contract.ThrowIfFalse(0 <= index && index < this.TokenCount);
+            Contract.ThrowIfFalse((0 <= index) && (index < this.TokenCount));
             return _tokens[index];
         }
 
@@ -151,7 +151,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         public TokenData GetPreviousTokenData(TokenData tokenData)
         {
-            if (tokenData.IndexInStream > 0 && tokenData.IndexInStream < this.TokenCount)
+            if ((tokenData.IndexInStream > 0) && (tokenData.IndexInStream < this.TokenCount))
             {
                 return new TokenData(this, tokenData.IndexInStream - 1, _tokens[tokenData.IndexInStream - 1]);
             }
@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         public TokenData GetNextTokenData(TokenData tokenData)
         {
-            if (tokenData.IndexInStream >= 0 && tokenData.IndexInStream < this.TokenCount - 1)
+            if ((tokenData.IndexInStream >= 0) && (tokenData.IndexInStream < (this.TokenCount - 1)))
             {
                 return new TokenData(this, tokenData.IndexInStream + 1, _tokens[tokenData.IndexInStream + 1]);
             }
@@ -255,7 +255,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         public void ApplyChange(int pairIndex, TriviaData data)
         {
             Contract.ThrowIfNull(data);
-            Contract.ThrowIfFalse(0 <= pairIndex && pairIndex < this.TokenCount - 1);
+            Contract.ThrowIfFalse((0 <= pairIndex) && (pairIndex < (this.TokenCount - 1)));
 
             // do reference equality check
             var sameAsOriginal = GetOriginalTriviaData(pairIndex) == data;
@@ -365,7 +365,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             }
 
             // regular trivia cases
-            for (int pairIndex = 0; pairIndex < this.TokenCount - 1; pairIndex++)
+            for (int pairIndex = 0; pairIndex < (this.TokenCount - 1); pairIndex++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -398,11 +398,11 @@ namespace Microsoft.CodeAnalysis.Formatting
 
             // normal cases
             Contract.Requires(token1.Token.Span.End <= token2.Token.SpanStart);
-            Contract.Requires(token1.IndexInStream < 0 || token2.IndexInStream < 0 || (token1.IndexInStream + 1 == token2.IndexInStream));
-            Contract.Requires((token1.IndexInStream >= 0 && token2.IndexInStream >= 0) || token1.Token.Equals(token2.Token.GetPreviousToken(includeZeroWidth: true)) || token2.Token.LeadingTrivia.Span.Contains(token1.Token.Span));
+            Contract.Requires((token1.IndexInStream < 0) || (token2.IndexInStream < 0) || ((token1.IndexInStream + 1) == token2.IndexInStream));
+            Contract.Requires(((token1.IndexInStream >= 0) && (token2.IndexInStream >= 0)) || token1.Token.Equals(token2.Token.GetPreviousToken(includeZeroWidth: true)) || token2.Token.LeadingTrivia.Span.Contains(token1.Token.Span));
 
             // one of token is out side of cached token stream
-            if (token1.IndexInStream < 0 || token2.IndexInStream < 0)
+            if ((token1.IndexInStream < 0) || (token2.IndexInStream < 0))
             {
                 return GetOriginalTriviaData(token1, token2);
             }
@@ -423,10 +423,10 @@ namespace Microsoft.CodeAnalysis.Formatting
             }
 
             Contract.Requires(token1.Token.Span.End <= token2.Token.SpanStart);
-            Contract.Requires(token1.IndexInStream < 0 || token2.IndexInStream < 0 || (token1.IndexInStream + 1 == token2.IndexInStream));
-            Contract.Requires((token1.IndexInStream >= 0 && token2.IndexInStream >= 0) || token1.Token.Equals(token2.Token.GetPreviousToken(includeZeroWidth: true)) || token2.Token.LeadingTrivia.Span.Contains(token1.Token.Span));
+            Contract.Requires((token1.IndexInStream < 0) || (token2.IndexInStream < 0) || ((token1.IndexInStream + 1) == token2.IndexInStream));
+            Contract.Requires(((token1.IndexInStream >= 0) && (token2.IndexInStream >= 0)) || token1.Token.Equals(token2.Token.GetPreviousToken(includeZeroWidth: true)) || token2.Token.LeadingTrivia.Span.Contains(token1.Token.Span));
 
-            if (token1.IndexInStream < 0 || token2.IndexInStream < 0)
+            if ((token1.IndexInStream < 0) || (token2.IndexInStream < 0))
             {
                 return _factory.Create(token1.Token, token2.Token);
             }
@@ -460,7 +460,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         public TriviaData GetTriviaData(int pairIndex)
         {
-            Contract.ThrowIfFalse(0 <= pairIndex && pairIndex < this.TokenCount - 1);
+            Contract.ThrowIfFalse((0 <= pairIndex) && (pairIndex < (this.TokenCount - 1)));
             if (_changes.TryGet(pairIndex, out var data))
             {
                 return data;
@@ -472,7 +472,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         private TriviaData GetOriginalTriviaData(int pairIndex)
         {
-            Contract.ThrowIfFalse(0 <= pairIndex && pairIndex < this.TokenCount - 1);
+            Contract.ThrowIfFalse((0 <= pairIndex) && (pairIndex < (this.TokenCount - 1)));
 
             if (_cachedOriginalTriviaInfo[pairIndex] == null)
             {

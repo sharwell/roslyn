@@ -36,7 +36,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                         using (var key = root.OpenSubKey("Performance"))
                         {
                             const string name = "SustainedLowLatencyDuration";
-                            if (key != null && key.GetValue(name) != null && key.GetValueKind(name) == Microsoft.Win32.RegistryValueKind.DWord)
+                            if ((key != null) && (key.GetValue(name) != null) && (key.GetValueKind(name) == Microsoft.Win32.RegistryValueKind.DWord))
                             {
                                 s_delayMilliseconds = (int)key.GetValue(name, s_delayMilliseconds);
                                 return;

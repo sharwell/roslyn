@@ -164,15 +164,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             SyntaxNode forbiddenZone)
         {
             Debug.Assert(
-                nodeToBind.Kind() == SyntaxKind.CasePatternSwitchLabel ||
-                nodeToBind.Kind() == SyntaxKind.ThisConstructorInitializer ||
-                nodeToBind.Kind() == SyntaxKind.BaseConstructorInitializer ||
-                nodeToBind.Kind() == SyntaxKind.ArgumentList && nodeToBind.Parent is ConstructorInitializerSyntax ||
-                nodeToBind.Kind() == SyntaxKind.VariableDeclarator &&
+                (nodeToBind.Kind() == SyntaxKind.CasePatternSwitchLabel) ||
+                (nodeToBind.Kind() == SyntaxKind.ThisConstructorInitializer) ||
+                (nodeToBind.Kind() == SyntaxKind.BaseConstructorInitializer) ||
+                ((nodeToBind.Kind() == SyntaxKind.ArgumentList) && (nodeToBind.Parent is ConstructorInitializerSyntax)) ||
+                ((nodeToBind.Kind() == SyntaxKind.VariableDeclarator) &&
                     new[] { SyntaxKind.LocalDeclarationStatement, SyntaxKind.ForStatement, SyntaxKind.UsingStatement, SyntaxKind.FixedStatement }.
-                        Contains(nodeToBind.Ancestors().OfType<StatementSyntax>().First().Kind()) ||
-                nodeToBind is ExpressionSyntax);
-            return typeSyntax.IsVar && kind != LocalDeclarationKind.DeclarationExpressionVariable
+                        Contains(nodeToBind.Ancestors().OfType<StatementSyntax>().First().Kind())) ||
+                (nodeToBind is ExpressionSyntax));
+            return typeSyntax.IsVar && (kind != LocalDeclarationKind.DeclarationExpressionVariable)
                 ? new LocalSymbolWithEnclosingContext(containingSymbol, scopeBinder, nodeBinder, typeSyntax, identifierToken, kind, nodeToBind, forbiddenZone)
                 : new SourceLocalSymbol(containingSymbol, scopeBinder, false, typeSyntax, identifierToken, kind);
         }
@@ -336,8 +336,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 // If we got a valid result that was not void then use the inferred type
                 // else create an error type.
-                if ((object)inferredType != null &&
-                    inferredType.SpecialType != SpecialType.System_Void)
+                if (((object)inferredType != null) &&
+                    (inferredType.SpecialType != SpecialType.System_Void))
                 {
                     declType = inferredType;
                 }
@@ -376,9 +376,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // In the event that we race to set the type of a local, we should
             // always deduce the same type, or deduce that the type is an error.
 
-            Debug.Assert((object)originalType == null ||
-                originalType.IsErrorType() && newType.IsErrorType() ||
-                originalType == newType);
+            Debug.Assert(((object)originalType == null) ||
+                (originalType.IsErrorType() && newType.IsErrorType()) ||
+                (originalType == newType));
 
             if ((object)originalType == null)
             {
@@ -473,7 +473,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var symbol = obj as SourceLocalSymbol;
-            return (object)symbol != null
+            return ((object)symbol != null)
                 && symbol._identifierToken.Equals(_identifierToken)
                 && Equals(symbol._containingSymbol, _containingSymbol);
         }
@@ -535,7 +535,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             /// <param name="boundInitValue">If we already have the bound node for the initial value, pass it in to avoid recomputing it.</param>
             private void MakeConstantTuple(LocalSymbol inProgress, BoundExpression boundInitValue)
             {
-                if (this.IsConst && _constantTuple == null)
+                if (this.IsConst && (_constantTuple == null))
                 {
                     var value = Microsoft.CodeAnalysis.ConstantValue.Bad;
                     var initValueNodeLocation = _initializer.Value.Location;
@@ -555,7 +555,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             internal override ConstantValue GetConstantValue(SyntaxNode node, LocalSymbol inProgress, DiagnosticBag diagnostics = null)
             {
-                if (this.IsConst && inProgress == this)
+                if (this.IsConst && (inProgress == this))
                 {
                     if (diagnostics != null)
                     {
@@ -647,7 +647,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 SyntaxNode deconstruction)
             : base(containingSymbol, scopeBinder, false, typeSyntax, identifierToken, declarationKind)
             {
-                Debug.Assert(deconstruction.Kind() == SyntaxKind.SimpleAssignmentExpression || deconstruction.Kind() == SyntaxKind.ForEachVariableStatement);
+                Debug.Assert((deconstruction.Kind() == SyntaxKind.SimpleAssignmentExpression) || (deconstruction.Kind() == SyntaxKind.ForEachVariableStatement));
 
                 _deconstruction = deconstruction;
                 _nodeBinder = nodeBinder;
@@ -718,12 +718,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 : base(containingSymbol, scopeBinder, false, typeSyntax, identifierToken, declarationKind)
             {
                 Debug.Assert(
-                    nodeToBind.Kind() == SyntaxKind.CasePatternSwitchLabel ||
-                    nodeToBind.Kind() == SyntaxKind.ThisConstructorInitializer ||
-                    nodeToBind.Kind() == SyntaxKind.BaseConstructorInitializer ||
-                    nodeToBind.Kind() == SyntaxKind.ArgumentList && nodeToBind.Parent is ConstructorInitializerSyntax ||
-                    nodeToBind.Kind() == SyntaxKind.VariableDeclarator ||
-                    nodeToBind is ExpressionSyntax);
+                    (nodeToBind.Kind() == SyntaxKind.CasePatternSwitchLabel) ||
+                    (nodeToBind.Kind() == SyntaxKind.ThisConstructorInitializer) ||
+                    (nodeToBind.Kind() == SyntaxKind.BaseConstructorInitializer) ||
+                    ((nodeToBind.Kind() == SyntaxKind.ArgumentList) && (nodeToBind.Parent is ConstructorInitializerSyntax)) ||
+                    (nodeToBind.Kind() == SyntaxKind.VariableDeclarator) ||
+                    (nodeToBind is ExpressionSyntax));
                 this._nodeBinder = nodeBinder;
                 this._nodeToBind = nodeToBind;
                 this._forbiddenZone = forbiddenZone;

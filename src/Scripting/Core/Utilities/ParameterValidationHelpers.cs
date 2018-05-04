@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Scripting
 
         internal static void RequireNonNull<T>(IEnumerable<T> items, string parameterName)
         {
-            if (items == null || items is ImmutableArray<T> && ((ImmutableArray<T>)items).IsDefault)
+            if ((items == null) || ((items is ImmutableArray<T>) && ((ImmutableArray<T>)items).IsDefault))
             {
                 throw new ArgumentNullException(parameterName);
             }

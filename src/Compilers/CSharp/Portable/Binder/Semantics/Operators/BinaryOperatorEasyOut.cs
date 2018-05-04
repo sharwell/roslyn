@@ -398,7 +398,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     case SpecialType.System_Decimal: return 14;
 
                     case SpecialType.None:
-                        if ((object)type != null && type.IsNullableType())
+                        if (((object)type != null) && type.IsNullableType())
                         {
                             TypeSymbol underlyingType = type.GetNullableUnderlyingType();
 
@@ -449,7 +449,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 //
                 // Example: int & int is legal, but int && int is not, so we can't use the same
                 // table for both operators.
-                if (!kind.IsLogical() || (leftIndex == (int)BinaryOperatorKind.Bool && rightIndex == (int)BinaryOperatorKind.Bool))
+                if (!kind.IsLogical() || ((leftIndex == (int)BinaryOperatorKind.Bool) && (rightIndex == (int)BinaryOperatorKind.Bool)))
                 {
                     result = s_opkind[kind.OperatorIndex()][leftIndex.Value, rightIndex.Value];
                 }
@@ -512,7 +512,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // int, both have to be bool, or both have to be string. Otherwise
             // we skip the easy out and go for the slow path.
 
-            if (left.ConstantValue == null && right.ConstantValue == null)
+            if ((left.ConstantValue == null) && (right.ConstantValue == null))
             {
                 // Neither is constant. Go for the easy out.
                 return false;
@@ -526,9 +526,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return true;
             }
 
-            if (left.Type.SpecialType == SpecialType.System_Int32 ||
-                left.Type.SpecialType == SpecialType.System_Boolean ||
-                left.Type.SpecialType == SpecialType.System_String)
+            if ((left.Type.SpecialType == SpecialType.System_Int32) ||
+                (left.Type.SpecialType == SpecialType.System_Boolean) ||
+                (left.Type.SpecialType == SpecialType.System_String))
             {
                 // They are both int, both bool, or both string. Go for the fast path.
                 return false;

@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal static bool IsGeneratedMemberName(string memberName)
         {
-            return memberName.Length > 0 && memberName[0] == '<';
+            return (memberName.Length > 0) && (memberName[0] == '<');
         }
 
         internal static string MakeBackingFieldName(string propertyName)
@@ -164,10 +164,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             int entityGeneration = -1)
         {
             Debug.Assert(methodOrdinal >= -1);
-            Debug.Assert(methodGeneration >= 0 || methodGeneration == -1 && methodOrdinal == -1);
+            Debug.Assert((methodGeneration >= 0) || ((methodGeneration == -1) && (methodOrdinal == -1)));
             Debug.Assert(entityOrdinal >= -1);
-            Debug.Assert(entityGeneration >= 0 || entityGeneration == -1 && entityOrdinal == -1);
-            Debug.Assert(entityGeneration == -1 || entityGeneration >= methodGeneration);
+            Debug.Assert((entityGeneration >= 0) || ((entityGeneration == -1) && (entityOrdinal == -1)));
+            Debug.Assert((entityGeneration == -1) || (entityGeneration >= methodGeneration));
 
             var result = PooledStringBuilder.GetInstance();
             var builder = result.Builder;
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             builder.Append('>');
             builder.Append((char)kind);
 
-            if (suffix != null || methodOrdinal >= 0 || entityOrdinal >= 0)
+            if ((suffix != null) || (methodOrdinal >= 0) || (entityOrdinal >= 0))
             {
                 builder.Append(SuffixSeparator);
                 builder.Append(suffix);
@@ -309,10 +309,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if (openBracketOffset >= 0)
             {
                 closeBracketOffset = name.IndexOfBalancedParenthesis(openBracketOffset, '>');
-                if (closeBracketOffset >= 0 && closeBracketOffset + 1 < name.Length)
+                if ((closeBracketOffset >= 0) && ((closeBracketOffset + 1) < name.Length))
                 {
                     int c = name[closeBracketOffset + 1];
-                    if ((c >= '1' && c <= '9') || (c >= 'a' && c <= 'z')) // Note '0' is not special.
+                    if (((c >= '1') && (c <= '9')) || ((c >= 'a') && (c <= 'z'))) // Note '0' is not special.
                     {
                         kind = (GeneratedNameKind)c;
                         return true;
@@ -337,7 +337,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return false;
             }
 
-            if (requiredKind != 0 && kind != requiredKind)
+            if ((requiredKind != 0) && (kind != requiredKind))
             {
                 methodName = null;
                 return false;
@@ -365,13 +365,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal static bool TryParseSlotIndex(string fieldName, out int slotIndex)
         {
             int lastUnder = fieldName.LastIndexOf('_');
-            if (lastUnder - 1 < 0 || lastUnder == fieldName.Length || fieldName[lastUnder - 1] != '_')
+            if (((lastUnder - 1) < 0) || (lastUnder == fieldName.Length) || (fieldName[lastUnder - 1] != '_'))
             {
                 slotIndex = -1;
                 return false;
             }
 
-            if (int.TryParse(fieldName.Substring(lastUnder + 1), NumberStyles.None, CultureInfo.InvariantCulture, out slotIndex) && slotIndex >= 1)
+            if (int.TryParse(fieldName.Substring(lastUnder + 1), NumberStyles.None, CultureInfo.InvariantCulture, out slotIndex) && (slotIndex >= 1))
             {
                 slotIndex--;
                 return true;

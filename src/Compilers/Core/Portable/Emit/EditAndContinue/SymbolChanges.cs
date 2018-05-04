@@ -172,7 +172,7 @@ namespace Microsoft.CodeAnalysis.Emit
                 case SymbolChange.ContainsChanges:
                     var definition = symbol as IDefinition;
 
-                    if (definition != null && !_definitionMap.DefinitionExists(definition))
+                    if ((definition != null) && !_definitionMap.DefinitionExists(definition))
                     {
                         // If the definition did not exist in the previous generation, it was added.
                         return SymbolChange.Added;
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis.Emit
                 }
 
                 var kind = symbol.Kind;
-                if (kind == SymbolKind.Property || kind == SymbolKind.Event)
+                if ((kind == SymbolKind.Property) || (kind == SymbolKind.Event))
                 {
                     changes.Add(symbol, SymbolChange.Updated);
                 }

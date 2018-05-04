@@ -3724,7 +3724,7 @@ IInvalidOperation (OperationKind.Invalid, Type: ?, IsInvalid) (Syntax: 'M2(1, 2)
 
             public override void VisitPropertyReference(IPropertyReferenceOperation operation)
             {
-                if (operation.HasErrors(_compilation) || operation.Arguments.Length == 0)
+                if (operation.HasErrors(_compilation) || (operation.Arguments.Length == 0))
                 {
                     return;
                 }

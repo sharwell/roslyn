@@ -52,11 +52,11 @@ namespace Microsoft.CodeAnalysis
 
         internal SyntaxNodeOrToken(SyntaxNode parent, GreenNode token, int position, int index)
         {
-            Debug.Assert(parent == null || !parent.Green.IsList, "parent cannot be a list");
-            Debug.Assert(token != null || (parent == null && position == 0 && index == 0), "parts must form a token");
-            Debug.Assert(token == null || token.IsToken, "token must be a token");
+            Debug.Assert((parent == null) || !parent.Green.IsList, "parent cannot be a list");
+            Debug.Assert((token != null) || ((parent == null) && (position == 0) && (index == 0)), "parts must form a token");
+            Debug.Assert((token == null) || token.IsToken, "token must be a token");
             Debug.Assert(index >= 0, "index must not be negative");
-            Debug.Assert(parent == null || token != null, "null token cannot have parent");
+            Debug.Assert((parent == null) || (token != null), "null token cannot have parent");
 
             _position = position;
             _tokenIndex = index;
@@ -666,12 +666,12 @@ namespace Microsoft.CodeAnalysis
         {
             // index replaces position to ensure equality.  Assert if offset affects equality.
             Debug.Assert(
-                (_nodeOrParent == other._nodeOrParent && _token == other._token && _position == other._position && _tokenIndex == other._tokenIndex) ==
-                (_nodeOrParent == other._nodeOrParent && _token == other._token && _tokenIndex == other._tokenIndex));
+                ((_nodeOrParent == other._nodeOrParent) && (_token == other._token) && (_position == other._position) && (_tokenIndex == other._tokenIndex)) ==
+                ((_nodeOrParent == other._nodeOrParent) && (_token == other._token) && (_tokenIndex == other._tokenIndex)));
 
-            return _nodeOrParent == other._nodeOrParent &&
-                   _token == other._token &&
-                   _tokenIndex == other._tokenIndex;
+            return (_nodeOrParent == other._nodeOrParent) &&
+                   (_token == other._token) &&
+                   (_tokenIndex == other._tokenIndex);
         }
 
         /// <summary>
@@ -696,7 +696,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is SyntaxNodeOrToken && Equals((SyntaxNodeOrToken)obj);
+            return (obj is SyntaxNodeOrToken) && Equals((SyntaxNodeOrToken)obj);
         }
 
         /// <summary>
@@ -720,7 +720,7 @@ namespace Microsoft.CodeAnalysis
             var thisUnderlying = this.UnderlyingNode;
             var otherUnderlying = other.UnderlyingNode;
 
-            return (thisUnderlying == otherUnderlying) || (thisUnderlying != null && thisUnderlying.IsEquivalentTo(otherUnderlying));
+            return (thisUnderlying == otherUnderlying) || ((thisUnderlying != null) && thisUnderlying.IsEquivalentTo(otherUnderlying));
         }
 
         /// <summary>
@@ -844,8 +844,8 @@ namespace Microsoft.CodeAnalysis
                 if (tr.IsDirective)
                 {
                     var directive = tr.GetStructure() as TDirective;
-                    if (directive == null ||
-                        (filter != null && !filter(directive)))
+                    if ((directive == null) ||
+                        ((filter != null) && !filter(directive)))
                     {
                         continue;
                     }
@@ -901,7 +901,7 @@ namespace Microsoft.CodeAnalysis
                     {
                         // If we hit a zero width node, move left to the first such node (or the
                         // first one in the list)
-                        for (; r > 0 && list[r - 1].FullWidth == 0; r--)
+                        for (; (r > 0) && (list[r - 1].FullWidth == 0); r--)
                         {
                             ;
                         }

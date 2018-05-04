@@ -68,8 +68,8 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                         }
 
                         // check whether given item is for active document, otherwise, nothing to do here
-                        if (_processor._documentTracker == null ||
-                            _processor._documentTracker.GetActiveDocument() != item.DocumentId)
+                        if ((_processor._documentTracker == null) ||
+                            (_processor._documentTracker.GetActiveDocument() != item.DocumentId))
                         {
                             return;
                         }

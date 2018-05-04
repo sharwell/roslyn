@@ -92,8 +92,8 @@ namespace Microsoft.VisualStudio.InteractiveWindow.Commands
                 int index = arguments.IndexOf(NoConfigParameterName, startIndex, StringComparison.Ordinal);
                 if (index < 0) yield break;
 
-                if ((index == 0 || char.IsWhiteSpace(arguments[index - 1])) &&
-                    (index + s_noConfigParameterNameLength == arguments.Length || char.IsWhiteSpace(arguments[index + s_noConfigParameterNameLength])))
+                if (((index == 0) || char.IsWhiteSpace(arguments[index - 1])) &&
+                    (((index + s_noConfigParameterNameLength) == arguments.Length) || char.IsWhiteSpace(arguments[index + s_noConfigParameterNameLength])))
                 {
                     yield return index;
                 }

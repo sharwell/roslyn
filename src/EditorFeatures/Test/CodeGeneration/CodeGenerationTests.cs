@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.CodeGeneration
                 }
 
                 var expectedMessage = string.Format(WorkspacesResources.Cannot_generate_code_for_unsupported_operator_0, method.Name);
-                Assert.True(exception != null && exception.Message.StartsWith(expectedMessage, StringComparison.Ordinal),
+                Assert.True((exception != null) && exception.Message.StartsWith(expectedMessage, StringComparison.Ordinal),
                     string.Format("\r\nExpected exception: {0}\r\nActual exception: {1}\r\n", expectedMessage, exception == null ? "no exception" : exception.Message));
             }
         }
@@ -414,13 +414,13 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.CodeGeneration
                     statements: context.ParseStatements(setStatements));
 
                 // If get is provided but set isn't, we don't want an accessor for set
-                if (getStatements != null && setStatements == null)
+                if ((getStatements != null) && (setStatements == null))
                 {
                     setAccessor = null;
                 }
 
                 // If set is provided but get isn't, we don't want an accessor for get
-                if (getStatements == null && setStatements != null)
+                if ((getStatements == null) && (setStatements != null))
                 {
                     getAccessor = null;
                 }
@@ -862,7 +862,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.CodeGeneration
             {
                 var destSpan = Workspace.Documents.Single().SelectedSpans.Single();
                 var token = SemanticModel.SyntaxTree.GetRoot().FindToken(destSpan.Start);
-                return token.Parent.AncestorsAndSelf().OfType<T>().FirstOrDefault(t => !fullSpanCoverage || t.Span.End >= destSpan.End);
+                return token.Parent.AncestorsAndSelf().OfType<T>().FirstOrDefault(t => !fullSpanCoverage || (t.Span.End >= destSpan.End));
             }
 
             public ImmutableArray<SyntaxNode> ParseStatements(string statements)

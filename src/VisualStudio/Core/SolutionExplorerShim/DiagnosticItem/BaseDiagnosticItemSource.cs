@@ -110,9 +110,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
 
         private void OnWorkspaceChangedLookForOptionsChanges(object sender, WorkspaceChangeEventArgs e)
         {
-            if (e.Kind == WorkspaceChangeKind.SolutionCleared ||
-                e.Kind == WorkspaceChangeKind.SolutionReloaded ||
-                e.Kind == WorkspaceChangeKind.SolutionRemoved)
+            if ((e.Kind == WorkspaceChangeKind.SolutionCleared) ||
+                (e.Kind == WorkspaceChangeKind.SolutionReloaded) ||
+                (e.Kind == WorkspaceChangeKind.SolutionRemoved))
             {
                 _workspace.WorkspaceChanged -= OnWorkspaceChangedLookForOptionsChanges;
             }
@@ -128,7 +128,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
                     var newGeneralDiagnosticOption = project.CompilationOptions.GeneralDiagnosticOption;
                     var newSpecificDiagnosticOptions = project.CompilationOptions.SpecificDiagnosticOptions;
 
-                    if (newGeneralDiagnosticOption != _generalDiagnosticOption ||
+                    if ((newGeneralDiagnosticOption != _generalDiagnosticOption) ||
                         !object.ReferenceEquals(newSpecificDiagnosticOptions, _specificDiagnosticOptions))
                     {
                         _generalDiagnosticOption = newGeneralDiagnosticOption;

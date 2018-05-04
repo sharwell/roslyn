@@ -627,7 +627,7 @@ class C
             var compilation = GetCompilation(source, LanguageNames.CSharp);
             var symbols = GetAllSymbols(
                 compilation.GetSemanticModel(compilation.SyntaxTrees.Single()),
-                n => n is CSharp.Syntax.MemberAccessExpressionSyntax || n is CSharp.Syntax.InvocationExpressionSyntax);
+                n => (n is CSharp.Syntax.MemberAccessExpressionSyntax) || (n is CSharp.Syntax.InvocationExpressionSyntax));
 
             var tested = false;
             foreach (var symbol in symbols)
@@ -784,7 +784,7 @@ class C
             SemanticModel model, SyntaxNode node,
             List<ISymbol> list, Func<SyntaxNode, bool> predicate)
         {
-            if (predicate == null || predicate(node))
+            if ((predicate == null) || predicate(node))
             {
                 var symbol = model.GetDeclaredSymbol(node);
                 if (symbol != null)

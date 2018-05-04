@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.Symbols.Source
             }
             else
             {
-                Assert.True(symbol.IsFromCompilation(compilation) || symbol is MergedNamespaceSymbol, "symbol with declaration should be in source, except for merged namespaces");
+                Assert.True(symbol.IsFromCompilation(compilation) || (symbol is MergedNamespaceSymbol), "symbol with declaration should be in source, except for merged namespaces");
                 Assert.False(symbol.IsImplicitlyDeclared);
 
                 foreach (var node in declaringReferences.Select(d => d.GetSyntax()))
@@ -84,9 +84,9 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.Symbols.Source
             }
             else
             {
-                Assert.True(symbol.IsFromCompilation(compilation) || symbol is MergedNamespaceSymbol, "symbol with declaration should be in source, except for merged namespaces");
+                Assert.True(symbol.IsFromCompilation(compilation) || (symbol is MergedNamespaceSymbol), "symbol with declaration should be in source, except for merged namespaces");
 
-                if (symbol.Kind == SymbolKind.Namespace && ((NamespaceSymbol)symbol).IsGlobalNamespace)
+                if ((symbol.Kind == SymbolKind.Namespace) && ((NamespaceSymbol)symbol).IsGlobalNamespace)
                 {
                     Assert.True(symbol.IsImplicitlyDeclared);
                 }
@@ -117,7 +117,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.Symbols.Source
             }
             else
             {
-                Assert.True(symbol.IsFromCompilation(compilation) || symbol is MergedNamespaceSymbol, "symbol with declaration should be in source, except for merged namespaces");
+                Assert.True(symbol.IsFromCompilation(compilation) || (symbol is MergedNamespaceSymbol), "symbol with declaration should be in source, except for merged namespaces");
                 Assert.False(symbol.IsImplicitlyDeclared);
 
                 for (int i = 0; i < expectedNumber; i++)
@@ -517,7 +517,7 @@ namespace N1 {
 
             foreach (Symbol memb in e1.GetMembers())
             {
-                if (memb.Kind == SymbolKind.Method && ((MethodSymbol)memb).MethodKind == MethodKind.Constructor)
+                if ((memb.Kind == SymbolKind.Method) && (((MethodSymbol)memb).MethodKind == MethodKind.Constructor))
                     CheckDeclaringSyntaxNodesIncludingParameters(comp, memb, 0);  // implicit constructor
                 else
                     CheckDeclaringSyntaxNodesIncludingParameters(comp, memb, 1);
@@ -533,13 +533,13 @@ namespace N1 {
                 if (memb is MethodSymbol)
                 {
                     MethodSymbol meth = (MethodSymbol)memb;
-                    if (meth.AssociatedSymbol != null && meth.AssociatedSymbol.OriginalDefinition.Equals(ev1))
+                    if ((meth.AssociatedSymbol != null) && meth.AssociatedSymbol.OriginalDefinition.Equals(ev1))
                         expectedDeclaringNodes = 0;  // implicit accessor.
                 }
                 if (memb is FieldSymbol)
                 {
                     FieldSymbol fld = (FieldSymbol)memb;
-                    if (fld.AssociatedSymbol != null && fld.AssociatedSymbol.OriginalDefinition.Equals(prop3))
+                    if ((fld.AssociatedSymbol != null) && fld.AssociatedSymbol.OriginalDefinition.Equals(prop3))
                         expectedDeclaringNodes = 0;  // auto-prop backing field.
                 }
 
@@ -556,13 +556,13 @@ namespace N1 {
                 if (memb is MethodSymbol)
                 {
                     MethodSymbol meth = (MethodSymbol)memb;
-                    if (meth.AssociatedSymbol != null && meth.AssociatedSymbol.OriginalDefinition.Equals(ev1))
+                    if ((meth.AssociatedSymbol != null) && meth.AssociatedSymbol.OriginalDefinition.Equals(ev1))
                         expectedDeclaringNodes = 0;  // implicit accessor.
                 }
                 if (memb is FieldSymbol)
                 {
                     FieldSymbol fld = (FieldSymbol)memb;
-                    if (fld.AssociatedSymbol != null && fld.AssociatedSymbol.OriginalDefinition.Equals(prop3))
+                    if ((fld.AssociatedSymbol != null) && fld.AssociatedSymbol.OriginalDefinition.Equals(prop3))
                         expectedDeclaringNodes = 0;  // auto-prop backing field.
                 }
 

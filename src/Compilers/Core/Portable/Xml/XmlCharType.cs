@@ -961,7 +961,7 @@ namespace Microsoft.CodeAnalysis
 
         public static bool IsNameSingleChar(char ch)
         {
-            return IsNCNameSingleChar(ch) || ch == ':';
+            return IsNCNameSingleChar(ch) || (ch == ':');
         }
 
 #if XML10_FIFTH_EDITION
@@ -973,7 +973,7 @@ namespace Microsoft.CodeAnalysis
 
         public static bool IsStartNameSingleChar(char ch)
         {
-            return IsStartNCNameSingleChar(ch) || ch == ':';
+            return IsStartNCNameSingleChar(ch) || (ch == ':');
         }
 
         public static bool IsCharData(char ch)
@@ -1019,19 +1019,19 @@ namespace Microsoft.CodeAnalysis
         // This method uses the XML 4th edition name character ranges
         public static bool IsStartNCNameCharXml4e(char ch)
         {
-            return IsLetter(ch) || ch == '_';
+            return IsLetter(ch) || (ch == '_');
         }
 
         // This method uses the XML 4th edition name character ranges
         public static bool IsNameCharXml4e(char ch)
         {
-            return IsNCNameCharXml4e(ch) || ch == ':';
+            return IsNCNameCharXml4e(ch) || (ch == ':');
         }
 
         // This method uses the XML 4th edition name character ranges
         public static bool IsStartNameCharXml4e(char ch)
         {
-            return IsStartNCNameCharXml4e(ch) || ch == ':';
+            return IsStartNCNameCharXml4e(ch) || (ch == ':');
         }
 
         // Digit methods
@@ -1063,14 +1063,14 @@ namespace Microsoft.CodeAnalysis
 
         internal static int CombineSurrogateChar(int lowChar, int highChar)
         {
-            return (lowChar - SurLowStart) | ((highChar - SurHighStart) << 10) + 0x10000;
+            return (lowChar - SurLowStart) | (((highChar - SurHighStart) << 10) + 0x10000);
         }
 
         internal static void SplitSurrogateChar(int combinedChar, out char lowChar, out char highChar)
         {
             int v = combinedChar - 0x10000;
-            lowChar = (char)(SurLowStart + v % 1024);
-            highChar = (char)(SurHighStart + v / 1024);
+            lowChar = (char)(SurLowStart + (v % 1024));
+            highChar = (char)(SurHighStart + (v / 1024));
         }
 
         internal static bool IsOnlyWhitespace(string str)
@@ -1102,7 +1102,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     if ((charProperties(str[i]) & fCharData) == 0)
                     {
-                        if (i + 1 >= str.Length || !(XmlCharType.IsHighSurrogate(str[i]) && XmlCharType.IsLowSurrogate(str[i + 1])))
+                        if (((i + 1) >= str.Length) || !(XmlCharType.IsHighSurrogate(str[i]) && XmlCharType.IsLowSurrogate(str[i + 1])))
                         {
                             return i;
                         }
@@ -1119,10 +1119,10 @@ namespace Microsoft.CodeAnalysis
         static internal bool IsOnlyDigits(string str, int startPos, int len)
         {
             Debug.Assert(str != null);
-            Debug.Assert(startPos + len <= str.Length);
+            Debug.Assert((startPos + len) <= str.Length);
             Debug.Assert(startPos <= str.Length);
 
-            for (int i = startPos; i < startPos + len; i++)
+            for (int i = startPos; i < (startPos + len); i++)
             {
                 if (!IsDigit(str[i]))
                 {
@@ -1135,10 +1135,10 @@ namespace Microsoft.CodeAnalysis
         static internal bool IsOnlyDigits(char[] chars, int startPos, int len)
         {
             Debug.Assert(chars != null);
-            Debug.Assert(startPos + len <= chars.Length);
+            Debug.Assert((startPos + len) <= chars.Length);
             Debug.Assert(startPos <= chars.Length);
 
-            for (int i = startPos; i < startPos + len; i++)
+            for (int i = startPos; i < (startPos + len); i++)
             {
                 if (!IsDigit(chars[i]))
                 {

@@ -74,7 +74,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             // Inherits statements
             var inheritsNodes = CodeModelService.GetInheritsNodes(node);
             var inheritsNodeCount = inheritsNodes.Count();
-            if (index < currentIndex + inheritsNodeCount)
+            if (index < (currentIndex + inheritsNodeCount))
             {
                 var child = inheritsNodes.ElementAt(index - currentIndex);
                 element = FileCodeModel.GetOrCreateCodeElement<EnvDTE.CodeElement>(child);
@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             // Implements statements
             var implementsNodes = CodeModelService.GetImplementsNodes(node);
             var implementsNodeCount = implementsNodes.Count();
-            if (index < currentIndex + implementsNodeCount)
+            if (index < (currentIndex + implementsNodeCount))
             {
                 var child = implementsNodes.ElementAt(index - currentIndex);
                 element = FileCodeModel.GetOrCreateCodeElement<EnvDTE.CodeElement>(child);

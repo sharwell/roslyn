@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                     var parseOptions = SwitchSyntax?.SyntaxTree?.Options as CSharpParseOptions;
                     return
-                        parseOptions?.Features.ContainsKey("testV7SwitchBinder") == true ||
+                        (parseOptions?.Features.ContainsKey("testV7SwitchBinder") == true) ||
                         HasPatternSwitchSyntax(SwitchSyntax) ||
                         !SwitchGoverningType.IsValidV6SwitchGoverningType();
             }
@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 boundPatternSwitchSectionsBuilder.Add(section);
             }
 
-            isComplete = defaultLabel != null || subsumption.IsComplete || someCaseMatches;
+            isComplete = (defaultLabel != null) || subsumption.IsComplete || someCaseMatches;
             return boundPatternSwitchSectionsBuilder.ToImmutableAndFree();
         }
 
@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 LabelSymbol label = labelsByNode[labelSyntax];
                 BoundPatternSwitchLabel boundLabel = BindPatternSwitchSectionLabel(sectionBinder, labelSyntax, label, ref defaultLabel, diagnostics);
                 bool isNotSubsumed = subsumption.AddLabel(boundLabel, diagnostics);
-                bool guardAlwaysSatisfied = boundLabel.Guard == null || boundLabel.Guard.ConstantValue == ConstantValue.True;
+                bool guardAlwaysSatisfied = (boundLabel.Guard == null) || (boundLabel.Guard.ConstantValue == ConstantValue.True);
 
                 // patternMatches is true if the input expression is unconditionally matched by the pattern, false if it never matches, null otherwise.
                 // While subsumption would produce an error for an unreachable pattern based on the input's type, this is used for reachability (warnings),
@@ -178,12 +178,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                     patternMatches = null;
                 }
 
-                bool labelIsReachable = isNotSubsumed && !someCaseMatches && patternMatches != false;
+                bool labelIsReachable = isNotSubsumed && !someCaseMatches && (patternMatches != false);
                 boundLabel = boundLabel.Update(boundLabel.Label, boundLabel.Pattern, boundLabel.Guard, labelIsReachable);
                 boundLabelsBuilder.Add(boundLabel);
 
                 // labelWouldMatch is true if we find an unconditional (no `when` clause restriction) label that matches the input expression
-                bool labelWouldMatch = guardAlwaysSatisfied && patternMatches == true;
+                bool labelWouldMatch = guardAlwaysSatisfied && (patternMatches == true);
                 someCaseMatches |= labelWouldMatch;
             }
 
@@ -222,9 +222,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                         pattern.WasCompilerGenerated = true;
                         var constantValue = pattern.ConstantValue;
                         if (!hasErrors &&
-                            (object)constantValue != null &&
-                            pattern.Value.Type == SwitchGoverningType &&
-                            this.FindMatchingSwitchCaseLabel(constantValue, caseLabelSyntax) != label)
+                            ((object)constantValue != null) &&
+                            (pattern.Value.Type == SwitchGoverningType) &&
+                            (this.FindMatchingSwitchCaseLabel(constantValue, caseLabelSyntax) != label))
                         {
                             diagnostics.Add(ErrorCode.ERR_DuplicateCaseLabel, node.Location, pattern.ConstantValue.GetValueToDisplay() ?? label.Name);
                             hasErrors = true;

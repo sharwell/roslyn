@@ -517,7 +517,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.CodeActions
             Tuple<Solution, Solution> result = null;
             foreach (var operation in operations)
             {
-                if (operation is ApplyChangesOperation && result == null)
+                if ((operation is ApplyChangesOperation) && (result == null))
                 {
                     var oldSolution = workspace.CurrentSolution;
                     var newSolution = ((ApplyChangesOperation)operation).ChangedSolution;

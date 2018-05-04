@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
         private static TextSpan CreateSpan(SyntaxTokenList startOpt, SyntaxNodeOrToken startFallbackOpt, SyntaxNodeOrToken endOpt)
         {
-            Debug.Assert(startFallbackOpt != default || endOpt != default);
+            Debug.Assert((startFallbackOpt != default) || (endOpt != default));
 
             int startPos;
             if (startOpt.Count > 0)
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                     }
 
                     // int P { get; set; } = [|expr|]
-                    if (property.Initializer != null && position >= property.Initializer.FullSpan.Start)
+                    if ((property.Initializer != null) && (position >= property.Initializer.FullSpan.Start))
                     {
                         return property.Initializer.Value.Span;
                     }
@@ -345,7 +345,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         private static TextSpan? TryCreateSpanForSwitchLabel(SwitchLabelSyntax switchLabel, int position)
         {
             var switchSection = switchLabel.Parent as SwitchSectionSyntax;
-            if (switchSection == null || switchSection.Statements.Count == 0)
+            if ((switchSection == null) || (switchSection.Statements.Count == 0))
             {
                 return null;
             }
@@ -458,7 +458,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                     // have hit that on the way up as well. In "foreach(var f in expr)" we allow a
                     // bp on "foreach", "var f" and "in".
                     var forEachStatement = (CommonForEachStatementSyntax)statement;
-                    if (position < forEachStatement.OpenParenToken.Span.End || position > forEachStatement.CloseParenToken.SpanStart)
+                    if ((position < forEachStatement.OpenParenToken.Span.End) || (position > forEachStatement.CloseParenToken.SpanStart))
                     {
                         return CreateSpan(forEachStatement.ForEachKeyword);
                     }
@@ -605,7 +605,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 return CreateSpan(modifiersOpt, variableDeclaration, semicolonOpt);
             }
 
-            if (semicolonOpt != default && position > semicolonOpt.SpanStart)
+            if ((semicolonOpt != default) && (position > semicolonOpt.SpanStart))
             {
                 position = variableDeclaration.SpanStart;
             }
@@ -632,17 +632,17 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             {
                 var left = d - i;
                 var right = d + i;
-                if (left < 0 && right >= declarators.Count)
+                if ((left < 0) && (right >= declarators.Count))
                 {
                     return null;
                 }
 
-                if (left >= 0 && declarators[left].Initializer != null)
+                if ((left >= 0) && (declarators[left].Initializer != null))
                 {
                     return declarators[left];
                 }
 
-                if (right < declarators.Count && declarators[right].Initializer != null)
+                if ((right < declarators.Count) && (declarators[right].Initializer != null))
                 {
                     return declarators[right];
                 }
@@ -708,7 +708,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         /// </summary>
         private static bool IsBreakableExpression(ExpressionSyntax expression)
         {
-            if (expression == null || expression.Parent == null)
+            if ((expression == null) || (expression.Parent == null))
             {
                 return false;
             }
@@ -724,7 +724,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                     var forStatement = (ForStatementSyntax)parent;
                     return
                         forStatement.Initializers.Contains(expression) ||
-                        forStatement.Condition == expression ||
+                        (forStatement.Condition == expression) ||
                         forStatement.Incrementors.Contains(expression);
 
                 case SyntaxKind.ForEachStatement:
@@ -741,7 +741,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         {
             for (var i = 0; i < accessors.Count; i++)
             {
-                if (position <= accessors[i].FullSpan.End || i == accessors.Count - 1)
+                if ((position <= accessors[i].FullSpan.End) || (i == (accessors.Count - 1)))
                 {
                     return TryCreateSpanForNode(accessors[i], position);
                 }

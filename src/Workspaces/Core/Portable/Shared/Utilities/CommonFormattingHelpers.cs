@@ -116,14 +116,14 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             endToken = (endToken.RawKind != 0) ? endToken : root.GetLastToken(includeZeroWidth: true);
 
             // token is in right order
-            Contract.ThrowIfFalse(startToken.Equals(endToken) || startToken.Span.End <= endToken.SpanStart);
+            Contract.ThrowIfFalse(startToken.Equals(endToken) || (startToken.Span.End <= endToken.SpanStart));
             return ValueTuple.Create(startToken, endToken);
         }
 
         public static bool IsInvalidTokenRange(this SyntaxNode root, SyntaxToken startToken, SyntaxToken endToken)
         {
             // given token must be token exist excluding EndOfFile token.
-            if (startToken.RawKind == 0 || endToken.RawKind == 0)
+            if ((startToken.RawKind == 0) || (endToken.RawKind == 0))
             {
                 return true;
             }
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
             // regular case. 
             // start token can't be end of file token and start token must be before end token if it's not the same token.
-            return root.FullSpan.End == startToken.SpanStart || startToken.FullSpan.End > endToken.FullSpan.Start;
+            return (root.FullSpan.End == startToken.SpanStart) || (startToken.FullSpan.End > endToken.FullSpan.Start);
         }
 
         public static int GetTokenColumn(this SyntaxTree tree, SyntaxToken token, int tabSize)
@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         public static void AppendTextBetween(SyntaxToken token1, SyntaxToken token2, StringBuilder builder)
         {
-            Contract.ThrowIfTrue(token1.RawKind == 0 && token2.RawKind == 0);
+            Contract.ThrowIfTrue((token1.RawKind == 0) && (token2.RawKind == 0));
             Contract.ThrowIfTrue(token1.Equals(token2));
 
             if (token1.RawKind == 0)

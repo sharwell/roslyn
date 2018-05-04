@@ -53,14 +53,14 @@ namespace Microsoft.CodeAnalysis.SignatureHelp
 
             var closeToken = getCloseToken(argumentList);
             if (!closeToken.IsMissing &&
-                position > closeToken.SpanStart)
+                (position > closeToken.SpanStart))
             {
                 return false;
             }
 
             foreach (var element in getArgumentsWithSeparators(argumentList))
             {
-                if (element.IsToken && position >= element.Span.End)
+                if (element.IsToken && (position >= element.Span.End))
                 {
                     index++;
                 }
@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.SignatureHelp
             where TArgumentList : SyntaxNode
         {
             var closeToken = getCloseToken(argumentList);
-            if (closeToken.RawKind != 0 && !closeToken.IsMissing)
+            if ((closeToken.RawKind != 0) && !closeToken.IsMissing)
             {
                 return TextSpan.FromBounds(start, closeToken.SpanStart);
             }

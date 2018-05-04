@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
             private bool IsNone(SymbolInfo info)
             {
-                return info.Symbol == null && info.CandidateSymbols.Length == 0;
+                return (info.Symbol == null) && (info.CandidateSymbols.Length == 0);
             }
         }
     }

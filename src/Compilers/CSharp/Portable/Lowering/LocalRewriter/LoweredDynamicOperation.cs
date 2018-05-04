@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             if (_factory == null)
             {
-                Debug.Assert(SiteInitialization == null && SiteInvocation is BoundBadExpression && _temps.IsDefaultOrEmpty);
+                Debug.Assert((SiteInitialization == null) && (SiteInvocation is BoundBadExpression) && _temps.IsDefaultOrEmpty);
                 return SiteInvocation;
             }
 

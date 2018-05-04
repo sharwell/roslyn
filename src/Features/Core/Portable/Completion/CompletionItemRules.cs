@@ -132,10 +132,10 @@ namespace Microsoft.CodeAnalysis.Completion
         {
             if (filterCharacterRules.IsDefaultOrEmpty &&
                 commitCharacterRules.IsDefaultOrEmpty &&
-                enterKeyRule == Default.EnterKeyRule &&
-                formatOnCommit == Default.FormatOnCommit &&
-                matchPriority.GetValueOrDefault() == Default.MatchPriority &&
-                selectionBehavior == Default.SelectionBehavior)
+                (enterKeyRule == Default.EnterKeyRule) &&
+                (formatOnCommit == Default.FormatOnCommit) &&
+                (matchPriority.GetValueOrDefault() == Default.MatchPriority) &&
+                (selectionBehavior == Default.SelectionBehavior))
             {
                 return Default;
             }
@@ -182,12 +182,12 @@ namespace Microsoft.CodeAnalysis.Completion
             var newMatchPriority = matchPriority.HasValue ? matchPriority.Value : this.MatchPriority;
             var newSelectionBehavior = selectionBehavior.HasValue ? selectionBehavior.Value : this.SelectionBehavior;
 
-            if (newFilterRules == this.FilterCharacterRules &&
-                newCommitRules == this.CommitCharacterRules &&
-                newEnterKeyRule == this.EnterKeyRule &&
-                newFormatOnCommit == this.FormatOnCommit &&
-                newMatchPriority == this.MatchPriority &&
-                newSelectionBehavior == this.SelectionBehavior)
+            if ((newFilterRules == this.FilterCharacterRules) &&
+                (newCommitRules == this.CommitCharacterRules) &&
+                (newEnterKeyRule == this.EnterKeyRule) &&
+                (newFormatOnCommit == this.FormatOnCommit) &&
+                (newMatchPriority == this.MatchPriority) &&
+                (newSelectionBehavior == this.SelectionBehavior))
             {
                 return this;
             }

@@ -206,7 +206,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 (t, m) =>
                 {
                     var implementation = classOrStructType.FindImplementationForInterfaceMember(m);
-                    return implementation != null && implementation.ContainingType == classOrStructType;
+                    return (implementation != null) && (implementation.ContainingType == classOrStructType);
                 },
                 GetMembers,
                 allowReimplementation: true,
@@ -225,7 +225,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 (t, m) =>
                 {
                     var implementation = classOrStructType.FindImplementationForInterfaceMember(m);
-                    return implementation != null && implementation.ContainingType == classOrStructType;
+                    return (implementation != null) && (implementation.ContainingType == classOrStructType);
                 },
                 interfaceMemberGetter,
                 allowReimplementation: true,
@@ -259,7 +259,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             Contract.ThrowIfNull(interfacesOrAbstractClasses);
             Contract.ThrowIfNull(isImplemented);
 
-            if (classOrStructType.TypeKind != TypeKind.Class && classOrStructType.TypeKind != TypeKind.Struct)
+            if ((classOrStructType.TypeKind != TypeKind.Class) && (classOrStructType.TypeKind != TypeKind.Struct))
             {
                 return ImmutableArray<(INamedTypeSymbol type, ImmutableArray<ISymbol> members)>.Empty;
             }
@@ -316,7 +316,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             // However, there's no need to re-implement any interfaces that our base types already
             // implement.  By definition they must contain all the necessary methods.
             var baseType = classOrStructType.BaseType;
-            var alreadyImplementedInterfaces = baseType == null || allowReimplementation
+            var alreadyImplementedInterfaces = (baseType == null) || allowReimplementation
                 ? SpecializedCollections.EmptyEnumerable<INamedTypeSymbol>()
                 : baseType.AllInterfaces;
 
@@ -335,9 +335,9 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         {
             var q = from m in interfaceMemberGetter(interfaceType, classOrStructType)
                     where m.Kind != SymbolKind.NamedType
-                    where m.Kind != SymbolKind.Method || ((IMethodSymbol)m).MethodKind == MethodKind.Ordinary
-                    where m.Kind != SymbolKind.Property || ((IPropertySymbol)m).IsIndexer || ((IPropertySymbol)m).CanBeReferencedByName
-                    where m.Kind != SymbolKind.Event || ((IEventSymbol)m).CanBeReferencedByName
+                    where (m.Kind != SymbolKind.Method) || (((IMethodSymbol)m).MethodKind == MethodKind.Ordinary)
+                    where (m.Kind != SymbolKind.Property) || ((IPropertySymbol)m).IsIndexer || ((IPropertySymbol)m).CanBeReferencedByName
+                    where (m.Kind != SymbolKind.Event) || ((IEventSymbol)m).CanBeReferencedByName
                     where !isImplemented(classOrStructType, m, isValidImplementation, cancellationToken)
                     select m;
 
@@ -397,8 +397,8 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     if (!propertySymbol.IsReadOnly &&
                         !propertySymbol.IsWriteOnly &&
                         !propertySymbol.IsStatic &&
-                        propertySymbol.GetMethod != null &&
-                        propertySymbol.SetMethod != null &&
+                        (propertySymbol.GetMethod != null) &&
+                        (propertySymbol.SetMethod != null) &&
                         propertySymbol.GetMethod.IsAccessibleWithin(within) &&
                         propertySymbol.SetMethod.IsAccessibleWithin(within))
                     {
@@ -447,12 +447,12 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             var result = new Dictionary<ISymbol, int>();
             var index = 0;
 
-            if (containingType != null && 
+            if ((containingType != null) && 
                 !containingType.IsScriptClass && 
                 !containingType.IsImplicitClass &&
                 !containingType.IsStatic)
             {
-                if (containingType.TypeKind == TypeKind.Class || containingType.TypeKind == TypeKind.Struct)
+                if ((containingType.TypeKind == TypeKind.Class) || (containingType.TypeKind == TypeKind.Struct))
                 {
                     var baseTypes = containingType.GetBaseTypes().Reverse();
                     foreach (var type in baseTypes)

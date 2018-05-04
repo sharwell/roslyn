@@ -328,7 +328,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
             this.UndoManager.Disconnect();
 
-            if (_triggerView != null && !_triggerView.IsClosed)
+            if ((_triggerView != null) && !_triggerView.IsClosed)
             {
                 _triggerView.Selection.Clear();
             }
@@ -737,7 +737,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
             foreach (var span in bufferManager.GetEditableSpansForSnapshot(point.Snapshot))
             {
-                if (span.Contains(point) || span.End == point)
+                if (span.Contains(point) || (span.End == point))
                 {
                     editableSpan = span;
                     return true;

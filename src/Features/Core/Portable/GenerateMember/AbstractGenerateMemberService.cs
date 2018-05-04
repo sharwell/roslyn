@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember
                 return false;
             }
 
-            if (typeToGenerateIn.TypeKind == TypeKind.Interface && isStatic)
+            if ((typeToGenerateIn.TypeKind == TypeKind.Interface) && isStatic)
             {
                 return false;
             }

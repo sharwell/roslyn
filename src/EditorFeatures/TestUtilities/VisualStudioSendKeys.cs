@@ -47,7 +47,7 @@ namespace Roslyn.Test.Utilities
                     newLine.Append(charOrEscapeSequence);
                 }
 
-                if (count + newLine.Length < MaxChars)
+                if ((count + newLine.Length) < MaxChars)
                 {
                     // We're still part of the current block, so update the current element to include
                     // this line.
@@ -170,8 +170,8 @@ namespace Roslyn.Test.Utilities
 
                 foreach (var command in commands)
                 {
-                    if (start + skipLength < normalLine.Length &&
-                        start + skipLength + command.Length <= normalLine.Length &&
+                    if (((start + skipLength) < normalLine.Length) &&
+                        (((start + skipLength + command.Length)) <= normalLine.Length) &&
                         normalLine.Substring(start + skipLength, command.Length).Equals(command))
                     {
                         skipLength += command.Length;

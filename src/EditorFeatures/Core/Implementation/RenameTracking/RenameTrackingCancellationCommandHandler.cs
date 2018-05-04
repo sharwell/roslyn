@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
         {
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
 
-            return document != null &&
+            return (document != null) &&
                 RenameTrackingDismisser.DismissVisibleRenameTracking(document.Project.Solution.Workspace, document.Id);
         }
 

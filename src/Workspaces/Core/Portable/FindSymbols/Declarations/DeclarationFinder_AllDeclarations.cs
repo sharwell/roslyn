@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 throw new ArgumentNullException(nameof(project));
             }
 
-            if (query.Name != null && string.IsNullOrWhiteSpace(query.Name))
+            if ((query.Name != null) && string.IsNullOrWhiteSpace(query.Name))
             {
                 return ImmutableArray<SymbolAndProjectId>.Empty;
             }

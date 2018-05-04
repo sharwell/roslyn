@@ -52,8 +52,8 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateDefaultConstructors
 
                 var baseType = this.ClassType.BaseType;
                 if (this.ClassType.IsStatic ||
-                    baseType == null ||
-                    baseType.TypeKind == TypeKind.Error)
+                    (baseType == null) ||
+                    (baseType.TypeKind == TypeKind.Error))
                 {
                     return false;
                 }

@@ -44,14 +44,14 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         public bool Equals(LambdaDebugInfo other)
         {
-            return SyntaxOffset == other.SyntaxOffset
-                && ClosureOrdinal == other.ClosureOrdinal
+            return (SyntaxOffset == other.SyntaxOffset)
+                && (ClosureOrdinal == other.ClosureOrdinal)
                 && LambdaId.Equals(other.LambdaId);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is LambdaDebugInfo && Equals((LambdaDebugInfo)obj);
+            return (obj is LambdaDebugInfo) && Equals((LambdaDebugInfo)obj);
         }
 
         public override int GetHashCode()

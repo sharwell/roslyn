@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CSharp.IntroduceVariable
             {
                 // Can't introduce for the first clause in a query.
                 var fromClause = expression.GetAncestor<FromClauseSyntax>();
-                if (fromClause == null || query.FromClause != fromClause)
+                if ((fromClause == null) || (query.FromClause != fromClause))
                 {
                     return true;
                 }

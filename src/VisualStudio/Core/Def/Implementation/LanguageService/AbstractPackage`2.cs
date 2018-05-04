@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
 
         private bool IsInIdeMode(Workspace workspace)
         {
-            return workspace != null && !IsInCommandLineMode();
+            return (workspace != null) && !IsInCommandLineMode();
         }
 
         private bool IsInCommandLineMode()

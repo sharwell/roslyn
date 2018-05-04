@@ -89,14 +89,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.VsNavIn
 
                 // In some cases, Class View presentation NavInfo objects will have extra nodes (LLT_PACKAGE & LLT_HIERARCHY) up front.
                 // When this NavInfo is consumed by Object Browser (for 'Browse to Definition'), we need to skip first two nodes
-                if (isObjectBrowser && !isCanonical && baseNodes.Length >= 2 && baseNodes[1].ListType == _LIB_LISTTYPE.LLT_HIERARCHY)
+                if (isObjectBrowser && !isCanonical && (baseNodes.Length >= 2) && (baseNodes[1].ListType == _LIB_LISTTYPE.LLT_HIERARCHY))
                 {
                     startIndex = 2;
                 }
 
                 for (int i = startIndex; i < baseNodes.Length; i++)
                 {
-                    if (isCanonical && baseNodes[i].ListType == _LIB_LISTTYPE.LLT_HIERARCHY)
+                    if (isCanonical && (baseNodes[i].ListType == _LIB_LISTTYPE.LLT_HIERARCHY))
                     {
                         continue;
                     }

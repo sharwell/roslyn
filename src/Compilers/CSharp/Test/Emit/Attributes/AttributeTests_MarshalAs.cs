@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                     {
                         Assert.Null(field.MarshallingInformation);
                         var blob = blobs[field.Name];
-                        if (blob != null && blob[0] <= 0x50)
+                        if ((blob != null) && (blob[0] <= 0x50))
                         {
                             Assert.Equal((UnmanagedType)blob[0], field.MarshallingType);
                         }
@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                         {
                             Assert.Null(parameter.MarshallingInformation);
                             var blob = blobs[method.Name + ":" + parameter.Name];
-                            if (blob != null && blob[0] <= 0x50)
+                            if ((blob != null) && (blob[0] <= 0x50))
                             {
                                 Assert.Equal((UnmanagedType)blob[0], parameter.MarshallingType);
                             }
@@ -1048,7 +1048,7 @@ enum E
 
 ";
 
-            CompileAndVerifyFieldMarshal(source, (name, _omitted1) => (name == "e" || name == "X") ? new byte[] { 0x02 } : null);
+            CompileAndVerifyFieldMarshal(source, (name, _omitted1) => ((name == "e") || (name == "X")) ? new byte[] { 0x02 } : null);
         }
 
         #endregion

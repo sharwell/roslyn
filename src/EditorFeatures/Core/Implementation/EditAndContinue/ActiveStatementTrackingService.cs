@@ -212,7 +212,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
                 bool updated = false;
                 lock (_trackingSpans)
                 {
-                    if (_trackingSpans.TryGetValue(documentId, out var documentTrackingSpans) && documentTrackingSpans == null)
+                    if (_trackingSpans.TryGetValue(documentId, out var documentTrackingSpans) && (documentTrackingSpans == null))
                     {
                         SetTrackingSpansNoLock(documentId, CreateTrackingSpans(snapshot, documentActiveSpans));
                         updated = true;
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
 
             private void SetTrackingSpansNoLock(DocumentId documentId, ITrackingSpan[] spans)
             {
-                Debug.Assert(spans == null || spans.Length == _editSession.BaseActiveStatements[documentId].Length);
+                Debug.Assert((spans == null) || (spans.Length == _editSession.BaseActiveStatements[documentId].Length));
                 _trackingSpans[documentId] = spans;
             }
 
@@ -264,12 +264,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
             {
                 lock (_trackingSpans)
                 {
-                    if (_trackingSpans.TryGetValue(id.DocumentId, out var documentSpans) && documentSpans != null)
+                    if (_trackingSpans.TryGetValue(id.DocumentId, out var documentSpans) && (documentSpans != null))
                     {
                         var trackingSpan = documentSpans[id.Ordinal];
                         var snapshot = source.FindCorrespondingEditorTextSnapshot();
 
-                        if (snapshot != null && snapshot.TextBuffer == trackingSpan.TextBuffer)
+                        if ((snapshot != null) && (snapshot.TextBuffer == trackingSpan.TextBuffer))
                         {
                             span = trackingSpan.GetSpan(snapshot).Span.ToTextSpan();
                             return true;
@@ -299,7 +299,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
                 ITrackingSpan[] documentTrackingSpans;
                 lock (_trackingSpans)
                 {
-                    if (!_trackingSpans.TryGetValue(document.Id, out documentTrackingSpans) || documentTrackingSpans == null)
+                    if (!_trackingSpans.TryGetValue(document.Id, out documentTrackingSpans) || (documentTrackingSpans == null))
                     {
                         return SpecializedCollections.EmptyEnumerable<ActiveStatementTextSpan>();
                     }
@@ -310,7 +310,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
 
                 // The document might have been reopened with a new text buffer
                 // and we haven't created tracking spans for the new text buffer yet.
-                if (snapshot == null || snapshot.TextBuffer != documentTrackingSpans[0].TextBuffer)
+                if ((snapshot == null) || (snapshot.TextBuffer != documentTrackingSpans[0].TextBuffer))
                 {
                     return SpecializedCollections.EmptyEnumerable<ActiveStatementTextSpan>();
                 }
@@ -341,13 +341,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
                     foreach (var span in spans)
                     {
                         ActiveStatementId id = span.Key;
-                        if (_trackingSpans.TryGetValue(id.DocumentId, out var documentSpans) && documentSpans != null)
+                        if (_trackingSpans.TryGetValue(id.DocumentId, out var documentSpans) && (documentSpans != null))
                         {
                             var snapshot = source.FindCorrespondingEditorTextSnapshot();
 
                             // Avoid updating spans if the buffer has changed. 
                             // Buffer change is handled by DocumentOpened event.
-                            if (snapshot != null && snapshot.TextBuffer == documentSpans[id.Ordinal].TextBuffer)
+                            if ((snapshot != null) && (snapshot.TextBuffer == documentSpans[id.Ordinal].TextBuffer))
                             {
                                 documentSpans[id.Ordinal] = snapshot.CreateTrackingSpan(span.Value.ToSpan(), SpanTrackingMode.EdgeExclusive);
 

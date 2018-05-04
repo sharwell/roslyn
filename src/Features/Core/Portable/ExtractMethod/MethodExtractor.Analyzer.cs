@@ -262,7 +262,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             {
                 if (this.SelectionResult.ShouldPutAsyncModifier())
                 {
-                    var names = parameters.Where(v => !v.UseAsReturnValue && (v.ParameterModifier == ParameterBehavior.Out || v.ParameterModifier == ParameterBehavior.Ref))
+                    var names = parameters.Where(v => !v.UseAsReturnValue && ((v.ParameterModifier == ParameterBehavior.Out) || (v.ParameterModifier == ParameterBehavior.Ref)))
                                           .Select(p => p.Name ?? string.Empty);
 
                     if (names.Any())
@@ -410,7 +410,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                     }
 
                     // parameter defined inside of the selection (such as lambda parameter) will be ignored (bug # 10964)
-                    if (symbol is IParameterSymbol && variableDeclared)
+                    if ((symbol is IParameterSymbol) && variableDeclared)
                     {
                         continue;
                     }
@@ -531,7 +531,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                     return false;
                 }
 
-                return type.OriginalDefinition.SpecialType == SpecialType.None && !WellKnownFrameworkValueType(compilation, type);
+                return (type.OriginalDefinition.SpecialType == SpecialType.None) && !WellKnownFrameworkValueType(compilation, type);
             }
 
             private bool WellKnownFrameworkValueType(Compilation compilation, ITypeSymbol type)
@@ -542,7 +542,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                 }
 
                 var cancellationTokenType = compilation.GetTypeByMetadataName(typeof(CancellationToken).FullName);
-                if (cancellationTokenType != null && cancellationTokenType.Equals(type))
+                if ((cancellationTokenType != null) && cancellationTokenType.Equals(type))
                 {
                     return true;
                 }
@@ -634,8 +634,8 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
                 return parameter.IsImplicitlyDeclared &&
                        parameter.ContainingAssembly.IsInteractive &&
-                       parameter.ContainingSymbol != null &&
-                       parameter.ContainingSymbol.ContainingType != null &&
+                       (parameter.ContainingSymbol != null) &&
+                       (parameter.ContainingSymbol.ContainingType != null) &&
                        parameter.ContainingSymbol.ContainingType.IsScriptClass;
             }
 
@@ -659,8 +659,8 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
             private void AddTypeParameterToMap(ITypeParameterSymbol typeParameter, IDictionary<int, ITypeParameterSymbol> sortedMap)
             {
-                if (typeParameter == null ||
-                    typeParameter.DeclaringMethod == null ||
+                if ((typeParameter == null) ||
+                    (typeParameter.DeclaringMethod == null) ||
                     sortedMap.ContainsKey(typeParameter.Ordinal))
                 {
                     return;
@@ -728,7 +728,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                 foreach (var pair in symbolMap.Where(p => p.Key.Kind == SymbolKind.TypeParameter))
                 {
                     var typeParameter = pair.Key as ITypeParameterSymbol;
-                    if (typeParameter.DeclaringMethod == null ||
+                    if ((typeParameter.DeclaringMethod == null) ||
                         sortedMap.ContainsKey(typeParameter.Ordinal))
                     {
                         continue;

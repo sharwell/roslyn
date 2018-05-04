@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Options.Style
                     CodeStyleItems[i].CanMoveUp = false;
                 }
 
-                if (i == CodeStyleItems.Count - 1)
+                if (i == (CodeStyleItems.Count - 1))
                 {
                     CodeStyleItems[i].CanMoveDown = false;
                 }
@@ -282,7 +282,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Options.Style
 
             public bool IsComplete()
             {
-                return SelectedSpecification != null && SelectedStyle != null && SelectedNotificationPreference != null;
+                return (SelectedSpecification != null) && (SelectedStyle != null) && (SelectedNotificationPreference != null);
             }
         }
     }

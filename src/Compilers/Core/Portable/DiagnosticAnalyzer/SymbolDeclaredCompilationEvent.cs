@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             lock (_gate)
             {
                 var semanticModel = _semanticModel;
-                if (semanticModel == null && _lazySemanticModel != null)
+                if ((semanticModel == null) && (_lazySemanticModel != null))
                 {
                     _semanticModel = semanticModel = _lazySemanticModel.Value;
                     _lazySemanticModel = null;
@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 {
                     _weakModel?.TryGetTarget(out semanticModel);
                 }
-                if (semanticModel == null || semanticModel.SyntaxTree != reference.SyntaxTree)
+                if ((semanticModel == null) || (semanticModel.SyntaxTree != reference.SyntaxTree))
                 {
                     semanticModel = Compilation.GetSemanticModel(reference.SyntaxTree);
                     _weakModel = new WeakReference<SemanticModel>(semanticModel);

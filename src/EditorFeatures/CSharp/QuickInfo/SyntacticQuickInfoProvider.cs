@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.QuickInfo
 
             // Don't show for interpolations
             if (token.Parent.IsKind(SyntaxKind.Interpolation) &&
-                ((InterpolationSyntax)token.Parent).CloseBraceToken == token)
+                (((InterpolationSyntax)token.Parent).CloseBraceToken == token))
             {
                 return null;
             }

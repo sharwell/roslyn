@@ -96,9 +96,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // For a decimal value, DefaultValue won't be used directly, instead, DecimalConstantAttribute will be generated.
                 // Similarly for DateTime. (C# does not directly support optional parameters with DateTime constants, but honors
                 // the attributes if [Optional][DateTimeConstant(whatever)] are on the parameter.)
-                return this.ExplicitDefaultConstantValue != null &&
-                       this.ExplicitDefaultConstantValue.SpecialType != SpecialType.System_Decimal &&
-                       this.ExplicitDefaultConstantValue.SpecialType != SpecialType.System_DateTime;
+                return (this.ExplicitDefaultConstantValue != null) &&
+                       (this.ExplicitDefaultConstantValue.SpecialType != SpecialType.System_Decimal) &&
+                       (this.ExplicitDefaultConstantValue.SpecialType != SpecialType.System_DateTime);
             }
         }
 
@@ -213,7 +213,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             PEModuleBuilder moduleBeingBuilt = (PEModuleBuilder)context.Module;
 
             if (this.IsDefinition &&
-                this.ContainingModule == moduleBeingBuilt.SourceModule)
+                (this.ContainingModule == moduleBeingBuilt.SourceModule))
             {
                 return this;
             }

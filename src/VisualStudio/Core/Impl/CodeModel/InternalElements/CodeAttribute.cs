@@ -133,8 +133,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Inter
         {
             string name;
 
-            if (nameObj == Type.Missing ||
-                nameObj == null)
+            if ((nameObj == Type.Missing) ||
+                (nameObj == null))
             {
                 name = null;
             }

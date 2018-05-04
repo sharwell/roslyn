@@ -52,9 +52,9 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             }
 
             var other = obj as WorkspaceAnalyzerOptions;
-            return other != null &&
-                _solution.WorkspaceVersion == other._solution.WorkspaceVersion &&
-                _solution.Workspace == other._solution.Workspace &&
+            return (other != null) &&
+                (_solution.WorkspaceVersion == other._solution.WorkspaceVersion) &&
+                (_solution.Workspace == other._solution.Workspace) &&
                 base.Equals(other);
         }
 

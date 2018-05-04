@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 var currentNode = nodes.First.Value;
                 nodes.RemoveFirst();
 
-                if (currentNode != null && searchSpan.Contains(currentNode.FullSpan) && predicate(currentNode))
+                if ((currentNode != null) && searchSpan.Contains(currentNode.FullSpan) && predicate(currentNode))
                 {
                     if (currentNode is TSyntaxNode tSyntax)
                     {
@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         public static SyntaxNode GetCommonRoot(this SyntaxNode node1, SyntaxNode node2)
         {
-            Contract.ThrowIfTrue(node1.RawKind == 0 || node2.RawKind == 0);
+            Contract.ThrowIfTrue((node1.RawKind == 0) || (node2.RawKind == 0));
 
             // find common starting node from two nodes.
             // as long as two nodes belong to same tree, there must be at least one common root (Ex, compilation unit)
@@ -419,7 +419,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 {
                     // only add to replacement map if we don't intersect with the previous node. This taken with the sort order
                     // should ensure that parent nodes are not processed in the same batch as child nodes.
-                    if (previous == default || !previous.IntersectsWith(span))
+                    if ((previous == default) || !previous.IntersectsWith(span))
                     {
                         if (nodesToReplace.TryGetValue(span, out var currentNode))
                         {
@@ -464,7 +464,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                         nodes: nodesToReplace.Values,
                         computeReplacementNode: (original, rewritten) =>
                             {
-                                if (rewritten != original || !nodeReplacements.TryGetValue(original, out var replaced))
+                                if ((rewritten != original) || !nodeReplacements.TryGetValue(original, out var replaced))
                                 {
                                     // the subtree did change, or we didn't have a replacement for it in this batch
                                     // so we need to add an annotation so we can find this node again for the next batch.
@@ -477,7 +477,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                         tokens: tokensToReplace.Values,
                         computeReplacementToken: (original, rewritten) =>
                             {
-                                if (rewritten != original || !tokenReplacements.TryGetValue(original, out var replaced))
+                                if ((rewritten != original) || !tokenReplacements.TryGetValue(original, out var replaced))
                                 {
                                     // the subtree did change, or we didn't have a replacement for it in this batch
                                     // so we need to add an annotation so we can find this node again for the next batch.
@@ -547,7 +547,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     {
                         foreach (var token in skippedTokensTrivia.Tokens)
                         {
-                            if (token.Span.Length > 0 && position <= token.Span.End)
+                            if ((token.Span.Length > 0) && (position <= token.Span.End))
                             {
                                 return token;
                             }
@@ -577,7 +577,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     {
                         foreach (var token in skippedTokensTrivia.Tokens)
                         {
-                            if (token.Span.Length > 0 && token.SpanStart <= position)
+                            if ((token.Span.Length > 0) && (token.SpanStart <= position))
                             {
                                 return token;
                             }
@@ -596,7 +596,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             bool includeDirectives = false,
             bool includeDocumentationComments = false)
         {
-            return (position < root.FullSpan.End || !(root is ICompilationUnitSyntax))
+            return ((position < root.FullSpan.End) || !(root is ICompilationUnitSyntax))
                 ? root.FindToken(position, includeSkipped || includeDirectives || includeDocumentationComments)
                 : root.GetLastToken(includeZeroWidth: true, includeSkipped: true, includeDirectives: true, includeDocumentationComments: true)
                       .GetPreviousToken(includeZeroWidth: false, includeSkipped: includeSkipped, includeDirectives: includeDirectives, includeDocumentationComments: includeDocumentationComments);
@@ -630,7 +630,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                         ? skippedToken
                         : token.GetNextToken(includeZeroWidth: false, includeSkipped: includeSkipped, includeDirectives: includeDirectives, includeDocumentationComments: includeDocumentationComments);
                 }
-                while (token.RawKind != 0 && token.Span.End <= position && token.Span.End <= root.FullSpan.End);
+                while ((token.RawKind != 0) && (token.Span.End <= position) && (token.Span.End <= root.FullSpan.End));
             }
 
             if (token.Span.Length == 0)
@@ -664,7 +664,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                         ? skippedToken
                         : token.GetPreviousToken(includeZeroWidth: false, includeSkipped: includeSkipped, includeDirectives: includeDirectives, includeDocumentationComments: includeDocumentationComments);
                 }
-                while (position <= token.SpanStart && root.FullSpan.Start < token.SpanStart);
+                while ((position <= token.SpanStart) && (root.FullSpan.Start < token.SpanStart));
             }
             else if (token.Span.End < position)
             {

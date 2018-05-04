@@ -112,22 +112,22 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 return new FailureInlineRenameInfo(EditorFeaturesResources.You_cannot_rename_this_element);
             }
 
-            if (symbol.Kind == SymbolKind.Alias && symbol.IsExtern)
+            if ((symbol.Kind == SymbolKind.Alias) && symbol.IsExtern)
             {
                 return new FailureInlineRenameInfo(EditorFeaturesResources.You_cannot_rename_this_element);
             }
 
             // Cannot rename constructors in VB.  TODO: this logic should be in the VB subclass of this type.
             var workspace = document.Project.Solution.Workspace;
-            if (symbol != null &&
-                symbol.Kind == SymbolKind.NamedType &&
-                symbol.Language == LanguageNames.VisualBasic &&
+            if ((symbol != null) &&
+                (symbol.Kind == SymbolKind.NamedType) &&
+                (symbol.Language == LanguageNames.VisualBasic) &&
                 triggerToken.ToString().Equals("New", StringComparison.OrdinalIgnoreCase))
             {
                 var originalSymbol = SymbolFinder.FindSymbolAtPositionAsync(semanticModel, triggerToken.SpanStart, workspace, cancellationToken: cancellationToken)
                     .WaitAndGetResult(cancellationToken);
 
-                if (originalSymbol != null && originalSymbol.IsConstructor())
+                if ((originalSymbol != null) && originalSymbol.IsConstructor())
                 {
                     return new FailureInlineRenameInfo(EditorFeaturesResources.You_cannot_rename_this_element);
                 }
@@ -143,12 +143,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
             // we allow implicit locals and parameters of Event handlers
             if (symbol.IsImplicitlyDeclared &&
-                symbol.Kind != SymbolKind.Local &&
-                !(symbol.Kind == SymbolKind.Parameter &&
-                  symbol.ContainingSymbol.Kind == SymbolKind.Method &&
-                  symbol.ContainingType != null &&
+                (symbol.Kind != SymbolKind.Local) &&
+                !((symbol.Kind == SymbolKind.Parameter) &&
+                  (symbol.ContainingSymbol.Kind == SymbolKind.Method) &&
+                  (symbol.ContainingType != null) &&
                   symbol.ContainingType.IsDelegateType() &&
-                  symbol.ContainingType.AssociatedSymbol != null))
+                  (symbol.ContainingType.AssociatedSymbol != null)))
             {
                 // We enable the parameter in RaiseEvent, if the Event is declared with a signature. If the Event is declared as a 
                 // delegate type, we do not have a connection between the delegate type and the event.
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 return new FailureInlineRenameInfo(EditorFeaturesResources.You_cannot_rename_this_element);
             }
 
-            if (symbol.Kind == SymbolKind.Property && symbol.ContainingType.IsAnonymousType)
+            if ((symbol.Kind == SymbolKind.Property) && symbol.ContainingType.IsAnonymousType)
             {
                 return new FailureInlineRenameInfo(EditorFeaturesResources.Renaming_anonymous_type_members_is_not_yet_supported);
             }
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 return new FailureInlineRenameInfo(EditorFeaturesResources.Please_resolve_errors_in_your_code_before_renaming_this_element);
             }
 
-            if (symbol.Kind == SymbolKind.Method && ((IMethodSymbol)symbol).MethodKind == MethodKind.UserDefinedOperator)
+            if ((symbol.Kind == SymbolKind.Method) && (((IMethodSymbol)symbol).MethodKind == MethodKind.UserDefinedOperator))
             {
                 return new FailureInlineRenameInfo(EditorFeaturesResources.You_cannot_rename_operators);
             }

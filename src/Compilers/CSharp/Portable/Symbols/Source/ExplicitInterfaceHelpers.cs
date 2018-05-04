@@ -178,7 +178,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             var containingType = implementingMember.ContainingType;
             var containingTypeKind = containingType.TypeKind;
 
-            if (containingTypeKind != TypeKind.Class && containingTypeKind != TypeKind.Struct)
+            if ((containingTypeKind != TypeKind.Class) && (containingTypeKind != TypeKind.Struct))
             {
                 diagnostics.Add(ErrorCode.ERR_ExplicitInterfaceImplementationInNonClassOrStruct, memberLocation, implementingMember);
                 return null;
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // At this point, we know that explicitInterfaceNamedType is an interface, so candidate must be public
                 // and, therefore, accessible.  So we don't need to check that.
                 // However, metadata interface members can be static - we ignore them, as does Dev10.
-                if (interfaceMember.Kind != implementingMember.Kind || interfaceMember.IsStatic)
+                if ((interfaceMember.Kind != implementingMember.Kind) || interfaceMember.IsStatic)
                 {
                     continue;
                 }
@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             foreach (Symbol collisionCandidateMember in explicitInterfaceType.GetMembers(implementedMember.Name))
             {
-                if (collisionCandidateMember.Kind == implementingMember.Kind && implementedMember != collisionCandidateMember)
+                if ((collisionCandidateMember.Kind == implementingMember.Kind) && (implementedMember != collisionCandidateMember))
                 {
                     // NOTE: we are more precise than Dev10 - we will not generate a diagnostic if the return types differ 
                     // because that is enough to distinguish them in the runtime.

@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Emit
     {
         internal static bool IsValid(this InstrumentationKind value)
         {
-            return value >= InstrumentationKind.None && value <= InstrumentationKind.TestCoverage;
+            return (value >= InstrumentationKind.None) && (value <= InstrumentationKind.TestCoverage);
         }
     }
 }

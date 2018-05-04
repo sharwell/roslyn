@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         public static MethodSymbol Create(MethodSymbol method, TypeSymbol receiverType, Compilation compilation)
         {
-            Debug.Assert(method.IsExtensionMethod && method.MethodKind != MethodKind.ReducedExtension);
+            Debug.Assert(method.IsExtensionMethod && (method.MethodKind != MethodKind.ReducedExtension));
             Debug.Assert(method.ParameterCount > 0);
             Debug.Assert((object)receiverType != null);
 
@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public static MethodSymbol Create(MethodSymbol method)
         {
-            Debug.Assert(method.IsExtensionMethod && method.MethodKind != MethodKind.ReducedExtension);
+            Debug.Assert(method.IsExtensionMethod && (method.MethodKind != MethodKind.ReducedExtension));
 
             // The reduced form is always created from the unconstructed method symbol.
             var constructedFrom = method.ConstructedFrom;
@@ -406,7 +406,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             else
             {
                 var parameters = new ParameterSymbol[count - 1];
-                for (int i = 0; i < count - 1; i++)
+                for (int i = 0; i < (count - 1); i++)
                 {
                     parameters[i] = new ReducedExtensionMethodParameterSymbol(this, reducedFromParameters[i + 1]);
                 }
@@ -425,7 +425,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((object)this == obj) return true;
 
             ReducedExtensionMethodSymbol other = obj as ReducedExtensionMethodSymbol;
-            return (object)other != null && _reducedFrom.Equals(other._reducedFrom);
+            return ((object)other != null) && _reducedFrom.Equals(other._reducedFrom);
         }
 
         public override int GetHashCode()
@@ -488,8 +488,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // ReferenceEquals.
 
                 var other = obj as ReducedExtensionMethodParameterSymbol;
-                return (object)other != null &&
-                    this.Ordinal == other.Ordinal &&
+                return ((object)other != null) &&
+                    (this.Ordinal == other.Ordinal) &&
                     this.ContainingSymbol.Equals(other.ContainingSymbol);
             }
 

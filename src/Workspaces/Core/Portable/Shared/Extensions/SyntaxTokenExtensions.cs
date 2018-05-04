@@ -40,11 +40,11 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         public static SyntaxNode GetCommonRoot(this SyntaxToken token1, SyntaxToken token2)
         {
-            Contract.ThrowIfTrue(token1.RawKind == 0 || token2.RawKind == 0);
+            Contract.ThrowIfTrue((token1.RawKind == 0) || (token2.RawKind == 0));
 
             // find common starting node from two tokens.
             // as long as two tokens belong to same tree, there must be at least on common root (Ex, compilation unit)
-            if (token1.Parent == null || token2.Parent == null)
+            if ((token1.Parent == null) || (token2.Parent == null))
             {
                 return null;
             }
@@ -79,9 +79,9 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             var previousToken = token.GetPreviousToken(
                 includeZeroWidth, findInsideTrivia, findInsideTrivia, findInsideTrivia);
 
-            if (token.SpanStart == position &&
-                previousToken.RawKind != 0 &&
-                previousToken.Span.End == position)
+            if ((token.SpanStart == position) &&
+                (previousToken.RawKind != 0) &&
+                (previousToken.Span.End == position))
             {
                 return previousToken;
             }

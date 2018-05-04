@@ -128,8 +128,8 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             Assert.NotNull(compilation);
 
-            Assert.True(expectedOutput == null ||
-                compilation.Options.OutputKind == OutputKind.ConsoleApplication || compilation.Options.OutputKind == OutputKind.WindowsApplication,
+            Assert.True((expectedOutput == null) ||
+                (compilation.Options.OutputKind == OutputKind.ConsoleApplication) || (compilation.Options.OutputKind == OutputKind.WindowsApplication),
                 "Compilation must be executable if output is expected.");
 
             if (sourceSymbolValidator != null)
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
         static internal void RunValidators(CompilationVerifier verifier, Action<PEAssembly> assemblyValidator, Action<IModuleSymbol> symbolValidator)
         {
-            Assert.True(assemblyValidator != null || symbolValidator != null);
+            Assert.True((assemblyValidator != null) || (symbolValidator != null));
 
             var emittedMetadata = verifier.GetMetadata();
 
@@ -228,7 +228,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
             verifier.Emit(expectedOutput, expectedReturnCode, args, manifestResources, emitOptions, verify, expectedSignatures);
 
-            if (assemblyValidator != null || symbolValidator != null)
+            if ((assemblyValidator != null) || (symbolValidator != null))
             {
                 // We're dual-purposing emitters here.  In this context, it
                 // tells the validator the version of Emit that is calling it. 

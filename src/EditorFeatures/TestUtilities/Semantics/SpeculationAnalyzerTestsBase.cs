@@ -29,10 +29,10 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Semantics
             var initialExpression = initialMatch.Groups["content"].Value;
 
             var initialTree = Parse(UnderTestRegex.Replace(code, m => m.Groups["content"].Value));
-            var initialNode = initialTree.GetRoot().DescendantNodes().First(n => IsExpressionNode(n) && n.ToString() == (expressionToAnalyze ?? initialExpression));
+            var initialNode = initialTree.GetRoot().DescendantNodes().First(n => IsExpressionNode(n) && (n.ToString() == (expressionToAnalyze ?? initialExpression)));
 
             var replacementTree = Parse(UnderTestRegex.Replace(code, replacementExpression));
-            var replacementNode = replacementTree.GetRoot().DescendantNodes().First(n => IsExpressionNode(n) && n.ToString() == (expressionToAnalyze ?? replacementExpression));
+            var replacementNode = replacementTree.GetRoot().DescendantNodes().First(n => IsExpressionNode(n) && (n.ToString() == (expressionToAnalyze ?? replacementExpression)));
 
             var initialCompilation = CreateCompilation(initialTree);
             var initialModel = initialCompilation.GetSemanticModel(initialTree);

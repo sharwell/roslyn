@@ -606,18 +606,18 @@ namespace Microsoft.CodeAnalysis
         public static bool IsWellKnownType(this WellKnownType typeId)
         {
             Debug.Assert(typeId != WellKnownType.ExtSentinel);
-            return typeId >= WellKnownType.First && typeId < WellKnownType.NextAvailable;
+            return (typeId >= WellKnownType.First) && (typeId < WellKnownType.NextAvailable);
         }
 
         public static bool IsValueTupleType(this WellKnownType typeId)
         {
             Debug.Assert(typeId != WellKnownType.ExtSentinel);
-            return typeId >= WellKnownType.System_ValueTuple_T1 && typeId <= WellKnownType.System_ValueTuple_TRest;
+            return (typeId >= WellKnownType.System_ValueTuple_T1) && (typeId <= WellKnownType.System_ValueTuple_TRest);
         }
 
         public static bool IsValid(this WellKnownType typeId)
         {
-            return typeId >= WellKnownType.First && typeId < WellKnownType.NextAvailable && typeId != WellKnownType.ExtSentinel;
+            return (typeId >= WellKnownType.First) && (typeId < WellKnownType.NextAvailable) && (typeId != WellKnownType.ExtSentinel);
         }
 
         public static string GetMetadataName(this WellKnownType id)
@@ -642,7 +642,7 @@ namespace Microsoft.CodeAnalysis
         internal static WellKnownType GetWellKnownFunctionDelegate(int invokeArgumentCount)
         {
             Debug.Assert(invokeArgumentCount >= 0);
-            return (invokeArgumentCount <= WellKnownType.System_Func_TMax - WellKnownType.System_Func_T) ?
+            return (invokeArgumentCount <= (WellKnownType.System_Func_TMax - WellKnownType.System_Func_T)) ?
                 (WellKnownType)((int)WellKnownType.System_Func_T + invokeArgumentCount) :
                 WellKnownType.Unknown;
         }
@@ -652,7 +652,7 @@ namespace Microsoft.CodeAnalysis
         {
             Debug.Assert(invokeArgumentCount >= 0);
 
-            return (invokeArgumentCount <= WellKnownType.System_Action_TMax - WellKnownType.System_Action) ?
+            return (invokeArgumentCount <= (WellKnownType.System_Action_TMax - WellKnownType.System_Action)) ?
                 (WellKnownType)((int)WellKnownType.System_Action + invokeArgumentCount) :
                 WellKnownType.Unknown;
         }

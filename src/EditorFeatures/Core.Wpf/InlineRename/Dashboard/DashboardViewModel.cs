@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
         private void UpdateSearchText(int referenceCount, int fileCount)
         {
-            if (referenceCount == 1 && fileCount == 1)
+            if ((referenceCount == 1) && (fileCount == 1))
             {
                 _searchText = EditorFeaturesResources.Rename_will_update_1_reference_in_1_file;
             }
@@ -132,8 +132,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
         private void UpdateSeverity()
         {
-            if (_errorText != null ||
-                _unresolvableConflictCount > 0)
+            if ((_errorText != null) ||
+                (_unresolvableConflictCount > 0))
             {
                 _severity = DashboardSeverity.Error;
             }

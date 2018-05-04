@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             // Check if we have an index for a previous version of this document.  If our
             // checksums match, we can just use that.
             if (s_documentIdToIndex.TryGetValue(document.Id, out var index) &&
-                index.Checksum == checksum)
+                (index.Checksum == checksum))
             {
                 // The previous index we stored with this documentId is still valid.  Just
                 // return that.

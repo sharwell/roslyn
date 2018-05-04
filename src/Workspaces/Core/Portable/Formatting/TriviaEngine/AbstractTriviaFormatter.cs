@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             Contract.ThrowIfFalse(lineBreaks >= 0);
             Contract.ThrowIfFalse(spaces >= 0);
 
-            Contract.ThrowIfTrue(token1 == default && token2 == default);
+            Contract.ThrowIfTrue((token1 == default) && (token2 == default));
 
             this.Context = context;
             this.FormattingRules = formattingRules;
@@ -365,7 +365,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             GetTokensAtEdgeOfStructureTrivia(trivia1, trivia2, out var token1, out var token2);
 
             // if there are tokens, try formatting rules to see whether there is a user supplied one
-            if (token1.RawKind == 0 || token2.RawKind == 0)
+            if ((token1.RawKind == 0) || (token2.RawKind == 0))
             {
                 return defaultRule;
             }
@@ -374,7 +374,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             var lineOperation = this.FormattingRules.GetAdjustNewLinesOperation(token1, token2);
 
             // there is existing lines, but no line operation
-            if (existingWhitespaceBetween.Lines != 0 && lineOperation == null)
+            if ((existingWhitespaceBetween.Lines != 0) && (lineOperation == null))
             {
                 return defaultRule;
             }
@@ -413,9 +413,9 @@ namespace Microsoft.CodeAnalysis.Formatting
                 return defaultRule;
             }
 
-            if (spaceOperation != null &&
-                spaceOperation.Option == AdjustSpacesOption.DefaultSpacesIfOnSingleLine &&
-                spaceOperation.Space == 1)
+            if ((spaceOperation != null) &&
+                (spaceOperation.Option == AdjustSpacesOption.DefaultSpacesIfOnSingleLine) &&
+                (spaceOperation.Space == 1))
             {
                 return defaultRule;
             }
@@ -483,7 +483,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         {
             // if we see elastic trivia as the first trivia in the trivia list, 
             // we consider it as blank line
-            if (this.Token1.TrailingTrivia.Count > 0 &&
+            if ((this.Token1.TrailingTrivia.Count > 0) &&
                 this.Token1.TrailingTrivia[0].IsElastic())
             {
                 return true;
@@ -511,8 +511,8 @@ namespace Microsoft.CodeAnalysis.Formatting
         {
             // we do not touch spaces adjacent to missing token
             // [missing token] [whitespace] [trivia] or [trivia] [whitespace] [missing token] case
-            if ((this.Token1.IsMissing && trivia1.RawKind == 0) ||
-                (trivia2.RawKind == 0 && this.Token2.IsMissing))
+            if ((this.Token1.IsMissing && (trivia1.RawKind == 0)) ||
+                ((trivia2.RawKind == 0) && this.Token2.IsMissing))
             {
                 // leave things as it is
                 return existingWhitespaceBetween;
@@ -534,7 +534,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             var lineColumnAfterExistingWhitespace = lineColumnAfterTrivia1.With(existingWhitespaceBetween);
 
             // next trivia is moved to next line or already on a new line, use indentation
-            if (rule.Lines > 0 || lineColumnAfterExistingWhitespace.WhitespaceOnly)
+            if ((rule.Lines > 0) || lineColumnAfterExistingWhitespace.WhitespaceOnly)
             {
                 switch (rule.IndentationOperation)
                 {
@@ -603,7 +603,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         /// </summary>
         private int GetTrailingLinesAtEndOfTrivia1(LineColumn lineColumnAfterTrivia1)
         {
-            return (lineColumnAfterTrivia1.Column == 0 && lineColumnAfterTrivia1.Line > 0) ? 1 : 0;
+            return ((lineColumnAfterTrivia1.Column == 0) && (lineColumnAfterTrivia1.Line > 0)) ? 1 : 0;
         }
 
         private void AddExtraLines(int linesBetweenTokens, List<SyntaxTrivia> changes)
@@ -625,7 +625,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             // first line is blank or there is no changes. 
             // just insert at the head
             if (_firstLineBlank ||
-                changes.Count == 0)
+                (changes.Count == 0))
             {
                 return 0;
             }
@@ -714,7 +714,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             // first line is blank or there is no changes. 
             // just insert at the head
             if (_firstLineBlank ||
-                changes.Count == 0)
+                (changes.Count == 0))
             {
                 return new TextSpan(this.StartPosition, 0);
             }
@@ -747,7 +747,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             TextSpan notUsed,
             List<SyntaxTrivia> changes)
         {
-            if (delta.Lines == 0 && delta.Spaces == 0)
+            if ((delta.Lines == 0) && (delta.Spaces == 0))
             {
                 // remove trivia
                 return;
@@ -767,7 +767,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             var tabSize = this.OptionSet.GetOption(FormattingOptions.TabSize, this.Language);
 
             // space indicates indentation
-            if (delta.Lines > 0 || lineColumn.Column == 0)
+            if ((delta.Lines > 0) || (lineColumn.Column == 0))
             {
                 changes.Add(CreateWhitespace(delta.Spaces.CreateIndentationString(useTabs, tabSize)));
                 return;
@@ -796,7 +796,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             var tabSize = this.OptionSet.GetOption(FormattingOptions.TabSize, this.Language);
 
             // space indicates indentation
-            if (delta.Lines > 0 || lineColumn.Column == 0)
+            if ((delta.Lines > 0) || (lineColumn.Column == 0))
             {
                 sb.AppendIndentationString(delta.Spaces, useTabs, tabSize);
                 return StringBuilderPool.ReturnAndFree(sb);
@@ -861,7 +861,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 var lineColumnAfterPreviousTrivia = GetLineColumn(lineColumn, previousTrivia);
 
                 var newLineFromPreviousOperation = (whitespaceBetween.Lines > 0) ||
-                                                   (lineColumnAfterPreviousTrivia.Line > 0 && lineColumnAfterPreviousTrivia.Column == 0);
+                                                   ((lineColumnAfterPreviousTrivia.Line > 0) && (lineColumnAfterPreviousTrivia.Column == 0));
                 if (newLineFromPreviousOperation && whitespaceBetween.WhitespaceOnly)
                 {
                     return LineColumnDelta.Default;
@@ -935,7 +935,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         private static string GetSpaces(int space)
         {
-            if (space >= 0 && space < 20)
+            if ((space >= 0) && (space < 20))
             {
                 return s_spaceCache[space];
             }

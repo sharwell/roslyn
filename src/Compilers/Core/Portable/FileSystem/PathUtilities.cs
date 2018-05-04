@@ -27,12 +27,12 @@ namespace Roslyn.Utilities
         /// <summary>
         /// True if the character is the platform directory separator character or the alternate directory separator.
         /// </summary>
-        public static bool IsDirectorySeparator(char c) => c == DirectorySeparatorChar || c == AltDirectorySeparatorChar;
+        public static bool IsDirectorySeparator(char c) => (c == DirectorySeparatorChar) || (c == AltDirectorySeparatorChar);
 
         /// <summary>
         /// True if the character is any recognized directory separator character.
         /// </summary>
-        public static bool IsAnyDirectorySeparator(char c) => c == '\\' || c == '/';
+        public static bool IsAnyDirectorySeparator(char c) => (c == '\\') || (c == '/');
 
         /// <summary>
         /// Removes trailing directory separator characters
@@ -44,7 +44,7 @@ namespace Roslyn.Utilities
         public static string TrimTrailingSeparators(string s)
         {
             int lastSeparator = s.Length;
-            while (lastSeparator > 0 && IsDirectorySeparator(s[lastSeparator - 1]))
+            while ((lastSeparator > 0) && IsDirectorySeparator(s[lastSeparator - 1]))
             {
                 lastSeparator = lastSeparator - 1;
             }
@@ -62,7 +62,7 @@ namespace Roslyn.Utilities
         /// </summary>
         public static string EnsureTrailingSeparator(string s)
         {
-            if (s.Length == 0 || IsAnyDirectorySeparator(s[s.Length - 1]))
+            if ((s.Length == 0) || IsAnyDirectorySeparator(s[s.Length - 1]))
             {
                 return s;
             }
@@ -131,7 +131,7 @@ namespace Roslyn.Utilities
                         i--;
                         if (IsDirectorySeparator(path[i]))
                         {
-                            if (i > 0 && IsDirectorySeparator(path[i - 1]))
+                            if ((i > 0) && IsDirectorySeparator(path[i - 1]))
                             {
                                 continue;
                             }
@@ -195,9 +195,9 @@ namespace Roslyn.Utilities
         {
             // Windows
             int length = path.Length;
-            if (length >= 1 && IsDirectorySeparator(path[0]))
+            if ((length >= 1) && IsDirectorySeparator(path[0]))
             {
-                if (length < 2 || !IsDirectorySeparator(path[1]))
+                if ((length < 2) || !IsDirectorySeparator(path[1]))
                 {
                     //  It was of the form:
                     //          \     
@@ -242,10 +242,10 @@ namespace Roslyn.Utilities
                     return path.Substring(0, i);
                 }
             }
-            else if (length >= 2 && path[1] == VolumeSeparatorChar)
+            else if ((length >= 2) && (path[1] == VolumeSeparatorChar))
             {
                 // handles c: and c:\
-                return length >= 3 && IsDirectorySeparator(path[2])
+                return (length >= 3) && IsDirectorySeparator(path[2])
                     ? path.Substring(0, 3)
                     : path.Substring(0, 2);
             }
@@ -258,7 +258,7 @@ namespace Roslyn.Utilities
 
         private static int ConsumeDirectorySeparators(string path, int length, int i)
         {
-            while (i < length && IsDirectorySeparator(path[i]))
+            while ((i < length) && IsDirectorySeparator(path[i]))
             {
                 i++;
             }
@@ -269,7 +269,7 @@ namespace Roslyn.Utilities
         private static string GetUnixRoot(string path)
         {
             // either it starts with "/" and thus has "/" as the root.  Or it has no root.
-            return path.Length > 0 && IsDirectorySeparator(path[0])
+            return (path.Length > 0) && IsDirectorySeparator(path[0])
                 ? path.Substring(0, 1)
                 : "";
         }
@@ -296,16 +296,16 @@ namespace Roslyn.Utilities
             // ".."
             // ".\"
             // "..\"
-            if (path.Length > 0 && path[0] == '.')
+            if ((path.Length > 0) && (path[0] == '.'))
             {
-                if (path.Length == 1 || IsDirectorySeparator(path[1]))
+                if ((path.Length == 1) || IsDirectorySeparator(path[1]))
                 {
                     return PathKind.RelativeToCurrentDirectory;
                 }
 
                 if (path[1] == '.')
                 {
-                    if (path.Length == 2 || IsDirectorySeparator(path[2]))
+                    if ((path.Length == 2) || IsDirectorySeparator(path[2]))
                     {
                         return PathKind.RelativeToCurrentParent;
                     }
@@ -316,14 +316,14 @@ namespace Roslyn.Utilities
             {
                 // "\"
                 // "\goo"
-                if (path.Length >= 1 && IsDirectorySeparator(path[0]))
+                if ((path.Length >= 1) && IsDirectorySeparator(path[0]))
                 {
                     return PathKind.RelativeToCurrentRoot;
                 }
 
                 // "C:goo"
 
-                if (path.Length >= 2 && path[1] == VolumeSeparatorChar && (path.Length <= 2 || !IsDirectorySeparator(path[2])))
+                if ((path.Length >= 2) && (path[1] == VolumeSeparatorChar) && ((path.Length <= 2) || !IsDirectorySeparator(path[2])))
                 {
                     return PathKind.RelativeToDriveDirectory;
                 }
@@ -357,7 +357,7 @@ namespace Roslyn.Utilities
 
             // "\\machine\share"
             // Including invalid/incomplete UNC paths (e.g. "\\goo")
-            return path.Length >= 2 &&
+            return (path.Length >= 2) &&
                 IsDirectorySeparator(path[0]) &&
                 IsDirectorySeparator(path[1]);
         }
@@ -368,7 +368,7 @@ namespace Roslyn.Utilities
         private static bool IsDriveRootedAbsolutePath(string path)
         {
             Debug.Assert(!IsUnixLikePlatform);
-            return path.Length >= 3 && path[1] == VolumeSeparatorChar && IsDirectorySeparator(path[2]);
+            return (path.Length >= 3) && (path[1] == VolumeSeparatorChar) && IsDirectorySeparator(path[2]);
         }
 
         /// <summary>
@@ -423,7 +423,7 @@ namespace Roslyn.Utilities
             Debug.Assert(!string.IsNullOrEmpty(root));
 
             char c = root[root.Length - 1];
-            if (!IsDirectorySeparator(c) && c != VolumeSeparatorChar)
+            if (!IsDirectorySeparator(c) && (c != VolumeSeparatorChar))
             {
                 return root + DirectorySeparatorStr + relativePath;
             }
@@ -433,7 +433,7 @@ namespace Roslyn.Utilities
 
         private static string RemoveTrailingDirectorySeparator(string path)
         {
-            if (path.Length > 0 && IsDirectorySeparator(path[path.Length - 1]))
+            if ((path.Length > 0) && IsDirectorySeparator(path[path.Length - 1]))
             {
                 return path.Substring(0, path.Length - 1);
             }
@@ -454,8 +454,8 @@ namespace Roslyn.Utilities
             string extension = FileNameUtilities.GetExtension(assemblyDisplayNameOrPath);
             return string.Equals(extension, ".dll", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(extension, ".exe", StringComparison.OrdinalIgnoreCase)
-                || assemblyDisplayNameOrPath.IndexOf(DirectorySeparatorChar) != -1
-                || assemblyDisplayNameOrPath.IndexOf(AltDirectorySeparatorChar) != -1;
+                || (assemblyDisplayNameOrPath.IndexOf(DirectorySeparatorChar) != -1)
+                || (assemblyDisplayNameOrPath.IndexOf(AltDirectorySeparatorChar) != -1);
         }
 
         /// <summary>
@@ -509,7 +509,7 @@ namespace Roslyn.Utilities
             var directoryPathParts = GetPathParts(directory);
             var fullPathParts = GetPathParts(fullPath);
 
-            if (directoryPathParts.Length == 0 || fullPathParts.Length == 0)
+            if ((directoryPathParts.Length == 0) || (fullPathParts.Length == 0))
             {
                 return fullPath;
             }
@@ -556,8 +556,8 @@ namespace Roslyn.Utilities
         /// </summary>
         public static bool IsChildPath(string parentPath, string childPath)
         {
-            return parentPath.Length > 0
-                && childPath.Length > parentPath.Length
+            return (parentPath.Length > 0)
+                && (childPath.Length > parentPath.Length)
                 && PathsEqual(childPath, parentPath, parentPath.Length)
                 && (IsDirectorySeparator(parentPath[parentPath.Length - 1]) || IsDirectorySeparator(childPath[parentPath.Length]));
         }
@@ -604,7 +604,7 @@ namespace Roslyn.Utilities
         /// </summary>
         private static bool PathsEqual(string path1, string path2, int length)
         {
-            if (path1.Length < length || path2.Length < length)
+            if ((path1.Length < length) || (path2.Length < length))
             {
                 return false;
             }
@@ -712,9 +712,9 @@ namespace Roslyn.Utilities
                 return !string.IsNullOrEmpty(fileInfo.Name);
             }
             catch (Exception ex) when (
-                ex is ArgumentException ||          // The file name is empty, contains only white spaces, or contains invalid characters.
-                ex is PathTooLongException ||       // The specified path, file name, or both exceed the system-defined maximum length.
-                ex is NotSupportedException)        // fileName contains a colon (:) in the middle of the string.
+                (ex is ArgumentException) ||          // The file name is empty, contains only white spaces, or contains invalid characters.
+                (ex is PathTooLongException) ||       // The specified path, file name, or both exceed the system-defined maximum length.
+                (ex is NotSupportedException))        // fileName contains a colon (:) in the middle of the string.
             {
                 return false;
             }
@@ -726,12 +726,12 @@ namespace Roslyn.Utilities
         {
             public bool Equals(string x, string y)
             {
-                if (x == null && y == null)
+                if ((x == null) && (y == null))
                 {
                     return true;
                 }
 
-                if (x == null || y == null)
+                if ((x == null) || (y == null))
                 {
                     return false;
                 }

@@ -27,13 +27,13 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
 
             if (ordinal >= 0)
             {
-                if (method.PartialDefinitionPart != null && ordinal < method.PartialDefinitionPart.TypeParameters.Length)
+                if ((method.PartialDefinitionPart != null) && (ordinal < method.PartialDefinitionPart.TypeParameters.Length))
                 {
                     return Task.FromResult(ImmutableArray.Create(
                         symbolAndProjectId.WithSymbol((ISymbol)method.PartialDefinitionPart.TypeParameters[ordinal])));
                 }
 
-                if (method.PartialImplementationPart != null && ordinal < method.PartialImplementationPart.TypeParameters.Length)
+                if ((method.PartialImplementationPart != null) && (ordinal < method.PartialImplementationPart.TypeParameters.Length))
                 {
                     return Task.FromResult(ImmutableArray.Create(
                         symbolAndProjectId.WithSymbol((ISymbol)method.PartialImplementationPart.TypeParameters[ordinal])));

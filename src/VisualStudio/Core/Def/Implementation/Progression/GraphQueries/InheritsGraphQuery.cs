@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                             newNodes.Add(baseTypeNode);
                             graphBuilder.AddLink(node, CodeLinkCategories.InheritsFrom, baseTypeNode);
                         }
-                        else if (namedType.TypeKind == TypeKind.Interface && !namedType.OriginalDefinition.AllInterfaces.IsEmpty)
+                        else if ((namedType.TypeKind == TypeKind.Interface) && !namedType.OriginalDefinition.AllInterfaces.IsEmpty)
                         {
                             foreach (var baseNode in namedType.OriginalDefinition.AllInterfaces.Distinct())
                             {

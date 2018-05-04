@@ -28,7 +28,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                 //      set to VSCmdOptQueryParameterList, pvaIn set to NULL, and pvaOut 
                 //      pointing to a VARIANT ready to receive the result BSTR.
                 var shouldSkipCommand = executeInformation == (((uint)VsMenus.VSCmdOptQueryParameterList << 16) | (uint)OLECMDEXECOPT.OLECMDEXECOPT_SHOWHELP);
-                if (subjectBuffer == null || shouldSkipCommand)
+                if ((subjectBuffer == null) || shouldSkipCommand)
                 {
                     return NextCommandTarget.Exec(ref pguidCmdGroup, commandId, executeInformation, pvaIn, pvaOut);
                 }
@@ -210,7 +210,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                         if (pvaIn != IntPtr.Zero)
                         {
                             object o = Marshal.GetObjectForNativeVariant(pvaIn);
-                            if (o == null || o is string)
+                            if ((o == null) || (o is string))
                             {
                                 count = 1;
                             }
@@ -957,7 +957,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
 
                 OLECMD[] cmds = new[] { new OLECMD() { cmdf = 0, cmdID = cmd } };
                 var hr = target.QueryStatus(VSConstants.GUID_VSStandardCommandSet97, 1, cmds, IntPtr.Zero);
-                if (hr == VSConstants.S_OK && (cmds[0].cmdf & (uint)OLECMDF.OLECMDF_ENABLED) != 0)
+                if ((hr == VSConstants.S_OK) && ((cmds[0].cmdf & (uint)OLECMDF.OLECMDF_ENABLED) != 0))
                 {
                     // ignore failure
                     target.Exec(VSConstants.GUID_VSStandardCommandSet97, cmd, (uint)OLECMDEXECOPT.OLECMDEXECOPT_DODEFAULT, IntPtr.Zero, IntPtr.Zero);

@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal InContainerBinder(NamespaceOrTypeSymbol container, Binder next, Imports imports = null)
             : base(next)
         {
-            Debug.Assert((object)container != null || imports != null);
+            Debug.Assert(((object)container != null) || (imports != null));
 
             _container = container;
             _lazyImports = imports ?? Imports.Empty;
@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal override Imports GetImports(ConsList<Symbol> basesBeingResolved)
         {
-            Debug.Assert(_lazyImports != null || _computeImports != null, "Have neither imports nor a way to compute them.");
+            Debug.Assert((_lazyImports != null) || (_computeImports != null), "Have neither imports nor a way to compute them.");
 
             if (_lazyImports == null)
             {
@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (_lazyImportChain == null)
                 {
                     ImportChain importChain = this.Next.ImportChain;
-                    if ((object)_container == null || _container.Kind == SymbolKind.Namespace)
+                    if (((object)_container == null) || (_container.Kind == SymbolKind.Namespace))
                     {
                         importChain = new ImportChain(GetImports(basesBeingResolved: null), importChain);
                     }
@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     QuickAttributeChecker result = this.Next.QuickAttributeChecker;
 
-                    if ((object)_container == null || _container.Kind == SymbolKind.Namespace)
+                    if (((object)_container == null) || (_container.Kind == SymbolKind.Namespace))
                     {
                         result = result.AddAliasesIfAny(_usingsSyntax);
                     }
@@ -232,14 +232,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             var imports = GetImports(basesBeingResolved);
 
             // first lookup members of the namespace
-            if ((options & LookupOptions.NamespaceAliasesOnly) == 0 && _container != null)
+            if (((options & LookupOptions.NamespaceAliasesOnly) == 0) && (_container != null))
             {
                 this.LookupMembersInternal(result, _container, name, arity, basesBeingResolved, options, originalBinder, diagnose, ref useSiteDiagnostics);
 
                 if (result.IsMultiViable)
                 {
                     // symbols cannot conflict with using alias names
-                    if (arity == 0 && imports.IsUsingAlias(name, originalBinder.IsSemanticModelBinder))
+                    if ((arity == 0) && imports.IsUsingAlias(name, originalBinder.IsSemanticModelBinder))
                     {
                         CSDiagnosticInfo diagInfo = new CSDiagnosticInfo(ErrorCode.ERR_ConflictAliasAndMember, name, _container);
                         var error = new ExtendedErrorTypeSymbol((NamespaceOrTypeSymbol)null, name, arity, diagInfo, unreported: true);

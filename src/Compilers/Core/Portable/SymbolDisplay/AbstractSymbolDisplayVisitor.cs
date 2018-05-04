@@ -137,11 +137,11 @@ namespace Microsoft.CodeAnalysis.SymbolDisplay
                 if (ctor != null)
                 {
                     var type = ctor.ContainingType;
-                    if (!ctor.Parameters.Any() && type.Name == "FlagsAttribute")
+                    if (!ctor.Parameters.Any() && (type.Name == "FlagsAttribute"))
                     {
                         var containingSymbol = type.ContainingSymbol;
-                        if (containingSymbol.Kind == SymbolKind.Namespace &&
-                            containingSymbol.Name == "System" &&
+                        if ((containingSymbol.Kind == SymbolKind.Namespace) &&
+                            (containingSymbol.Name == "System") &&
                             ((INamespaceSymbol)containingSymbol.ContainingSymbol).IsGlobalNamespace)
                         {
                             return true;
@@ -194,12 +194,12 @@ namespace Microsoft.CodeAnalysis.SymbolDisplay
 
                     // In the case that we prefer a numeric value or expanded flags, we don't want to add the
                     // field matching this precise value because we'd rather see the constituent parts.
-                    if (preferNumericValueOrExpandedFlags && valueAtIndex == constantValueULong)
+                    if (preferNumericValueOrExpandedFlags && (valueAtIndex == constantValueULong))
                     {
                         continue;
                     }
 
-                    if (valueAtIndex != 0 && (result & valueAtIndex) == valueAtIndex)
+                    if ((valueAtIndex != 0) && ((result & valueAtIndex) == valueAtIndex))
                     {
                         usedFieldsAndValues.Add(fieldAndValue);
                         result -= valueAtIndex;
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.SymbolDisplay
             }
 
             // We were able to represent this number as a bitwise or of valid flags.
-            if (result == 0 && usedFieldsAndValues.Count > 0)
+            if ((result == 0) && (usedFieldsAndValues.Count > 0))
             {
                 // We want to emit the fields in lower to higher value.  So we walk backward.
                 for (int i = usedFieldsAndValues.Count - 1; i >= 0; i--)

@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
                 case SymbolKind.Field:
                     var containingType = symbol.ContainingType;
-                    if (containingType != null && containingType.TypeKind == TypeKind.Enum)
+                    if ((containingType != null) && (containingType.TypeKind == TypeKind.Enum))
                     {
                         return Glyph.EnumMemberPublic;
                     }
@@ -93,11 +93,11 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     {
                         var methodSymbol = (IMethodSymbol)symbol;
 
-                        if (methodSymbol.MethodKind == MethodKind.UserDefinedOperator || methodSymbol.MethodKind == MethodKind.Conversion)
+                        if ((methodSymbol.MethodKind == MethodKind.UserDefinedOperator) || (methodSymbol.MethodKind == MethodKind.Conversion))
                         {
                             return Glyph.Operator;
                         }
-                        else if (methodSymbol.IsExtensionMethod || methodSymbol.MethodKind == MethodKind.ReducedExtension)
+                        else if (methodSymbol.IsExtensionMethod || (methodSymbol.MethodKind == MethodKind.ReducedExtension))
                         {
                             publicIcon = Glyph.ExtensionMethodPublic;
                         }
@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             parts.Add(new SymbolDisplayPart(SymbolDisplayPartKind.Text, null, $"\r\n{WorkspacesResources.Usage_colon}\r\n  "));
 
             var returnType = symbol.InferAwaitableReturnType(semanticModel, position);
-            returnType = returnType != null && returnType.SpecialType != SpecialType.System_Void ? returnType : null;
+            returnType = (returnType != null) && (returnType.SpecialType != SpecialType.System_Void) ? returnType : null;
             if (returnType != null)
             {
                 if (semanticModel.Language == "C#")

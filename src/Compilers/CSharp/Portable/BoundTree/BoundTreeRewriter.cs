@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
                 }
 
-                if (newList != null && visited != null)
+                if ((newList != null) && (visited != null))
                 {
                     newList.Add((T)visited);
                 }

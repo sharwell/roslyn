@@ -216,7 +216,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UsePatternMatching
 
             // Since we're going to remove this declaration-statement,
             // we need to first ensure that it's not used up to the target statement.
-            if (declarationIndex + 1 < targetIndex)
+            if ((declarationIndex + 1) < targetIndex)
             {
                 var dataFlow = semanticModel.AnalyzeDataFlow(
                     statements[declarationIndex + 1], 
@@ -264,7 +264,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UsePatternMatching
             }
 
             // Make sure that no access is made to the variable before assignment in the subsequent statements
-            if (targetIndex + 1 < statements.Count)
+            if ((targetIndex + 1) < statements.Count)
             {
                 var dataFlow = semanticModel.AnalyzeDataFlow(
                     statements[targetIndex + 1],
@@ -294,7 +294,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UsePatternMatching
                     //      Console.WriteLine(x);
                     //
                     return isNegativeNullCheck &&
-                       ifStatement != null &&
+                       (ifStatement != null) &&
                        !semanticModel.AnalyzeControlFlow(ifStatement.Statement).EndPointIsReachable;
                 }
             }

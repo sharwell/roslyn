@@ -353,7 +353,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
                     action(state);
                     return;
                 }
-                catch (COMException e) when (e.HResult == UIA_E_ELEMENTNOTAVAILABLE && i < AutomationRetryCount)
+                catch (COMException e) when ((e.HResult == UIA_E_ELEMENTNOTAVAILABLE) && (i < AutomationRetryCount))
                 {
                     Thread.Sleep(AutomationRetryDelay);
                     continue;
@@ -370,7 +370,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities
                 {
                     return function(state);
                 }
-                catch (COMException e) when (e.HResult == UIA_E_ELEMENTNOTAVAILABLE && i < AutomationRetryCount)
+                catch (COMException e) when ((e.HResult == UIA_E_ELEMENTNOTAVAILABLE) && (i < AutomationRetryCount))
                 {
                     Thread.Sleep(AutomationRetryDelay);
                     continue;

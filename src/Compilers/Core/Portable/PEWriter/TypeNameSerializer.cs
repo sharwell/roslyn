@@ -180,7 +180,7 @@ namespace Microsoft.Cci
             {
                 var containingAssembly = context.Module.GetContainingAssembly(context);
 
-                if (containingAssembly == null || !ReferenceEquals(referencedAssembly, containingAssembly))
+                if ((containingAssembly == null) || !ReferenceEquals(referencedAssembly, containingAssembly))
                 {
                     sb.Append(", ");
                     sb.Append(MetadataWriter.StrongName(referencedAssembly));
@@ -205,7 +205,7 @@ namespace Microsoft.Cci
                 mangledName.Append(ch);
             }
 
-            if (namedType.MangleName && namedType.GenericParameterCount > 0)
+            if (namedType.MangleName && (namedType.GenericParameterCount > 0))
             {
                 mangledName.Append(MetadataHelpers.GetAritySuffix(namedType.GenericParameterCount));
             }

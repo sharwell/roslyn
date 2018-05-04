@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     return;
                 }
 
-                if ((object)expression.Type == null || expression.Type.SpecialType != SpecialType.System_Decimal)
+                if (((object)expression.Type == null) || (expression.Type.SpecialType != SpecialType.System_Decimal))
                 {
                     EmitConstantExpression(expression.Type, constantValue, used, expression.Syntax);
                     return;
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             var receiverType = receiver.Type;
             LocalDefinition receiverTemp = null;
             Debug.Assert(!receiverType.IsValueType ||
-                (receiverType.IsNullableType() && expression.HasValueMethodOpt != null), "conditional receiver cannot be a struct");
+                (receiverType.IsNullableType() && (expression.HasValueMethodOpt != null)), "conditional receiver cannot be a struct");
 
             var receiverConstant = receiver.ConstantValue;
             if (receiverConstant?.IsNull == false)
@@ -389,8 +389,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             // or if we deal with stack local (reads are destructive)
             // or if we have default(T) (to do box just once)
             var nullCheckOnCopy = LocalRewriter.CanChangeValueBetweenReads(receiver, localsMayBeAssignedOrCaptured: false) ||
-                                   (receiverType.IsReferenceType && receiverType.TypeKind == TypeKind.TypeParameter) ||
-                                   (receiver.Kind == BoundKind.Local && IsStackLocal(((BoundLocal)receiver).LocalSymbol));
+                                   (receiverType.IsReferenceType && (receiverType.TypeKind == TypeKind.TypeParameter)) ||
+                                   ((receiver.Kind == BoundKind.Local) && IsStackLocal(((BoundLocal)receiver).LocalSymbol));
 
             // ===== RECEIVER
             if (nullCheckOnCopy)
@@ -462,7 +462,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             _builder.EmitBranch(ILOpCode.Brtrue, whenNotNullLabel);
 
             // no longer need the temp if we are not holding a copy
-            if (receiverTemp != null && !nullCheckOnCopy)
+            if ((receiverTemp != null) && !nullCheckOnCopy)
             {
                 FreeTemp(receiverTemp);
                 receiverTemp = null;
@@ -511,7 +511,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 Debug.Assert(receiverTemp == null);
                 // receiver may be used as target of a struct call (if T happens to be a sruct)
                 receiverTemp = EmitReceiverRef(receiver, AddressKind.Constrained);
-                Debug.Assert(receiverTemp == null || receiver.IsDefaultValue());
+                Debug.Assert((receiverTemp == null) || receiver.IsDefaultValue());
             }
 
             EmitExpression(expression.WhenNotNull, used);
@@ -731,7 +731,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             // CONSIDER:    only side effects and no value. Note that VB's BoundSequence node has an optional value field.
             // CONSIDER:    This will allow us to remove the below check before emitting the value.
 
-            Debug.Assert(sequence.Value.Kind != BoundKind.TypeExpression || !used);
+            Debug.Assert((sequence.Value.Kind != BoundKind.TypeExpression) || !used);
             if (sequence.Value.Kind != BoundKind.TypeExpression)
             {
                 EmitExpression(sequence.Value, used);
@@ -821,9 +821,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         private void EmitArguments(ImmutableArray<BoundExpression> arguments, ImmutableArray<ParameterSymbol> parameters, ImmutableArray<RefKind> argRefKindsOpt)
         {
             // We might have an extra argument for the __arglist() of a varargs method.
-            Debug.Assert(arguments.Length == parameters.Length || arguments.Length == parameters.Length + 1, "argument count must match parameter count");
+            Debug.Assert((arguments.Length == parameters.Length) || (arguments.Length == (parameters.Length + 1)), "argument count must match parameter count");
             Debug.Assert(parameters.All(p => p.RefKind == RefKind.None) || !argRefKindsOpt.IsDefault, "there are nontrivial parameters, so we must have argRefKinds");
-            Debug.Assert(argRefKindsOpt.IsDefault || argRefKindsOpt.Length == arguments.Length, "if we have argRefKinds, we should have one for each argument");
+            Debug.Assert(argRefKindsOpt.IsDefault || (argRefKindsOpt.Length == arguments.Length), "if we have argRefKinds, we should have one for each argument");
 
             for (int i = 0; i < arguments.Length; i++)
             {
@@ -841,13 +841,13 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             RefKind argRefKind;
             if (i < parameters.Length)
             {
-                if (!argRefKindsOpt.IsDefault && i < argRefKindsOpt.Length)
+                if (!argRefKindsOpt.IsDefault && (i < argRefKindsOpt.Length))
                 {
                     // if we have an explicit refKind for the given argument, use that
                     argRefKind = argRefKindsOpt[i];
 
-                    Debug.Assert(argRefKind == parameters[i].RefKind ||
-                            argRefKind == RefKindExtensions.StrictIn && parameters[i].RefKind == RefKind.In,
+                    Debug.Assert((argRefKind == parameters[i].RefKind) ||
+                            ((argRefKind == RefKindExtensions.StrictIn) && (parameters[i].RefKind == RefKind.In)),
                             "in Emit the argument RefKind must be compatible with the corresponding parameter");
                 }
                 else
@@ -984,7 +984,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 }
             }
 
-            Debug.Assert(!field.IsConst || field.ContainingType.SpecialType == SpecialType.System_Decimal,
+            Debug.Assert(!field.IsConst || (field.ContainingType.SpecialType == SpecialType.System_Decimal),
                 "rewriter should lower constant fields into constant expressions");
 
             // static field access is sideeffecting since it guarantees that ..ctor has run.
@@ -1002,7 +1002,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             {
                 var receiver = fieldAccess.ReceiverOpt;
                 var fieldType = field.Type;
-                if (fieldType.IsValueType && (object)fieldType == (object)receiver.Type)
+                if (fieldType.IsValueType && ((object)fieldType == (object)receiver.Type))
                 {
                     //Handle emitting a field of a self-containing struct (only possible in mscorlib)
                     //since "val.field" is the same as val, we only need to emit val.
@@ -1059,7 +1059,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         // Returns 'true' if the receiver was actually emitted this way
         private bool EmitFieldLoadReceiverAddress(BoundExpression receiver)
         {
-            if (receiver == null || !receiver.Type.IsValueType)
+            if ((receiver == null) || !receiver.Type.IsValueType)
             {
                 return false;
             }
@@ -1105,7 +1105,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             }
 
             // can unbox directly into a ref.
-            if (receiver.Kind == BoundKind.Conversion && ((BoundConversion)receiver).ConversionKind == ConversionKind.Unboxing)
+            if ((receiver.Kind == BoundKind.Conversion) && (((BoundConversion)receiver).ConversionKind == ConversionKind.Unboxing))
             {
                 return true;
             }
@@ -1242,7 +1242,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 }
             }
 
-            if (used && local.LocalSymbol.RefKind != RefKind.None)
+            if (used && (local.LocalSymbol.RefKind != RefKind.None))
             {
                 EmitLoadIndirect(local.LocalSymbol.Type, local.Syntax);
             }
@@ -1565,12 +1565,12 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             // see bug 6156 for details.
 
             MethodSymbol actualMethodTargetedByTheCall = method;
-            if (method.IsOverride && callKind != CallKind.Call)
+            if (method.IsOverride && (callKind != CallKind.Call))
             {
                 actualMethodTargetedByTheCall = method.GetConstructedLeastOverriddenMethod(_method.ContainingType);
             }
 
-            if (callKind == CallKind.ConstrainedCallVirt && actualMethodTargetedByTheCall.ContainingType.IsValueType)
+            if ((callKind == CallKind.ConstrainedCallVirt) && actualMethodTargetedByTheCall.ContainingType.IsValueType)
             {
                 // special case for overridden methods like ToString(...) called on
                 // value types: if the original method used in emit cannot use callvirt in this
@@ -1588,7 +1588,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 // Other scenarios are uncommon since base class cannot be sealed and 
                 // referring to a derived type in a different module is not an easy thing to do.
                 if (IsThisReceiver(receiver) && actualMethodTargetedByTheCall.ContainingType.IsSealed &&
-                        (object)actualMethodTargetedByTheCall.ContainingModule == (object)_method.ContainingModule)
+                        ((object)actualMethodTargetedByTheCall.ContainingModule == (object)_method.ContainingModule))
                 {
                     // special case for target is in a sealed class and "this" receiver.
                     Debug.Assert(receiver.Type.IsVerifierReference());
@@ -1671,7 +1671,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 _builder.EmitOpCode(ILOpCode.Nop);
             }
 
-            if (useKind == UseKind.UsedAsValue && method.RefKind != RefKind.None)
+            if ((useKind == UseKind.UsedAsValue) && (method.RefKind != RefKind.None))
             {
                 EmitLoadIndirect(method.ReturnType, call.Syntax);
             }
@@ -1687,7 +1687,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         {
             Debug.Assert(methodContainingType.IsVerifierValue(), "only struct calls can be readonly");
 
-            if (methodContainingType.IsReadOnly && method.MethodKind != MethodKind.Constructor)
+            if (methodContainingType.IsReadOnly && (method.MethodKind != MethodKind.Constructor))
             {
                 return true;
             }
@@ -1696,9 +1696,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             {
                 var originalMethod = method.OriginalDefinition;
 
-                if ((object)originalMethod == this._module.Compilation.GetSpecialTypeMember(SpecialMember.System_Nullable_T_GetValueOrDefault) ||
-                    (object)originalMethod == this._module.Compilation.GetSpecialTypeMember(SpecialMember.System_Nullable_T_get_Value) ||
-                    (object)originalMethod == this._module.Compilation.GetSpecialTypeMember(SpecialMember.System_Nullable_T_get_HasValue))
+                if (((object)originalMethod == this._module.Compilation.GetSpecialTypeMember(SpecialMember.System_Nullable_T_GetValueOrDefault)) ||
+                    ((object)originalMethod == this._module.Compilation.GetSpecialTypeMember(SpecialMember.System_Nullable_T_get_Value)) ||
+                    ((object)originalMethod == this._module.Compilation.GetSpecialTypeMember(SpecialMember.System_Nullable_T_get_HasValue)))
                 {
                     return true;
                 }
@@ -1805,7 +1805,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             }
 
             var overriddenMethod = method.OverriddenMethod;
-            if ((object)overriddenMethod == null || overriddenMethod.IsAbstract)
+            if (((object)overriddenMethod == null) || overriddenMethod.IsAbstract)
             {
                 return true;
             }
@@ -1842,9 +1842,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             //      int64 for Array.LongLength
             //      UIntPtr for synthetic code that needs just check if length != 0 - 
             //                  this is used in "fixed(int* ptr = arr)"
-            Debug.Assert(expression.Type.SpecialType == SpecialType.System_Int32 ||
-                expression.Type.SpecialType == SpecialType.System_Int64 ||
-                expression.Type.SpecialType == SpecialType.System_UIntPtr);
+            Debug.Assert((expression.Type.SpecialType == SpecialType.System_Int32) ||
+                (expression.Type.SpecialType == SpecialType.System_Int64) ||
+                (expression.Type.SpecialType == SpecialType.System_UIntPtr));
 
             // ldlen will null-check the expression so it must be "used"
             EmitExpression(expression.Expression, used: true);
@@ -1944,7 +1944,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
                 // ReadOnlySpan may just refer to the blob, if possible.
                 if (this._module.Compilation.IsReadOnlySpanType(expression.Type) &&
-                    expression.Arguments.Length == 1)
+                    (expression.Arguments.Length == 1))
                 {
                     if (TryEmitReadonlySpanAsBlobWrapper((NamedTypeSymbol)expression.Type, expression.Arguments[0], used, inPlace: false))
                     {
@@ -1979,15 +1979,15 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 return true;
             }
 
-            if (originalDef.ContainingType.Name == TupleTypeSymbol.TupleTypeName &&
-                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T2__ctor) ||
-                    originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T3__ctor) ||
-                    originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T4__ctor) ||
-                    originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T5__ctor) ||
-                    originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T6__ctor) ||
-                    originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T7__ctor) ||
-                    originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_TRest__ctor) ||
-                    originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T1__ctor)))
+            if ((originalDef.ContainingType.Name == TupleTypeSymbol.TupleTypeName) &&
+                    ((originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T2__ctor)) ||
+                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T3__ctor)) ||
+                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T4__ctor)) ||
+                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T5__ctor)) ||
+                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T6__ctor)) ||
+                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T7__ctor)) ||
+                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_TRest__ctor)) ||
+                    (originalDef == compilation.GetWellKnownTypeMember(WellKnownMember.System_ValueTuple_T1__ctor))))
             {
                 return true;
             }
@@ -2087,7 +2087,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             // in-place is not advantageous for reference types or constants
             if (!rightType.IsTypeParameter())
             {
-                if (rightType.IsReferenceType || (right.ConstantValue != null && rightType.SpecialType != SpecialType.System_Decimal))
+                if (rightType.IsReferenceType || ((right.ConstantValue != null) && (rightType.SpecialType != SpecialType.System_Decimal)))
                 {
                     return false;
                 }
@@ -2131,7 +2131,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
             // because of array covariance, taking a reference to an element of 
             // generic array may fail even though assignment "arr[i] = default(T)" would always succeed.
-            if (left.Kind == BoundKind.ArrayAccess && left.Type.TypeKind == TypeKind.TypeParameter && !left.Type.IsValueType)
+            if ((left.Kind == BoundKind.ArrayAccess) && (left.Type.TypeKind == TypeKind.TypeParameter) && !left.Type.IsValueType)
             {
                 return false;
             }
@@ -2172,7 +2172,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             Debug.Assert(temp == null, "in-place ctor target should not create temps");
 
             // ReadOnlySpan may just refer to the blob, if possible.
-            if (this._module.Compilation.IsReadOnlySpanType(objCreation.Type) && objCreation.Arguments.Length == 1)
+            if (this._module.Compilation.IsReadOnlySpanType(objCreation.Type) && (objCreation.Arguments.Length == 1))
             {
                 if (TryEmitReadonlySpanAsBlobWrapper((NamedTypeSymbol)objCreation.Type, objCreation.Arguments[0], used, inPlace: true))
                 {
@@ -2209,7 +2209,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 if (_tryNestingLevel != 0)
                 {
                     var local = left as BoundLocal;
-                    if (local != null && !_builder.PossiblyDefinedOutsideOfTry(GetLocal(local)))
+                    if ((local != null) && !_builder.PossiblyDefinedOutsideOfTry(GetLocal(local)))
                     {
                         // local defined inside immediate Try - cannot escape
                         return true;
@@ -2271,7 +2271,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 case BoundKind.Parameter:
                     {
                         var left = (BoundParameter)assignmentTarget;
-                        if (left.ParameterSymbol.RefKind != RefKind.None &&
+                        if ((left.ParameterSymbol.RefKind != RefKind.None) &&
                             !assignmentOperator.IsRef)
                         {
                             _builder.EmitLoadArgumentOpcode(ParameterSlot(left));
@@ -2303,7 +2303,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                         // and then do an indirect store. In that case we need to have the
                         // contents of addr on the stack.
 
-                        if (left.LocalSymbol.RefKind != RefKind.None && !assignmentOperator.IsRef)
+                        if ((left.LocalSymbol.RefKind != RefKind.None) && !assignmentOperator.IsRef)
                         {
                             if (!IsStackLocal(left.LocalSymbol))
                             {
@@ -2464,9 +2464,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 var exprTempsAfter = _expressionTemps?.Count ?? 0;
 
                 // are we, by the way, ref-assigning to something that lives longer than encompassing expression?
-                Debug.Assert(lhs.Kind != BoundKind.Parameter || exprTempsAfter <= exprTempsBefore);
+                Debug.Assert((lhs.Kind != BoundKind.Parameter) || (exprTempsAfter <= exprTempsBefore));
 
-                if (lhs.Kind == BoundKind.Local && ((BoundLocal)lhs).LocalSymbol.SynthesizedKind.IsLongLived())
+                if ((lhs.Kind == BoundKind.Local) && ((BoundLocal)lhs).LocalSymbol.SynthesizedKind.IsLongLived())
                 {
                     // This situation is extremely rare. We are assigning a ref to a local with unknown lifetime
                     // while computing that ref required expression temps.
@@ -2537,7 +2537,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
                     // See the comments in EmitAssignmentExpression above for details.
                     BoundLocal local = (BoundLocal)expression;
-                    if (local.LocalSymbol.RefKind != RefKind.None && !assignment.IsRef)
+                    if ((local.LocalSymbol.RefKind != RefKind.None) && !assignment.IsRef)
                     {
                         EmitIndirectStore(local.LocalSymbol.Type, local.Syntax);
                     }
@@ -2636,7 +2636,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 FreeTemp(temp);
             }
 
-            if (useKind == UseKind.UsedAsValue && assignment.IsRef)
+            if ((useKind == UseKind.UsedAsValue) && assignment.IsRef)
             {
                 EmitLoadIndirect(assignment.Type, assignment.Syntax);
             }
@@ -2744,7 +2744,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         {
             int slot = ParameterSlot(parameter);
 
-            if (parameter.ParameterSymbol.RefKind != RefKind.None && !refAssign)
+            if ((parameter.ParameterSymbol.RefKind != RefKind.None) && !refAssign)
             {
                 //NOTE: we should have the actual parameter already loaded, 
                 //now need to do a store to where it points to
@@ -2855,7 +2855,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 var operandType = operand.Type;
                 var targetType = asOp.Type;
                 Debug.Assert((object)targetType != null);
-                if ((object)operandType != null && !operandType.IsVerifierReference())
+                if (((object)operandType != null) && !operandType.IsVerifierReference())
                 {
                     // box the operand for isinst if it is not a verifier reference
                     EmitBox(operandType, operand.Syntax);
@@ -2876,7 +2876,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             if (used)
             {
                 // default type parameter values must be emitted as 'initobj' regardless of constraints
-                if (!type.IsTypeParameter() && type.SpecialType != SpecialType.System_Decimal)
+                if (!type.IsTypeParameter() && (type.SpecialType != SpecialType.System_Decimal))
                 {
                     var constantValue = type.GetDefaultValue();
                     if (constantValue != null)
@@ -2886,7 +2886,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     }
                 }
 
-                if (type.IsPointerType() || type.SpecialType == SpecialType.System_UIntPtr)
+                if (type.IsPointerType() || (type.SpecialType == SpecialType.System_UIntPtr))
                 {
                     // default(whatever*) and default(UIntPtr) can be emitted as:
                     _builder.EmitOpCode(ILOpCode.Ldc_i4_0);
@@ -2906,8 +2906,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
         private void EmitDefaultExpression(BoundDefaultExpression expression, bool used)
         {
-            Debug.Assert(expression.Type.SpecialType == SpecialType.System_Decimal ||
-                expression.Type.GetDefaultValue() == null, "constant should be set on this expression");
+            Debug.Assert((expression.Type.SpecialType == SpecialType.System_Decimal) ||
+                (expression.Type.GetDefaultValue() == null), "constant should be set on this expression");
 
             // Default value for the given default expression is not a constant
             // Expression must be of type parameter type or a non-primitive value type
@@ -3144,7 +3144,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     EmitStaticCast(expr.Type, expr.Syntax);
                     mergeTypeOfAlternative = expr.Type;
                 }
-                else if (expr.Type.IsInterfaceType() && expr.Type != mergeTypeOfAlternative)
+                else if (expr.Type.IsInterfaceType() && (expr.Type != mergeTypeOfAlternative))
                 {
                     EmitStaticCast(expr.Type, expr.Syntax);
                 }
@@ -3168,7 +3168,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     EmitStaticCast(expr.Type, expr.Syntax);
                     mergeTypeOfConsequence = expr.Type;
                 }
-                else if (expr.Type.IsInterfaceType() && expr.Type != mergeTypeOfConsequence)
+                else if (expr.Type.IsInterfaceType() && (expr.Type != mergeTypeOfConsequence))
                 {
                     EmitStaticCast(expr.Type, expr.Syntax);
                 }
@@ -3205,7 +3205,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     EmitStaticCast(expr.Type, expr.Syntax);
                     mergeTypeOfLeftValue = expr.Type;
                 }
-                else if (expr.Type.IsInterfaceType() && expr.Type != mergeTypeOfLeftValue)
+                else if (expr.Type.IsInterfaceType() && (expr.Type != mergeTypeOfLeftValue))
                 {
                     EmitStaticCast(expr.Type, expr.Syntax);
                 }
@@ -3275,8 +3275,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     Debug.Assert(conversionKind != ConversionKind.DefaultOrNullLiteral);
 
                     if (conversionKind.IsImplicitConversion() &&
-                        conversionKind != ConversionKind.MethodGroup &&
-                        conversionKind != ConversionKind.DefaultOrNullLiteral)
+                        (conversionKind != ConversionKind.MethodGroup) &&
+                        (conversionKind != ConversionKind.DefaultOrNullLiteral))
                     {
                         return StackMergeType(conversion.Operand);
                     }
@@ -3332,7 +3332,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 return IsVarianceCast(((ArrayTypeSymbol)to).ElementType, ((ArrayTypeSymbol)from).ElementType);
             }
 
-            return (to.IsDelegateType() && to != from) ||
+            return (to.IsDelegateType() && (to != from)) ||
                    (to.IsInterfaceType() && from.IsInterfaceType() && !from.InterfacesAndTheirBaseInterfacesNoUseSiteDiagnostics.Contains((NamedTypeSymbol)to));
         }
 

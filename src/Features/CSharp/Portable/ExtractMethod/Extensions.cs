@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
             while (node != null)
             {
-                if (node.Parent != null &&
+                if ((node.Parent != null) &&
                     node.Parent.IsStatementContainerNode())
                 {
                     return node as StatementSyntax;
@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
         public static bool IsStatementContainerNode(this SyntaxNode node)
         {
-            return node is BlockSyntax || node is SwitchSectionSyntax;
+            return (node is BlockSyntax) || (node is SwitchSectionSyntax);
         }
 
         public static BlockSyntax GetBlockBody(this SyntaxNode node)
@@ -74,10 +74,10 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
             bool predicate(SyntaxNode n)
             {
-                if (n is BaseMethodDeclarationSyntax ||
-                    n is AccessorDeclarationSyntax ||
-                    n is BlockSyntax ||
-                    n is GlobalStatementSyntax)
+                if ((n is BaseMethodDeclarationSyntax) ||
+                    (n is AccessorDeclarationSyntax) ||
+                    (n is BlockSyntax) ||
+                    (n is GlobalStatementSyntax))
                 {
                     return true;
                 }
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 return false;
             }
 
-            if (node.FromScript() || node.GetAncestor<TypeDeclarationSyntax>() != null)
+            if (node.FromScript() || (node.GetAncestor<TypeDeclarationSyntax>() != null))
             {
                 return true;
             }
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 return false;
             }
 
-            return equal.Value != null && equal.Value.Span.Contains(node.Span);
+            return (equal.Value != null) && equal.Value.Span.Contains(node.Span);
         }
 
         public static bool ContainArgumentlessThrowWithoutEnclosingCatch(this IEnumerable<SyntaxToken> tokens, TextSpan textSpan)
@@ -147,13 +147,13 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 }
 
                 var throwStatement = token.Parent as ThrowStatementSyntax;
-                if (throwStatement == null || throwStatement.Expression != null)
+                if ((throwStatement == null) || (throwStatement.Expression != null))
                 {
                     continue;
                 }
 
                 var catchClause = token.GetAncestor<CatchClauseSyntax>();
-                if (catchClause == null || !textSpan.Contains(catchClause.Span))
+                if ((catchClause == null) || !textSpan.Contains(catchClause.Span))
                 {
                     return true;
                 }
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 }
             }
 
-            return activeIfs != 0 || activeRegions != 0;
+            return (activeIfs != 0) || (activeRegions != 0);
         }
 
         public static IEnumerable<SyntaxTrivia> GetAllTrivia(this IEnumerable<SyntaxToken> tokens)
@@ -250,12 +250,12 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
         public static bool IsArrayInitializer(this SyntaxNode node)
         {
-            return node is InitializerExpressionSyntax && node.Parent is EqualsValueClauseSyntax;
+            return (node is InitializerExpressionSyntax) && (node.Parent is EqualsValueClauseSyntax);
         }
 
         public static bool IsExpressionInCast(this SyntaxNode node)
         {
-            return node is ExpressionSyntax && node.Parent is CastExpressionSyntax;
+            return (node is ExpressionSyntax) && (node.Parent is CastExpressionSyntax);
         }
 
         public static bool IsExpression(this SyntaxNode node)
@@ -265,17 +265,17 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
         public static bool IsErrorType(this ITypeSymbol type)
         {
-            return type == null || type.Kind == SymbolKind.ErrorType;
+            return (type == null) || (type.Kind == SymbolKind.ErrorType);
         }
 
         public static bool IsObjectType(this ITypeSymbol type)
         {
-            return type == null || type.SpecialType == SpecialType.System_Object;
+            return (type == null) || (type.SpecialType == SpecialType.System_Object);
         }
 
         public static bool BetweenFieldAndNonFieldMember(this SyntaxToken token1, SyntaxToken token2)
         {
-            if (token1.RawKind != (int)SyntaxKind.SemicolonToken || !(token1.Parent is FieldDeclarationSyntax))
+            if ((token1.RawKind != (int)SyntaxKind.SemicolonToken) || !(token1.Parent is FieldDeclarationSyntax))
             {
                 return false;
             }

@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Syntax
             var node = nodesAndSeparators[nodeIndex].AsNode();
 
             nextTokenIsSeparator =
-                nodeIndex + 1 < nodesAndSeparators.Count &&
+                ((nodeIndex + 1) < nodesAndSeparators.Count) &&
                 nodesAndSeparators[nodeIndex + 1].IsToken;
 
             nextSeparatorBelongsToNode =

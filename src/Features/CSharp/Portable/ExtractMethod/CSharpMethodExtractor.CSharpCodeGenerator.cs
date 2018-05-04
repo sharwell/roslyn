@@ -134,8 +134,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 var selectedNode = this.GetFirstStatementOrInitializerSelectedAtCallSite();
 
                 // field initializer, constructor initializer, expression bodied member case
-                if (selectedNode is ConstructorInitializerSyntax ||
-                    selectedNode is FieldDeclarationSyntax ||
+                if ((selectedNode is ConstructorInitializerSyntax) ||
+                    (selectedNode is FieldDeclarationSyntax) ||
                     IsExpressionBodiedMember(selectedNode) || 
                     IsExpressionBodiedAccessor(selectedNode))
                 {
@@ -159,10 +159,10 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
             }
 
             private bool IsExpressionBodiedMember(SyntaxNode node)
-                => node is MemberDeclarationSyntax member && member.GetExpressionBody() != null;
+                => node is MemberDeclarationSyntax member && (member.GetExpressionBody() != null);
 
             private bool IsExpressionBodiedAccessor(SyntaxNode node)
-                => node is AccessorDeclarationSyntax accessor && accessor.ExpressionBody != null;
+                => node is AccessorDeclarationSyntax accessor && (accessor.ExpressionBody != null);
 
             private SimpleNameSyntax CreateMethodNameForInvocation()
             {
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
                 if (count == 1)
                 {
-                    if (statements.Single() is ReturnStatementSyntax returnStatement && returnStatement.Expression == null)
+                    if (statements.Single() is ReturnStatementSyntax returnStatement && (returnStatement.Expression == null))
                     {
                         return OperationStatus.NoActiveStatement;
                     }
@@ -368,7 +368,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                         list.Add(variableDeclaration);
                     }
 
-                    if (list.Count == 0 && triviaList.Count > 0)
+                    if ((list.Count == 0) && (triviaList.Count > 0))
                     {
                         // well, there are trivia associated with the node.
                         // we can't just delete the node since then, we will lose
@@ -480,7 +480,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
             {
                 var identifier = variable.Identifier;
                 var typeSyntax = declarationStatement.Declaration.Type;
-                if (firstVariableToAttachTrivia && typeSyntax != null)
+                if (firstVariableToAttachTrivia && (typeSyntax != null))
                 {
                     var identifierLeadingTrivia = new SyntaxTriviaList();
 

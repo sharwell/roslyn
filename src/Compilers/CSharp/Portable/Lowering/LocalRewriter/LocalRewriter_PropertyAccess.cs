@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             // check for System.Array.[Length|LongLength] on a single dimensional array,
             // we have a special node for such cases.
-            if (rewrittenReceiverOpt != null && rewrittenReceiverOpt.Type.IsArray() && !isLeftOfAssignment)
+            if ((rewrittenReceiverOpt != null) && rewrittenReceiverOpt.Type.IsArray() && !isLeftOfAssignment)
             {
                 var asArrayType = (ArrayTypeSymbol)rewrittenReceiverOpt.Type;
                 if (asArrayType.IsSZArray)
@@ -40,14 +40,14 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // NOTE: we are not interested in potential badness of Array.Length property.
                     // If it is bad reference compare will not succeed.
                     if (ReferenceEquals(propertySymbol, _compilation.GetSpecialTypeMember(SpecialMember.System_Array__Length)) ||
-                        !_inExpressionLambda && ReferenceEquals(propertySymbol, _compilation.GetSpecialTypeMember(SpecialMember.System_Array__LongLength)))
+                        (!_inExpressionLambda && ReferenceEquals(propertySymbol, _compilation.GetSpecialTypeMember(SpecialMember.System_Array__LongLength))))
                     {
                         return new BoundArrayLength(syntax, rewrittenReceiverOpt, type);
                     }
                 }
             }
 
-            if (isLeftOfAssignment && propertySymbol.RefKind == RefKind.None)
+            if (isLeftOfAssignment && (propertySymbol.RefKind == RefKind.None))
             {
                 // This is a property set access. We return a BoundPropertyAccess node here.
                 // This node will be rewritten with MakePropertyAssignment when rewriting the enclosing BoundAssignmentOperator.

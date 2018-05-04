@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             MissingModuleSymbol other = obj as MissingModuleSymbol;
 
-            return (object)other != null && assembly.Equals(other.assembly);
+            return ((object)other != null) && assembly.Equals(other.assembly);
         }
 
         public override ImmutableArray<Location> Locations
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             MissingModuleSymbolWithName other = obj as MissingModuleSymbolWithName;
 
-            return (object)other != null && assembly.Equals(other.assembly) && string.Equals(_name, other._name, StringComparison.OrdinalIgnoreCase);
+            return ((object)other != null) && assembly.Equals(other.assembly) && string.Equals(_name, other._name, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                             // ensure relevant imports are complete.
                             foreach (var declaration in _mergedDeclaration.Declarations)
                             {
-                                if (locationOpt == null || locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree)
+                                if ((locationOpt == null) || (locationOpt.SourceTree == declaration.SyntaxReference.SyntaxTree))
                                 {
                                     if (declaration.HasUsings || declaration.HasExternAliases)
                                     {

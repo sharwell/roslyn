@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeSymbol target,
             ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(sourceExpression != null || (object)source != null);
+            Debug.Assert((sourceExpression != null) || ((object)source != null));
             Debug.Assert((object)target != null);
 
             // User-defined conversions that involve generics can be quite strange. There
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ref HashSet<DiagnosticInfo> useSiteDiagnostics,
             bool allowAnyTarget = false)
         {
-            Debug.Assert(sourceExpression != null || (object)source != null);
+            Debug.Assert((sourceExpression != null) || ((object)source != null));
             Debug.Assert((object)target != null == !allowAnyTarget);
             Debug.Assert(d != null);
             Debug.Assert(u != null);
@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Unfortunately, we know of several real programs that rely upon this bug, so we are going
             // to reproduce it here.
 
-            if ((object)source != null && source.IsInterfaceType() || (object)target != null && target.IsInterfaceType())
+            if ((((object)source != null) && source.IsInterfaceType()) || (((object)target != null) && target.IsInterfaceType()))
             {
                 return;
             }
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 foreach (MethodSymbol op in declaringType.GetOperators(WellKnownMemberNames.ImplicitConversionName))
                 {
                     // We might have a bad operator and be in an error recovery situation. Ignore it.
-                    if (op.ReturnsVoid || op.ParameterCount != 1)
+                    if (op.ReturnsVoid || (op.ParameterCount != 1))
                     {
                         continue;
                     }
@@ -270,7 +270,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         //
                         // We perpetuate this fiction here.
 
-                        if ((object)target != null && target.IsNullableType() && convertsTo.IsNonNullableValueType())
+                        if (((object)target != null) && target.IsNullableType() && convertsTo.IsNonNullableValueType())
                         {
                             convertsTo = MakeNullableType(convertsTo);
                             toConversion = allowAnyTarget ? Conversion.Identity :
@@ -279,7 +279,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                         u.Add(UserDefinedConversionAnalysis.Normal(op, fromConversion, toConversion, convertsFrom, convertsTo));
                     }
-                    else if ((object)source != null && source.IsNullableType() && convertsFrom.IsNonNullableValueType() &&
+                    else if (((object)source != null) && source.IsNullableType() && convertsFrom.IsNonNullableValueType() &&
                         (allowAnyTarget || target.CanBeAssignedNull()))
                     {
                         // As mentioned above, here we diverge from the specification, in two ways.
@@ -377,7 +377,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static int? MostSpecificConversionOperator(TypeSymbol sx, TypeSymbol tx, ImmutableArray<UserDefinedConversionAnalysis> u)
         {
-            return MostSpecificConversionOperator(conv => conv.FromType == sx && conv.ToType == tx, u);
+            return MostSpecificConversionOperator(conv => (conv.FromType == sx) && (conv.ToType == tx), u);
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BestIndex bestUnlifted = UniqueIndex(u,
                 conv =>
                 constraint(conv) &&
-                LiftingCount(conv) == 0);
+                (LiftingCount(conv) == 0));
 
             if (bestUnlifted.Kind == BestIndexKind.Best)
             {
@@ -458,7 +458,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BestIndex bestHalfLifted = UniqueIndex(u,
                 conv =>
                 constraint(conv) &&
-                LiftingCount(conv) == 1);
+                (LiftingCount(conv) == 1));
 
             if (bestHalfLifted.Kind == BestIndexKind.Best)
             {
@@ -476,7 +476,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BestIndex bestFullyLifted = UniqueIndex(u,
                 conv =>
                 constraint(conv) &&
-                LiftingCount(conv) == 2);
+                (LiftingCount(conv) == 2));
 
             if (bestFullyLifted.Kind == BestIndexKind.Best)
             {
@@ -536,7 +536,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private Conversion EncompassingImplicitConversion(BoundExpression aExpr, TypeSymbol a, TypeSymbol b, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(aExpr != null || (object)a != null);
+            Debug.Assert((aExpr != null) || ((object)a != null));
             Debug.Assert((object)b != null);
 
             // DELIBERATE SPEC VIOLATION: 
@@ -796,7 +796,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 BetterResult result = better(candidateItem, currentItem);
-                if (result != BetterResult.Left && result != BetterResult.Equal)
+                if ((result != BetterResult.Left) && (result != BetterResult.Equal))
                 {
                     // The candidate was not better than everything that came before it. There is 
                     // no best item.

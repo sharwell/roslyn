@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         private static bool GetIsUnsafe(CodeGenerationFieldInfo info)
         {
-            return info != null && info._isUnsafe;
+            return (info != null) && info._isUnsafe;
         }
 
         public static bool GetIsUnsafe(IFieldSymbol field)
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         private static bool GetIsWithEvents(CodeGenerationFieldInfo info)
         {
-            return info != null && info._isWithEvents;
+            return (info != null) && info._isWithEvents;
         }
 
         public static bool GetIsWithEvents(IFieldSymbol field)

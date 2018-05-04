@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             public override ITypeSymbol VisitArrayType(IArrayTypeSymbol symbol)
             {
                 var elementType = symbol.ElementType.Accept(this);
-                if (elementType != null && elementType.Equals(symbol.ElementType))
+                if ((elementType != null) && elementType.Equals(symbol.ElementType))
                 {
                     return symbol;
                 }
@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             public override ITypeSymbol VisitPointerType(IPointerTypeSymbol symbol)
             {
                 var elementType = symbol.PointedAtType.Accept(this);
-                if (elementType != null && elementType.Equals(symbol.PointedAtType))
+                if ((elementType != null) && elementType.Equals(symbol.PointedAtType))
                 {
                     return symbol;
                 }
@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                         // If there is one constraint which is a INamedTypeSymbol then return the INamedTypeSymbol
                         // because the TypeParameter is expected to be of that type
                         // else return the original symbol
-                        return symbol.ConstraintTypes.ElementAt(0) as INamedTypeSymbol ?? (ITypeSymbol)symbol;
+                        return (symbol.ConstraintTypes.ElementAt(0) as INamedTypeSymbol) ?? (ITypeSymbol)symbol;
 
                     // More than one
                     default:

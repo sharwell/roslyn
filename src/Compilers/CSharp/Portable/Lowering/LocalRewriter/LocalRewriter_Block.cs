@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis.CSharp
     {
         public override BoundNode VisitBlock(BoundBlock node)
         {
-            if (!this.Instrument || (node != _rootStatement && (node.WasCompilerGenerated || node.Syntax.Kind() != SyntaxKind.Block)))
+            if (!this.Instrument || ((node != _rootStatement) && (node.WasCompilerGenerated || (node.Syntax.Kind() != SyntaxKind.Block))))
             {
                 return node.Update(node.Locals, node.LocalFunctions, VisitList(node.Statements));
             }

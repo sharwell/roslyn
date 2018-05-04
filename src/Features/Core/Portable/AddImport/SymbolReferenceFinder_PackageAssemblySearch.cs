@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.AddImport
                 string name, int arity, bool inAttributeContext,
                 CancellationToken cancellationToken)
             {
-                if (arity == 0 && inAttributeContext)
+                if ((arity == 0) && inAttributeContext)
                 {
                     await FindNugetOrReferenceAssemblyTypeReferencesWorkerAsync(
                         allReferences, nameNode, name + AttributeSuffix, arity,

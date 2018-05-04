@@ -229,7 +229,7 @@ namespace Microsoft.VisualStudio.LanguageServices.FindUsages
                     // We found no definitions that *want* to be displayed.  However, we still 
                     // want to show something.  So, if necessary, show at lest the first definition
                     // even if we found no references and even if it would prefer to not be seen.
-                    if (entries.Count == 0 && Definitions.Count > 0)
+                    if ((entries.Count == 0) && (Definitions.Count > 0))
                     {
                         return ImmutableArray.Create(Definitions.First());
                     }

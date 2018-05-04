@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Host
 
         public virtual bool CanCreateRecoverableTree(SyntaxNode root)
         {
-            return _hasCachingService && root.FullSpan.Length >= this.MinimumLengthForRecoverableTree;
+            return _hasCachingService && (root.FullSpan.Length >= this.MinimumLengthForRecoverableTree);
         }
 
         protected static SyntaxNode RecoverNode(SyntaxTree tree, TextSpan textSpan, int kind)
@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.Host
 
             while (node != null)
             {
-                if (node.Span == textSpan && node.RawKind == kind)
+                if ((node.Span == textSpan) && (node.RawKind == kind))
                 {
                     return node;
                 }

@@ -358,7 +358,7 @@ namespace Roslyn.Test.Utilities
         {
             count = _name.Length + 1; // + 1 for null terminator
             Debug.Assert((bufferLength == 0) || (bufferLength == count));
-            for (int i = 0; i < bufferLength - 1; i++)
+            for (int i = 0; i < (bufferLength - 1); i++)
             {
                 name[i] = _name[i];
             }

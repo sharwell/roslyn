@@ -103,7 +103,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Inter
 
             set
             {
-                if (value == null || value is string)
+                if ((value == null) || (value is string))
                 {
                     UpdateNode(FileCodeModel.UpdateInitExpression, (string)value);
                     return;

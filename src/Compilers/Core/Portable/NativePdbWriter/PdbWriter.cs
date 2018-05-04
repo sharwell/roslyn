@@ -71,7 +71,7 @@ namespace Microsoft.Cci
             // This is to accomodate for a requirement of Windows PDB writer that the entry point method must have some debug information.
             bool isKickoffMethod = methodBody.StateMachineTypeName != null;
             bool emitDebugInfo = isKickoffMethod || !methodBody.SequencePoints.IsEmpty ||
-                methodBody.MethodDefinition == (Context.Module.DebugEntryPoint ?? Context.Module.PEEntryPoint);
+                (methodBody.MethodDefinition == (Context.Module.DebugEntryPoint ?? Context.Module.PEEntryPoint));
 
             if (!emitDebugInfo)
             {
@@ -91,7 +91,7 @@ namespace Microsoft.Cci
                 this.DefineScopeLocals(localScopes[0], localSignatureHandleOpt);
             }
 
-            if (!isKickoffMethod && methodBody.ImportScope != null)
+            if (!isKickoffMethod && (methodBody.ImportScope != null))
             {
                 IMethodDefinition forwardToMethod;
                 if (customDebugInfoWriter.ShouldForwardNamespaceScopes(Context, methodBody, methodHandle, out forwardToMethod))
@@ -161,7 +161,7 @@ namespace Microsoft.Cci
                 {
                     foreach (var import in scope.GetUsedNamespaces())
                     {
-                        if (import.TargetNamespaceOpt == null && import.TargetTypeOpt == null)
+                        if ((import.TargetNamespaceOpt == null) && (import.TargetTypeOpt == null))
                         {
                             Debug.Assert(import.AliasOpt != null);
                             Debug.Assert(import.TargetAssemblyOpt == null);
@@ -425,7 +425,7 @@ namespace Microsoft.Cci
                 // the alias requires binding.  For example, "using A.B;" could refer to
                 // either "A::B" or "global::A.B".
 
-                if (assembly == alias.Assembly && declaredExternAliases.Contains(alias.Name))
+                if ((assembly == alias.Assembly) && declaredExternAliases.Contains(alias.Name))
                 {
                     return alias.Name;
                 }
@@ -451,7 +451,7 @@ namespace Microsoft.Cci
                 while (scopeStack.Count > 0)
                 {
                     LocalScope topScope = scopeStack.Last();
-                    if (currentScope.StartOffset < topScope.StartOffset + topScope.Length)
+                    if (currentScope.StartOffset < (topScope.StartOffset + topScope.Length))
                     {
                         break;
                     }

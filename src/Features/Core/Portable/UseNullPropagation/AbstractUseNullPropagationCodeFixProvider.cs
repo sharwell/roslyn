@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.UseNullPropagation
                     syntaxFacts.GetNameAndArityOfSimpleName(nameNode, out var name, out var arity);
                     var comparer = syntaxFacts.StringComparer;
 
-                    if (arity == 0 && comparer.Equals(name, nameof(Nullable<int>.Value)))
+                    if ((arity == 0) && comparer.Equals(name, nameof(Nullable<int>.Value)))
                     {
                         // They're calling ".Value" off of a nullable.  Because we're moving to ?.
                         // we want to remove the .Value as well.  i.e. we should generate:

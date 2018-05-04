@@ -35,9 +35,9 @@ namespace Microsoft.CodeAnalysis
                 var properties = containingSymbolResolution.GetAllSymbols().OfType<INamedTypeSymbol>()
                     .SelectMany(t => t.GetMembers())
                     .OfType<IPropertySymbol>()
-                    .Where(p => p.Parameters.Length == refKinds.Length &&
-                                p.MetadataName == metadataName &&
-                                p.IsIndexer == isIndexer);
+                    .Where(p => (p.Parameters.Length == refKinds.Length) &&
+                                (p.MetadataName == metadataName) &&
+                                (p.IsIndexer == isIndexer));
                 var matchingProperties = properties.Where(p =>
                     ParameterRefKindsMatch(p.OriginalDefinition.Parameters, refKinds) &&
                     reader.ParameterTypesMatch(p.OriginalDefinition.Parameters, originalParameterTypes));

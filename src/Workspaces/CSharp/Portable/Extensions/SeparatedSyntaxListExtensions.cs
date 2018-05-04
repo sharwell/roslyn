@@ -15,8 +15,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
     {
         private static Tuple<List<T>, List<SyntaxToken>> GetNodesAndSeparators<T>(this SeparatedSyntaxList<T> separatedList) where T : SyntaxNode
         {
-            Contract.Requires(separatedList.Count == separatedList.SeparatorCount ||
-                              separatedList.Count == separatedList.SeparatorCount + 1);
+            Contract.Requires((separatedList.Count == separatedList.SeparatorCount) ||
+                              (separatedList.Count == (separatedList.SeparatorCount + 1)));
 
             var nodes = new List<T>(separatedList.Count);
             var separators = new List<SyntaxToken>(separatedList.SeparatorCount);

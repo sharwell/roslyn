@@ -133,9 +133,9 @@ namespace Microsoft.VisualStudio.LanguageServices.EditAndContinue
                     {
                         foreach (var moduleInstance in runtimeInstance.GetModuleInstances())
                         {
-                            if (moduleInstance.TagValue == DkmModuleInstance.Tag.ClrModuleInstance &&
+                            if ((moduleInstance.TagValue == DkmModuleInstance.Tag.ClrModuleInstance) &&
                                 moduleInstance is DkmClrModuleInstance clrModuleInstance &&
-                                clrModuleInstance.Mvid == mvid)
+                                (clrModuleInstance.Mvid == mvid))
                             {
                                 return clrModuleInstance;
                             }

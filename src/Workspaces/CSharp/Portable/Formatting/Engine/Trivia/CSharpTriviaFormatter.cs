@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                     return LineColumnRule.PreserveLinesWithDefaultIndentation(lines: 0);
                 }
 
-                if (existingWhitespaceBetween.Lines > 0 && existingWhitespaceBetween.Spaces != this.Spaces)
+                if ((existingWhitespaceBetween.Lines > 0) && (existingWhitespaceBetween.Spaces != this.Spaces))
                 {
                     return LineColumnRule.PreserveWithGivenSpaces(spaces: this.Spaces);
                 }
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             {
                 // Check for immovable preprocessor directives, which are bad directive trivia 
                 // without a preceding line break
-                if (trivia2.IsKind(SyntaxKind.BadDirectiveTrivia) && existingWhitespaceBetween.Lines == 0 && !implicitLineBreak)
+                if (trivia2.IsKind(SyntaxKind.BadDirectiveTrivia) && (existingWhitespaceBetween.Lines == 0) && !implicitLineBreak)
                 {
                     _succeeded = false;
                     return LineColumnRule.Preserve();
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             if (trivia2.IsRegularOrDocComment())
             {
                 // start of new comments group
-                if (!trivia1.IsRegularComment() || existingWhitespaceBetween.Lines > 1)
+                if (!trivia1.IsRegularComment() || (existingWhitespaceBetween.Lines > 1))
                 {
                     if (this.FormattingRules.GetAdjustNewLinesOperation(this.Token1, this.Token2) != null)
                     {
@@ -163,14 +163,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
             var structuredTrivia = trivia.GetStructure();
 
-            return structuredTrivia != null &&
+            return (structuredTrivia != null) &&
                 structuredTrivia.HasTrailingTrivia &&
                 structuredTrivia.GetTrailingTrivia().Any(SyntaxKind.EndOfLineTrivia);
         }
 
         private bool IsStartOrEndOfFile(SyntaxTrivia trivia1, SyntaxTrivia trivia2)
         {
-            return (this.Token1.RawKind == 0 || this.Token2.RawKind == 0) && (trivia1.Kind() == 0 || trivia2.Kind() == 0);
+            return ((this.Token1.RawKind == 0) || (this.Token2.RawKind == 0)) && ((trivia1.Kind() == 0) || (trivia2.Kind() == 0));
         }
 
         private static bool IsMultilineComment(SyntaxTrivia trivia1)

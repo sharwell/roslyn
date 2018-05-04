@@ -23,7 +23,7 @@ namespace Roslyn.Utilities
         private void Resize()
         {
             Debug.Assert(_size == _items.Length);
-            Debug.Assert(_items.Length == 0 || _items.Length >= MinimalNonEmptySize);
+            Debug.Assert((_items.Length == 0) || (_items.Length >= MinimalNonEmptySize));
 
             int alive = _items.Length;
             int firstDead = -1;
@@ -41,13 +41,13 @@ namespace Roslyn.Utilities
                 }
             }
 
-            if (alive < _items.Length / 4)
+            if (alive < (_items.Length / 4))
             {
                 // If we have just a few items left we shrink the array.
                 // We avoid expanding the array until the number of new items added exceeds half of its capacity.
                 Shrink(firstDead, alive);
             }
-            else if (alive >= 3 * _items.Length / 4)
+            else if (alive >= ((3 * _items.Length / 4)))
             {
                 // If we have a lot of items alive we expand the array since just compacting them 
                 // wouldn't free up much space (we would end up calling Resize again after adding a few more items).
@@ -72,7 +72,7 @@ namespace Roslyn.Utilities
                 Compact(firstDead, _items);
             }
 
-            Debug.Assert(_items.Length > 0 && _size < 3 * _items.Length / 4, "length: " + _items.Length + " size: " + _size);
+            Debug.Assert((_items.Length > 0) && (_size < ((3 * _items.Length / 4))), "length: " + _items.Length + " size: " + _size);
         }
 
         private void Shrink(int firstDead, int alive)
@@ -139,7 +139,7 @@ namespace Roslyn.Utilities
 
         public WeakReference<T> GetWeakReference(int index)
         {
-            if (index < 0 || index >= _size)
+            if ((index < 0) || (index >= _size))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -189,7 +189,7 @@ namespace Roslyn.Utilities
                 _items = Array.Empty<WeakReference<T>>();
                 _size = 0;
             }
-            else if (alive < _items.Length / 4)
+            else if (alive < (_items.Length / 4))
             {
                 // If we have just a few items left we shrink the array.
                 Shrink(firstDead, alive);

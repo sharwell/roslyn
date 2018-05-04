@@ -13,11 +13,11 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
         protected override bool CanFind(IMethodSymbol symbol)
         {
             return
-                symbol.MethodKind == MethodKind.Ordinary ||
-                symbol.MethodKind == MethodKind.DelegateInvoke ||
-                symbol.MethodKind == MethodKind.DeclareMethod ||
-                symbol.MethodKind == MethodKind.ReducedExtension ||
-                symbol.MethodKind == MethodKind.LocalFunction;
+                (symbol.MethodKind == MethodKind.Ordinary) ||
+                (symbol.MethodKind == MethodKind.DelegateInvoke) ||
+                (symbol.MethodKind == MethodKind.DeclareMethod) ||
+                (symbol.MethodKind == MethodKind.ReducedExtension) ||
+                (symbol.MethodKind == MethodKind.LocalFunction);
         }
 
         protected override async Task<ImmutableArray<SymbolAndProjectId>> DetermineCascadedSymbolsAsync(
@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 var otherPartsOfPartial = GetOtherPartsOfPartial(symbolAndProjectId);
                 var baseCascadedSymbols = await base.DetermineCascadedSymbolsAsync(symbolAndProjectId, solution, projects, cancellationToken).ConfigureAwait(false);
 
-                if (otherPartsOfPartial == null && baseCascadedSymbols == null)
+                if ((otherPartsOfPartial == null) && (baseCascadedSymbols == null))
                 {
                     return ImmutableArray<SymbolAndProjectId>.Empty;
                 }
@@ -103,8 +103,8 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
         private bool IsForEachMethod(IMethodSymbol methodSymbol)
         {
             return
-                methodSymbol.Name == WellKnownMemberNames.GetEnumeratorMethodName ||
-                methodSymbol.Name == WellKnownMemberNames.MoveNextMethodName;
+                (methodSymbol.Name == WellKnownMemberNames.GetEnumeratorMethodName) ||
+                (methodSymbol.Name == WellKnownMemberNames.MoveNextMethodName);
         }
 
         private bool IsDeconstructMethod(IMethodSymbol methodSymbol)

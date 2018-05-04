@@ -46,8 +46,8 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
             out string beforeCaretText, out string afterCaretText)
         {
             return
-                item.Properties.TryGetValue(BeforeCaretTextOnSpace, out beforeCaretText) &
-                item.Properties.TryGetValue(AfterCaretTextOnSpace, out afterCaretText) &&
+                (item.Properties.TryGetValue(BeforeCaretTextOnSpace, out beforeCaretText) &
+                item.Properties.TryGetValue(AfterCaretTextOnSpace, out afterCaretText)) &&
                 (!string.IsNullOrEmpty(beforeCaretText) || !string.IsNullOrEmpty(afterCaretText));
         }
     }

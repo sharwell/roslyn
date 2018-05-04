@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var select = state.selectOrGroup as SelectClauseSyntax;
             if (select == null) return false;
             var name = select.Expression as IdentifierNameSyntax;
-            return name != null && state.rangeVariable.Name == name.Identifier.ValueText;
+            return (name != null) && (state.rangeVariable.Name == name.Identifier.ValueText);
         }
 
         private BoundExpression BindQueryInternal2(QueryTranslationState state, DiagnosticBag diagnostics)
@@ -181,7 +181,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         result = ReverseLastTwoParameterOrder(result);
 
                         BoundExpression unoptimizedForm = null;
-                        if (vId != null && vId.Identifier.ValueText == x.Name)
+                        if ((vId != null) && (vId.Identifier.ValueText == x.Name))
                         {
                             // The optimized form.  We store the unoptimized form for analysis
                             unoptimizedForm = result;
@@ -296,7 +296,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var x2 = state.AddRangeVariable(this, join.Identifier, diagnostics);
             var innerKeySelectorLambda = MakeQueryUnboundLambda(QueryTranslationState.RangeVariableMap(x2), x2, join.RightExpression);
 
-            if (state.clauses.IsEmpty() && state.selectOrGroup.Kind() == SyntaxKind.SelectClause)
+            if (state.clauses.IsEmpty() && (state.selectOrGroup.Kind() == SyntaxKind.SelectClause))
             {
                 var select = (SelectClauseSyntax)state.selectOrGroup;
                 BoundCall invocation;
@@ -573,7 +573,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Error(d, ErrorCode.ERR_QueryRangeVariableAssignedBadValue, errorLocation, yExpression.Display);
                     yExpression = new BoundBadExpression(yExpression.Syntax, LookupResultKind.Empty, ImmutableArray<Symbol>.Empty, ImmutableArray.Create(yExpression), CreateErrorType());
                 }
-                else if (!yExpression.HasAnyErrors && yExpression.Type.SpecialType == SpecialType.System_Void)
+                else if (!yExpression.HasAnyErrors && (yExpression.Type.SpecialType == SpecialType.System_Void))
                 {
                     Error(d, ErrorCode.ERR_QueryRangeVariableAssignedBadValue, errorLocation, yExpression.Type);
                     yExpression = new BoundBadExpression(yExpression.Syntax, LookupResultKind.Empty, ImmutableArray<Symbol>.Empty, ImmutableArray.Create(yExpression), yExpression.Type);
@@ -614,7 +614,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundExpression castInvocation = null,
             BoundExpression unoptimizedForm = null)
         {
-            if (unoptimizedForm != null && unoptimizedForm.HasAnyErrors && !expression.HasAnyErrors) unoptimizedForm = null;
+            if ((unoptimizedForm != null) && unoptimizedForm.HasAnyErrors && !expression.HasAnyErrors) unoptimizedForm = null;
             return new BoundQueryClause(
                 syntax: syntax, value: expression,
                 definedSymbol: definedSymbol,
@@ -689,7 +689,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private UnboundLambda MakeQueryUnboundLambda(CSharpSyntaxNode node, QueryUnboundLambdaState state)
         {
-            Debug.Assert(node is ExpressionSyntax || LambdaUtilities.IsQueryPairLambda(node));
+            Debug.Assert((node is ExpressionSyntax) || LambdaUtilities.IsQueryPairLambda(node));
             var lambda = new UnboundLambda(node, state, hasErrors: false) { WasCompilerGenerated = true };
             state.SetUnboundLambda(lambda);
             return lambda;
@@ -733,7 +733,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     diagnostics.Add(ErrorCode.ERR_BadSKunknown, ultimateReceiver.Syntax.Location, ultimateReceiver.Syntax, MessageID.IDS_SK_NAMESPACE.Localize());
                 }
-                else if (ultimateReceiver.Kind == BoundKind.Lambda || ultimateReceiver.Kind == BoundKind.UnboundLambda)
+                else if ((ultimateReceiver.Kind == BoundKind.Lambda) || (ultimateReceiver.Kind == BoundKind.UnboundLambda))
                 {
                     // Could not find an implementation of the query pattern for source type '{0}'.  '{1}' not found.
                     diagnostics.Add(ErrorCode.ERR_QueryNoProvider, node.Location, MessageID.IDS_AnonMethod.Localize(), methodName);

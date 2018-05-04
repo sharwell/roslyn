@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     identifier.Parent.GetLocation());
             }
 
-            if (addRefReadOnlyModifier && refKind == RefKind.In)
+            if (addRefReadOnlyModifier && (refKind == RefKind.In))
             {
                 var modifierType = context.GetWellKnownType(WellKnownType.System_Runtime_InteropServices_InAttribute, declarationDiagnostics, syntax);
 
@@ -246,7 +246,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // Parameters of accessors are always synthesized. (e.g., parameter of indexer accessors).
                 // The non-synthesized accessors are on the property/event itself.
                 MethodSymbol owningMethod = ContainingSymbol as MethodSymbol;
-                return (object)owningMethod != null && owningMethod.IsAccessor();
+                return ((object)owningMethod != null) && owningMethod.IsAccessor();
             }
         }
 

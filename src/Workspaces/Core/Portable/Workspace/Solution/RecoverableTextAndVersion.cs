@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis
 
         public override bool TryGetValue(out TextAndVersion value)
         {
-            if (_text != null && _text.TryGetValue(out var text))
+            if ((_text != null) && _text.TryGetValue(out var text))
             {
                 value = TextAndVersion.Create(text, _version, _filePath);
                 return true;

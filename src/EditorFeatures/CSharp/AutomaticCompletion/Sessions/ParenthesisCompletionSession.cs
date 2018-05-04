@@ -25,8 +25,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
 
             // check token at the opening point first
             if (!IsValidToken(token) ||
-                token.RawKind != OpeningTokenKind ||
-                token.SpanStart != position || token.Parent == null)
+                (token.RawKind != OpeningTokenKind) ||
+                (token.SpanStart != position) || (token.Parent == null))
             {
                 return false;
             }
@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
                 return true;
             }
 
-            return (int)pair.closeBrace.Kind() != ClosingTokenKind || pair.closeBrace.Span.Length == 0;
+            return ((int)pair.closeBrace.Kind() != ClosingTokenKind) || (pair.closeBrace.Span.Length == 0);
         }
     }
 }

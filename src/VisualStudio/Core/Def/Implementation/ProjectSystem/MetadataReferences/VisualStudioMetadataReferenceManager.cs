@@ -304,7 +304,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                     return false;
                 }
 
-                return ErrorHandler.Succeeded(info.GetFileMapping(out pImage, out length, out var mappingType)) && mappingType == CorFileMapping.Flat;
+                return ErrorHandler.Succeeded(info.GetFileMapping(out pImage, out length, out var mappingType)) && (mappingType == CorFileMapping.Flat);
             }
         }
 

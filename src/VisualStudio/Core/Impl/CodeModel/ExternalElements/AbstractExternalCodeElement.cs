@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Exter
         {
             var symbol = LookupSymbol();
 
-            if (symbol.Kind == SymbolKind.Namespace &&
+            if ((symbol.Kind == SymbolKind.Namespace) &&
                 ((INamespaceSymbol)symbol).IsGlobalNamespace)
             {
                 // TODO: We should be returning the RootCodeModel object here.

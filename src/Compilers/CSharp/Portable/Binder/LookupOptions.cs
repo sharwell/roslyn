@@ -134,8 +134,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // If MustNotBeNamespace or MustNotBeMethodTypeParameter is set, neither NamespaceAliasesOnly nor NamespacesOrTypesOnly must be set.
-            if ((options & (LookupOptions.MustNotBeNamespace | LookupOptions.MustNotBeMethodTypeParameter)) != 0 &&
-                (options & (LookupOptions.NamespaceAliasesOnly | LookupOptions.NamespacesOrTypesOnly)) != 0)
+            if (((options & (LookupOptions.MustNotBeNamespace | LookupOptions.MustNotBeMethodTypeParameter)) != 0) &&
+                ((options & (LookupOptions.NamespaceAliasesOnly | LookupOptions.NamespacesOrTypesOnly)) != 0))
             {
                 return false;
             }

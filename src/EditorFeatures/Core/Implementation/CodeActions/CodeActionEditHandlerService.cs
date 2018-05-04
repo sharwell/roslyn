@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CodeActions
                     var preview = _previewService.GetSolutionPreviews(
                         oldSolution, newSolution, cancellationToken);
 
-                    if (preview != null && !preview.IsEmpty)
+                    if ((preview != null) && !preview.IsEmpty)
                     {
                         currentResult = SolutionPreviewResult.Merge(currentResult, preview);
                         continue;
@@ -225,7 +225,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CodeActions
             var changedAdditionalDocuments = projectChange.GetChangedAdditionalDocuments().ToImmutableArray();
             var changedDocuments = projectChange.GetChangedDocuments().ToImmutableArray();
 
-            if (changedAdditionalDocuments.Length + changedDocuments.Length != 1)
+            if ((changedAdditionalDocuments.Length + changedDocuments.Length) != 1)
             {
                 return null;
             }

@@ -154,7 +154,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         public static int LastIndexOf(this SourceText text, string value, int startIndex, bool caseSensitive)
         {
             var normalized = caseSensitive ? value : CaseInsensitiveComparison.ToLower(value);
-            startIndex = startIndex + normalized.Length > text.Length
+            startIndex = (startIndex + normalized.Length) > text.Length
                 ? text.Length - normalized.Length
                 : startIndex;
 
@@ -191,9 +191,9 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
         public static bool AreOnSameLine(this SourceText text, SyntaxToken token1, SyntaxToken token2)
         {
-            return token1.RawKind != 0 &&
-                token2.RawKind != 0 &&
-                text.Lines.IndexOf(token1.Span.End) == text.Lines.IndexOf(token2.SpanStart);
+            return (token1.RawKind != 0) &&
+                (token2.RawKind != 0) &&
+                (text.Lines.IndexOf(token1.Span.End) == text.Lines.IndexOf(token2.SpanStart));
         }
 
         // 32KB. comes from SourceText char buffer size and less than large object size
@@ -236,13 +236,13 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     cancellationToken.ThrowIfCancellationRequested();
 
                     var count = Math.Min(buffer.Length, length - offset);
-                    if ((i < numberOfChunks - 1) || (count == buffer.Length))
+                    if ((i < (numberOfChunks - 1)) || (count == buffer.Length))
                     {
                         // chunks before last chunk or last chunk match buffer size
                         sourceText.CopyTo(offset, buffer, 0, buffer.Length);
                         writer.WriteValue(buffer);
                     }
-                    else if (i == numberOfChunks - 1)
+                    else if (i == (numberOfChunks - 1))
                     {
                         // last chunk which size is not buffer size
                         var tempArray = new char[count];
@@ -339,12 +339,12 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     throw new ArgumentNullException(nameof(buffer));
                 }
 
-                if (index < 0 || index >= buffer.Length)
+                if ((index < 0) || (index >= buffer.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                if (count < 0 || (index + count) > buffer.Length)
+                if ((count < 0) || ((index + count) > buffer.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(count));
                 }

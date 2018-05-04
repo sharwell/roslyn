@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis
         /// <returns>True when parsing succeeds completely (i.e. every character in the string was consumed), false otherwise.</returns>
         private static bool TryParse(string s, bool allowWildcard, ushort maxValue, bool allowPartialParse, out Version version)
         {
-            Debug.Assert(!allowWildcard || maxValue < ushort.MaxValue);
+            Debug.Assert(!allowWildcard || (maxValue < ushort.MaxValue));
 
             if (string.IsNullOrWhiteSpace(s))
             {
@@ -62,9 +62,9 @@ namespace Microsoft.CodeAnalysis
 
             // If the wildcard is being used, the first two elements must be specified explicitly, and
             // the last must be a exactly single asterisk without whitespace.
-            bool hasWildcard = allowWildcard && elements[elements.Length - 1] == "*";
+            bool hasWildcard = allowWildcard && (elements[elements.Length - 1] == "*");
 
-            if ((hasWildcard && elements.Length < 3) || elements.Length > 4)
+            if ((hasWildcard && (elements.Length < 3)) || (elements.Length > 4))
             {
                 version = AssemblyIdentity.NullVersion;
                 return false;
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis
             for (int i = 0; i < lastExplicitValue; i++)
             {
 
-                if (!ushort.TryParse(elements[i], NumberStyles.None, CultureInfo.InvariantCulture, out values[i]) || values[i] > maxValue)
+                if (!ushort.TryParse(elements[i], NumberStyles.None, CultureInfo.InvariantCulture, out values[i]) || (values[i] > maxValue))
                 {
                     if (!allowPartialParse)
                     {
@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public static Version GenerateVersionFromPatternAndCurrentTime(DateTime time, Version pattern)
         {
-            if (pattern == null || pattern.Revision != ushort.MaxValue)
+            if ((pattern == null) || (pattern.Revision != ushort.MaxValue))
             {
                 return pattern;
             }

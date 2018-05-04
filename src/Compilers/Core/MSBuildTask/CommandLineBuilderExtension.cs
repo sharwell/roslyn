@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
             bool[] treatAsFlags       // May be null. In this case no metadata are treated as flags.
             )
         {
-            Debug.Assert(treatAsFlags == null
+            Debug.Assert((treatAsFlags == null)
                          || (metadataNames.Length == treatAsFlags.Length),
                          "metadataNames and treatAsFlags should have the same length.");
 
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                             if ((metadataValue != null) && (metadataValue.Length > 0))
                             {
                                 // Treat attribute as a boolean flag?
-                                if (treatAsFlags == null || treatAsFlags[i] == false)
+                                if ((treatAsFlags == null) || (treatAsFlags[i] == false))
                                 {
                                     // Not a boolean flag.
                                     CommandLine.Append(',');
@@ -243,7 +243,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                             }
                             else
                             {
-                                if (treatAsFlags == null || treatAsFlags[i] == false)
+                                if ((treatAsFlags == null) || (treatAsFlags[i] == false))
                                 {
                                     // If the caller of this method asked us to add metadata
                                     // A, B, and C, and metadata A doesn't exist on the item,

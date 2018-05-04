@@ -53,8 +53,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics.PreferFrameworkType
             var preferTypeKeywordInMemberAccessOption = workspace.Options.GetOption(
                 CodeStyleOptions.PreferIntrinsicPredefinedTypeKeywordInMemberAccess, GetLanguageName()).Notification;
 
-            return !(preferTypeKeywordInDeclarationOption == NotificationOption.Warning || preferTypeKeywordInDeclarationOption == NotificationOption.Error ||
-                     preferTypeKeywordInMemberAccessOption == NotificationOption.Warning || preferTypeKeywordInMemberAccessOption == NotificationOption.Error);
+            return !((preferTypeKeywordInDeclarationOption == NotificationOption.Warning) || (preferTypeKeywordInDeclarationOption == NotificationOption.Error) ||
+                     (preferTypeKeywordInMemberAccessOption == NotificationOption.Warning) || (preferTypeKeywordInMemberAccessOption == NotificationOption.Error));
         }
 
         protected abstract string GetLanguageName();
@@ -164,6 +164,6 @@ namespace Microsoft.CodeAnalysis.Diagnostics.PreferFrameworkType
         /// </summary>
         /// <remarks>if predefined type is not preferred, it implies the preference is framework type.</remarks>
         private static bool OptionSettingPrefersFrameworkType(CodeStyleOption<bool> optionValue, DiagnosticSeverity severity) =>
-            !optionValue.Value && severity != DiagnosticSeverity.Hidden;
+            !optionValue.Value && (severity != DiagnosticSeverity.Hidden);
     }
 }

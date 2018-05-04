@@ -187,7 +187,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
                     foreach (var child in childNodesAndTokens.Reverse())
                     {
                         var first = index == 0;
-                        var last = index == childCount - 1;
+                        var last = index == (childCount - 1);
 
                         // We want the leading trivia if we've asked for it, or if we're not the first
                         // token being processed.  We want the trailing trivia if we've asked for it,
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
             while (
                 _oneOrMoreBlankLines.TryMatch(leadingTriviaToKeep, ref index) ||
                 _bannerMatcher.TryMatch(leadingTriviaToKeep, ref index) ||
-                (node.FullSpan.Start == 0 && _fileBannerMatcher.TryMatch(leadingTriviaToKeep, ref index)))
+                ((node.FullSpan.Start == 0) && _fileBannerMatcher.TryMatch(leadingTriviaToKeep, ref index)))
             {
             }
 

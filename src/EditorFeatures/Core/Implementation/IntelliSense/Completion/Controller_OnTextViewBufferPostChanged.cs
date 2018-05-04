@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             // caret isn't within the bounds of the items, then we dismiss completion. If they have
             // not computed results yet, then chain a task to see if we should dismiss the list.  
             var model = sessionOpt.Computation.InitialUnfilteredModel;
-            if (model != null && this.IsCaretOutsideAllItemBounds(model, this.GetCaretPointInViewBuffer()))
+            if ((model != null) && this.IsCaretOutsideAllItemBounds(model, this.GetCaretPointInViewBuffer()))
             {
                 // If the caret moved out of bounds of our items, then we want to dismiss the list. 
                 this.DismissSessionIfActive();

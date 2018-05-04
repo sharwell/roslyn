@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
         public void ShowDialog()
         {
             IVsReferenceManager referenceManager = GetReferenceManager();
-            if (referenceManager != null &&
-                _tracker.SelectedHierarchy != null)
+            if ((referenceManager != null) &&
+                (_tracker.SelectedHierarchy != null))
             {
                 referenceManager.ShowReferenceManager(this,
                                                       SolutionExplorerShim.Add_Analyzer,

@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                     var firstStatement = result.GetFirstStatement();
                     var lastStatement = result.GetLastStatement();
 
-                    return firstStatement == lastStatement || firstStatement.Span.Contains(lastStatement.Span);
+                    return (firstStatement == lastStatement) || firstStatement.Span.Contains(lastStatement.Span);
                 }
 
                 protected override SyntaxToken CreateMethodName()

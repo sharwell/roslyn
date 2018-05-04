@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                         bool found = false;
                         foreach (var rInner in resources)
                         {
-                            if ((rInner.pstringName.Ordinal == i + 1) &&    //ICON IDs start at 1
+                            if ((rInner.pstringName.Ordinal == (i + 1)) &&    //ICON IDs start at 1
                                 (rInner.pstringType.Ordinal == 3))  //RT_ICON
                             {
                                 found = true;

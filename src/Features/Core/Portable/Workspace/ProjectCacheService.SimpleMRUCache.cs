@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.Host
             {
                 for (var i = 0; i < _nodes.Length; i++)
                 {
-                    if (_nodes[i].Data != null && _nodes[i].LastTouched < expirationTime)
+                    if ((_nodes[i].Data != null) && (_nodes[i].LastTouched < expirationTime))
                     {
                         _nodes[i] = default;
                     }

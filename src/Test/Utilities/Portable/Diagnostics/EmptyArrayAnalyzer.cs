@@ -67,14 +67,14 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                         // can be replaced with Array.Empty<T>(), provided that the element type can be a generic type argument.
 
                         var elementType = (arrayCreation as IArrayTypeSymbol)?.ElementType;
-                        if (arrayCreation.DimensionSizes.Length == 1
+                        if ((arrayCreation.DimensionSizes.Length == 1)
                             //// Pointer types can't be generic type arguments.
-                            && elementType?.TypeKind != TypeKind.Pointer)
+                            && (elementType?.TypeKind != TypeKind.Pointer))
                         {
                             Optional<object> arrayLength = arrayCreation.DimensionSizes[0].ConstantValue;
                             if (arrayLength.HasValue &&
-                                arrayLength.Value is int &&
-                                (int)arrayLength.Value == 0)
+                                (arrayLength.Value is int) &&
+                                ((int)arrayLength.Value == 0))
                             {
                                 Report(operationContext, arrayCreation.Syntax);
                             }

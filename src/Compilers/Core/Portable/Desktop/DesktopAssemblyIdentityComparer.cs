@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis
             AssemblyIdentityParts referenceParts,
             out bool isDefinitionFxAssembly)
         {
-            if (reference.ContentType == AssemblyContentType.Default &&
+            if ((reference.ContentType == AssemblyContentType.Default) &&
                 SimpleNameComparer.Equals(reference.Name, definition.Name) &&
                 SimpleNameComparer.Equals(reference.Name, "mscorlib"))
             {
@@ -200,8 +200,8 @@ namespace Microsoft.CodeAnalysis
         {
             // Short-circuit zero-version/non-neutral culture/weak name, 
             // which will never match retargeted identities.
-            return identity.CultureName.Length != 0
-                || identity.ContentType != AssemblyContentType.Default
+            return (identity.CultureName.Length != 0)
+                || (identity.ContentType != AssemblyContentType.Default)
                 || !identity.IsStrongName;
         }
 
@@ -244,7 +244,7 @@ namespace Microsoft.CodeAnalysis
 
         private AssemblyIdentity Port(AssemblyIdentity identity)
         {
-            if (identity.IsRetargetable || !identity.IsStrongName || identity.ContentType != AssemblyContentType.Default)
+            if (identity.IsRetargetable || !identity.IsStrongName || (identity.ContentType != AssemblyContentType.Default))
             {
                 return identity;
             }
@@ -253,7 +253,7 @@ namespace Microsoft.CodeAnalysis
             ImmutableArray<byte> newPublicKeyToken = default(ImmutableArray<byte>);
 
             var version = (AssemblyVersion)identity.Version;
-            if (version >= new AssemblyVersion(2, 0, 0, 0) && version <= new AssemblyVersion(5, 9, 0, 0))
+            if ((version >= new AssemblyVersion(2, 0, 0, 0)) && (version <= new AssemblyVersion(5, 9, 0, 0)))
             {
                 if (identity.PublicKeyToken.SequenceEqual(s_SILVERLIGHT_PLATFORM_PUBLICKEY_STR_L))
                 {

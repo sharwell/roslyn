@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis
             IEnumerable<string> allArgs = args;
             _clientDirectory = buildPaths.ClientDirectory;
 
-            Debug.Assert(null == responseFile || PathUtilities.IsAbsolute(responseFile));
+            Debug.Assert((null == responseFile) || PathUtilities.IsAbsolute(responseFile));
             if (!SuppressDefaultResponseFile(args) && File.Exists(responseFile))
             {
                 allArgs = new[] { "@" + responseFile }.Concat(allArgs);
@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis
         internal static string ExtractShortCommitHash(string hash)
         {
             // leave "<developer build>" alone, but truncate SHA to 8 characters
-            if (hash != null && hash.Length >= 8 && hash[0] != '<')
+            if ((hash != null) && (hash.Length >= 8) && (hash[0] != '<'))
             {
                 return hash.Substring(0, 8);
             }
@@ -329,7 +329,7 @@ namespace Microsoft.CodeAnalysis
                 else
                 {
                     text = TryReadEmbeddedFileContent(path, diagnostics);
-                    Debug.Assert(text != null || diagnostics.HasAnyErrors());
+                    Debug.Assert((text != null) || diagnostics.HasAnyErrors());
                 }
 
                 // We can safely add nulls because result will be ignored if any error is produced.
@@ -369,7 +369,7 @@ namespace Microsoft.CodeAnalysis
         {
             DiagnosticInfo diagnosticInfo;
 
-            if (e is FileNotFoundException || e.GetType().Name == "DirectoryNotFoundException")
+            if ((e is FileNotFoundException) || (e.GetType().Name == "DirectoryNotFoundException"))
             {
                 diagnosticInfo = new DiagnosticInfo(messageProvider, messageProvider.ERR_FileNotFound, filePath);
             }
@@ -827,7 +827,7 @@ namespace Microsoft.CodeAnalysis
 
                     if (success)
                     {
-                        bool emitPdbFile = Arguments.EmitPdb && emitOptions.DebugInformationFormat != Emit.DebugInformationFormat.Embedded;
+                        bool emitPdbFile = Arguments.EmitPdb && (emitOptions.DebugInformationFormat != Emit.DebugInformationFormat.Embedded);
 
                         var peStreamProvider = new CompilerEmitStreamProvider(this, finalPeFilePath);
                         var pdbStreamProviderOpt = emitPdbFile ? new CompilerEmitStreamProvider(this, finalPdbFilePath) : null;
@@ -836,7 +836,7 @@ namespace Microsoft.CodeAnalysis
                         var refPeStreamProviderOpt = finalRefPeFilePath != null ? new CompilerEmitStreamProvider(this, finalRefPeFilePath) : null;
 
                         RSAParameters? privateKeyOpt = null;
-                        if (compilation.Options.StrongNameProvider?.Capability == SigningCapability.SignsPeBuilder && !compilation.Options.PublicSign)
+                        if ((compilation.Options.StrongNameProvider?.Capability == SigningCapability.SignsPeBuilder) && !compilation.Options.PublicSign)
                         {
                             privateKeyOpt = compilation.StrongNameKeys.PrivateKey;
                         }
@@ -859,7 +859,7 @@ namespace Microsoft.CodeAnalysis
                         refPeStreamProviderOpt?.Close(diagnostics);
                         pdbStreamProviderOpt?.Close(diagnostics);
 
-                        if (success && touchedFilesLogger != null)
+                        if (success && (touchedFilesLogger != null))
                         {
                             if (pdbStreamProviderOpt != null)
                             {
@@ -925,7 +925,7 @@ namespace Microsoft.CodeAnalysis
                 var readStream = OpenFile(readFilesPath, diagnostics, mode: FileMode.OpenOrCreate);
                 var writtenStream = OpenFile(writtenFilesPath, diagnostics, mode: FileMode.OpenOrCreate);
 
-                if (readStream == null || writtenStream == null)
+                if ((readStream == null) || (writtenStream == null))
                 {
                     return false;
                 }

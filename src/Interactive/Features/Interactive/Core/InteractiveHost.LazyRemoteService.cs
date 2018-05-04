@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.Interactive
 
                 // If the value has been calculated already, dispose the service.
                 InitializedRemoteService initializedService;
-                if (InitializedService.TryGetValue(out initializedService) && initializedService.ServiceOpt != null)
+                if (InitializedService.TryGetValue(out initializedService) && (initializedService.ServiceOpt != null))
                 {
                     initializedService.ServiceOpt.Dispose(joinThreads);
                 }

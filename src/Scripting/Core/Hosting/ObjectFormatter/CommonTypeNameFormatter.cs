@@ -208,7 +208,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
                 quoteStringsAndCharacters: true,
                 escapeNonPrintableCharacters: true,
                 cultureInfo: CultureInfo.InvariantCulture);
-            var formatted = int.MinValue <= bound && bound <= int.MaxValue
+            var formatted = (int.MinValue <= bound) && (bound <= int.MaxValue)
                 ? PrimitiveFormatter.FormatPrimitive((int)bound, options)
                 : PrimitiveFormatter.FormatPrimitive(bound, options);
             sb.Append(formatted);

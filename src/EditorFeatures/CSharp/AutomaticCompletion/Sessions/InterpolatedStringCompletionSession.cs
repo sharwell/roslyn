@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
             var token = snapshot.FindToken(position, cancellationToken);
 
             return token.IsKind(SyntaxKind.InterpolatedStringStartToken, SyntaxKind.InterpolatedVerbatimStringStartToken)
-                && token.Span.End - 1 == position;
+                && ((token.Span.End - 1) == position);
         }
 
         public static bool IsContext(Document document, int position, CancellationToken cancellationToken)

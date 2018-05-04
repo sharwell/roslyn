@@ -315,7 +315,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 // There should be no way for a userMain to be passed in unless it already passed the 
                 // parameter checks for determining entrypoint validity.
-                Debug.Assert(userMain.ParameterCount == 0 || userMain.ParameterCount == 1);
+                Debug.Assert((userMain.ParameterCount == 0) || (userMain.ParameterCount == 1));
 
                 _userMainReturnTypeSyntax = userMain.ExtractReturnTypeSyntax();
                 var binder = compilation.GetBinder(_userMainReturnTypeSyntax);
@@ -346,8 +346,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 droppedBag.Free();
 
                 Debug.Assert(
-                    ReturnType.SpecialType == SpecialType.System_Void ||
-                    ReturnType.SpecialType == SpecialType.System_Int32);
+                    (ReturnType.SpecialType == SpecialType.System_Void) ||
+                    (ReturnType.SpecialType == SpecialType.System_Int32));
             }
 
             public override string Name => MainName;

@@ -103,8 +103,8 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                     return explicitImplementations.SelectAsArray(symbolAndProjectId.WithSymbol);
                 }
                 else if (
-                    symbol.DeclaredAccessibility == Accessibility.Public && !symbol.IsStatic &&
-                    (symbol.ContainingType.TypeKind == TypeKind.Class || symbol.ContainingType.TypeKind == TypeKind.Struct))
+                    (symbol.DeclaredAccessibility == Accessibility.Public) && !symbol.IsStatic &&
+                    ((symbol.ContainingType.TypeKind == TypeKind.Class) || (symbol.ContainingType.TypeKind == TypeKind.Struct)))
                 {
                     // Interface implementation is a tricky thing.  A method may implement an interface
                     // method, even if its containing type doesn't state that it implements the
@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                                         bestMethod.Symbol, solution.Workspace, cancellationToken);
                                     foreach (var implementation in implementations)
                                     {
-                                        if (implementation.Symbol != null &&
+                                        if ((implementation.Symbol != null) &&
                                             SymbolEquivalenceComparer.Instance.Equals(implementation.Symbol.OriginalDefinition, symbol.OriginalDefinition))
                                         {
                                             builder.Add(bestMethod);
@@ -270,9 +270,9 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             if (symbol.Locations.Any(l => l.IsInMetadata))
             {
                 var accessibility = symbol.DeclaredAccessibility;
-                return accessibility == Accessibility.Public ||
-                    accessibility == Accessibility.Protected ||
-                    accessibility == Accessibility.ProtectedOrInternal;
+                return (accessibility == Accessibility.Public) ||
+                    (accessibility == Accessibility.Protected) ||
+                    (accessibility == Accessibility.ProtectedOrInternal);
             }
 
             return true;
@@ -334,9 +334,9 @@ namespace Microsoft.CodeAnalysis.FindSymbols
         {
             if (symbol != null)
             {
-                if (symbol.Kind == SymbolKind.Event ||
-                    symbol.Kind == SymbolKind.Method ||
-                    symbol.Kind == SymbolKind.Property)
+                if ((symbol.Kind == SymbolKind.Event) ||
+                    (symbol.Kind == SymbolKind.Method) ||
+                    (symbol.Kind == SymbolKind.Property))
                 {
                     var result = await FindReferencesAsync(
                         symbol, solution, documents, cancellationToken).ConfigureAwait(false);
@@ -358,7 +358,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 return true;
             }
 
-            if (searchSymbol == null || symbolToMatch == null)
+            if ((searchSymbol == null) || (symbolToMatch == null))
             {
                 return false;
             }
@@ -389,7 +389,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 return true;
             }
 
-            if (searchSymbol.Kind == SymbolKind.Namespace && symbolToMatch.Kind == SymbolKind.Namespace)
+            if ((searchSymbol.Kind == SymbolKind.Namespace) && (symbolToMatch.Kind == SymbolKind.Namespace))
             {
                 // if one of them is a merged namespace symbol and other one is its constituent namespace symbol, they are equivalent.
                 var namespace1 = (INamespaceSymbol)searchSymbol;
@@ -398,9 +398,9 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 var namespace2Count = namespace2.ConstituentNamespaces.Length;
                 if (namespace1Count != namespace2Count)
                 {
-                    if ((namespace1Count > 1 &&
+                    if (((namespace1Count > 1) &&
                          namespace1.ConstituentNamespaces.Any(n => NamespaceSymbolsMatch(n, namespace2, solution, cancellationToken))) ||
-                        (namespace2Count > 1 &&
+                        ((namespace2Count > 1) &&
                          namespace2.ConstituentNamespaces.Any(n2 => NamespaceSymbolsMatch(namespace1, n2, solution, cancellationToken))))
                     {
                         return true;
@@ -408,7 +408,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 }
             }
 
-            if (searchSymbol.Kind == SymbolKind.NamedType && symbolToMatch.IsConstructor())
+            if ((searchSymbol.Kind == SymbolKind.NamedType) && symbolToMatch.IsConstructor())
             {
                 return OriginalSymbolsMatch(searchSymbol, symbolToMatch.ContainingType, solution, searchSymbolCompilation, symbolToMatchCompilation, cancellationToken);
             }
@@ -424,7 +424,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             Compilation symbolToMatchCompilation,
             CancellationToken cancellationToken)
         {
-            if (searchSymbol == null || symbolToMatch == null)
+            if ((searchSymbol == null) || (symbolToMatch == null))
             {
                 return false;
             }
@@ -497,7 +497,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             int verifiedCount = 0;
 
             // First check forwarded types in searchSymbolCompilation.
-            if (searchSymbolCompilation != null || TryGetCompilation(searchSymbol, solution, out searchSymbolCompilation, cancellationToken))
+            if ((searchSymbolCompilation != null) || TryGetCompilation(searchSymbol, solution, out searchSymbolCompilation, cancellationToken))
             {
                 verifiedCount = VerifyForwardedTypes(equivalentTypesWithDifferingAssemblies, searchSymbolCompilation, verifiedKeys, isSearchSymbolCompilation: true);
                 if (verifiedCount == count)

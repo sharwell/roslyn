@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert((object)symbol != null);
             Debug.Assert((object)within != null);
             Debug.Assert(within.IsDefinition);
-            Debug.Assert(within is NamedTypeSymbol || within is AssemblySymbol);
+            Debug.Assert((within is NamedTypeSymbol) || (within is AssemblySymbol));
 
             failedThroughTypeCheck = false;
 
@@ -139,7 +139,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         // assembly.
         private static bool IsNamedTypeAccessible(NamedTypeSymbol type, Symbol within, ref HashSet<DiagnosticInfo> useSiteDiagnostics, ConsList<Symbol> basesBeingResolved = null)
         {
-            Debug.Assert(within is NamedTypeSymbol || within is AssemblySymbol);
+            Debug.Assert((within is NamedTypeSymbol) || (within is AssemblySymbol));
             Debug.Assert((object)type != null);
 
             var compilation = within.DeclaringCompilation;
@@ -153,7 +153,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     // type parameters are always accessible, so don't check those (so common it's
                     // worth optimizing this).
-                    if (typeArg.Kind != SymbolKind.TypeParameter && !IsSymbolAccessibleCore(typeArg, within, null, out unused, compilation, ref useSiteDiagnostics, basesBeingResolved))
+                    if ((typeArg.Kind != SymbolKind.TypeParameter) && !IsSymbolAccessibleCore(typeArg, within, null, out unused, compilation, ref useSiteDiagnostics, basesBeingResolved))
                     {
                         return false;
                     }
@@ -173,7 +173,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Accessibility declaredAccessibility,
             Symbol within)
         {
-            Debug.Assert(within is NamedTypeSymbol || within is AssemblySymbol);
+            Debug.Assert((within is NamedTypeSymbol) || (within is AssemblySymbol));
             Debug.Assert((object)assembly != null);
 
             switch (declaredAccessibility)
@@ -198,7 +198,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     // An internal type is accessible if we're in the same assembly or we have
                     // friend access to the assembly it was defined in.
-                    return (object)withinAssembly == (object)assembly || withinAssembly.HasInternalAccessTo(assembly);
+                    return ((object)withinAssembly == (object)assembly) || withinAssembly.HasInternalAccessTo(assembly);
 
                 default:
                     throw ExceptionUtilities.UnexpectedValue(declaredAccessibility);
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ref HashSet<DiagnosticInfo> useSiteDiagnostics,
             ConsList<Symbol> basesBeingResolved = null)
         {
-            Debug.Assert(within is NamedTypeSymbol || within is AssemblySymbol);
+            Debug.Assert((within is NamedTypeSymbol) || (within is AssemblySymbol));
             Debug.Assert((object)containingType != null);
 
             failedThroughTypeCheck = false;
@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
 
                     // private members never accessible from outside a type.
-                    return (object)withinType != null && IsPrivateSymbolAccessible(withinType, originalContainingType);
+                    return ((object)withinType != null) && IsPrivateSymbolAccessible(withinType, originalContainingType);
 
                 case Accessibility.Internal:
                     // An internal type is accessible if we're in the same assembly or we have
@@ -391,7 +391,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // inheritance chains should be very short.  As such, it might actually be
                         // slower to create and check inside the set versus just walking the
                         // inheritance chain.
-                        if ((object)originalThroughTypeOpt == null ||
+                        if (((object)originalThroughTypeOpt == null) ||
                             originalThroughTypeOpt.InheritsFromIgnoringConstruction(current, compilation, ref useSiteDiagnostics))
                         {
                             return true;
@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Symbol within,
             NamedTypeSymbol originalContainingType)
         {
-            Debug.Assert(within is NamedTypeSymbol || within is AssemblySymbol);
+            Debug.Assert((within is NamedTypeSymbol) || (within is AssemblySymbol));
 
             var withinType = within as NamedTypeSymbol;
             if ((object)withinType == null)

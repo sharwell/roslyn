@@ -32,10 +32,10 @@ namespace Microsoft.CodeAnalysis.FindSymbols
         private static Func<Location, bool> s_isInSource = loc => loc.IsInSource;
 
         private static Func<INamedTypeSymbol, bool> s_isNonSealedClass =
-            t => t?.TypeKind == TypeKind.Class && !t.IsSealed;
+            t => (t?.TypeKind == TypeKind.Class) && !t.IsSealed;
 
         private static readonly Func<INamedTypeSymbol, bool> s_isInterfaceOrNonSealedClass =
-            t => t.TypeKind == TypeKind.Interface || s_isNonSealedClass(t);
+            t => (t.TypeKind == TypeKind.Interface) || s_isNonSealedClass(t);
 
         private static readonly ObjectPool<SymbolAndProjectIdSet> s_setPool = new ObjectPool<SymbolAndProjectIdSet>(
             () => new SymbolAndProjectIdSet(SymbolAndProjectIdComparer<INamedTypeSymbol>.SymbolEquivalenceInstance));
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
             // We only want implementing types here, not derived interfaces.
             return derivedAndImplementingTypes.WhereAsArray(
-                t => t.Symbol.TypeKind == TypeKind.Class || t.Symbol.TypeKind == TypeKind.Struct);
+                t => (t.Symbol.TypeKind == TypeKind.Class) || (t.Symbol.TypeKind == TypeKind.Struct));
         }
 
         /// <summary>
@@ -599,7 +599,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 // our criteria.
                 foreach (var derivedType in symbolTreeInfo.GetDerivedMetadataTypes(baseTypeName, compilation, cancellationToken))
                 {
-                    if (derivedType != null && derivedType.Locations.Any(s_isInMetadata))
+                    if ((derivedType != null) && derivedType.Locations.Any(s_isInMetadata))
                     {
                         if (metadataTypeMatches(metadataTypes, derivedType))
                         {
@@ -788,7 +788,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                     var resolvedSymbol = info.TryResolve(semanticModel, cancellationToken);
                     if (resolvedSymbol is INamedTypeSymbol namedType)
                     {
-                        if (predicateOpt == null ||
+                        if ((predicateOpt == null) ||
                             predicateOpt(namedType))
                         {
                             result.Add(new SymbolAndProjectId<INamedTypeSymbol>(namedType, document.Project.Id));

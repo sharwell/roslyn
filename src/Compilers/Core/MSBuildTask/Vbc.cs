@@ -307,7 +307,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                 if (actualPdbInfo.Exists)
                 {
                     // .. and the desired one does not exist or it's older...
-                    if (!desiredPdbInfo.Exists || (desiredPdbInfo.Exists && actualPdbInfo.LastWriteTime > desiredPdbInfo.LastWriteTime))
+                    if (!desiredPdbInfo.Exists || (desiredPdbInfo.Exists && (actualPdbInfo.LastWriteTime > desiredPdbInfo.LastWriteTime)))
                     {
                         // Delete the existing one if it's already there, as Move would otherwise fail
                         if (desiredPdbInfo.Exists)
@@ -624,9 +624,9 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
             // We can also return immediately if the current string is not a warning or error
             // and we have not seen a warning or error yet. 'Error' and 'Warning' are not localized.
-            if (_vbErrorLines.Count == 0 &&
-                singleLine.IndexOf("warning", StringComparison.OrdinalIgnoreCase) == -1 &&
-                singleLine.IndexOf("error", StringComparison.OrdinalIgnoreCase) == -1)
+            if ((_vbErrorLines.Count == 0) &&
+                (singleLine.IndexOf("warning", StringComparison.OrdinalIgnoreCase) == -1) &&
+                (singleLine.IndexOf("error", StringComparison.OrdinalIgnoreCase) == -1))
             {
                 base.LogEventsFromTextOutput(singleLine, messageImportance);
                 return;
@@ -651,7 +651,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
             {
                 // vbc separates the error message from the source text with an empty line, so
                 // we can check for an empty line to see if vbc finished outputting the error message
-                if (!_isDoneOutputtingErrorMessage && singleLine.Length == 0)
+                if (!_isDoneOutputtingErrorMessage && (singleLine.Length == 0))
                 {
                     _isDoneOutputtingErrorMessage = true;
                     _numberOfLinesInErrorMessage = _vbErrorLines.Count;
@@ -667,7 +667,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                 // <line with the source text>
                 // <line with the '~'>
                 if (_isDoneOutputtingErrorMessage &&
-                    _vbErrorLines.Count == _numberOfLinesInErrorMessage + 3)
+                    (_vbErrorLines.Count == (_numberOfLinesInErrorMessage + 3)))
                 {
                     // Once we have the 4th line (error line + 3), then parse it for the first ~
                     // which will correspond to the column of the token with the error because
@@ -684,7 +684,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
 
                     // If for some reason the line does not contain any ~ then something went wrong
                     // so abort and return the original string.
-                    if (column < 0 || endParenthesisLocation < 0)
+                    if ((column < 0) || (endParenthesisLocation < 0))
                     {
                         // we need to output all of the original lines we ate.
                         Log.LogMessageFromText(originalVBErrorString, originalVBError.MessageImportance);
@@ -717,9 +717,9 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                 {
                     base.LogEventsFromTextOutput(singleLine, messageImportance);
                 }
-                else if ((parts.category == CanonicalError.Parts.Category.Error ||
-                     parts.category == CanonicalError.Parts.Category.Warning) &&
-                     parts.column == CanonicalError.Parts.numberNotSpecified)
+                else if (((parts.category == CanonicalError.Parts.Category.Error) ||
+                     (parts.category == CanonicalError.Parts.Category.Warning)) &&
+                     (parts.column == CanonicalError.Parts.numberNotSpecified))
                 {
                     if (parts.line != CanonicalError.Parts.numberNotSpecified)
                     {
@@ -913,7 +913,7 @@ namespace Microsoft.CodeAnalysis.BuildTasks
                 }
 
                 // Check for support of the LangVersion property
-                if (vbcHostObject is IVbcHostObject3 && !DeferToICompilerOptionsHostObject(LangVersion, vbcHostObject))
+                if ((vbcHostObject is IVbcHostObject3) && !DeferToICompilerOptionsHostObject(LangVersion, vbcHostObject))
                 {
                     IVbcHostObject3 vbcHostObject3 = (IVbcHostObject3)vbcHostObject;
                     CheckHostObjectSupport(param = nameof(LangVersion), vbcHostObject3.SetLanguageVersion(LangVersion));

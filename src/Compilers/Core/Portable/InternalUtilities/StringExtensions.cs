@@ -41,12 +41,12 @@ namespace Roslyn.Utilities
 
         public static bool LooksLikeInterfaceName(this string name)
         {
-            return name.Length >= 3 && name[0] == 'I' && char.IsUpper(name[1]) && char.IsLower(name[2]);
+            return (name.Length >= 3) && (name[0] == 'I') && char.IsUpper(name[1]) && char.IsLower(name[2]);
         }
 
         public static bool LooksLikeTypeParameterName(this string name)
         {
-            return name.Length >= 3 && name[0] == 'T' && char.IsUpper(name[1]) && char.IsLower(name[2]);
+            return (name.Length >= 3) && (name[0] == 'T') && char.IsUpper(name[1]) && char.IsLower(name[2]);
         }
 
         private static readonly Func<char, char> s_toLower = char.ToLower;
@@ -91,7 +91,7 @@ namespace Roslyn.Utilities
 
         internal static bool IsValidClrTypeName(this string name)
         {
-            return !string.IsNullOrEmpty(name) && name.IndexOf('\0') == -1;
+            return !string.IsNullOrEmpty(name) && (name.IndexOf('\0') == -1);
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Roslyn.Utilities
             char lastChar = '.';
             foreach (char c in name)
             {
-                if (c == '\0' || (c == '.' && lastChar == '.'))
+                if ((c == '\0') || ((c == '.') && (lastChar == '.')))
                 {
                     return false;
                 }
@@ -152,7 +152,7 @@ namespace Roslyn.Utilities
         {
             const string AttributeSuffix = "Attribute";
             var comparison = isCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-            if (name.Length > AttributeSuffix.Length && name.EndsWith(AttributeSuffix, comparison))
+            if ((name.Length > AttributeSuffix.Length) && name.EndsWith(AttributeSuffix, comparison))
             {
                 result = name.Substring(0, name.Length - AttributeSuffix.Length);
                 return true;
@@ -172,7 +172,7 @@ namespace Roslyn.Utilities
                 // (high surrogate, low surrogate) makes a valid pair, anything else is invalid:
                 if (char.IsHighSurrogate(c))
                 {
-                    if (i < str.Length && char.IsLowSurrogate(str[i]))
+                    if ((i < str.Length) && char.IsLowSurrogate(str[i]))
                     {
                         i++;
                     }
@@ -202,7 +202,7 @@ namespace Roslyn.Utilities
 
         internal static string Unquote(this string arg, out bool quoted)
         {
-            if (arg.Length > 1 && arg[0] == '"' && arg[arg.Length - 1] == '"')
+            if ((arg.Length > 1) && (arg[0] == '"') && (arg[arg.Length - 1] == '"'))
             {
                 quoted = true;
                 return arg.Substring(1, arg.Length - 2);
@@ -268,8 +268,8 @@ namespace Roslyn.Utilities
         public static int GetCaseInsensitivePrefixLength(this string string1, string string2)
         {
             int x = 0;
-            while (x < string1.Length && x < string2.Length &&
-                   char.ToUpper(string1[x]) == char.ToUpper(string2[x]))
+            while ((x < string1.Length) && (x < string2.Length) &&
+                   (char.ToUpper(string1[x]) == char.ToUpper(string2[x])))
             {
                 x++;
             }

@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 Contract.Requires(_updateSources.Contains(source));
 
                 // check cheap early bail out
-                if (args.Diagnostics.Length == 0 && !_map.ContainsKey(source))
+                if ((args.Diagnostics.Length == 0) && !_map.ContainsKey(source))
                 {
                     // no new diagnostic, and we don't have update source for it.
                     return false;
@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 // distinguish them. so we separate diagnostics per workspace map.
                 var workspaceMap = _map.GetOrAdd(source, _ => new Dictionary<Workspace, Dictionary<object, Data>>());
 
-                if (args.Diagnostics.Length == 0 && !workspaceMap.ContainsKey(args.Workspace))
+                if ((args.Diagnostics.Length == 0) && !workspaceMap.ContainsKey(args.Workspace))
                 {
                     // no new diagnostic, and we don't have workspace for it.
                     return false;
@@ -127,7 +127,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 var diagnosticDataMap = workspaceMap.GetOrAdd(args.Workspace, _ => new Dictionary<object, Data>());
 
                 diagnosticDataMap.Remove(args.Id);
-                if (diagnosticDataMap.Count == 0 && args.Diagnostics.Length == 0)
+                if ((diagnosticDataMap.Count == 0) && (args.Diagnostics.Length == 0))
                 {
                     workspaceMap.Remove(args.Workspace);
 
@@ -178,7 +178,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 if (source.SupportGetDiagnostics)
                 {
                     var diagnostics = source.GetDiagnostics(workspace, projectId, documentId, id, includeSuppressedDiagnostics, cancellationToken);
-                    if (diagnostics != null && diagnostics.Length > 0)
+                    if ((diagnostics != null) && (diagnostics.Length > 0))
                     {
                         return diagnostics;
                     }
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     using (var pool = SharedPools.Default<List<Data>>().GetPooledObject())
                     {
                         AppendMatchingData(source, workspace, projectId, documentId, id, pool.Object);
-                        Contract.Requires(pool.Object.Count == 0 || pool.Object.Count == 1);
+                        Contract.Requires((pool.Object.Count == 0) || (pool.Object.Count == 1));
 
                         if (pool.Object.Count == 1)
                         {

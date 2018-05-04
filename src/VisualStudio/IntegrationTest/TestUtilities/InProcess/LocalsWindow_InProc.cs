@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
             EnvDTE.Expression entry = null;
 
             int i = 0;
-            while (i < entryNames.Length && TryGetEntryInternal(entryNames[i], expressions, out entry))
+            while ((i < entryNames.Length) && TryGetEntryInternal(entryNames[i], expressions, out entry))
             {
                 i++;
                 expressions = entry.DataMembers;

@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
                 // Add root scope if it was not already added.
                 // we add it even if it does not contain any locals
-                if (result.Count > 0 && result[result.Count - 1].Length != expectedRootScopeLength)
+                if ((result.Count > 0) && (result[result.Count - 1].Length != expectedRootScopeLength))
                 {
                     result.Add(new Cci.LocalScope(
                         0,
@@ -207,7 +207,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 }
                 else
                 {
-                    Debug.Assert(scopeType == ScopeType.Variable || scopeType == ScopeType.StateMachineVariable);
+                    Debug.Assert((scopeType == ScopeType.Variable) || (scopeType == ScopeType.StateMachineVariable));
                     return new LocalScopeInfo();
                 }
             }
@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             internal override bool ContainsLocal(LocalDefinition local)
             {
                 var locals = _localVariables;
-                return locals != null && locals.Contains(local);
+                return (locals != null) && locals.Contains(local);
             }
 
             public virtual BasicBlock CreateBlock(ILBuilder builder)
@@ -450,7 +450,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 }
 
                 // we are not interested in scopes with no variables or no code in them.
-                if ((_localVariables != null || _localConstants != null) && end > begin)
+                if (((_localVariables != null) || (_localConstants != null)) && (end > begin))
                 {
                     var newScope = new Cci.LocalScope(
                         begin,
@@ -495,7 +495,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 }
 
                 // we are not interested in scopes with no variables or no code in them.
-                if (_stateMachineUserHoistedLocalSlotIndices != null && end > begin)
+                if ((_stateMachineUserHoistedLocalSlotIndices != null) && (end > begin))
                 {
                     var newScope = new StateMachineHoistedLocalScope(begin, end);
 
@@ -838,7 +838,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                     // handler[0] is always the try
                     // if we have a finally, then we do not have any catches and 
                     // the finally is as handlers[1]
-                    if (handlers.Count != 2 || handlers[1].Type != ScopeType.Finally)
+                    if ((handlers.Count != 2) || (handlers[1].Type != ScopeType.Finally))
                     {
                         return false;
                     }
@@ -858,7 +858,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
             internal ScopeBounds(int begin, int end)
             {
-                Debug.Assert(begin >= 0 && end >= 0);
+                Debug.Assert((begin >= 0) && (end >= 0));
                 this.Begin = begin;
                 this.End = end;
             }

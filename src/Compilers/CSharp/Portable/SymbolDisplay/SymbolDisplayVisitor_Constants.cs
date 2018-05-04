@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 AddNonNullConstantValue(type, constantValue, preferNumericValueOrExpandedFlagsForEnum);
             }
-            else if (type.IsReferenceType || type.TypeKind == TypeKind.Pointer || type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            else if (type.IsReferenceType || (type.TypeKind == TypeKind.Pointer) || (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T))
             {
                 AddKeyword(SyntaxKind.NullKeyword);
             }
@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected override void AddLiteralValue(SpecialType type, object value)
         {
-            Debug.Assert(value.GetType().GetTypeInfo().IsPrimitive || value is string || value is decimal);
+            Debug.Assert(value.GetType().GetTypeInfo().IsPrimitive || (value is string) || (value is decimal));
             var valueString = SymbolDisplay.FormatPrimitive(value, quoteStrings: true, useHexadecimalNumbers: false);
             Debug.Assert(valueString != null);
 

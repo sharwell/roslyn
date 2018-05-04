@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.RuntimeMembers
             // get the type
             bool result = MatchType(GetFieldType(field), signature, ref position);
 
-            Debug.Assert(!result || position == signature.Length);
+            Debug.Assert(!result || (position == signature.Length));
             return result;
         }
 

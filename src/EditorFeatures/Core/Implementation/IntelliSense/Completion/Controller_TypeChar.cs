@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             var caretPoint = TextView.Caret.Position.Point;
             var point1 = caretPoint.GetPoint(this.SubjectBuffer, PositionAffinity.Predecessor);
             var point2 = caretPoint.GetPoint(this.SubjectBuffer, PositionAffinity.Successor);
-            if (point1.HasValue && point1 != point2)
+            if (point1.HasValue && (point1 != point2))
             {
                 return true;
             }
@@ -255,7 +255,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             // TODO(cyrusn): Actually use the right unicode categories here.
             return char.IsLetter(args.TypedChar)
                 || char.IsNumber(args.TypedChar)
-                || args.TypedChar == '_';
+                || (args.TypedChar == '_');
         }
 
         private Document GetDocument()
@@ -295,7 +295,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
         {
             AssertIsForeground();
 
-            if (model == null || model.IsSoftSelection || model.SelectedItemOpt == null)
+            if ((model == null) || model.IsSoftSelection || (model.SelectedItemOpt == null))
             {
                 return false;
             }

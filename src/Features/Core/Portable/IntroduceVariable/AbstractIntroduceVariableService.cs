@@ -173,8 +173,8 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
             if (destination is TTypeDeclarationSyntax typeDecl)
             {
                 var insertionIndices = this.GetInsertionIndices(typeDecl, cancellationToken);
-                if (insertionIndices != null &&
-                    insertionIndices.Count > insertionIndex &&
+                if ((insertionIndices != null) &&
+                    (insertionIndices.Count > insertionIndex) &&
                     insertionIndices[insertionIndex])
                 {
                     return true;
@@ -317,8 +317,8 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
             var semanticModel = document.SemanticModel;
             var typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
-            if (typeInfo.Type?.SpecialType == SpecialType.System_String &&
-                typeInfo.ConvertedType?.IsFormattableString() == true)
+            if ((typeInfo.Type?.SpecialType == SpecialType.System_String) &&
+                (typeInfo.ConvertedType?.IsFormattableString() == true))
             {
                 return typeInfo.ConvertedType;
             }
@@ -382,7 +382,7 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
                                 expandInsideNode: node =>
                                 {
                                     var expression = node as TExpressionSyntax;
-                                    return expression == null
+                                    return (expression == null)
                                         || !newMatches.Contains(expression);
                                 },
                                 cancellationToken: ct)

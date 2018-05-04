@@ -53,11 +53,11 @@ namespace Microsoft.CodeAnalysis.Editing
                 isStatic: symbol.IsStatic,
                 isAbstract: symbol.IsAbstract,
                 ////isNew: (property != null && property.OverriddenProperty == null) || (method != null && method.OverriddenMethod == null),
-                isReadOnly: (field != null && field.IsReadOnly) || (property != null && property.IsReadOnly),
+                isReadOnly: ((field != null) && field.IsReadOnly) || ((property != null) && property.IsReadOnly),
                 isVirtual: symbol.IsVirtual,
                 isOverride: symbol.IsOverride,
                 isSealed: symbol.IsSealed,
-                isConst: field != null && field.IsConst);
+                isConst: (field != null) && field.IsConst);
         }
 
         public bool IsStatic => (_modifiers & Modifiers.Static) != 0;
@@ -222,7 +222,7 @@ namespace Microsoft.CodeAnalysis.Editing
 
         public override bool Equals(object obj)
         {
-            return obj is DeclarationModifiers && Equals((DeclarationModifiers)obj);
+            return (obj is DeclarationModifiers) && Equals((DeclarationModifiers)obj);
         }
 
         public override int GetHashCode()

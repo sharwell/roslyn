@@ -173,7 +173,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
 
                 if (charsOffset > 0)
                 {
-                    for (var i = 0; i < charsOffset - 1; i++)
+                    for (var i = 0; i < (charsOffset - 1); i++)
                     {
                         view.Caret.MoveToNextCaretPosition();
                     }
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
                     // On the first negative charsOffset, move to anchor-point position, as if the user hit the LEFT key
                     view.Caret.MoveTo(new SnapshotPoint(view.TextSnapshot, view.Selection.AnchorPoint.Position.Position));
 
-                    for (var i = 0; i < -charsOffset - 1; i++)
+                    for (var i = 0; i < (-charsOffset - 1); i++)
                     {
                         view.Caret.MoveToPreviousCaretPosition();
                     }
@@ -272,7 +272,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
            }
 
            var session = broker.GetSession(view);
-           if (session == null || !session.IsExpanded)
+           if ((session == null) || !session.IsExpanded)
            {
                return false;
            }
@@ -303,7 +303,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
             }
 
             var activeSession = broker.GetSession(view);
-            if (activeSession == null || !activeSession.IsExpanded)
+            if ((activeSession == null) || !activeSession.IsExpanded)
             {
                 var bufferType = view.TextBuffer.ContentType.DisplayName;
                 throw new InvalidOperationException(string.Format("No expanded light bulb session found after View.ShowSmartTag.  Buffer content type={0}", bufferType));

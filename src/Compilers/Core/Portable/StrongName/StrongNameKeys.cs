@@ -66,8 +66,8 @@ namespace Microsoft.CodeAnalysis
 
         internal StrongNameKeys(ImmutableArray<byte> keyPair, ImmutableArray<byte> publicKey, RSAParameters? privateKey, string keyContainerName, string keyFilePath)
         {
-            Debug.Assert(keyContainerName == null || keyPair.IsDefault);
-            Debug.Assert(keyPair.IsDefault || keyFilePath != null);
+            Debug.Assert((keyContainerName == null) || keyPair.IsDefault);
+            Debug.Assert(keyPair.IsDefault || (keyFilePath != null));
 
             this.KeyPair = keyPair;
             this.PublicKey = publicKey;
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis
 
             // Check the key pair cache
             var cachedKeyPair = s_lastSeenKeyPair;
-            if (cachedKeyPair != null && keyFileContent == cachedKeyPair.Item1)
+            if ((cachedKeyPair != null) && (keyFileContent == cachedKeyPair.Item1))
             {
                 keyPair = cachedKeyPair.Item1;
                 publicKey = cachedKeyPair.Item2;
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis
         {
             get
             {
-                return !KeyPair.IsDefault || KeyContainer != null;
+                return !KeyPair.IsDefault || (KeyContainer != null);
             }
         }
 
@@ -216,16 +216,16 @@ namespace Microsoft.CodeAnalysis
 
         internal static bool IsValidPublicKeyString(string publicKey)
         {
-            if (string.IsNullOrEmpty(publicKey) || publicKey.Length % 2 != 0)
+            if (string.IsNullOrEmpty(publicKey) || ((publicKey.Length % 2) != 0))
             {
                 return false;
             }
 
             foreach (char c in publicKey)
             {
-                if (!(c >= '0' && c <= '9') &&
-                    !(c >= 'a' && c <= 'f') &&
-                    !(c >= 'A' && c <= 'F'))
+                if (!((c >= '0') && (c <= '9')) &&
+                    !((c >= 'a') && (c <= 'f')) &&
+                    !((c >= 'A') && (c <= 'F')))
                 {
                     return false;
                 }

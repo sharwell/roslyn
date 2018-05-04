@@ -76,9 +76,9 @@ namespace Roslyn.Test.Utilities
 
         internal static bool Requires64Bits(this PEHeaders headers)
         {
-            return headers.PEHeader != null && headers.PEHeader.Magic == PEMagic.PE32Plus
-                || headers.CoffHeader.Machine == Machine.Amd64
-                || headers.CoffHeader.Machine == Machine.IA64;
+            return ((headers.PEHeader != null) && (headers.PEHeader.Magic == PEMagic.PE32Plus))
+                || (headers.CoffHeader.Machine == Machine.Amd64)
+                || (headers.CoffHeader.Machine == Machine.IA64);
         }
 
         public static string GetString(this MetadataReader[] readers, StringHandle handle)
@@ -199,7 +199,7 @@ namespace Roslyn.Test.Utilities
             builder.Add(0); // Add null terminator.
             var bytes = builder.ToImmutableAndFree();
 
-            for (int i = 0; i < metadata.Length - bytes.Length; i++)
+            for (int i = 0; i < (metadata.Length - bytes.Length); i++)
             {
                 if (metadata.IsAtIndex(bytes, i))
                 {

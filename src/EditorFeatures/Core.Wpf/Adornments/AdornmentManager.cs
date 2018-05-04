@@ -241,7 +241,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Adornments
             var visualSnapshot = _textView.VisualSnapshot;
 
             var viewLines = _textView.TextViewLines;
-            if (viewLines == null || viewLines.Count == 0)
+            if ((viewLines == null) || (viewLines.Count == 0))
             {
                 return; // nothing to draw on
             }
@@ -326,7 +326,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Adornments
             // anchor to the viewSnapshot however, since the _anchor is not available, we have to
             // map start and end TODO: verify that affinity is correct. If it does not matter we
             // should use the cheapest.
-            if (viewSnapshot != null && mappingSpan.AnchorBuffer == viewSnapshot.TextBuffer)
+            if ((viewSnapshot != null) && (mappingSpan.AnchorBuffer == viewSnapshot.TextBuffer))
             {
                 var mappedStart = mappingSpan.Start.GetPoint(viewSnapshot, PositionAffinity.Predecessor).Value;
                 var mappedEnd = mappingSpan.End.GetPoint(viewSnapshot, PositionAffinity.Successor).Value;

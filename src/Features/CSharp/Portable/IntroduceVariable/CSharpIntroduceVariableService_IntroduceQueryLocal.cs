@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.CSharp.IntroduceVariable
     {
         private static bool IsAnyQueryClause(SyntaxNode node)
         {
-            return node is QueryClauseSyntax || node is SelectOrGroupClauseSyntax;
+            return (node is QueryClauseSyntax) || (node is SelectOrGroupClauseSyntax);
         }
 
         protected override Task<Document> IntroduceQueryLocalAsync(

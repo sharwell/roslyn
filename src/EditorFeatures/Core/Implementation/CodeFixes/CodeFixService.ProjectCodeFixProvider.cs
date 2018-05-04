@@ -62,8 +62,8 @@ namespace Microsoft.CodeAnalysis.CodeFixes
                                 var attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
                                 if (attribute != null)
                                 {
-                                    if (attribute.Languages == null ||
-                                        attribute.Languages.Length == 0 ||
+                                    if ((attribute.Languages == null) ||
+                                        (attribute.Languages.Length == 0) ||
                                         attribute.Languages.Contains(language))
                                     {
                                         builder.Add((CodeFixProvider)Activator.CreateInstance(typeInfo.AsType()));

@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.SQLite
 
             var documentId = TryGetDocumentId(connection, document);
             var nameId = TryGetStringId(connection, name);
-            if (documentId == null || nameId == null)
+            if ((documentId == null) || (nameId == null))
             {
                 return false;
             }
@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.SQLite
             var documentPathId = TryGetStringId(connection, document.FilePath);
             var documentNameId = TryGetStringId(connection, document.Name);
 
-            if (documentPathId == null || documentNameId == null)
+            if ((documentPathId == null) || (documentNameId == null))
             {
                 return null;
             }

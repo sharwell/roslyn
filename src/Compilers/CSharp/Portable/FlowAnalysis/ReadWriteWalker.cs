@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 var thisParameter = m.ThisParameter;
-                if ((object)thisParameter != null && thisParameter.RefKind != RefKind.None)
+                if (((object)thisParameter != null) && (thisParameter.RefKind != RefKind.None))
                 {
                     _readOutside.Add(thisParameter);
                 }
@@ -200,7 +200,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     {
                         base.AssignImpl(node, value, isRef, written, read);
                         var fieldAccess = node as BoundFieldAccess;
-                        if (!IsInside && node.Syntax != null && node.Syntax.Span.Contains(RegionSpan))
+                        if (!IsInside && (node.Syntax != null) && node.Syntax.Span.Contains(RegionSpan))
                         {
                             NoteReceiverWritten(fieldAccess);
                         }

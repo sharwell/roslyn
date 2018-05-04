@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.AddImport
             {
                 var reference = obj as ProjectSymbolReference;
                 return base.Equals(reference) &&
-                    _project.Id == reference._project.Id;
+                    (_project.Id == reference._project.Id);
             }
 
             public override int GetHashCode()

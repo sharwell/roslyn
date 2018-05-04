@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.Symbols.Metadata.PE
         private void TestTypeAccessibilityHelper(ModuleSymbol module0)
         {
             var system = (from n in module0.GlobalNamespace.GetMembers()
-                          where n.Kind == SymbolKind.Namespace && n.Name.Equals("System")
+                          where (n.Kind == SymbolKind.Namespace) && n.Name.Equals("System")
                           select n).Cast<NamespaceSymbol>().Single();
 
             var obj = (from t in system.GetTypeMembers()
@@ -62,15 +62,15 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.Symbols.Metadata.PE
             Assert.Equal(Accessibility.Public, contextForm.DeclaredAccessibility);
 
             var runtime = (from t in system.GetMembers()
-                           where t.Kind == SymbolKind.Namespace && t.Name.Equals("Runtime")
+                           where (t.Kind == SymbolKind.Namespace) && t.Name.Equals("Runtime")
                            select t).Cast<NamespaceSymbol>().Single();
 
             var remoting = (from t in runtime.GetMembers()
-                            where t.Kind == SymbolKind.Namespace && t.Name.Equals("Remoting")
+                            where (t.Kind == SymbolKind.Namespace) && t.Name.Equals("Remoting")
                             select t).Cast<NamespaceSymbol>().Single();
 
             var messaging = (from t in remoting.GetMembers()
-                             where t.Kind == SymbolKind.Namespace && t.Name.Equals("Messaging")
+                             where (t.Kind == SymbolKind.Namespace) && t.Name.Equals("Messaging")
                              select t).Cast<NamespaceSymbol>().Single();
 
             var messageSmuggler = (from t in messaging.GetTypeMembers()
@@ -84,11 +84,11 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.Symbols.Metadata.PE
             Assert.Equal(Accessibility.Protected, serializedArg.DeclaredAccessibility);
 
             var security = (from t in system.GetMembers()
-                            where t.Kind == SymbolKind.Namespace && t.Name.Equals("Security")
+                            where (t.Kind == SymbolKind.Namespace) && t.Name.Equals("Security")
                             select t).Cast<NamespaceSymbol>().Single();
 
             var accessControl = (from t in security.GetMembers()
-                                 where t.Kind == SymbolKind.Namespace && t.Name.Equals("AccessControl")
+                                 where (t.Kind == SymbolKind.Namespace) && t.Name.Equals("AccessControl")
                                  select t).Cast<NamespaceSymbol>().Single();
 
             var nativeObjectSecurity = (from t in accessControl.GetTypeMembers()

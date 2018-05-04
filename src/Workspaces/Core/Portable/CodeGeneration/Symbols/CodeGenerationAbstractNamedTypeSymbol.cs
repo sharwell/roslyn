@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         public ImmutableArray<CustomModifier> GetTypeArgumentCustomModifiers(int ordinal)
         {
-            if (ordinal < 0 || ordinal >= Arity)
+            if ((ordinal < 0) || (ordinal >= Arity))
             {
                 throw new System.IndexOutOfRangeException();
             }

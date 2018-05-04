@@ -34,8 +34,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             if (_eventQueue.Count > 0)
             {
                 var priorEvent = _eventQueue.Peek();
-                if (priorEvent.Node == @event.Node &&
-                    priorEvent.ParentNode == @event.ParentNode &&
+                if ((priorEvent.Node == @event.Node) &&
+                    (priorEvent.ParentNode == @event.ParentNode) &&
                     priorEvent.Type.IsChange() &&
                     @event.Type.IsChange())
                 {

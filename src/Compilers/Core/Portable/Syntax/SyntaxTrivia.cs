@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis
             Position = position;
             Index = index;
 
-            Debug.Assert(this.RawKind != 0 || this.Equals(default(SyntaxTrivia)));
+            Debug.Assert((this.RawKind != 0) || this.Equals(default(SyntaxTrivia)));
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool Equals(SyntaxTrivia other)
         {
-            return Token == other.Token && UnderlyingNode == other.UnderlyingNode && Position == other.Position && Index == other.Index;
+            return (Token == other.Token) && (UnderlyingNode == other.UnderlyingNode) && (Position == other.Position) && (Index == other.Index);
         }
 
         /// <summary>
@@ -258,7 +258,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is SyntaxTrivia && Equals((SyntaxTrivia)obj);
+            return (obj is SyntaxTrivia) && Equals((SyntaxTrivia)obj);
         }
 
         /// <summary>
@@ -362,7 +362,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var annotations = this.UnderlyingNode.GetAnnotations();
-            if (annotations == null || annotations.Length == 0)
+            if ((annotations == null) || (annotations.Length == 0))
             {
                 return trivia;
             }
@@ -409,8 +409,8 @@ namespace Microsoft.CodeAnalysis
         public bool IsEquivalentTo(SyntaxTrivia trivia)
         {
             return
-                (UnderlyingNode == null && trivia.UnderlyingNode == null) ||
-                (UnderlyingNode != null && trivia.UnderlyingNode != null && UnderlyingNode.IsEquivalentTo(trivia.UnderlyingNode));
+                ((UnderlyingNode == null) && (trivia.UnderlyingNode == null)) ||
+                ((UnderlyingNode != null) && (trivia.UnderlyingNode != null) && UnderlyingNode.IsEquivalentTo(trivia.UnderlyingNode));
         }
     }
 }

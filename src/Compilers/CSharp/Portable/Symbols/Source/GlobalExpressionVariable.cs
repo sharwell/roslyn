@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 FieldSymbol containingFieldOpt,
                 SyntaxNode nodeToBind)
         {
-            Debug.Assert(nodeToBind.Kind() == SyntaxKind.VariableDeclarator || nodeToBind is ExpressionSyntax);
+            Debug.Assert((nodeToBind.Kind() == SyntaxKind.VariableDeclarator) || (nodeToBind is ExpressionSyntax));
 
             var syntaxReference = syntax.GetReference();
             return typeSyntax.IsVar
@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             bool isVar;
             type = binder.BindTypeOrVarKeyword(typeSyntax, diagnostics, out isVar);
 
-            Debug.Assert((object)type != null || isVar);
+            Debug.Assert(((object)type != null) || isVar);
 
             if (isVar && !fieldsBeingBound.ContainsReference(this))
             {
@@ -113,9 +113,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // In the event that we race to set the type of a field, we should
             // always deduce the same type, unless the cached type is an error.
 
-            Debug.Assert((object)originalType == null ||
+            Debug.Assert(((object)originalType == null) ||
                 originalType.IsErrorType() ||
-                originalType == type);
+                (originalType == type));
 
             if ((object)Interlocked.CompareExchange(ref _lazyType, type, null) == null)
             {
@@ -157,7 +157,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 SyntaxNode nodeToBind)
                 : base(containingType, modifiers, typeSyntax, name, syntax, location)
             {
-                Debug.Assert(nodeToBind.Kind() == SyntaxKind.VariableDeclarator || nodeToBind is ExpressionSyntax);
+                Debug.Assert((nodeToBind.Kind() == SyntaxKind.VariableDeclarator) || (nodeToBind is ExpressionSyntax));
 
                 _containingFieldOpt = containingFieldOpt;
                 _nodeToBind = nodeToBind.GetReference();
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 var nodeToBind = _nodeToBind.GetSyntax();
 
-                if ((object)_containingFieldOpt != null && nodeToBind.Kind() != SyntaxKind.VariableDeclarator)
+                if (((object)_containingFieldOpt != null) && (nodeToBind.Kind() != SyntaxKind.VariableDeclarator))
                 {
                     binder = binder.WithContainingMemberOrLambda(_containingFieldOpt).WithAdditionalFlags(BinderFlags.FieldInitializer);
                 }

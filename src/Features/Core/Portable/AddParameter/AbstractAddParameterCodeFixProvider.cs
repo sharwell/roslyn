@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.AddParameter
             foreach (var constructor in type.InstanceConstructors.OrderBy(m => m.Parameters.Length))
             {
                 if (constructor.IsNonImplicitAndFromSource() &&
-                    NonParamsParameterCount(constructor) < arguments.Count)
+                    (NonParamsParameterCount(constructor) < arguments.Count))
                 {
                     var argumentToAdd = DetermineFirstArgumentToAdd(
                         semanticModel, syntaxFacts, comparer, constructor,
@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.AddParameter
 
                     if (argumentToAdd != null)
                     {
-                        if (argumentOpt != null && argumentToAdd != argumentOpt)
+                        if ((argumentOpt != null) && (argumentToAdd != argumentOpt))
                         {
                             // We were trying to fix a specific argument, but the argument we want
                             // to fix is something different.  That means there was an error earlier
@@ -451,7 +451,7 @@ namespace Microsoft.CodeAnalysis.AddParameter
                     var isNullLiteral = syntaxFacts.IsNullLiteralExpression(expressionOfArgument);
                     var isDefaultLiteral = syntaxFacts.IsDefaultLiteralExpression(expressionOfArgument);
 
-                    if (argumentTypeInfo.Type == null && argumentTypeInfo.ConvertedType == null)
+                    if ((argumentTypeInfo.Type == null) && (argumentTypeInfo.ConvertedType == null))
                     {
                         // Didn't know the type of the argument.  We shouldn't assume it doesn't
                         // match a parameter.  However, if the user wrote 'null' and it didn't

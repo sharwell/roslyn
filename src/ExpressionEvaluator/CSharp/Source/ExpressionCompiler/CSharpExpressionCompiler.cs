@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             {
                 // Re-use entire context if method scope has not changed.
                 var previousContext = previousMetadataContext.EvaluationContext;
-                if (previousContext != null &&
+                if ((previousContext != null) &&
                     previousContext.MethodContextReuseConstraints.HasValue &&
                     previousContext.MethodContextReuseConstraints.GetValueOrDefault().AreSatisfied(moduleVersionId, methodToken, methodVersion, offset))
                 {

@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis
 
             // see whether we can use primary branch one
             var primaryBranchId = solution.Workspace.PrimaryBranchId;
-            if (solution.BranchId != primaryBranchId &&
+            if ((solution.BranchId != primaryBranchId) &&
                 TryGetReferenceFromBranch(primaryBranchId, projectReference, finalOrDeclarationCompilation, version, out reference))
             {
                 solution.Workspace.LogTestMessage($"Found already cached metadata for the primary branch and version {version}");
@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis
             var mapFromBranch = s_cache.GetValue(branchId, s_createReferenceSetMap);
             // if we have one, return it
             if (mapFromBranch.TryGetValue(projectReference.ProjectId, out var referenceSet) &&
-               (version == VersionStamp.Default || referenceSet.Version == version))
+               ((version == VersionStamp.Default) || (referenceSet.Version == version)))
             {
                 // record it to snapshot based cache.
                 var newReferenceSet = s_snapshotCache.GetValue(finalOrDeclarationCompilation, _ => referenceSet);

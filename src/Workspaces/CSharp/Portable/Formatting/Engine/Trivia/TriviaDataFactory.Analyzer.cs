@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
                 var result = default(AnalysisResult);
 
-                if (token1.IsMissing && token1.FullWidth() == 0)
+                if (token1.IsMissing && (token1.FullWidth() == 0))
                 {
                     // Consider the following case:
                     //
@@ -75,8 +75,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                         }
 
                         // Finally hit the first previous token with non-zero full width.
-                        if (previousToken.TrailingTrivia.Count > 0 &&
-                            previousToken.TrailingTrivia.Last().Kind() == SyntaxKind.EndOfLineTrivia)
+                        if ((previousToken.TrailingTrivia.Count > 0) &&
+                            (previousToken.TrailingTrivia.Last().Kind() == SyntaxKind.EndOfLineTrivia))
                         {
                             result.LineBreaks = 1;
                         }
@@ -119,8 +119,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                     {
                         result.HasSkippedTokens = true;
                     }
-                    else if (trivia.Kind() == SyntaxKind.DisabledTextTrivia ||
-                             trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia)
+                    else if ((trivia.Kind() == SyntaxKind.DisabledTextTrivia) ||
+                             (trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia))
                     {
                         result.HasSkippedOrDisabledText = true;
                     }
@@ -140,7 +140,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             private static void AnalyzeLineBreak(SyntaxTrivia trivia, ref AnalysisResult result)
             {
                 // if there was any space before line break, then we have trailing spaces
-                if (result.Space > 0 || result.Tab > 0)
+                if ((result.Space > 0) || (result.Tab > 0))
                 {
                     result.HasTrailingSpace = true;
                 }

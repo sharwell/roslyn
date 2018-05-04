@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.DiagnosticComments.CodeFixes
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             var parentMethod = root.FindNode(context.Span).FirstAncestorOrSelf<TMemberDeclarationSyntax>();
 
-            if (parentMethod != null && TryGetDocCommentNode(parentMethod.GetLeadingTrivia()) != null)
+            if ((parentMethod != null) && (TryGetDocCommentNode(parentMethod.GetLeadingTrivia()) != null))
             {
                 context.RegisterCodeFix(
                     new MyCodeAction(
@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.DiagnosticComments.CodeFixes
                 // only if any existing nodes are at the top level--this route will not
                 // be taken if the existing node is nested in another node
                 var summaryNode = GetElementNodes(newDocComment, "summary").FirstOrDefault();
-                if (index != 0 || (!paramNodes.Any() && summaryNode != null))
+                if ((index != 0) || (!paramNodes.Any() && (summaryNode != null)))
                 {
                     // First, try to get the node before the param node so we know where to insert the new node
                     TXmlElementSyntax nodeBeforeNewParamNode = null;
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.DiagnosticComments.CodeFixes
                     var indexOfNode = paramNodeSiblings.IndexOf(nodeAfterNewParamNode);
 
                     // set insert node to be the doc comment signifier of the closest param before the new node
-                    if (indexOfNode > 0 && paramNodeSiblings[indexOfNode - 1] is TXmlTextSyntax)
+                    if ((indexOfNode > 0) && (paramNodeSiblings[indexOfNode - 1] is TXmlTextSyntax))
                     {
                         nodeAfterNewParamNode = paramNodeSiblings[indexOfNode - 1];
                     }

@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             public BoundSpillSequenceBuilder(BoundExpression value = null)
                 : base(SpillSequenceBuilder, null, value?.Type)
             {
-                Debug.Assert(value == null || value.Kind != SpillSequenceBuilder);
+                Debug.Assert((value == null) || (value.Kind != SpillSequenceBuilder));
                 this.Value = value;
             }
 
@@ -203,7 +203,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             // wrap the node in a spill sequence to mark the fact that it must be moved up the tree.
             // The caller will handle this node type if the result is discarded.
-            if (expression != null && expression.Kind == BoundKind.AwaitExpression)
+            if ((expression != null) && (expression.Kind == BoundKind.AwaitExpression))
             {
                 // we force the await expression to be assigned to a temp variable
                 var awaitExpression = (BoundAwaitExpression)expression;
@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var e = (BoundExpression)this.Visit(expression);
-            if (e == null || e.Kind != SpillSequenceBuilder)
+            if ((e == null) || (e.Kind != SpillSequenceBuilder))
             {
                 return e;
             }
@@ -272,7 +272,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (builder == null)
             {
                 // statement doesn't contain any await
-                Debug.Assert(!substituteTemps || _tempSubstitution.Count == 0);
+                Debug.Assert(!substituteTemps || (_tempSubstitution.Count == 0));
                 Debug.Assert(statement != null);
                 return statement;
             }
@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 builder.AddStatement(statement);
             }
 
-            var substituterOpt = (substituteTemps && _tempSubstitution.Count > 0) ? new LocalSubstituter(_tempSubstitution, RecursionDepth) : null;
+            var substituterOpt = (substituteTemps && (_tempSubstitution.Count > 0)) ? new LocalSubstituter(_tempSubstitution, RecursionDepth) : null;
             var result = _F.Block(builder.GetLocals(), builder.GetStatements(substituterOpt));
 
             builder.Free();
@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     case BoundKind.ThisReference:
                     case BoundKind.BaseReference:
-                        if (refKind != RefKind.None || expression.Type.IsReferenceType)
+                        if ((refKind != RefKind.None) || expression.Type.IsReferenceType)
                         {
                             return expression;
                         }
@@ -351,7 +351,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     case BoundKind.Local:
                         var local = (BoundLocal)expression;
-                        if (local.LocalSymbol.SynthesizedKind == SynthesizedLocalKind.AwaitSpill || refKind != RefKind.None)
+                        if ((local.LocalSymbol.SynthesizedKind == SynthesizedLocalKind.AwaitSpill) || (refKind != RefKind.None))
                         {
                             return local;
                         }
@@ -364,7 +364,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         if (fieldSymbol.IsStatic)
                         {
                             // no need to spill static fields if used as locations or if readonly
-                            if (refKind != RefKind.None || fieldSymbol.IsReadOnly)
+                            if ((refKind != RefKind.None) || fieldSymbol.IsReadOnly)
                             {
                                 return field;
                             }
@@ -385,7 +385,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         //
                         //       It is allowed to spill ordinary `In` arguments by value if reference-preserving spilling is not possible.
                         //       The "strict" ones do not permit implicit copying, so the same situation should result in an error.
-                        if (refKind != RefKind.None && refKind != RefKind.In)
+                        if ((refKind != RefKind.None) && (refKind != RefKind.In))
                         {
                             Debug.Assert(call.Method.RefKind != RefKind.None);
                             _F.Diagnostics.Add(ErrorCode.ERR_RefReturningCallAndAwait, _F.Syntax.Location, call.Method);
@@ -402,7 +402,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         //
                         //       It is allowed to spill ordinary `In` arguments by value if reference-preserving spilling is not possible.
                         //       The "strict" ones do not permit implicit copying, so the same situation should result in an error.
-                        if (refKind != RefKind.None && refKind != RefKind.RefReadOnly)
+                        if ((refKind != RefKind.None) && (refKind != RefKind.RefReadOnly))
                         {
                             Debug.Assert(conditional.IsRef);
                             _F.Diagnostics.Add(ErrorCode.ERR_RefConditionalAndAwait, _F.Syntax.Location);
@@ -421,7 +421,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         return expression;
 
                     default:
-                        if (expression.Type.SpecialType == SpecialType.System_Void || sideEffectsOnly)
+                        if ((expression.Type.SpecialType == SpecialType.System_Void) || sideEffectsOnly)
                         {
                             builder.AddStatement(_F.ExpressionStatement(expression));
                             return null;
@@ -454,7 +454,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             bool sideEffectsOnly = false)
         {
             Debug.Assert(!sideEffectsOnly || refKinds.IsDefault);
-            Debug.Assert(refKinds.IsDefault || refKinds.Length == args.Length);
+            Debug.Assert(refKinds.IsDefault || (refKinds.Length == args.Length));
 
             if (args.Length == 0)
             {
@@ -500,7 +500,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var refKind = refKinds.IsDefault ? RefKind.None : refKinds[i];
                 var replacement = Spill(builder, newList[i], refKind, sideEffectsOnly);
 
-                Debug.Assert(sideEffectsOnly || replacement != null);
+                Debug.Assert(sideEffectsOnly || (replacement != null));
 
                 if (!sideEffectsOnly)
                 {
@@ -571,7 +571,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             Debug.Assert(expr != null);
-            Debug.Assert(builder == null || builder.Value == null);
+            Debug.Assert((builder == null) || (builder.Value == null));
             return UpdateStatement(builder, node.Update(expr), substituteTemps: true);
         }
 
@@ -785,7 +785,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var leftBuilder = new BoundSpillSequenceBuilder();
                 left = VisitExpression(ref leftBuilder, node.Left);
                 left = Spill(leftBuilder, left);
-                if (node.OperatorKind == BinaryOperatorKind.LogicalBoolOr || node.OperatorKind == BinaryOperatorKind.LogicalBoolAnd)
+                if ((node.OperatorKind == BinaryOperatorKind.LogicalBoolOr) || (node.OperatorKind == BinaryOperatorKind.LogicalBoolAnd))
                 {
                     var tmp = _F.SynthesizedLocal(node.Type, kind: SynthesizedLocalKind.AwaitSpill, syntax: _F.Syntax);
                     leftBuilder.AddLocal(tmp, _F.Diagnostics);
@@ -855,7 +855,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundSpillSequenceBuilder alternativeBuilder = null;
             var alternative = VisitExpression(ref alternativeBuilder, node.Alternative);
 
-            if (consequenceBuilder == null && alternativeBuilder == null)
+            if ((consequenceBuilder == null) && (alternativeBuilder == null))
             {
                 return UpdateExpression(conditionBuilder, node.Update(node.IsRef, condition, consequence, alternative, node.ConstantValueOpt, node.Type));
             }
@@ -987,7 +987,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundSpillSequenceBuilder whenNullBuilder = null;
             var whenNullOpt = VisitExpression(ref whenNullBuilder, node.WhenNullOpt);
 
-            if (whenNotNullBuilder == null && whenNullBuilder == null)
+            if ((whenNotNullBuilder == null) && (whenNullBuilder == null))
             {
                 return UpdateExpression(receiverBuilder, node.Update(receiver, node.HasValueMethodOpt, whenNotNull, whenNullOpt, node.Id, node.Type));
             }
@@ -998,7 +998,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
 
             BoundExpression condition;
-            if (receiver.Type.IsReferenceType || receiver.Type.IsValueType || receiverRefKind == RefKind.None)
+            if (receiver.Type.IsReferenceType || receiver.Type.IsValueType || (receiverRefKind == RefKind.None))
             {
                 // spill to a clone
                 receiver = Spill(receiverBuilder, receiver, RefKind.None);
@@ -1046,7 +1046,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var whenNotNullStatement = UpdateStatement(whenNotNullBuilder, _F.ExpressionStatement(whenNotNull), substituteTemps: false);
                 whenNotNullStatement = ConditionalReceiverReplacer.Replace(whenNotNullStatement, receiver, node.Id, RecursionDepth);
 
-                Debug.Assert(whenNullOpt == null || !LocalRewriter.ReadIsSideeffecting(whenNullOpt));
+                Debug.Assert((whenNullOpt == null) || !LocalRewriter.ReadIsSideeffecting(whenNullOpt));
 
                 receiverBuilder.AddStatement(_F.If(condition, whenNotNullStatement));
 
@@ -1158,7 +1158,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundSpillSequenceBuilder builder = null;
             var sideEffects = VisitExpressionList(ref builder, node.SideEffects, forceSpill: valueBuilder != null, sideEffectsOnly: true);
 
-            if (builder == null && valueBuilder == null)
+            if ((builder == null) && (valueBuilder == null))
             {
                 return node.Update(node.Locals, sideEffects, value, node.Type);
             }

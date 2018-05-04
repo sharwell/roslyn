@@ -78,7 +78,7 @@ namespace Roslyn.Test.Utilities.CoreClr
             emitData.RuntimeData.ExecuteRequested = true;
             var (ExitCode, Output) = emitData.LoadContext.Execute(GetMainImage(), args, expectedOutput?.Length);
 
-            if (expectedOutput != null && expectedOutput.Trim() != Output.Trim())
+            if ((expectedOutput != null) && (expectedOutput.Trim() != Output.Trim()))
             {
                 throw new ExecutionException(expectedOutput, Output, moduleName);
             }

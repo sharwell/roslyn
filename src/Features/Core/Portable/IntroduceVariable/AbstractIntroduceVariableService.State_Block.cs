@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
                 }
 
                 var type = GetTypeSymbol(this.Document, this.Expression, cancellationToken, objectAsDefault: false);
-                if (type == null || type.SpecialType == SpecialType.System_Void)
+                if ((type == null) || (type.SpecialType == SpecialType.System_Void))
                 {
                     return false;
                 }

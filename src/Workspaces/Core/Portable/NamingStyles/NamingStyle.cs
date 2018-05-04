@@ -48,11 +48,11 @@ namespace Microsoft.CodeAnalysis.NamingStyles
             var newWordSeparator = wordSeparator.HasValue ? wordSeparator.Value : this.WordSeparator;
             var newCapitalizationScheme = capitalizationScheme.HasValue ? capitalizationScheme.Value : this.CapitalizationScheme;
 
-            if (newName == this.Name &&
-                newPrefix == this.Prefix &&
-                newSuffix == this.Suffix &&
-                newWordSeparator == this.WordSeparator &&
-                newCapitalizationScheme == this.CapitalizationScheme)
+            if ((newName == this.Name) &&
+                (newPrefix == this.Prefix) &&
+                (newSuffix == this.Suffix) &&
+                (newWordSeparator == this.WordSeparator) &&
+                (newCapitalizationScheme == this.CapitalizationScheme))
             {
                 return this;
             }
@@ -137,7 +137,7 @@ namespace Microsoft.CodeAnalysis.NamingStyles
                 return false;
             }
 
-            if (name.Length <= Prefix.Length + Suffix.Length)
+            if (name.Length <= (Prefix.Length + Suffix.Length))
             {
                 failureReason = null;
                 return true;
@@ -327,7 +327,7 @@ namespace Microsoft.CodeAnalysis.NamingStyles
         private string FinishFixingName(string name)
         {
             // Edge case: prefix "as", suffix "sa", name "asa"
-            if (Suffix.Length + Prefix.Length >= name.Length)
+            if ((Suffix.Length + Prefix.Length) >= name.Length)
             {
                 return name;
             }

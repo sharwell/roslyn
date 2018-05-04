@@ -35,13 +35,13 @@ namespace Microsoft.CodeAnalysis.Emit
 
         public override bool Equals(object obj)
         {
-            return obj is MethodImplKey && Equals((MethodImplKey)obj);
+            return (obj is MethodImplKey) && Equals((MethodImplKey)obj);
         }
 
         public bool Equals(MethodImplKey other)
         {
-            return this.ImplementingMethod == other.ImplementingMethod &&
-                this.Index == other.Index;
+            return (this.ImplementingMethod == other.ImplementingMethod) &&
+                (this.Index == other.Index);
         }
 
         public override int GetHashCode()
@@ -119,7 +119,7 @@ namespace Microsoft.CodeAnalysis.Emit
                 {
                     return module.Module.GetMethodBodyOrThrow(methodHandle)?.LocalSignature ?? default;
                 }
-                catch (Exception e) when (e is BadImageFormatException || e is IOException)
+                catch (Exception e) when ((e is BadImageFormatException) || (e is IOException))
                 {
                     throw new InvalidDataException(e.Message, e);
                 }
@@ -414,8 +414,8 @@ namespace Microsoft.CodeAnalysis.Emit
             Func<MethodDefinitionHandle, EditAndContinueMethodDebugInformation> debugInformationProvider,
             Func<MethodDefinitionHandle, StandaloneSignatureHandle> localSignatureProvider)
         {
-            Debug.Assert(_anonymousTypeMap == null || anonymousTypeMap != null);
-            Debug.Assert(_anonymousTypeMap == null || anonymousTypeMap.Count >= _anonymousTypeMap.Count);
+            Debug.Assert((_anonymousTypeMap == null) || (anonymousTypeMap != null));
+            Debug.Assert((_anonymousTypeMap == null) || (anonymousTypeMap.Count >= _anonymousTypeMap.Count));
 
             return new EmitBaseline(
                 InitialBaseline,

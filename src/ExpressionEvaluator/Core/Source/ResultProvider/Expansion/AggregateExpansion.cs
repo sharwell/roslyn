@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             foreach (var expansion in _expansions)
             {
                 expansion.GetRows(resultProvider, rows, inspectionContext, parent, value, startIndex, count, visitAll, ref index);
-                if (!visitAll && (index >= startIndex + count))
+                if (!visitAll && (index >= (startIndex + count)))
                 {
                     return;
                 }

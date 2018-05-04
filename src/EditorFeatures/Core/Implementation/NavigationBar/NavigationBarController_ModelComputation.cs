@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigationBar
                 if (_lastCompletedModel != null)
                 {
                     var semanticVersion = await document.Project.GetDependentSemanticVersionAsync(CancellationToken.None).ConfigureAwait(false);
-                    if (_lastCompletedModel.SemanticVersionStamp == semanticVersion && SpanStillValid(_lastCompletedModel, snapshot, cancellationToken))
+                    if ((_lastCompletedModel.SemanticVersionStamp == semanticVersion) && SpanStillValid(_lastCompletedModel, snapshot, cancellationToken))
                     {
                         // it looks like we can re-use previous model
                         return _lastCompletedModel;
@@ -182,20 +182,20 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigationBar
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    if (span.Contains(point) || span.End == point)
+                    if (span.Contains(point) || (span.End == point))
                     {
                         // This is the item we should show normally. We'll continue looking at other
                         // items as there might be a nested type that we're actually in. If there
                         // are multiple items containing the point, choose whichever containing span
                         // starts later because that will be the most nested item.
 
-                        if (exactItem == null || span.Start >= exactItemStart)
+                        if ((exactItem == null) || (span.Start >= exactItemStart))
                         {
                             exactItem = item;
                             exactItemStart = span.Start;
                         }
                     }
-                    else if (span.Start > point && span.Start <= nextItemStart)
+                    else if ((span.Start > point) && (span.Start <= nextItemStart))
                     {
                         nextItem = item;
                         nextItemStart = span.Start;
@@ -212,7 +212,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigationBar
                 // The second parameter is if we should show it grayed. We'll be nice and say false
                 // unless we actually have an item
                 var itemToGray = nextItem ?? items.LastOrDefault();
-                if (itemToGray != null && !itemsService.ShowItemGrayedIfNear(itemToGray))
+                if ((itemToGray != null) && !itemsService.ShowItemGrayedIfNear(itemToGray))
                 {
                     itemToGray = null;
                 }

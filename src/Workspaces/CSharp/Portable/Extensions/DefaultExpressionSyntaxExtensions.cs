@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (parseOptions.LanguageVersion < LanguageVersion.CSharp7_1 ||
+            if ((parseOptions.LanguageVersion < LanguageVersion.CSharp7_1) ||
                 !options.GetOption(CSharpCodeStyleOptions.PreferSimpleDefaultExpression).Value)
             {
                 return false;
@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                     var entityType = semanticModel.GetTypeInfo(typeSyntax, cancellationToken).Type;
                     var defaultType = semanticModel.GetTypeInfo(defaultExpression.Type, cancellationToken).Type;
 
-                    if (entityType != null && entityType.Equals(defaultType))
+                    if ((entityType != null) && entityType.Equals(defaultType))
                     {
                         // We have a simple case of "CancellationToken c = default(CancellationToken)".
                         // We can just simplify without having to do any additional analysis.

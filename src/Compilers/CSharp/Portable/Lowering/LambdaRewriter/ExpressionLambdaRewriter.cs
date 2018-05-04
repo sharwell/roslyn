@@ -362,7 +362,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression VisitAsOperator(BoundAsOperator node)
         {
-            if (node.Operand.IsLiteralNull() && (object)node.Operand.Type == null)
+            if (node.Operand.IsLiteralNull() && ((object)node.Operand.Type == null))
             {
                 var operand = _bound.Null(_bound.SpecialType(SpecialType.System_Object));
                 node = node.Update(operand, node.TargetType, node.Conversion, node.Type);
@@ -413,11 +413,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             string opName = GetBinaryOperatorName(opKind, out isChecked, out isLifted, out requiresLifted);
 
             // Fix up the null value for a nullable comparison vs null
-            if ((object)left.Type == null && left.IsLiteralNull())
+            if (((object)left.Type == null) && left.IsLiteralNull())
             {
                 left = _bound.Default(right.Type);
             }
-            if ((object)right.Type == null && right.IsLiteralNull())
+            if (((object)right.Type == null) && right.IsLiteralNull())
             {
                 right = _bound.Default(left.Type);
             }
@@ -459,7 +459,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var conversion = (BoundConversion)operand;
                 if (!conversion.ConversionKind.IsUserDefinedConversion() &&
                     conversion.ConversionKind.IsImplicitConversion() &&
-                    conversion.ConversionKind != ConversionKind.DefaultOrNullLiteral &&
+                    (conversion.ConversionKind != ConversionKind.DefaultOrNullLiteral) &&
                     conversion.Type.StrippedType().IsEnumType())
                 {
                     operand = conversion.Operand;
@@ -492,7 +492,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             return
                 ((object)methodOpt == null) ? ExprFactory(opName, loweredLeft, loweredRight) :
-                    requiresLifted ? ExprFactory(opName, loweredLeft, loweredRight, _bound.Literal(isLifted && methodOpt.ReturnType != type), _bound.MethodInfo(methodOpt)) :
+                    requiresLifted ? ExprFactory(opName, loweredLeft, loweredRight, _bound.Literal(isLifted && (methodOpt.ReturnType != type)), _bound.MethodInfo(methodOpt)) :
                         ExprFactory(opName, loweredLeft, loweredRight, _bound.MethodInfo(methodOpt));
         }
 
@@ -520,7 +520,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var e = type as NamedTypeSymbol;
             if ((object)e != null)
             {
-                if (e.TypeKind == TypeKind.Enum || e.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T && e.TypeArgumentsNoUseSiteDiagnostics[0].TypeKind == TypeKind.Enum)
+                if ((e.TypeKind == TypeKind.Enum) || ((e.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T) && (e.TypeArgumentsNoUseSiteDiagnostics[0].TypeKind == TypeKind.Enum)))
                 {
                     return Convert(node, type, isChecked);
                 }
@@ -585,7 +585,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private BoundExpression VisitExactType(BoundExpression e)
         {
             var conversion = e as BoundConversion;
-            if (conversion != null && !conversion.ExplicitCastInCode)
+            if ((conversion != null) && !conversion.ExplicitCastInCode)
             {
                 e = conversion.Update(
                     conversion.Operand,
@@ -617,7 +617,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         var operandType = node.Operand.Type;
                         var strippedOperandType = operandType.StrippedType();
                         var conversionInputType = method.Parameters[0].Type;
-                        var isLifted = operandType != conversionInputType && strippedOperandType == conversionInputType;
+                        var isLifted = (operandType != conversionInputType) && (strippedOperandType == conversionInputType);
                         bool requireAdditionalCast =
                             strippedOperandType != ((node.ConversionKind == ConversionKind.ExplicitUserDefined) ? conversionInputType : conversionInputType.StrippedType());
                         var resultType = (isLifted && method.ReturnType.IsNonNullableValueType() && node.Type.IsNullableType()) ? _nullableType.Construct(method.ReturnType) : method.ReturnType;
@@ -655,7 +655,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression Convert(BoundExpression operand, TypeSymbol oldType, TypeSymbol newType, bool isChecked, bool isExplicit)
         {
-            return (oldType == newType && !isExplicit) ? operand : Convert(operand, newType, isChecked);
+            return ((oldType == newType) && !isExplicit) ? operand : Convert(operand, newType, isChecked);
         }
 
         private BoundExpression Convert(BoundExpression expr, TypeSymbol type, bool isChecked)
@@ -703,7 +703,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var d = node.Argument.Type as NamedTypeSymbol;
-            if ((object)d != null && d.TypeKind == TypeKind.Delegate)
+            if (((object)d != null) && (d.TypeKind == TypeKind.Delegate))
             {
                 return DelegateCreation(node.Argument, d.DelegateInvokeMethod, node.Type, false);
             }
@@ -723,7 +723,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private BoundExpression VisitIsOperator(BoundIsOperator node)
         {
             var operand = node.Operand;
-            if ((object)operand.Type == null && operand.ConstantValue != null && operand.ConstantValue.IsNull)
+            if (((object)operand.Type == null) && (operand.ConstantValue != null) && operand.ConstantValue.IsNull)
             {
                 operand = _bound.Null(_objectType);
             }
@@ -947,8 +947,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return Constant(node);
             }
 
-            if ((object)node.Constructor == null ||
-                (node.Arguments.Length == 0 && !node.Type.IsStructType()) ||
+            if (((object)node.Constructor == null) ||
+                ((node.Arguments.Length == 0) && !node.Type.IsStructType()) ||
                 node.Constructor.IsDefaultValueTypeConstructor())
             {
                 return ExprFactory("New", _bound.Typeof(node.Type));
@@ -956,7 +956,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var ctor = _bound.ConstructorInfo(node.Constructor);
             var args = _bound.Convert(_IEnumerableType.Construct(ExpressionType), Expressions(node.Arguments));
-            if (node.Type.IsAnonymousType && node.Arguments.Length != 0)
+            if (node.Type.IsAnonymousType && (node.Arguments.Length != 0))
             {
                 var anonType = (NamedTypeSymbol)node.Type;
                 var membersBuilder = ArrayBuilder<BoundExpression>.GetInstance();
@@ -1008,7 +1008,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             //         the implementation of the getter must make observable mutations to the instance.
             //
             //         At this point it seems more appropriate to continue adding these casts.
-            if (node.ReceiverOpt?.Type.IsTypeParameter() == true &&
+            if ((node.ReceiverOpt?.Type.IsTypeParameter() == true) &&
                 !node.ReceiverOpt.Type.IsReferenceType)
             {
                 receiver = this.Convert(receiver, getMethod.ReceiverType, isChecked: false);
@@ -1053,7 +1053,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     throw ExceptionUtilities.UnexpectedValue(op);
             }
 
-            if (node.OperatorKind.OperandTypes() == UnaryOperatorKind.Enum && (opKind & UnaryOperatorKind.Lifted) != 0)
+            if ((node.OperatorKind.OperandTypes() == UnaryOperatorKind.Enum) && ((opKind & UnaryOperatorKind.Lifted) != 0))
             {
                 Debug.Assert((object)node.MethodOpt == null);
                 var promotedType = PromotedType(arg.Type.StrippedType().GetEnumUnderlyingType());

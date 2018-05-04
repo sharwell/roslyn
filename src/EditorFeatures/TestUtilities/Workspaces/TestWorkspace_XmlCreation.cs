@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 
         private static XAttribute CreateFeaturesAttribute(ParseOptions parseOptions)
         {
-            if (parseOptions.Features == null || parseOptions.Features.Count == 0)
+            if ((parseOptions.Features == null) || (parseOptions.Features.Count == 0))
             {
                 return null;
             }

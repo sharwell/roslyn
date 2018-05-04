@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
         public bool ExecuteCommand(InvokeCompletionListCommandArgs args, CommandExecutionContext context)
         {
             AssertIsForeground();
-            if (EventHookupSessionManager.QuickInfoSession == null || EventHookupSessionManager.QuickInfoSession.IsDismissed)
+            if ((EventHookupSessionManager.QuickInfoSession == null) || EventHookupSessionManager.QuickInfoSession.IsDismissed)
             {
                 return false;
             }

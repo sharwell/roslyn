@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.FullyQualify
             using (Logger.LogBlock(FunctionId.Refactoring_FullyQualify, cancellationToken))
             {
                 // Has to be a simple identifier or generic name.
-                if (node == null || !CanFullyQualify(diagnostic, ref node))
+                if ((node == null) || !CanFullyQualify(diagnostic, ref node))
                 {
                     return;
                 }
@@ -181,14 +181,14 @@ namespace Microsoft.CodeAnalysis.CodeFixes.FullyQualify
             SemanticModel semanticModel, int arity, bool inAttributeContext, 
             bool looksGeneric, INamedTypeSymbol searchResult)
         {
-            if (arity != 0 && searchResult.GetArity() != arity)
+            if ((arity != 0) && (searchResult.GetArity() != arity))
             {
                 // If the user supplied type arguments, then the search result has to match the 
                 // number provided.
                 return false;
             }
 
-            if (looksGeneric && searchResult.TypeArguments.Length == 0)
+            if (looksGeneric && (searchResult.TypeArguments.Length == 0))
             {
                 return false;
             }
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.FullyQualify
         private static bool HasValidContainer(ISymbol symbol)
         {
             var container = symbol.ContainingSymbol;
-            return container is INamespaceSymbol ||
+            return (container is INamespaceSymbol) ||
                    (container is INamedTypeSymbol parentType && !parentType.IsGenericType);
         }
 
@@ -320,7 +320,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.FullyQualify
         {
             symbols = symbols ?? SpecializedCollections.EmptyList<SymbolResult>();
             symbols = symbols.Distinct()
-                             .Where(n => n.Symbol is INamedTypeSymbol || !((INamespaceSymbol)n.Symbol).IsGlobalNamespace)
+                             .Where(n => (n.Symbol is INamedTypeSymbol) || !((INamespaceSymbol)n.Symbol).IsGlobalNamespace)
                              .Order();
             return symbols.Select(n => n.Symbol).ToList();
         }

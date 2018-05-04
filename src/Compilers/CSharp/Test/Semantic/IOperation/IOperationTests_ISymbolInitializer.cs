@@ -26,7 +26,7 @@ class C
             var compilation = CreateCompilation(source, options: TestOptions.ReleaseDll, parseOptions: TestOptions.Regular);
 
             var tree = compilation.SyntaxTrees.Single();
-            var nodes = tree.GetRoot().DescendantNodes().Where(n => n is VariableDeclarationSyntax || n is PropertyDeclarationSyntax).ToArray();
+            var nodes = tree.GetRoot().DescendantNodes().Where(n => (n is VariableDeclarationSyntax) || (n is PropertyDeclarationSyntax)).ToArray();
             Assert.Equal(3, nodes.Length);
 
             var semanticModel = compilation.GetSemanticModel(tree);

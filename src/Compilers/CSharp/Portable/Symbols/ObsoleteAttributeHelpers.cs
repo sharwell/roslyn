@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             ObsoleteAttributeData obsoleteAttributeData;
             obsoleteAttributeData = containingModule.Module.TryGetDeprecatedOrExperimentalOrObsoleteAttribute(token, ignoreByRefLikeMarker);
-            Debug.Assert(obsoleteAttributeData == null || !obsoleteAttributeData.IsUninitialized);
+            Debug.Assert((obsoleteAttributeData == null) || !obsoleteAttributeData.IsUninitialized);
             return obsoleteAttributeData;
         }
 

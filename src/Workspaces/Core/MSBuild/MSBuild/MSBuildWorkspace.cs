@@ -366,7 +366,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
                 var extension = _applyChangesProjectFile.GetDocumentExtension(info.SourceCodeKind);
                 var fileName = Path.ChangeExtension(info.Name, extension);
 
-                var relativePath = (info.Folders != null && info.Folders.Count > 0)
+                var relativePath = ((info.Folders != null) && (info.Folders.Count > 0))
                     ? Path.Combine(Path.Combine(info.Folders.ToArray()), fileName)
                     : fileName;
 

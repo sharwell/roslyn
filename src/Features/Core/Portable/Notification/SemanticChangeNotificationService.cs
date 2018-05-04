@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Notification
             public async Task AnalyzeDocumentAsync(Document document, SyntaxNode bodyOpt, InvocationReasons reasons, CancellationToken cancellationToken)
             {
                 // method body change
-                if (bodyOpt != null || !document.IsOpen())
+                if ((bodyOpt != null) || !document.IsOpen())
                 {
                     return;
                 }
@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.Notification
                 // get semantic version for the project this document belongs to
                 var newVersion = await document.Project.GetDependentSemanticVersionAsync(cancellationToken).ConfigureAwait(false);
                 // check whether we already saw semantic version change
-                if (_map.TryGetValue(document.Id, out var oldVersion) && oldVersion == newVersion)
+                if (_map.TryGetValue(document.Id, out var oldVersion) && (oldVersion == newVersion))
                 {
                     return;
                 }

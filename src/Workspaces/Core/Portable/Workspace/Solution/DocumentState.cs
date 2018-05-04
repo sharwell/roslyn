@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis
             var tree = treeFactory.ParseSyntaxTree(filePath, options, text, cancellationToken);
 
             var root = tree.GetRoot(cancellationToken);
-            if (mode == PreservationMode.PreserveValue && treeFactory.CanCreateRecoverableTree(root))
+            if ((mode == PreservationMode.PreserveValue) && treeFactory.CanCreateRecoverableTree(root))
             {
                 tree = treeFactory.CreateRecoverableTree(cacheKey, tree.FilePath, tree.Options, newTextSource, text.Encoding, root);
             }
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // if texts are small enough, just use the equivalent to find out whether there was top level edits
-            if (oldText.Length < MaxTextChangeRangeLength && newText.Length < MaxTextChangeRangeLength)
+            if ((oldText.Length < MaxTextChangeRangeLength) && (newText.Length < MaxTextChangeRangeLength))
             {
                 var topLevel = !newTree.IsEquivalentTo(oldTree, topLevel: true);
                 return topLevel;
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // if changes are small enough, we use IsEquivalentTo to find out whether there was a top level edit
-            if (change.Span.Length < MaxTextChangeRangeLength && change.NewLength < MaxTextChangeRangeLength)
+            if ((change.Span.Length < MaxTextChangeRangeLength) && (change.NewLength < MaxTextChangeRangeLength))
             {
                 var topLevel = !newTree.IsEquivalentTo(oldTree, topLevel: true);
                 return topLevel;
@@ -293,9 +293,9 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool HasContentChanged(DocumentState oldState)
         {
-            return oldState._treeSource != this._treeSource
-                || oldState.sourceTextOpt != this.sourceTextOpt
-                || oldState.textAndVersionSource != this.textAndVersionSource;
+            return (oldState._treeSource != this._treeSource)
+                || (oldState.sourceTextOpt != this.sourceTextOpt)
+                || (oldState.textAndVersionSource != this.textAndVersionSource);
         }
 
         /// <summary>
@@ -303,8 +303,8 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool HasTextChanged(DocumentState oldState)
         {
-            return oldState.sourceTextOpt != this.sourceTextOpt
-                || oldState.textAndVersionSource != this.textAndVersionSource;
+            return (oldState.sourceTextOpt != this.sourceTextOpt)
+                || (oldState.textAndVersionSource != this.textAndVersionSource);
         }
 
         public DocumentState UpdateParseOptions(ParseOptions options)
@@ -348,7 +348,7 @@ namespace Microsoft.CodeAnalysis
 
         public DocumentState UpdateSourceCodeKind(SourceCodeKind kind)
         {
-            if (this.ParseOptions == null || kind == this.SourceCodeKind)
+            if ((this.ParseOptions == null) || (kind == this.SourceCodeKind))
             {
                 return this;
             }
@@ -407,7 +407,7 @@ namespace Microsoft.CodeAnalysis
             if (mode == PreservationMode.PreserveIdentity)
             {
                 var br = _firstBranch;
-                if (br != null && br.Text == newText)
+                if ((br != null) && (br.Text == newText))
                 {
                     return br.State;
                 }
@@ -418,7 +418,7 @@ namespace Microsoft.CodeAnalysis
 
             var newState = this.UpdateText(newTextAndVersion, mode);
 
-            if (mode == PreservationMode.PreserveIdentity && _firstBranch == null)
+            if ((mode == PreservationMode.PreserveIdentity) && (_firstBranch == null))
             {
                 Interlocked.CompareExchange(ref _firstBranch, new DocumentBranch(newText, newState), null);
             }
@@ -633,7 +633,7 @@ namespace Microsoft.CodeAnalysis
                 return textAndVersion.Version.GetNewerVersion();
             }
 
-            if (_treeSource.TryGetValue(out var treeAndVersion) && treeAndVersion != null)
+            if (_treeSource.TryGetValue(out var treeAndVersion) && (treeAndVersion != null))
             {
                 return treeAndVersion.Version.GetNewerVersion();
             }
@@ -644,7 +644,7 @@ namespace Microsoft.CodeAnalysis
         public bool TryGetSyntaxTree(out SyntaxTree syntaxTree)
         {
             syntaxTree = default;
-            if (_treeSource.TryGetValue(out var treeAndVersion) && treeAndVersion != null)
+            if (_treeSource.TryGetValue(out var treeAndVersion) && (treeAndVersion != null))
             {
                 syntaxTree = treeAndVersion.Tree;
                 BindSyntaxTreeToId(syntaxTree, this.Id);
@@ -675,7 +675,7 @@ namespace Microsoft.CodeAnalysis
 
         public bool TryGetTopLevelChangeTextVersion(out VersionStamp version)
         {
-            if (_treeSource.TryGetValue(out var treeAndVersion) && treeAndVersion != null)
+            if (_treeSource.TryGetValue(out var treeAndVersion) && (treeAndVersion != null))
             {
                 version = treeAndVersion.Version;
                 return true;
@@ -694,7 +694,7 @@ namespace Microsoft.CodeAnalysis
                 return await this.GetTextVersionAsync(cancellationToken).ConfigureAwait(false);
             }
 
-            if (_treeSource.TryGetValue(out var treeAndVersion) && treeAndVersion != null)
+            if (_treeSource.TryGetValue(out var treeAndVersion) && (treeAndVersion != null))
             {
                 return treeAndVersion.Version;
             }

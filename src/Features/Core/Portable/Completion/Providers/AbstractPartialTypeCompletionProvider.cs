@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
 
             return semanticModel.LookupNamespacesAndTypes(context.Position, containingSymbol)
                                 .OfType<INamedTypeSymbol>()
-                                .Where(symbol => declaredSymbol.TypeKind == symbol.TypeKind &&
+                                .Where(symbol => (declaredSymbol.TypeKind == symbol.TypeKind) &&
                                                  NotNewDeclaredMember(symbol, context) &&
                                                  InSameProject(symbol, semanticModel.Compilation));
         }
@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
         {
             return symbol.DeclaringSyntaxReferences
                          .Select(reference => reference.GetSyntax())
-                         .Any(node => !(node.SyntaxTree == context.SyntaxTree && node.Span.IntersectsWith(context.Position)));
+                         .Any(node => !((node.SyntaxTree == context.SyntaxTree) && node.Span.IntersectsWith(context.Position)));
         }
 
         protected override Task<CompletionDescription> GetDescriptionWorkerAsync(Document document, CompletionItem item, CancellationToken cancellationToken)

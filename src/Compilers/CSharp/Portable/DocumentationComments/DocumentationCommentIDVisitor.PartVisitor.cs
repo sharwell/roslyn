@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     builder.Append("[0:");
 
-                    for (int i = 0; i < symbol.Rank - 1; i++)
+                    for (int i = 0; i < (symbol.Rank - 1); i++)
                     {
                         builder.Append(",0:");
                     }
@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return VisitNamedType(((TupleTypeSymbol)symbol).UnderlyingNamedType, builder);
                 }
 
-                if ((object)symbol.ContainingSymbol != null && symbol.ContainingSymbol.Name.Length != 0)
+                if (((object)symbol.ContainingSymbol != null) && (symbol.ContainingSymbol.Name.Length != 0))
                 {
                     Visit(symbol.ContainingSymbol, builder);
                     builder.Append('.');
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     // Special case: dev11 treats types instances of the declaring type in the parameter list
                     // (and return type, for conversions) as constructed with its own type parameters.
-                    if (!_inParameterOrReturnType && symbol == symbol.ConstructedFrom)
+                    if (!_inParameterOrReturnType && (symbol == symbol.ConstructedFrom))
                     {
                         builder.Append('`');
                         builder.Append(symbol.Arity);
@@ -228,7 +228,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             public override object VisitNamespace(NamespaceSymbol symbol, StringBuilder builder)
             {
-                if ((object)symbol.ContainingNamespace != null && symbol.ContainingNamespace.Name.Length != 0)
+                if (((object)symbol.ContainingNamespace != null) && (symbol.ContainingNamespace.Name.Length != 0))
                 {
                     Visit(symbol.ContainingNamespace, builder);
                     builder.Append('.');

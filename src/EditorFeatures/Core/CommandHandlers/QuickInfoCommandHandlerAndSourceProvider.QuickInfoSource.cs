@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
             public void AugmentQuickInfoSession(IQuickInfoSession session, IList<object> quickInfoContent, out ITrackingSpan applicableToSpan)
             {
                 applicableToSpan = null;
-                if (quickInfoContent.Count != 0 ||
+                if ((quickInfoContent.Count != 0) ||
                     session.Properties.TryGetProperty(QuickInfoUtilities.EventHookupKey, out object eventHookupValue))
                 {
                     // No quickinfo if it's the event hookup popup.

@@ -278,7 +278,7 @@ enum F
         {
             // enum E { M0 = M1 - 1, M1 = M2 - 1, ..., Mn = n, }
             // Dev12 reports "CS1647: An expression is too long or complex to compile" at ~1500 members.
-            var source = GenerateEnum(10000, (i, n) => (i < n - 1) ? string.Format("M{0} - 1", i + 1) : i.ToString());
+            var source = GenerateEnum(10000, (i, n) => (i < (n - 1)) ? string.Format("M{0} - 1", i + 1) : i.ToString());
             CreateCompilation(source).VerifyDiagnostics();
         }
 

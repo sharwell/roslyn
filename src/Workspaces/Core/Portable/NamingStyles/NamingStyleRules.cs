@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
 
         internal bool TryGetApplicableRule(ISymbol symbol, out NamingRule applicableRule)
         {
-            if (NamingRules != null &&
+            if ((NamingRules != null) &&
                 IsSymbolNameAnalyzable(symbol))
             {
                 foreach (var namingRule in NamingRules)
@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
             }
 
             var containingType = symbol.ContainingType;
-            if (containingType.TypeKind != TypeKind.Class && containingType.TypeKind != TypeKind.Struct)
+            if ((containingType.TypeKind != TypeKind.Class) && (containingType.TypeKind != TypeKind.Struct))
             {
                 return false;
             }

@@ -16,14 +16,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         private void ScanStringLiteral(ref TokenInfo info, bool allowEscapes = true)
         {
             var quoteCharacter = TextWindow.PeekChar();
-            if (quoteCharacter == '\'' || quoteCharacter == '"')
+            if ((quoteCharacter == '\'') || (quoteCharacter == '"'))
             {
                 TextWindow.AdvanceChar();
                 _builder.Length = 0;
                 while (true)
                 {
                     char ch = TextWindow.PeekChar();
-                    if (ch == '\\' && allowEscapes)
+                    if ((ch == '\\') && allowEscapes)
                     {
                         // normal string & char constants can have escapes
                         char c2;
@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                         break;
                     }
                     else if (SyntaxFacts.IsNewLine(ch) ||
-                            (ch == SlidingTextWindow.InvalidCharacter && TextWindow.IsReallyAtEnd()))
+                            ((ch == SlidingTextWindow.InvalidCharacter) && TextWindow.IsReallyAtEnd()))
                     {
                         //String and character literals can contain any Unicode character. They are not limited
                         //to valid UTF-16 characters. So if we get the SlidingTextWindow's sentinel value,
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             _builder.Length = 0;
 
-            if (TextWindow.PeekChar() == '@' && TextWindow.PeekChar(1) == '"')
+            if ((TextWindow.PeekChar() == '@') && (TextWindow.PeekChar(1) == '"'))
             {
                 TextWindow.AdvanceChar(2);
                 bool done = false;
@@ -311,8 +311,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             {
                 char ch = lexer.TextWindow.PeekChar();
                 return
-                    !allowNewline && SyntaxFacts.IsNewLine(ch) ||
-                    (ch == SlidingTextWindow.InvalidCharacter && lexer.TextWindow.IsReallyAtEnd());
+                    (!allowNewline && SyntaxFacts.IsNewLine(ch)) ||
+                    ((ch == SlidingTextWindow.InvalidCharacter) && lexer.TextWindow.IsReallyAtEnd());
             }
 
             internal void ScanInterpolatedStringLiteralTop(ArrayBuilder<Interpolation> interpolations, ref TokenInfo info, out bool closeQuoteMissing)
@@ -362,7 +362,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     switch (lexer.TextWindow.PeekChar())
                     {
                         case '"':
-                            if (isVerbatim && lexer.TextWindow.PeekChar(1) == '"')
+                            if (isVerbatim && (lexer.TextWindow.PeekChar(1) == '"'))
                             {
                                 lexer.TextWindow.AdvanceChar(); // "
                                 lexer.TextWindow.AdvanceChar(); // "
@@ -422,7 +422,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                             var escapeStart = lexer.TextWindow.Position;
                             char c2;
                             char ch = lexer.ScanEscapeSequence(out c2);
-                            if ((ch == '{' || ch == '}') && error == null)
+                            if (((ch == '{') || (ch == '}')) && (error == null))
                             {
                                 error = lexer.MakeError(escapeStart, lexer.TextWindow.Position - escapeStart, ErrorCode.ERR_EscapedCurly, ch);
                             }
@@ -443,20 +443,20 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 while (true)
                 {
                     char ch = lexer.TextWindow.PeekChar();
-                    if (ch == '\\' && !isVerbatim)
+                    if ((ch == '\\') && !isVerbatim)
                     {
                         // normal string & char constants can have escapes
                         var pos = lexer.TextWindow.Position;
                         char c2;
                         ch = lexer.ScanEscapeSequence(out c2);
-                        if ((ch == '{' || ch == '}') && error == null)
+                        if (((ch == '{') || (ch == '}')) && (error == null))
                         {
                             error = lexer.MakeError(pos, 1, ErrorCode.ERR_EscapedCurly, ch);
                         }
                     }
                     else if (ch == '"')
                     {
-                        if (isVerbatim && lexer.TextWindow.PeekChar(1) == '"')
+                        if (isVerbatim && (lexer.TextWindow.PeekChar(1) == '"'))
                         {
                             lexer.TextWindow.AdvanceChar();
                             lexer.TextWindow.AdvanceChar();
@@ -529,7 +529,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                             lexer.TextWindow.AdvanceChar();
                             continue;
                         case '$':
-                            if (lexer.TextWindow.PeekChar(1) == '"' || lexer.TextWindow.PeekChar(1) == '@' && lexer.TextWindow.PeekChar(2) == '"')
+                            if ((lexer.TextWindow.PeekChar(1) == '"') || ((lexer.TextWindow.PeekChar(1) == '@') && (lexer.TextWindow.PeekChar(2) == '"')))
                             {
                                 bool isVerbatimSubstring = lexer.TextWindow.PeekChar(1) == '@';
                                 var interpolations = default(ArrayBuilder<Interpolation>);
@@ -659,7 +659,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
                     var ch = lexer.TextWindow.PeekChar();
                     lexer.TextWindow.AdvanceChar();
-                    if (ch == '*' && lexer.TextWindow.PeekChar() == '/')
+                    if ((ch == '*') && (lexer.TextWindow.PeekChar() == '/'))
                     {
                         lexer.TextWindow.AdvanceChar(); // skip */
                         return;

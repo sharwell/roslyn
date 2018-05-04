@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Preview
                 {
                     // Added document to new solution.
                     // If unchecked, then remove this added document from new solution.
-                    if (applyingChanges && fileChange.CheckState == __PREVIEWCHANGESITEMCHECKSTATE.PCCS_Unchecked)
+                    if (applyingChanges && (fileChange.CheckState == __PREVIEWCHANGESITEMCHECKSTATE.PCCS_Unchecked))
                     {
                         solution = isAdditionalDoc ?
                             solution.RemoveAdditionalDocument(updatedDocument.Id) :
@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Preview
                 {
                     // Removed document from old solution.
                     // If unchecked, then add back this removed document to new solution.
-                    if (applyingChanges && fileChange.CheckState == __PREVIEWCHANGESITEMCHECKSTATE.PCCS_Unchecked)
+                    if (applyingChanges && (fileChange.CheckState == __PREVIEWCHANGESITEMCHECKSTATE.PCCS_Unchecked))
                     {
                         var oldText = oldDocument.GetTextAsync().Result.ToString();
                         solution = isAdditionalDoc ?

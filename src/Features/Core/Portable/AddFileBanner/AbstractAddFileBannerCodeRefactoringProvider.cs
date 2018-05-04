@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis.AddFileBanner
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var siblingBanner = await TryGetBannerAsync(siblingDocument, siblingRoot, cancellationToken).ConfigureAwait(false);
-                if (siblingBanner.Length > 0 && !siblingDocument.IsGeneratedCode(cancellationToken))
+                if ((siblingBanner.Length > 0) && !siblingDocument.IsGeneratedCode(cancellationToken))
                 {
                     context.RegisterRefactoring(
                         new MyCodeAction(c => AddBannerAsync(document, root, siblingBanner, c)));
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.AddFileBanner
 
             // Didn't have a tree.  Don't want to parse the file if we can avoid it.
             var text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-            if (text.Length == 0 || !IsCommentStartCharacter(text[0]))
+            if ((text.Length == 0) || !IsCommentStartCharacter(text[0]))
             {
                 // Didn't start with a comment character, don't bother looking at 
                 // this file.

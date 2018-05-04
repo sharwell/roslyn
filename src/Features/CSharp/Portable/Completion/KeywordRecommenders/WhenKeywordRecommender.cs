@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 return true;
             }
 
-            if (lastToken == context.LeftToken && expressionOrPattern is DeclarationPatternSyntax declarationPattern)
+            if ((lastToken == context.LeftToken) && expressionOrPattern is DeclarationPatternSyntax declarationPattern)
             {
                 // case constant w|
 
@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             // If what we have here is known to be a type, we don't want to clutter the variable name suggestion list
             // with 'when' since we know that the resulting code would be semantically invalid.
 
-            var expression = expressionOrPattern as ExpressionSyntax
+            var expression = (expressionOrPattern as ExpressionSyntax)
                 ?? (expressionOrPattern as ConstantPatternSyntax)?.Expression;
             
             if (!(expression is TypeSyntax typeSyntax))
@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 return typeSyntax.IsVar;
             }
             
-            return symbols.All(symbol => symbol is IAliasSymbol || symbol is ITypeSymbol);
+            return symbols.All(symbol => (symbol is IAliasSymbol) || (symbol is ITypeSymbol));
         }
     }
 }

@@ -241,7 +241,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                     (TLanguageService)this, v, commandHandlerFactory, EditorAdaptersFactoryService).AttachToVsTextView());
 
             var openDocument = wpfTextView.TextBuffer.AsTextContainer().GetRelatedDocuments().FirstOrDefault();
-            var isOpenMetadataAsSource = openDocument != null && openDocument.Project.Solution.Workspace.Kind == WorkspaceKind.MetadataAsSource;
+            var isOpenMetadataAsSource = (openDocument != null) && (openDocument.Project.Solution.Workspace.Kind == WorkspaceKind.MetadataAsSource);
 
             ConditionallyCollapseOutliningRegions(textView, wpfTextView, workspace, isOpenMetadataAsSource);
             // If this is a metadata-to-source view, we want to consider the file read-only

@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
 
         public void AddIdentifier(SyntaxToken token)
         {
-            if (token.IsMissing || token.ValueText == null)
+            if (token.IsMissing || (token.ValueText == null))
             {
                 return;
             }
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
 
         public void RemoveIdentifier(SyntaxToken token)
         {
-            if (token.IsMissing || token.ValueText == null)
+            if (token.IsMissing || (token.ValueText == null))
             {
                 return;
             }

@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             {
                 var parameter = GetParameter(p, options, isExplicit, isFirstParam, seenOptional);
                 result.Add(parameter);
-                seenOptional = seenOptional || parameter.Default != null;
+                seenOptional = seenOptional || (parameter.Default != null);
                 isFirstParam = false;
             }
 

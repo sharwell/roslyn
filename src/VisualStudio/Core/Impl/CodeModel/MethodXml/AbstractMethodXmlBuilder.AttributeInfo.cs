@@ -21,8 +21,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Metho
             {
                 get
                 {
-                    return this.Name == null
-                        && this.Value == null;
+                    return (this.Name == null)
+                        && (this.Value == null);
                 }
             }
         }

@@ -45,14 +45,14 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                     semanticModel.LookupSymbols(throughExpression.SpanStart, name: throughSymbol.Name).Any(s => !(s is INamedTypeSymbol)) ||
                     (!(throughSymbol is INamespaceOrTypeSymbol) && semanticModel.LookupSymbols(throughExpression.SpanStart, container: throughSymbol.ContainingType).Any(s => !(s is INamedTypeSymbol)));
 
-                var includeStatic = throughSymbol is INamedTypeSymbol ||
+                var includeStatic = (throughSymbol is INamedTypeSymbol) ||
                     (throughExpression.IsKind(SyntaxKind.IdentifierName) &&
                     semanticModel.LookupNamespacesAndTypes(throughExpression.SpanStart, name: throughSymbol.Name).Any(t => t.GetSymbolType() == throughType));
 
                 Contract.ThrowIfFalse(includeInstance || includeStatic);
                 methodGroup = methodGroup.Where(m => (m.IsStatic && includeStatic) || (!m.IsStatic && includeInstance));
             }
-            else if (invocationExpression.Expression is SimpleNameSyntax &&
+            else if ((invocationExpression.Expression is SimpleNameSyntax) &&
                 invocationExpression.IsInStaticContext())
             {
                 methodGroup = methodGroup.Where(m => m.IsStatic);

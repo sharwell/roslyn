@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         }
 
         internal override bool ShouldReuseInSerialization => base.ShouldReuseInSerialization && 
-                                                             FullWidth < Lexer.MaxCachedTokenSize;
+                                                             (FullWidth < Lexer.MaxCachedTokenSize);
 
         //====================
 
@@ -121,7 +121,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 }
             }
 
-            if (leading == SyntaxFactory.ElasticZeroSpace && trailing == SyntaxFactory.ElasticZeroSpace)
+            if ((leading == SyntaxFactory.ElasticZeroSpace) && (trailing == SyntaxFactory.ElasticZeroSpace))
             {
                 return s_tokensWithElasticTrivia[(int)kind].Value;
             }
@@ -215,7 +215,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         internal static SyntaxToken Identifier(SyntaxKind contextualKind, GreenNode leading, string text, string valueText, GreenNode trailing)
         {
-            if (contextualKind == SyntaxKind.IdentifierToken && valueText == text)
+            if ((contextualKind == SyntaxKind.IdentifierToken) && (valueText == text))
             {
                 return Identifier(leading, text, trailing);
             }
@@ -379,7 +379,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         private static DirectiveStack ApplyDirectivesToTrivia(GreenNode triviaList, DirectiveStack stack)
         {
-            if (triviaList != null && triviaList.ContainsDirectives)
+            if ((triviaList != null) && triviaList.ContainsDirectives)
             {
                 return ApplyDirectivesToListOrNode(triviaList, stack);
             }
@@ -438,7 +438,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             var otherLeading = otherToken.GetLeadingTrivia();
             if (thisLeading != otherLeading)
             {
-                if (thisLeading == null || otherLeading == null)
+                if ((thisLeading == null) || (otherLeading == null))
                 {
                     return false;
                 }
@@ -453,7 +453,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             var otherTrailing = otherToken.GetTrailingTrivia();
             if (thisTrailing != otherTrailing)
             {
-                if (thisTrailing == null || otherTrailing == null)
+                if ((thisTrailing == null) || (otherTrailing == null))
                 {
                     return false;
                 }

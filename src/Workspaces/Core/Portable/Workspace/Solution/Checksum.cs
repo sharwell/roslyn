@@ -164,9 +164,9 @@ namespace Microsoft.CodeAnalysis
 
             public bool Equals(Sha1Hash other)
             {
-                return Data1 == other.Data1
-                    && Data2 == other.Data2
-                    && Data3 == other.Data3;
+                return (Data1 == other.Data1)
+                    && (Data2 == other.Data2)
+                    && (Data3 == other.Data3);
             }
         }
     }

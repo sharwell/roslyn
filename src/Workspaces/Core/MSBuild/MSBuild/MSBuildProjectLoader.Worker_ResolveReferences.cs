@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
                 /// Returns true if a metadata reference with the given file path is contained within this list.
                 /// </summary>
                 public bool Contains(string filePath)
-                    => filePath != null
+                    => (filePath != null)
                     && _pathToIndicesMap.ContainsKey(filePath);
 
                 /// <summary>
@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
                 /// </summary>
                 public void Remove(string filePath)
                 {
-                    if (filePath != null && _pathToIndicesMap.TryGetValue(filePath, out var indices))
+                    if ((filePath != null) && _pathToIndicesMap.TryGetValue(filePath, out var indices))
                     {
                         _indicesToRemove.AddRange(indices);
                     }

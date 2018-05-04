@@ -46,9 +46,9 @@ namespace Roslyn.VisualStudio.IntegrationTests
 
                 // Winforms and XAML do not open text files on creation
                 // so these editor tasks will not work if that is the project template being used.
-                if (_projectTemplate != WellKnownProjectTemplates.WinFormsApplication &&
-                    _projectTemplate != WellKnownProjectTemplates.WpfApplication &&
-                    _projectTemplate != WellKnownProjectTemplates.CSharpNetCoreClassLibrary)
+                if ((_projectTemplate != WellKnownProjectTemplates.WinFormsApplication) &&
+                    (_projectTemplate != WellKnownProjectTemplates.WpfApplication) &&
+                    (_projectTemplate != WellKnownProjectTemplates.CSharpNetCoreClassLibrary))
                 {
                     VisualStudio.Workspace.SetUseSuggestionMode(false);
                     ClearEditor();

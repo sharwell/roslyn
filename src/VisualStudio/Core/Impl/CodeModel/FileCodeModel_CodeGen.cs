@@ -102,7 +102,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             // TODO(DustinCa): Check VB's behavior when a bad array is passed.
             var result = new List<object>();
 
-            if (itemOrArray != null && itemOrArray != DBNull.Value && itemOrArray != Type.Missing)
+            if ((itemOrArray != null) && (itemOrArray != DBNull.Value) && (itemOrArray != Type.Missing))
             {
                 if (itemOrArray is Array realArray)
                 {
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                     var lowerBound = realArray.GetLowerBound(0);
                     var upperBound = realArray.GetUpperBound(0);
 
-                    if (!allowMultipleElements && upperBound > lowerBound)
+                    if (!allowMultipleElements && (upperBound > lowerBound))
                     {
                         throw Exceptions.ThrowEInvalidArg();
                     }
@@ -124,7 +124,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                     {
                         var item = realArray.GetValue(i);
 
-                        if (item != null && item != DBNull.Value)
+                        if ((item != null) && (item != DBNull.Value))
                         {
                             result.Add(item);
                         }
@@ -191,7 +191,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             var semanticModel = GetSemanticModel();
 
             var baseArray = GetValidArray(bases, allowMultipleElements: false);
-            Debug.Assert(baseArray.Length == 0 || baseArray.Length == 1);
+            Debug.Assert((baseArray.Length == 0) || (baseArray.Length == 1));
 
             var baseTypeSymbol = baseArray.Length == 1
                 ? (INamedTypeSymbol)CodeModelService.GetTypeSymbol(baseArray[0], semanticModel, containerNodePosition)
@@ -246,7 +246,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
         public EnvDTE.CodeVariable AddEnumMember(SyntaxNode containerNode, string name, object value, object position)
         {
-            if (value != null && !(value is string))
+            if ((value != null) && !(value is string))
             {
                 throw Exceptions.ThrowEInvalidArg();
             }
@@ -289,8 +289,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
             SyntaxNode newMember;
 
-            if (kind == EnvDTE.vsCMFunction.vsCMFunctionSub ||
-                kind == EnvDTE.vsCMFunction.vsCMFunctionFunction)
+            if ((kind == EnvDTE.vsCMFunction.vsCMFunctionSub) ||
+                (kind == EnvDTE.vsCMFunction.vsCMFunctionFunction))
             {
                 var containerNodePosition = containerNode.SpanStart;
                 var semanticModel = GetSemanticModel();
@@ -366,7 +366,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             bool isPutterPresent = !string.IsNullOrEmpty(putterName);
 
             if ((!isGetterPresent && !isPutterPresent) ||
-                (isGetterPresent && isPutterPresent && getterName != putterName))
+                (isGetterPresent && isPutterPresent && (getterName != putterName)))
             {
                 throw Exceptions.ThrowEInvalidArg();
             }

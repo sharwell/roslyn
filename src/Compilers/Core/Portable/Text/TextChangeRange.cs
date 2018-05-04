@@ -45,8 +45,8 @@ namespace Microsoft.CodeAnalysis.Text
         public bool Equals(TextChangeRange other)
         {
             return
-                other.Span == this.Span &&
-                other.NewLength == this.NewLength;
+                (other.Span == this.Span) &&
+                (other.NewLength == this.NewLength);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is TextChangeRange && Equals((TextChangeRange)obj);
+            return (obj is TextChangeRange) && Equals((TextChangeRange)obj);
         }
 
         /// <summary>

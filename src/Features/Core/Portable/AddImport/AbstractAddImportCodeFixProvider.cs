@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.AddImport
                 ? _symbolSearchService ?? solution.Workspace.Services.GetService<ISymbolSearchService>()
                 : null;
 
-            var packageSources = symbolSearchService != null && searchNuGetPackages
+            var packageSources = (symbolSearchService != null) && searchNuGetPackages
                 ? GetPackageSources(document)
                 : ImmutableArray<PackageSource>.Empty;
 

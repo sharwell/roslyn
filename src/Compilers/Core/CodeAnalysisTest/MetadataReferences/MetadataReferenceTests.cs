@@ -485,8 +485,8 @@ namespace Microsoft.CodeAnalysis.UnitTests
                     var eq = comparer.Equals(r, s);
 
                     if (ReferenceEquals(r, s) ||
-                        ReferenceEquals(r, c1a) && ReferenceEquals(s, c1b) ||
-                        ReferenceEquals(s, c1a) && ReferenceEquals(r, c1b))
+                        (ReferenceEquals(r, c1a) && ReferenceEquals(s, c1b)) ||
+                        (ReferenceEquals(s, c1a) && ReferenceEquals(r, c1b)))
                     {
                         Assert.True(eq, string.Format("expected '{0}' == '{1}'", r.Display, s.Display));
                     }

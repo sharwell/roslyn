@@ -392,7 +392,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                     }
                 }
 
-                if (!hasAssociatedRoslynDocument && this._documentTrackingServiceOpt != null && !_docCookiesToNonRoslynDocumentBuffers.ContainsKey(docCookie))
+                if (!hasAssociatedRoslynDocument && (this._documentTrackingServiceOpt != null) && !_docCookiesToNonRoslynDocumentBuffers.ContainsKey(docCookie))
                 {
                     // Non-Roslyn document opened.
                     var textBuffer = _editorAdaptersFactoryService.GetDocumentBuffer(shimTextBuffer);
@@ -489,7 +489,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             if (!_docCookiesToOpenDocumentKeys.TryGetValue(docCookie, out var documentKeys))
             {
                 // Handle non-Roslyn document close.
-                if (this._documentTrackingServiceOpt != null && _docCookiesToNonRoslynDocumentBuffers.TryGetValue(docCookie, out ITextBuffer textBuffer))
+                if ((this._documentTrackingServiceOpt != null) && _docCookiesToNonRoslynDocumentBuffers.TryGetValue(docCookie, out ITextBuffer textBuffer))
                 {
                     var moniker = _runningDocumentTable.GetDocumentMoniker(docCookie);
                     if (!StringComparer.OrdinalIgnoreCase.Equals(moniker, monikerToKeep))
@@ -742,7 +742,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         {
             AssertIsForeground();
             var document = documentKey.HostProject.GetCurrentDocumentFromPath(documentKey.Moniker);
-            return document != null && LinkedFileUtilities.IsCurrentContextHierarchy(document, _runningDocumentTable);
+            return (document != null) && LinkedFileUtilities.IsCurrentContextHierarchy(document, _runningDocumentTable);
         }
 
         public IDisposable ProvideDocumentIdHint(string filePath, DocumentId documentId)

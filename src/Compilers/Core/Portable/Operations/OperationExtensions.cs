@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.Operations
                 throw new InvalidOperationException();
             }
 
-            if (index < 0 || index >= dynamicOperation.Arguments.Length)
+            if ((index < 0) || (index >= dynamicOperation.Arguments.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis.Operations
                 throw new InvalidOperationException();
             }
 
-            if (index < 0 || index >= dynamicOperation.Arguments.Length)
+            if ((index < 0) || (index >= dynamicOperation.Arguments.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }

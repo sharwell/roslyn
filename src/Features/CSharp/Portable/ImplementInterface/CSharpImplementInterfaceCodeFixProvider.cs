@@ -18,8 +18,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ImplementInterface
     [ExtensionOrder(After = PredefinedCodeFixProviderNames.ImplementAbstractClass)]
     internal class CSharpImplementInterfaceCodeFixProvider : CodeFixProvider
     {
-        private readonly Func<TypeSyntax, bool> _interfaceName = n => n.Parent is BaseTypeSyntax && n.Parent.Parent is BaseListSyntax && ((BaseTypeSyntax)n.Parent).Type == n;
-        private readonly Func<IEnumerable<CodeAction>, bool> _codeActionAvailable = actions => actions != null && actions.Any();
+        private readonly Func<TypeSyntax, bool> _interfaceName = n => (n.Parent is BaseTypeSyntax) && (n.Parent.Parent is BaseListSyntax) && (((BaseTypeSyntax)n.Parent).Type == n);
+        private readonly Func<IEnumerable<CodeAction>, bool> _codeActionAvailable = actions => (actions != null) && actions.Any();
 
         private const string CS0535 = nameof(CS0535); // 'Program' does not implement interface member 'System.Collections.IEnumerable.GetEnumerator()'
         private const string CS0737 = nameof(CS0737); // 'Class' does not implement interface member 'IInterface.M()'. 'Class.M()' cannot implement an interface member because it is not public.

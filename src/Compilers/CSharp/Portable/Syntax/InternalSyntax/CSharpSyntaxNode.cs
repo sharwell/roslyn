@@ -203,7 +203,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         private static void GetDirectives(GreenNode node, List<DirectiveTriviaSyntax> directives)
         {
-            if (node != null && node.ContainsDirectives)
+            if ((node != null) && node.ContainsDirectives)
             {
                 var d = node as DirectiveTriviaSyntax;
                 if (d != null)
@@ -270,8 +270,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         public override bool IsTriviaWithEndOfLine()
         {
-            return this.Kind == SyntaxKind.EndOfLineTrivia
-                || this.Kind == SyntaxKind.SingleLineCommentTrivia;
+            return (this.Kind == SyntaxKind.EndOfLineTrivia)
+                || (this.Kind == SyntaxKind.SingleLineCommentTrivia);
         }
 
         // Use conditional weak table so we always return same identity for structured trivia

@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.GenerateOverrides
             protected override async Task<IEnumerable<CodeActionOperation>> ComputeOperationsAsync(object options, CancellationToken cancellationToken)
             {
                 var result = (PickMembersResult)options;
-                if (result.IsCanceled || result.Members.Length == 0)
+                if (result.IsCanceled || (result.Members.Length == 0))
                 {
                     return ImmutableArray<CodeActionOperation>.Empty;
                 }

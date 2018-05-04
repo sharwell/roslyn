@@ -341,13 +341,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var moduleNs = namespaceSymbol as NamespaceSymbol;
-            if ((object)moduleNs != null && moduleNs.Extent.Kind == NamespaceKind.Module && moduleNs.ContainingModule == this)
+            if (((object)moduleNs != null) && (moduleNs.Extent.Kind == NamespaceKind.Module) && (moduleNs.ContainingModule == this))
             {
                 // this is already the correct module namespace
                 return moduleNs;
             }
 
-            if (namespaceSymbol.IsGlobalNamespace || (object)namespaceSymbol.ContainingNamespace == null)
+            if (namespaceSymbol.IsGlobalNamespace || ((object)namespaceSymbol.ContainingNamespace == null))
             {
                 return this.GlobalNamespace;
             }

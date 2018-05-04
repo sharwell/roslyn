@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis
             => Equals((DocumentSpan)obj);
 
         public bool Equals(DocumentSpan obj)
-            => this.Document == obj.Document && this.SourceSpan == obj.SourceSpan;
+            => (this.Document == obj.Document) && (this.SourceSpan == obj.SourceSpan);
 
         public static bool operator ==(DocumentSpan d1, DocumentSpan d2)
             => d1.Equals(d2);

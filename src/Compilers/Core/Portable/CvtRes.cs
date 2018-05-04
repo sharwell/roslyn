@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis
                 var cbData = reader.ReadUInt32();
                 var cbHdr = reader.ReadUInt32();
 
-                if (cbHdr < 2 * sizeof(DWORD))
+                if (cbHdr < (2 * sizeof(DWORD)))
                 {
                     throw new ResourceException(String.Format("Resource header beginning at offset 0x{0:x} is malformed.", stream.Position - 8));
                     //ErrorPrint(ERR_FILECORRUPT, szFilename);
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis
 
                 if (cbData == 0)
                 {
-                    stream.Position += cbHdr - 2 * sizeof(DWORD);
+                    stream.Position += cbHdr - (2 * sizeof(DWORD));
                     continue;
                 }
 
@@ -111,7 +111,7 @@ namespace Microsoft.CodeAnalysis
 
                 stream.Position = (stream.Position + 3) & ~3;
 
-                if (pAdditional.pstringType.theString == null && (pAdditional.pstringType.Ordinal == (WORD)RT_DLGINCLUDE))
+                if ((pAdditional.pstringType.theString == null) && (pAdditional.pstringType.Ordinal == (WORD)RT_DLGINCLUDE))
                 {
                     // Ignore DLGINCLUDE resources
                     continue;
@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis
     {
         private static void ConfirmSectionValues(SectionHeader hdr, long fileSize)
         {
-            if ((long)hdr.PointerToRawData + hdr.SizeOfRawData > fileSize)
+            if (((long)hdr.PointerToRawData + hdr.SizeOfRawData) > fileSize)
                 throw new ResourceException(CodeAnalysisResources.CoffResourceInvalidSectionSize);
         }
 
@@ -248,7 +248,7 @@ namespace Microsoft.CodeAnalysis
 
             try
             {
-                var lastSymAddress = checked(peHeaders.CoffHeader.PointerToSymbolTable + peHeaders.CoffHeader.NumberOfSymbols * ImageSizeOfSymbol);
+                var lastSymAddress = checked(peHeaders.CoffHeader.PointerToSymbolTable + (peHeaders.CoffHeader.NumberOfSymbols * ImageSizeOfSymbol));
 
                 if (lastSymAddress > stream.Length)
                     throw new ResourceException(CodeAnalysisResources.CoffResourceInvalidSymbol);
@@ -266,7 +266,7 @@ namespace Microsoft.CodeAnalysis
                 if (relocationSymbolIndices[i] > peHeaders.CoffHeader.NumberOfSymbols)
                     throw new ResourceException(CodeAnalysisResources.CoffResourceInvalidRelocation);
 
-                var offsetOfSymbol = peHeaders.CoffHeader.PointerToSymbolTable + relocationSymbolIndices[i] * ImageSizeOfSymbol;
+                var offsetOfSymbol = peHeaders.CoffHeader.PointerToSymbolTable + (relocationSymbolIndices[i] * ImageSizeOfSymbol);
 
                 stream.Position = offsetOfSymbol;
                 stream.Position += 8; //skip over symbol name
@@ -277,8 +277,8 @@ namespace Microsoft.CodeAnalysis
 
                 const ushort IMAGE_SYM_TYPE_NULL = 0x0000;
 
-                if (symType != IMAGE_SYM_TYPE_NULL ||
-                    symSection != 3)  //3rd section is .rsrc$02
+                if ((symType != IMAGE_SYM_TYPE_NULL) ||
+                    (symSection != 3))  //3rd section is .rsrc$02
                     throw new ResourceException(CodeAnalysisResources.CoffResourceInvalidSymbol);
 
                 //perform relocation. We are concatenating the contents of .rsrc$02 (the raw resource data)
@@ -438,7 +438,7 @@ namespace Microsoft.CodeAnalysis
 
             resStream.Position = (resStream.Position + 3) & ~3; //align 4-byte boundary
             //write the icon group. first a RESOURCEHEADER. the data is the ICONDIR
-            resWriter.Write((DWORD)(3 * sizeof(WORD) + count * /*sizeof(ICONRESDIR)*/ 14));
+            resWriter.Write((DWORD)((3 * sizeof(WORD)) + (count * /*sizeof(ICONRESDIR)*/ 14)));
             resWriter.Write((DWORD)0x00000020);
             resWriter.Write((WORD)0xFFFF);
             resWriter.Write((WORD)RT_GROUP_ICON);
@@ -545,7 +545,7 @@ namespace Microsoft.CodeAnalysis
 
             ver.WriteVerResource(resWriter);
 
-            System.Diagnostics.Debug.Assert(resStream.Position - startPos == dataSize + headerSize);
+            System.Diagnostics.Debug.Assert((resStream.Position - startPos) == (dataSize + headerSize));
         }
 
         internal static void AppendManifestToResourceStream(Stream resStream, Stream manifestStream, bool isDll)
@@ -671,7 +671,7 @@ namespace Microsoft.CodeAnalysis
             private static int PadKeyLen(int cb)
             {
                 //add previously written 3 WORDS, round up, then subtract the 3 WORDS.
-                return PadToDword(cb + 3 * sizeof(WORD)) - 3 * sizeof(WORD);
+                return PadToDword(cb + (3 * sizeof(WORD))) - (3 * sizeof(WORD));
             }
             /// <summary>
             /// assuming the length of bytes submitted began on a 32-bit boundary,
@@ -720,7 +720,7 @@ namespace Microsoft.CodeAnalysis
                 writer.Write((WORD)'\0');
                 //writer.Write(new byte[PadToDword(cbVal) - cbVal]);
 
-                System.Diagnostics.Debug.Assert(cbBlock == writer.BaseStream.Position - startPos);
+                System.Diagnostics.Debug.Assert(cbBlock == (writer.BaseStream.Position - startPos));
             }
 
             /// <summary>
@@ -753,7 +753,7 @@ namespace Microsoft.CodeAnalysis
 
             internal int GetDataSize()
             {
-                int sizeEXEVERRESOURCE = sizeof(WORD) * 3 * 5 + 2 * sizeof(WORD) + //five headers + two words for CP and lang
+                int sizeEXEVERRESOURCE = ((sizeof(WORD) * 3 * 5)) + (2 * sizeof(WORD)) + //five headers + two words for CP and lang
                     KEYBYTES(vsVersionInfoKey) +
                     KEYBYTES(varFileInfoKey) +
                     KEYBYTES(translationKey) +
@@ -808,39 +808,39 @@ namespace Microsoft.CodeAnalysis
                 writer.Write((WORD)sizeVS_FIXEDFILEINFO);
                 writer.Write((WORD)0);
                 writer.Write(vsVersionInfoKey.ToCharArray());
-                writer.Write(new byte[KEYBYTES(vsVersionInfoKey) - vsVersionInfoKey.Length * 2]);
+                writer.Write(new byte[KEYBYTES(vsVersionInfoKey) - (vsVersionInfoKey.Length * 2)]);
                 System.Diagnostics.Debug.Assert((writer.BaseStream.Position & 3) == 0);
                 WriteVSFixedFileInfo(writer);
-                writer.Write((WORD)(sizeof(WORD) * 2 + 2 * HDRSIZE + KEYBYTES(varFileInfoKey) + KEYBYTES(translationKey)));
+                writer.Write((WORD)((sizeof(WORD) * 2) + (2 * HDRSIZE) + KEYBYTES(varFileInfoKey) + KEYBYTES(translationKey)));
                 writer.Write((WORD)0);
                 writer.Write((WORD)1);
                 writer.Write(varFileInfoKey.ToCharArray());
-                writer.Write(new byte[KEYBYTES(varFileInfoKey) - varFileInfoKey.Length * 2]);   //padding
+                writer.Write(new byte[KEYBYTES(varFileInfoKey) - (varFileInfoKey.Length * 2)]);   //padding
                 System.Diagnostics.Debug.Assert((writer.BaseStream.Position & 3) == 0);
-                writer.Write((WORD)(sizeof(WORD) * 2 + HDRSIZE + KEYBYTES(translationKey)));
+                writer.Write((WORD)((sizeof(WORD) * 2) + HDRSIZE + KEYBYTES(translationKey)));
                 writer.Write((WORD)(sizeof(WORD) * 2));
                 writer.Write((WORD)0);
                 writer.Write(translationKey.ToCharArray());
-                writer.Write(new byte[KEYBYTES(translationKey) - translationKey.Length * 2]);   //padding
+                writer.Write(new byte[KEYBYTES(translationKey) - (translationKey.Length * 2)]);   //padding
                 System.Diagnostics.Debug.Assert((writer.BaseStream.Position & 3) == 0);
                 writer.Write((WORD)0);      //langId; MAKELANGID(LANG_NEUTRAL, SUBLANG_NEUTRAL)) = 0
                 writer.Write((WORD)CP_WINUNICODE);   //codepage; 1200 = CP_WINUNICODE
                 System.Diagnostics.Debug.Assert((writer.BaseStream.Position & 3) == 0);
-                writer.Write((WORD)(2 * HDRSIZE + KEYBYTES(stringFileInfoKey) + KEYBYTES(_langIdAndCodePageKey) + GetStringsSize()));
+                writer.Write((WORD)((2 * HDRSIZE) + KEYBYTES(stringFileInfoKey) + KEYBYTES(_langIdAndCodePageKey) + GetStringsSize()));
                 writer.Write((WORD)0);
                 writer.Write((WORD)1);
                 writer.Write(stringFileInfoKey.ToCharArray());      //actually preceded by 5 WORDS so not consistent with the
                                                                     //assumptions of KEYBYTES, but equivalent.
-                writer.Write(new byte[KEYBYTES(stringFileInfoKey) - stringFileInfoKey.Length * 2]); //padding. 
+                writer.Write(new byte[KEYBYTES(stringFileInfoKey) - (stringFileInfoKey.Length * 2)]); //padding. 
                 System.Diagnostics.Debug.Assert((writer.BaseStream.Position & 3) == 0);
                 writer.Write((WORD)(HDRSIZE + KEYBYTES(_langIdAndCodePageKey) + GetStringsSize()));
                 writer.Write((WORD)0);
                 writer.Write((WORD)1);
                 writer.Write(_langIdAndCodePageKey.ToCharArray());
-                writer.Write(new byte[KEYBYTES(_langIdAndCodePageKey) - _langIdAndCodePageKey.Length * 2]); //padding
+                writer.Write(new byte[KEYBYTES(_langIdAndCodePageKey) - (_langIdAndCodePageKey.Length * 2)]); //padding
                 System.Diagnostics.Debug.Assert((writer.BaseStream.Position & 3) == 0);
 
-                System.Diagnostics.Debug.Assert(writer.BaseStream.Position - debugPos == dataSize - GetStringsSize());
+                System.Diagnostics.Debug.Assert((writer.BaseStream.Position - debugPos) == (dataSize - GetStringsSize()));
                 debugPos = writer.BaseStream.Position;
 
                 foreach (var entry in GetVerStrings())
@@ -854,7 +854,7 @@ namespace Microsoft.CodeAnalysis
                     WriteVersionString(entry, writer);
                 }
 
-                System.Diagnostics.Debug.Assert(writer.BaseStream.Position - debugPos == GetStringsSize());
+                System.Diagnostics.Debug.Assert((writer.BaseStream.Position - debugPos) == GetStringsSize());
             }
         }
     }

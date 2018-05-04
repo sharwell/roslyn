@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var parentScope = next;
                 while(parentScope != null)
                 {
-                    if (parentScope is InMethodBinder || parentScope is WithLambdaParametersBinder)
+                    if ((parentScope is InMethodBinder) || (parentScope is WithLambdaParametersBinder))
                     {
                         _localScopeDepth = Binder.TopLevelScope;
                         break;
@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                if (_lazyLocalsMap == null && this.Locals.Length > 0)
+                if ((_lazyLocalsMap == null) && (this.Locals.Length > 0))
                 {
                     _lazyLocalsMap = BuildMap(this.Locals);
                 }
@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                if (_lazyLocalFunctionsMap == null && this.LocalFunctions.Length > 0)
+                if ((_lazyLocalFunctionsMap == null) && (this.LocalFunctions.Length > 0))
                 {
                     _lazyLocalFunctionsMap = BuildMap(this.LocalFunctions);
                 }
@@ -144,7 +144,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                if (_lazyLabelsMap == null && this.Labels.Length > 0)
+                if ((_lazyLabelsMap == null) && (this.Labels.Length > 0))
                 {
                     _lazyLabelsMap = BuildMap(this.Labels);
                 }
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         protected override SourceLocalSymbol LookupLocal(SyntaxToken nameToken)
         {
             LocalSymbol result = null;
-            if (LocalsMap != null && LocalsMap.TryGetValue(nameToken.ValueText, out result))
+            if ((LocalsMap != null) && LocalsMap.TryGetValue(nameToken.ValueText, out result))
             {
                 if (result.IdentifierToken == nameToken) return (SourceLocalSymbol)result;
 
@@ -351,7 +351,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         protected override LocalFunctionSymbol LookupLocalFunction(SyntaxToken nameToken)
         {
             LocalFunctionSymbol result = null;
-            if (LocalFunctionsMap != null && LocalFunctionsMap.TryGetValue(nameToken.ValueText, out result))
+            if ((LocalFunctionsMap != null) && LocalFunctionsMap.TryGetValue(nameToken.ValueText, out result))
             {
                 if (result.NameToken == nameToken) return result;
 
@@ -391,7 +391,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var localsMap = this.LocalsMap;
-            if (localsMap != null && (options & LookupOptions.NamespaceAliasesOnly) == 0)
+            if ((localsMap != null) && ((options & LookupOptions.NamespaceAliasesOnly) == 0))
             {
                 LocalSymbol localSymbol;
                 if (localsMap.TryGetValue(name, out localSymbol))
@@ -401,7 +401,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var localFunctionsMap = this.LocalFunctionsMap;
-            if (localFunctionsMap != null && options.CanConsiderLocals())
+            if ((localFunctionsMap != null) && options.CanConsiderLocals())
             {
                 LocalFunctionSymbol localSymbol;
                 if (localFunctionsMap.TryGetValue(name, out localSymbol))
@@ -459,17 +459,17 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var declaredInThisScope = false;
 
-            declaredInThisScope |= newSymbolKind == SymbolKind.Local && this.Locals.Contains((LocalSymbol)newSymbol);
-            declaredInThisScope |= newSymbolKind == SymbolKind.Method && this.LocalFunctions.Contains((LocalFunctionSymbol)newSymbol);
+            declaredInThisScope |= (newSymbolKind == SymbolKind.Local) && this.Locals.Contains((LocalSymbol)newSymbol);
+            declaredInThisScope |= (newSymbolKind == SymbolKind.Method) && this.LocalFunctions.Contains((LocalFunctionSymbol)newSymbol);
 
-            if (declaredInThisScope && newLocation.SourceSpan.Start >= local.Locations[0].SourceSpan.Start)
+            if (declaredInThisScope && (newLocation.SourceSpan.Start >= local.Locations[0].SourceSpan.Start))
             {
                 // A local variable or function named '{0}' is already defined in this scope
                 diagnostics.Add(ErrorCode.ERR_LocalDuplicate, newLocation, name);
                 return true;
             }
 
-            if (newSymbolKind == SymbolKind.Local || newSymbolKind == SymbolKind.Parameter || newSymbolKind == SymbolKind.Method || newSymbolKind == SymbolKind.TypeParameter)
+            if ((newSymbolKind == SymbolKind.Local) || (newSymbolKind == SymbolKind.Parameter) || (newSymbolKind == SymbolKind.Method) || (newSymbolKind == SymbolKind.TypeParameter))
             {
                 // A local or parameter named '{0}' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter
                 diagnostics.Add(ErrorCode.ERR_LocalIllegallyOverrides, newLocation, name);
@@ -497,8 +497,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             var localFunctionsMap = this.LocalFunctionsMap;
 
             // TODO: Handle case where 'name' exists in both localsMap and localFunctionsMap. Right now locals are preferred over local functions.
-            if ((localsMap != null && localsMap.TryGetValue(name, out existingLocal)) ||
-                (localFunctionsMap != null && localFunctionsMap.TryGetValue(name, out existingLocalFunction)))
+            if (((localsMap != null) && localsMap.TryGetValue(name, out existingLocal)) ||
+                ((localFunctionsMap != null) && localFunctionsMap.TryGetValue(name, out existingLocalFunction)))
             {
                 var existingSymbol = (Symbol)existingLocal ?? existingLocalFunction;
                 if (symbol == existingSymbol)

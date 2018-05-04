@@ -51,7 +51,7 @@ namespace Microsoft.Cci
             }
 
             IUnitReference definingUnit = MetadataWriter.GetDefiningUnitReference(fieldReference.GetContainingType(Context), Context);
-            if (definingUnit != null && ReferenceEquals(definingUnit, Context.Module))
+            if ((definingUnit != null) && ReferenceEquals(definingUnit, Context.Module))
             {
                 return;
             }
@@ -91,8 +91,8 @@ namespace Microsoft.Cci
             {
                 ITypeReference containingType = nestedType.GetContainingType(Context);
 
-                if (containingType.AsGenericTypeInstanceReference != null ||
-                    containingType.AsSpecializedNestedTypeReference != null)
+                if ((containingType.AsGenericTypeInstanceReference != null) ||
+                    (containingType.AsSpecializedNestedTypeReference != null))
                 {
                     this.Visit(nestedType.GetContainingType(Context));
                 }
@@ -135,7 +135,7 @@ namespace Microsoft.Cci
             // an ordinary method def token. We consistently choose to emit a method ref regardless.)
 
             IUnitReference definingUnit = MetadataWriter.GetDefiningUnitReference(methodReference.GetContainingType(Context), Context);
-            if (definingUnit != null && ReferenceEquals(definingUnit, Context.Module) && !methodReference.AcceptsExtraArguments)
+            if ((definingUnit != null) && ReferenceEquals(definingUnit, Context.Module) && !methodReference.AcceptsExtraArguments)
             {
                 return;
             }
@@ -184,7 +184,7 @@ namespace Microsoft.Cci
 
         public override void Visit(INamespaceTypeReference namespaceTypeReference)
         {
-            if (!this.typeReferenceNeedsToken && namespaceTypeReference.TypeCode != PrimitiveTypeCode.NotPrimitive)
+            if (!this.typeReferenceNeedsToken && (namespaceTypeReference.TypeCode != PrimitiveTypeCode.NotPrimitive))
             {
                 return;
             }
@@ -206,7 +206,7 @@ namespace Microsoft.Cci
                     // If this is a module from a referenced multi-module assembly,
                     // the assembly should be used as the resolution scope. 
                     assemblyReference = moduleReference.GetContainingAssembly(Context);
-                    if (assemblyReference != null && assemblyReference != Context.Module.GetContainingAssembly(Context))
+                    if ((assemblyReference != null) && (assemblyReference != Context.Module.GetContainingAssembly(Context)))
                     {
                         this.Visit(assemblyReference);
                     }
@@ -222,7 +222,7 @@ namespace Microsoft.Cci
 
         public override void Visit(INestedTypeReference nestedTypeReference)
         {
-            if (!this.typeReferenceNeedsToken && nestedTypeReference.AsSpecializedNestedTypeReference != null)
+            if (!this.typeReferenceNeedsToken && (nestedTypeReference.AsSpecializedNestedTypeReference != null))
             {
                 return;
             }
@@ -417,8 +417,8 @@ namespace Microsoft.Cci
             }
 
             INestedTypeReference/*?*/ nestedTypeReference = typeReference.AsNestedTypeReference;
-            if (this.typeReferenceNeedsToken || nestedTypeReference != null ||
-              (typeReference.TypeCode == PrimitiveTypeCode.NotPrimitive && typeReference.AsNamespaceTypeReference != null))
+            if (this.typeReferenceNeedsToken || (nestedTypeReference != null) ||
+              ((typeReference.TypeCode == PrimitiveTypeCode.NotPrimitive) && (typeReference.AsNamespaceTypeReference != null)))
             {
                 ISpecializedNestedTypeReference/*?*/ specializedNestedTypeReference = nestedTypeReference?.AsSpecializedNestedTypeReference;
                 if (specializedNestedTypeReference != null)

@@ -44,8 +44,8 @@ namespace Microsoft.Cci
             INestedTypeReference nestedTypeReference = typeReference.AsNestedTypeReference;
             if (nestedTypeReference != null)
             {
-                return nestedTypeReference.AsSpecializedNestedTypeReference != null ||
-                    nestedTypeReference.AsGenericTypeInstanceReference != null;
+                return (nestedTypeReference.AsSpecializedNestedTypeReference != null) ||
+                    (nestedTypeReference.AsGenericTypeInstanceReference != null);
             }
 
             return typeReference.AsNamespaceTypeReference == null;

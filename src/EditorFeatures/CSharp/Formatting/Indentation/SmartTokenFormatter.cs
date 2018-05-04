@@ -43,8 +43,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
         public IList<TextChange> FormatRange(
             Workspace workspace, SyntaxToken startToken, SyntaxToken endToken, CancellationToken cancellationToken)
         {
-            Contract.ThrowIfTrue(startToken.Kind() == SyntaxKind.None || startToken.Kind() == SyntaxKind.EndOfFileToken);
-            Contract.ThrowIfTrue(endToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.EndOfFileToken);
+            Contract.ThrowIfTrue((startToken.Kind() == SyntaxKind.None) || (startToken.Kind() == SyntaxKind.EndOfFileToken));
+            Contract.ThrowIfTrue((endToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.EndOfFileToken));
 
             var smartTokenformattingRules = _formattingRules;
             var common = startToken.GetCommonRoot(endToken);
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
         public async Task<IList<TextChange>> FormatTokenAsync(
             Workspace workspace, SyntaxToken token, CancellationToken cancellationToken)
         {
-            Contract.ThrowIfTrue(token.Kind() == SyntaxKind.None || token.Kind() == SyntaxKind.EndOfFileToken);
+            Contract.ThrowIfTrue((token.Kind() == SyntaxKind.None) || (token.Kind() == SyntaxKind.EndOfFileToken));
 
             // get previous token
             var previousToken = token.GetPreviousToken(includeZeroWidth: true);
@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
             int adjustedEndPosition = token.Span.End;
             if (token.IsKind(SyntaxKind.OpenBraceToken) &&
                 (token.Parent.IsInitializerForArrayOrCollectionCreationExpression() ||
-                    token.Parent is AnonymousObjectCreationExpressionSyntax))
+                    (token.Parent is AnonymousObjectCreationExpressionSyntax)))
             {
                 var nextToken = token.GetNextToken(includeZeroWidth: true);
                 if (nextToken.IsKind(SyntaxKind.CloseBraceToken))
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
             var adjustedStartPosition = previousToken.SpanStart;
             var indentStyle = _optionSet.GetOption(FormattingOptions.SmartIndent, LanguageNames.CSharp);
             if (token.IsKind(SyntaxKind.OpenBraceToken) &&
-                indentStyle != FormattingOptions.IndentStyle.Smart)
+                (indentStyle != FormattingOptions.IndentStyle.Smart))
             {
                 var text = await token.SyntaxTree.GetTextAsync(cancellationToken).ConfigureAwait(false);
                 if (token.IsFirstTokenOnLine(text))
@@ -152,7 +152,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
 
                 // if there is force space operation, convert it to ForceSpaceIfSingleLine operation.
                 // (force space basically means remove all line breaks)
-                if (spaceOperation != null && spaceOperation.Option == AdjustSpacesOption.ForceSpaces)
+                if ((spaceOperation != null) && (spaceOperation.Option == AdjustSpacesOption.ForceSpaces))
                 {
                     return FormattingOperations.CreateAdjustSpacesOperation(spaceOperation.Space, AdjustSpacesOption.ForceSpacesIfOnSingleLine);
                 }

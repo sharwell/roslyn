@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
             var newMember = syntaxFactsService.GetContainingMemberDeclaration(newRoot, range.Span.Start);
 
             // reached the top (compilation unit)
-            if (oldMember == null || newMember == null)
+            if ((oldMember == null) || (newMember == null))
             {
                 return null;
             }
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
             var newMember = syntaxFactsService.GetContainingMemberDeclaration(newRoot, range.Span.Start);
 
             // reached the top (compilation unit)
-            if (oldMember == null || newMember == null)
+            if ((oldMember == null) || (newMember == null))
             {
                 return null;
             }

@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 var end = destination.Members.First().SpanStart;
                 indices.Add(!destination.OverlapsHiddenPosition(TextSpan.FromBounds(start, end), cancellationToken));
 
-                for (int i = 0; i < members.Count - 1; i++)
+                for (int i = 0; i < (members.Count - 1); i++)
                 {
                     var member1 = members[i];
                     var member2 = members[i + 1];
@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 {
                     foreach (var syntaxRef in typeSymbol.DeclaringSyntaxReferences)
                     {
-                        if (syntaxRef.GetSyntax(cancellationToken) is TypeDeclarationSyntax typeDecl && typeDecl.BaseList != null)
+                        if (syntaxRef.GetSyntax(cancellationToken) is TypeDeclarationSyntax typeDecl && (typeDecl.BaseList != null))
                         {
                             baseListTypes = baseListTypes.Concat(typeDecl.BaseList.Types);
                         }

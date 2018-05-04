@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
             public override SyntaxNode Visit(SyntaxNode node)
             {
-                if (_expandInsideNode == null || _expandInsideNode(node))
+                if ((_expandInsideNode == null) || _expandInsideNode(node))
                 {
                     return base.Visit(node);
                 }
@@ -174,12 +174,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                     }
 
                     // Next, try to add a types to the lambda parameters
-                    if (_expandParameter && parenthesizedLambda.ParameterList != null)
+                    if (_expandParameter && (parenthesizedLambda.ParameterList != null))
                     {
                         var parameterList = parenthesizedLambda.ParameterList;
                         var parameters = parameterList.Parameters.ToArray();
 
-                        if (parameters.Length > 0 && parameters.Any(p => p.Type == null))
+                        if ((parameters.Length > 0) && parameters.Any(p => p.Type == null))
                         {
                             var parameterSymbols = node.ParameterList.Parameters
                                 .Select(p => _semanticModel.GetDeclaredSymbol(p, _cancellationToken))
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
                 var newArgument = (ArgumentSyntax)base.VisitArgument(node);
 
-                if (node.NameColon == null
+                if ((node.NameColon == null)
                     && node.Parent is TupleExpressionSyntax tuple
                     && !IsTupleInDeconstruction(tuple)) // The language currently does not allow explicit element names in deconstruction
                 {
@@ -276,10 +276,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 }
 
                 var argumentType = _semanticModel.GetTypeInfo(node.Expression).ConvertedType;
-                if (argumentType != null &&
+                if ((argumentType != null) &&
                     !IsPassedToDelegateCreationExpression(node, argumentType) &&
-                    node.Expression.Kind() != SyntaxKind.DeclarationExpression &&
-                    node.RefOrOutKeyword.Kind() == SyntaxKind.None)
+                    (node.Expression.Kind() != SyntaxKind.DeclarationExpression) &&
+                    (node.RefOrOutKeyword.Kind() == SyntaxKind.None))
                 {
                     if (TryCastTo(argumentType, node.Expression, newArgument.Expression, out var newArgumentExpressionWithCast))
                     {
@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
             private static bool CanMakeNameExplicitInTuple(TupleExpressionSyntax tuple, string name)
             {
-                if (name == null || SyntaxFacts.IsReservedTupleElementName(name))
+                if ((name == null) || SyntaxFacts.IsReservedTupleElementName(name))
                 {
                     return false;
                 }
@@ -365,7 +365,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
                 var result = (BinaryExpressionSyntax)base.VisitBinaryExpression(node);
 
-                if ((node.Kind() == SyntaxKind.GreaterThanExpression || node.Kind() == SyntaxKind.RightShiftExpression) && !node.IsParentKind(SyntaxKind.ParenthesizedExpression))
+                if (((node.Kind() == SyntaxKind.GreaterThanExpression) || (node.Kind() == SyntaxKind.RightShiftExpression)) && !node.IsParentKind(SyntaxKind.ParenthesizedExpression))
                 {
                     return result.Parenthesize();
                 }
@@ -377,7 +377,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             {
                 var result = (InterpolationSyntax)base.VisitInterpolation(node);
 
-                if (result.Expression != null && !result.Expression.IsKind(SyntaxKind.ParenthesizedExpression))
+                if ((result.Expression != null) && !result.Expression.IsKind(SyntaxKind.ParenthesizedExpression))
                 {
                     result = result.WithExpression(result.Expression.Parenthesize());
                 }
@@ -475,7 +475,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                         // if the enclosing expression is a typeof expression that already contains open type we cannot
                         // we need to insert an open type as well.
                         var typeOfExpression = originalSimpleName.GetAncestor<TypeOfExpressionSyntax>();
-                        if (typeOfExpression != null && IsTypeOfUnboundGenericType(_semanticModel, typeOfExpression))
+                        if ((typeOfExpression != null) && IsTypeOfUnboundGenericType(_semanticModel, typeOfExpression))
                         {
                             aliasTarget = ((INamedTypeSymbol)aliasTarget).ConstructUnboundGenericType();
                         }
@@ -593,7 +593,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 if (IsTypeArgumentDefinedRecursive(symbol, typeArgumentSymbols, enterContainingSymbol: true))
                 {
                     if (symbol.ContainingSymbol.Equals(symbol.OriginalDefinition.ContainingSymbol) &&
-                        symbol.Kind == SymbolKind.Method &&
+                        (symbol.Kind == SymbolKind.Method) &&
                         ((IMethodSymbol)symbol).IsStatic)
                     {
                         if (IsTypeArgumentDefinedRecursive(symbol, typeArgumentSymbols, enterContainingSymbol: false))
@@ -621,7 +621,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 ////
                 if (originalSimpleName.GetAncestor<AttributeSyntax>() != null)
                 {
-                    if (symbol.IsConstructor() && symbol.ContainingType?.IsAttribute() == true)
+                    if (symbol.IsConstructor() && (symbol.ContainingType?.IsAttribute() == true))
                     {
                         symbol = symbol.ContainingType;
                         var name = symbol.Name;
@@ -629,7 +629,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                         Debug.Assert(name.StartsWith(originalSimpleName.Identifier.ValueText, StringComparison.Ordinal));
 
                         // if the user already used the Attribute suffix in the attribute, we'll maintain it.
-                        if (identifier.ValueText == name && name.EndsWith("Attribute", StringComparison.Ordinal))
+                        if ((identifier.ValueText == name) && name.EndsWith("Attribute", StringComparison.Ordinal))
                         {
                             identifier = identifier.WithAdditionalAnnotations(SimplificationHelpers.DontSimplifyAnnotation);
                         }
@@ -659,12 +659,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 var parent = originalSimpleName.Parent;
 
                 // do not complexify further for location where only simple names are allowed
-                if (parent is MemberDeclarationSyntax ||
-                    parent is MemberBindingExpressionSyntax ||
-                    originalSimpleName.GetAncestor<NameEqualsSyntax>() != null ||
-                    (parent is MemberAccessExpressionSyntax && parent.Kind() != SyntaxKind.SimpleMemberAccessExpression) ||
-                    ((parent.Kind() == SyntaxKind.SimpleMemberAccessExpression || parent.Kind() == SyntaxKind.NameMemberCref) && originalSimpleName.IsRightSideOfDot()) ||
-                    (parent.Kind() == SyntaxKind.QualifiedName && originalSimpleName.IsRightSideOfQualifiedName()) ||
+                if ((parent is MemberDeclarationSyntax) ||
+                    (parent is MemberBindingExpressionSyntax) ||
+                    (originalSimpleName.GetAncestor<NameEqualsSyntax>() != null) ||
+                    ((parent is MemberAccessExpressionSyntax) && (parent.Kind() != SyntaxKind.SimpleMemberAccessExpression)) ||
+                    (((parent.Kind() == SyntaxKind.SimpleMemberAccessExpression) || (parent.Kind() == SyntaxKind.NameMemberCref)) && originalSimpleName.IsRightSideOfDot()) ||
+                    ((parent.Kind() == SyntaxKind.QualifiedName) && originalSimpleName.IsRightSideOfQualifiedName()) ||
                     (parent.Kind() == SyntaxKind.AliasQualifiedName)||
                     (parent.Kind() == SyntaxKind.NameColon))
                 {
@@ -676,14 +676,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 ////
 
                 // we need to treat the constructor as type name, so just get the containing type.
-                if (symbol.IsConstructor() && (parent.Kind() == SyntaxKind.ObjectCreationExpression || parent.Kind() == SyntaxKind.NameMemberCref))
+                if (symbol.IsConstructor() && ((parent.Kind() == SyntaxKind.ObjectCreationExpression) || (parent.Kind() == SyntaxKind.NameMemberCref)))
                 {
                     symbol = symbol.ContainingType;
                 }
 
                 // if it's a namespace or type name, fully qualify it.
-                if (symbol.Kind == SymbolKind.NamedType ||
-                    symbol.Kind == SymbolKind.Namespace)
+                if ((symbol.Kind == SymbolKind.NamedType) ||
+                    (symbol.Kind == SymbolKind.Namespace))
                 {
                     var replacement = FullyQualifyIdentifierName(
                         (INamespaceOrTypeSymbol)symbol,
@@ -700,9 +700,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 }
 
                 // if it's a member access, we're fully qualifying the left side and make it a member access.
-                if (symbol.Kind == SymbolKind.Method ||
-                    symbol.Kind == SymbolKind.Field ||
-                    symbol.Kind == SymbolKind.Property)
+                if ((symbol.Kind == SymbolKind.Method) ||
+                    (symbol.Kind == SymbolKind.Field) ||
+                    (symbol.Kind == SymbolKind.Property))
                 {
                     if (symbol.IsStatic ||
                         originalSimpleName.IsParentKind(SyntaxKind.NameMemberCref) ||
@@ -760,7 +760,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
                     foreach (var candidateToken in leftTokens)
                     {
-                        if (candidateToken.Kind() == SyntaxKind.LessThanToken || candidateToken.Kind() == SyntaxKind.GreaterThanToken)
+                        if ((candidateToken.Kind() == SyntaxKind.LessThanToken) || (candidateToken.Kind() == SyntaxKind.GreaterThanToken))
                         {
                             candidateTokens.Add(candidateToken);
                             continue;
@@ -775,7 +775,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
             private ExpressionSyntax TryAddTypeArgumentToIdentifierName(ExpressionSyntax newNode, ISymbol symbol)
             {
-                if (newNode.Kind() == SyntaxKind.IdentifierName && symbol.Kind == SymbolKind.Method)
+                if ((newNode.Kind() == SyntaxKind.IdentifierName) && (symbol.Kind == SymbolKind.Method))
                 {
                     if (((IMethodSymbol)symbol).TypeArguments.Length != 0)
                     {
@@ -810,7 +810,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                     foreach (var typeArgument in castedTypeArgument.Arguments)
                     {
                         var symbol = _semanticModel.GetSymbolInfo(typeArgument).Symbol;
-                        if (symbol != null && !typeArgumentSymbols.Contains(symbol))
+                        if ((symbol != null) && !typeArgumentSymbols.Contains(symbol))
                         {
                             typeArgumentSymbols.Add(symbol);
                         }
@@ -825,7 +825,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 var invocationExpression = originalSimpleName.Ancestors().OfType<InvocationExpressionSyntax>().FirstOrDefault();
 
                 // Check to see if this is the invocation Expression we wanted to work with
-                if (invocationExpression != null && invocationExpression.Expression.GetLastToken() == originalSimpleName.GetLastToken())
+                if ((invocationExpression != null) && (invocationExpression.Expression.GetLastToken() == originalSimpleName.GetLastToken()))
                 {
                     if (invocationExpression.ArgumentList != null)
                     {
@@ -834,7 +834,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                             if (argument != null)
                             {
                                 var typeinfo = semanticModel.GetTypeInfo(argument.Expression);
-                                if (typeinfo.Type != null && typeinfo.Type.TypeKind == TypeKind.Dynamic)
+                                if ((typeinfo.Type != null) && (typeinfo.Type.TypeKind == TypeKind.Dynamic))
                                 {
                                     return true;
                                 }
@@ -869,7 +869,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
             private void TypeArgumentsInAllContainingSymbol(ISymbol symbol, IList<ISymbol> typeArgumentSymbols, bool enterContainingSymbol, bool isRecursive)
             {
-                if (symbol == null || symbol.IsNamespace())
+                if ((symbol == null) || symbol.IsNamespace())
                 {
                     // This is the terminating condition
                     return;
@@ -908,7 +908,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 {
                     if (parent.Kind() == SyntaxKind.ObjectInitializerExpression)
                     {
-                        return currentNode.Kind() == SyntaxKind.SimpleAssignmentExpression &&
+                        return (currentNode.Kind() == SyntaxKind.SimpleAssignmentExpression) &&
                             object.Equals(((AssignmentExpressionSyntax)currentNode).Left, identifierName);
                     }
                     else if (parent is ExpressionSyntax)
@@ -935,7 +935,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 bool isInsideCref,
                 bool omitLeftHandSide)
             {
-                Debug.Assert(!replaceNode || rewrittenNode.Kind() == SyntaxKind.IdentifierName);
+                Debug.Assert(!replaceNode || (rewrittenNode.Kind() == SyntaxKind.IdentifierName));
 
                 //// TODO: use and expand Generate*Syntax(isymbol) to not depend on symbol display any more.
                 //// See GenerateExpressionSyntax();
@@ -943,7 +943,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 var result = rewrittenNode;
 
                 // only if this symbol has a containing type or namespace there is work for us to do.
-                if (replaceNode || symbol.ContainingType != null || symbol.ContainingNamespace != null)
+                if (replaceNode || (symbol.ContainingType != null) || (symbol.ContainingNamespace != null))
                 {
                     ImmutableArray<SymbolDisplayPart> displayParts;
 
@@ -951,7 +951,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
                     // we either need to create an AliasQualifiedName if the symbol is directly contained in the global namespace,
                     // otherwise it a QualifiedName.
-                    if (!replaceNode && symbol.ContainingType == null && symbol.ContainingNamespace.IsGlobalNamespace)
+                    if (!replaceNode && (symbol.ContainingType == null) && symbol.ContainingNamespace.IsGlobalNamespace)
                     {
                         return rewrittenNode.CopyAnnotationsTo(
                             SyntaxFactory.AliasQualifiedName(
@@ -1095,7 +1095,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                     var memberAccess = (MemberAccessExpressionSyntax)originalNode.Expression;
                     var targetSymbol = SimplificationHelpers.GetOriginalSymbolInfo(_semanticModel, memberAccess.Name);
 
-                    if (targetSymbol != null && targetSymbol.IsReducedExtension() && memberAccess.Expression != null)
+                    if ((targetSymbol != null) && targetSymbol.IsReducedExtension() && (memberAccess.Expression != null))
                     {
                         rewrittenNode = RewriteExtensionMethodInvocation(originalNode, rewrittenNode, ((MemberAccessExpressionSyntax)rewrittenNode.Expression).Expression, (IMethodSymbol)targetSymbol);
                     }

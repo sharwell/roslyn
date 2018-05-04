@@ -424,7 +424,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
                 {
                     var typeArgument = typeArguments[i];
                     var typeParameter = typeParameters[i];
-                    if (typeArgument is ITypeParameterSymbol && typeArgument.Name == typeParameter.Name)
+                    if ((typeArgument is ITypeParameterSymbol) && (typeArgument.Name == typeParameter.Name))
                     {
                         continue;
                     }
@@ -455,7 +455,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
 
                 // Don't bother showing disambiguating text for enum members. The icon displayed
                 // on Quick Info should be enough.
-                if (symbol.ContainingType != null && symbol.ContainingType.TypeKind == TypeKind.Enum)
+                if ((symbol.ContainingType != null) && (symbol.ContainingType.TypeKind == TypeKind.Enum))
                 {
                     AddToGroup(SymbolDescriptionGroups.MainDescription, parts);
                 }
@@ -540,7 +540,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
             {
                 // TODO : show duplicated member case
                 var awaitable = method.IsAwaitableNonDynamic(_semanticModel, _position);
-                var extension = method.IsExtensionMethod || method.MethodKind == MethodKind.ReducedExtension;
+                var extension = method.IsExtensionMethod || (method.MethodKind == MethodKind.ReducedExtension);
                 if (awaitable && extension)
                 {
                     AddAwaitableExtensionPrefix();
@@ -635,7 +635,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
             {
                 return symbolGroup.Select(s => s.OriginalDefinition)
                                   .Where(s => !s.Equals(symbolGroup.First().OriginalDefinition))
-                                  .Where(s => s is IMethodSymbol || s.IsIndexer())
+                                  .Where(s => (s is IMethodSymbol) || s.IsIndexer())
                                   .Count();
             }
 
@@ -655,7 +655,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
                     parts.AddRange(Space());
                     parts.AddRange(ToMinimalDisplayParts(typeArguments[i]));
 
-                    if (i < count - 1)
+                    if (i < (count - 1))
                     {
                         parts.AddRange(LineBreak());
                     }

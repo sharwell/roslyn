@@ -64,7 +64,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             var parameters = GetParameters();
             var index = parameters.IndexOf(p => p.Name == name);
 
-            if (index >= 0 && index < parameters.Length)
+            if ((index >= 0) && (index < parameters.Length))
             {
                 element = (EnvDTE.CodeElement)ExternalCodeParameter.Create(this.State, _projectId, parameters[index], this.ParentElement);
                 return true;

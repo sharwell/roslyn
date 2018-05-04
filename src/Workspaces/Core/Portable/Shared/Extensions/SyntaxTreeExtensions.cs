@@ -57,14 +57,14 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             var root = await syntaxTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
             var token = root.FindToken(position, findInsideTrivia);
 
-            if ((token.Span.Contains(position) || token.Span.End == position) && predicate(token))
+            if ((token.Span.Contains(position) || (token.Span.End == position)) && predicate(token))
             {
                 return token;
             }
 
             token = token.GetPreviousToken();
 
-            if (token.Span.End == position && predicate(token))
+            if ((token.Span.End == position) && predicate(token))
             {
                 return token;
             }
@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 {
                     // implements the ASP.Net IsHidden rule
                     var lineVisibility = tree.GetLineVisibility(position, cancellationToken2);
-                    return lineVisibility == LineVisibility.Hidden || lineVisibility == LineVisibility.BeforeFirstLineDirective;
+                    return (lineVisibility == LineVisibility.Hidden) || (lineVisibility == LineVisibility.BeforeFirstLineDirective);
                 },
                 cancellationToken);
         }

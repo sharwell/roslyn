@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             CancellationToken cancellationToken)
         {
             var location = symbol.Locations.FirstOrDefault();
-            if (location == null || !location.IsInSource)
+            if ((location == null) || !location.IsInSource)
             {
                 return SpecializedTasks.EmptyImmutableArray<Document>();
             }
@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 return SpecializedTasks.EmptyImmutableArray<Document>();
             }
 
-            if (documents != null && !documents.Contains(document))
+            if ((documents != null) && !documents.Contains(document))
             {
                 return SpecializedTasks.EmptyImmutableArray<Document>();
             }
@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 return await FindReferencesInContainerAsync(symbol, container, document, semanticModel, cancellationToken).ConfigureAwait(false);
             }
 
-            if (symbol.ContainingType != null && symbol.ContainingType.IsScriptClass)
+            if ((symbol.ContainingType != null) && symbol.ContainingType.IsScriptClass)
             {
                 var syntaxTree = await document.GetSyntaxTreeAsync(cancellationToken).ConfigureAwait(false);
                 var syntaxFactsService = document.GetLanguageService<ISyntaxFactsService>();
@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 if (current is IFieldSymbol field)
                 {
                     if (field.IsImplicitlyDeclared &&
-                        field.AssociatedSymbol?.Kind == SymbolKind.Property)
+                        (field.AssociatedSymbol?.Kind == SymbolKind.Property))
                     {
                         return field.AssociatedSymbol;
                     }
@@ -97,8 +97,8 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 }
 
                 if (current is IMethodSymbol method &&
-                    method.MethodKind != MethodKind.AnonymousFunction &&
-                    method.MethodKind != MethodKind.LocalFunction)
+                    (method.MethodKind != MethodKind.AnonymousFunction) &&
+                    (method.MethodKind != MethodKind.LocalFunction))
                 {
                     return method;
                 }

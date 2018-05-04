@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
                 var attributeArgumentList = token.Parent as AttributeArgumentListSyntax;
                 var attributeSyntax = token.Parent.Parent as AttributeSyntax;
-                if (attributeSyntax == null || attributeArgumentList == null)
+                if ((attributeSyntax == null) || (attributeArgumentList == null))
                 {
                     return;
                 }
@@ -97,11 +97,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         private bool IsAfterNameColonArgument(SyntaxToken token)
         {
             var argumentList = token.Parent as AttributeArgumentListSyntax;
-            if (token.Kind() == SyntaxKind.CommaToken && argumentList != null)
+            if ((token.Kind() == SyntaxKind.CommaToken) && (argumentList != null))
             {
                 foreach (var item in argumentList.Arguments.GetWithSeparators())
                 {
-                    if (item.IsToken && item.AsToken() == token)
+                    if (item.IsToken && (item.AsToken() == token))
                     {
                         return false;
                     }
@@ -123,11 +123,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         private bool IsAfterNameEqualsArgument(SyntaxToken token)
         {
             var argumentList = token.Parent as AttributeArgumentListSyntax;
-            if (token.Kind() == SyntaxKind.CommaToken && argumentList != null)
+            if ((token.Kind() == SyntaxKind.CommaToken) && (argumentList != null))
             {
                 foreach (var item in argumentList.Arguments.GetWithSeparators())
                 {
-                    if (item.IsToken && item.AsToken() == token)
+                    if (item.IsToken && (item.AsToken() == token))
                     {
                         return false;
                     }
@@ -215,7 +215,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         {
             var within = semanticModel.GetEnclosingNamedTypeOrAssembly(position, cancellationToken);
             var attributeType = semanticModel.GetTypeInfo(attribute, cancellationToken).Type as INamedTypeSymbol;
-            if (within != null && attributeType != null)
+            if ((within != null) && (attributeType != null))
             {
                 return attributeType.InstanceConstructors.Where(c => c.IsAccessibleWithin(within))
                                                          .Select(c => c.Parameters);
@@ -248,21 +248,21 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             {
                 // If user types a space, do not complete the " =" (space and equals) at the end of a named parameter. The
                 // typed space character will be passed through to the editor, and they can then type the '='.
-                if (ch == ' ' && displayText.EndsWith(SpaceEqualsString, StringComparison.Ordinal))
+                if ((ch == ' ') && displayText.EndsWith(SpaceEqualsString, StringComparison.Ordinal))
                 {
                     return new TextChange(selectedItem.Span, displayText.Remove(displayText.Length - SpaceEqualsString.Length));
                 }
 
                 // If the user types '=', do not complete the '=' at the end of the named parameter because the typed '=' 
                 // will be passed through to the editor.
-                if (ch == '=' && displayText.EndsWith(EqualsString, StringComparison.Ordinal))
+                if ((ch == '=') && displayText.EndsWith(EqualsString, StringComparison.Ordinal))
                 {
                     return new TextChange(selectedItem.Span, displayText.Remove(displayText.Length - EqualsString.Length));
                 }
 
                 // If the user types ':', do not complete the ':' at the end of the named parameter because the typed ':' 
                 // will be passed through to the editor.
-                if (ch == ':' && displayText.EndsWith(ColonString, StringComparison.Ordinal))
+                if ((ch == ':') && displayText.EndsWith(ColonString, StringComparison.Ordinal))
                 {
                     return new TextChange(selectedItem.Span, displayText.Remove(displayText.Length - ColonString.Length));
                 }

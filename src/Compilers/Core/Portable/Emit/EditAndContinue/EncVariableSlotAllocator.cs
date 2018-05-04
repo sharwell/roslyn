@@ -291,7 +291,7 @@ namespace Microsoft.CodeAnalysis.Emit
         public override bool TryGetPreviousClosure(SyntaxNode scopeSyntax, out DebugId closureId)
         {
             int syntaxOffset;
-            if (_closureMapOpt != null &&
+            if ((_closureMapOpt != null) &&
                 TryGetPreviousSyntaxOffset(scopeSyntax, out syntaxOffset) &&
                 _closureMapOpt.TryGetValue(syntaxOffset, out closureId))
             {
@@ -307,7 +307,7 @@ namespace Microsoft.CodeAnalysis.Emit
             KeyValuePair<DebugId, int> idAndClosureOrdinal;
 
             int syntaxOffset;
-            if (_lambdaMapOpt != null &&
+            if ((_lambdaMapOpt != null) &&
                 TryGetPreviousLambdaSyntaxOffset(lambdaOrLambdaBodySyntax, isLambdaBody, out syntaxOffset) &&
                 _lambdaMapOpt.TryGetValue(syntaxOffset, out idAndClosureOrdinal))
             {

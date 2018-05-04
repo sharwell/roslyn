@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ForegroundNotification
                     processedCount++;
 
                     // there is input to process, or we've exceeded a time slice, postpone the remaining work
-                    if (IsInputPending() || Environment.TickCount - startProcessingTime > DefaultTimeSliceInMS)
+                    if (IsInputPending() || ((Environment.TickCount - startProcessingTime) > DefaultTimeSliceInMS))
                     {
                         return;
                     }
@@ -206,7 +206,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ForegroundNotification
                 }
 
                 // The next item is ready to run
-                if (nextItem - Environment.TickCount <= 0)
+                if ((nextItem - Environment.TickCount) <= 0)
                 {
                     break;
                 }
@@ -216,7 +216,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ForegroundNotification
             }
 
             // Throttle how often we run by waiting MinimumDelayBetweenProcessing since the last time we processed notifications
-            if (Environment.TickCount - _lastProcessedTimeInMS < MinimumDelayBetweenProcessing)
+            if ((Environment.TickCount - _lastProcessedTimeInMS) < MinimumDelayBetweenProcessing)
             {
                 await Task.Delay(MinimumDelayBetweenProcessing).ConfigureAwait(false);
             }
@@ -380,7 +380,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ForegroundNotification
 
             private bool ContainsMoreWork_NoLock(int currentTime)
             {
-                return _list.Count > 0 && _list.First.Value.MinimumRunPointInMS <= currentTime;
+                return (_list.Count > 0) && (_list.First.Value.MinimumRunPointInMS <= currentTime);
             }
 
             private PendingWork Dequeue_NoLock()

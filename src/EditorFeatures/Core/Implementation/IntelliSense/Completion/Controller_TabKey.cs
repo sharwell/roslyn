@@ -102,9 +102,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             }
 
             var syntaxFactsOpt = document.GetLanguageService<ISyntaxFactsService>();
-            if (syntaxFactsOpt == null ||
-                caretPoint < 2 ||
-                text[caretPoint - 1] != '?' ||
+            if ((syntaxFactsOpt == null) ||
+                (caretPoint < 2) ||
+                (text[caretPoint - 1] != '?') ||
                 !QuestionMarkIsPrecededByIdentifierAndWhitespace(text, caretPoint - 1, syntaxFactsOpt))
             {
                 return false;
@@ -126,12 +126,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 
             // First, skip all the whitespace.
             var current = startOfLine;
-            while (current < questionPosition && char.IsWhiteSpace(text[current]))
+            while ((current < questionPosition) && char.IsWhiteSpace(text[current]))
             {
                 current++;
             }
 
-            if (current < questionPosition && syntaxFacts.IsIdentifierStartCharacter(text[current]))
+            if ((current < questionPosition) && syntaxFacts.IsIdentifierStartCharacter(text[current]))
             {
                 current++;
             }
@@ -140,7 +140,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 return false;
             }
 
-            while (current < questionPosition && syntaxFacts.IsIdentifierPartCharacter(text[current]))
+            while ((current < questionPosition) && syntaxFacts.IsIdentifierPartCharacter(text[current]))
             {
                 current++;
             }

@@ -275,7 +275,7 @@ namespace Microsoft.CodeAnalysis.Remote
                 foreach (var file in Directory.EnumerateFiles(logPath, "*.log"))
                 {
                     var lastWrite = File.GetLastWriteTimeUtc(file);
-                    if (now - lastWrite > oneDay)
+                    if ((now - lastWrite) > oneDay)
                     {
                         continue;
                     }

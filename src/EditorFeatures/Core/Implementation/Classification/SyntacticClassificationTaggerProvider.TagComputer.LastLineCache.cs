@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Classification
                     {
                         // currently, it is using SnapshotSpan even though holding onto it could be
                         // expensive. reason being it should be very soon sync-ed to latest snapshot.
-                        if (_classifications != null && _span.Equals(span))
+                        if ((_classifications != null) && _span.Equals(span))
                         {
                             classifications = _classifications;
                             return true;

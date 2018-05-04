@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsValid(this OptimizationLevel value)
         {
-            return value >= OptimizationLevel.Debug && value <= OptimizationLevel.Release;
+            return (value >= OptimizationLevel.Debug) && (value <= OptimizationLevel.Release);
         }
     }
 }

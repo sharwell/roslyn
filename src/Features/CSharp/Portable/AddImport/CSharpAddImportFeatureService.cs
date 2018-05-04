@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.CSharp.AddImport
                 case CS1929:
                     var memberAccessName = (node.Parent as MemberAccessExpressionSyntax)?.Name;
                     var conditionalAccessName = (((node.Parent as ConditionalAccessExpressionSyntax)?.WhenNotNull as InvocationExpressionSyntax)?.Expression as MemberBindingExpressionSyntax)?.Name;
-                    if (memberAccessName == null && conditionalAccessName == null)
+                    if ((memberAccessName == null) && (conditionalAccessName == null))
                     {
                         return false;
                     }
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.CSharp.AddImport
                 return false;
             }
 
-            return node.AncestorsAndSelf().Any(n => n is QueryExpressionSyntax && !(n.Parent is QueryContinuationSyntax));
+            return node.AncestorsAndSelf().Any(n => (n is QueryExpressionSyntax) && !(n.Parent is QueryContinuationSyntax));
         }
 
         protected override bool CanAddImportForType(string diagnosticId, SyntaxNode node, out SimpleNameSyntax nameNode)
@@ -295,17 +295,17 @@ namespace Microsoft.CodeAnalysis.CSharp.AddImport
             var externAliasString = externAlias != null ? $"extern alias {externAlias.Identifier.ValueText};" : null;
             var usingDirectiveString = usingDirective != null ? GetUsingDirectiveString(namespaceOrTypeSymbol) :null;
 
-            if (externAlias == null && usingDirective == null)
+            if ((externAlias == null) && (usingDirective == null))
             {
                 return (null, false);
             }
 
-            if (externAlias != null && !hasExistingExtern)
+            if ((externAlias != null) && !hasExistingExtern)
             {
                 return (externAliasString, false);
             }
 
-            if (usingDirective != null && !hasExistingUsing)
+            if ((usingDirective != null) && !hasExistingUsing)
             {
                 return (usingDirectiveString, false);
             }
@@ -351,12 +351,12 @@ namespace Microsoft.CodeAnalysis.CSharp.AddImport
             var newImports = ArrayBuilder<SyntaxNode>.GetInstance();
             try
             {
-                if (!hasExistingExtern && externAliasDirective != null)
+                if (!hasExistingExtern && (externAliasDirective != null))
                 {
                     newImports.Add(externAliasDirective);
                 }
 
-                if (!hasExistingUsing && usingDirective != null)
+                if (!hasExistingUsing && (usingDirective != null))
                 {
                     newImports.Add(usingDirective);
                 }
@@ -510,7 +510,7 @@ namespace Microsoft.CodeAnalysis.CSharp.AddImport
             {
                 var containingNamespaceSymbol = semanticModel.GetDeclaredSymbol(namespaceToAddTo);
 
-                while (containingNamespaceSymbol != null && !containingNamespaceSymbol.IsGlobalNamespace)
+                while ((containingNamespaceSymbol != null) && !containingNamespaceSymbol.IsGlobalNamespace)
                 {
                     if (containingNamespaceSymbol.GetMembers(rightOfAliasName).Any())
                     {

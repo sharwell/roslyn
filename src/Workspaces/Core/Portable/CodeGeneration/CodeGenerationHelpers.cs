@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
         public static TSyntaxNode AddAnnotationsTo<TSyntaxNode>(ISymbol symbol, TSyntaxNode syntax)
             where TSyntaxNode : SyntaxNode
         {
-            if (syntax != null && symbol is CodeGenerationSymbol)
+            if ((syntax != null) && (symbol is CodeGenerationSymbol))
             {
                 return syntax.WithAdditionalAnnotations(
                     ((CodeGenerationSymbol)symbol).GetAnnotations());
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
         public static void CheckNodeType<TSyntaxNode1>(SyntaxNode node, string argumentName)
             where TSyntaxNode1 : SyntaxNode
         {
-            if (node == null || node is TSyntaxNode1)
+            if ((node == null) || (node is TSyntaxNode1))
             {
                 return;
             }
@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             out string name,
             out INamespaceSymbol innermostNamespace)
         {
-            if (options.GenerateMembers && options.MergeNestedNamespaces && @namespace.Name != string.Empty)
+            if (options.GenerateMembers && options.MergeNestedNamespaces && (@namespace.Name != string.Empty))
             {
                 var names = new List<string>();
                 names.Add(@namespace.Name);
@@ -76,9 +76,9 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
                 while (true)
                 {
                     var members = innermostNamespace.GetMembers().ToList();
-                    if (members.Count == 1 &&
-                        members[0] is INamespaceSymbol &&
-                        CodeGenerationNamespaceInfo.GetImports(innermostNamespace).Count == 0)
+                    if ((members.Count == 1) &&
+                        (members[0] is INamespaceSymbol) &&
+                        (CodeGenerationNamespaceInfo.GetImports(innermostNamespace).Count == 0))
                     {
                         var childNamespace = (INamespaceSymbol)members[0];
                         names.Add(childNamespace.Name);
@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         public static bool IsSpecialType(ITypeSymbol type, SpecialType specialType)
         {
-            return type != null && type.SpecialType == specialType;
+            return (type != null) && (type.SpecialType == specialType);
         }
 
         public static int GetPreferredIndex(int index, IList<bool> availableIndices, bool forward)
@@ -213,7 +213,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
         {
             Contract.ThrowIfNull(symbol);
 
-            return options != null && options.ReuseSyntax && symbol.DeclaringSyntaxReferences.Length == 1
+            return (options != null) && options.ReuseSyntax && (symbol.DeclaringSyntaxReferences.Length == 1)
                 ? symbol.DeclaringSyntaxReferences[0].GetSyntax() as T
                 : null;
         }
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
         {
             Contract.ThrowIfNull(attribute);
 
-            return options != null && options.ReuseSyntax && attribute.ApplicationSyntaxReference != null ?
+            return (options != null) && options.ReuseSyntax && (attribute.ApplicationSyntaxReference != null) ?
                 attribute.ApplicationSyntaxReference.GetSyntax() as T :
                 null;
         }
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             Func<SyntaxList<TDeclaration>, TDeclaration> before = null)
             where TDeclaration : SyntaxNode
         {
-            Contract.ThrowIfTrue(availableIndices != null && availableIndices.Count != declarationList.Count + 1);
+            Contract.ThrowIfTrue((availableIndices != null) && (availableIndices.Count != (declarationList.Count + 1)));
 
             if (options != null)
             {
@@ -389,7 +389,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             while (desiredGroupIndex < declarationList.Count)
             {
                 // Stop walking forward if we hit an unavailable index.
-                if (availableIndices != null && !availableIndices[desiredGroupIndex])
+                if ((availableIndices != null) && !availableIndices[desiredGroupIndex])
                 {
                     break;
                 }
@@ -412,7 +412,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
                 var previousIndex = currentIndex - 1;
 
                 // Stop walking backward if we hit an unavailable index.
-                if (availableIndices != null && !availableIndices[previousIndex])
+                if ((availableIndices != null) && !availableIndices[previousIndex])
                 {
                     break;
                 }

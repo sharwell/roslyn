@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis
             public abstract ushort ExponentBits { get; }
             public int MinBinaryExponent => 1 - MaxBinaryExponent;
             public abstract int MaxBinaryExponent { get; }
-            public int OverflowDecimalExponent => (MaxBinaryExponent + 2 * NormalMantissaBits) / 3;
+            public int OverflowDecimalExponent => (MaxBinaryExponent + (2 * NormalMantissaBits)) / 3;
             public abstract int ExponentBias { get; }
             public ulong DenormalMantissaMask => (1UL << (DenormalMantissaBits)) - 1;
             public ulong NormalMantissaMask => (1UL << NormalMantissaBits) - 1;
@@ -292,9 +292,9 @@ namespace Microsoft.CodeAnalysis
                 var mantissaBuilder = new StringBuilder();
                 var exponent = 0;
                 int i = 0;
-                while (i < source.Length && source[i] == '0') i++;
+                while ((i < source.Length) && (source[i] == '0')) i++;
                 int skippedDecimals = 0;
-                while (i < source.Length && source[i] >= '0' && source[i] <= '9')
+                while ((i < source.Length) && (source[i] >= '0') && (source[i] <= '9'))
                 {
                     if (source[i] == '0')
                     {
@@ -309,10 +309,10 @@ namespace Microsoft.CodeAnalysis
                     exponent++;
                     i++;
                 }
-                if (i < source.Length && source[i] == '.')
+                if ((i < source.Length) && (source[i] == '.'))
                 {
                     i++;
-                    while (i < source.Length && source[i] >= '0' && source[i] <= '9')
+                    while ((i < source.Length) && (source[i] >= '0') && (source[i] <= '9'))
                     {
                         if (source[i] == '0')
                         {
@@ -329,24 +329,24 @@ namespace Microsoft.CodeAnalysis
                 }
                 var result = default(DecimalFloatingPointString);
                 result.Mantissa = mantissaBuilder.ToString();
-                if (i < source.Length && (source[i] == 'e' || source[i] == 'E'))
+                if ((i < source.Length) && ((source[i] == 'e') || (source[i] == 'E')))
                 {
                     const int MAX_EXP = 1 << 30; // even playing ground
                     char exponentSign = '\0';
                     i++;
-                    if (i < source.Length && (source[i] == '-' || source[i] == '+'))
+                    if ((i < source.Length) && ((source[i] == '-') || (source[i] == '+')))
                     {
                         exponentSign = source[i];
                         i++;
                     }
                     int firstExponent = i;
                     int lastExponent = i;
-                    while (i < source.Length && source[i] >= '0' && source[i] <= '9') lastExponent = ++i;
+                    while ((i < source.Length) && (source[i] >= '0') && (source[i] <= '9')) lastExponent = ++i;
 
                     int exponentMagnitude = 0;
 
                     if (int.TryParse(source.Substring(firstExponent, lastExponent - firstExponent), out exponentMagnitude) &&
-                        exponentMagnitude <= MAX_EXP)
+                        (exponentMagnitude <= MAX_EXP))
                     {
                         if (exponentSign == '-')
                         {
@@ -429,8 +429,8 @@ namespace Microsoft.CodeAnalysis
             // then we can assemble the result immediately:
             byte[] integerValueAsBytes;
             uint integerBitsOfPrecision = CountSignificantBits(integerValue, out integerValueAsBytes);
-            if (integerBitsOfPrecision >= requiredBitsOfPrecision ||
-                fractionalDigitsPresent == 0)
+            if ((integerBitsOfPrecision >= requiredBitsOfPrecision) ||
+                (fractionalDigitsPresent == 0))
             {
                 return ConvertBigIntegerToFloatingPointBits(
                     integerValueAsBytes,
@@ -451,7 +451,7 @@ namespace Microsoft.CodeAnalysis
             uint fractionalDenominatorExponent = data.Exponent < 0
                 ? fractionalDigitsPresent + (uint)-data.Exponent
                 : fractionalDigitsPresent;
-            if (integerBitsOfPrecision == 0 && (fractionalDenominatorExponent - (int)data.MantissaCount) > type.OverflowDecimalExponent)
+            if ((integerBitsOfPrecision == 0) && ((fractionalDenominatorExponent - (int)data.MantissaCount) > type.OverflowDecimalExponent))
             {
                 // If there were any digits in the integer part, it is impossible to  
                 // underflow (because the exponent cannot possibly be small enough),  
@@ -538,7 +538,7 @@ namespace Microsoft.CodeAnalysis
             if (fractionalMantissaBits > requiredFractionalBitsOfPrecision)
             {
                 int shift = (int)(fractionalMantissaBits - requiredFractionalBitsOfPrecision);
-                hasZeroTail = hasZeroTail && (fractionalMantissa & ((1UL << shift) - 1)) == 0;
+                hasZeroTail = hasZeroTail && ((fractionalMantissa & ((1UL << shift) - 1)) == 0);
                 fractionalMantissa >>= shift;
             }
 
@@ -594,14 +594,14 @@ namespace Microsoft.CodeAnalysis
             // from the eight high-order bytes and we will get between 59 and 64 bits, which is more  
             // than enough.
             int bottomElementIndex = Math.Max(0, topElementIndex - (64 / 8) + 1);
-            exponent = baseExponent + bottomElementIndex * 8;
+            exponent = baseExponent + (bottomElementIndex * 8);
             mantissa = 0;
             for (int i = (int)topElementIndex; i >= bottomElementIndex; i--)
             {
                 mantissa <<= 8;
                 mantissa |= integerValueAsBytes[i];
             }
-            for (int i = bottomElementIndex - 1; has_zero_tail && i >= 0; i--)
+            for (int i = bottomElementIndex - 1; has_zero_tail && (i >= 0); i--)
             {
                 if (integerValueAsBytes[i] != 0) has_zero_tail = false;
             }
@@ -668,7 +668,7 @@ namespace Microsoft.CodeAnalysis
             for (int i = dataBytes.Length - 1; i >= 0; i--)
             {
                 var v = dataBytes[i];
-                if (v != 0) return 8 * (uint)i + CountSignificantBits(v);
+                if (v != 0) return (8 * (uint)i) + CountSignificantBits(v);
             }
 
             return 0;
@@ -705,7 +705,7 @@ namespace Microsoft.CodeAnalysis
 
             bool lsbBit = (value & lsbBitMask) != 0;
             bool roundBit = (value & roundBitMask) != 0;
-            bool hasTailBits = !hasZeroTail || (value & extraBitsMask) != 0;
+            bool hasTailBits = !hasZeroTail || ((value & extraBitsMask) != 0);
 
             return (value >> shift) + (ShouldRoundUp(lsbBit: lsbBit, roundBit: roundBit, hasTailBits: hasTailBits) ? 1UL : 0);
         }

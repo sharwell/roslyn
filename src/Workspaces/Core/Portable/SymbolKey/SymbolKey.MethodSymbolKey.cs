@@ -180,8 +180,8 @@ namespace Microsoft.CodeAnalysis
                 ImmutableArray<RefKind> parameterRefKinds, int beforeParametersPosition,
                 IMethodSymbol method)
             {
-                if (method.Arity == arity &&
-                    method.MetadataName == metadataName &&
+                if ((method.Arity == arity) &&
+                    (method.MetadataName == metadataName) &&
                     ParameterRefKindsMatch(method.Parameters, parameterRefKinds))
                 {
                     // Method looks like a potential match.  It has the right arity, name and 
@@ -224,7 +224,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     if (reader.ParameterTypesMatch(method.OriginalDefinition.Parameters, originalParameterTypes))
                     {
-                        if (returnType == null ||
+                        if ((returnType == null) ||
                             reader.Comparer.Equals(returnType, method.ReturnType))
                         {
                             if (isPartialMethodImplementationPart)

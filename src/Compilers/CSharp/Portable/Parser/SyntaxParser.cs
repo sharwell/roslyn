@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             _mode = point.Mode;
             var offset = point.Position - _firstToken;
-            Debug.Assert(offset >= 0 && offset < _tokenCount);
+            Debug.Assert((offset >= 0) && (offset < _tokenCount));
             _tokenOffset = offset;
             _currentToken = default(SyntaxToken);
             _currentNode = default(BlendedNode);
@@ -361,8 +361,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             // shift tokens to left if we are far to the right
             // don't shift if reset points have fixed locked tge starting point at the token in the window
-            if (_tokenOffset > (_blendedTokens.Length >> 1)
-                && (_resetStart == -1 || _resetStart > _firstToken))
+            if ((_tokenOffset > (_blendedTokens.Length >> 1))
+                && ((_resetStart == -1) || (_resetStart > _firstToken)))
             {
                 int shiftOffset = (_resetStart == -1) ? _tokenOffset : _resetStart - _firstToken;
                 int shiftCount = _tokenCount - shiftOffset;
@@ -389,8 +389,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             // shift tokens to left if we are far to the right
             // don't shift if reset points have fixed locked tge starting point at the token in the window
-            if (_tokenOffset > (_lexedTokens.Length >> 1)
-                && (_resetStart == -1 || _resetStart > _firstToken))
+            if ((_tokenOffset > (_lexedTokens.Length >> 1))
+                && ((_resetStart == -1) || (_resetStart > _firstToken)))
             {
                 int shiftOffset = (_resetStart == -1) ? _tokenOffset : _resetStart - _firstToken;
                 int shiftCount = _tokenCount - shiftOffset;
@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         protected SyntaxToken PeekToken(int n)
         {
             Debug.Assert(n >= 0);
-            while (_tokenOffset + n >= _tokenCount)
+            while ((_tokenOffset + n) >= _tokenCount)
             {
                 this.AddNewToken();
             }
@@ -599,7 +599,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         protected virtual SyntaxDiagnosticInfo GetExpectedTokenError(SyntaxKind expected, SyntaxKind actual, int offset, int width)
         {
             var code = GetExpectedTokenErrorCode(expected, actual);
-            if (code == ErrorCode.ERR_SyntaxError || code == ErrorCode.ERR_IdentifierExpectedKW)
+            if ((code == ErrorCode.ERR_SyntaxError) || (code == ErrorCode.ERR_IdentifierExpectedKW))
             {
                 return new SyntaxDiagnosticInfo(offset, width, code, SyntaxFacts.GetText(expected), SyntaxFacts.GetText(actual));
             }
@@ -708,7 +708,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             int offset, width;
 
             SyntaxToken token = node as SyntaxToken;
-            if (token != null && token.ContainsSkippedText)
+            if ((token != null) && token.ContainsSkippedText)
             {
                 // This code exists to clean up an anti-pattern:
                 //   1) an undesirable token is parsed,
@@ -824,7 +824,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         protected TNode AddLeadingSkippedSyntax<TNode>(TNode node, GreenNode skippedSyntax) where TNode : CSharpSyntaxNode
         {
-            var oldToken = node as SyntaxToken ?? node.GetFirstToken();
+            var oldToken = (node as SyntaxToken) ?? node.GetFirstToken();
             var newToken = AddSkippedSyntax(oldToken, skippedSyntax, trailing: false);
             return SyntaxFirstTokenReplacer.Replace(node, oldToken, newToken, skippedSyntax.FullWidth);
         }
@@ -909,7 +909,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
                     currentOffset += token.FullWidth;
                 }
-                else if (node.ContainsDiagnostics && diagnostic == null)
+                else if (node.ContainsDiagnostics && (diagnostic == null))
                 {
                     // only propagate the first error to reduce noise:
                     var existing = (SyntaxDiagnosticInfo)node.GetDiagnostics().FirstOrDefault();
@@ -1026,7 +1026,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                         ? SyntaxFactory.MissingToken(token.LeadingTrivia.Node, token.ContextualKind, token.TrailingTrivia.Node)
                         : SyntaxFactory.Token(token.LeadingTrivia.Node, token.ContextualKind, token.TrailingTrivia.Node);
                 var d = token.GetDiagnostics();
-                if (d != null && d.Length > 0)
+                if ((d != null) && (d.Length > 0))
                 {
                     kw = kw.WithDiagnosticsGreen(d);
                 }

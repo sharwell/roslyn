@@ -76,7 +76,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
             }
 
             var current = DateTimeOffset.UtcNow;
-            if (current - _lastTimeReported < s_minimumInterval)
+            if ((current - _lastTimeReported) < s_minimumInterval)
             {
                 // make sure we are not flooding UI. 
                 // this is just presentation, fine to not updating UI especially since

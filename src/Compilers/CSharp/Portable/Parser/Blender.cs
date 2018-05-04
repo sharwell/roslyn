@@ -127,7 +127,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             // the left by maxLookahead tokens.  We only need to do this as long as we're not at the
             // start of the tree.  Also, the tokens we get back may be zero width.  In that case we
             // need to keep on looking backward.
-            for (var i = 0; start > 0 && i <= maxLookahead;)
+            for (var i = 0; (start > 0) && (i <= maxLookahead);)
             {
                 var token = oldTree.FindToken(start, findInsideTrivia: false);
                 Debug.Assert(token.Kind() != SyntaxKind.None, "how could we not get a real token back?");

@@ -7,16 +7,16 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
     {
         public static bool IsImplicitValueParameter(this ISymbol symbolOpt)
         {
-            if (symbolOpt is IParameterSymbol && symbolOpt.IsImplicitlyDeclared)
+            if ((symbolOpt is IParameterSymbol) && symbolOpt.IsImplicitlyDeclared)
             {
                 if (symbolOpt.ContainingSymbol is IMethodSymbol method)
                 {
-                    if (method.MethodKind == MethodKind.EventAdd ||
-                        method.MethodKind == MethodKind.EventRemove ||
-                        method.MethodKind == MethodKind.PropertySet)
+                    if ((method.MethodKind == MethodKind.EventAdd) ||
+                        (method.MethodKind == MethodKind.EventRemove) ||
+                        (method.MethodKind == MethodKind.PropertySet))
                     {
                         // the name is value in C#, and Value in VB
-                        return symbolOpt.Name == "value" || symbolOpt.Name == "Value";
+                        return (symbolOpt.Name == "value") || (symbolOpt.Name == "Value");
                     }
                 }
             }

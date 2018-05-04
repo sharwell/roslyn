@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Threading
                         return retry;
                     }
 
-                    if (index == loopCount - 1)
+                    if (index == (loopCount - 1))
                     {
                         _service.RegisterNotification(() => { _done = true; }, asyncToken, CancellationToken.None);
                     }

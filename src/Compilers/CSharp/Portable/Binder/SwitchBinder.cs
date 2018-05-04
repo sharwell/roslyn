@@ -37,9 +37,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // lead to a translation that fully supports edit-and-continue, so it delegates to the C# 6
                 // binder when it can. The "testV7SwitchBinder" feature flag forces the use of the C# 7 switch binder
                 // for all operations; we use it to enhance test coverage.
-                (parseOptions?.IsFeatureEnabled(MessageID.IDS_FeaturePatternMatching) != false ||
-                 parseOptions?.Features.ContainsKey("testV7SwitchBinder") != false ||
-                 switchSyntax.HasErrors && HasPatternSwitchSyntax(switchSyntax))
+                ((parseOptions?.IsFeatureEnabled(MessageID.IDS_FeaturePatternMatching) != false) ||
+                 (parseOptions?.Features.ContainsKey("testV7SwitchBinder") != false) ||
+                 (switchSyntax.HasErrors && HasPatternSwitchSyntax(switchSyntax)))
                 ? new PatternSwitchBinder(next, switchSyntax)
                 : new SwitchBinder(next, switchSyntax);
         }
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                if (_lazySwitchLabelsMap == null && this.Labels.Length > 0)
+                if ((_lazySwitchLabelsMap == null) && (this.Labels.Length > 0))
                 {
                     _lazySwitchLabelsMap = BuildLabelsByValue(this.Labels);
                 }
@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 object key;
                 var constantValue = label.SwitchCaseLabelConstant;
-                if ((object)constantValue != null && !constantValue.IsBad)
+                if (((object)constantValue != null) && !constantValue.IsBad)
                 {
                     // Case labels with a non-null constant value are indexed on their ConstantValue.
                     key = KeyForConstant(constantValue);
@@ -302,7 +302,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Invalid case labels (with null constant value) are indexed on the label syntax.
 
             object key;
-            if ((object)constantValue != null && !constantValue.IsBad)
+            if (((object)constantValue != null) && !constantValue.IsBad)
             {
                 key = KeyForConstant(constantValue);
             }
@@ -432,7 +432,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var switchGoverningType = switchExpression.Type;
 
-            if ((object)switchGoverningType != null && !switchGoverningType.IsErrorType())
+            if (((object)switchGoverningType != null) && !switchGoverningType.IsErrorType())
             {
                 // SPEC:    The governing type of a switch statement is established by the switch expression.
                 // SPEC:    1) If the type of the switch expression is sbyte, byte, short, ushort, int, uint,
@@ -492,7 +492,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (!switchExpression.HasAnyErrors)
             {
-                Debug.Assert((object)switchExpression.Type == null || switchExpression.Type.SpecialType == SpecialType.System_Void);
+                Debug.Assert(((object)switchExpression.Type == null) || (switchExpression.Type.SpecialType == SpecialType.System_Void));
                 diagnostics.Add(ErrorCode.ERR_SwitchExpressionValueExpected, node.Location, switchExpression.Display);
             }
 
@@ -611,13 +611,13 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     // SPEC:    The constant expression of each case label must denote a value that
                     // SPEC:    is implicitly convertible (§6.1) to the governing type of the switch statement.
-                    if (!hasErrors && labelExpressionConstant == null)
+                    if (!hasErrors && (labelExpressionConstant == null))
                     {
                         diagnostics.Add(ErrorCode.ERR_ConstantExpected, caseLabelSyntax.Value.Location);
                         hasErrors = true;
                     }
 
-                    if (!hasErrors && (object)labelExpressionConstant != null && FindMatchingSwitchCaseLabel(labelExpressionConstant, caseLabelSyntax) != label)
+                    if (!hasErrors && ((object)labelExpressionConstant != null) && (FindMatchingSwitchCaseLabel(labelExpressionConstant, caseLabelSyntax) != label))
                     {
                         diagnostics.Add(ErrorCode.ERR_DuplicateCaseLabel, node.Location, labelExpressionConstant?.GetValueToDisplay() ?? label.Name);
                         hasErrors = true;
@@ -660,7 +660,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal BoundStatement BindGotoCaseOrDefault(GotoStatementSyntax node, Binder gotoBinder, DiagnosticBag diagnostics)
         {
-            Debug.Assert(node.Kind() == SyntaxKind.GotoCaseStatement || node.Kind() == SyntaxKind.GotoDefaultStatement);
+            Debug.Assert((node.Kind() == SyntaxKind.GotoCaseStatement) || (node.Kind() == SyntaxKind.GotoDefaultStatement));
             BoundExpression gotoCaseExpressionOpt = null;
 
             // Prevent cascading diagnostics
@@ -691,7 +691,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // Check for bind errors
                     hasErrors = hasErrors || gotoCaseExpressionOpt.HasAnyErrors;
 
-                    if (!hasErrors && gotoCaseExpressionConstant == null)
+                    if (!hasErrors && (gotoCaseExpressionConstant == null))
                     {
                         diagnostics.Add(ErrorCode.ERR_ConstantExpected, node.Location);
                         hasErrors = true;

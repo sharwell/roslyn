@@ -48,8 +48,8 @@ namespace Microsoft.CodeAnalysis.SymbolDisplay
             var type2 = GetSymbolType(typeOnlySymbol);
 
             return
-                type1 != null &&
-                type2 != null &&
+                (type1 != null) &&
+                (type2 != null) &&
                 type1.Equals(type2) &&
                 typeOnlySymbol.Equals(symbol.OriginalDefinition);
         }

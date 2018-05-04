@@ -36,8 +36,8 @@ namespace Microsoft.CodeAnalysis.UseIsNullCheck
                 {
                     var referenceEqualsMethod = objectType.GetMembers(nameof(ReferenceEquals))
                                                           .OfType<IMethodSymbol>()
-                                                          .FirstOrDefault(m => m.DeclaredAccessibility == Accessibility.Public &&
-                                                                               m.Parameters.Length == 2);
+                                                          .FirstOrDefault(m => (m.DeclaredAccessibility == Accessibility.Public) &&
+                                                                               (m.Parameters.Length == 2));
                     if (referenceEqualsMethod != null)
                     {
                         context.RegisterSyntaxNodeAction(c => AnalyzeSyntax(c, referenceEqualsMethod), GetInvocationExpressionKind());

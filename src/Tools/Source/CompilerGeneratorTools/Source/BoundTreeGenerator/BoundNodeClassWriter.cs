@@ -34,7 +34,7 @@ namespace BoundTreeGenerator
             _writer = writer;
             _tree = tree;
             _targetLang = targetLang;
-            _typeMap = tree.Types.Where(t => !(t is EnumType || t is ValueType)).ToDictionary(n => n.Name, n => n.Base);
+            _typeMap = tree.Types.Where(t => !((t is EnumType) || (t is ValueType))).ToDictionary(n => n.Name, n => n.Base);
             _typeMap.Add(tree.Root, null);
 
             InitializeValueTypes();
@@ -698,7 +698,7 @@ namespace BoundTreeGenerator
 
         private static bool HasValidate(TreeType node)
         {
-            return node.HasValidate != null && string.Compare(node.HasValidate, "true", true) == 0;
+            return (node.HasValidate != null) && (string.Compare(node.HasValidate, "true", true) == 0);
         }
 
         private IEnumerable<TreeType> TypeAndBaseTypes(TreeType node)
@@ -767,7 +767,7 @@ namespace BoundTreeGenerator
 
             if (f.Override)
                 return FieldNullHandling(BaseType(node), fieldName);
-            else if (!IsValueType(f.Type) || GetGenericType(f.Type) == "ImmutableArray")
+            else if (!IsValueType(f.Type) || (GetGenericType(f.Type) == "ImmutableArray"))
                 return NullHandling.Disallow; // default is to disallow nulls.
             else
                 return NullHandling.NotApplicable;   // value types can't check nulls.
@@ -1239,7 +1239,7 @@ namespace BoundTreeGenerator
                                     Write("new TreeDumperNode(\"{0}\", null, new TreeDumperNode[] {{ Visit(node.{1}, null) }})", ToCamelCase(field.Name), field.Name);
                                 else if (IsListOfDerived("BoundNode", field.Type))
                                 {
-                                    if (IsImmutableArray(field.Type) && FieldNullHandling(node, field.Name) == NullHandling.Disallow)
+                                    if (IsImmutableArray(field.Type) && (FieldNullHandling(node, field.Name) == NullHandling.Disallow))
                                     {
                                         Write("new TreeDumperNode(\"{0}\", null, from x in node.{1} select Visit(x, null))", ToCamelCase(field.Name), field.Name);
                                     }
@@ -1251,7 +1251,7 @@ namespace BoundTreeGenerator
                                 else
                                     Write("new TreeDumperNode(\"{0}\", node.{1}, null)", ToCamelCase(field.Name), field.Name);
 
-                                if (i == allFields.Length - 1)
+                                if (i == (allFields.Length - 1))
                                     WriteLine("");
                                 else
                                     WriteLine(",");
@@ -1304,7 +1304,7 @@ namespace BoundTreeGenerator
                                 else
                                     Write("New TreeDumperNode(\"{0}\", node.{1}, Nothing)", ToCamelCase(field.Name), field.Name);
 
-                                if (i == allFields.Length - 1)
+                                if (i == (allFields.Length - 1))
                                     WriteLine("");
                                 else
                                     WriteLine(",");
@@ -1363,7 +1363,7 @@ namespace BoundTreeGenerator
                             if (hadField)
                             {
                                 Write("return node.Update");
-                                ParenList(AllSpecifiableFields(node), field => IsDerivedOrListOfDerived("BoundNode", field.Type) || field.Type == "TypeSymbol" ? ToCamelCase(field.Name) : string.Format("node.{0}", field.Name));
+                                ParenList(AllSpecifiableFields(node), field => IsDerivedOrListOfDerived("BoundNode", field.Type) || (field.Type == "TypeSymbol") ? ToCamelCase(field.Name) : string.Format("node.{0}", field.Name));
                                 WriteLine(";");
                             }
                             else
@@ -1410,7 +1410,7 @@ namespace BoundTreeGenerator
                             if (hadField)
                             {
                                 Write("Return node.Update");
-                                ParenList(AllSpecifiableFields(node), field => IsDerivedOrListOfDerived("BoundNode", field.Type) || field.Type == "TypeSymbol" ? ToCamelCase(field.Name) : string.Format("node.{0}", field.Name));
+                                ParenList(AllSpecifiableFields(node), field => IsDerivedOrListOfDerived("BoundNode", field.Type) || (field.Type == "TypeSymbol") ? ToCamelCase(field.Name) : string.Format("node.{0}", field.Name));
                                 WriteLine("");
                             }
                             else
@@ -1556,7 +1556,7 @@ namespace BoundTreeGenerator
         {
             if (typeName == derivedTypeName)
                 return true;
-            if (derivedTypeName != null && _typeMap.TryGetValue(derivedTypeName, out var baseType))
+            if ((derivedTypeName != null) && _typeMap.TryGetValue(derivedTypeName, out var baseType))
             {
                 return IsDerivedType(typeName, baseType);
             }
@@ -1565,7 +1565,7 @@ namespace BoundTreeGenerator
 
         private static bool IsRoot(Node n)
         {
-            return n.Root != null && string.Compare(n.Root, "true", true) == 0;
+            return (n.Root != null) && (string.Compare(n.Root, "true", true) == 0);
         }
 
         private bool IsNode(string typeName)
@@ -1575,17 +1575,17 @@ namespace BoundTreeGenerator
 
         private static bool IsNew(Field f)
         {
-            return f.New != null && string.Compare(f.New, "true", true) == 0;
+            return (f.New != null) && (string.Compare(f.New, "true", true) == 0);
         }
 
         private static bool IsPropertyOverrides(Field f)
         {
-            return f.PropertyOverrides != null && string.Compare(f.PropertyOverrides, "true", true) == 0;
+            return (f.PropertyOverrides != null) && (string.Compare(f.PropertyOverrides, "true", true) == 0);
         }
 
         private static bool SkipInVisitor(Field f)
         {
-            return f.SkipInVisitor != null && string.Compare(f.SkipInVisitor, "true", true) == 0;
+            return (f.SkipInVisitor != null) && (string.Compare(f.SkipInVisitor, "true", true) == 0);
         }
 
         private string ToCamelCase(string name)

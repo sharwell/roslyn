@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 //  We assume that all IL markers allocated for the same basic block are 
                 //  allocated sequentially and don't interleave with markers from other blocks
                 Debug.Assert((this.FirstILMarker < 0) == (this.LastILMarker < 0));
-                Debug.Assert((this.LastILMarker < 0) || (this.LastILMarker + 1 == marker));
+                Debug.Assert((this.LastILMarker < 0) || ((this.LastILMarker + 1) == marker));
 
                 if (this.FirstILMarker < 0)
                 {
@@ -388,8 +388,8 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 get
                 {
                     var next = this.NextBlock;
-                    while (next != null &&
-                        next.BranchCode == ILOpCode.Nop &&
+                    while ((next != null) &&
+                        (next.BranchCode == ILOpCode.Nop) &&
                         next.HasNoRegularInstructions)
                     {
                         next = next.NextBlock;
@@ -402,8 +402,8 @@ namespace Microsoft.CodeAnalysis.CodeGen
             private bool TryOptimizeSameAsNext(BasicBlock next, ref int delta)
             {
                 if (next.HasNoRegularInstructions &&
-                    next.BranchCode == this.BranchCode &&
-                    next.BranchBlock.Start == this.BranchBlock.Start)
+                    (next.BranchCode == this.BranchCode) &&
+                    (next.BranchBlock.Start == this.BranchBlock.Start))
                 {
                     if (next.EnclosingHandler == this.EnclosingHandler)
                     {
@@ -440,10 +440,10 @@ namespace Microsoft.CodeAnalysis.CodeGen
             private bool TryOptimizeBranchOverUncondBranch(BasicBlock next, ref int delta)
             {
                 if (next.HasNoRegularInstructions &&
-                    next.NextBlock != null &&
-                    next.NextBlock.Start == BranchBlock.Start &&
-                    (next.BranchCode == ILOpCode.Br || next.BranchCode == ILOpCode.Br_s) &&
-                    next.BranchBlock != next)
+                    (next.NextBlock != null) &&
+                    (next.NextBlock.Start == BranchBlock.Start) &&
+                    ((next.BranchCode == ILOpCode.Br) || (next.BranchCode == ILOpCode.Br_s)) &&
+                    (next.BranchBlock != next))
                 {
                     ILOpCode revBrOp = this.GetReversedBranchOp();
 
@@ -456,7 +456,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                         var branchBlock = this.BranchBlock;
                         while (toRemove != branchBlock)
                         {
-                            Debug.Assert(toRemove == next || toRemove.TotalSize == 0);
+                            Debug.Assert((toRemove == next) || (toRemove.TotalSize == 0));
                             Debug.Assert(!builder._labelInfos.Values.Any(li => li.bb == toRemove),
                                 "nothing should branch to a trivial block at this point");
                             toRemove.Reachability = ILBuilder.Reachability.NotReachable;
@@ -489,10 +489,10 @@ namespace Microsoft.CodeAnalysis.CodeGen
             private bool TryOptimizeBranchToNextOrRet(BasicBlock next, ref int delta)
             {
                 var curBranchCode = this.BranchCode;
-                if (curBranchCode == ILOpCode.Br || curBranchCode == ILOpCode.Br_s)
+                if ((curBranchCode == ILOpCode.Br) || (curBranchCode == ILOpCode.Br_s))
                 {
                     // check for branch to next.
-                    if (BranchBlock.Start - next.Start == 0)
+                    if ((BranchBlock.Start - next.Start) == 0)
                     {
                         // becomes a nop block
                         this.SetBranch(null, ILOpCode.Nop);
@@ -502,7 +502,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                     }
 
                     // check for branch to ret.
-                    if (BranchBlock.HasNoRegularInstructions && BranchBlock.BranchCode == ILOpCode.Ret)
+                    if (BranchBlock.HasNoRegularInstructions && (BranchBlock.BranchCode == ILOpCode.Ret))
                     {
                         this.SetBranch(null, ILOpCode.Ret);
 
@@ -522,7 +522,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                 {
                     // check for branch to next, 
                     // or if both blocks are identical
-                    if (BranchBlock.Start - next.Start == 0 ||
+                    if (((BranchBlock.Start - next.Start) == 0) ||
                         AreIdentical(BranchBlock, next))
                     {
                         // becomes a pop block
@@ -553,13 +553,13 @@ namespace Microsoft.CodeAnalysis.CodeGen
             /// </summary>
             private static bool AreIdentical(BasicBlock one, BasicBlock another)
             {
-                if (one._branchCode == another._branchCode &&
+                if ((one._branchCode == another._branchCode) &&
                     !one._branchCode.CanFallThrough() &&
-                    one._branchLabel == another._branchLabel)
+                    (one._branchLabel == another._branchLabel))
                 {
                     var instr1 = one.RegularInstructions;
                     var instr2 = another.RegularInstructions;
-                    return instr1 == instr2 || instr1?.ContentEquals(instr2) == true;
+                    return (instr1 == instr2) || (instr1?.ContentEquals(instr2) == true);
                 }
 
                 return false;
@@ -755,7 +755,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                     // size(N) = 4
                     // size(t1, t2,... tN) = 4*N
 
-                    uint branchSize = 5 + 4 * this.BranchesCount;
+                    uint branchSize = 5 + (4 * this.BranchesCount);
                     return (int)(RegularInstructionsLength + branchSize);
                 }
             }

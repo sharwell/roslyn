@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Collections
                 return true;
             }
 
-            if (x.IsDefault || y.IsDefault || x.Length != y.Length)
+            if (x.IsDefault || y.IsDefault || (x.Length != y.Length))
             {
                 return false;
             }
@@ -43,12 +43,12 @@ namespace Microsoft.CodeAnalysis.Collections
 
         internal static bool Equals(byte[] left, int leftStart, byte[] right, int rightStart, int length)
         {
-            if (left == null || right == null)
+            if ((left == null) || (right == null))
             {
                 return ReferenceEquals(left, right);
             }
 
-            if (ReferenceEquals(left, right) && leftStart == rightStart)
+            if (ReferenceEquals(left, right) && (leftStart == rightStart))
             {
                 return true;
             }
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Collections
                 return true;
             }
 
-            if (left == null || right == null || left.Length != right.Length)
+            if ((left == null) || (right == null) || (left.Length != right.Length))
             {
                 return false;
             }

@@ -428,7 +428,7 @@ namespace Microsoft.CodeAnalysis
             {
                 // Ensure we are not invoked for merged namespace symbol, but instead for constituent namespace scoped to the source assembly.
                 var ns = (INamespaceSymbol)context.Symbol;
-                if (ns.ContainingAssembly != context.Compilation.Assembly || ns.ConstituentNamespaces.Length > 1)
+                if ((ns.ContainingAssembly != context.Compilation.Assembly) || (ns.ConstituentNamespaces.Length > 1))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(Rule, ns.Locations[0]));
                 }
@@ -822,7 +822,7 @@ namespace Microsoft.CodeAnalysis
 
             private void ReportDiagnosticIfActionInvokedConcurrently(SemaphoreSlim gate, SymbolAnalysisContext symbolContext)
             {
-                if (gate.CurrentCount != registeredActionCounts - 1)
+                if (gate.CurrentCount != (registeredActionCounts - 1))
                 {
                     var diagnostic = Diagnostic.Create(Descriptor, symbolContext.Symbol.Locations[0]);
                     symbolContext.ReportDiagnostic(diagnostic);

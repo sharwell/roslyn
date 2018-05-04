@@ -314,7 +314,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 
         private static ParseOptions GetParseOptions(XElement projectElement, string language, HostLanguageServices languageServices)
         {
-            return language == LanguageNames.CSharp || language == LanguageNames.VisualBasic
+            return (language == LanguageNames.CSharp) || (language == LanguageNames.VisualBasic)
                 ? GetParseOptionsWorker(projectElement, language, languageServices)
                 : null;
         }
@@ -452,7 +452,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             ParseOptions parseOptions)
         {
             var compilationOptionsElement = projectElement.Element(CompilationOptionsElementName);
-            return language == LanguageNames.CSharp || language == LanguageNames.VisualBasic
+            return (language == LanguageNames.CSharp) || (language == LanguageNames.VisualBasic)
                 ? CreateCompilationOptions(workspace, language, compilationOptionsElement, parseOptions)
                 : null;
         }
@@ -526,8 +526,8 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
                 }
 
                 var outputTypeAttribute = compilationOptionsElement.Attribute(OutputTypeAttributeName);
-                if (outputTypeAttribute != null
-                    && outputTypeAttribute.Value == "WindowsRuntimeMetadata")
+                if ((outputTypeAttribute != null)
+                    && (outputTypeAttribute.Value == "WindowsRuntimeMetadata"))
                 {
                     if (rootNamespaceAttribute == null)
                     {
@@ -590,7 +590,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             string filePath;
 
             var isLinkFileAttribute = documentElement.Attribute(IsLinkFileAttributeName);
-            bool isLinkFile = isLinkFileAttribute != null && ((bool?)isLinkFileAttribute).HasValue && ((bool?)isLinkFileAttribute).Value;
+            bool isLinkFile = (isLinkFileAttribute != null) && ((bool?)isLinkFileAttribute).HasValue && ((bool?)isLinkFileAttribute).Value;
             if (isLinkFile)
             {
                 // This is a linked file. Use the filePath and markup from the referenced document.
@@ -598,7 +598,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
                 var originalAssemblyName = documentElement.Attribute(LinkAssemblyNameAttributeName)?.Value;
                 var originalProjectName = documentElement.Attribute(LinkProjectNameAttributeName)?.Value;
 
-                if (originalAssemblyName == null && originalProjectName == null)
+                if ((originalAssemblyName == null) && (originalProjectName == null))
                 {
                     throw new ArgumentException($"Linked files must specify either a {LinkAssemblyNameAttributeName} or {LinkProjectNameAttributeName}");
                 }
@@ -719,7 +719,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 
             bool includeXmlDocComments = false;
             var includeXmlDocCommentsAttribute = referencedSource.Attribute(IncludeXmlDocCommentsAttributeName);
-            if (includeXmlDocCommentsAttribute != null &&
+            if ((includeXmlDocCommentsAttribute != null) &&
                 ((bool?)includeXmlDocCommentsAttribute).HasValue &&
                 ((bool?)includeXmlDocCommentsAttribute).Value)
             {
@@ -810,7 +810,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             var references = new List<MetadataReference>();
 
             var net45 = element.Attribute(CommonReferencesNet45AttributeName);
-            if (net45 != null &&
+            if ((net45 != null) &&
                 ((bool?)net45).HasValue &&
                 ((bool?)net45).Value)
             {
@@ -824,7 +824,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             }
 
             var commonReferencesAttribute = element.Attribute(CommonReferencesAttributeName);
-            if (commonReferencesAttribute != null &&
+            if ((commonReferencesAttribute != null) &&
                 ((bool?)commonReferencesAttribute).HasValue &&
                 ((bool?)commonReferencesAttribute).Value)
             {
@@ -838,7 +838,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             }
 
             var winRT = element.Attribute(CommonReferencesWinRTAttributeName);
-            if (winRT != null &&
+            if ((winRT != null) &&
                 ((bool?)winRT).HasValue &&
                 ((bool?)winRT).Value)
             {
@@ -853,7 +853,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             }
 
             var portable = element.Attribute(CommonReferencesPortableAttributeName);
-            if (portable != null &&
+            if ((portable != null) &&
                 ((bool?)portable).HasValue &&
                 ((bool?)portable).Value)
             {
@@ -862,7 +862,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             }
 
             var systemRuntimeFacade = element.Attribute(CommonReferenceFacadeSystemRuntimeAttributeName);
-            if (systemRuntimeFacade != null &&
+            if ((systemRuntimeFacade != null) &&
                 ((bool?)systemRuntimeFacade).HasValue &&
                 ((bool?)systemRuntimeFacade).Value)
             {

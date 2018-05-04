@@ -109,7 +109,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.L
                 outputDirectory = FileUtilities.ResolveRelativePath(outputDirectory, containingDirectoryPathOpt);
             }
 
-            if (outputDirectory == null || targetFileName == null)
+            if ((outputDirectory == null) || (targetFileName == null))
             {
                 return false;
             }

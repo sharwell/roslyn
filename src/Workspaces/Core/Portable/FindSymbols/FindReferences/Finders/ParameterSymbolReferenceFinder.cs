@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
 
             var invokeMethod = containingMethod.AssociatedAnonymousDelegate.DelegateInvokeMethod;
             int ordinal = parameter.Ordinal;
-            if (invokeMethod == null || ordinal >= invokeMethod.Parameters.Length)
+            if ((invokeMethod == null) || (ordinal >= invokeMethod.Parameters.Length))
             {
                 return standardFunction;
             }
@@ -172,7 +172,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 if (IdentifiersMatch(syntaxFacts, parameter.Name, token))
                 {
                     var symbol = semanticModel.GetDeclaredSymbol(token.Parent, cancellationToken);
-                    if (symbol is IParameterSymbol &&
+                    if ((symbol is IParameterSymbol) &&
                         symbol.ContainingSymbol.IsAnonymousFunction() &&
                         SignatureComparer.Instance.HaveSameSignatureAndConstraintsAndReturnTypeAndAccessors(parameter.ContainingSymbol, symbol.ContainingSymbol, syntaxFacts.IsCaseSensitive) &&
                         ParameterNamesMatch(syntaxFacts, (IMethodSymbol)parameter.ContainingSymbol, (IMethodSymbol)symbol.ContainingSymbol))
@@ -208,7 +208,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             {
                 var declaredSymbol = semanticModel.GetDeclaredSymbol(current);
 
-                if (declaredSymbol is IMethodSymbol && ((IMethodSymbol)declaredSymbol).MethodKind != MethodKind.AnonymousFunction)
+                if ((declaredSymbol is IMethodSymbol) && (((IMethodSymbol)declaredSymbol).MethodKind != MethodKind.AnonymousFunction))
                 {
                     return current;
                 }
@@ -236,12 +236,12 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             }
             else if (containingSymbol is IPropertySymbol containingProperty)
             {
-                if (containingProperty.GetMethod != null && ordinal < containingProperty.GetMethod.Parameters.Length)
+                if ((containingProperty.GetMethod != null) && (ordinal < containingProperty.GetMethod.Parameters.Length))
                 {
                     results.Add(parameterAndProjectId.WithSymbol(containingProperty.GetMethod.Parameters[ordinal]));
                 }
 
-                if (containingProperty.SetMethod != null && ordinal < containingProperty.SetMethod.Parameters.Length)
+                if ((containingProperty.SetMethod != null) && (ordinal < containingProperty.SetMethod.Parameters.Length))
                 {
                     results.Add(parameterAndProjectId.WithSymbol(containingProperty.SetMethod.Parameters[ordinal]));
                 }
@@ -271,7 +271,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                             ordinal, beginInvokeMethod?.Parameters);
                     }
                     else if (containingMethod.ContainingType.IsDelegateType() &&
-                             containingMethod.Name == WellKnownMemberNames.DelegateBeginInvokeName)
+                             (containingMethod.Name == WellKnownMemberNames.DelegateBeginInvokeName))
                     {
                         // cascade to the corresponding parameter in the Invoke method.
                         AddParameterAtIndex(
@@ -288,7 +288,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             int ordinal, 
             ImmutableArray<IParameterSymbol>? parameters)
         {
-            if (parameters != null && ordinal < parameters.Value.Length)
+            if ((parameters != null) && (ordinal < parameters.Value.Length))
             {
                 results.Add(parameterAndProjectId.WithSymbol(parameters.Value[ordinal]));
             }
@@ -303,13 +303,13 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             {
                 var ordinal = parameter.Ordinal;
                 var method = (IMethodSymbol)parameter.ContainingSymbol;
-                if (method.PartialDefinitionPart != null && ordinal < method.PartialDefinitionPart.Parameters.Length)
+                if ((method.PartialDefinitionPart != null) && (ordinal < method.PartialDefinitionPart.Parameters.Length))
                 {
                     results.Add(
                         parameterAndProjectId.WithSymbol(method.PartialDefinitionPart.Parameters[ordinal]));
                 }
 
-                if (method.PartialImplementationPart != null && ordinal < method.PartialImplementationPart.Parameters.Length)
+                if ((method.PartialImplementationPart != null) && (ordinal < method.PartialImplementationPart.Parameters.Length))
                 {
                     results.Add(
                         parameterAndProjectId.WithSymbol(method.PartialImplementationPart.Parameters[ordinal]));

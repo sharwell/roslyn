@@ -122,7 +122,7 @@ namespace Roslyn.Utilities
                 throw new ArgumentNullException(nameof(source));
             }
 
-            return source as ISet<T> ?? new HashSet<T>(source);
+            return (source as ISet<T>) ?? new HashSet<T>(source);
         }
 
         public static T? FirstOrNullable<T>(this IEnumerable<T> source)
@@ -399,7 +399,7 @@ namespace System.Linq
                 return true;
             }
 
-            if (first == null || second == null)
+            if ((first == null) || (second == null))
             {
                 return false;
             }

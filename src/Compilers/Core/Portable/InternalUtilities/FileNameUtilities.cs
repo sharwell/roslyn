@@ -51,7 +51,7 @@ namespace Roslyn.Utilities
                 char c = path[i];
                 if (c == '.')
                 {
-                    if (i != length - 1)
+                    if (i != (length - 1))
                     {
                         return i;
                     }
@@ -59,7 +59,7 @@ namespace Roslyn.Utilities
                     return -1;
                 }
 
-                if (c == DirectorySeparatorChar || c == AltDirectorySeparatorChar || c == VolumeSeparatorChar)
+                if ((c == DirectorySeparatorChar) || (c == AltDirectorySeparatorChar) || (c == VolumeSeparatorChar))
                 {
                     break;
                 }
@@ -107,7 +107,7 @@ namespace Roslyn.Utilities
             }
 
             // trim last ".", if present
-            if (path.Length > 0 && path[path.Length - 1] == '.')
+            if ((path.Length > 0) && (path[path.Length - 1] == '.'))
             {
                 return path.Substring(0, path.Length - 1);
             }
@@ -133,12 +133,12 @@ namespace Roslyn.Utilities
             }
 
             var pathWithoutExtension = RemoveExtension(path);
-            if (extension == null || path.Length == 0)
+            if ((extension == null) || (path.Length == 0))
             {
                 return pathWithoutExtension;
             }
 
-            if (extension.Length == 0 || extension[0] != '.')
+            if ((extension.Length == 0) || (extension[0] != '.'))
             {
                 return pathWithoutExtension + "." + extension;
             }
@@ -160,7 +160,7 @@ namespace Roslyn.Utilities
             for (int i = path.Length - 1; i >= 0; i--)
             {
                 char ch = path[i];
-                if (ch == DirectorySeparatorChar || ch == AltDirectorySeparatorChar || ch == VolumeSeparatorChar)
+                if ((ch == DirectorySeparatorChar) || (ch == AltDirectorySeparatorChar) || (ch == VolumeSeparatorChar))
                 {
                     return i + 1;
                 }

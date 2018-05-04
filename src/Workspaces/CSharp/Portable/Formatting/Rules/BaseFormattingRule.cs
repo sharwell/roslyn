@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             TextSpan textSpan,
             IndentBlockOption option = IndentBlockOption.RelativePosition)
         {
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             bool includeTriviaAtEnd = false,
             IndentBlockOption option = IndentBlockOption.RelativePosition)
         {
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             SyntaxToken endToken,
             IndentBlockOption option = IndentBlockOption.AbsolutePosition)
         {
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             SyntaxToken endToken,
             IndentBlockOption option = IndentBlockOption.RelativePosition)
         {
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             TextSpan textSpan,
             IndentBlockOption option = IndentBlockOption.RelativePosition)
         {
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         protected void AddSuppressOperation(List<SuppressOperation> list, SyntaxToken startToken, SyntaxToken endToken, SuppressOption option)
         {
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         protected void AddAnchorIndentationOperation(List<AnchorIndentationOperation> list, SyntaxToken anchorToken, SyntaxToken endToken)
         {
-            if (anchorToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((anchorToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 return;
             }
@@ -151,7 +151,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         protected void AddAlignIndentationOfTokensToBaseTokenOperation(List<AlignTokensOperation> list, SyntaxNode containingNode, SyntaxToken baseNode, IEnumerable<SyntaxToken> tokens, AlignTokensOption option = AlignTokensOption.AlignIndentationOfTokensToBaseToken)
         {
-            if (containingNode == null || tokens == null)
+            if ((containingNode == null) || (tokens == null))
             {
                 return;
             }
@@ -216,8 +216,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             // when deciding if the construct is on a single line.
 
             var endToken = bracePair.Item2;
-            if (lastToken.Kind() != SyntaxKind.CloseBraceToken &&
-                lastToken.Kind() != SyntaxKind.EndOfFileToken &&
+            if ((lastToken.Kind() != SyntaxKind.CloseBraceToken) &&
+                (lastToken.Kind() != SyntaxKind.EndOfFileToken) &&
                 !endToken.IsMissing)
             {
                 // The user didn't just type the close brace.  So any close brace we have may 
@@ -226,7 +226,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
                 if (SomeParentHasMissingCloseBrace(node.Parent))
                 {
-                    if (node.IsKind(SyntaxKind.Block) && ((BlockSyntax)node).Statements.Count >= 1)
+                    if (node.IsKind(SyntaxKind.Block) && (((BlockSyntax)node).Statements.Count >= 1))
                     {
                         // In the case of a block, see if the first statement is on the same line 
                         // as the open curly.  If so then we'll want to consider the end of the
@@ -256,7 +256,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         private bool SomeParentHasMissingCloseBrace(SyntaxNode node)
         {
-            while (node != null && node.Kind() != SyntaxKind.CompilationUnit)
+            while ((node != null) && (node.Kind() != SyntaxKind.CompilationUnit))
             {
                 var bracePair = node.GetBracePair();
                 if (bracePair.Item2.IsMissing)

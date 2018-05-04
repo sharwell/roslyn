@@ -78,7 +78,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
         }
 
         private static bool ShouldShowFrame(Type declaringType) =>
-            !(declaringType != null && typeof(INotifyCompletion).IsAssignableFrom(declaringType));
+            !((declaringType != null) && typeof(INotifyCompletion).IsAssignableFrom(declaringType));
 
         private static string FormatFrame(MethodBase method, Type declaringType)
         {
@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                 stringBuilder.Append("async ");
                 var start = fullName.LastIndexOf('<');
                 var end = fullName.LastIndexOf('>');
-                if (start >= 0 && end >= 0)
+                if ((start >= 0) && (end >= 0))
                 {
                     stringBuilder.Append(fullName.Remove(start, 1).Substring(0, end - 1));
                 }

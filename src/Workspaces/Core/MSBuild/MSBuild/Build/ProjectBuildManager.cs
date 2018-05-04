@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.MSBuild.Build
             CancellationToken cancellationToken)
         {
             var loadedProjects = projectCollection.GetLoadedProjects(path);
-            if (loadedProjects == null || loadedProjects.Count == 0)
+            if ((loadedProjects == null) || (loadedProjects.Count == 0))
             {
                 return null;
             }

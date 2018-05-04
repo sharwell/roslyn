@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
 
         public override Boolean IsTriggerCharacter(Char ch)
         {
-            return ch == '(' || ch == ',';
+            return (ch == '(') || (ch == ',');
         }
 
         protected override async Task<SignatureHelpItems> GetItemsWorkerAsync(Document document, int position, SignatureHelpTriggerInfo triggerInfo, CancellationToken cancellationToken)
@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
             var inferredTypes = FindNearestTupleConstructionWithInferrableType(root, semanticModel, position, triggerInfo,
                 typeInferrer, syntaxFacts, cancellationToken, out var targetExpression);
 
-            if (inferredTypes == null || !inferredTypes.Any())
+            if ((inferredTypes == null) || !inferredTypes.Any())
             {
                 return null;
             }
@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
         private static bool IsTupleArgumentListToken(TupleExpressionSyntax tupleExpression, SyntaxToken token)
         {
             return tupleExpression.Arguments.FullSpan.Contains(token.SpanStart) &&
-                token != tupleExpression.CloseParenToken;
+                (token != tupleExpression.CloseParenToken);
         }
 
         private bool TryGetParenthesizedExpression(SignatureHelpTriggerReason triggerReason, SyntaxNode root, int position,
@@ -222,13 +222,13 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
 
         private bool IsParenthesizedExpressionTriggerToken(SyntaxToken token)
         {
-            return token.IsKind(SyntaxKind.OpenParenToken) && token.Parent is ParenthesizedExpressionSyntax;
+            return token.IsKind(SyntaxKind.OpenParenToken) && (token.Parent is ParenthesizedExpressionSyntax);
         }
 
         private static bool IsParenthesizedExpressionToken(ParenthesizedExpressionSyntax expr, SyntaxToken token)
         {
             return expr.FullSpan.Contains(token.SpanStart) &&
-                token != expr.CloseParenToken;
+                (token != expr.CloseParenToken);
         }
     }
 }

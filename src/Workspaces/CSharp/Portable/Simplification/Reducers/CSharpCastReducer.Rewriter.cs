@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             {
                 var result = base.VisitBinaryExpression(node);
                 var reducedNode = result as BinaryExpressionSyntax;
-                if (reducedNode != node && reducedNode != null)
+                if ((reducedNode != node) && (reducedNode != null))
                 {
                     if ((node.Left.IsKind(SyntaxKind.CastExpression) && !reducedNode.Left.IsKind(SyntaxKind.CastExpression)) ||
                         (node.Right.IsKind(SyntaxKind.CastExpression) && !reducedNode.Right.IsKind(SyntaxKind.CastExpression)))
@@ -52,11 +52,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                             .OfType<ExpressionSyntax>()
                             .LastOrDefault();
 
-                        if (topmostExpressionAncestor != null && topmostExpressionAncestor != node)
+                        if ((topmostExpressionAncestor != null) && (topmostExpressionAncestor != node))
                         {
                             var reducedAncestor = topmostExpressionAncestor.ReplaceNode(node, reducedNode);
                             var reparsedAncestor = SyntaxFactory.ParseExpression(reducedAncestor.ToFullString());
-                            if (reparsedAncestor != null && !reparsedAncestor.IsEquivalentTo(reducedAncestor))
+                            if ((reparsedAncestor != null) && !reparsedAncestor.IsEquivalentTo(reducedAncestor))
                             {
                                 return SyntaxFactory.ParenthesizedExpression(reducedNode)
                                     .WithAdditionalAnnotations(Simplifier.Annotation);

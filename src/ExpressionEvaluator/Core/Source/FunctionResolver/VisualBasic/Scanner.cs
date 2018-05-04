@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.VisualBasic.ExpressionEvaluator
             private Token Scan()
             {
                 int length = _text.Length;
-                while (_offset < length && char.IsWhiteSpace(_text[_offset]))
+                while ((_offset < length) && char.IsWhiteSpace(_text[_offset]))
                 {
                     _offset++;
                 }
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.VisualBasic.ExpressionEvaluator
                 if (c == '[')
                 {
                     n = ScanIdentifier();
-                    if (n > 0 && _offset + n < length && _text[_offset + n] == ']')
+                    if ((n > 0) && ((_offset + n) < length) && (_text[_offset + n] == ']'))
                     {
                         // A verbatim identifier. Treat the '[' and ']' as part
                         // of the token, but not part of the text.
@@ -123,10 +123,10 @@ namespace Microsoft.CodeAnalysis.VisualBasic.ExpressionEvaluator
             private int ScanIdentifier()
             {
                 int length = _text.Length - _offset;
-                if (length > 0 && UnicodeCharacterUtilities.IsIdentifierStartCharacter(_text[_offset]))
+                if ((length > 0) && UnicodeCharacterUtilities.IsIdentifierStartCharacter(_text[_offset]))
                 {
                     int n = 1;
-                    while (n < length && UnicodeCharacterUtilities.IsIdentifierPartCharacter(_text[_offset + n]))
+                    while ((n < length) && UnicodeCharacterUtilities.IsIdentifierPartCharacter(_text[_offset + n]))
                     {
                         n++;
                     }

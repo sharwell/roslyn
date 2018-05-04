@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                         if (tr.IsDirective)
                         {
                             var d = (DirectiveTriviaSyntax)tr.GetStructure();
-                            if (predicate == null || predicate(d))
+                            if ((predicate == null) || predicate(d))
                             {
                                 return d;
                             }
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                         if (tr.IsDirective)
                         {
                             var d = (DirectiveTriviaSyntax)tr.GetStructure();
-                            if (predicate == null || predicate(d))
+                            if ((predicate == null) || predicate(d))
                             {
                                 return d;
                             }
@@ -225,14 +225,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     switch (d.Kind())
                     {
                         case SyntaxKind.IfDirectiveTrivia:
-                            while (d != null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia)
+                            while ((d != null) && (d.Kind() != SyntaxKind.EndIfDirectiveTrivia))
                             {
                                 d = d.GetNextRelatedDirective();
                             }
 
                             continue;
                         case SyntaxKind.RegionDirectiveTrivia:
-                            while (d != null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia)
+                            while ((d != null) && (d.Kind() != SyntaxKind.EndRegionDirectiveTrivia))
                             {
                                 d = d.GetNextRelatedDirective();
                             }
@@ -326,14 +326,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     switch (d.Kind())
                     {
                         case SyntaxKind.EndIfDirectiveTrivia:
-                            while (d != null && d.Kind() != SyntaxKind.IfDirectiveTrivia)
+                            while ((d != null) && (d.Kind() != SyntaxKind.IfDirectiveTrivia))
                             {
                                 d = d.GetPreviousRelatedDirective();
                             }
 
                             continue;
                         case SyntaxKind.EndRegionDirectiveTrivia:
-                            while (d != null && d.Kind() != SyntaxKind.RegionDirectiveTrivia)
+                            while ((d != null) && (d.Kind() != SyntaxKind.RegionDirectiveTrivia))
                             {
                                 d = d.GetPreviousRelatedDirective();
                             }

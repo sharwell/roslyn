@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
 
             var token = root.FindToken(firstNonWhitespacePosition.Value);
             if (token.IsKind(SyntaxKind.None) ||
-                token.SpanStart != firstNonWhitespacePosition)
+                (token.SpanStart != firstNonWhitespacePosition))
             {
                 return false;
             }
@@ -87,13 +87,13 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
             var previousToken = token.GetPreviousToken(includeZeroWidth: true);
 
             // only use smart token formatter when we have two visible tokens.
-            if (previousToken.Kind() == SyntaxKind.None || previousToken.IsMissing)
+            if ((previousToken.Kind() == SyntaxKind.None) || previousToken.IsMissing)
             {
                 return false;
             }
 
             var lineOperation = FormattingOperations.GetAdjustNewLinesOperation(formattingRules, previousToken, token, optionSet);
-            if (lineOperation == null || lineOperation.Option == AdjustNewLinesOption.ForceLinesIfOnSingleLine)
+            if ((lineOperation == null) || (lineOperation.Option == AdjustNewLinesOption.ForceLinesIfOnSingleLine))
             {
                 // no indentation operation, nothing to do for smart token formatter
                 return false;
@@ -116,9 +116,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
 
                 ReplaceCaseIndentationRules(list, node);
 
-                if (node is BaseParameterListSyntax ||
-                    node is TypeArgumentListSyntax ||
-                    node is TypeParameterListSyntax ||
+                if ((node is BaseParameterListSyntax) ||
+                    (node is TypeArgumentListSyntax) ||
+                    (node is TypeParameterListSyntax) ||
                     node.IsKind(SyntaxKind.Interpolation))
                 {
                     AddIndentBlockOperations(list, node);
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
                 }
 
                 if (node is BaseArgumentListSyntax argument &&
-                    argument.Parent.Kind() != SyntaxKind.ThisConstructorInitializer &&
+                    (argument.Parent.Kind() != SyntaxKind.ThisConstructorInitializer) &&
                     !IsBracketedArgumentListMissingBrackets(argument as BracketedArgumentListSyntax))
                 {
                     AddIndentBlockOperations(list, argument);
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
 
                 // only valid if the user has started to actually type a constructor initializer
                 if (node is ConstructorInitializerSyntax constructorInitializer &&
-                    constructorInitializer.ArgumentList.OpenParenToken.Kind() != SyntaxKind.None &&
+                    (constructorInitializer.ArgumentList.OpenParenToken.Kind() != SyntaxKind.None) &&
                     !constructorInitializer.ThisOrBaseKeyword.IsMissing)
                 {
                     var text = node.SyntaxTree.GetText();
@@ -165,13 +165,13 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
 
             private bool IsBracketedArgumentListMissingBrackets(BracketedArgumentListSyntax node)
             {
-                return node != null && node.OpenBracketToken.IsMissing && node.CloseBracketToken.IsMissing;
+                return (node != null) && node.OpenBracketToken.IsMissing && node.CloseBracketToken.IsMissing;
             }
 
             private void ReplaceCaseIndentationRules(List<IndentBlockOperation> list, SyntaxNode node)
             {
                 var section = node as SwitchSectionSyntax;
-                if (section == null || section.Statements.Count == 0)
+                if ((section == null) || (section.Statements.Count == 0))
                 {
                     return;
                 }
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
                 for (int i = 0; i < list.Count; i++)
                 {
                     var operation = list[i];
-                    if (operation.StartToken == startToken && operation.EndToken == endToken)
+                    if ((operation.StartToken == startToken) && (operation.EndToken == endToken))
                     {
                         // replace operation
                         list[i] = FormattingOperations.CreateIndentBlockOperation(startToken, endToken, indentationDelta: 1, option: IndentBlockOption.RelativePosition);

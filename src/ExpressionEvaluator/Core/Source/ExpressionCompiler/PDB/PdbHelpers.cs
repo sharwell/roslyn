@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             {
                 var scope = stack.Pop();
                 allScopes.Add(scope);
-                if (offset >= 0 && IsInScope(scope, offset, isScopeEndInclusive))
+                if ((offset >= 0) && IsInScope(scope, offset, isScopeEndInclusive))
                 {
                     containingScopes.Add(scope);
                 }
@@ -194,7 +194,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                     return ConstantValue.Create((double)symValue);
 
                 case SpecialType.System_String:
-                    if (symValue is int && (int)symValue == 0)
+                    if ((symValue is int) && ((int)symValue == 0))
                     {
                         return ConstantValue.Null;
                     }
@@ -213,7 +213,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                     return ConstantValue.Create(str);
 
                 case SpecialType.System_Object:
-                    if (symValue is int && (int)symValue == 0)
+                    if ((symValue is int) && ((int)symValue == 0))
                     {
                         return ConstantValue.Null;
                     }
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 case SpecialType.None:
                     if (type.IsReferenceType)
                     {
-                        if (symValue is int && (int)symValue == 0)
+                        if ((symValue is int) && ((int)symValue == 0))
                         {
                             return ConstantValue.Null;
                         }

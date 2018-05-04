@@ -60,8 +60,8 @@ namespace Microsoft.CodeAnalysis
             var newAttributes = attributes ?? Attributes;
             var newProjects = projects ?? Projects;
 
-            if (newAttributes == Attributes &&
-                newProjects == Projects)
+            if ((newAttributes == Attributes) &&
+                (newProjects == Projects))
             {
                 return this;
             }

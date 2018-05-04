@@ -25,9 +25,9 @@ namespace Roslyn.Test.Utilities
                 {
                     string actualAll = "";
                     string expectedAll = "";
-                    for (var j = i - 3; j <= i + 5; j++)
+                    for (var j = i - 3; j <= (i + 5); j++)
                     {
-                        if (j >= 0 && j < max)
+                        if ((j >= 0) && (j < max))
                         {
                             if (j == i)
                             {

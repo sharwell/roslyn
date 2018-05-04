@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="nodes">The nodes to insert.</param>
         public SyntaxList<TNode> InsertRange(int index, IEnumerable<TNode> nodes)
         {
-            if (index < 0 || index > this.Count)
+            if ((index < 0) || (index > this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -248,7 +248,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="index">The index of the element to remove.</param>
         public SyntaxList<TNode> RemoveAt(int index)
         {
-            if (index < 0 || index > this.Count)
+            if ((index < 0) || (index > this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -293,7 +293,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var index = this.IndexOf(nodeInList);
-            if (index >= 0 && index < this.Count)
+            if ((index >= 0) && (index < this.Count))
             {
                 var list = this.ToList();
                 list.RemoveAt(index);
@@ -380,7 +380,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool Any()
         {
-            Debug.Assert(_node == null || Count != 0);
+            Debug.Assert((_node == null) || (Count != 0));
             return _node != null;
         }
 
@@ -435,7 +435,7 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is SyntaxList<TNode> && Equals((SyntaxList<TNode>)obj);
+            return (obj is SyntaxList<TNode>) && Equals((SyntaxList<TNode>)obj);
         }
 
         public override int GetHashCode()

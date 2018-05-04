@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.InitializeParameter
                         return true;
                     }
                 }
-                else if (parameter.Type.SpecialType == SpecialType.System_String &&
+                else if ((parameter.Type.SpecialType == SpecialType.System_String) &&
                          IsStringCheck(condition, parameter))
                 {
                     return true;
@@ -154,12 +154,12 @@ namespace Microsoft.CodeAnalysis.InitializeParameter
         private bool IsStringCheck(IOperation condition, IParameterSymbol parameter)
         {
             if (condition is IInvocationOperation invocation &&
-                invocation.Arguments.Length == 1 &&
+                (invocation.Arguments.Length == 1) &&
                 IsParameterReference(invocation.Arguments[0].Value, parameter))
             {
                 var targetMethod = invocation.TargetMethod;
-                if (targetMethod?.Name == nameof(string.IsNullOrEmpty) ||
-                    targetMethod?.Name == nameof(string.IsNullOrWhiteSpace))
+                if ((targetMethod?.Name == nameof(string.IsNullOrEmpty)) ||
+                    (targetMethod?.Name == nameof(string.IsNullOrWhiteSpace)))
                 {
                     return targetMethod.ContainingType.SpecialType == SpecialType.System_String;
                 }
@@ -174,7 +174,7 @@ namespace Microsoft.CodeAnalysis.InitializeParameter
         private bool IsNullLiteral(IOperation operand)
             => operand is ILiteralOperation literal &&
                literal.ConstantValue.HasValue &&
-               literal.ConstantValue.Value == null;
+               (literal.ConstantValue.Value == null);
 
         private async Task<Document> AddNullCheckAsync(
             Document document,

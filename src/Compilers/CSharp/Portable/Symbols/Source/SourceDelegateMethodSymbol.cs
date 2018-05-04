@@ -67,8 +67,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // (2) a constructor with argument types (object, System.IntPtr)
             symbols.Add(new Constructor(delegateType, voidType, objectType, intPtrType, syntax));
 
-            if (binder.Compilation.GetSpecialType(SpecialType.System_IAsyncResult).TypeKind != TypeKind.Error &&
-                binder.Compilation.GetSpecialType(SpecialType.System_AsyncCallback).TypeKind != TypeKind.Error &&
+            if ((binder.Compilation.GetSpecialType(SpecialType.System_IAsyncResult).TypeKind != TypeKind.Error) &&
+                (binder.Compilation.GetSpecialType(SpecialType.System_AsyncCallback).TypeKind != TypeKind.Error) &&
                 // WinRT delegates don't have Begin/EndInvoke methods
                 !delegateType.IsCompilationOutputWinMdObj())
             {

@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis.UseObjectInitializer
 
                     // If we're implicitly referencing some target that is before the 
                     // object creation expression, then our semantics will change.
-                    if (expression != null && expression.SpanStart < _objectCreationExpression.SpanStart)
+                    if ((expression != null) && (expression.SpanStart < _objectCreationExpression.SpanStart))
                     {
                         return true;
                     }

@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
         public DocumentId GetActiveDocument()
         {
             var snapshot = _visibleFrames;
-            if (_activeFrame == null || snapshot.IsEmpty)
+            if ((_activeFrame == null) || snapshot.IsEmpty)
             {
                 return null;
             }
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
         }
         public void Dispose()
         {
-            if (_cookie != VSConstants.VSCOOKIE_NIL && _monitorSelection != null)
+            if ((_cookie != VSConstants.VSCOOKIE_NIL) && (_monitorSelection != null))
             {
                 _activeFrame = null;
                 _monitorSelection.UnadviseSelectionEvents(_cookie);

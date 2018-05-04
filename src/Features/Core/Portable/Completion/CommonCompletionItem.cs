@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Completion
             }
 
             properties = properties ?? ImmutableDictionary<string, string>.Empty;
-            if (!description.IsDefault && description.Length > 0)
+            if (!description.IsDefault && (description.Length > 0))
             {
                 properties = properties.Add("Description", EncodeDescription(description));
             }

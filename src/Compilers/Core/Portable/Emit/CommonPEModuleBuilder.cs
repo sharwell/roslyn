@@ -199,14 +199,14 @@ namespace Microsoft.CodeAnalysis.Emit
             Debug.Assert(methodSymbol.ContainingModule == CommonSourceModule);
             Debug.Assert(methodSymbol.IsDefinition);
             Debug.Assert(methodSymbol.PartialDefinitionPart == null); // Must be definition.
-            Debug.Assert(body == null || (object)methodSymbol == body.MethodDefinition);
+            Debug.Assert((body == null) || ((object)methodSymbol == body.MethodDefinition));
 
             _methodBodyMap.Add(methodSymbol, body);
         }
 
         internal void SetPEEntryPoint(IMethodSymbol method, DiagnosticBag diagnostics)
         {
-            Debug.Assert(method == null || IsSourceDefinition(method));
+            Debug.Assert((method == null) || IsSourceDefinition(method));
             Debug.Assert(OutputKind.IsApplication());
 
             PEEntryPoint = Translate(method, diagnostics, needDeclaration: true);
@@ -214,14 +214,14 @@ namespace Microsoft.CodeAnalysis.Emit
 
         internal void SetDebugEntryPoint(IMethodSymbol method, DiagnosticBag diagnostics)
         {
-            Debug.Assert(method == null || IsSourceDefinition(method));
+            Debug.Assert((method == null) || IsSourceDefinition(method));
 
             DebugEntryPoint = Translate(method, diagnostics, needDeclaration: true);
         }
 
         private bool IsSourceDefinition(IMethodSymbol method)
         {
-            return method.ContainingModule == CommonSourceModule && method.IsDefinition;
+            return (method.ContainingModule == CommonSourceModule) && method.IsDefinition;
         }
 
         /// <summary>
@@ -313,7 +313,7 @@ namespace Microsoft.CodeAnalysis.Emit
                     string alias = aliases[i];
 
                     // filter out duplicates and global aliases:
-                    if (alias != MetadataReferenceProperties.GlobalAlias && aliases.IndexOf(alias, 0, i) < 0)
+                    if ((alias != MetadataReferenceProperties.GlobalAlias) && (aliases.IndexOf(alias, 0, i) < 0))
                     {
                         result.Add(new Cci.AssemblyReferenceAlias(alias, Translate(assembly, context.Diagnostics)));
                     }
@@ -492,7 +492,7 @@ namespace Microsoft.CodeAnalysis.Emit
 
             // First time through, we need to push things through NoPiaReferenceIndexer
             // to make sure we collect all to be embedded NoPia types and members.
-            if (EmbeddedTypesManagerOpt != null && !EmbeddedTypesManagerOpt.IsFrozen)
+            if ((EmbeddedTypesManagerOpt != null) && !EmbeddedTypesManagerOpt.IsFrozen)
             {
                 noPiaIndexer = new Cci.NoPiaReferenceIndexer(context);
                 Debug.Assert(names != null);

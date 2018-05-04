@@ -126,8 +126,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Inter
                 var symbol = (IMethodSymbol)LookupSymbol();
 
                 // Only methods and constructors can be overloaded
-                if (symbol.MethodKind != MethodKind.Ordinary &&
-                    symbol.MethodKind != MethodKind.Constructor)
+                if ((symbol.MethodKind != MethodKind.Ordinary) &&
+                    (symbol.MethodKind != MethodKind.Constructor))
                 {
                     return false;
                 }

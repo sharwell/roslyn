@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
                 type = ((IArrayTypeSymbol)type).ElementType;
             }
 
-            if (type == null ||
+            if ((type == null) ||
                 (isArray && preselect))
             {
                 // In the case of array creation, we don't offer a preselected/hard-selected item because
@@ -109,15 +109,15 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
             // list even if they can't new them directly.
             if (!isArray)
             {
-                if (type.TypeKind == TypeKind.Interface ||
-                    type.TypeKind == TypeKind.Pointer ||
-                    type.TypeKind == TypeKind.Dynamic ||
+                if ((type.TypeKind == TypeKind.Interface) ||
+                    (type.TypeKind == TypeKind.Pointer) ||
+                    (type.TypeKind == TypeKind.Dynamic) ||
                     type.IsAbstract)
                 {
                     return SpecializedTasks.EmptyImmutableArray<ISymbol>();
                 }
 
-                if (type.TypeKind == TypeKind.TypeParameter &&
+                if ((type.TypeKind == TypeKind.TypeParameter) &&
                     !((ITypeParameterSymbol)type).HasConstructorConstraint)
                 {
                     return SpecializedTasks.EmptyImmutableArray<ISymbol>();

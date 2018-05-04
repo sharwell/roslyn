@@ -157,10 +157,10 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         private static MetadataBlock GetMetadataBlock(ImmutableArray<MetadataBlock> previousMetadataBlocks, int index, IntPtr ptr, uint size)
         {
-            if (!previousMetadataBlocks.IsDefault && index < previousMetadataBlocks.Length)
+            if (!previousMetadataBlocks.IsDefault && (index < previousMetadataBlocks.Length))
             {
                 var previousBlock = previousMetadataBlocks[index];
-                if (previousBlock.Pointer == ptr && previousBlock.Size == size)
+                if ((previousBlock.Pointer == ptr) && (previousBlock.Size == size))
                 {
                     return previousBlock;
                 }
@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             {
                 modifierFlags = DkmEvaluationResultTypeModifierFlags.Virtual;
             }
-            else if (symbol.Kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsVolatile)
+            else if ((symbol.Kind == SymbolKind.Field) && ((IFieldSymbol)symbol).IsVolatile)
             {
                 modifierFlags = DkmEvaluationResultTypeModifierFlags.Volatile;
             }

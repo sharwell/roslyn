@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             }
 
             var diagnosticIds = fixAllProvider.GetSupportedFixAllDiagnosticIds(provider);
-            if (diagnosticIds == null || diagnosticIds.IsEmpty())
+            if ((diagnosticIds == null) || diagnosticIds.IsEmpty())
             {
                 return null;
             }

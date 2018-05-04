@@ -10,7 +10,7 @@ namespace Microsoft.CodeAnalysis.CSharp
     {
         internal override string GetConflictCommentText(string header, string beforeString, string afterString)
         {
-            if (beforeString == null && afterString == null)
+            if ((beforeString == null) && (afterString == null))
             {
                 // Whitespace only
                 return null;

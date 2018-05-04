@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             Workspace workspace, CodeGenerationOptions options, ParseOptions parseOptions)
         {
             var hasNoBody = !options.GenerateMethodBodies ||
-                            destination == CodeGenerationDestination.InterfaceType ||
+                            (destination == CodeGenerationDestination.InterfaceType) ||
                             method.IsAbstract;
 
             var explicitInterfaceSpecifier = GenerateExplicitInterfaceSpecifier(method.ExplicitInterfaceImplementations);
@@ -171,9 +171,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             else
             {
                 // If we're generating into an interface, then we don't use any modifiers.
-                if (destination != CodeGenerationDestination.CompilationUnit &&
-                    destination != CodeGenerationDestination.Namespace &&
-                    destination != CodeGenerationDestination.InterfaceType)
+                if ((destination != CodeGenerationDestination.CompilationUnit) &&
+                    (destination != CodeGenerationDestination.Namespace) &&
+                    (destination != CodeGenerationDestination.InterfaceType))
                 {
                     AddAccessibilityModifiers(method.DeclaredAccessibility, tokens, options, Accessibility.Private);
 

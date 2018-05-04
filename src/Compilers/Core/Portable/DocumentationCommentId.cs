@@ -203,7 +203,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(results));
             }
 
-            if (id.Length > 1 && id[0] == 'N' && id[1] == ':')
+            if ((id.Length > 1) && (id[0] == 'N') && (id[1] == ':'))
             {
                 return TryGetSymbolsForDeclarationId(id, compilation, results);
             }
@@ -226,7 +226,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(compilation));
             }
 
-            if (id.Length > 1 && id[0] == 'N' && id[1] == ':')
+            if ((id.Length > 1) && (id[0] == 'N') && (id[1] == ':'))
             {
                 return GetFirstSymbolForDeclarationId(id, compilation);
             }
@@ -363,7 +363,7 @@ namespace Microsoft.CodeAnalysis
 
                 private ReferenceGenerator GetReferenceGenerator(ISymbol typeParameterContext)
                 {
-                    if (_referenceGenerator == null || _referenceGenerator.TypeParameterContext != typeParameterContext)
+                    if ((_referenceGenerator == null) || (_referenceGenerator.TypeParameterContext != typeParameterContext))
                     {
                         _referenceGenerator = new ReferenceGenerator(_builder, typeParameterContext);
                     }
@@ -837,7 +837,7 @@ namespace Microsoft.CodeAnalysis
 
                 // context expression embedded in reference => <context-definition>:<type-parameter>
                 // note: this is a deviation from the language spec
-                if ((ch == 'M' || ch == 'T') && PeekNextChar(id, index + 1) == ':')
+                if (((ch == 'M') || (ch == 'T')) && (PeekNextChar(id, index + 1) == ':'))
                 {
                     var contexts = s_symbolListPool.Allocate();
                     try
@@ -935,7 +935,7 @@ namespace Microsoft.CodeAnalysis
                     if (methodContext != null)
                     {
                         var count = methodContext.TypeParameters.Length;
-                        if (count > 0 && methodTypeParameterIndex < count)
+                        if ((count > 0) && (methodTypeParameterIndex < count))
                         {
                             results.Add(methodContext.TypeParameters[methodTypeParameterIndex]);
                         }
@@ -989,11 +989,11 @@ namespace Microsoft.CodeAnalysis
                             arity = ReadNextInteger(id, ref index);
                         }
 
-                        if (arity != 0 || PeekNextChar(id, index) != '.')
+                        if ((arity != 0) || (PeekNextChar(id, index) != '.'))
                         {
                             GetMatchingTypes(containers, name, arity, results);
 
-                            if (arity != 0 && typeArguments != null && typeArguments.Count != 0)
+                            if ((arity != 0) && (typeArguments != null) && (typeArguments.Count != 0))
                             {
                                 var typeArgs = typeArguments.ToArray();
                                 for (int i = 0; i < results.Count; i++)
@@ -1140,7 +1140,7 @@ namespace Microsoft.CodeAnalysis
 
                 foreach (var symbol in members)
                 {
-                    if (symbol.Kind == SymbolKind.Namespace || (symbol.Kind == SymbolKind.NamedType && ((INamedTypeSymbol)symbol).Arity == 0))
+                    if ((symbol.Kind == SymbolKind.Namespace) || ((symbol.Kind == SymbolKind.NamedType) && (((INamedTypeSymbol)symbol).Arity == 0)))
                     {
                         results.Add(symbol);
                     }
@@ -1185,7 +1185,7 @@ namespace Microsoft.CodeAnalysis
                             index = startIndex;
 
                             var methodSymbol = symbol as IMethodSymbol;
-                            if (methodSymbol != null && methodSymbol.Arity == arity)
+                            if ((methodSymbol != null) && (methodSymbol.Arity == arity))
                             {
                                 parameters?.Clear();
 
@@ -1218,7 +1218,7 @@ namespace Microsoft.CodeAnalysis
                                     ITypeSymbol returnType = ParseTypeSymbol(id, ref index, compilation, methodSymbol);
 
                                     // if return type is specified, then it must match
-                                    if (returnType != null && methodSymbol.ReturnType.Equals(returnType))
+                                    if ((returnType != null) && methodSymbol.ReturnType.Equals(returnType))
                                     {
                                         // return type matches
                                         results.Add(methodSymbol);
@@ -1361,7 +1361,7 @@ namespace Microsoft.CodeAnalysis
 
                 var parameterType = parameterInfo.Type;
 
-                return parameterType != null && symbol.Type.Equals(parameterType);
+                return (parameterType != null) && symbol.Type.Equals(parameterType);
             }
 
             private static ITypeParameterSymbol GetNthTypeParameter(INamedTypeSymbol typeSymbol, int n)
@@ -1504,9 +1504,9 @@ namespace Microsoft.CodeAnalysis
             {
                 int n = 0;
 
-                while (index < id.Length && char.IsDigit(id[index]))
+                while ((index < id.Length) && char.IsDigit(id[index]))
                 {
-                    n = n * 10 + (id[index] - '0');
+                    n = (n * 10) + (id[index] - '0');
                     index++;
                 }
 
@@ -1517,7 +1517,7 @@ namespace Microsoft.CodeAnalysis
                 where TSource : class
                 where TDestination : class
             {
-                if (destination.Count + source.Count > destination.Capacity)
+                if ((destination.Count + source.Count) > destination.Capacity)
                 {
                     destination.Capacity = destination.Count + source.Count;
                 }

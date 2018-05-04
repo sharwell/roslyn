@@ -217,7 +217,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
         {
             bool selectedProjectSupportsAnalyzers = SelectedProjectSupportsAnalyzers();
             _projectAddMenuItem.Visible = selectedProjectSupportsAnalyzers;
-            _projectContextAddMenuItem.Visible = selectedProjectSupportsAnalyzers && _tracker.SelectedItemId == VSConstants.VSITEMID_ROOT;
+            _projectContextAddMenuItem.Visible = selectedProjectSupportsAnalyzers && (_tracker.SelectedItemId == VSConstants.VSITEMID_ROOT);
             _referencesContextAddMenuItem.Visible = selectedProjectSupportsAnalyzers;
             _setActiveRuleSetMenuItem.Visible = selectedProjectSupportsAnalyzers &&
                                                 _tracker.SelectedHierarchy.TryGetItemName(_tracker.SelectedItemId, out var itemName) &&
@@ -234,8 +234,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
 
         private void UpdateOpenHelpLinkMenuItemVisibility()
         {
-            _openHelpLinkMenuItem.Visible = _tracker.SelectedDiagnosticItems.Length == 1 &&
-                                            _tracker.SelectedDiagnosticItems[0].GetHelpLink() != null;
+            _openHelpLinkMenuItem.Visible = (_tracker.SelectedDiagnosticItems.Length == 1) &&
+                                            (_tracker.SelectedDiagnosticItems[0].GetHelpLink() != null);
         }
 
         private void UpdateSeverityMenuItemsChecked()
@@ -330,10 +330,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
 
         private bool SelectedProjectSupportsAnalyzers()
         {
-            return _tracker != null &&
-                   _tracker.SelectedHierarchy != null &&
+            return (_tracker != null) &&
+                   (_tracker.SelectedHierarchy != null) &&
                    _tracker.SelectedHierarchy.TryGetProject(out var project) &&
-                   project.Object is VSProject3;
+                   (project.Object is VSProject3);
         }
 
         /// <summary>
@@ -362,8 +362,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
 
         internal void OpenRuleSetHandler(object sender, EventArgs args)
         {
-            if (_tracker.SelectedFolder != null &&
-                _serviceProvider != null)
+            if ((_tracker.SelectedFolder != null) &&
+                (_serviceProvider != null))
             {
                 var workspace = _tracker.SelectedFolder.Workspace as VisualStudioWorkspaceImpl;
                 var projectId = _tracker.SelectedFolder.ProjectId;

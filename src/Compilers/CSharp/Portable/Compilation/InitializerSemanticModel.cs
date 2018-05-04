@@ -198,8 +198,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             switch (node.Kind())
             {
                 case SyntaxKind.EqualsValueClause:
-                    return this.Root == node ||     /*enum or parameter initializer*/
-                           this.Root == node.Parent /*field initializer*/;
+                    return (this.Root == node) ||     /*enum or parameter initializer*/
+                           (this.Root == node.Parent) /*field initializer*/;
 
                 case SyntaxKind.BaseConstructorInitializer:
                 case SyntaxKind.ThisConstructorInitializer:

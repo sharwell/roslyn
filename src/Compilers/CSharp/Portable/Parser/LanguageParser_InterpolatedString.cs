@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             }
 
             int len = last - first + 1;
-            return (last > s.Length || len <= 0) ? string.Empty : s.Substring(first, len);
+            return ((last > s.Length) || (len <= 0)) ? string.Empty : s.Substring(first, len);
         }
 
         private ExpressionSyntax ParseInterpolatedStringToken()
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             var originalToken = this.EatToken();
             var originalText = originalToken.ValueText; // this is actually the source text
             Debug.Assert(originalText[0] == '$');
-            var isVerbatim = originalText.Length > 2 && originalText[1] == '@';
+            var isVerbatim = (originalText.Length > 2) && (originalText[1] == '@');
             Debug.Assert(originalToken.Kind == SyntaxKind.InterpolatedStringToken);
             var interpolations = ArrayBuilder<Lexer.Interpolation>.GetInstance();
             SyntaxDiagnosticInfo error = null;
@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
             // Make a token for the close quote " (even if it was missing)
             var closeQuoteIndex = closeQuoteMissing ? originalText.Length : originalText.Length - 1;
-            Debug.Assert(closeQuoteMissing || originalText[closeQuoteIndex] == '"');
+            Debug.Assert(closeQuoteMissing || (originalText[closeQuoteIndex] == '"'));
             var closeQuote = closeQuoteMissing
                 ? SyntaxFactory.MissingToken(SyntaxKind.InterpolatedStringEndToken).TokenWithTrailingTrivia(originalToken.GetTrailingTrivia())
                 : SyntaxFactory.Token(null, SyntaxKind.InterpolatedStringEndToken, originalToken.GetTrailingTrivia());

@@ -36,9 +36,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 return false;
             }
 
-            return Node == other.Node
-                && ParentNode == other.ParentNode
-                && Type == other.Type;
+            return (Node == other.Node)
+                && (ParentNode == other.ParentNode)
+                && (Type == other.Type);
         }
     }
 }

@@ -220,7 +220,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                             compilation.References.Single(r =>
                             {
                                 var cr = r as CompilationReference;
-                                return cr != null && cr.Compilation == compilationReference.Compilation;
+                                return (cr != null) && (cr.Compilation == compilationReference.Compilation);
                             });
                         }
                     }
@@ -1243,7 +1243,7 @@ End Class";
         {
             DateTime start = DateTime.UtcNow;
 
-            while ((DateTime.UtcNow - start) < timeout && !condition())
+            while (((DateTime.UtcNow - start) < timeout) && !condition())
             {
                 Thread.Sleep(TimeSpan.FromMilliseconds(10));
             }

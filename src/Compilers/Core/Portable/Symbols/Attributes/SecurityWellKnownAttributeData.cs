@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis
 
         public void SetSecurityAttribute(int attributeIndex, DeclarativeSecurityAction action, int totalSourceAttributes)
         {
-            Debug.Assert(attributeIndex >= 0 && attributeIndex < totalSourceAttributes);
+            Debug.Assert((attributeIndex >= 0) && (attributeIndex < totalSourceAttributes));
             Debug.Assert(action != 0);
 
             if (_lazySecurityActions == null)
@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis
 
         public void SetPathForPermissionSetAttributeFixup(int attributeIndex, string resolvedFilePath, int totalSourceAttributes)
         {
-            Debug.Assert(attributeIndex >= 0 && attributeIndex < totalSourceAttributes);
+            Debug.Assert((attributeIndex >= 0) && (attributeIndex < totalSourceAttributes));
             Debug.Assert(resolvedFilePath != null);
 
             if (_lazyPathsForPermissionSetFixup == null)
@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis
             where T : Cci.ICustomAttribute
         {
             Debug.Assert(!customAttributes.IsDefault);
-            Debug.Assert(_lazyPathsForPermissionSetFixup == null || _lazySecurityActions != null && _lazyPathsForPermissionSetFixup.Length == _lazySecurityActions.Length);
+            Debug.Assert((_lazyPathsForPermissionSetFixup == null) || ((_lazySecurityActions != null) && (_lazyPathsForPermissionSetFixup.Length == _lazySecurityActions.Length)));
 
             if (_lazySecurityActions != null)
             {

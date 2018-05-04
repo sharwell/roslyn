@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis
 
         private VersionStamp(DateTime utcLastModified, int localIncrement, int globalIncrement)
         {
-            Contract.ThrowIfFalse(utcLastModified == default || utcLastModified.Kind == DateTimeKind.Utc);
+            Contract.ThrowIfFalse((utcLastModified == default) || (utcLastModified.Kind == DateTimeKind.Utc));
 
             _utcLastModified = utcLastModified;
             _localIncrement = localIncrement;
@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // there was a collision, we can't use these
-            if (baseVersion._localIncrement != 0 || persistedVersion._localIncrement != 0)
+            if ((baseVersion._localIncrement != 0) || (persistedVersion._localIncrement != 0))
             {
                 return false;
             }

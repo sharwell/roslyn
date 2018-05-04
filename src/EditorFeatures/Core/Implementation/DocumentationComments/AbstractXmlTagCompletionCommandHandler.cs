@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             // Ensure completion and any other buffer edits happen first.
             nextHandler();
 
-            if (args.TypedChar != '>' && args.TypedChar != '/')
+            if ((args.TypedChar != '>') && (args.TypedChar != '/'))
             {
                 return;
             }

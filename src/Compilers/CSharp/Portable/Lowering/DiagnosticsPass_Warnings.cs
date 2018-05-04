@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             FieldSymbol fieldSymbol = fieldAccess.FieldSymbol;
 
             // We can safely suppress this warning when calling an Interlocked API
-            if (fieldSymbol.IsVolatile && ((object)consumerOpt == null || !IsInterlockedAPI(consumerOpt)))
+            if (fieldSymbol.IsVolatile && (((object)consumerOpt == null) || !IsInterlockedAPI(consumerOpt)))
             {
                 Error(ErrorCode.WRN_VolatileByRef, fieldAccess, fieldSymbol);
             }
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private void CheckReceiverIfField(BoundExpression receiverOpt)
         {
-            if (receiverOpt != null && receiverOpt.Kind == BoundKind.FieldAccess)
+            if ((receiverOpt != null) && (receiverOpt.Kind == BoundKind.FieldAccess))
             {
                 CheckFieldAsReceiver((BoundFieldAccess)receiverOpt);
             }
@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static bool IsInstanceFieldAccessWithNonThisReceiver(BoundFieldAccess fieldAccess)
         {
             BoundExpression receiver = fieldAccess.ReceiverOpt;
-            if (receiver == null || fieldAccess.FieldSymbol.IsStatic)
+            if ((receiver == null) || fieldAccess.FieldSymbol.IsStatic)
             {
                 return false;
             }
@@ -141,13 +141,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 receiver = conversion.Operand;
             }
 
-            return receiver.Kind != BoundKind.ThisReference && receiver.Kind != BoundKind.BaseReference;
+            return (receiver.Kind != BoundKind.ThisReference) && (receiver.Kind != BoundKind.BaseReference);
         }
 
         private bool IsInterlockedAPI(Symbol method)
         {
             var interlocked = _compilation.GetWellKnownType(WellKnownType.System_Threading_Interlocked);
-            if ((object)interlocked != null && interlocked == method.ContainingType)
+            if (((object)interlocked != null) && (interlocked == method.ContainingType))
                 return true;
 
             return false;
@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 // CONSIDER: Dev11 doesn't strip conversions to float or double.
                 BoundConversion conversion = current as BoundConversion;
-                if (conversion == null || !conversion.ConversionKind.IsImplicitConversion())
+                if ((conversion == null) || !conversion.ConversionKind.IsImplicitConversion())
                 {
                     return current;
                 }
@@ -171,12 +171,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool IsSameLocalOrField(BoundExpression expr1, BoundExpression expr2)
         {
-            if (expr1 == null && expr2 == null)
+            if ((expr1 == null) && (expr2 == null))
             {
                 return true;
             }
 
-            if (expr1 == null || expr2 == null)
+            if ((expr1 == null) || (expr2 == null))
             {
                 return false;
             }
@@ -203,12 +203,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case BoundKind.FieldAccess:
                     var field1 = (BoundFieldAccess)expr1;
                     var field2 = (BoundFieldAccess)expr2;
-                    return field1.FieldSymbol == field2.FieldSymbol &&
+                    return (field1.FieldSymbol == field2.FieldSymbol) &&
                         (field1.FieldSymbol.IsStatic || IsSameLocalOrField(field1.ReceiverOpt, field2.ReceiverOpt));
                 case BoundKind.EventAccess:
                     var event1 = (BoundEventAccess)expr1;
                     var event2 = (BoundEventAccess)expr2;
-                    return event1.EventSymbol == event2.EventSymbol &&
+                    return (event1.EventSymbol == event2.EventSymbol) &&
                         (event1.EventSymbol.IsStatic || IsSameLocalOrField(event1.ReceiverOpt, event2.ReceiverOpt));
                 case BoundKind.Parameter:
                     var param1 = (BoundParameter)expr1;
@@ -230,14 +230,14 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool IsComCallWithRefOmitted(MethodSymbol method, ImmutableArray<BoundExpression> arguments, ImmutableArray<RefKind> argumentRefKindsOpt)
         {
-            if (method.ParameterCount != arguments.Length ||
-                (object)method.ContainingType == null ||
+            if ((method.ParameterCount != arguments.Length) ||
+                ((object)method.ContainingType == null) ||
                 !method.ContainingType.IsComImport)
                 return false;
 
             for (int i = 0; i < arguments.Length; i++)
             {
-                if (method.Parameters[i].RefKind != RefKind.None && (argumentRefKindsOpt.IsDefault || argumentRefKindsOpt[i] == RefKind.None)) return true;
+                if ((method.Parameters[i].RefKind != RefKind.None) && (argumentRefKindsOpt.IsDefault || (argumentRefKindsOpt[i] == RefKind.None))) return true;
             }
 
             return false;
@@ -291,25 +291,25 @@ namespace Microsoft.CodeAnalysis.CSharp
             // is doing something like "if (0xFFFFFFFFU == 0)" -- these are likely to be machine-
             // generated code. 
 
-            if (node.Left.ConstantValue != null && node.Right.ConstantValue == null && node.Right.Kind == BoundKind.Conversion)
+            if ((node.Left.ConstantValue != null) && (node.Right.ConstantValue == null) && (node.Right.Kind == BoundKind.Conversion))
             {
                 CheckVacuousComparisons(node, node.Left.ConstantValue, node.Right);
             }
 
-            if (node.Right.ConstantValue != null && node.Left.ConstantValue == null && node.Left.Kind == BoundKind.Conversion)
+            if ((node.Right.ConstantValue != null) && (node.Left.ConstantValue == null) && (node.Left.Kind == BoundKind.Conversion))
             {
                 CheckVacuousComparisons(node, node.Right.ConstantValue, node.Left);
             }
 
-            if (node.OperatorKind == BinaryOperatorKind.ObjectEqual || node.OperatorKind == BinaryOperatorKind.ObjectNotEqual)
+            if ((node.OperatorKind == BinaryOperatorKind.ObjectEqual) || (node.OperatorKind == BinaryOperatorKind.ObjectNotEqual))
             {
                 TypeSymbol t;
-                if (node.Left.Type.SpecialType == SpecialType.System_Object && !IsExplicitCast(node.Left) && !(node.Left.ConstantValue != null && node.Left.ConstantValue.IsNull) && ConvertedHasEqual(node.OperatorKind, node.Right, out t))
+                if ((node.Left.Type.SpecialType == SpecialType.System_Object) && !IsExplicitCast(node.Left) && !((node.Left.ConstantValue != null) && node.Left.ConstantValue.IsNull) && ConvertedHasEqual(node.OperatorKind, node.Right, out t))
                 {
                     // Possible unintended reference comparison; to get a value comparison, cast the left hand side to type '{0}'
                     _diagnostics.Add(ErrorCode.WRN_BadRefCompareLeft, node.Syntax.Location, t);
                 }
-                else if (node.Right.Type.SpecialType == SpecialType.System_Object && !IsExplicitCast(node.Right) && !(node.Right.ConstantValue != null && node.Right.ConstantValue.IsNull) && ConvertedHasEqual(node.OperatorKind, node.Left, out t))
+                else if ((node.Right.Type.SpecialType == SpecialType.System_Object) && !IsExplicitCast(node.Right) && !((node.Right.ConstantValue != null) && node.Right.ConstantValue.IsNull) && ConvertedHasEqual(node.OperatorKind, node.Left, out t))
                 {
                     // Possible unintended reference comparison; to get a value comparison, cast the right hand side to type '{0}'
                     _diagnostics.Add(ErrorCode.WRN_BadRefCompareRight, node.Syntax.Location, t);
@@ -321,7 +321,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool IsExplicitCast(BoundExpression node)
         {
-            return node.Kind == BoundKind.Conversion && ((BoundConversion)node).ExplicitCastInCode;
+            return (node.Kind == BoundKind.Conversion) && ((BoundConversion)node).ExplicitCastInCode;
         }
 
         private static bool ConvertedHasEqual(BinaryOperatorKind oldOperatorKind, BoundNode node, out TypeSymbol type)
@@ -331,16 +331,16 @@ namespace Microsoft.CodeAnalysis.CSharp
             var conv = (BoundConversion)node;
             if (conv.ExplicitCastInCode) return false;
             NamedTypeSymbol nt = conv.Operand.Type as NamedTypeSymbol;
-            if ((object)nt == null || !nt.IsReferenceType) return false;
+            if (((object)nt == null) || !nt.IsReferenceType) return false;
             string opName = (oldOperatorKind == BinaryOperatorKind.ObjectEqual) ? WellKnownMemberNames.EqualityOperatorName : WellKnownMemberNames.InequalityOperatorName;
             for (var t = nt; (object)t != null; t = t.BaseTypeNoUseSiteDiagnostics)
             {
                 foreach (var sym in t.GetMembers(opName))
                 {
                     MethodSymbol op = sym as MethodSymbol;
-                    if ((object)op == null || op.MethodKind != MethodKind.UserDefinedOperator) continue;
+                    if (((object)op == null) || (op.MethodKind != MethodKind.UserDefinedOperator)) continue;
                     var parameters = op.GetParameters();
-                    if (parameters.Length == 2 && parameters[0].Type == t && parameters[1].Type == t)
+                    if ((parameters.Length == 2) && (parameters[0].Type == t) && (parameters[1].Type == t))
                     {
                         type = t;
                         return true;
@@ -405,8 +405,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 conversion != null;
                 conversion = conversion.Operand as BoundConversion)
             {
-                if (conversion.ConversionKind != ConversionKind.ImplicitNumeric &&
-                    conversion.ConversionKind != ConversionKind.ImplicitConstant)
+                if ((conversion.ConversionKind != ConversionKind.ImplicitNumeric) &&
+                    (conversion.ConversionKind != ConversionKind.ImplicitConstant))
                 {
                     return;
                 }
@@ -522,7 +522,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (constVal != null)
             {
                 ulong val = constVal.UInt64Value;
-                if ((val & right) == right || (~val & right) == right)
+                if (((val & right) == right) || ((~val & right) == right))
                 {
                     return;
                 }
@@ -532,7 +532,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (constVal != null)
             {
                 ulong val = constVal.UInt64Value;
-                if ((val & left) == left || (~val & left) == left)
+                if (((val & left) == left) || ((~val & left) == left))
                 {
                     return;
                 }
@@ -558,7 +558,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             ConstantValue constVal = operand.ConstantValue;
 
-            if (constVal == null || !constVal.IsIntegral)
+            if ((constVal == null) || !constVal.IsIntegral)
             {
                 return null;
             }
@@ -585,7 +585,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeSymbol from = conv.Operand.Type;
             TypeSymbol to = conv.Type;
 
-            if ((object)from == null || (object)to == null)
+            if (((object)from == null) || ((object)to == null))
             {
                 return 0;
             }
@@ -611,7 +611,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             int fromSize = fromSpecialType.SizeInBytes();
             int toSize = toSpecialType.SizeInBytes();
 
-            if (fromSize == 0 || toSize == 0)
+            if ((fromSize == 0) || (toSize == 0))
             {
                 return 0;
             }
@@ -831,7 +831,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // but the warning we want to produce is that the null on the right hand
             // side is of type sbyte?, not int?. 
 
-            if ((object)node.Type == null || !node.Type.IsNullableType())
+            if (((object)node.Type == null) || !node.Type.IsNullableType())
             {
                 return null;
             }
@@ -841,7 +841,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (node.Kind == BoundKind.Conversion)
             {
                 var conv = (BoundConversion)node;
-                if (conv.ConversionKind == ConversionKind.ExplicitNullable || conv.ConversionKind == ConversionKind.ImplicitNullable)
+                if ((conv.ConversionKind == ConversionKind.ExplicitNullable) || (conv.ConversionKind == ConversionKind.ImplicitNullable))
                 {
                     type = GetTypeForLiftedComparisonWarning(conv.Operand);
                 }
@@ -877,7 +877,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
             }
 
-            if (right.Kind != BoundKind.ConvertedTupleLiteral && right.Kind != BoundKind.TupleLiteral)
+            if ((right.Kind != BoundKind.ConvertedTupleLiteral) && (right.Kind != BoundKind.TupleLiteral))
             {
                 return;
             }

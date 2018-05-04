@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
             var token = snapshot.FindToken(position, cancellationToken);
 
             return token.IsKind(SyntaxKind.OpenBraceToken)
-                && token.SpanStart == position;
+                && (token.SpanStart == position);
         }
 
         public static bool IsContext(Document document, int position, CancellationToken cancellationToken)
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
                 index--;
             }
 
-            if (openCurlyCount > 0 && openCurlyCount % 2 == 1)
+            if ((openCurlyCount > 0) && ((openCurlyCount % 2) == 1))
             {
                 return false;
             }

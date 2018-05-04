@@ -113,11 +113,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
                 AssertIsForeground();
 
                 _newIdentifierBindsTask = _isRenamableIdentifierTask.SafeContinueWithFromAsync(
-                    async t => t.Result != TriggerIdentifierKind.NotRenamable &&
-                               TriggerIdentifierKind.RenamableReference ==
+                    async t => (t.Result != TriggerIdentifierKind.NotRenamable) &&
+                               (TriggerIdentifierKind.RenamableReference ==
                                    await DetermineIfRenamableIdentifierAsync(
                                        TrackingSpan.GetSpan(snapshot),
-                                       initialCheck: false).ConfigureAwait(false),
+                                       initialCheck: false).ConfigureAwait(false)),
                     _cancellationToken,
                     TaskContinuationOptions.OnlyOnRanToCompletion,
                     TaskScheduler.Default);
@@ -153,7 +153,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
                     // recovery (the "[x" is actually in the trailing trivia). If the OriginalName
                     // found through the textual check has a different length than the span of the 
                     // touching word, then we cannot perform a rename.
-                    if (initialCheck && token.Span.Length != this.OriginalName.Length)
+                    if (initialCheck && (token.Span.Length != this.OriginalName.Length))
                     {
                         return TriggerIdentifierKind.NotRenamable;
                     }
@@ -215,7 +215,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
                 // Get the source symbol if possible
                 var sourceSymbol = await SymbolFinder.FindSourceDefinitionAsync(symbol, document.Project.Solution, _cancellationToken).ConfigureAwait(false) ?? symbol;
 
-                if (sourceSymbol.Kind == SymbolKind.Field && 
+                if ((sourceSymbol.Kind == SymbolKind.Field) && 
                     ((IFieldSymbol)sourceSymbol).ContainingType.IsTupleType &&
                     sourceSymbol.IsImplicitlyDeclared)
                 {
@@ -266,7 +266,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
 
             private bool NewIdentifierDefinitelyBindsToReference()
             {
-                return _newIdentifierBindsTask.Status == TaskStatus.RanToCompletion && _newIdentifierBindsTask.Result;
+                return (_newIdentifierBindsTask.Status == TaskStatus.RanToCompletion) && _newIdentifierBindsTask.Result;
             }
         }
     }

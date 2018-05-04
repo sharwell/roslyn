@@ -79,8 +79,8 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests
                 var lastSpan = selectionSpanList.Last();
                 var cursorPosition = cursorDocument.CursorPosition.Value;
 
-                Assert.True(cursorPosition == firstSpan.Start || cursorPosition == firstSpan.End
-                            || cursorPosition == lastSpan.Start || cursorPosition == lastSpan.End,
+                Assert.True((cursorPosition == firstSpan.Start) || (cursorPosition == firstSpan.End)
+                            || (cursorPosition == lastSpan.Start) || (cursorPosition == lastSpan.End),
                     "cursorPosition wasn't at an endpoint of the 'Selection' annotated span");
 
                 _textView.Selection.Mode = selectionSpanList.Length > 1
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests
                 SnapshotPoint boxSelectionStart, boxSelectionEnd;
                 bool isReversed;
 
-                if (cursorPosition == firstSpan.Start || cursorPosition == lastSpan.End)
+                if ((cursorPosition == firstSpan.Start) || (cursorPosition == lastSpan.End))
                 {
                     // Top-left and bottom-right corners used as anchor points.
                     boxSelectionStart = new SnapshotPoint(_subjectBuffer.CurrentSnapshot, firstSpan.Start);
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests
         {
             excludedTypes = excludedTypes ?? Type.EmptyTypes;
 
-            if (excludedTypes.Count == 0 && (extraParts == null || extraParts.Parts.Count == 0))
+            if ((excludedTypes.Count == 0) && ((extraParts == null) || (extraParts.Parts.Count == 0)))
             {
                 return useMinimumCatalog
                     ? TestExportProvider.MinimumExportProviderFactoryWithCSharpAndVisualBasic.CreateExportProvider()

@@ -267,7 +267,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
         private static int GetSolutionHash(Solution solution)
         {
-            if (solution != null && solution.FilePath != null)
+            if ((solution != null) && (solution.FilePath != null))
             {
                 return solution.FilePath.ToLowerInvariant().GetHashCode();
             }

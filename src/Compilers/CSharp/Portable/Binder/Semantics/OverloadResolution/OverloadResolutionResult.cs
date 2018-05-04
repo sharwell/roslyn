@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 EnsureBestResultLoaded();
 
-                return _bestResultState == ThreeState.True && _bestResult.Result.IsValid;
+                return (_bestResultState == ThreeState.True) && _bestResult.Result.IsValid;
             }
         }
 
@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 EnsureBestResultLoaded();
 
-                Debug.Assert(_bestResultState == ThreeState.True && _bestResult.Result.IsValid);
+                Debug.Assert((_bestResultState == ThreeState.True) && _bestResult.Result.IsValid);
                 return _bestResult;
             }
         }
@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Otherwise if there is any method whose return type does not match the delegate, then the
             // first such method is the best bad method
 
-            if (isMethodGroupConversion && returnRefKind != null &&
+            if (isMethodGroupConversion && (returnRefKind != null) &&
                 HadReturnMismatch(location, diagnostics, returnRefKind.GetValueOrDefault(), delegateType))
             {
                 return;
@@ -391,7 +391,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         break;
                     case MemberResolutionKind.NoCorrespondingNamedParameter:
                         if (supportedInPriorityOrder[noCorrespondingNamedParameterPriority].IsNull ||
-                            result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[noCorrespondingNamedParameterPriority].Result.BadArgumentsOpt[0])
+                            (result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[noCorrespondingNamedParameterPriority].Result.BadArgumentsOpt[0]))
                         {
                             supportedInPriorityOrder[noCorrespondingNamedParameterPriority] = result;
                         }
@@ -415,14 +415,14 @@ namespace Microsoft.CodeAnalysis.CSharp
                         break;
                     case MemberResolutionKind.NameUsedForPositional:
                         if (supportedInPriorityOrder[nameUsedForPositionalPriority].IsNull ||
-                            result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[nameUsedForPositionalPriority].Result.BadArgumentsOpt[0])
+                            (result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[nameUsedForPositionalPriority].Result.BadArgumentsOpt[0]))
                         {
                             supportedInPriorityOrder[nameUsedForPositionalPriority] = result;
                         }
                         break;
                     case MemberResolutionKind.BadNonTrailingNamedArgument:
                         if (supportedInPriorityOrder[badNonTrailingNamedArgumentPriority].IsNull ||
-                            result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[badNonTrailingNamedArgumentPriority].Result.BadArgumentsOpt[0])
+                            (result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[badNonTrailingNamedArgumentPriority].Result.BadArgumentsOpt[0]))
                         {
                             supportedInPriorityOrder[badNonTrailingNamedArgumentPriority] = result;
                         }
@@ -430,7 +430,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     case MemberResolutionKind.DuplicateNamedArgument:
                         {
                             if (supportedInPriorityOrder[duplicateNamedArgumentPriority].IsNull ||
-                            result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[duplicateNamedArgumentPriority].Result.BadArgumentsOpt[0])
+                            (result.Result.BadArgumentsOpt[0] > supportedInPriorityOrder[duplicateNamedArgumentPriority].Result.BadArgumentsOpt[0]))
                             {
                                 supportedInPriorityOrder[duplicateNamedArgumentPriority] = result;
                             }
@@ -458,7 +458,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 // If there are multiple supported candidates, we don't have a good way to choose the best
                 // one so we report a general diagnostic (below).
-                if (!(firstSupported.Result.Kind == MemberResolutionKind.RequiredParameterMissing && supportedRequiredParameterMissingConflicts) && !isMethodGroupConversion)
+                if (!((firstSupported.Result.Kind == MemberResolutionKind.RequiredParameterMissing) && supportedRequiredParameterMissingConflicts) && !isMethodGroupConversion)
                 {
                     switch (firstSupported.Result.Kind)
                     {
@@ -601,7 +601,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 diagnostics.Add(ErrorCode.ERR_InitializerAddHasWrongSignature, location, symbol);
             }
-            else if (nodeOpt?.Kind() == SyntaxKind.AwaitExpression && symbol.Name == WellKnownMemberNames.GetAwaiter)
+            else if ((nodeOpt?.Kind() == SyntaxKind.AwaitExpression) && (symbol.Name == WellKnownMemberNames.GetAwaiter))
             {
                 diagnostics.Add(ErrorCode.ERR_BadAwaitArg, location, receiverOpt.Type);
             }
@@ -1076,7 +1076,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // Early out: if the bad argument is an __arglist parameter then simply report that:
 
-            if (method.GetIsVararg() && parm == method.GetParameterCount())
+            if (method.GetIsVararg() && (parm == method.GetParameterCount()))
             {
                 // NOTE: No SymbolDistinguisher required, since one of the arguments is "__arglist".
 
@@ -1092,14 +1092,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             ParameterSymbol parameter = method.GetParameters()[parm];
-            bool isLastParameter = method.GetParameterCount() == parm + 1; // This is used to later decide if we need to try to unwrap a params array
+            bool isLastParameter = method.GetParameterCount() == (parm + 1); // This is used to later decide if we need to try to unwrap a params array
             RefKind refArg = arguments.RefKind(arg);
             RefKind refParameter = parameter.RefKind;
 
             if (arguments.IsExtensionMethodThisArgument(arg))
             {
                 Debug.Assert(refArg == RefKind.None);
-                if (refParameter == RefKind.Ref || refParameter == RefKind.In)
+                if ((refParameter == RefKind.Ref) || (refParameter == RefKind.In))
                 {
                     // For ref and ref-readonly extension methods, we omit the "ref" modifier on receiver arguments.
                     // Setting the correct RefKind for finding the correct diagnostics message.
@@ -1112,19 +1112,19 @@ namespace Microsoft.CodeAnalysis.CSharp
             // then we never want to report the error "you need a ref on that thing". Rather, we want to
             // say that you can't convert "null" to "ref int".
             if (!argument.HasExpressionType() &&
-                argument.Kind != BoundKind.OutDeconstructVarPendingInference &&
-                argument.Kind != BoundKind.OutVariablePendingInference &&
-                argument.Kind != BoundKind.DiscardExpression)
+                (argument.Kind != BoundKind.OutDeconstructVarPendingInference) &&
+                (argument.Kind != BoundKind.OutVariablePendingInference) &&
+                (argument.Kind != BoundKind.DiscardExpression))
             {
                 TypeSymbol parameterType = UnwrapIfParamsArray(parameter, isLastParameter) is TypeSymbol t ? t : parameter.Type;
 
                 // If the problem is that a lambda isn't convertible to the given type, also report why.
                 // The argument and parameter type might match, but may not have same in/out modifiers
-                if (argument.Kind == BoundKind.UnboundLambda && refArg == refParameter)
+                if ((argument.Kind == BoundKind.UnboundLambda) && (refArg == refParameter))
                 {
                     ((UnboundLambda)argument).GenerateAnonymousFunctionConversionError(diagnostics, parameterType);
                 }
-                else if (argument.Kind == BoundKind.MethodGroup && parameterType.TypeKind == TypeKind.Delegate &&
+                else if ((argument.Kind == BoundKind.MethodGroup) && (parameterType.TypeKind == TypeKind.Delegate) &&
                         Conversions.ReportDelegateMethodGroupDiagnostics(binder, (BoundMethodGroup)argument, parameterType, diagnostics))
                 {
                     // a diagnostic has been reported by ReportDelegateMethodGroupDiagnostics
@@ -1143,9 +1143,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                         UnwrapIfParamsArray(parameter, isLastParameter));
                 }
             }
-            else if (refArg != refParameter && !(refArg == RefKind.None && refParameter == RefKind.In))
+            else if ((refArg != refParameter) && !((refArg == RefKind.None) && (refParameter == RefKind.In)))
             {
-                if (refParameter == RefKind.None || refParameter == RefKind.In)
+                if ((refParameter == RefKind.None) || (refParameter == RefKind.In))
                 {
                     //  Argument {0} should not be passed with the {1} keyword
                     diagnostics.Add(
@@ -1170,7 +1170,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 Debug.Assert(argument.Kind != BoundKind.OutDeconstructVarPendingInference);
                 Debug.Assert(argument.Kind != BoundKind.OutVariablePendingInference);
-                Debug.Assert(argument.Kind != BoundKind.DiscardExpression || argument.HasExpressionType());
+                Debug.Assert((argument.Kind != BoundKind.DiscardExpression) || argument.HasExpressionType());
                 Debug.Assert(argument.Display != null);
 
                 if (arguments.IsExtensionMethodThisArgument(arg))
@@ -1240,7 +1240,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (parameter.IsParams && isLastParameter)
             {
                 ArrayTypeSymbol arrayType = parameter.Type as ArrayTypeSymbol;
-                if ((object)arrayType != null && arrayType.IsSZArray)
+                if (((object)arrayType != null) && arrayType.IsSZArray)
                 {
                     return arrayType.ElementType;
                 }

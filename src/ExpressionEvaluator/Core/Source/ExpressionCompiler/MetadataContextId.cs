@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         public override bool Equals(object obj)
         {
-            return obj is MetadataContextId && this.Equals((MetadataContextId)obj);
+            return (obj is MetadataContextId) && this.Equals((MetadataContextId)obj);
         }
 
         public override int GetHashCode()

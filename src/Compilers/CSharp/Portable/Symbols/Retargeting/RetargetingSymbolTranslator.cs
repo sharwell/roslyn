@@ -137,7 +137,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
 
             public Symbol Retarget(Symbol symbol)
             {
-                Debug.Assert(symbol.Kind != SymbolKind.NamedType || ((NamedTypeSymbol)symbol).PrimitiveTypeCode == Cci.PrimitiveTypeCode.NotPrimitive);
+                Debug.Assert((symbol.Kind != SymbolKind.NamedType) || (((NamedTypeSymbol)symbol).PrimitiveTypeCode == Cci.PrimitiveTypeCode.NotPrimitive));
                 return symbol.Accept(this, RetargetOptions.RetargetPrimitiveTypesByName);
             }
 
@@ -269,8 +269,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
 
                 NamedTypeSymbol result;
 
-                if (type.ContainingSymbol.Kind != SymbolKind.NamedType &&
-                    type.Arity == 0)
+                if ((type.ContainingSymbol.Kind != SymbolKind.NamedType) &&
+                    (type.Arity == 0))
                 {
                     // Get type's identity
 
@@ -297,9 +297,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
 
                             if (signatureIndex != -1)
                             {
-                                Debug.Assert(signatureIndex == 0 || signatureIndex == 1);
+                                Debug.Assert((signatureIndex == 0) || (signatureIndex == 1));
 
-                                if (signatureIndex == 1 && attrData.CommonConstructorArguments.Length == 2)
+                                if ((signatureIndex == 1) && (attrData.CommonConstructorArguments.Length == 2))
                                 {
                                     scope = attrData.CommonConstructorArguments[0].Value as string;
                                     identifier = attrData.CommonConstructorArguments[1].Value as string;
@@ -372,7 +372,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
 
                     mdName = MetadataTypeName.FromTypeName(type.MetadataName, forcedArity: type.Arity);
                     result = scope.LookupMetadataType(ref mdName);
-                    Debug.Assert((object)result != null && result.Arity == type.Arity);
+                    Debug.Assert(((object)result != null) && (result.Arity == type.Arity));
                 }
                 else
                 {
@@ -407,7 +407,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                         NamedTypeSymbol scope = PerformTypeRetargeting(ref destination, containingType);
                         mdName = MetadataTypeName.FromTypeName(type.MetadataName, forcedArity: type.Arity);
                         result1 = scope.LookupMetadataType(ref mdName);
-                        Debug.Assert((object)result1 != null && result1.Arity == type.Arity);
+                        Debug.Assert(((object)result1 != null) && (result1.Arity == type.Arity));
                     }
                     else
                     {
@@ -449,12 +449,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                     return newDefinition;
                 }
 
-                if (newDefinition.Kind == SymbolKind.ErrorType && !newDefinition.IsGenericType)
+                if ((newDefinition.Kind == SymbolKind.ErrorType) && !newDefinition.IsGenericType)
                 {
                     return newDefinition;
                 }
 
-                Debug.Assert(originalDefinition.Arity == 0 || !ReferenceEquals(type.ConstructedFrom, type));
+                Debug.Assert((originalDefinition.Arity == 0) || !ReferenceEquals(type.ConstructedFrom, type));
                 if (type.IsUnboundGenericType)
                 {
                     if (ReferenceEquals(newDefinition, originalDefinition))
@@ -465,7 +465,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                     return newDefinition.AsUnboundGenericType();
                 }
 
-                Debug.Assert((object)type.ContainingType == null || !type.ContainingType.IsUnboundGenericType());
+                Debug.Assert(((object)type.ContainingType == null) || !type.ContainingType.IsUnboundGenericType());
 
                 // This must be a generic instantiation (i.e. constructed type).
 
@@ -476,7 +476,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                 // Collect generic arguments for the type and its containers.
                 while ((object)genericType != null)
                 {
-                    if (startOfNonInterfaceArguments == int.MaxValue &&
+                    if ((startOfNonInterfaceArguments == int.MaxValue) &&
                         !genericType.IsInterface)
                     {
                         startOfNonInterfaceArguments = oldArguments.Count;
@@ -519,7 +519,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                     var newArg = new TypeWithModifiers((TypeSymbol)arg.Type.Accept(this, RetargetOptions.RetargetPrimitiveTypesByTypeCode), // generic instantiation is a signature
                                                        RetargetModifiers(arg.CustomModifiers, out modifiersHaveChanged));
 
-                    if (!anythingRetargeted && (modifiersHaveChanged || newArg.Type != arg.Type))
+                    if (!anythingRetargeted && (modifiersHaveChanged || (newArg.Type != arg.Type)))
                     {
                         anythingRetargeted = true;
                     }
@@ -647,7 +647,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                             namedType = namedType.TupleUnderlyingType;
                         }
 
-                        if ((object)symbol.OriginalDefinition.ContainingModule == (object)_retargetingModule.UnderlyingModule &&
+                        if (((object)symbol.OriginalDefinition.ContainingModule == (object)_retargetingModule.UnderlyingModule) &&
                             namedType.IsExplicitDefinitionOfNoPiaLocalType)
                         {
                             return true;
@@ -727,7 +727,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                     }
                 }
 
-                Debug.Assert(newModifiers == null || newModifiers.Count == oldModifiers.Length);
+                Debug.Assert((newModifiers == null) || (newModifiers.Count == oldModifiers.Length));
                 modifiersHaveChanged = newModifiers != null;
                 return modifiersHaveChanged ? newModifiers.ToImmutableAndFree() : oldModifiers;
             }
@@ -787,7 +787,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                     // If there is an error type in the base type list, it will end up in the interface list (rather
                     // than as the base class), so it might end up passing through here.  If it is specified using
                     // a primitive type keyword, then it will have a primitive type code, even if corlib is missing.
-                    Debug.Assert(nts.TypeKind == TypeKind.Error || nts.PrimitiveTypeCode == Cci.PrimitiveTypeCode.NotPrimitive);
+                    Debug.Assert((nts.TypeKind == TypeKind.Error) || (nts.PrimitiveTypeCode == Cci.PrimitiveTypeCode.NotPrimitive));
                     result.Add(Retarget(nts, RetargetOptions.RetargetPrimitiveTypesByName));
                 }
 
@@ -801,7 +801,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                 foreach (var ts in sequence)
                 {
                     // In incorrect code, a type parameter constraint list can contain primitive types.
-                    Debug.Assert(ts.TypeKind == TypeKind.Error || ts.PrimitiveTypeCode == Cci.PrimitiveTypeCode.NotPrimitive);
+                    Debug.Assert((ts.TypeKind == TypeKind.Error) || (ts.PrimitiveTypeCode == Cci.PrimitiveTypeCode.NotPrimitive));
                     result.Add(Retarget(ts, RetargetOptions.RetargetPrimitiveTypesByName));
                 }
 
@@ -1173,7 +1173,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                 if (oldConstant.Kind == TypedConstantKind.Array)
                 {
                     var newArray = RetargetAttributeConstructorArguments(oldConstant.Values);
-                    if (newConstantType != oldConstantType || newArray != oldConstant.Values)
+                    if ((newConstantType != oldConstantType) || (newArray != oldConstant.Values))
                     {
                         typedConstantChanged = true;
                         return new TypedConstant(newConstantType, newArray);
@@ -1195,7 +1195,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Retargeting
                     newConstantValue = oldConstantValue;
                 }
 
-                if (newConstantType != oldConstantType || newConstantValue != oldConstantValue)
+                if ((newConstantType != oldConstantType) || (newConstantValue != oldConstantValue))
                 {
                     typedConstantChanged = true;
                     return new TypedConstant(newConstantType, oldConstant.Kind, newConstantValue);

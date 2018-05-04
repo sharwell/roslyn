@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractInterface
         public VSCommanding.CommandState GetCommandState(ExtractInterfaceCommandArgs args)
         {
             var document = args.SubjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null ||
+            if ((document == null) ||
                 !document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.AddDocument) ||
                 !document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractInterface
                 (errorMessage, severity) => workspace.Services.GetService<INotificationService>().SendNotification(errorMessage, severity: severity),
                 CancellationToken.None);
 
-            if (result == null || !result.Succeeded)
+            if ((result == null) || !result.Succeeded)
             {
                 return true;
             }

@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
                 // We are inside the region we can edit, so let's forward only if it's a valid
                 // character
-                if (syntaxFactsService == null ||
+                if ((syntaxFactsService == null) ||
                     syntaxFactsService.IsIdentifierStartCharacter(args.TypedChar) ||
                     syntaxFactsService.IsIdentifierPartCharacter(args.TypedChar) ||
                     syntaxFactsService.IsStartOfUnicodeEscapeSequence(args.TypedChar))

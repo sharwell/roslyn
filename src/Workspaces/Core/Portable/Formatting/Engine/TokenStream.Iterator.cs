@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 {
                     get
                     {
-                        if (_index == 0 || _index == _maxCount + 1)
+                        if ((_index == 0) || (_index == (_maxCount + 1)))
                         {
                             throw new InvalidOperationException();
                         }

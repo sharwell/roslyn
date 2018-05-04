@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
         {
             if (field.HasConstantValue)
             {
-                var canUseFieldReference = field.Type != null && !field.Type.Equals(field.ContainingType);
+                var canUseFieldReference = (field.Type != null) && !field.Type.Equals(field.ContainingType);
                 return SyntaxFactory.EqualsValueClause(ExpressionGenerator.GenerateExpression(field.Type, field.ConstantValue, canUseFieldReference));
             }
 

@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                return _identifierNodeOrToken.IsToken && _identifierNodeOrToken.Parent == null
+                return _identifierNodeOrToken.IsToken && (_identifierNodeOrToken.Parent == null)
                     ? ImmutableArray<Location>.Empty
                     : ImmutableArray.Create<Location>(_identifierNodeOrToken.GetLocation());
             }
@@ -147,8 +147,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var symbol = obj as SourceLabelSymbol;
-            return (object)symbol != null
-                && symbol._identifierNodeOrToken.Kind() != SyntaxKind.None
+            return ((object)symbol != null)
+                && (symbol._identifierNodeOrToken.Kind() != SyntaxKind.None)
                 && symbol._identifierNodeOrToken.Equals(_identifierNodeOrToken)
                 && Equals(symbol._containingMethod, _containingMethod);
         }

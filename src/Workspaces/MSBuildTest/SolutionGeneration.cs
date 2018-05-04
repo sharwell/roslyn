@@ -274,7 +274,7 @@ EndGlobal
 
                 var importTargets = document.Root.Elements().Last();
 
-                if (ProjectReferences != null && ProjectReferences.Any())
+                if ((ProjectReferences != null) && ProjectReferences.Any())
                 {
                     AddItemGroup(
                         importTargets,

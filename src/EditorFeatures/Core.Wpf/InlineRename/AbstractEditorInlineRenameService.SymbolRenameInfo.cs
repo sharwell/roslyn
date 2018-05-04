@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
             internal bool IsRenamingAttributeTypeWithAttributeSuffix()
             {
-                if (this.RenameSymbol.IsAttribute() || (this.RenameSymbol.Kind == SymbolKind.Alias && ((IAliasSymbol)this.RenameSymbol).Target.IsAttribute()))
+                if (this.RenameSymbol.IsAttribute() || ((this.RenameSymbol.Kind == SymbolKind.Alias) && ((IAliasSymbol)this.RenameSymbol).Target.IsAttribute()))
                 {
                     var name = this.RenameSymbol.Name;
                     if (name.TryGetWithoutAttributeSuffix(isCaseSensitive: true, result: out name))

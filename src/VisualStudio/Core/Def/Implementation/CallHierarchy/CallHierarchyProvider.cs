@@ -37,10 +37,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
         public async Task<ICallHierarchyMemberItem> CreateItem(ISymbol symbol,
             Project project, IEnumerable<Location> callsites, CancellationToken cancellationToken)
         {
-            if (symbol.Kind == SymbolKind.Method ||
-                symbol.Kind == SymbolKind.Property ||
-                symbol.Kind == SymbolKind.Event ||
-                symbol.Kind == SymbolKind.Field)
+            if ((symbol.Kind == SymbolKind.Method) ||
+                (symbol.Kind == SymbolKind.Property) ||
+                (symbol.Kind == SymbolKind.Event) ||
+                (symbol.Kind == SymbolKind.Field))
             {
                 symbol = GetTargetSymbol(symbol);
 
@@ -82,9 +82,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CallHierarchy
 
         public async Task<IEnumerable<AbstractCallFinder>> CreateFinders(ISymbol symbol, Project project, CancellationToken cancellationToken)
         {
-            if (symbol.Kind == SymbolKind.Property ||
-                    symbol.Kind == SymbolKind.Event ||
-                    symbol.Kind == SymbolKind.Method)
+            if ((symbol.Kind == SymbolKind.Property) ||
+                    (symbol.Kind == SymbolKind.Event) ||
+                    (symbol.Kind == SymbolKind.Method))
             {
                 var finders = new List<AbstractCallFinder>();
 

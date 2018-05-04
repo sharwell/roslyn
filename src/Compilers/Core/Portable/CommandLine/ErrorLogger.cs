@@ -110,8 +110,8 @@ namespace Microsoft.CodeAnalysis
             // See https://github.com/dotnet/roslyn/issues/11228 for discussion around
             // whether this is the correct treatment of Diagnostic.AdditionalLocations
             // as SARIF relatedLocations.
-            if (additionalLocations != null &&
-                additionalLocations.Count > 0 &&
+            if ((additionalLocations != null) &&
+                (additionalLocations.Count > 0) &&
                 additionalLocations.Any(l => HasPath(l)))
             {
                 _writer.WriteArrayStart("relatedLocations");
@@ -201,7 +201,7 @@ namespace Microsoft.CodeAnalysis
             Debug.Assert(diagnostic.DefaultSeverity == diagnostic.Descriptor.DefaultSeverity);
             Debug.Assert(diagnostic.IsEnabledByDefault == diagnostic.Descriptor.IsEnabledByDefault);
 
-            if (diagnostic.WarningLevel > 0 || diagnostic.Properties.Count > 0)
+            if ((diagnostic.WarningLevel > 0) || (diagnostic.Properties.Count > 0))
             {
                 _writer.WriteObjectStart("properties");
 
@@ -431,15 +431,15 @@ namespace Microsoft.CodeAnalysis
                     }
 
                     // The properties are guaranteed to be non-null by DiagnosticDescriptor invariants.
-                    Debug.Assert(x.Description != null && x.Title != null && x.CustomTags != null);
-                    Debug.Assert(y.Description != null && y.Title != null && y.CustomTags != null);
+                    Debug.Assert((x.Description != null) && (x.Title != null) && (x.CustomTags != null));
+                    Debug.Assert((y.Description != null) && (y.Title != null) && (y.CustomTags != null));
 
-                    return x.Category == y.Category
-                        && x.DefaultSeverity == y.DefaultSeverity
+                    return (x.Category == y.Category)
+                        && (x.DefaultSeverity == y.DefaultSeverity)
                         && x.Description.Equals(y.Description)
-                        && x.HelpLinkUri == y.HelpLinkUri
-                        && x.Id == y.Id
-                        && x.IsEnabledByDefault == y.IsEnabledByDefault
+                        && (x.HelpLinkUri == y.HelpLinkUri)
+                        && (x.Id == y.Id)
+                        && (x.IsEnabledByDefault == y.IsEnabledByDefault)
                         && x.Title.Equals(y.Title)
                         && x.CustomTags.SequenceEqual(y.CustomTags);
                 }
@@ -452,8 +452,8 @@ namespace Microsoft.CodeAnalysis
                     }
 
                     // The properties are guaranteed to be non-null by DiagnosticDescriptor invariants.
-                    Debug.Assert(obj.Category != null && obj.Description != null && obj.HelpLinkUri != null 
-                        && obj.Id != null && obj.Title != null && obj.CustomTags != null);
+                    Debug.Assert((obj.Category != null) && (obj.Description != null) && (obj.HelpLinkUri != null) 
+                        && (obj.Id != null) && (obj.Title != null) && (obj.CustomTags != null));
 
                     return Hash.Combine(obj.Category.GetHashCode(),
                         Hash.Combine(obj.DefaultSeverity.GetHashCode(),

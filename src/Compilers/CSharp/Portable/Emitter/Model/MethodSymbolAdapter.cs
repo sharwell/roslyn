@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 if (!this.IsDefinition &&
                     (!this.IsGenericMethod || PEModuleBuilder.IsGenericType(this.ContainingType)))
                 {
-                    Debug.Assert((object)this.ContainingType != null &&
+                    Debug.Assert(((object)this.ContainingType != null) &&
                             PEModuleBuilder.IsGenericType(this.ContainingType));
                     return this;
                 }
@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             PEModuleBuilder moduleBeingBuilt = (PEModuleBuilder)context.Module;
 
             if (this.IsDefinition && // can't be generic instantiation
-                this.ContainingModule == moduleBeingBuilt.SourceModule) // must be declared in the module we are building
+                (this.ContainingModule == moduleBeingBuilt.SourceModule)) // must be declared in the module we are building
             {
                 Debug.Assert((object)this.PartialDefinitionPart == null); // must be definition
                 return this;
@@ -190,7 +190,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(this.IsDefinitionOrDistinct());
 
             PEModuleBuilder moduleBeingBuilt = (PEModuleBuilder)context.Module;
-            if (this.IsDefinition && this.ContainingModule == moduleBeingBuilt.SourceModule)
+            if (this.IsDefinition && (this.ContainingModule == moduleBeingBuilt.SourceModule))
             {
                 return StaticCast<Cci.IParameterTypeInformation>.From(this.EnumerateDefinitionParameters());
             }
@@ -376,9 +376,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // Set the new bit to indicate that it can only be overridden
                 // by classes that can normally access this member.
                 Accessibility accessibility = this.DeclaredAccessibility;
-                return (accessibility == Accessibility.Private ||
-                        accessibility == Accessibility.ProtectedAndInternal ||
-                        accessibility == Accessibility.Internal)
+                return ((accessibility == Accessibility.Private) ||
+                        (accessibility == Accessibility.ProtectedAndInternal) ||
+                        (accessibility == Accessibility.Internal))
                        && ((Cci.IMethodDefinition)this).IsVirtual && !((Cci.IMethodDefinition)this).IsSealed;
             }
         }
@@ -412,7 +412,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // Note that we don't force methods marked with MethodImplAttributes.InternalCall or MethodImplAttributes.Runtime
                 // to be external, so it is possible to mark methods with bodies by these flags. It's up to the VM to interpret these flags
                 // and throw runtime exception if they are applied incorrectly.
-                return this.IsExtern || (object)ContainingType != null && ContainingType.TypeKind == TypeKind.Delegate;
+                return this.IsExtern || (((object)ContainingType != null) && (ContainingType.TypeKind == TypeKind.Delegate));
             }
         }
 
@@ -485,8 +485,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 CheckDefinitionInvariant();
-                return this.MethodKind == MethodKind.Constructor
-                    || this.MethodKind == MethodKind.StaticConstructor;
+                return (this.MethodKind == MethodKind.Constructor)
+                    || (this.MethodKind == MethodKind.StaticConstructor);
             }
         }
 
@@ -508,7 +508,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 return this.IsSealed ||
                     (this.IsMetadataVirtual() &&
-                     !(this.IsVirtual || this.IsOverride || this.IsAbstract || this.MethodKind == MethodKind.Destructor));
+                     !(this.IsVirtual || this.IsOverride || this.IsAbstract || (this.MethodKind == MethodKind.Destructor)));
             }
         }
 

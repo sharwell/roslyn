@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(nodes));
             }
 
-            if (index < 0 || index > this.Count)
+            if ((index < 0) || (index > this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -379,7 +379,7 @@ namespace Microsoft.CodeAnalysis
             int insertionIndex = index < this.Count ? nodesWithSeps.IndexOf(this[index]) : nodesWithSeps.Count;
 
             // determine how to deal with separators (commas)
-            if (insertionIndex > 0 && insertionIndex < nodesWithSeps.Count)
+            if ((insertionIndex > 0) && (insertionIndex < nodesWithSeps.Count))
             {
                 var previous = nodesWithSeps[insertionIndex - 1];
                 if (previous.IsToken && !KeepSeparatorWithPreviousNode(previous.AsToken()))
@@ -395,7 +395,7 @@ namespace Microsoft.CodeAnalysis
                 if (item != null)
                 {
                     // if item before insertion point is a node, add a separator
-                    if (nodesToInsertWithSeparators.Count > 0 || (insertionIndex > 0 && nodesWithSeps[insertionIndex - 1].IsNode))
+                    if ((nodesToInsertWithSeparators.Count > 0) || ((insertionIndex > 0) && nodesWithSeps[insertionIndex - 1].IsNode))
                     {
                         nodesToInsertWithSeparators.Add(item.Green.CreateSeparator<TNode>(item));
                     }
@@ -405,7 +405,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // if item after last inserted node is a node, add separator
-            if (insertionIndex < nodesWithSeps.Count && nodesWithSeps[insertionIndex].IsNode)
+            if ((insertionIndex < nodesWithSeps.Count) && nodesWithSeps[insertionIndex].IsNode)
             {
                 var node = nodesWithSeps[insertionIndex].AsNode();
                 nodesToInsertWithSeparators.Add(node.Green.CreateSeparator<TNode>(node)); // separator
@@ -435,7 +435,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="index">The index of the element to remove.</param>
         public SeparatedSyntaxList<TNode> RemoveAt(int index)
         {
-            if (index < 0 || index > this.Count)
+            if ((index < 0) || (index > this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -452,16 +452,16 @@ namespace Microsoft.CodeAnalysis
             var nodesWithSeps = this.GetWithSeparators();
             int index = nodesWithSeps.IndexOf(node);
 
-            if (index >= 0 && index <= nodesWithSeps.Count)
+            if ((index >= 0) && (index <= nodesWithSeps.Count))
             {
                 nodesWithSeps = nodesWithSeps.RemoveAt(index);
 
                 // remove separator too
-                if (index < nodesWithSeps.Count && nodesWithSeps[index].IsToken)
+                if ((index < nodesWithSeps.Count) && nodesWithSeps[index].IsToken)
                 {
                     nodesWithSeps = nodesWithSeps.RemoveAt(index);
                 }
-                else if (index > 0 && nodesWithSeps[index - 1].IsToken)
+                else if ((index > 0) && nodesWithSeps[index - 1].IsToken)
                 {
                     nodesWithSeps = nodesWithSeps.RemoveAt(index - 1);
                 }
@@ -485,7 +485,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var index = this.IndexOf(nodeInList);
-            if (index >= 0 && index < this.Count)
+            if ((index >= 0) && (index < this.Count))
             {
                 return new SeparatedSyntaxList<TNode>(this.GetWithSeparators().Replace(nodeInList, newNode));
             }
@@ -506,7 +506,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var index = this.IndexOf(nodeInList);
-            if (index >= 0 && index < this.Count)
+            if ((index >= 0) && (index < this.Count))
             {
                 var newNodeList = newNodes.ToList();
                 if (newNodeList.Count == 0)
@@ -542,8 +542,8 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentException("separatorToken");
             }
 
-            if (newSeparator.RawKind != nodesWithSeps[index].RawKind ||
-                newSeparator.Language != nodesWithSeps[index].Language)
+            if ((newSeparator.RawKind != nodesWithSeps[index].RawKind) ||
+                (newSeparator.Language != nodesWithSeps[index].Language))
             {
                 throw new ArgumentException("newSeparator");
             }

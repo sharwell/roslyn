@@ -75,11 +75,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal SourceNamedTypeSymbol(NamespaceOrTypeSymbol containingSymbol, MergedTypeDeclaration declaration, DiagnosticBag diagnostics)
             : base(containingSymbol, declaration, diagnostics)
         {
-            Debug.Assert(declaration.Kind == DeclarationKind.Struct ||
-                         declaration.Kind == DeclarationKind.Interface ||
-                         declaration.Kind == DeclarationKind.Enum ||
-                         declaration.Kind == DeclarationKind.Delegate ||
-                         declaration.Kind == DeclarationKind.Class);
+            Debug.Assert((declaration.Kind == DeclarationKind.Struct) ||
+                         (declaration.Kind == DeclarationKind.Interface) ||
+                         (declaration.Kind == DeclarationKind.Enum) ||
+                         (declaration.Kind == DeclarationKind.Delegate) ||
+                         (declaration.Kind == DeclarationKind.Class));
 
             if (containingSymbol.Kind == SymbolKind.NamedType)
             {
@@ -153,13 +153,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         throw ExceptionUtilities.UnexpectedValue(typeDecl.Kind());
                 }
 
-                bool isInterfaceOrDelegate = typeKind == SyntaxKind.InterfaceDeclaration || typeKind == SyntaxKind.DelegateDeclaration;
+                bool isInterfaceOrDelegate = (typeKind == SyntaxKind.InterfaceDeclaration) || (typeKind == SyntaxKind.DelegateDeclaration);
                 var parameterBuilder = new List<TypeParameterBuilder>();
                 parameterBuilders1.Add(parameterBuilder);
                 int i = 0;
                 foreach (var tp in tpl.Parameters)
                 {
-                    if (tp.VarianceKeyword.Kind() != SyntaxKind.None &&
+                    if ((tp.VarianceKeyword.Kind() != SyntaxKind.None) &&
                         !isInterfaceOrDelegate)
                     {
                         diagnostics.Add(ErrorCode.ERR_IllegalVarianceSyntax, tp.VarianceKeyword.GetLocation());
@@ -455,7 +455,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private CustomAttributesBag<CSharpAttributeData> GetAttributesBag()
         {
             var bag = _lazyCustomAttributesBag;
-            if (bag != null && bag.IsSealed)
+            if ((bag != null) && bag.IsSealed)
             {
                 return bag;
             }
@@ -488,7 +488,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private TypeWellKnownAttributeData GetDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -505,7 +505,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal CommonTypeEarlyWellKnownAttributeData GetEarlyDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -604,10 +604,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal override AttributeUsageInfo GetAttributeUsageInfo()
         {
-            Debug.Assert(this.SpecialType == SpecialType.System_Object || this.DeclaringCompilation.IsAttributeType(this));
+            Debug.Assert((this.SpecialType == SpecialType.System_Object) || this.DeclaringCompilation.IsAttributeType(this));
 
             CommonTypeEarlyWellKnownAttributeData data = this.GetEarlyDecodedWellKnownAttributeData();
-            if (data != null && !data.AttributeUsageInfo.IsNull)
+            if ((data != null) && !data.AttributeUsageInfo.IsNull)
             {
                 return data.AttributeUsageInfo;
             }
@@ -624,7 +624,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var lazyCustomAttributesBag = _lazyCustomAttributesBag;
-                if (lazyCustomAttributesBag != null && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+                if ((lazyCustomAttributesBag != null) && lazyCustomAttributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
                 {
                     var data = (CommonTypeEarlyWellKnownAttributeData)lazyCustomAttributesBag.EarlyDecodedWellKnownAttributeData;
                     return data != null ? data.ObsoleteAttributeData : null;
@@ -742,7 +742,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 arguments.GetOrCreateData<TypeWellKnownAttributeData>().HasSecurityCriticalAttributes = true;
             }
-            else if (_lazyIsExplicitDefinitionOfNoPiaLocalType == ThreeState.Unknown && attribute.IsTargetAttribute(this, AttributeDescription.TypeIdentifierAttribute))
+            else if ((_lazyIsExplicitDefinitionOfNoPiaLocalType == ThreeState.Unknown) && attribute.IsTargetAttribute(this, AttributeDescription.TypeIdentifierAttribute))
             {
                 _lazyIsExplicitDefinitionOfNoPiaLocalType = ThreeState.True;
             }
@@ -854,13 +854,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             var attribute = arguments.Attribute;
             Debug.Assert(!attribute.HasErrors);
 
-            if (this.IsInterfaceType() && (!arguments.HasDecodedData || (object)((TypeWellKnownAttributeData)arguments.DecodedData).ComImportCoClass == null))
+            if (this.IsInterfaceType() && (!arguments.HasDecodedData || ((object)((TypeWellKnownAttributeData)arguments.DecodedData).ComImportCoClass == null)))
             {
                 TypedConstant argument = attribute.CommonConstructorArguments[0];
                 Debug.Assert(argument.Kind == TypedConstantKind.Type);
 
                 var coClassType = argument.Value as NamedTypeSymbol;
-                if ((object)coClassType != null && coClassType.TypeKind == TypeKind.Class)
+                if (((object)coClassType != null) && (coClassType.TypeKind == TypeKind.Class))
                 {
                     arguments.GetOrCreateData<TypeWellKnownAttributeData>().ComImportCoClass = coClassType;
                 }
@@ -872,7 +872,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 CommonTypeEarlyWellKnownAttributeData data = this.GetEarlyDecodedWellKnownAttributeData();
-                return data != null && data.HasComImportAttribute;
+                return (data != null) && data.HasComImportAttribute;
             }
         }
 
@@ -899,7 +899,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 string name = attribute.GetConstructorArgument<string>(0, SpecialType.System_String);
 
-                if (name == null || !SyntaxFacts.IsValidIdentifier(name))
+                if ((name == null) || !SyntaxFacts.IsValidIdentifier(name))
                 {
                     // CS0633: The argument to the '{0}' attribute must be a valid identifier
                     CSharpSyntaxNode attributeArgumentSyntax = attribute.GetAttributeArgumentSyntax(0, node);
@@ -913,7 +913,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                return data != null && data.HasSpecialNameAttribute;
+                return (data != null) && data.HasSpecialNameAttribute;
             }
         }
 
@@ -922,7 +922,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetEarlyDecodedWellKnownAttributeData();
-                return data != null && data.HasCodeAnalysisEmbeddedAttribute;
+                return (data != null) && data.HasCodeAnalysisEmbeddedAttribute;
             }
         }
 
@@ -936,7 +936,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 TypeWellKnownAttributeData data = this.GetDecodedWellKnownAttributeData();
-                return data != null && data.HasWindowsRuntimeImportAttribute;
+                return (data != null) && data.HasWindowsRuntimeImportAttribute;
             }
         }
 
@@ -945,7 +945,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = this.GetDecodedWellKnownAttributeData();
-                return data != null && data.HasSerializableAttribute;
+                return (data != null) && data.HasSerializableAttribute;
             }
         }
 
@@ -983,7 +983,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                if (data != null && data.HasStructLayoutAttribute)
+                if ((data != null) && data.HasStructLayoutAttribute)
                 {
                     return data.Layout;
                 }
@@ -1007,7 +1007,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                return data != null && data.HasStructLayoutAttribute;
+                return (data != null) && data.HasStructLayoutAttribute;
             }
         }
 
@@ -1016,7 +1016,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                return (data != null && data.HasStructLayoutAttribute) ? data.MarshallingCharSet : DefaultMarshallingCharSet;
+                return ((data != null) && data.HasStructLayoutAttribute) ? data.MarshallingCharSet : DefaultMarshallingCharSet;
             }
         }
 
@@ -1025,7 +1025,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = this.GetDecodedWellKnownAttributeData();
-                return data != null && data.HasDeclarativeSecurity;
+                return (data != null) && data.HasDeclarativeSecurity;
             }
         }
 
@@ -1034,7 +1034,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = this.GetDecodedWellKnownAttributeData();
-                return data != null && data.HasSecurityCriticalAttributes;
+                return (data != null) && data.HasSecurityCriticalAttributes;
             }
         }
 
@@ -1076,7 +1076,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 Debug.Assert(boundAttributes.Any());
 
                 // Symbol with ComImportAttribute must have a GuidAttribute
-                if (data == null || data.GuidString == null)
+                if ((data == null) || (data.GuidString == null))
                 {
                     int index = boundAttributes.IndexOfAttribute(this, AttributeDescription.ComImportAttribute);
                     diagnostics.Add(ErrorCode.ERR_ComImportWithoutUuidAttribute, allAttributeSyntaxNodes[index].Name.Location, this.Name);
@@ -1085,7 +1085,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 if (this.TypeKind == TypeKind.Class)
                 {
                     var baseType = this.BaseTypeNoUseSiteDiagnostics;
-                    if ((object)baseType != null && baseType.SpecialType != SpecialType.System_Object)
+                    if (((object)baseType != null) && (baseType.SpecialType != SpecialType.System_Object))
                     {
                         // CS0424: '{0}': a class with the ComImport attribute cannot specify a base class
                         diagnostics.Add(ErrorCode.ERR_ComImportWithBase, this.Locations[0], this.Name);
@@ -1131,7 +1131,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             // Report ERR_DefaultMemberOnIndexedType if type has a default member attribute and has indexers.
-            if (data != null && data.HasDefaultMemberAttribute && this.Indexers.Any())
+            if ((data != null) && data.HasDefaultMemberAttribute && this.Indexers.Any())
             {
                 Debug.Assert(boundAttributes.Any());
 
@@ -1171,7 +1171,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 //     we will not emit Obsolete even if Deprecated or Experimental was used.
                 //     we do not want to get into a scenario where different kinds of deprecation are combined together.
                 //
-                if (obsoleteData == null && !this.IsRestrictedType(ignoreSpanLikeTypes:true))
+                if ((obsoleteData == null) && !this.IsRestrictedType(ignoreSpanLikeTypes:true))
                 {
                     AddSynthesizedAttribute(ref attributes, compilation.TrySynthesizeAttribute(WellKnownMember.System_ObsoleteAttribute__ctor,
                         ImmutableArray.Create(

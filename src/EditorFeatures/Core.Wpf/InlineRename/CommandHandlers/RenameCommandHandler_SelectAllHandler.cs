@@ -35,8 +35,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
             {
                 if (_renameService.ActiveSession.TryGetContainingEditableSpan(caretPoint.Value, out var span))
                 {
-                    if (view.Selection.Start.Position != span.Start.Position ||
-                        view.Selection.End.Position != span.End.Position)
+                    if ((view.Selection.Start.Position != span.Start.Position) ||
+                        (view.Selection.End.Position != span.End.Position))
                     {
                         view.SetSelection(span);
                         return true;

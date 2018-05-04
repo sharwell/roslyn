@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public async ValueTask<AnalyzerActions> GetAnalyzerActionsAsync(DiagnosticAnalyzer analyzer, AnalyzerExecutor analyzerExecutor)
         {
             var sessionScope = await GetSessionAnalysisScopeAsync(analyzer, analyzerExecutor).ConfigureAwait(false);
-            if (sessionScope.CompilationStartActions.Length > 0 && analyzerExecutor.Compilation != null)
+            if ((sessionScope.CompilationStartActions.Length > 0) && (analyzerExecutor.Compilation != null))
             {
                 var compilationScope = await GetCompilationAnalysisScopeAsync(analyzer, sessionScope, analyzerExecutor).ConfigureAwait(false);
                 return compilationScope.GetAnalyzerActions(analyzer);
@@ -193,10 +193,10 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         private static bool IsCompilerReservedDiagnostic(string id)
         {
             // Only the compiler analyzer should produce diagnostics with CS or BC prefixes (followed by digit)
-            if (id.Length >= 3 && (id.StartsWith("CS", StringComparison.Ordinal) || id.StartsWith("BC", StringComparison.Ordinal)))
+            if ((id.Length >= 3) && (id.StartsWith("CS", StringComparison.Ordinal) || id.StartsWith("BC", StringComparison.Ordinal)))
             {
                 char thirdChar = id[2];
-                return thirdChar >= '0' && thirdChar <= '9';
+                return (thirdChar >= '0') && (thirdChar <= '9');
             }
 
             return false;

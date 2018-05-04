@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             {
                 if (_visited.Add(symbol))
                 {
-                    if (symbol.TypeParameterKind == TypeParameterKind.Method || !_onlyMethodTypeParameters)
+                    if ((symbol.TypeParameterKind == TypeParameterKind.Method) || !_onlyMethodTypeParameters)
                     {
                         if (!_typeParameters.Contains(symbol))
                         {

@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.FindUsages
 
                 var project = projectAndSymbol.project;
                 var symbol = projectAndSymbol.symbol;
-                if (symbol == null || project == null)
+                if ((symbol == null) || (project == null))
                 {
                     return false;
                 }

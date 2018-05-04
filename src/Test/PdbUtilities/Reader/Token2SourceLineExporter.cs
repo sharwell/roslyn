@@ -258,7 +258,7 @@ namespace Roslyn.Test.PdbUtilities
             internal void ReadCString(out string value)
             {
                 int len = 0;
-                while (_offset + len < _buffer.Length && _buffer[_offset + len] != 0)
+                while (((_offset + len) < _buffer.Length) && (_buffer[_offset + len] != 0))
                 {
                     len++;
                 }
@@ -269,7 +269,7 @@ namespace Roslyn.Test.PdbUtilities
             internal void SkipCString(out string value)
             {
                 int len = 0;
-                while (_offset + len < _buffer.Length && _buffer[_offset + len] != 0)
+                while (((_offset + len) < _buffer.Length) && (_buffer[_offset + len] != 0))
                 {
                     len++;
                 }
@@ -298,7 +298,7 @@ namespace Roslyn.Test.PdbUtilities
             internal string ReadString()
             {
                 int len = 0;
-                while (_offset + len < _buffer.Length && _buffer[_offset + len] != 0)
+                while (((_offset + len) < _buffer.Length) && (_buffer[_offset + len] != 0))
                 {
                     len += 2;
                 }
@@ -400,7 +400,7 @@ namespace Roslyn.Test.PdbUtilities
             {
                 if (capacity < 0)
                     throw new ArgumentOutOfRangeException(nameof(capacity), "ArgumentOutOfRange_NeedNonNegNum");
-                if (!(loadFactorPerc >= 10 && loadFactorPerc <= 100))
+                if (!((loadFactorPerc >= 10) && (loadFactorPerc <= 100)))
                     throw new ArgumentOutOfRangeException(nameof(loadFactorPerc), "ArgumentOutOfRange_IntHashTableLoadFactor");
 
                 // Based on perf work, .72 is the optimal load factor for this table.
@@ -456,12 +456,12 @@ namespace Roslyn.Test.PdbUtilities
                         {
                             return null;
                         }
-                        if (((b.hash_coll & 0x7FFFFFFF) == hashcode) && key == b.key)
+                        if (((b.hash_coll & 0x7FFFFFFF) == hashcode) && (key == b.key))
                         {
                             return b.val;
                         }
                         seed += incr;
-                    } while (b.hash_coll < 0 && ++ntry < lbuckets.Length);
+                    } while ((b.hash_coll < 0) && (++ntry < lbuckets.Length));
                     return null;
                 }
                 //set {
@@ -471,7 +471,7 @@ namespace Roslyn.Test.PdbUtilities
 
             private void expand()
             {
-                rehash(GetPrime(1 + _buckets.Length * 2));
+                rehash(GetPrime(1 + (_buckets.Length * 2)));
             }
 
             private void rehash()
@@ -530,7 +530,7 @@ namespace Roslyn.Test.PdbUtilities
                 {
                     expand();
                 }
-                else if (_occupancy > _loadsize && _count > 100)
+                else if ((_occupancy > _loadsize) && (_count > 100))
                 {
                     rehash();
                 }
@@ -576,7 +576,7 @@ namespace Roslyn.Test.PdbUtilities
                     // OR
                     // it is available, but has had the collision bit set and we have already found an available bucket
                     if (((_buckets[bucketNumber].hash_coll & 0x7FFFFFFF) == hashcode) &&
-                                key == _buckets[bucketNumber].key)
+                                (key == _buckets[bucketNumber].key))
                     {
                         if (add)
                         {
@@ -836,7 +836,7 @@ namespace Roslyn.Test.PdbUtilities
 
             internal void Seek(int page, int offset)
             {
-                reader.Seek(page * pageSize + offset, SeekOrigin.Begin);
+                reader.Seek((page * pageSize) + offset, SeekOrigin.Begin);
             }
 
             internal void Read(byte[] bytes, int offset, int count)
@@ -878,7 +878,7 @@ namespace Roslyn.Test.PdbUtilities
             internal void Read(PdbReader reader, int position,
                              byte[] bytes, int offset, int data)
             {
-                if (position + data > contentSize)
+                if ((position + data) > contentSize)
                 {
                     throw new Exception(
                         string.Format(
@@ -1406,7 +1406,7 @@ namespace Roslyn.Test.PdbUtilities
             // Read (or skip) string buffer.
             bits.ReadInt32(out var buf);    //  8..11 Bytes of Strings
 
-            if (sig != 0xeffeeffe || ver != 1)
+            if ((sig != 0xeffeeffe) || (ver != 1))
             {
                 throw new Exception(string.Format("Unsupported Name Stream version. (sig={0:x8}, ver={1})", sig, ver));
             }

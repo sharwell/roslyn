@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.Workspaces.Diagnostics
                         }
                     case LocationKind.SourceFile:
                         {
-                            if (tree != null && diagnostic.Location.SourceTree == tree)
+                            if ((tree != null) && (diagnostic.Location.SourceTree == tree))
                             {
                                 var document = GetDocument(diagnostic);
                                 if (document != null)

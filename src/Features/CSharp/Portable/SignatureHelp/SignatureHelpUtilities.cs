@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                 {
                     var parent = parenthesizedExpr.Parent;
                     var grandParent = parent.Parent;
-                    if (grandParent is ArgumentListSyntax && grandParent.Parent is TSyntaxNode)
+                    if ((grandParent is ArgumentListSyntax) && (grandParent.Parent is TSyntaxNode))
                     {
                         // Argument to TSyntaxNode's argument list
                         return true;
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                     else
                     {
                         // Argument to a tuple in TSyntaxNode's argument list
-                        return grandParent is TupleExpressionSyntax && parenthesizedExpr.GetAncestor<TSyntaxNode>() != null;
+                        return (grandParent is TupleExpressionSyntax) && (parenthesizedExpr.GetAncestor<TSyntaxNode>() != null);
                     }
                 }
                 else
@@ -115,16 +115,16 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
             }
 
             // Don't dismiss if the user types ',' to add a member to a tuple
-            if (token.IsKind(SyntaxKind.CommaToken) && token.Parent is TupleExpressionSyntax && token.GetAncestor<TSyntaxNode>() != null)
+            if (token.IsKind(SyntaxKind.CommaToken) && (token.Parent is TupleExpressionSyntax) && (token.GetAncestor<TSyntaxNode>() != null))
             {
                 return true;
             }
 
             return !token.IsKind(SyntaxKind.None) &&
-                token.ValueText.Length == 1 &&
+                (token.ValueText.Length == 1) &&
                 isTriggerCharacter(token.ValueText[0]) &&
-                token.Parent is ArgumentListSyntax &&
-                token.Parent.Parent is TSyntaxNode;
+                (token.Parent is ArgumentListSyntax) &&
+                (token.Parent.Parent is TSyntaxNode);
         }
     }
 }

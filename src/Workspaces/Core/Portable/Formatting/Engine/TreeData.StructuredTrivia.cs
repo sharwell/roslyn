@@ -48,13 +48,13 @@ namespace Microsoft.CodeAnalysis.Formatting
             private SourceText GetText()
             {
                 var root = _trivia.GetStructure();
-                if (root.SyntaxTree != null && root.SyntaxTree.GetText() != null)
+                if ((root.SyntaxTree != null) && (root.SyntaxTree.GetText() != null))
                 {
                     return root.SyntaxTree.GetText();
                 }
 
                 var parent = _trivia.Token.Parent;
-                if (parent != null && parent.SyntaxTree != null && parent.SyntaxTree.GetText() != null)
+                if ((parent != null) && (parent.SyntaxTree != null) && (parent.SyntaxTree.GetText() != null))
                 {
                     return parent.SyntaxTree.GetText();
                 }

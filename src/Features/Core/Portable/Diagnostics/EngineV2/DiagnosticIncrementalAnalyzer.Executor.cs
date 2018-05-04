@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
                         // we can't return here if we have open file only analyzers sine saved data for open file only analyzer
                         // is wrong. (since it only contains info on open files rather than whole project)
-                        if (existingData.Version == version && !analyzerDriverOpt.ContainsOpenFileOnlyAnalyzers(project.Solution.Workspace))
+                        if ((existingData.Version == version) && !analyzerDriverOpt.ContainsOpenFileOnlyAnalyzers(project.Solution.Workspace))
                         {
                             return existingData;
                         }
@@ -298,7 +298,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 foreach (var analyzer in existingAnalyzers)
                 {
                     if (existing.TryGetValue(analyzer, out var analysisResult) &&
-                        analysisResult.Version == version &&
+                        (analysisResult.Version == version) &&
                         !analyzer.IsOpenFileOnly(project.Solution.Workspace))
                     {
                         // we already have up to date result.
@@ -326,7 +326,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 try
                 {
                     // check whether there is IDE specific project diagnostic analyzer
-                    var ideAnalyzers = stateSets.Select(s => s.Analyzer).Where(a => a is ProjectDiagnosticAnalyzer || a is DocumentDiagnosticAnalyzer).ToImmutableArrayOrEmpty();
+                    var ideAnalyzers = stateSets.Select(s => s.Analyzer).Where(a => (a is ProjectDiagnosticAnalyzer) || (a is DocumentDiagnosticAnalyzer)).ToImmutableArrayOrEmpty();
                     if (ideAnalyzers.Length <= 0)
                     {
                         return result;
@@ -456,7 +456,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 CompilationWithAnalyzers analyzerDriverOpt, Document document, DiagnosticAnalyzer analyzer, AnalysisKind kind, TextSpan? spanOpt, CancellationToken cancellationToken)
             {
                 // quick optimization to reduce allocations.
-                if (analyzerDriverOpt == null || !_owner.SupportAnalysisKind(analyzer, document.Project.Language, kind))
+                if ((analyzerDriverOpt == null) || !_owner.SupportAnalysisKind(analyzer, document.Project.Language, kind))
                 {
                     LogSyntaxInfo(analyzerDriverOpt, document, analyzer, kind);
                     return ImmutableArray<Diagnostic>.Empty;
@@ -493,7 +493,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
             private async Task<bool> AnalysisEnabled(Document document, DiagnosticAnalyzer analyzer, AnalysisKind kind, CancellationToken cancellationToken)
             {
                 // if project is not loaded successfully then, we disable semantic errors for compiler analyzers
-                if (kind == AnalysisKind.Syntax || !_owner.HostAnalyzerManager.IsCompilerDiagnosticAnalyzer(document.Project.Language, analyzer))
+                if ((kind == AnalysisKind.Syntax) || !_owner.HostAnalyzerManager.IsCompilerDiagnosticAnalyzer(document.Project.Language, analyzer))
                 {
                     return true;
                 }
@@ -596,7 +596,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 foreach (var diagnostic in diagnostics)
                 {
                     var document = project.GetDocument(diagnostic.Location.SourceTree);
-                    if (document == null || document != targetDocument)
+                    if ((document == null) || (document != targetDocument))
                     {
                         continue;
                     }

@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis
         internal SyntaxNodeOrTokenList(SyntaxNode node, int index)
             : this()
         {
-            Debug.Assert(node != null || index == 0);
+            Debug.Assert((node != null) || (index == 0));
             if (node != null)
             {
                 _node = node;
@@ -287,7 +287,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="nodesAndTokens">The nodes or tokens to insert.</param>
         public SyntaxNodeOrTokenList InsertRange(int index, IEnumerable<SyntaxNodeOrToken> nodesAndTokens)
         {
-            if (index < 0 || index > this.Count)
+            if ((index < 0) || (index > this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -329,7 +329,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="index">The index of the element to remove.</param>
         public SyntaxNodeOrTokenList RemoveAt(int index)
         {
-            if (index < 0 || index >= this.Count)
+            if ((index < 0) || (index >= this.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -347,7 +347,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxNodeOrTokenList Remove(SyntaxNodeOrToken nodeOrTokenInList)
         {
             var index = this.IndexOf(nodeOrTokenInList);
-            if (index >= 0 && index < this.Count)
+            if ((index >= 0) && (index < this.Count))
             {
                 return this.RemoveAt(index);
             }
@@ -378,7 +378,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxNodeOrTokenList ReplaceRange(SyntaxNodeOrToken nodeOrTokenInList, IEnumerable<SyntaxNodeOrToken> newNodesAndTokens)
         {
             var index = this.IndexOf(nodeOrTokenInList);
-            if (index >= 0 && index < this.Count)
+            if ((index >= 0) && (index < this.Count))
             {
                 var nodes = this.ToList();
                 nodes.RemoveAt(index);
@@ -477,7 +477,7 @@ namespace Microsoft.CodeAnalysis
         /// </returns>
         public override bool Equals(object obj)
         {
-            return obj is SyntaxNodeOrTokenList && Equals((SyntaxNodeOrTokenList)obj);
+            return (obj is SyntaxNodeOrTokenList) && Equals((SyntaxNodeOrTokenList)obj);
         }
 
         /// <summary>

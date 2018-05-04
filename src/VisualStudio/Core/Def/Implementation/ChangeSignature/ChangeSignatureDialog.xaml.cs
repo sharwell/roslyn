@@ -98,7 +98,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
         private void MoveUp_Click(object sender, EventArgs e)
         {
             int oldSelectedIndex = Members.SelectedIndex;
-            if (_viewModel.CanMoveUp && oldSelectedIndex >= 0)
+            if (_viewModel.CanMoveUp && (oldSelectedIndex >= 0))
             {
                 _viewModel.MoveUp();
                 Members.Items.Refresh();
@@ -111,7 +111,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
         private void MoveDown_Click(object sender, EventArgs e)
         {
             int oldSelectedIndex = Members.SelectedIndex;
-            if (_viewModel.CanMoveDown && oldSelectedIndex >= 0)
+            if (_viewModel.CanMoveDown && (oldSelectedIndex >= 0))
             {
                 _viewModel.MoveDown();
                 Members.Items.Refresh();
@@ -188,7 +188,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
         private void MoveSelectionDown_Click(object sender, EventArgs e)
         {
             int oldSelectedIndex = Members.SelectedIndex;
-            if (oldSelectedIndex >= 0 && oldSelectedIndex < Members.Items.Count - 1)
+            if ((oldSelectedIndex >= 0) && (oldSelectedIndex < (Members.Items.Count - 1)))
             {
                 Members.SelectedIndex = oldSelectedIndex + 1;
             }

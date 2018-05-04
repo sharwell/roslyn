@@ -377,7 +377,7 @@ namespace Microsoft.CodeAnalysis.Editing
             var decl = this.GetDeclarations(currentSymbol).FirstOrDefault(d =>
             {
                 var doc = _currentSolution.GetDocument(d.SyntaxTree);
-                return doc != null && doc.Id == documentId && d.FullSpan.IntersectsWith(position);
+                return (doc != null) && (doc.Id == documentId) && d.FullSpan.IntersectsWith(position);
             });
 
             if (decl == null)
@@ -411,7 +411,7 @@ namespace Microsoft.CodeAnalysis.Editing
 
             // get first symbol declaration that encompasses at least one of the member declarations
             var memberDecls = this.GetDeclarations(currentMember).ToList();
-            var declaration = this.GetDeclarations(currentSymbol).FirstOrDefault(d => memberDecls.Any(md => md.SyntaxTree == d.SyntaxTree && d.FullSpan.IntersectsWith(md.FullSpan)));
+            var declaration = this.GetDeclarations(currentSymbol).FirstOrDefault(d => memberDecls.Any(md => (md.SyntaxTree == d.SyntaxTree) && d.FullSpan.IntersectsWith(md.FullSpan)));
 
             if (declaration == null)
             {

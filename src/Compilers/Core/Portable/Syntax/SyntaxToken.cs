@@ -27,8 +27,8 @@ namespace Microsoft.CodeAnalysis
 
         internal SyntaxToken(SyntaxNode parent, GreenNode token, int position, int index)
         {
-            Debug.Assert(parent == null || !parent.Green.IsList, "list cannot be a parent");
-            Debug.Assert(token == null || token.IsToken, "token must be a token");
+            Debug.Assert((parent == null) || !parent.Green.IsList, "list cannot be a parent");
+            Debug.Assert((token == null) || token.IsToken, "token must be a token");
             Parent = parent;
             Node = token;
             Position = position;
@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis
         internal SyntaxToken(GreenNode token)
             : this()
         {
-            Debug.Assert(token == null || token.IsToken, "token must be a token");
+            Debug.Assert((token == null) || token.IsToken, "token must be a token");
             Node = token;
         }
 
@@ -546,10 +546,10 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool Equals(SyntaxToken other)
         {
-            return Parent == other.Parent &&
-                   Node == other.Node &&
-                   Position == other.Position &&
-                   Index == other.Index;
+            return (Parent == other.Parent) &&
+                   (Node == other.Node) &&
+                   (Position == other.Position) &&
+                   (Index == other.Index);
         }
 
         /// <summary>
@@ -558,7 +558,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is SyntaxToken && Equals((SyntaxToken)obj);
+            return (obj is SyntaxToken) && Equals((SyntaxToken)obj);
         }
 
         /// <summary>
@@ -675,8 +675,8 @@ namespace Microsoft.CodeAnalysis
         public bool IsEquivalentTo(SyntaxToken token)
         {
             return
-                (Node == null && token.Node == null) ||
-                (Node != null && token.Node != null && Node.IsEquivalentTo(token.Node));
+                ((Node == null) && (token.Node == null)) ||
+                ((Node != null) && (token.Node != null) && Node.IsEquivalentTo(token.Node));
         }
     }
 }

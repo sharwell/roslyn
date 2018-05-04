@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis
         public bool Equals(FileLinePositionSpan other)
         {
             return _span.Equals(other._span)
-                && _hasMappedPath == other._hasMappedPath
+                && (_hasMappedPath == other._hasMappedPath)
                 && string.Equals(_path, other._path, StringComparison.Ordinal);
         }
 
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public override bool Equals(object other)
         {
-            return other is FileLinePositionSpan && Equals((FileLinePositionSpan)other);
+            return (other is FileLinePositionSpan) && Equals((FileLinePositionSpan)other);
         }
 
         /// <summary>

@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.Classification
 
             private void AddClassification(TextSpan textSpan, string type)
             {
-                if (textSpan.Length > 0 && textSpan.OverlapsWith(_textSpan))
+                if ((textSpan.Length > 0) && textSpan.OverlapsWith(_textSpan))
                 {
                     var tuple = new ClassifiedSpan(type, textSpan);
                     if (!_set.Contains(tuple))

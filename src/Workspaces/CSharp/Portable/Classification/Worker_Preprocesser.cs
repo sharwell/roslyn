@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Classification
 
         private void ClassifyPreprocessorTrivia(SyntaxTrivia trivia, bool allowComments)
         {
-            if (allowComments && trivia.Kind() == SyntaxKind.SingleLineCommentTrivia)
+            if (allowComments && (trivia.Kind() == SyntaxKind.SingleLineCommentTrivia))
             {
                 AddClassification(trivia, ClassificationTypeNames.Comment);
             }

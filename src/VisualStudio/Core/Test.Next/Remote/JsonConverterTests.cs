@@ -70,13 +70,13 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
 
             VerifyJsonSerialization(arguments, (x, y) =>
             {
-                if (x.ForcedAnalysis == y.ForcedAnalysis &&
-                    x.ReportSuppressedDiagnostics == y.ReportSuppressedDiagnostics &&
-                    x.LogAnalyzerExecutionTime == y.LogAnalyzerExecutionTime &&
-                    x.ProjectId == y.ProjectId &&
-                    x.OptionSetChecksum == y.OptionSetChecksum &&
-                    x.AnalyzerIds.Length == y.AnalyzerIds.Length &&
-                    x.AnalyzerIds.Except(y.AnalyzerIds).Count() == 0)
+                if ((x.ForcedAnalysis == y.ForcedAnalysis) &&
+                    (x.ReportSuppressedDiagnostics == y.ReportSuppressedDiagnostics) &&
+                    (x.LogAnalyzerExecutionTime == y.LogAnalyzerExecutionTime) &&
+                    (x.ProjectId == y.ProjectId) &&
+                    (x.OptionSetChecksum == y.OptionSetChecksum) &&
+                    (x.AnalyzerIds.Length == y.AnalyzerIds.Length) &&
+                    (x.AnalyzerIds.Except(y.AnalyzerIds).Count() == 0))
                 {
                     return 0;
                 }
@@ -135,7 +135,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
             var checksum = Checksum.Create(WellKnownSynchronizationKind.Null, ImmutableArray.CreateRange(Guid.NewGuid().ToByteArray()));
             VerifyJsonSerialization(new PinnedSolutionInfo(scopeId: 10, fromPrimaryBranch: false, solutionChecksum: checksum), (x, y) =>
             {
-                return (x.ScopeId == y.ScopeId && x.FromPrimaryBranch == y.FromPrimaryBranch && x.SolutionChecksum == y.SolutionChecksum) ? 0 : 1;
+                return ((x.ScopeId == y.ScopeId) && (x.FromPrimaryBranch == y.FromPrimaryBranch) && (x.SolutionChecksum == y.SolutionChecksum)) ? 0 : 1;
             });
         }
 
@@ -144,7 +144,7 @@ namespace Roslyn.VisualStudio.Next.UnitTests.Remote
         {
             VerifyJsonSerialization(
                 new AnalyzerPerformanceInfo("testAnalyzer", builtIn: false, timeSpan: TimeSpan.FromMilliseconds(12345)),
-                (x, y) => (x.AnalyzerId == y.AnalyzerId && x.BuiltIn == y.BuiltIn && x.TimeSpan == y.TimeSpan) ? 0 : 1);
+                (x, y) => ((x.AnalyzerId == y.AnalyzerId) && (x.BuiltIn == y.BuiltIn) && (x.TimeSpan == y.TimeSpan)) ? 0 : 1);
         }
 
         private static void VerifyJsonSerialization<T>(T value, Comparison<T> equality = null)

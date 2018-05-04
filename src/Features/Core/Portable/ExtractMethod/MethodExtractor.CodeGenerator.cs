@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                 var finalRoot = finalDocument.Root;
 
                 var methodDefinition = finalRoot.GetAnnotatedNodesAndTokens(this.MethodDefinitionAnnotation).FirstOrDefault();
-                if (!methodDefinition.IsNode || methodDefinition.AsNode() == null)
+                if (!methodDefinition.IsNode || (methodDefinition.AsNode() == null))
                 {
                     return await CreateGeneratedCodeAsync(
                         result.Status.With(OperationStatus.FailedWithUnknownReason), finalDocument, cancellationToken).ConfigureAwait(false);
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                 }
 
                 var type = this.SelectionResult.GetContainingScopeType();
-                if (type != null && type.SpecialType != SpecialType.System_Void)
+                if ((type != null) && (type.SpecialType != SpecialType.System_Void))
                 {
                     return statements;
                 }
@@ -246,8 +246,8 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
                 var variableToUseAsReturnValue = this.AnalyzerResult.VariableToUseAsReturnValue;
 
-                Contract.ThrowIfFalse(variableToUseAsReturnValue.ReturnBehavior == ReturnBehavior.Assignment ||
-                                      variableToUseAsReturnValue.ReturnBehavior == ReturnBehavior.Initialization);
+                Contract.ThrowIfFalse((variableToUseAsReturnValue.ReturnBehavior == ReturnBehavior.Assignment) ||
+                                      (variableToUseAsReturnValue.ReturnBehavior == ReturnBehavior.Initialization));
 
                 return statements.Concat(CreateReturnStatement(this.AnalyzerResult.VariableToUseAsReturnValue.Name));
             }
@@ -259,9 +259,9 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
                 foreach (var variable in variables)
                 {
-                    Contract.ThrowIfFalse(variable.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveOut ||
-                                          variable.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveIn ||
-                                          variable.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.Delete);
+                    Contract.ThrowIfFalse((variable.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveOut) ||
+                                          (variable.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveIn) ||
+                                          (variable.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.Delete));
 
                     variable.AddIdentifierTokenAnnotationPair(annotations, cancellationToken);
                 }
@@ -281,7 +281,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                 var typeParameters = ArrayBuilder<ITypeParameterSymbol>.GetInstance();
                 foreach (var parameter in this.AnalyzerResult.MethodTypeParametersInDeclaration)
                 {
-                    if (parameter != null && set.Contains(parameter))
+                    if ((parameter != null) && set.Contains(parameter))
                     {
                         typeParameters.Add(parameter);
                         continue;

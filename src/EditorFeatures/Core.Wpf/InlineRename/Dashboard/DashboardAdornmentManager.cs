@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         {
             _adornmentLayer.RemoveAllAdornments();
 
-            if (_renameService.ActiveSession != null &&
+            if ((_renameService.ActiveSession != null) &&
                 ViewIncludesBufferFromWorkspace(_textView, _renameService.ActiveSession.Workspace))
             {
                 var newAdornment = new Dashboard(

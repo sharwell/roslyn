@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 // 1) the old file already was a misc file, at which point we might just be doing a rename from
                 //    one name to another with the same extension
                 // 2) the old file was a different extension that we weren't tracking, which may have now changed
-                if (TryUntrackClosingDocument(docCookie, pszMkDocumentOld) || TryGetLanguageInformation(pszMkDocumentOld) == null)
+                if (TryUntrackClosingDocument(docCookie, pszMkDocumentOld) || (TryGetLanguageInformation(pszMkDocumentOld) == null))
                 {
                     // Add the new one, if appropriate.
                     TrackOpenedDocument(docCookie, pszMkDocumentNew);
@@ -141,7 +141,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             {
                 var moniker = _runningDocumentTable.GetDocumentMoniker(docCookie);
 
-                if (moniker != null && TryGetLanguageInformation(moniker) != null && !_docCookiesToProjectIdAndContainer.ContainsKey(docCookie))
+                if ((moniker != null) && (TryGetLanguageInformation(moniker) != null) && !_docCookiesToProjectIdAndContainer.ContainsKey(docCookie))
                 {
                     TrackOpenedDocument(docCookie, moniker);
                 }
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         {
             _foregroundThreadAffinitization.AssertIsForeground();
 
-            if (dwReadLocksRemaining + dwEditLocksRemaining == 0)
+            if ((dwReadLocksRemaining + dwEditLocksRemaining) == 0)
             {
                 TryUntrackClosingDocument(docCookie, _runningDocumentTable.GetDocumentMoniker(docCookie));
             }
@@ -314,7 +314,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         {
             // Currently, we are also responsible for pushing documents to the metadata as source workspace,
             // so we count that here as well
-            return registration.Workspace != null && registration.Workspace.Kind != WorkspaceKind.MetadataAsSource && registration.Workspace.Kind != WorkspaceKind.MiscellaneousFiles;
+            return (registration.Workspace != null) && (registration.Workspace.Kind != WorkspaceKind.MetadataAsSource) && (registration.Workspace.Kind != WorkspaceKind.MiscellaneousFiles);
         }
 
         private void AttachToDocument(uint docCookie, string moniker)
@@ -358,9 +358,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             // https://devdiv.visualstudio.com/DevDiv/_workitems/edit/575761
             var parseOptionsOpt = languageServices.GetService<ISyntaxTreeFactoryService>()?.GetDefaultParseOptionsWithLatestLanguageVersion();
 
-            if (parseOptionsOpt != null &&
-                compilationOptionsOpt != null &&
-                PathUtilities.GetExtension(filePath) == languageInformation.ScriptExtension)
+            if ((parseOptionsOpt != null) &&
+                (compilationOptionsOpt != null) &&
+                (PathUtilities.GetExtension(filePath) == languageInformation.ScriptExtension))
             {
                 parseOptionsOpt = parseOptionsOpt.WithKind(SourceCodeKind.Script);
 

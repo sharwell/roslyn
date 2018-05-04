@@ -269,7 +269,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Test.Utilities
 
         public static SyntaxTree[] Parse(IEnumerable<string> sources, CSharpParseOptions options = null)
         {
-            if (sources == null || !sources.Any())
+            if ((sources == null) || !sources.Any())
             {
                 return new SyntaxTree[] { };
             }
@@ -279,7 +279,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Test.Utilities
 
         public static SyntaxTree[] Parse(CSharpParseOptions options = null, params string[] sources)
         {
-            if (sources == null || (sources.Length == 1 && null == sources[0]))
+            if ((sources == null) || ((sources.Length == 1) && (null == sources[0])))
             {
                 return new SyntaxTree[] { };
             }
@@ -746,7 +746,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Test.Utilities
             // =================
             // Get Binding Node
             var node = tree.GetRoot().FindToken(start).Parent;
-            while (node != null && node.ToString() != bindText)
+            while ((node != null) && (node.ToString() != bindText))
             {
                 node = node.Parent;
             }
@@ -756,7 +756,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Test.Utilities
             {
                 while ((node as TNode) == null)
                 {
-                    if (node.Parent != null && node.Parent.ToString() == bindText)
+                    if ((node.Parent != null) && (node.Parent.ToString() == bindText))
                     {
                         node = node.Parent;
                     }
@@ -911,7 +911,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Test.Utilities
             }
 
             // TODO (tomat): the .maxstack in IL can't be less than 8, but many tests expect .maxstack < 8
-            int maxStack = (bodyBlock.MaxStack == 8 && methodData.ILBuilder.MaxStack < 8) ? methodData.ILBuilder.MaxStack : bodyBlock.MaxStack;
+            int maxStack = ((bodyBlock.MaxStack == 8) && (methodData.ILBuilder.MaxStack < 8)) ? methodData.ILBuilder.MaxStack : bodyBlock.MaxStack;
 
             var visualizer = new Visualizer(new MetadataDecoder(peModule, peMethod));
 

@@ -167,7 +167,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
                 }
 
                 // whole document case
-                if (textChanges.Count == 1 && textChanges[0].Span.Length == oldText.Length)
+                if ((textChanges.Count == 1) && (textChanges[0].Span.Length == oldText.Length))
                 {
                     // no benefit here. pulling from remote host is more efficient
                     return;

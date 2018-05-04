@@ -63,11 +63,11 @@ namespace Microsoft.Cci
 
         public bool Equals(UsedNamespaceOrType other)
         {
-            return AliasOpt == other.AliasOpt
+            return (AliasOpt == other.AliasOpt)
                 && object.Equals(TargetAssemblyOpt, other.TargetAssemblyOpt)
                 && object.Equals(TargetNamespaceOpt, other.TargetNamespaceOpt)
                 && object.Equals(TargetTypeOpt, other.TargetTypeOpt)
-                && TargetXmlNamespaceOpt == other.TargetXmlNamespaceOpt;
+                && (TargetXmlNamespaceOpt == other.TargetXmlNamespaceOpt);
         }
 
         public override int GetHashCode()

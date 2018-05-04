@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
                 var directory = Path.GetDirectoryName(RuntimeUtilities.GetAssemblyLocation(typeof(RuntimeUtilities)));
                 string path = null;
-                while (directory != null && !File.Exists(path = Path.Combine(directory, "Binaries", "Tools", "ILAsm", ilasmExeName)))
+                while ((directory != null) && !File.Exists(path = Path.Combine(directory, "Binaries", "Tools", "ILAsm", ilasmExeName)))
                 {
                     directory = Path.GetDirectoryName(directory);
                 }

@@ -50,9 +50,9 @@ namespace Microsoft.CodeAnalysis
             }
 
             return !ReferenceEquals(reference, null) &&
-                   _projectId == reference._projectId &&
+                   (_projectId == reference._projectId) &&
                    _aliases.SequenceEqual(reference._aliases) &&
-                   _embedInteropTypes == reference._embedInteropTypes;
+                   (_embedInteropTypes == reference._embedInteropTypes);
         }
 
         public static bool operator ==(ProjectReference left, ProjectReference right)

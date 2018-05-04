@@ -96,13 +96,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case SyntaxKind.JoinClause:
                     var oldJoin = (JoinClauseSyntax)oldBody.Parent;
                     var newJoin = (JoinClauseSyntax)newLambda;
-                    Debug.Assert(oldJoin.LeftExpression == oldBody || oldJoin.RightExpression == oldBody);
+                    Debug.Assert((oldJoin.LeftExpression == oldBody) || (oldJoin.RightExpression == oldBody));
                     return (oldJoin.LeftExpression == oldBody) ? newJoin.LeftExpression : newJoin.RightExpression;
 
                 case SyntaxKind.GroupClause:
                     var oldGroup = (GroupClauseSyntax)oldBody.Parent;
                     var newGroup = (GroupClauseSyntax)newLambda;
-                    Debug.Assert(oldGroup.GroupExpression == oldBody || oldGroup.ByExpression == oldBody);
+                    Debug.Assert((oldGroup.GroupExpression == oldBody) || (oldGroup.ByExpression == oldBody));
                     return (oldGroup.GroupExpression == oldBody) ?
                         (IsReducedSelectOrGroupByClause(newGroup, newGroup.GroupExpression) ? null : newGroup.GroupExpression) : newGroup.ByExpression;
 
@@ -154,15 +154,15 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 case SyntaxKind.ArrowExpressionClause:
                     var arrowExpressionClause = (ArrowExpressionClauseSyntax)parent;
-                    return arrowExpressionClause.Expression == node && arrowExpressionClause.Parent is LocalFunctionStatementSyntax;
+                    return (arrowExpressionClause.Expression == node) && (arrowExpressionClause.Parent is LocalFunctionStatementSyntax);
 
                 case SyntaxKind.FromClause:
                     var fromClause = (FromClauseSyntax)parent;
-                    return fromClause.Expression == node && fromClause.Parent is QueryBodySyntax;
+                    return (fromClause.Expression == node) && (fromClause.Parent is QueryBodySyntax);
 
                 case SyntaxKind.JoinClause:
                     var joinClause = (JoinClauseSyntax)parent;
-                    return joinClause.LeftExpression == node || joinClause.RightExpression == node;
+                    return (joinClause.LeftExpression == node) || (joinClause.RightExpression == node);
 
                 case SyntaxKind.LetClause:
                     var letClause = (LetClauseSyntax)parent;
@@ -179,12 +179,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 case SyntaxKind.SelectClause:
                     var selectClause = (SelectClauseSyntax)parent;
-                    return selectClause.Expression == node && (allowReducedLambdas || !IsReducedSelectOrGroupByClause(selectClause, selectClause.Expression));
+                    return (selectClause.Expression == node) && (allowReducedLambdas || !IsReducedSelectOrGroupByClause(selectClause, selectClause.Expression));
 
                 case SyntaxKind.GroupClause:
                     var groupClause = (GroupClauseSyntax)parent;
-                    return (groupClause.GroupExpression == node && (allowReducedLambdas || !IsReducedSelectOrGroupByClause(groupClause, groupClause.GroupExpression))) ||
-                           groupClause.ByExpression == node;
+                    return ((groupClause.GroupExpression == node) && (allowReducedLambdas || !IsReducedSelectOrGroupByClause(groupClause, groupClause.GroupExpression))) ||
+                           (groupClause.ByExpression == node);
             }
 
             return false;
@@ -240,7 +240,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return false;
             }
 
-            if (selectOrGroupClause.IsKind(SyntaxKind.SelectClause) && containingBody.Clauses.Count == 0)
+            if (selectOrGroupClause.IsKind(SyntaxKind.SelectClause) && (containingBody.Clauses.Count == 0))
             {
                 return false;
             }
@@ -355,8 +355,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         public static bool AreEquivalentIgnoringLambdaBodies(SyntaxNode oldNode, SyntaxNode newNode)
         {
             // all tokens that don't belong to a lambda body:
-            var oldTokens = oldNode.DescendantTokens(node => node == oldNode || !IsLambdaBodyStatementOrExpression(node));
-            var newTokens = newNode.DescendantTokens(node => node == newNode || !IsLambdaBodyStatementOrExpression(node));
+            var oldTokens = oldNode.DescendantTokens(node => (node == oldNode) || !IsLambdaBodyStatementOrExpression(node));
+            var newTokens = newNode.DescendantTokens(node => (node == newNode) || !IsLambdaBodyStatementOrExpression(node));
 
             return oldTokens.SequenceEqual(newTokens, SyntaxFactory.AreEquivalent);
         }
@@ -435,7 +435,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // TODO: EE expression
-            if (node is ExpressionSyntax && node.Parent != null && node.Parent.Parent == null)
+            if ((node is ExpressionSyntax) && (node.Parent != null) && (node.Parent.Parent == null))
             {
                 return true;
             }

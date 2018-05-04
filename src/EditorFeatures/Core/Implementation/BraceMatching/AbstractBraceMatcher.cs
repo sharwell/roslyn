@@ -26,13 +26,13 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BraceMatching
             var braceTokens = (from child in parent.ChildNodesAndTokens()
                                where child.IsToken
                                let tok = child.AsToken()
-                               where tok.RawKind == _openBrace.Kind || tok.RawKind == _closeBrace.Kind
+                               where (tok.RawKind == _openBrace.Kind) || (tok.RawKind == _closeBrace.Kind)
                                where tok.Span.Length > 0
                                select tok).ToList();
 
-            if (braceTokens.Count == 2 &&
-                braceTokens[0].RawKind == _openBrace.Kind &&
-                braceTokens[1].RawKind == _closeBrace.Kind)
+            if ((braceTokens.Count == 2) &&
+                (braceTokens[0].RawKind == _openBrace.Kind) &&
+                (braceTokens[1].RawKind == _closeBrace.Kind))
             {
                 if (braceTokens[0] == token)
                 {
@@ -59,9 +59,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BraceMatching
             var token = root.FindToken(position);
 
             var text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
-            if (position < text.Length && this.IsBrace(text[position]))
+            if ((position < text.Length) && this.IsBrace(text[position]))
             {
-                if (token.RawKind == _openBrace.Kind && AllowedForToken(token))
+                if ((token.RawKind == _openBrace.Kind) && AllowedForToken(token))
                 {
                     var leftToken = token;
                     if (TryFindMatchingToken(leftToken, out var rightToken))
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BraceMatching
                         return new BraceMatchingResult(leftToken.Span, rightToken.Span);
                     }
                 }
-                else if (token.RawKind == _closeBrace.Kind && AllowedForToken(token))
+                else if ((token.RawKind == _closeBrace.Kind) && AllowedForToken(token))
                 {
                     var rightToken = token;
                     if (TryFindMatchingToken(rightToken, out var leftToken))
@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BraceMatching
 
         private bool IsBrace(char c)
         {
-            return _openBrace.Character == c || _closeBrace.Character == c;
+            return (_openBrace.Character == c) || (_closeBrace.Character == c);
         }
     }
 }

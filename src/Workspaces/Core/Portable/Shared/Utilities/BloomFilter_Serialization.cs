@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
         private static void WriteBitArray(ObjectWriter writer, BitArray bitArray)
         {
             // Our serialization format doesn't round-trip bit arrays of non-byte lengths
-            Contract.ThrowIfTrue(bitArray.Length % 8 != 0);
+            Contract.ThrowIfTrue((bitArray.Length % 8) != 0);
 
             writer.WriteInt32(bitArray.Length / 8);
 
@@ -35,14 +35,14 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             {
                 if (bitArray[i])
                 {
-                    b = (byte)(0x80 | b >> 1);
+                    b = (byte)(0x80 | (b >> 1));
                 }
                 else
                 {
                     b >>= 1;
                 }
 
-                if ((i + 1) % 8 == 0)
+                if (((i + 1) % 8) == 0)
                 {
                     // End of a byte, write out the byte
                     writer.WriteByte(b);

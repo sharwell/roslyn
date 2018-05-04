@@ -39,16 +39,16 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertForEachToFor
 
             // check whether there is any comments between foreach and ) tokens
             // if they do, we don't support conversion.
-            foreach (var trivia in foreachStatement.DescendantTrivia(n => n == foreachStatement || scope.Contains(n.FullSpan)))
+            foreach (var trivia in foreachStatement.DescendantTrivia(n => (n == foreachStatement) || scope.Contains(n.FullSpan)))
             {
-                if (trivia.Span.End <= scope.Start ||
-                    scope.End <= trivia.Span.Start)
+                if ((trivia.Span.End <= scope.Start) ||
+                    (scope.End <= trivia.Span.Start))
                 {
                     continue;
                 }
 
-                if (trivia.Kind() != SyntaxKind.WhitespaceTrivia &&
-                    trivia.Kind() != SyntaxKind.EndOfLineTrivia)
+                if ((trivia.Kind() != SyntaxKind.WhitespaceTrivia) &&
+                    (trivia.Kind() != SyntaxKind.EndOfLineTrivia))
                 {
                     // we don't know what to do with these comments
                     return null;

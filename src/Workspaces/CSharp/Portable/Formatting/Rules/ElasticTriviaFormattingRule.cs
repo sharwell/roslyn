@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         private static void AddPropertyDeclarationSuppressOperations(List<SuppressOperation> list, SyntaxNode node)
         {
-            if (node is BasePropertyDeclarationSyntax basePropertyDeclaration && basePropertyDeclaration.AccessorList != null &&
+            if (node is BasePropertyDeclarationSyntax basePropertyDeclaration && (basePropertyDeclaration.AccessorList != null) &&
                 basePropertyDeclaration.AccessorList.Accessors.All(a => a.Body == null) &&
                 basePropertyDeclaration.GetAnnotatedTrivia(SyntaxAnnotation.ElasticAnnotation).Any())
             {
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         {
             var initializer = GetInitializerNode(node);
             var lastTokenOfType = GetLastTokenOfType(node);
-            if (initializer != null && lastTokenOfType != null)
+            if ((initializer != null) && (lastTokenOfType != null))
             {
                 AddSuppressWrappingIfOnSingleLineOperation(list, lastTokenOfType.Value, initializer.CloseBraceToken, SuppressOption.IgnoreElastic);
                 return;
@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
             var previousMember = FormattingRangeHelper.GetEnclosingMember(previousToken);
             var nextMember = FormattingRangeHelper.GetEnclosingMember(currentToken);
-            if (previousMember == null || nextMember == null)
+            if ((previousMember == null) || (nextMember == null))
             {
                 return null;
             }
@@ -186,8 +186,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             if (previousMember.Kind() == nextMember.Kind())
             {
                 // Easy cases:
-                if (previousMember.Kind() == SyntaxKind.FieldDeclaration ||
-                    previousMember.Kind() == SyntaxKind.EventFieldDeclaration)
+                if ((previousMember.Kind() == SyntaxKind.FieldDeclaration) ||
+                    (previousMember.Kind() == SyntaxKind.EventFieldDeclaration))
                 {
                     // Ensure that fields and events are each declared on a separate line.
                     return CreateAdjustNewLinesOperation(1, AdjustNewLinesOption.ForceLines);
@@ -198,8 +198,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 {
                     var nextProperty = (BasePropertyDeclarationSyntax)nextMember;
 
-                    if (previousProperty?.AccessorList?.Accessors.All(a => a.Body == null) == true &&
-                        nextProperty?.AccessorList?.Accessors.All(a => a.Body == null) == true)
+                    if ((previousProperty?.AccessorList?.Accessors.All(a => a.Body == null) == true) &&
+                        (nextProperty?.AccessorList?.Accessors.All(a => a.Body == null) == true))
                     {
                         return CreateAdjustNewLinesOperation(1, AdjustNewLinesOption.PreserveLines);
                     }
@@ -210,8 +210,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 {
                     var nextMethod = (BaseMethodDeclarationSyntax)nextMember;
 
-                    if (previousMethod.Body == null &&
-                        nextMethod.Body == null)
+                    if ((previousMethod.Body == null) &&
+                        (nextMethod.Body == null))
                     {
                         return CreateAdjustNewLinesOperation(1, AdjustNewLinesOption.PreserveLines);
                     }
@@ -244,7 +244,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 //     then, engine will pick new line operation and ignore space operation
 
                 // make attributes have a space following
-                if (previousToken.IsKind(SyntaxKind.CloseBracketToken) && previousToken.Parent is AttributeListSyntax
+                if (previousToken.IsKind(SyntaxKind.CloseBracketToken) && (previousToken.Parent is AttributeListSyntax)
                     && !(currentToken.Parent is AttributeListSyntax))
                 {
                     return CreateAdjustSpacesOperation(1, AdjustSpacesOption.ForceSpaces);
@@ -278,15 +278,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                     return LineBreaksAfterCloseBrace(currentToken);
 
                 case SyntaxKind.CloseParenToken:
-                    return (((previousToken.Parent is StatementSyntax) && currentToken.Parent != previousToken.Parent)
-                        || currentToken.Kind() == SyntaxKind.OpenBraceToken) ? 1 : 0;
+                    return (((previousToken.Parent is StatementSyntax) && (currentToken.Parent != previousToken.Parent))
+                        || (currentToken.Kind() == SyntaxKind.OpenBraceToken)) ? 1 : 0;
 
                 case SyntaxKind.CloseBracketToken:
                     // Assembly and module-level attributes followed by non-attributes should have
                     // a blank line after them.
                     if (previousToken.Parent is AttributeListSyntax parent)
                     {
-                        if (parent.Target != null &&
+                        if ((parent.Target != null) &&
                             (parent.Target.Identifier.IsKindOrHasMatchingText(SyntaxKind.AssemblyKeyword) ||
                              parent.Target.Identifier.IsKindOrHasMatchingText(SyntaxKind.ModuleKeyword)))
                         {
@@ -314,7 +314,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                     return currentToken.Kind() != SyntaxKind.IfKeyword ? 1 : 0;
 
                 case SyntaxKind.ColonToken:
-                    if (previousToken.Parent is LabeledStatementSyntax || previousToken.Parent is SwitchLabelSyntax)
+                    if ((previousToken.Parent is LabeledStatementSyntax) || (previousToken.Parent is SwitchLabelSyntax))
                     {
                         return 1;
                     }
@@ -322,14 +322,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                     break;
             }
 
-            if ((currentToken.Kind() == SyntaxKind.FromKeyword && currentToken.Parent.Kind() == SyntaxKind.FromClause) ||
-                (currentToken.Kind() == SyntaxKind.LetKeyword && currentToken.Parent.Kind() == SyntaxKind.LetClause) ||
-                (currentToken.Kind() == SyntaxKind.WhereKeyword && currentToken.Parent.Kind() == SyntaxKind.WhereClause) ||
-                (currentToken.Kind() == SyntaxKind.JoinKeyword && currentToken.Parent.Kind() == SyntaxKind.JoinClause) ||
-                (currentToken.Kind() == SyntaxKind.JoinKeyword && currentToken.Parent.Kind() == SyntaxKind.JoinIntoClause) ||
-                (currentToken.Kind() == SyntaxKind.OrderByKeyword && currentToken.Parent.Kind() == SyntaxKind.OrderByClause) ||
-                (currentToken.Kind() == SyntaxKind.SelectKeyword && currentToken.Parent.Kind() == SyntaxKind.SelectClause) ||
-                (currentToken.Kind() == SyntaxKind.GroupKeyword && currentToken.Parent.Kind() == SyntaxKind.GroupClause))
+            if (((currentToken.Kind() == SyntaxKind.FromKeyword) && (currentToken.Parent.Kind() == SyntaxKind.FromClause)) ||
+                ((currentToken.Kind() == SyntaxKind.LetKeyword) && (currentToken.Parent.Kind() == SyntaxKind.LetClause)) ||
+                ((currentToken.Kind() == SyntaxKind.WhereKeyword) && (currentToken.Parent.Kind() == SyntaxKind.WhereClause)) ||
+                ((currentToken.Kind() == SyntaxKind.JoinKeyword) && (currentToken.Parent.Kind() == SyntaxKind.JoinClause)) ||
+                ((currentToken.Kind() == SyntaxKind.JoinKeyword) && (currentToken.Parent.Kind() == SyntaxKind.JoinIntoClause)) ||
+                ((currentToken.Kind() == SyntaxKind.OrderByKeyword) && (currentToken.Parent.Kind() == SyntaxKind.OrderByClause)) ||
+                ((currentToken.Kind() == SyntaxKind.SelectKeyword) && (currentToken.Parent.Kind() == SyntaxKind.SelectClause)) ||
+                ((currentToken.Kind() == SyntaxKind.GroupKeyword) && (currentToken.Parent.Kind() == SyntaxKind.GroupClause)))
             {
                 return 1;
             }
@@ -349,8 +349,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                     {
                         if (parent.Target != null)
                         {
-                            if (parent.Target.Identifier == SyntaxFactory.Token(SyntaxKind.AssemblyKeyword) ||
-                                parent.Target.Identifier == SyntaxFactory.Token(SyntaxKind.ModuleKeyword))
+                            if ((parent.Target.Identifier == SyntaxFactory.Token(SyntaxKind.AssemblyKeyword)) ||
+                                (parent.Target.Identifier == SyntaxFactory.Token(SyntaxKind.ModuleKeyword)))
                             {
                                 if (!(previousToken.Parent is AttributeListSyntax))
                                 {
@@ -384,15 +384,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 return 1;
             }
             else if (
-                nextToken.Kind() == SyntaxKind.CatchKeyword ||
-                nextToken.Kind() == SyntaxKind.FinallyKeyword ||
-                nextToken.Kind() == SyntaxKind.ElseKeyword)
+                (nextToken.Kind() == SyntaxKind.CatchKeyword) ||
+                (nextToken.Kind() == SyntaxKind.FinallyKeyword) ||
+                (nextToken.Kind() == SyntaxKind.ElseKeyword))
             {
                 return 1;
             }
             else if (
-                nextToken.Kind() == SyntaxKind.WhileKeyword &&
-                nextToken.Parent.Kind() == SyntaxKind.DoStatement)
+                (nextToken.Kind() == SyntaxKind.WhileKeyword) &&
+                (nextToken.Parent.Kind() == SyntaxKind.DoStatement))
             {
                 return 1;
             }
@@ -432,8 +432,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         private bool IsWhitespace(SyntaxTrivia trivia)
         {
-            return trivia.Kind() == SyntaxKind.WhitespaceTrivia
-                || trivia.Kind() == SyntaxKind.EndOfLineTrivia;
+            return (trivia.Kind() == SyntaxKind.WhitespaceTrivia)
+                || (trivia.Kind() == SyntaxKind.EndOfLineTrivia);
         }
 
         private int GetNumberOfLines(IEnumerable<SyntaxTrivia> triviaList)

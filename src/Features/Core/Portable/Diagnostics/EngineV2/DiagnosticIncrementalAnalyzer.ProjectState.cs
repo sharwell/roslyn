@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 // PERF: avoid loading data if version is not right one.
                 // avoid loading data flag is there as a strictly perf optimization.
                 var version = await GetDiagnosticVersionAsync(project, cancellationToken).ConfigureAwait(false);
-                if (avoidLoadingData && lastResult.Version != version)
+                if (avoidLoadingData && (lastResult.Version != version))
                 {
                     return lastResult;
                 }
@@ -127,7 +127,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
 
                 var version = await GetDiagnosticVersionAsync(document.Project, cancellationToken).ConfigureAwait(false);
-                if (avoidLoadingData && lastResult.Version != version)
+                if (avoidLoadingData && (lastResult.Version != version))
                 {
                     return lastResult;
                 }
@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 }
 
                 var version = await GetDiagnosticVersionAsync(project, cancellationToken).ConfigureAwait(false);
-                if (avoidLoadingData && lastResult.Version != version)
+                if (avoidLoadingData && (lastResult.Version != version))
                 {
                     return lastResult;
                 }
@@ -260,9 +260,9 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 // if it is allowed to keep project state, check versions and if they are same, bail out.
                 // if full solution analysis is off or we are asked to reset document state, we always merge.
                 if (fullAnalysis && !openFileOnlyAnalyzer &&
-                    syntax.Version != VersionStamp.Default &&
-                    syntax.Version == semantic.Version &&
-                    syntax.Version == lastResult.Version)
+                    (syntax.Version != VersionStamp.Default) &&
+                    (syntax.Version == semantic.Version) &&
+                    (syntax.Version == lastResult.Version))
                 {
                     // all data is in sync already.
                     return;
@@ -412,7 +412,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 // after initial deserialization, we track actual document/project that actually have diagnostics so no data won't be a common
                 // case.
                 // check cache first
-                if (InMemoryStorage.TryGetValue(_owner.Analyzer, (key, stateKey), out var entry) && serializer.Version == entry.Version)
+                if (InMemoryStorage.TryGetValue(_owner.Analyzer, (key, stateKey), out var entry) && (serializer.Version == entry.Version))
                 {
                     if (entry.Diagnostics.Length == 0)
                     {

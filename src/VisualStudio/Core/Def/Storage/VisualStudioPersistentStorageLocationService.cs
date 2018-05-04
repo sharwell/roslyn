@@ -61,7 +61,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Storage
 
             lock (_gate)
             {
-                if (visualStudioWorkspace.CurrentSolution.Id == _currentSolutionId && _currentWorkingFolderPath != null)
+                if ((visualStudioWorkspace.CurrentSolution.Id == _currentSolutionId) && (_currentWorkingFolderPath != null))
                 {
                     return;
                 }

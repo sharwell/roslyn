@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (!_awaiterFields.TryGetValue(awaiterType, out result))
             {
                 int slotIndex;
-                if (slotAllocatorOpt == null || !slotAllocatorOpt.TryGetPreviousAwaiterSlotIndex(F.ModuleBuilderOpt.Translate(awaiterType, F.Syntax, F.Diagnostics), F.Diagnostics, out slotIndex))
+                if ((slotAllocatorOpt == null) || !slotAllocatorOpt.TryGetPreviousAwaiterSlotIndex(F.ModuleBuilderOpt.Translate(awaiterType, F.Syntax, F.Diagnostics), F.Diagnostics, out slotIndex))
                 {
                     slotIndex = _nextAwaiterId++;
                 }
@@ -300,7 +300,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 resultsDiscarded: resultPlace == null);
 
             // [$resultPlace = ] $awaiterTemp.GetResult();
-            BoundStatement getResultStatement = resultPlace != null && type.SpecialType != SpecialType.System_Void ?
+            BoundStatement getResultStatement = (resultPlace != null) && (type.SpecialType != SpecialType.System_Void) ?
                 F.Assignment(resultPlace, getResultCall):
                 F.ExpressionStatement(getResultCall);
 

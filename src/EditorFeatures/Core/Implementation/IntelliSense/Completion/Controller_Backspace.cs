@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             var viewBufferCaretPoint = GetCaretPointInViewBuffer();
             if (isDelete)
             {
-                deletedChar = viewBufferCaretPoint.Position >= 0 && viewBufferCaretPoint.Position < textView.TextBuffer.CurrentSnapshot.Length
+                deletedChar = (viewBufferCaretPoint.Position >= 0) && (viewBufferCaretPoint.Position < textView.TextBuffer.CurrentSnapshot.Length)
                     ? textView.TextBuffer.CurrentSnapshot[viewBufferCaretPoint.Position]
                     : default;
             }
@@ -93,9 +93,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 
                 var model = sessionOpt.Computation.InitialUnfilteredModel;
 
-                if ((model == null && CaretHasLeftDefaultTrackingSpan(subjectBufferCaretPoint, documentBeforeDeletion)) ||
-                    (model != null && this.IsCaretOutsideAllItemBounds(model, this.GetCaretPointInViewBuffer())) ||
-                    (model != null && model.OriginalList.Rules.DismissIfLastCharacterDeleted && AllFilterTextsEmpty(model, GetCaretPointInViewBuffer())))
+                if (((model == null) && CaretHasLeftDefaultTrackingSpan(subjectBufferCaretPoint, documentBeforeDeletion)) ||
+                    ((model != null) && this.IsCaretOutsideAllItemBounds(model, this.GetCaretPointInViewBuffer())) ||
+                    ((model != null) && model.OriginalList.Rules.DismissIfLastCharacterDeleted && AllFilterTextsEmpty(model, GetCaretPointInViewBuffer())))
                 {
                     // If the caret moved out of bounds of our items, then we want to dismiss the list. 
                     this.DismissSessionIfActive();

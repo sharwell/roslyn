@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                     using (Logger.LogBlock(FunctionId.Completion_ModelComputer_DoInBackground, cancellationToken))
                     {
                         cancellationToken.ThrowIfCancellationRequested();
-                        if (_completionService == null || _options == null)
+                        if ((_completionService == null) || (_options == null))
                         {
                             // both completionService and options can be null if given buffer is not registered to workspace yet.
                             // could happen in razor more frequently
@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                             return null;
                         }
 
-                        var suggestionMode = _useSuggestionMode || completionList.SuggestionModeItem != null;
+                        var suggestionMode = _useSuggestionMode || (completionList.SuggestionModeItem != null);
                         return Model.CreateModel(
                             _documentOpt,
                             _disconnectedBufferGraph,

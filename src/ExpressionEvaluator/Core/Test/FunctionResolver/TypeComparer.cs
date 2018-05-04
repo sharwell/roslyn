@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator.UnitTests
                         var xArray = (ArrayTypeSignature)x;
                         var yArray = (ArrayTypeSignature)y;
                         return Equals(xArray.ElementType, yArray.ElementType) &&
-                            xArray.Rank == yArray.Rank;
+                            (xArray.Rank == yArray.Rank);
                     }
                 case TypeSignatureKind.PointerType:
                     {

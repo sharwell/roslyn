@@ -155,8 +155,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 if (isWindowsRuntimeEvent)
                 {
                     NamedTypeSymbol eventRegistrationTokenTable_T = ((PEModuleSymbol)this.ContainingModule).EventRegistrationTokenTable_T;
-                    if (eventRegistrationTokenTable_T == candidateAssociatedFieldType.OriginalDefinition &&
-                        _eventType == ((NamedTypeSymbol)candidateAssociatedFieldType).TypeArgumentsNoUseSiteDiagnostics[0])
+                    if ((eventRegistrationTokenTable_T == candidateAssociatedFieldType.OriginalDefinition) &&
+                        (_eventType == ((NamedTypeSymbol)candidateAssociatedFieldType).TypeArgumentsNoUseSiteDiagnostics[0]))
                     {
                         return candidateAssociatedField;
                     }
@@ -188,10 +188,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 // does not check whether the containing type is a WinRT type -
                 // it was a design goal to accept any events of this form.
                 return
-                    _addMethod.ReturnType == token &&
-                    _addMethod.ParameterCount == 1 &&
-                    _removeMethod.ParameterCount == 1 &&
-                    _removeMethod.Parameters[0].Type == token;
+                    (_addMethod.ReturnType == token) &&
+                    (_addMethod.ParameterCount == 1) &&
+                    (_removeMethod.ParameterCount == 1) &&
+                    (_removeMethod.Parameters[0].Type == token);
             }
         }
 
@@ -364,8 +364,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         {
             get
             {
-                if (_addMethod.ExplicitInterfaceImplementations.Length == 0 &&
-                    _removeMethod.ExplicitInterfaceImplementations.Length == 0)
+                if ((_addMethod.ExplicitInterfaceImplementations.Length == 0) &&
+                    (_removeMethod.ExplicitInterfaceImplementations.Length == 0))
                 {
                     return ImmutableArray<EventSymbol>.Empty;
                 }

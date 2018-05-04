@@ -10,7 +10,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Utilities
         public static bool TryGetPropertyValue(this IVsShell shell, __VSSPROPID id, out IntPtr value)
         {
             int hresult = shell.GetProperty((int)id, out object objValue);
-            if (ErrorHandler.Succeeded(hresult) && objValue != null)
+            if (ErrorHandler.Succeeded(hresult) && (objValue != null))
             {
                 value = (IntPtr.Size == 4) ? (IntPtr)(int)objValue : (IntPtr)(long)objValue;
                 return true;

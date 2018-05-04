@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis
         private BitVector(Word bits0, Word[] bits, int capacity)
         {
             int requiredWords = WordsForCapacity(capacity);
-            Debug.Assert(requiredWords == 0 || requiredWords <= bits.Length);
+            Debug.Assert((requiredWords == 0) || (requiredWords <= bits.Length));
             _bits0 = bits0;
             _bits = bits;
             _capacity = capacity;
@@ -38,14 +38,14 @@ namespace Microsoft.CodeAnalysis
         public bool Equals(BitVector other)
         {
             // Bit arrays only equal if their underlying sets are of the same size.
-            return _capacity == other._capacity
-                && _bits0 == other._bits0
+            return (_capacity == other._capacity)
+                && (_bits0 == other._bits0)
                 && _bits.ValueEquals(other._bits);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is BitVector && Equals((BitVector)obj);
+            return (obj is BitVector) && Equals((BitVector)obj);
         }
 
         public override int GetHashCode()
@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis
         [Conditional("DEBUG_BITARRAY")]
         private void Check()
         {
-            Debug.Assert(_capacity == 0 || WordsForCapacity(_capacity) <= _bits.Length);
+            Debug.Assert((_capacity == 0) || (WordsForCapacity(_capacity) <= _bits.Length));
         }
 
         public void EnsureCapacity(int newCapacity)

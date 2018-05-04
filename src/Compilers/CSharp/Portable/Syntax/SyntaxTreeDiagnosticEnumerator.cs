@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             _syntaxTree = null;
             _current = null;
             _position = position;
-            if (node != null && node.ContainsDiagnostics)
+            if ((node != null) && node.ContainsDiagnostics)
             {
                 _syntaxTree = syntaxTree;
                 _stack = new NodeIterationStack(DefaultStackCapacity);
@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var diagIndex = _stack.Top.DiagnosticIndex;
                 var node = _stack.Top.Node;
                 var diags = node.GetDiagnostics();
-                if (diagIndex < diags.Length - 1)
+                if (diagIndex < (diags.Length - 1))
                 {
                     diagIndex++;
                     var sdi = (SyntaxDiagnosticInfo)diags[diagIndex];
@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 var slotIndex = _stack.Top.SlotIndex;
             tryAgain:
-                if (slotIndex < node.SlotCount - 1)
+                if (slotIndex < (node.SlotCount - 1))
                 {
                     slotIndex++;
                     var child = node.GetSlot(slotIndex);
@@ -199,7 +199,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 get
                 {
                     Debug.Assert(_stack != null);
-                    Debug.Assert(index >= 0 && index < _count);
+                    Debug.Assert((index >= 0) && (index < _count));
                     return _stack[index];
                 }
             }

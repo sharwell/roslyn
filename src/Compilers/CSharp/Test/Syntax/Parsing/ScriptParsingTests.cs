@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
             // get all errors
             var actualErrors = parsedTree.GetDiagnostics(parsedText);
-            if (errors == null || errors.Length == 0)
+            if ((errors == null) || (errors.Length == 0))
             {
                 Assert.Empty(actualErrors);
             }

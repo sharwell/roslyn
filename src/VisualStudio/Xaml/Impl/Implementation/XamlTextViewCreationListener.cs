@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Xaml
         {
             var projects = _vsWorkspace.DeferredState?.ProjectTracker.ImmutableProjects ?? ImmutableArray<AbstractProject>.Empty;
 
-            return projects.FirstOrDefault(p => p.Language == StringConstants.XamlLanguageName && p.Hierarchy == hierarchy);
+            return projects.FirstOrDefault(p => (p.Language == StringConstants.XamlLanguageName) && (p.Hierarchy == hierarchy));
         }
 
         private bool TryCreateXamlDocument(AbstractProject project, string filePath, out IVisualStudioHostDocument vsDocument)

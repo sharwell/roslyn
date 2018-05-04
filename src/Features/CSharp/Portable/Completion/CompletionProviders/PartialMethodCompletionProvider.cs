@@ -46,13 +46,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         internal override bool IsInsertionTrigger(SourceText text, int characterPosition, OptionSet options)
         {
             var ch = text[characterPosition];
-            return ch == ' ' || (CompletionUtilities.IsStartingNewWord(text, characterPosition) && options.GetOption(CompletionOptions.TriggerOnTypingLetters, LanguageNames.CSharp));
+            return (ch == ' ') || (CompletionUtilities.IsStartingNewWord(text, characterPosition) && options.GetOption(CompletionOptions.TriggerOnTypingLetters, LanguageNames.CSharp));
         }
 
         protected override bool IsPartial(IMethodSymbol method)
         {
-            if (method.DeclaredAccessibility != Accessibility.NotApplicable &&
-                method.DeclaredAccessibility != Accessibility.Private)
+            if ((method.DeclaredAccessibility != Accessibility.NotApplicable) &&
+                (method.DeclaredAccessibility != Accessibility.Private))
             {
                 return false;
             }
@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             }
 
             var declarations = method.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<MethodDeclarationSyntax>();
-            return declarations.Any(d => d.Body == null && d.Modifiers.Any(SyntaxKind.PartialKeyword));
+            return declarations.Any(d => (d.Body == null) && d.Modifiers.Any(SyntaxKind.PartialKeyword));
         }
 
         protected override bool IsPartialMethodCompletionContext(SyntaxTree tree, int position, CancellationToken cancellationToken, out DeclarationModifiers modifiers, out SyntaxToken token)
@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             modifiers = default;
 
             if (targetToken.IsKind(SyntaxKind.VoidKeyword, SyntaxKind.PartialKeyword) ||
-                (targetToken.Kind() == SyntaxKind.IdentifierToken && targetToken.HasMatchingText(SyntaxKind.PartialKeyword)))
+                ((targetToken.Kind() == SyntaxKind.IdentifierToken) && targetToken.HasMatchingText(SyntaxKind.PartialKeyword)))
             {
                 return !IsOnSameLine(touchingToken.GetNextToken(), touchingToken, text) &&
                     VerifyModifiers(tree, position, cancellationToken, out modifiers);
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         {
             return !syntaxToken.IsKind(SyntaxKind.None)
                 && !touchingToken.IsKind(SyntaxKind.None)
-                && text.Lines.IndexOf(syntaxToken.SpanStart) == text.Lines.IndexOf(touchingToken.SpanStart);
+                && (text.Lines.IndexOf(syntaxToken.SpanStart) == text.Lines.IndexOf(touchingToken.SpanStart));
         }
 
         protected override string GetDisplayText(IMethodSymbol method, SemanticModel semanticModel, int position)

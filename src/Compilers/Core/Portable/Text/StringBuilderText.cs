@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.Text
         {
             get
             {
-                if (position < 0 || position >= _builder.Length)
+                if ((position < 0) || (position >= _builder.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(position));
                 }

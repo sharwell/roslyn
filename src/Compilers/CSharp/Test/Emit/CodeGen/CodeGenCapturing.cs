@@ -37,8 +37,8 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.CodeGen
 
             public void Add(int depth, string varName)
             {
-                if (VariablesByScope.Count <= depth ||
-                    VariablesByScope[depth] == null)
+                if ((VariablesByScope.Count <= depth) ||
+                    (VariablesByScope[depth] == null))
                 {
                     VariablesByScope.Insert(depth, new List<string>() { varName });
                 }
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.CodeGen
                 else
                 {
                     // Not enough variables in the context -- add more
-                    for (int i = 0; i < numToCapture - numVarsAvailable; i++)
+                    for (int i = 0; i < (numToCapture - numVarsAvailable); i++)
                     {
                         varsAtCurrentDepth.Add($"captureVar_{ctx.CaptureNameIndex++}");
                     }
@@ -127,7 +127,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.CodeGen
                 for (int i = 0; i <= remainingSum; i++)
                 {
                     var newSets = setsSoFar.Add(i);
-                    if (setIndex == numSubsets - 1)
+                    if (setIndex == (numSubsets - 1))
                     {
                         yield return newSets;
                     }
@@ -372,8 +372,8 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests.CodeGen
                 }
 
                 var captureVars = methodInfo.CaptureContext.VariablesByScope;
-                if (captureVars.Count > (depth + 1) &&
-                    captureVars[depth + 1] != null)
+                if ((captureVars.Count > (depth + 1)) &&
+                    (captureVars[depth + 1] != null))
                 {
                     foreach (var captureVar in captureVars[depth + 1])
                     {

@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis
 
         internal FormattedSymbol(ISymbol symbol, SymbolDisplayFormat symbolDisplayFormat)
         {
-            Debug.Assert(symbol != null && symbolDisplayFormat != null);
+            Debug.Assert((symbol != null) && (symbolDisplayFormat != null));
 
             _symbol = symbol;
             _symbolDisplayFormat = symbolDisplayFormat;
@@ -33,9 +33,9 @@ namespace Microsoft.CodeAnalysis
         public override bool Equals(object obj)
         {
             var other = obj as FormattedSymbol;
-            return other != null &&
+            return (other != null) &&
                 _symbol.Equals(other._symbol) &&
-                _symbolDisplayFormat == other._symbolDisplayFormat;
+                (_symbolDisplayFormat == other._symbolDisplayFormat);
         }
 
         public override int GetHashCode()

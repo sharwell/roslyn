@@ -133,7 +133,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             ImmutableDictionary<Project, ImmutableArray<Diagnostic>> projectsAndDiagnosticsToFixMap,
             FixAllState fixAllState, CancellationToken cancellationToken)
         {
-            if (projectsAndDiagnosticsToFixMap != null && projectsAndDiagnosticsToFixMap.Any())
+            if ((projectsAndDiagnosticsToFixMap != null) && projectsAndDiagnosticsToFixMap.Any())
             {
                 FixAllLogger.LogDiagnosticsStats(fixAllState.CorrelationId, projectsAndDiagnosticsToFixMap);
 
@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             ConcurrentBag<(Diagnostic diagnostic, CodeAction action)> result)
             => (action, diagnostics) =>
                {
-                   if (action != null && action.EquivalenceKey == fixAllState.CodeActionEquivalenceKey)
+                   if ((action != null) && (action.EquivalenceKey == fixAllState.CodeActionEquivalenceKey))
                    {
                        result.Add((diagnostics.First(), action));
                    }
@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             var solution = fixAllState.Solution;
             var newSolution = await TryMergeFixesAsync(
                 solution, batchOfFixes, fixAllState, cancellationToken).ConfigureAwait(false);
-            if (newSolution != null && newSolution != solution)
+            if ((newSolution != null) && (newSolution != solution))
             {
                 var title = GetFixAllTitle(fixAllState);
                 return new CodeAction.SolutionChangeAction(title, _ => Task.FromResult(newSolution));
@@ -524,7 +524,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
                 }
 
                 return !IsPureInsertion(otherChange) &&
-                       otherChange.Span.End == change.Span.Start;
+                       (otherChange.Span.End == change.Span.Start);
             }
 
             // We're intersecting multiple changes.  That's never OK.
@@ -557,7 +557,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             // The change we want to make overlapped an existing change we're making.  Only allow
             // this if there was a single overlap and we are exactly the same change as it.
             // Otherwise, this is a conflict.
-            var isSafe = overlappingSpans.Count == 1 && overlappingSpans[0] == change;
+            var isSafe = (overlappingSpans.Count == 1) && (overlappingSpans[0] == change);
 
             return !isSafe;
         }

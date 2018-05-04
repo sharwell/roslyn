@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.Emit.NoPia
             protected CommonEmbeddedEvent(TEventSymbol underlyingEvent, TEmbeddedMethod adder, TEmbeddedMethod remover, TEmbeddedMethod caller) :
                 base(underlyingEvent)
             {
-                Debug.Assert(adder != null || remover != null);
+                Debug.Assert((adder != null) || (remover != null));
 
                 _adder = adder;
                 _remover = remover;
@@ -75,16 +75,16 @@ namespace Microsoft.CodeAnalysis.Emit.NoPia
 
             internal void EmbedCorrespondingComEventInterfaceMethod(TSyntaxNode syntaxNodeOpt, DiagnosticBag diagnostics, bool isUsedForComAwareEventBinding)
             {
-                if (_isUsedForComAwareEventBinding == 0 &&
+                if ((_isUsedForComAwareEventBinding == 0) &&
                     (!isUsedForComAwareEventBinding ||
-                     Interlocked.CompareExchange(ref _isUsedForComAwareEventBinding, 1, 0) == 0))
+                     (Interlocked.CompareExchange(ref _isUsedForComAwareEventBinding, 1, 0) == 0)))
                 {
-                    Debug.Assert(!isUsedForComAwareEventBinding || _isUsedForComAwareEventBinding != 0);
+                    Debug.Assert(!isUsedForComAwareEventBinding || (_isUsedForComAwareEventBinding != 0));
 
                     EmbedCorrespondingComEventInterfaceMethodInternal(syntaxNodeOpt, diagnostics, isUsedForComAwareEventBinding);
                 }
 
-                Debug.Assert(!isUsedForComAwareEventBinding || _isUsedForComAwareEventBinding != 0);
+                Debug.Assert(!isUsedForComAwareEventBinding || (_isUsedForComAwareEventBinding != 0));
             }
 
             Cci.IMethodReference Cci.IEventDefinition.Adder

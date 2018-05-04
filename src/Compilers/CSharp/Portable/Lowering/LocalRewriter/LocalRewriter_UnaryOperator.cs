@@ -45,8 +45,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // Binary operator lowering combines the binary operator with IsTrue/IsFalse more efficiently than we can do here.
 
                 var binaryOperator = (BoundBinaryOperator)node.Operand;
-                if (node.OperatorKind == UnaryOperatorKind.DynamicTrue && binaryOperator.OperatorKind == BinaryOperatorKind.DynamicLogicalOr ||
-                    node.OperatorKind == UnaryOperatorKind.DynamicFalse && binaryOperator.OperatorKind == BinaryOperatorKind.DynamicLogicalAnd)
+                if (((node.OperatorKind == UnaryOperatorKind.DynamicTrue) && (binaryOperator.OperatorKind == BinaryOperatorKind.DynamicLogicalOr)) ||
+                    ((node.OperatorKind == UnaryOperatorKind.DynamicFalse) && (binaryOperator.OperatorKind == BinaryOperatorKind.DynamicLogicalAnd)))
                 {
                     return VisitBinaryOperator(binaryOperator, applyParentUnaryOperator: node);
                 }
@@ -76,13 +76,13 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             if (kind.IsDynamic())
             {
-                Debug.Assert((kind == UnaryOperatorKind.DynamicTrue || kind == UnaryOperatorKind.DynamicFalse) && type.SpecialType == SpecialType.System_Boolean
+                Debug.Assert((((kind == UnaryOperatorKind.DynamicTrue) || (kind == UnaryOperatorKind.DynamicFalse)) && (type.SpecialType == SpecialType.System_Boolean))
                     || type.IsDynamic());
                 Debug.Assert((object)method == null);
 
                 // Logical operators on boxed Boolean constants:
                 var constant = UnboxConstant(loweredOperand);
-                if (constant == ConstantValue.True || constant == ConstantValue.False)
+                if ((constant == ConstantValue.True) || (constant == ConstantValue.False))
                 {
                     switch (kind)
                     {
@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 Debug.Assert((object)method != null);
                 Debug.Assert(type == method.ReturnType);
-                if (!_inExpressionLambda || kind == UnaryOperatorKind.UserDefinedTrue || kind == UnaryOperatorKind.UserDefinedFalse)
+                if (!_inExpressionLambda || (kind == UnaryOperatorKind.UserDefinedTrue) || (kind == UnaryOperatorKind.UserDefinedFalse))
                 {
                     return BoundCall.Synthesized(syntax, null, method, loweredOperand);
                 }
@@ -253,8 +253,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             // NOTE: we could in theory handle side-effecting loweredRight here too
             //       by including it as a part of whenNull, but there is a concern 
             //       that it can lead to code duplication
-            var optimize = conditionalLeft != null &&
-                (conditionalLeft.WhenNullOpt == null || conditionalLeft.WhenNullOpt.IsDefaultValue());
+            var optimize = (conditionalLeft != null) &&
+                ((conditionalLeft.WhenNullOpt == null) || conditionalLeft.WhenNullOpt.IsDefaultValue());
 
             if (optimize)
             {
@@ -312,7 +312,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Debug.Assert(conditional.Type == conditional.Consequence.Type);
                     Debug.Assert(conditional.Type == conditional.Alternative.Type);
 
-                    if (NullableAlwaysHasValue(conditional.Consequence) != null && NullableNeverHasValue(conditional.Alternative))
+                    if ((NullableAlwaysHasValue(conditional.Consequence) != null) && NullableNeverHasValue(conditional.Alternative))
                     {
                         return new BoundSequence(
                             syntax,
@@ -359,13 +359,13 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static bool IsIncrement(BoundIncrementOperator node)
         {
             var op = node.OperatorKind.Operator();
-            return op == UnaryOperatorKind.PostfixIncrement || op == UnaryOperatorKind.PrefixIncrement;
+            return (op == UnaryOperatorKind.PostfixIncrement) || (op == UnaryOperatorKind.PrefixIncrement);
         }
 
         private static bool IsPrefix(BoundIncrementOperator node)
         {
             var op = node.OperatorKind.Operator();
-            return op == UnaryOperatorKind.PrefixIncrement || op == UnaryOperatorKind.PrefixDecrement;
+            return (op == UnaryOperatorKind.PrefixIncrement) || (op == UnaryOperatorKind.PrefixDecrement);
         }
 
         /// <summary>
@@ -749,7 +749,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 binOp = MakeDecimalIncDecOperator(node.Syntax, binaryOperatorKind, binaryOperand);
             }
-            else if (unaryOperandType.IsNullableType() && unaryOperandType.GetNullableUnderlyingType().SpecialType == SpecialType.System_Decimal)
+            else if (unaryOperandType.IsNullableType() && (unaryOperandType.GetNullableUnderlyingType().SpecialType == SpecialType.System_Decimal))
             {
                 binOp = MakeLiftedDecimalIncDecOperator(node.Syntax, binaryOperatorKind, binaryOperand);
             }
@@ -791,7 +791,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression MakeLiftedDecimalIncDecOperator(SyntaxNode syntax, BinaryOperatorKind oper, BoundExpression operand)
         {
-            Debug.Assert(operand.Type.IsNullableType() && operand.Type.GetNullableUnderlyingType().SpecialType == SpecialType.System_Decimal);
+            Debug.Assert(operand.Type.IsNullableType() && (operand.Type.GetNullableUnderlyingType().SpecialType == SpecialType.System_Decimal));
 
             // This method assumes that operand is already a temporary and so there is no need to copy it again.
             MethodSymbol method = GetDecimalIncDecOperator(oper);

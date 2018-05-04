@@ -133,7 +133,7 @@ namespace Microsoft.CodeAnalysis.UseAutoProperty
 
             fieldSymbol = (IFieldSymbol)fieldSymbol.GetSymbolKey().Resolve(compilation, cancellationToken: cancellationToken).Symbol;
             propertySymbol = (IPropertySymbol)propertySymbol.GetSymbolKey().Resolve(compilation, cancellationToken: cancellationToken).Symbol;
-            Debug.Assert(fieldSymbol != null && propertySymbol != null);
+            Debug.Assert((fieldSymbol != null) && (propertySymbol != null));
 
             declarator = (TVariableDeclarator)await fieldSymbol.DeclaringSyntaxReferences[0].GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
             var temp = await propertySymbol.DeclaringSyntaxReferences[0].GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.UseAutoProperty
             if (!canEdit.ContainsKey(sourceTree))
             {
                 var document = solution.GetDocument(sourceTree);
-                canEdit[sourceTree] = document != null && !linkedDocuments.Contains(document.Id);
+                canEdit[sourceTree] = (document != null) && !linkedDocuments.Contains(document.Id);
             }
 
             return canEdit[sourceTree];

@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.AddImport
 
                     // Now add the action to install the specific version.
                     var preferredVersion = fixData.PackageVersionOpt;
-                    if (preferredVersion == null || !installedVersions.Contains(preferredVersion))
+                    if ((preferredVersion == null) || !installedVersions.Contains(preferredVersion))
                     {
                         codeActions.Add(CreateCodeAction(
                             document, fixData, installerService, preferredVersion, isLocal: false));

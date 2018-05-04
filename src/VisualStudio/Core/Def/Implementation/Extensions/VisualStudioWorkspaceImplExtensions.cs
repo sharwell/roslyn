@@ -120,7 +120,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Extensions
 
             public void GetImageMonikers(int firstImageIndex, int imageMonikerCount, ImageMoniker[] imageMonikers)
             {
-                if (firstImageIndex == 0 && imageMonikerCount == 1)
+                if ((firstImageIndex == 0) && (imageMonikerCount == 1))
                 {
                     imageMonikers[0] = _imageMoniker;
                 }

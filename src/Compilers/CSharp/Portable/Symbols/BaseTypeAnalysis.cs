@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 ClassDependsClosure(type.GetDeclaredBaseType(null), currentCompilation, partialClosure);
 
                 // containment is interesting only for the current compilation
-                if (currentCompilation != null && type.IsFromCompilation(currentCompilation))
+                if ((currentCompilation != null) && type.IsFromCompilation(currentCompilation))
                 {
                     ClassDependsClosure(type.ContainingType, currentCompilation, partialClosure);
                 }
@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 foreach (var member in type.GetMembersUnordered())
                 {
                     var field = member as FieldSymbol;
-                    if ((object)field == null || field.Type.TypeKind != TypeKind.Struct || field.IsStatic)
+                    if (((object)field == null) || (field.Type.TypeKind != TypeKind.Struct) || field.IsStatic)
                     {
                         continue;
                     }

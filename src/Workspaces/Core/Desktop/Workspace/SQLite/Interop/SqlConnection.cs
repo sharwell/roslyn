@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.SQLite.Interop
             {
                 var statement = resettableStatement.Statement;
                 var result = statement.Step(throwOnError);
-                if (result != Result.DONE && throwOnError)
+                if ((result != Result.DONE) && throwOnError)
                 {
                     Throw(result);
                 }
@@ -143,11 +143,11 @@ namespace Microsoft.CodeAnalysis.SQLite.Interop
                 action();
                 ExecuteCommand("commit transaction");
             }
-            catch (SqlException ex) when (ex.Result == Result.FULL ||
-                                          ex.Result == Result.IOERR ||
-                                          ex.Result == Result.BUSY ||
-                                          ex.Result == Result.LOCKED ||
-                                          ex.Result == Result.NOMEM)
+            catch (SqlException ex) when ((ex.Result == Result.FULL) ||
+                                          (ex.Result == Result.IOERR) ||
+                                          (ex.Result == Result.BUSY) ||
+                                          (ex.Result == Result.LOCKED) ||
+                                          (ex.Result == Result.NOMEM))
             {
                 // See documentation here: https://sqlite.org/lang_transaction.html
                 // If certain kinds of errors occur within a transaction, the transaction 

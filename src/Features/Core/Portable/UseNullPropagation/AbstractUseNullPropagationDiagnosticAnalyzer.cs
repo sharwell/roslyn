@@ -63,8 +63,8 @@ namespace Microsoft.CodeAnalysis.UseNullPropagation
                 var objectType = startContext.Compilation.GetSpecialType(SpecialType.System_Object);
                 var referenceEqualsMethodOpt = objectType?.GetMembers(nameof(ReferenceEquals))
                                                           .OfType<IMethodSymbol>()
-                                                          .FirstOrDefault(m => m.DeclaredAccessibility == Accessibility.Public &&
-                                                                               m.Parameters.Length == 2);
+                                                          .FirstOrDefault(m => (m.DeclaredAccessibility == Accessibility.Public) &&
+                                                                               (m.Parameters.Length == 2));
 
                 startContext.RegisterSyntaxNodeAction(
                     c => AnalyzeSyntax(c, expressionTypeOpt, referenceEqualsMethodOpt), GetSyntaxKindToAnalyze());
@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.UseNullPropagation
             var type = semanticModel.GetTypeInfo(conditionalExpression).Type;
             if (type?.IsValueType == true)
             {
-                if (!(type is INamedTypeSymbol namedType) || namedType.ConstructedFrom.SpecialType != SpecialType.System_Nullable_T)
+                if (!(type is INamedTypeSymbol namedType) || (namedType.ConstructedFrom.SpecialType != SpecialType.System_Nullable_T))
                 {
                     // User has something like:  If(str is nothing, nothing, str.Length)
                     // In this case, converting to str?.Length changes the type of this from
@@ -256,7 +256,7 @@ namespace Microsoft.CodeAnalysis.UseNullPropagation
 
             var conditionLeft = syntaxFacts.GetExpressionOfArgument(arguments[0]);
             var conditionRight = syntaxFacts.GetExpressionOfArgument(arguments[1]);
-            if (conditionLeft == null || conditionRight == null)
+            if ((conditionLeft == null) || (conditionRight == null))
             {
                 return false;
             }

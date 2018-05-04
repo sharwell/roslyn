@@ -35,8 +35,8 @@ namespace Microsoft.CodeAnalysis
                 ImmutableDictionary<string, string> properties,
                 bool isSuppressed)
             {
-                if ((warningLevel == 0 && severity != DiagnosticSeverity.Error) ||
-                    (warningLevel != 0 && severity == DiagnosticSeverity.Error))
+                if (((warningLevel == 0) && (severity != DiagnosticSeverity.Error)) ||
+                    ((warningLevel != 0) && (severity == DiagnosticSeverity.Error)))
                 {
                     throw new ArgumentException($"{nameof(warningLevel)} ({warningLevel}) and {nameof(severity)} ({severity}) are not compatible.", nameof(warningLevel));
                 }
@@ -156,9 +156,9 @@ namespace Microsoft.CodeAnalysis
 
                 return _descriptor.Equals(other._descriptor)
                     && _messageArgs.SequenceEqual(other._messageArgs, (a, b) => a == b)
-                    && _location == other._location
-                    && _severity == other._severity
-                    && _warningLevel == other._warningLevel;
+                    && (_location == other._location)
+                    && (_severity == other._severity)
+                    && (_warningLevel == other._warningLevel);
             }
 
             public override bool Equals(object obj)

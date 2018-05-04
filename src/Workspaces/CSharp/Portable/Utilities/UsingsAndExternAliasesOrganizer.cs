@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
 
             if (separateGroups)
             {
-                if (organizedExternAliasList.Count > 0 && organizedUsingList.Count > 0)
+                if ((organizedExternAliasList.Count > 0) && (organizedUsingList.Count > 0))
                 {
                     var firstUsing = organizedUsingList[0];
 
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
             out SyntaxList<ExternAliasDirectiveSyntax> organizedExternAliasList,
             out SyntaxList<UsingDirectiveSyntax> organizedUsingList)
         {
-            if (externAliasList.Count > 0 || usingList.Count > 0)
+            if ((externAliasList.Count > 0) || (usingList.Count > 0))
             {
                 // Merge the list of usings and externs into one list.  
                 // order them in the order that they were originally in the
@@ -146,12 +146,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
         {
             // First, make sure that every node (except the last one) ends with
             // a newline.
-            for (int i = 0; i < list.Count - 1; i++)
+            for (int i = 0; i < (list.Count - 1); i++)
             {
                 var node = list[i];
                 var trailingTrivia = node.GetTrailingTrivia();
 
-                if (!trailingTrivia.Any() || trailingTrivia.Last().Kind() != SyntaxKind.EndOfLineTrivia)
+                if (!trailingTrivia.Any() || (trailingTrivia.Last().Kind() != SyntaxKind.EndOfLineTrivia))
                 {
                     list[i] = node.WithTrailingTrivia(trailingTrivia.Concat(s_newLine));
                 }

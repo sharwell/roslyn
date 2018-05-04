@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 // try to retrieve projectId/documentId from id if possible.
                 if (id is LiveDiagnosticUpdateArgsId argsId)
                 {
-                    CurrentDocumentId = CurrentDocumentId ?? argsId.Key as DocumentId;
+                    CurrentDocumentId = CurrentDocumentId ?? (argsId.Key as DocumentId);
                     CurrentProjectId = CurrentProjectId ?? (argsId.Key as ProjectId) ?? CurrentDocumentId.ProjectId;
                 }
 
@@ -290,7 +290,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
             private ImmutableArray<DiagnosticData>? GetActiveFileDiagnostics(StateSet stateSet, DocumentId documentId, AnalysisKind kind)
             {
-                if (documentId == null || kind == AnalysisKind.NonLocal)
+                if ((documentId == null) || (kind == AnalysisKind.NonLocal))
                 {
                     return null;
                 }
@@ -378,7 +378,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
             protected override bool ShouldIncludeDiagnostic(DiagnosticData diagnostic)
             {
-                return _diagnosticIds == null || _diagnosticIds.Contains(diagnostic.Id);
+                return (_diagnosticIds == null) || _diagnosticIds.Contains(diagnostic.Id);
             }
 
             protected override async Task AppendDiagnosticsAsync(Project project, IEnumerable<DocumentId> documentIds, bool includeProjectNonLocalResult, CancellationToken cancellationToken)
@@ -427,7 +427,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     return false;
                 }
 
-                if (_diagnosticIds != null && diagnosticService.GetDiagnosticDescriptors(stateSet.Analyzer).All(d => !_diagnosticIds.Contains(d.Id)))
+                if ((_diagnosticIds != null) && diagnosticService.GetDiagnosticDescriptors(stateSet.Analyzer).All(d => !_diagnosticIds.Contains(d.Id)))
                 {
                     return false;
                 }

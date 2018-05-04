@@ -15,7 +15,7 @@ namespace Microsoft.CodeAnalysis.Operations
     {
         private static Optional<object> ConvertToOptional(ConstantValue value)
         {
-            return value != null && !value.IsBad ? new Optional<object>(value.Value) : default(Optional<object>);
+            return (value != null) && !value.IsBad ? new Optional<object>(value.Value) : default(Optional<object>);
         }
 
         private ImmutableArray<IOperation> ToStatements(BoundStatement statement)
@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Operations
                 semanticModel: _semanticModel,
                 syntax: argument ?? value.Syntax,
                 constantValue: default,
-                isImplicit: expression.WasCompilerGenerated || argument == null);
+                isImplicit: expression.WasCompilerGenerated || (argument == null));
         }
 
         private IVariableDeclaratorOperation CreateVariableDeclaratorInternal(BoundLocalDeclaration boundLocalDeclaration, SyntaxNode syntax)
@@ -96,13 +96,13 @@ namespace Microsoft.CodeAnalysis.Operations
 
         private Lazy<IOperation> CreateReceiverOperation(BoundNode instance, ISymbol symbol)
         {
-            if (instance == null || instance.Kind == BoundKind.TypeExpression)
+            if ((instance == null) || (instance.Kind == BoundKind.TypeExpression))
             {
                 return OperationFactory.NullOperation;
             }
 
             // Static members cannot have an implicit this receiver
-            if (symbol != null && symbol.IsStatic && instance.WasCompilerGenerated && instance.Kind == BoundKind.ThisReference)
+            if ((symbol != null) && symbol.IsStatic && instance.WasCompilerGenerated && (instance.Kind == BoundKind.ThisReference))
             {
                 return OperationFactory.NullOperation;
             }
@@ -167,11 +167,11 @@ namespace Microsoft.CodeAnalysis.Operations
                       {
                           ArrayBuilder<IOperation> builder = ArrayBuilder<IOperation>.GetInstance();
 
-                          if (receiverOpt != null
+                          if ((receiverOpt != null)
                              && (!receiverOpt.WasCompilerGenerated
-                                 || (receiverOpt.Kind != BoundKind.ThisReference
-                                    && receiverOpt.Kind != BoundKind.BaseReference
-                                    && receiverOpt.Kind != BoundKind.ImplicitReceiver)))
+                                 || ((receiverOpt.Kind != BoundKind.ThisReference)
+                                    && (receiverOpt.Kind != BoundKind.BaseReference)
+                                    && (receiverOpt.Kind != BoundKind.ImplicitReceiver))))
                           {
                               builder.Add(Create(receiverOpt));
                           }

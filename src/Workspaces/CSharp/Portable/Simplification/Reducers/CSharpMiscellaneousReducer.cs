@@ -44,9 +44,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
                     var oldSymbol = semanticModel.GetDeclaredSymbol(parameterSyntax, cancellationToken);
                     var newSymbol = speculationAnalyzer.SpeculativeSemanticModel.GetDeclaredSymbol(newParameterSyntax, cancellationToken);
-                    if (oldSymbol != null &&
-                        newSymbol != null &&
-                        oldSymbol.Type == newSymbol.Type)
+                    if ((oldSymbol != null) &&
+                        (newSymbol != null) &&
+                        (oldSymbol.Type == newSymbol.Type))
                     {
                         return !speculationAnalyzer.ReplacementChangesSemantics();
                     }
@@ -82,8 +82,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             OptionSet optionSet,
             CancellationToken cancellationToken)
         {
-            if (parenthesizedLambda.ParameterList != null &&
-                parenthesizedLambda.ParameterList.Parameters.Count == 1)
+            if ((parenthesizedLambda.ParameterList != null) &&
+                (parenthesizedLambda.ParameterList.Parameters.Count == 1))
             {
                 var parameter = parenthesizedLambda.ParameterList.Parameters.First();
                 if (CanRemoveTypeFromParameter(parameter, semanticModel, cancellationToken))
@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             OptionSet optionSet,
             CancellationToken cancellationToken)
         {
-            if (node.Statements.Count == 1 &&
+            if ((node.Statements.Count == 1) &&
                 CanHaveEmbeddedStatement(node.Parent) &&
                 !optionSet.GetOption(CSharpCodeStyleOptions.PreferBraces).Value)
             {

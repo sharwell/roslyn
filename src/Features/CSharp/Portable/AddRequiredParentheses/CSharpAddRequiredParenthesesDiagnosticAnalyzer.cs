@@ -53,8 +53,8 @@ namespace Microsoft.CodeAnalysis.CSharp.AddRequiredParentheses
             => CSharpRemoveUnnecessaryParenthesesDiagnosticAnalyzer.GetPrecedenceKind(binaryLike);
 
         protected override bool IsBinaryLike(ExpressionSyntax node)
-            => node is BinaryExpressionSyntax ||
-               node is IsPatternExpressionSyntax isPattern && isPattern.Pattern is ConstantPatternSyntax;
+            => (node is BinaryExpressionSyntax) ||
+               (node is IsPatternExpressionSyntax isPattern && (isPattern.Pattern is ConstantPatternSyntax));
 
         protected override (ExpressionSyntax, SyntaxToken, ExpressionSyntax) GetPartsOfBinaryLike(ExpressionSyntax binaryLikeOpt)
         {

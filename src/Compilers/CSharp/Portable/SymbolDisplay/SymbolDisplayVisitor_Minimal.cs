@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (boundSymbols.Length == 1)
                 {
                     var boundAlias = boundSymbols[0] as AliasSymbol;
-                    if ((object)boundAlias != null && alias.Target.Equals(symbol))
+                    if (((object)boundAlias != null) && alias.Target.Equals(symbol))
                     {
                         builder.Add(CreatePart(SymbolDisplayPartKind.AliasName, alias, aliasName));
                         return true;
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private void MinimallyQualify(INamespaceSymbol symbol)
         {
             // only the global namespace does not have a containing namespace
-            Debug.Assert(symbol.ContainingNamespace != null || symbol.IsGlobalNamespace);
+            Debug.Assert((symbol.ContainingNamespace != null) || symbol.IsGlobalNamespace);
 
             // NOTE(cyrusn): We only call this once we've already checked if there is an alias that
             // corresponds to this namespace. 
@@ -71,8 +71,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 ? semanticModelOpt.LookupNamespacesAndTypes(positionOpt, name: symbol.Name)
                 : semanticModelOpt.LookupSymbols(positionOpt, name: symbol.Name);
             var firstSymbol = symbols.OfType<ISymbol>().FirstOrDefault();
-            if (symbols.Length != 1 ||
-                firstSymbol == null ||
+            if ((symbols.Length != 1) ||
+                (firstSymbol == null) ||
                 !firstSymbol.Equals(symbol))
             {
                 // Just the name alone didn't bind properly.  Add our minimally qualified parent (if
@@ -84,9 +84,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     if (containingNamespace.IsGlobalNamespace)
                     {
-                        Debug.Assert(format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Included ||
-                                          format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Omitted ||
-                                          format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining);
+                        Debug.Assert((format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Included) ||
+                                          (format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Omitted) ||
+                                          (format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining));
 
                         if (format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Included)
                         {
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (this.IsMinimizing && !symbol.Locations.IsEmpty)
             {
                 var location = symbol.Locations.First();
-                if (location.IsInSource && location.SourceTree == semanticModelOpt.SyntaxTree)
+                if (location.IsInSource && (location.SourceTree == semanticModelOpt.SyntaxTree))
                 {
                     var token = location.SourceTree.GetRoot().FindToken(positionOpt);
                     var queryBody = GetQueryBody(token);
@@ -247,22 +247,22 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static QueryBodySyntax GetQueryBody(SyntaxToken token)
         {
             var fromClause = token.Parent as FromClauseSyntax;
-            if (fromClause != null && fromClause.Identifier == token)
+            if ((fromClause != null) && (fromClause.Identifier == token))
             {
                 // To heuristically determining the type of the range variable in a from
                 // clause, we speculatively bind the name of the variable in the select
                 // or group clause of the query body.
-                return fromClause.Parent as QueryBodySyntax ?? ((QueryExpressionSyntax)fromClause.Parent).Body;
+                return (fromClause.Parent as QueryBodySyntax) ?? ((QueryExpressionSyntax)fromClause.Parent).Body;
             }
 
             var letClause = token.Parent as LetClauseSyntax;
-            if (letClause != null && letClause.Identifier == token)
+            if ((letClause != null) && (letClause.Identifier == token))
             {
                 return letClause.Parent as QueryBodySyntax;
             }
 
             var joinClause = token.Parent as JoinClauseSyntax;
-            if (joinClause != null && joinClause.Identifier == token)
+            if ((joinClause != null) && (joinClause.Identifier == token))
             {
                 return joinClause.Parent as QueryBodySyntax;
             }

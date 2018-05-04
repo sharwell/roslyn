@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             foreach (var child in node.ChildNodesAndTokens())
             {
                 var childNode = child.AsNode();
-                if (childNode != null && GetLabel(childNode) != IgnoredNode)
+                if ((childNode != null) && (GetLabel(childNode) != IgnoredNode))
                 {
                     yield return childNode;
                 }
@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 descendIntoTrivia: false))
             {
                 var descendantNode = descendant.AsNode();
-                if (descendantNode != null && GetLabel(descendantNode) != IgnoredNode)
+                if ((descendantNode != null) && (GetLabel(descendantNode) != IgnoredNode))
                 {
                     yield return descendantNode;
                 }
@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             Label label = Classify(node.Kind(), out var isLeaf);
 
             // ignored should always be reported as leaves
-            Debug.Assert(label != Label.Ignored || isLeaf);
+            Debug.Assert((label != Label.Ignored) || isLeaf);
 
             return !isLeaf;
         }
@@ -356,7 +356,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                         return false;
                     }
 
-                    ignoreChildFunction = childKind => childKind == SyntaxKind.Block || childKind == SyntaxKind.ArrowExpressionClause || HasLabel(childKind);
+                    ignoreChildFunction = childKind => (childKind == SyntaxKind.Block) || (childKind == SyntaxKind.ArrowExpressionClause) || HasLabel(childKind);
                     break;
 
                 default:

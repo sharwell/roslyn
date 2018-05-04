@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.NavigationBar
         {
             var selectedItemPreviewText = string.Empty;
 
-            if (_dropdownBar.GetCurrentSelection(iCombo, out var selectionIndex) == VSConstants.S_OK && selectionIndex >= 0)
+            if ((_dropdownBar.GetCurrentSelection(iCombo, out var selectionIndex) == VSConstants.S_OK) && (selectionIndex >= 0))
             {
                 selectedItemPreviewText = GetItem(iCombo, selectionIndex).Text;
             }
@@ -335,7 +335,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.NavigationBar
 
             var projectIndex = selectedProject != null ? _projectItems.IndexOf(selectedProject) : -1;
             var typeIndex = selectedType != null ? _currentTypeItems.IndexOf(selectedType) : -1;
-            var memberIndex = selectedType != null && selectedMember != null ? selectedType.ChildItems.IndexOf(selectedMember) : -1;
+            var memberIndex = (selectedType != null) && (selectedMember != null) ? selectedType.ChildItems.IndexOf(selectedMember) : -1;
 
             _dropdownBar.RefreshCombo((int)NavigationBarDropdownKind.Project, projectIndex);
             _dropdownBar.RefreshCombo((int)NavigationBarDropdownKind.Type, typeIndex);

@@ -33,8 +33,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
             // If it starts with 'nameof(', skip the 'if' and parse as a constant pattern.
             if (SyntaxFacts.IsPredefinedType(tk) ||
-                (tk == SyntaxKind.IdentifierToken &&
-                  (this.CurrentToken.ContextualKind != SyntaxKind.NameOfKeyword || this.PeekToken(1).Kind != SyntaxKind.OpenParenToken)))
+                ((tk == SyntaxKind.IdentifierToken) &&
+                  ((this.CurrentToken.ContextualKind != SyntaxKind.NameOfKeyword) || (this.PeekToken(1).Kind != SyntaxKind.OpenParenToken))))
             {
                 var resetPoint = this.GetResetPoint();
                 try
@@ -48,9 +48,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     }
 
                     tk = this.CurrentToken.ContextualKind;
-                    if ((!IsExpectedBinaryOperator(tk) || GetPrecedence(SyntaxFacts.GetBinaryExpression(tk)) <= precedence) &&
+                    if ((!IsExpectedBinaryOperator(tk) || (GetPrecedence(SyntaxFacts.GetBinaryExpression(tk)) <= precedence)) &&
                         // member selection is not formally a binary operator but has higher precedence than relational
-                        tk != SyntaxKind.DotToken) 
+                        (tk != SyntaxKind.DotToken)) 
                     {
                         // it is a typical "is Type" operator.
                         // Note that we don't bother checking for primary expressions such as X[e], X(e), X++, and X--
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             // We parse a shift-expression ONLY (nothing looser) - i.e. not a relational expression
             // So x is y < z should be parsed as (x is y) < z
             // But x is y << z should be parsed as x is (y << z)
-            Debug.Assert(Precedence.Shift == precedence + 1);
+            Debug.Assert(Precedence.Shift == (precedence + 1));
 
             // In places where a pattern is supported, we do not support tuple types
             // due to both syntactic and semantic ambiguities between tuple types and positional patterns.
@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         private bool IsPossibleDeclarationExpression(ParseTypeMode mode, bool permitTupleDesignation)
         {
-            if (this.IsInAsync && this.CurrentToken.ContextualKind == SyntaxKind.AwaitKeyword)
+            if (this.IsInAsync && (this.CurrentToken.ContextualKind == SyntaxKind.AwaitKeyword))
             {
                 // can't be a declaration expression.
                 return false;
@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     case ParseTypeMode.FirstElementOfPossibleTupleLiteral:
                         return this.CurrentToken.Kind == SyntaxKind.CommaToken;
                     case ParseTypeMode.AfterTupleComma:
-                        return this.CurrentToken.Kind == SyntaxKind.CommaToken || this.CurrentToken.Kind == SyntaxKind.CloseParenToken;
+                        return (this.CurrentToken.Kind == SyntaxKind.CommaToken) || (this.CurrentToken.Kind == SyntaxKind.CloseParenToken);
                     default:
                         // The other case where we disambiguate between a declaration and expression is before the `in` of a foreach loop.
                         // There we err on the side of accepting a declaration.
@@ -229,8 +229,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             CSharpSyntaxNode node = null;
 
             // If it is a nameof, skip the 'if' and parse as an expression. 
-            if ((SyntaxFacts.IsPredefinedType(tk) || tk == SyntaxKind.IdentifierToken) &&
-                  this.CurrentToken.ContextualKind != SyntaxKind.NameOfKeyword)
+            if ((SyntaxFacts.IsPredefinedType(tk) || (tk == SyntaxKind.IdentifierToken)) &&
+                  (this.CurrentToken.ContextualKind != SyntaxKind.NameOfKeyword))
             {
                 var resetPoint = this.GetResetPoint();
                 try
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     if (!type.IsMissing)
                     {
                         // X.Y.Z id
-                        if (this.IsTrueIdentifier() && this.CurrentToken.ContextualKind != SyntaxKind.WhenKeyword)
+                        if (this.IsTrueIdentifier() && (this.CurrentToken.ContextualKind != SyntaxKind.WhenKeyword))
                         {
                             var designation = ParseSimpleDesignation();
                             node = _syntaxFactory.DeclarationPattern(type, designation);

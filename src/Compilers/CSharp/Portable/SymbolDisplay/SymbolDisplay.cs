@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     throw new ArgumentException(CSharpResources.SyntaxTreeSemanticModelMust);
                 }
-                else if (positionOpt < 0 || positionOpt > semanticModelOpt.SyntaxTree.Length) // Note: not >= since EOF is allowed.
+                else if ((positionOpt < 0) || (positionOpt > semanticModelOpt.SyntaxTree.Length)) // Note: not >= since EOF is allowed.
                 {
                     throw new ArgumentOutOfRangeException(CSharpResources.PositionNotWithinTree);
                 }

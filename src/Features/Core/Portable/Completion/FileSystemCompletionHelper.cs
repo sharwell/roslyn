@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.Completion
             CompletionItemRules itemRules)
         {
             Debug.Assert(searchPaths.All(path => PathUtilities.IsAbsolute(path)));
-            Debug.Assert(baseDirectoryOpt == null || PathUtilities.IsAbsolute(baseDirectoryOpt));
+            Debug.Assert((baseDirectoryOpt == null) || PathUtilities.IsAbsolute(baseDirectoryOpt));
 
             _searchPaths = searchPaths;
             _baseDirectoryOpt = baseDirectoryOpt;
@@ -117,7 +117,7 @@ namespace Microsoft.CodeAnalysis.Completion
         // internal for testing
         internal ImmutableArray<CompletionItem> GetItems(string directoryPath, CancellationToken cancellationToken)
         {
-            if (!PathUtilities.IsUnixLikePlatform && directoryPath.Length == 1 && directoryPath[0] == '\\')
+            if (!PathUtilities.IsUnixLikePlatform && (directoryPath.Length == 1) && (directoryPath[0] == '\\'))
             {
                 // The user has typed only "\".  In this case, we want to add "\\" to the list.  
                 return ImmutableArray.Create(CreateNetworkRoot());
@@ -233,7 +233,7 @@ namespace Microsoft.CodeAnalysis.Completion
 
             foreach (var file in EnumerateFiles(fullDirectoryPath))
             {
-                if (_allowableExtensions.Length != 0 &&
+                if ((_allowableExtensions.Length != 0) &&
                     !_allowableExtensions.Contains(
                         PathUtilities.GetExtension(file),
                         PathUtilities.IsUnixLikePlatform ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase))

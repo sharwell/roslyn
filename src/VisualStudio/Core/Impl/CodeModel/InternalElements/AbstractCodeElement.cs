@@ -62,8 +62,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Inter
                 return false;
             }
 
-            if (_nodeKind != null &&
-                _nodeKind.Value != node.RawKind)
+            if ((_nodeKind != null) &&
+                (_nodeKind.Value != node.RawKind))
             {
                 return false;
             }

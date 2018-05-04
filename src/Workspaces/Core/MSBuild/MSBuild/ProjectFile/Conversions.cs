@@ -10,7 +10,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
     internal static class Conversions
     {
         public static bool ToBool(string value)
-            => value != null
+            => (value != null)
             && (string.Equals(bool.TrueString, value, StringComparison.OrdinalIgnoreCase) ||
                 string.Equals("On", value, StringComparison.OrdinalIgnoreCase));
 

@@ -1355,7 +1355,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var collection = nodes as ICollection<TNode>;
 
-            if (collection != null && collection.Count == 0)
+            if ((collection != null) && (collection.Count == 0))
             {
                 return default(SeparatedSyntaxList<TNode>);
             }
@@ -1878,12 +1878,12 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </param>
         public static bool AreEquivalent(SyntaxTree oldTree, SyntaxTree newTree, bool topLevel)
         {
-            if (oldTree == null && newTree == null)
+            if ((oldTree == null) && (newTree == null))
             {
                 return true;
             }
 
-            if (oldTree == null || newTree == null)
+            if ((oldTree == null) || (newTree == null))
             {
                 return false;
             }
@@ -2007,7 +2007,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (node != null)
             {
                 var parent = node.Parent as ExpressionSyntax;
-                if (parent != null && (node.Kind() == SyntaxKind.IdentifierName || node.Kind() == SyntaxKind.GenericName))
+                if ((parent != null) && ((node.Kind() == SyntaxKind.IdentifierName) || (node.Kind() == SyntaxKind.GenericName)))
                 {
                     switch (parent.Kind())
                     {
@@ -2042,7 +2042,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         public static ExpressionSyntax GetStandaloneExpression(ExpressionSyntax expression)
         {
-            return SyntaxFactory.GetStandaloneNode(expression) as ExpressionSyntax ?? expression;
+            return (SyntaxFactory.GetStandaloneNode(expression) as ExpressionSyntax) ?? expression;
         }
 
         /// <summary>
@@ -2055,7 +2055,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         internal static CSharpSyntaxNode GetStandaloneNode(CSharpSyntaxNode node)
         {
-            if (node == null || !(node is ExpressionSyntax || node is CrefSyntax))
+            if ((node == null) || !((node is ExpressionSyntax) || (node is CrefSyntax)))
             {
                 return node;
             }
@@ -2124,7 +2124,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     if (((NameMemberCrefSyntax)parent).Name == node)
                     {
                         CSharpSyntaxNode grandparent = parent.Parent;
-                        return grandparent != null && grandparent.Kind() == SyntaxKind.QualifiedCref
+                        return (grandparent != null) && (grandparent.Kind() == SyntaxKind.QualifiedCref)
                             ? grandparent
                             : parent;
                     }
@@ -2148,7 +2148,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     break;
 
                 case SyntaxKind.ObjectCreationExpression:
-                    if (node.Kind() == SyntaxKind.NullableType && ((ObjectCreationExpressionSyntax)parent).Type == node)
+                    if ((node.Kind() == SyntaxKind.NullableType) && (((ObjectCreationExpressionSyntax)parent).Type == node))
                     {
                         return parent;
                     }
@@ -2174,8 +2174,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var currentNode = node;
 
-            Debug.Assert(currentNode.Kind() == SyntaxKind.MemberBindingExpression ||
-                         currentNode.Kind() == SyntaxKind.ElementBindingExpression);
+            Debug.Assert((currentNode.Kind() == SyntaxKind.MemberBindingExpression) ||
+                         (currentNode.Kind() == SyntaxKind.ElementBindingExpression));
 
             // In a well formed tree, the corresponding access node should be one of the ancestors
             // and its "?" token should precede the binding syntax.
@@ -2306,7 +2306,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (token.IsMissing)
             {
                 // expression statement terminating semicolon might be missing in script code:
-                if (tree.Options.Kind == SourceCodeKind.Regular ||
+                if ((tree.Options.Kind == SourceCodeKind.Regular) ||
                     !globalStatement.Statement.IsKind(SyntaxKind.ExpressionStatement) ||
                     !token.IsKind(SyntaxKind.SemicolonToken))
                 {
@@ -2344,7 +2344,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             foreach (var trivia in triviaList)
             {
-                if (trivia.ContainsDiagnostics && trivia.Kind() == SyntaxKind.MultiLineCommentTrivia)
+                if (trivia.ContainsDiagnostics && (trivia.Kind() == SyntaxKind.MultiLineCommentTrivia))
                 {
                     return true;
                 }

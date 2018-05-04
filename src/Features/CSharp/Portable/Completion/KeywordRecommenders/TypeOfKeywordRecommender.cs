@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
         {
             return
                 context.IsAnyExpressionContext &&
-                context.LeftToken.GetAncestor<AttributeSyntax>() != null;
+                (context.LeftToken.GetAncestor<AttributeSyntax>() != null);
         }
     }
 }

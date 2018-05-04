@@ -73,34 +73,34 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         public static bool IsOpenParenInParameterList(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.OpenParenToken && token.Parent.Kind() == SyntaxKind.ParameterList;
+            return (token.Kind() == SyntaxKind.OpenParenToken) && (token.Parent.Kind() == SyntaxKind.ParameterList);
         }
 
         public static bool IsCloseParenInParameterList(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.CloseParenToken && token.Parent.Kind() == SyntaxKind.ParameterList;
+            return (token.Kind() == SyntaxKind.CloseParenToken) && (token.Parent.Kind() == SyntaxKind.ParameterList);
         }
 
         public static bool IsOpenParenInArgumentList(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.OpenParenToken &&
+            return (token.Kind() == SyntaxKind.OpenParenToken) &&
                 (token.Parent.IsKind(SyntaxKind.ArgumentList) || token.Parent.IsKind(SyntaxKind.AttributeArgumentList));
         }
 
         public static bool IsCloseParenInArgumentList(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.CloseParenToken &&
+            return (token.Kind() == SyntaxKind.CloseParenToken) &&
                 (token.Parent.IsKind(SyntaxKind.ArgumentList) || token.Parent.IsKind(SyntaxKind.AttributeArgumentList));
         }
 
         public static bool IsColonInTypeBaseList(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.ColonToken && token.Parent.Kind() == SyntaxKind.BaseList;
+            return (token.Kind() == SyntaxKind.ColonToken) && (token.Parent.Kind() == SyntaxKind.BaseList);
         }
 
         public static bool IsCommaInArgumentOrParameterList(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.CommaToken && (token.Parent.IsAnyArgumentList() || token.Parent.Kind() == SyntaxKind.ParameterList);
+            return (token.Kind() == SyntaxKind.CommaToken) && (token.Parent.IsAnyArgumentList() || (token.Parent.Kind() == SyntaxKind.ParameterList));
         }
 
         public static bool IsLambdaBodyBlock(this SyntaxNode node)
@@ -127,9 +127,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         {
             var forStatement = token.Parent as ForStatementSyntax;
             return
-                token.Kind() == SyntaxKind.SemicolonToken &&
-                forStatement != null &&
-                (forStatement.FirstSemicolonToken == token || forStatement.SecondSemicolonToken == token);
+                (token.Kind() == SyntaxKind.SemicolonToken) &&
+                (forStatement != null) &&
+                ((forStatement.FirstSemicolonToken == token) || (forStatement.SecondSemicolonToken == token));
         }
 
         public static bool IsSemicolonOfEmbeddedStatement(this SyntaxToken token)
@@ -140,8 +140,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             }
 
             var statement = token.Parent as StatementSyntax;
-            if (statement == null ||
-                statement.GetLastToken() != token)
+            if ((statement == null) ||
+                (statement.GetLastToken() != token))
             {
                 return false;
             }
@@ -167,8 +167,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             }
 
             var block = token.Parent as BlockSyntax;
-            if (block == null ||
-                block.CloseBraceToken != token)
+            if ((block == null) ||
+                (block.CloseBraceToken != token))
             {
                 return false;
             }
@@ -184,20 +184,20 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 statementOrElse = node as ElseClauseSyntax;
             }
 
-            return statementOrElse != null
-                && statementOrElse.Parent != null
+            return (statementOrElse != null)
+                && (statementOrElse.Parent != null)
                 && statementOrElse.Parent.IsEmbeddedStatementOwner();
         }
 
         public static bool IsCommaInEnumDeclaration(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.CommaToken &&
+            return (token.Kind() == SyntaxKind.CommaToken) &&
                 token.Parent.IsKind(SyntaxKind.EnumDeclaration);
         }
 
         public static bool IsCommaInAnyArgumentsList(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.CommaToken &&
+            return (token.Kind() == SyntaxKind.CommaToken) &&
                 token.Parent.IsAnyArgumentList();
         }
 
@@ -219,40 +219,40 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             {
                 case SyntaxKind.SizeOfExpression:
                     var sizeOfExpression = (SizeOfExpressionSyntax)parent;
-                    return sizeOfExpression.OpenParenToken == token || sizeOfExpression.CloseParenToken == token;
+                    return (sizeOfExpression.OpenParenToken == token) || (sizeOfExpression.CloseParenToken == token);
 
                 case SyntaxKind.TypeOfExpression:
                     var typeOfExpression = (TypeOfExpressionSyntax)parent;
-                    return typeOfExpression.OpenParenToken == token || typeOfExpression.CloseParenToken == token;
+                    return (typeOfExpression.OpenParenToken == token) || (typeOfExpression.CloseParenToken == token);
 
                 case SyntaxKind.CheckedExpression:
                 case SyntaxKind.UncheckedExpression:
                     var checkedOfExpression = (CheckedExpressionSyntax)parent;
-                    return checkedOfExpression.OpenParenToken == token || checkedOfExpression.CloseParenToken == token;
+                    return (checkedOfExpression.OpenParenToken == token) || (checkedOfExpression.CloseParenToken == token);
 
                 case SyntaxKind.DefaultExpression:
                     var defaultExpression = (DefaultExpressionSyntax)parent;
-                    return defaultExpression.OpenParenToken == token || defaultExpression.CloseParenToken == token;
+                    return (defaultExpression.OpenParenToken == token) || (defaultExpression.CloseParenToken == token);
 
                 case SyntaxKind.MakeRefExpression:
                     var makeRefExpression = (MakeRefExpressionSyntax)parent;
-                    return makeRefExpression.OpenParenToken == token || makeRefExpression.CloseParenToken == token;
+                    return (makeRefExpression.OpenParenToken == token) || (makeRefExpression.CloseParenToken == token);
 
                 case SyntaxKind.RefTypeExpression:
                     var refTypeOfExpression = (RefTypeExpressionSyntax)parent;
-                    return refTypeOfExpression.OpenParenToken == token || refTypeOfExpression.CloseParenToken == token;
+                    return (refTypeOfExpression.OpenParenToken == token) || (refTypeOfExpression.CloseParenToken == token);
 
                 case SyntaxKind.RefValueExpression:
                     var refValueExpression = (RefValueExpressionSyntax)parent;
-                    return refValueExpression.OpenParenToken == token || refValueExpression.CloseParenToken == token;
+                    return (refValueExpression.OpenParenToken == token) || (refValueExpression.CloseParenToken == token);
 
                 case SyntaxKind.ArgumentList:
                     var argumentList = (ArgumentListSyntax)parent;
-                    return argumentList.OpenParenToken == token || argumentList.CloseParenToken == token;
+                    return (argumentList.OpenParenToken == token) || (argumentList.CloseParenToken == token);
 
                 case SyntaxKind.AttributeArgumentList:
                     var attributeArgumentList = (AttributeArgumentListSyntax)parent;
-                    return attributeArgumentList.OpenParenToken == token || attributeArgumentList.CloseParenToken == token;
+                    return (attributeArgumentList.OpenParenToken == token) || (attributeArgumentList.CloseParenToken == token);
             }
 
             return false;
@@ -300,7 +300,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         public static bool IsDotInMemberAccessOrQualifiedName(this SyntaxToken token)
         {
-            return token.IsDotInMemberAccess() || (token.Kind() == SyntaxKind.DotToken && token.Parent.Kind() == SyntaxKind.QualifiedName);
+            return token.IsDotInMemberAccess() || ((token.Kind() == SyntaxKind.DotToken) && (token.Parent.Kind() == SyntaxKind.QualifiedName));
         }
 
         public static bool IsDotInMemberAccess(this SyntaxToken token)
@@ -311,7 +311,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 return false;
             }
 
-            return token.Kind() == SyntaxKind.DotToken
+            return (token.Kind() == SyntaxKind.DotToken)
                 && memberAccess.OperatorToken.Equals(token);
         }
 
@@ -327,7 +327,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         public static bool IsCommaInInitializerExpression(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.CommaToken &&
+            return (token.Kind() == SyntaxKind.CommaToken) &&
                     ((token.Parent is InitializerExpressionSyntax) ||
                      (token.Parent is AnonymousObjectCreationExpressionSyntax));
         }
@@ -335,9 +335,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         public static bool IsIdentifierInLabeledStatement(this SyntaxToken token)
         {
             var labeledStatement = token.Parent as LabeledStatementSyntax;
-            return token.Kind() == SyntaxKind.IdentifierToken &&
-                labeledStatement != null &&
-                labeledStatement.Identifier == token;
+            return (token.Kind() == SyntaxKind.IdentifierToken) &&
+                (labeledStatement != null) &&
+                (labeledStatement.Identifier == token);
         }
 
         public static bool IsColonInSwitchLabel(this SyntaxToken token)
@@ -348,35 +348,35 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         public static bool IsColonInLabeledStatement(this SyntaxToken token)
         {
             var labeledStatement = token.Parent as LabeledStatementSyntax;
-            return token.Kind() == SyntaxKind.ColonToken &&
-                labeledStatement != null &&
-                labeledStatement.ColonToken == token;
+            return (token.Kind() == SyntaxKind.ColonToken) &&
+                (labeledStatement != null) &&
+                (labeledStatement.ColonToken == token);
         }
 
         public static bool IsEmbeddedStatementOwnerWithCloseParen(this SyntaxNode node)
         {
-            return node is IfStatementSyntax ||
-                   node is WhileStatementSyntax ||
-                   node is ForStatementSyntax ||
-                   node is CommonForEachStatementSyntax ||
-                   node is UsingStatementSyntax ||
-                   node is FixedStatementSyntax ||
-                   node is LockStatementSyntax;
+            return (node is IfStatementSyntax) ||
+                   (node is WhileStatementSyntax) ||
+                   (node is ForStatementSyntax) ||
+                   (node is CommonForEachStatementSyntax) ||
+                   (node is UsingStatementSyntax) ||
+                   (node is FixedStatementSyntax) ||
+                   (node is LockStatementSyntax);
         }
 
         public static bool IsNestedQueryExpression(this SyntaxToken token)
         {
             var fromClause = token.Parent as FromClauseSyntax;
-            return token.Kind() == SyntaxKind.InKeyword &&
-                   fromClause != null &&
-                   fromClause.Expression is QueryExpressionSyntax;
+            return (token.Kind() == SyntaxKind.InKeyword) &&
+                   (fromClause != null) &&
+                   (fromClause.Expression is QueryExpressionSyntax);
         }
 
         public static bool IsFirstFromKeywordInExpression(this SyntaxToken token)
         {
             var queryExpression = token.Parent.Parent as QueryExpressionSyntax;
-            return token.Kind() == SyntaxKind.FromKeyword &&
-                   queryExpression != null &&
+            return (token.Kind() == SyntaxKind.FromKeyword) &&
+                   (queryExpression != null) &&
                    queryExpression.GetFirstToken().Equals(token);
         }
 
@@ -430,10 +430,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             }
 
             var parent = initializer != null ? initializer.Parent : anonymousObjectInitializer.Parent;
-            if (parent is ArrayCreationExpressionSyntax ||
-                parent is ImplicitArrayCreationExpressionSyntax ||
-                parent is EqualsValueClauseSyntax ||
-                parent.Kind() == SyntaxKind.SimpleAssignmentExpression)
+            if ((parent is ArrayCreationExpressionSyntax) ||
+                (parent is ImplicitArrayCreationExpressionSyntax) ||
+                (parent is EqualsValueClauseSyntax) ||
+                (parent.Kind() == SyntaxKind.SimpleAssignmentExpression))
             {
                 return true;
             }
@@ -448,13 +448,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         public static bool ParenOrBracketContainsNothing(this SyntaxToken token1, SyntaxToken token2)
         {
-            return (token1.Kind() == SyntaxKind.OpenParenToken && token2.Kind() == SyntaxKind.CloseParenToken) ||
-                   (token1.Kind() == SyntaxKind.OpenBracketToken && token2.Kind() == SyntaxKind.CloseBracketToken);
+            return ((token1.Kind() == SyntaxKind.OpenParenToken) && (token2.Kind() == SyntaxKind.CloseParenToken)) ||
+                   ((token1.Kind() == SyntaxKind.OpenBracketToken) && (token2.Kind() == SyntaxKind.CloseBracketToken));
         }
 
         public static bool IsLastTokenInLabelStatement(this SyntaxToken token)
         {
-            if (token.Kind() != SyntaxKind.SemicolonToken && token.Kind() != SyntaxKind.CloseBraceToken)
+            if ((token.Kind() != SyntaxKind.SemicolonToken) && (token.Kind() != SyntaxKind.CloseBraceToken))
             {
                 return false;
             }
@@ -496,7 +496,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             Contract.ThrowIfNull(node);
 
             var blockNode = node as BlockSyntax;
-            if (blockNode == null || blockNode.Parent == null)
+            if ((blockNode == null) || (blockNode.Parent == null))
             {
                 return false;
             }
@@ -528,7 +528,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         public static bool IsPlusOrMinusExpression(this SyntaxToken token)
         {
-            if (token.Kind() != SyntaxKind.PlusToken && token.Kind() != SyntaxKind.MinusToken)
+            if ((token.Kind() != SyntaxKind.PlusToken) && (token.Kind() != SyntaxKind.MinusToken))
             {
                 return false;
             }
@@ -546,9 +546,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         /// </summary>
         public static bool IsOpenParenInVarDeconstructionDeclaration(this SyntaxToken currentToken)
         {
-            return currentToken.Kind() == SyntaxKind.OpenParenToken &&
-                currentToken.Parent is ParenthesizedVariableDesignationSyntax &&
-                currentToken.Parent.Parent is DeclarationExpressionSyntax;
+            return (currentToken.Kind() == SyntaxKind.OpenParenToken) &&
+                (currentToken.Parent is ParenthesizedVariableDesignationSyntax) &&
+                (currentToken.Parent.Parent is DeclarationExpressionSyntax);
         }
     }
 }

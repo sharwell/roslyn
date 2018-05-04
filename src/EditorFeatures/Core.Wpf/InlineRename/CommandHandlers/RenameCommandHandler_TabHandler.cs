@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         {
             // If the Dashboard is focused, just navigate through its UI.
             Dashboard dashboard = GetDashboard(args.TextView);
-            if (dashboard != null && dashboard.ShouldReceiveKeyboardNavigation)
+            if ((dashboard != null) && dashboard.ShouldReceiveKeyboardNavigation)
             {
                 dashboard.FocusNextElement();
                 return;
@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
                 {
                     if (span == spans[i])
                     {
-                        int selectNext = i < spans.Count - 1 ? i + 1 : 0;
+                        int selectNext = i < (spans.Count - 1) ? i + 1 : 0;
                         var newSelection = spans[selectNext];
                         args.TextView.TryMoveCaretToAndEnsureVisible(newSelection.Start);
                         args.TextView.SetSelection(newSelection);
@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         {
             // If the Dashboard is focused, just navigate through its UI.
             var dashboard = GetDashboard(args.TextView);
-            if (dashboard != null && dashboard.ShouldReceiveKeyboardNavigation)
+            if ((dashboard != null) && dashboard.ShouldReceiveKeyboardNavigation)
             {
                 dashboard.FocusPreviousElement();
                 return;

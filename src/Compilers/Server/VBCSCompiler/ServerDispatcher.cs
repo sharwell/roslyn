@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
                 MaybeCreateGCTask();
                 WaitForAnyCompletion(cancellationToken);
                 CheckCompletedTasks(cancellationToken);
-            } while (_connectionList.Count > 0 || _state == State.Running);
+            } while ((_connectionList.Count > 0) || (_state == State.Running));
         }
 
         private void CheckCompletedTasks(CancellationToken cancellationToken)
@@ -248,7 +248,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
         private void MaybeCreateTimeoutTask()
         {
             // If there are no active clients running then the server needs to be in a timeout mode.
-            if (_connectionList.Count == 0 && _timeoutTask == null && _keepAlive.HasValue)
+            if ((_connectionList.Count == 0) && (_timeoutTask == null) && _keepAlive.HasValue)
             {
                 Debug.Assert(_listenTask != null);
                 _timeoutTask = Task.Delay(_keepAlive.Value);
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
 
         private void MaybeCreateGCTask()
         {
-            if (_connectionList.Count == 0 && _gcTask == null)
+            if ((_connectionList.Count == 0) && (_gcTask == null))
             {
                 _gcTask = Task.Delay(GCTimeout);
             }
@@ -324,7 +324,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
         {
             if (value.HasValue)
             {
-                if (_keepAliveIsDefault || !_keepAlive.HasValue || value.Value > _keepAlive.Value)
+                if (_keepAliveIsDefault || !_keepAlive.HasValue || (value.Value > _keepAlive.Value))
                 {
                     _keepAlive = value;
                     _keepAliveIsDefault = false;

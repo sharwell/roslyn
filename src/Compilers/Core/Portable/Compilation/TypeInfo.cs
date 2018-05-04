@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is TypeInfo && this.Equals((TypeInfo)obj);
+            return (obj is TypeInfo) && this.Equals((TypeInfo)obj);
         }
 
         public override int GetHashCode()

@@ -27,14 +27,14 @@ namespace Roslyn.Utilities
                 }
 
                 var currentUICultureSetter = type.GetTypeInfo().GetDeclaredProperty(currentUICultureName)?.SetMethod;
-                if ((object)currentUICultureSetter == null || !currentUICultureSetter.IsStatic || currentUICultureSetter.ContainsGenericParameters || currentUICultureSetter.ReturnType != typeof(void))
+                if (((object)currentUICultureSetter == null) || !currentUICultureSetter.IsStatic || currentUICultureSetter.ContainsGenericParameters || (currentUICultureSetter.ReturnType != typeof(void)))
                 {
                     setter = null;
                     return false;
                 }
 
                 var parameters = currentUICultureSetter.GetParameters();
-                if (parameters.Length != 1 || parameters[0].ParameterType != typeof(CultureInfo))
+                if ((parameters.Length != 1) || (parameters[0].ParameterType != typeof(CultureInfo)))
                 {
                     setter = null;
                     return false;
@@ -66,21 +66,21 @@ namespace Roslyn.Utilities
 
                 var typeInfo = type.GetTypeInfo();
                 var currentThreadGetter = typeInfo.GetDeclaredProperty(currentThreadName)?.GetMethod;
-                if ((object)currentThreadGetter == null || !currentThreadGetter.IsStatic || currentThreadGetter.ContainsGenericParameters || currentThreadGetter.ReturnType != type || currentThreadGetter.GetParameters().Length != 0)
+                if (((object)currentThreadGetter == null) || !currentThreadGetter.IsStatic || currentThreadGetter.ContainsGenericParameters || (currentThreadGetter.ReturnType != type) || (currentThreadGetter.GetParameters().Length != 0))
                 {
                     setter = null;
                     return false;
                 }
 
                 var currentUICultureSetter = typeInfo.GetDeclaredProperty(currentUICultureName)?.SetMethod;
-                if ((object)currentUICultureSetter == null || currentUICultureSetter.IsStatic || currentUICultureSetter.ContainsGenericParameters || currentUICultureSetter.ReturnType != typeof(void))
+                if (((object)currentUICultureSetter == null) || currentUICultureSetter.IsStatic || currentUICultureSetter.ContainsGenericParameters || (currentUICultureSetter.ReturnType != typeof(void)))
                 {
                     setter = null;
                     return false;
                 }
 
                 var parameters = currentUICultureSetter.GetParameters();
-                if (parameters.Length != 1 || parameters[0].ParameterType != typeof(CultureInfo))
+                if ((parameters.Length != 1) || (parameters[0].ParameterType != typeof(CultureInfo)))
                 {
                     setter = null;
                     return false;

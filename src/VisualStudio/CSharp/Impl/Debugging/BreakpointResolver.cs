@@ -25,7 +25,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
         protected override IEnumerable<ISymbol> GetMembers(INamedTypeSymbol type, string name)
         {
             var members = type.GetMembers()
-                              .Where(m => m.Name == name ||
+                              .Where(m => (m.Name == name) ||
                                           m.ExplicitInterfaceImplementations()
                                            .Where(i => i.Name == name)
                                            .Any());

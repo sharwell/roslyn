@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
         public static bool IsCompletionItemStartCharacter(char ch)
         {
-            return ch == '@' || IsWordCharacter(ch);
+            return (ch == '@') || IsWordCharacter(ch);
         }
 
         internal static bool IsTriggerCharacter(SourceText text, int characterPosition, OptionSet options)
@@ -47,13 +47,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             }
 
             // Trigger on pointer member access
-            if (ch == '>' && characterPosition >= 1 && text[characterPosition - 1] == '-')
+            if ((ch == '>') && (characterPosition >= 1) && (text[characterPosition - 1] == '-'))
             {
                 return true;
             }
 
             // Trigger on alias name
-            if (ch == ':' && characterPosition >= 1 && text[characterPosition - 1] == ':')
+            if ((ch == ':') && (characterPosition >= 1) && (text[characterPosition - 1] == ':'))
             {
                 return true;
             }
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
         private static bool SpaceTypedNotBeforeWord(char ch, SourceText text, int characterPosition)
         {
-            return ch == ' ' && (characterPosition == text.Length - 1 || !IsWordStartCharacter(text[characterPosition + 1]));
+            return (ch == ' ') && ((characterPosition == (text.Length - 1)) || !IsWordStartCharacter(text[characterPosition + 1]));
         }
 
         public static bool IsStartingNewWord(SourceText text, int characterPosition)
@@ -107,8 +107,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 }
             }
 
-            if (symbol.Kind == SymbolKind.Label &&
-                symbol.DeclaringSyntaxReferences[0].GetSyntax().Kind() == SyntaxKind.DefaultSwitchLabel)
+            if ((symbol.Kind == SymbolKind.Label) &&
+                (symbol.DeclaringSyntaxReferences[0].GetSyntax().Kind() == SyntaxKind.DefaultSwitchLabel))
             {
                 return symbol.Name;
             }

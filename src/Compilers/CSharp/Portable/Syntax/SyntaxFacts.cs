@@ -15,13 +15,13 @@ namespace Microsoft.CodeAnalysis.CSharp
         public static bool IsAliasQualifier(SyntaxNode node)
         {
             var p = node.Parent as AliasQualifiedNameSyntax;
-            return p != null && p.Alias == node;
+            return (p != null) && (p.Alias == node);
         }
 
         public static bool IsAttributeName(SyntaxNode node)
         {
             var parent = node.Parent;
-            if (parent == null || !IsName(node.Kind()))
+            if ((parent == null) || !IsName(node.Kind()))
             {
                 return false;
             }
@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var p = node.Parent as AttributeSyntax;
-            return p != null && p.Name == node;
+            return (p != null) && (p.Name == node);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             node = (ExpressionSyntax)SyntaxFactory.GetStandaloneExpression(node);
             var inv = node.Parent as InvocationExpressionSyntax;
-            return inv != null && inv.Expression == node;
+            return (inv != null) && (inv.Expression == node);
         }
 
         /// <summary>
@@ -58,13 +58,13 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             node = (ExpressionSyntax)SyntaxFactory.GetStandaloneExpression(node);
             var indexer = node.Parent as ElementAccessExpressionSyntax;
-            return indexer != null && indexer.Expression == node;
+            return (indexer != null) && (indexer.Expression == node);
         }
 
         public static bool IsNamespaceAliasQualifier(ExpressionSyntax node)
         {
             var parent = node.Parent as AliasQualifiedNameSyntax;
-            return parent != null && parent.Alias == node;
+            return (parent != null) && (parent.Alias == node);
         }
 
         /// <summary>
@@ -254,13 +254,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var parent1 = node.Parent;
-            if (parent1 == null || !parent1.IsKind(NameColon))
+            if ((parent1 == null) || !parent1.IsKind(NameColon))
             {
                 return false;
             }
 
             var parent2 = parent1.Parent;
-            if (parent2 == null || !(parent2.IsKind(Argument) || parent2.IsKind(AttributeArgument)))
+            if ((parent2 == null) || !(parent2.IsKind(Argument) || parent2.IsKind(AttributeArgument)))
             {
                 return false;
             }
@@ -276,7 +276,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return true;
             }
 
-            if (!(parent3 is BaseArgumentListSyntax || parent3.IsKind(AttributeArgumentList)))
+            if (!((parent3 is BaseArgumentListSyntax) || parent3.IsKind(AttributeArgumentList)))
             {
                 return false;
             }
@@ -311,14 +311,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             node = node.Parent;
             // Dig through parens because dev10 does (even though the spec doesn't say so)
             // Dig through casts because there's a special error code (CS0254) for such casts.
-            while (node != null && (node.IsKind(ParenthesizedExpression) || node.IsKind(CastExpression))) node = node.Parent;
-            if (node == null || !node.IsKind(EqualsValueClause)) return false;
+            while ((node != null) && (node.IsKind(ParenthesizedExpression) || node.IsKind(CastExpression))) node = node.Parent;
+            if ((node == null) || !node.IsKind(EqualsValueClause)) return false;
             node = node.Parent;
-            if (node == null || !node.IsKind(VariableDeclarator)) return false;
+            if ((node == null) || !node.IsKind(VariableDeclarator)) return false;
             node = node.Parent;
-            if (node == null || !node.IsKind(VariableDeclaration)) return false;
+            if ((node == null) || !node.IsKind(VariableDeclaration)) return false;
             node = node.Parent;
-            return node != null && node.IsKind(FixedStatement);
+            return (node != null) && node.IsKind(FixedStatement);
         }
 
         public static string GetText(Accessibility accessibility)
@@ -406,7 +406,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static bool IsVar(this Syntax.InternalSyntax.SyntaxToken node)
         {
-            return node.Kind == SyntaxKind.IdentifierToken && node.ValueText == "var";
+            return (node.Kind == SyntaxKind.IdentifierToken) && (node.ValueText == "var");
         }
 
         internal static bool IsVarOrPredefinedType(this Syntax.InternalSyntax.SyntaxToken node)
@@ -436,8 +436,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case SyntaxKind.DeclarationExpression:
                     var declaration = (DeclarationExpressionSyntax)syntax;
                     var designationKind = declaration.Designation.Kind();
-                    if (designationKind == SyntaxKind.ParenthesizedVariableDesignation ||
-                        designationKind == SyntaxKind.DiscardDesignation)
+                    if ((designationKind == SyntaxKind.ParenthesizedVariableDesignation) ||
+                        (designationKind == SyntaxKind.DiscardDesignation))
                     {
                         return null;
                     }

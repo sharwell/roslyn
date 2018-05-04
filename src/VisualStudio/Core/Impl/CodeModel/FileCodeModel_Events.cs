@@ -45,7 +45,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
             _lastSyntaxTree = newTree;
 
-            if (oldTree == newTree ||
+            if ((oldTree == newTree) ||
                 oldTree.IsEquivalentTo(newTree, topLevel: true))
             {
                 return needMoreTime;
@@ -171,7 +171,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 Debug.Fail("We should have created an element for this event!");
             }
 
-            Debug.Assert(codeModelEvent.Type != CodeModelEventType.Remove || parentElement != null);
+            Debug.Assert((codeModelEvent.Type != CodeModelEventType.Remove) || (parentElement != null));
         }
 
         private object GetParentElementForCodeModelEvent(CodeModelEvent codeModelEvent)
@@ -197,8 +197,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             }
             else if (codeModelEvent.Type == CodeModelEventType.Remove)
             {
-                if (codeModelEvent.ParentNode != null &&
-                    codeModelEvent.ParentNode.Parent != null)
+                if ((codeModelEvent.ParentNode != null) &&
+                    (codeModelEvent.ParentNode.Parent != null))
                 {
                     return this.GetOrCreateCodeElement<EnvDTE.CodeElement>(codeModelEvent.ParentNode);
                 }
@@ -302,7 +302,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 else if (parentObject is EnvDTE.FileCodeModel)
                 {
                     var parentFileCodeModel = ComAggregate.TryGetManagedObject<FileCodeModel>(parentObject);
-                    if (parentFileCodeModel != null && parentFileCodeModel == this)
+                    if ((parentFileCodeModel != null) && (parentFileCodeModel == this))
                     {
                         return (EnvDTE.CodeElement)CodeAttribute.Create(this.State, this, null, name, ordinal);
                     }

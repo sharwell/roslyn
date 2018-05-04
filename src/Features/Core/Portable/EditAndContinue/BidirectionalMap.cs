@@ -36,6 +36,6 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             return new BidirectionalMap<T>(match.Matches, match.ReverseMatches);
         }
 
-        public bool IsDefaultOrEmpty => Forward == null || Forward.Count == 0;
+        public bool IsDefaultOrEmpty => (Forward == null) || (Forward.Count == 0);
     }
 }

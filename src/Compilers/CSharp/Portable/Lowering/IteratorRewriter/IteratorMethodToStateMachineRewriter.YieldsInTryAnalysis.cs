@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             /// </summary>
             public bool ContainsYields(BoundTryStatement statement)
             {
-                return _labelsInYieldingTrys != null && _labelsInYieldingTrys.ContainsKey(statement);
+                return (_labelsInYieldingTrys != null) && _labelsInYieldingTrys.ContainsKey(statement);
             }
 
             /// <summary>

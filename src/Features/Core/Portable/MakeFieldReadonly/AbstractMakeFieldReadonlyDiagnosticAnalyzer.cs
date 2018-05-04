@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.MakeFieldReadonly
             foreach (var item in typeSymbol.GetMembers())
             {
                 if (item is IFieldSymbol symbol &&
-                    symbol.DeclaredAccessibility == Accessibility.Private &&
+                    (symbol.DeclaredAccessibility == Accessibility.Private) &&
                     !symbol.IsReadOnly &&
                     !symbol.IsConst &&
                     !symbol.IsImplicitlyDeclared &&
@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.MakeFieldReadonly
                 }
 
                 var symbol = model.GetSymbolInfo(descendant).Symbol as IFieldSymbol;
-                if (symbol == null || !unassignedSymbols.Contains(symbol))
+                if ((symbol == null) || !unassignedSymbols.Contains(symbol))
                 {
                     continue;
                 }

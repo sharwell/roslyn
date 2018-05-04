@@ -29,10 +29,10 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal BoundExpression SetInferredType(TypeSymbol type, Binder binderOpt, DiagnosticBag diagnosticsOpt)
         {
-            Debug.Assert(binderOpt != null || (object)type != null);
-            Debug.Assert(this.Syntax.Kind() == SyntaxKind.SingleVariableDesignation ||
-                (this.Syntax.Kind() == SyntaxKind.DeclarationExpression &&
-                    ((DeclarationExpressionSyntax)this.Syntax).Designation.Kind() == SyntaxKind.SingleVariableDesignation));
+            Debug.Assert((binderOpt != null) || ((object)type != null));
+            Debug.Assert((this.Syntax.Kind() == SyntaxKind.SingleVariableDesignation) ||
+                ((this.Syntax.Kind() == SyntaxKind.DeclarationExpression) &&
+                    (((DeclarationExpressionSyntax)this.Syntax).Designation.Kind() == SyntaxKind.SingleVariableDesignation)));
 
             bool inferenceFailed = (object)type == null;
 

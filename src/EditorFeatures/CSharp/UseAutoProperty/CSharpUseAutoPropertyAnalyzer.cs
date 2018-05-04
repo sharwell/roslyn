@@ -125,8 +125,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UseAutoProperty
             if (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
-                return memberAccessExpression.Expression.Kind() == SyntaxKind.ThisExpression &&
-                    memberAccessExpression.Name.Kind() == SyntaxKind.IdentifierName;
+                return (memberAccessExpression.Expression.Kind() == SyntaxKind.ThisExpression) &&
+                    (memberAccessExpression.Name.Kind() == SyntaxKind.IdentifierName);
             }
             else if (expression.IsKind(SyntaxKind.IdentifierName))
             {
@@ -196,8 +196,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UseAutoProperty
             if (setExpression?.Kind() == SyntaxKind.SimpleAssignmentExpression)
             {
                 var assignmentExpression = (AssignmentExpressionSyntax)setExpression;
-                if (assignmentExpression.Right.Kind() == SyntaxKind.IdentifierName &&
-                    ((IdentifierNameSyntax)assignmentExpression.Right).Identifier.ValueText == "value")
+                if ((assignmentExpression.Right.Kind() == SyntaxKind.IdentifierName) &&
+                    (((IdentifierNameSyntax)assignmentExpression.Right).Identifier.ValueText == "value"))
                 {
                     return CheckExpressionSyntactically(assignmentExpression.Left) ? assignmentExpression.Left : null;
                 }

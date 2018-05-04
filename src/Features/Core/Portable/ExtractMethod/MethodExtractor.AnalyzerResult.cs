@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             {
                 get
                 {
-                    return this.ReturnType.SpecialType != SpecialType.System_Void && !this.AwaitTaskReturn;
+                    return (this.ReturnType.SpecialType != SpecialType.System_Void) && !this.AwaitTaskReturn;
                 }
             }
 
@@ -145,8 +145,8 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             public IEnumerable<VariableInfo> GetVariablesToSplitOrMoveIntoMethodDefinition(CancellationToken cancellationToken)
             {
                 return _variables
-                           .Where(v => v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.SplitIn ||
-                                       v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveIn);
+                           .Where(v => (v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.SplitIn) ||
+                                       (v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveIn));
             }
 
             public IEnumerable<VariableInfo> GetVariablesToMoveIntoMethodDefinition(CancellationToken cancellationToken)
@@ -161,14 +161,14 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
             public IEnumerable<VariableInfo> GetVariablesToMoveOutToCallSiteOrDelete(CancellationToken cancellationToken)
             {
-                return _variables.Where(v => v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveOut ||
-                                                 v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.Delete);
+                return _variables.Where(v => (v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveOut) ||
+                                                 (v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.Delete));
             }
 
             public IEnumerable<VariableInfo> GetVariablesToSplitOrMoveOutToCallSite(CancellationToken cancellationToken)
             {
-                return _variables.Where(v => v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.SplitOut ||
-                                                 v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveOut);
+                return _variables.Where(v => (v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.SplitOut) ||
+                                                 (v.GetDeclarationBehavior(cancellationToken) == DeclarationBehavior.MoveOut));
             }
         }
     }

@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.QuickInfo
                 var quickInfoContent = (QuickInfoDisplayDeferredContent)content;
                 Assert.Equal(expectedText, ((ClassifiableDeferredContent)quickInfoContent.UsageText).ClassifiableContent.GetFullText());
                 var warningGlyph = quickInfoContent.WarningGlyph as SymbolGlyphDeferredContent;
-                Assert.Equal(expectsWarningGlyph, warningGlyph != null && warningGlyph.Glyph == Glyph.CompletionWarning);
+                Assert.Equal(expectsWarningGlyph, (warningGlyph != null) && (warningGlyph.Glyph == Glyph.CompletionWarning));
             };
         }
 

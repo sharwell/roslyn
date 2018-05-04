@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.DesignerAttributes
             // same service run in both inproc and remote host, but remote host will not have RemoteHostClient service, 
             // so inproc one will always run
             var client = await document.Project.Solution.Workspace.TryGetRemoteHostClientAsync(cancellationToken).ConfigureAwait(false);
-            if (client != null && !document.IsOpen())
+            if ((client != null) && !document.IsOpen())
             {
                 // run designer attributes scanner on remote host
                 // we only run closed files to make open document to have better responsiveness. 
@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.DesignerAttributes
 
                         // if it has designer attribute, set it
                         var attribute = type.GetAttributes().Where(d => designerAttribute.Equals(d.AttributeClass)).FirstOrDefault();
-                        if (attribute != null && attribute.ConstructorArguments.Length == 1)
+                        if ((attribute != null) && (attribute.ConstructorArguments.Length == 1))
                         {
                             designerAttributeArgument = GetArgumentString(attribute.ConstructorArguments[0]);
                             return new DesignerAttributeResult(designerAttributeArgument, documentHasError, applicable: true);
@@ -132,8 +132,8 @@ namespace Microsoft.CodeAnalysis.DesignerAttributes
 
         private static string GetArgumentString(TypedConstant argument)
         {
-            if (argument.Type == null ||
-                argument.Type.SpecialType != SpecialType.System_String ||
+            if ((argument.Type == null) ||
+                (argument.Type.SpecialType != SpecialType.System_String) ||
                 argument.IsNull)
             {
                 return null;

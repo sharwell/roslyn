@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         private static bool IsSingleSpaceTrivia(SyntaxListBuilder syntax)
         {
-            return syntax.Count == 1 && SyntaxFactory.Space.IsEquivalentTo(syntax[0]);
+            return (syntax.Count == 1) && SyntaxFactory.Space.IsEquivalentTo(syntax[0]);
         }
 
         /// <summary>

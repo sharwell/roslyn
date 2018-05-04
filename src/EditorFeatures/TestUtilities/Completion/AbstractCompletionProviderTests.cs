@@ -430,7 +430,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Completion
 
             var text = await document.GetTextAsync();
 
-            if (commitChar == '\t' ||
+            if ((commitChar == '\t') ||
                 Controller.IsCommitCharacter(service.GetRules(), firstItem, commitChar, textTypedSoFar + commitChar))
             {
                 var textChange = (await service.GetChangeAsync(document, firstItem, commitChar, CancellationToken.None)).TextChange;

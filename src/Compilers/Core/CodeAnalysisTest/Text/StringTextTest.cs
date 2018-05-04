@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
             for (int i = 0; i < checksum.Length; i++)
             {
-                if (i > 0 && ((i % 4) == 0))
+                if ((i > 0) && ((i % 4) == 0))
                 {
                     builder.Append(' ');
                 }

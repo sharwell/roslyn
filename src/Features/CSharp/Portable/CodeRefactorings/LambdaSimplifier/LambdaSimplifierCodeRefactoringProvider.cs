@@ -36,8 +36,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.LambdaSimplifier
             var semanticDocument = await SemanticDocument.CreateAsync(document, cancellationToken).ConfigureAwait(false);
 
             var lambda = semanticDocument.Root.FindToken(textSpan.Start).GetAncestor(n =>
-                n is SimpleLambdaExpressionSyntax || n is ParenthesizedLambdaExpressionSyntax);
-            if (lambda == null || !lambda.Span.IntersectsWith(textSpan.Start))
+                (n is SimpleLambdaExpressionSyntax) || (n is ParenthesizedLambdaExpressionSyntax));
+            if ((lambda == null) || !lambda.Span.IntersectsWith(textSpan.Start))
             {
                 return;
             }
@@ -130,8 +130,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.LambdaSimplifier
             for (var i = 0; i < paramNames.Count; i++)
             {
                 var argument = invocation.ArgumentList.Arguments[i];
-                if (argument.NameColon != null ||
-                    argument.RefOrOutKeyword.Kind() != SyntaxKind.None ||
+                if ((argument.NameColon != null) ||
+                    (argument.RefOrOutKeyword.Kind() != SyntaxKind.None) ||
                     !argument.Expression.IsKind(SyntaxKind.IdentifierName))
                 {
                     return false;
@@ -147,8 +147,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.LambdaSimplifier
             var semanticModel = document.SemanticModel;
             var lambdaSemanticInfo = semanticModel.GetSymbolInfo(lambda, cancellationToken);
             var invocationSemanticInfo = semanticModel.GetSymbolInfo(invocation, cancellationToken);
-            if (lambdaSemanticInfo.Symbol == null ||
-                invocationSemanticInfo.Symbol == null)
+            if ((lambdaSemanticInfo.Symbol == null) ||
+                (invocationSemanticInfo.Symbol == null))
             {
                 // Don't offer this if there are any errors or ambiguities.
                 return false;
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.LambdaSimplifier
 
             var lambdaMethod = lambdaSemanticInfo.Symbol as IMethodSymbol;
             var invocationMethod = invocationSemanticInfo.Symbol as IMethodSymbol;
-            if (lambdaMethod == null || invocationMethod == null)
+            if ((lambdaMethod == null) || (invocationMethod == null))
             {
                 return false;
             }
@@ -170,7 +170,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.LambdaSimplifier
             // Check if any of the parameter is of Type Dynamic
             foreach (var parameter in lambdaMethod.Parameters)
             {
-                if (parameter.Type != null && parameter.Type.Kind == SymbolKind.DynamicType)
+                if ((parameter.Type != null) && (parameter.Type.Kind == SymbolKind.DynamicType))
                 {
                     return false;
                 }
@@ -179,8 +179,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.LambdaSimplifier
             // Check if the parameter and return types match between the lambda and the
             // invocation.  Note: return types can be covariant and argument types can be
             // contravariant.
-            if (lambdaMethod.ReturnsVoid != invocationMethod.ReturnsVoid ||
-                lambdaMethod.Parameters.Length != invocationMethod.Parameters.Length)
+            if ((lambdaMethod.ReturnsVoid != invocationMethod.ReturnsVoid) ||
+                (lambdaMethod.Parameters.Length != invocationMethod.Parameters.Length))
             {
                 return false;
             }

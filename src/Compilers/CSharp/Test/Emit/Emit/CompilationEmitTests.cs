@@ -821,7 +821,7 @@ public class C
         {
             bool expectMatch = includePrivateMembers ?
                 expectedMatch == Match.BothMetadataAndRefOut :
-                (expectedMatch == Match.BothMetadataAndRefOut || expectedMatch == Match.RefOut);
+                ((expectedMatch == Match.BothMetadataAndRefOut) || (expectedMatch == Match.RefOut));
 
             string name = GetUniqueName();
             string source1 = sourceTemplate.Replace("CHANGE", change1);
@@ -1378,19 +1378,19 @@ comp => comp.VerifyDiagnostics(
             // Whether the library is compiled in full, as metadata-only, or as a ref assembly should be transparent
             // to the client and the validator should be able to verify the same expectations.
 
-            if (debugFlag == -1 || debugFlag == 0)
+            if ((debugFlag == -1) || (debugFlag == 0))
             {
                 VerifyRefAssemblyClient(lib_cs, client_cs, validator,
                     EmitOptions.Default.WithEmitMetadataOnly(false));
             }
 
-            if (debugFlag == -1 || debugFlag == 1)
+            if ((debugFlag == -1) || (debugFlag == 1))
             {
                 VerifyRefAssemblyClient(lib_cs, client_cs, validator,
                     EmitOptions.Default.WithEmitMetadataOnly(true).WithIncludePrivateMembers(true));
             }
 
-            if (debugFlag == -1 || debugFlag == 2)
+            if ((debugFlag == -1) || (debugFlag == 2))
             {
                 VerifyRefAssemblyClient(lib_cs, client_cs, validator,
                     EmitOptions.Default.WithEmitMetadataOnly(true).WithIncludePrivateMembers(false));

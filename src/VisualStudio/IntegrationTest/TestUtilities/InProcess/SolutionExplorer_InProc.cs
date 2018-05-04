@@ -261,7 +261,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
             var project = GetProject(projectName);
             var vsproject = (VSProject)project.Object;
             var references = vsproject.References.Cast<Reference>();
-            var reference = references.Where(x => x.ContainingProject != null && x.Name == projectReferenceName).FirstOrDefault();
+            var reference = references.Where(x => (x.ContainingProject != null) && (x.Name == projectReferenceName)).FirstOrDefault();
             if (reference == null)
             {
                 var projectReference = references.Where(x => x.ContainingProject != null).Select(x => x.Name);
@@ -367,8 +367,8 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
 
         private EnvDTE.Project GetProject(string nameOrFileName)
             => _solution.Projects.OfType<EnvDTE.Project>().First(p
-                => string.Compare(p.FileName, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0
-                || string.Compare(p.Name, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0);
+                => (string.Compare(p.FileName, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0)
+                || (string.Compare(p.Name, nameOrFileName, StringComparison.OrdinalIgnoreCase) == 0));
 
         /// <summary>
         /// Update the given file if it already exists in the project, otherwise add a new file to the project.

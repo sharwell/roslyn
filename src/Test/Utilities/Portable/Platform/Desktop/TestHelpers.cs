@@ -17,7 +17,7 @@ namespace Roslyn.Test.Utilities
     {
         public static IEnumerable<Type> GetAllTypesImplementingGivenInterface(Assembly assembly, Type interfaceType)
         {
-            if (assembly == null || interfaceType == null || !interfaceType.IsInterface)
+            if ((assembly == null) || (interfaceType == null) || !interfaceType.IsInterface)
             {
                 throw new ArgumentException("interfaceType is not an interface.", nameof(interfaceType));
             }
@@ -32,13 +32,13 @@ namespace Roslyn.Test.Utilities
                 }
 
                 var candidate = t.GetInterface(interfaceType.ToString());
-                return candidate != null && candidate.Equals(interfaceType);
+                return (candidate != null) && candidate.Equals(interfaceType);
             }).ToList();
         }
 
         public static IEnumerable<Type> GetAllTypesSubclassingType(Assembly assembly, Type type)
         {
-            if (assembly == null || type == null)
+            if ((assembly == null) || (type == null))
             {
                 throw new ArgumentException("Invalid arguments");
             }

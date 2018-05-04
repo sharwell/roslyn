@@ -64,8 +64,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             var trailingTrivia = node.GetTrailingTriviaCore();
 
             // Trivia is either null or a non-empty list (there's no such thing as an empty green list)
-            Debug.Assert(leadingTrivia == null || !leadingTrivia.IsList || leadingTrivia.SlotCount > 0);
-            Debug.Assert(trailingTrivia == null || !trailingTrivia.IsList || trailingTrivia.SlotCount > 0);
+            Debug.Assert((leadingTrivia == null) || !leadingTrivia.IsList || (leadingTrivia.SlotCount > 0));
+            Debug.Assert((trailingTrivia == null) || !trailingTrivia.IsList || (trailingTrivia.SlotCount > 0));
 
             if (leadingTrivia != null)
             {
@@ -138,13 +138,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var item = list[i];
                 var visited = this.VisitListElement(item);
-                if (item != visited && alternate == null)
+                if ((item != visited) && (alternate == null))
                 {
                     alternate = new SyntaxListBuilder(n);
                     alternate.AddRange(list, 0, i);
                 }
 
-                if (alternate != null && visited != null && !visited.IsKind(SyntaxKind.None))
+                if ((alternate != null) && (visited != null) && !visited.IsKind(SyntaxKind.None))
                 {
                     alternate.Add(visited);
                 }
@@ -181,7 +181,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 if (alternate.IsNull)
                 {
-                    if (node != visitedNode || separator != visitedSeparator)
+                    if ((node != visitedNode) || (separator != visitedSeparator))
                     {
                         alternate = new SeparatedSyntaxListBuilder<TNode>(count);
                         alternate.AddRange(list, i);
@@ -224,7 +224,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
                 }
 
-                if (!alternate.IsNull && visitedNode != null)
+                if (!alternate.IsNull && (visitedNode != null))
                 {
                     alternate.Add(visitedNode);
                 }
@@ -253,13 +253,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 index++;
                 var visited = this.VisitToken(item);
-                if (item != visited && alternate == null)
+                if ((item != visited) && (alternate == null))
                 {
                     alternate = new SyntaxTokenListBuilder(count);
                     alternate.Add(list, 0, index);
                 }
 
-                if (alternate != null && visited.Kind() != SyntaxKind.None) //skip the null check since SyntaxToken is a value type
+                if ((alternate != null) && (visited.Kind() != SyntaxKind.None)) //skip the null check since SyntaxToken is a value type
                 {
                     alternate.Add(visited);
                 }
@@ -287,13 +287,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                     var visited = this.VisitListElement(item);
 
                     //skip the null check since SyntaxTrivia is a value type
-                    if (visited != item && alternate == null)
+                    if ((visited != item) && (alternate == null))
                     {
                         alternate = new SyntaxTriviaListBuilder(count);
                         alternate.Add(list, 0, index);
                     }
 
-                    if (alternate != null && visited.Kind() != SyntaxKind.None)
+                    if ((alternate != null) && (visited.Kind() != SyntaxKind.None))
                     {
                         alternate.Add(visited);
                     }

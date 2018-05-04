@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // 1) when rewriting MethodGroup conversions and the method gets substituted.
             // 2) when lowering IntPtr conversion (a compat-related conversion which becomes a kind of a user-defined conversion)
             // in those cases it is ok to ignore existing _uncommonData.
-            Debug.Assert(_kind == ConversionKind.MethodGroup || _kind == ConversionKind.IntPtr);
+            Debug.Assert((_kind == ConversionKind.MethodGroup) || (_kind == ConversionKind.IntPtr));
 
             return new Conversion(this.Kind, conversionMethod, isExtensionMethod: IsExtensionMethod);
         }
@@ -271,7 +271,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal static Conversion MakeNullableConversion(ConversionKind kind, Conversion nestedConversion)
         {
-            Debug.Assert(kind == ConversionKind.ImplicitNullable || kind == ConversionKind.ExplicitNullable);
+            Debug.Assert((kind == ConversionKind.ImplicitNullable) || (kind == ConversionKind.ExplicitNullable));
 
             ImmutableArray<Conversion> nested;
             switch (nestedConversion.Kind)
@@ -400,8 +400,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 return !this.IsUserDefined ||
-                    (object)this.Method != null ||
-                    _uncommonData?._conversionResult.Kind == UserDefinedConversionResultKind.Valid;
+                    ((object)this.Method != null) ||
+                    (_uncommonData?._conversionResult.Kind == UserDefinedConversionResultKind.Valid);
             }
         }
 
@@ -470,7 +470,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == ConversionKind.StackAllocToPointerType || Kind == ConversionKind.StackAllocToSpanType;
+                return (Kind == ConversionKind.StackAllocToPointerType) || (Kind == ConversionKind.StackAllocToSpanType);
             }
         }
 
@@ -484,7 +484,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == ConversionKind.ImplicitNumeric || Kind == ConversionKind.ExplicitNumeric;
+                return (Kind == ConversionKind.ImplicitNumeric) || (Kind == ConversionKind.ExplicitNumeric);
             }
         }
 
@@ -498,7 +498,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == ConversionKind.ImplicitEnumeration || Kind == ConversionKind.ExplicitEnumeration;
+                return (Kind == ConversionKind.ImplicitEnumeration) || (Kind == ConversionKind.ExplicitEnumeration);
             }
         }
 
@@ -538,7 +538,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == ConversionKind.ImplicitNullable || Kind == ConversionKind.ExplicitNullable;
+                return (Kind == ConversionKind.ImplicitNullable) || (Kind == ConversionKind.ExplicitNullable);
             }
         }
 
@@ -549,7 +549,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == ConversionKind.ImplicitTupleLiteral || Kind == ConversionKind.ExplicitTupleLiteral;
+                return (Kind == ConversionKind.ImplicitTupleLiteral) || (Kind == ConversionKind.ExplicitTupleLiteral);
             }
         }
 
@@ -560,7 +560,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == ConversionKind.ImplicitTuple || Kind == ConversionKind.ExplicitTuple;
+                return (Kind == ConversionKind.ImplicitTuple) || (Kind == ConversionKind.ExplicitTuple);
             }
         }
 
@@ -574,7 +574,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == ConversionKind.ImplicitReference || Kind == ConversionKind.ExplicitReference;
+                return (Kind == ConversionKind.ImplicitReference) || (Kind == ConversionKind.ExplicitReference);
             }
         }
 
@@ -900,7 +900,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <returns>true if the specified <see cref="Conversion"/> object is equal to the current <see cref="Conversion"/> object; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
-            return obj is Conversion && this.Equals((Conversion)obj);
+            return (obj is Conversion) && this.Equals((Conversion)obj);
         }
 
         /// <summary>
@@ -910,7 +910,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <returns>true if the specified <see cref="Conversion"/> object is equal to the current <see cref="Conversion"/> object; otherwise, false.</returns>
         public bool Equals(Conversion other)
         {
-            return this.Kind == other.Kind && this.Method == other.Method;
+            return (this.Kind == other.Kind) && (this.Method == other.Method);
         }
 
         /// <summary>

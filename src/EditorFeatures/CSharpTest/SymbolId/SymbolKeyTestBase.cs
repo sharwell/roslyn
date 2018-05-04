@@ -133,7 +133,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
                     body = accessor.Body;
                 }
 
-                if (body != null && body.Statements.Any())
+                if ((body != null) && body.Statements.Any())
                 {
                     list.Add(body);
                 }
@@ -258,7 +258,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
                     {
                         // var sym = model.GetSymbolInfo(u.Alias.Identifier).Symbol;
                         var sym = model.GetDeclaredSymbol(u);
-                        if (sym != null && !list.Contains(sym))
+                        if ((sym != null) && !list.Contains(sym))
                         {
                             list.Add(sym);
                         }
@@ -281,7 +281,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
             {
                 foreach (var node in symbol.DeclaringSyntaxReferences.Select(d => d.GetSyntax()))
                 {
-                    if (node is VariableDeclaratorSyntax declarator && declarator.Initializer != null)
+                    if (node is VariableDeclaratorSyntax declarator && (declarator.Initializer != null))
                     {
                         var model = _compilation.GetSemanticModel(declarator.SyntaxTree);
 
@@ -310,7 +310,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
 
                     var model = _compilation.GetSemanticModel(node.SyntaxTree);
 
-                    if (body != null && body.Statements.Any())
+                    if ((body != null) && body.Statements.Any())
                     {
                         var df = model.AnalyzeDataFlow(body);
                         GetLocalAndType(df, list);
@@ -321,7 +321,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
                     }
 
                     // C# specific (this|base access)
-                    if (node is ConstructorDeclarationSyntax ctor && ctor.Initializer != null)
+                    if (node is ConstructorDeclarationSyntax ctor && (ctor.Initializer != null))
                     {
                         foreach (var a in ctor.Initializer.ArgumentList.Arguments)
                         {
@@ -341,7 +341,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
                 foreach (var v in df.VariablesDeclared)
                 {
                     list.Add((Symbol)v);
-                    if (v is LocalSymbol local && (local.Type.Kind == SymbolKind.ArrayType || local.Type.Kind == SymbolKind.PointerType))
+                    if (v is LocalSymbol local && ((local.Type.Kind == SymbolKind.ArrayType) || (local.Type.Kind == SymbolKind.PointerType)))
                     {
                         list.Add(local.Type);
                     }
@@ -390,10 +390,10 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
             private void GetAnonymousExprSymbols(ExpressionSyntax expr, SemanticModel model, List<ISymbol> list)
             {
                 var kind = expr.Kind();
-                if (kind != SyntaxKind.AnonymousObjectCreationExpression &&
-                    kind != SyntaxKind.AnonymousMethodExpression &&
-                    kind != SyntaxKind.ParenthesizedLambdaExpression &&
-                    kind != SyntaxKind.SimpleLambdaExpression)
+                if ((kind != SyntaxKind.AnonymousObjectCreationExpression) &&
+                    (kind != SyntaxKind.AnonymousMethodExpression) &&
+                    (kind != SyntaxKind.ParenthesizedLambdaExpression) &&
+                    (kind != SyntaxKind.SimpleLambdaExpression))
                 {
                     return;
                 }
@@ -408,7 +408,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.UnitTests.SymbolId
                     var sinfo = model.GetSymbolInfo(expr);
                     list.Add((Symbol)sinfo.Symbol);
                 }
-                else if (tinfo.Type != null && tinfo.Type.TypeKind != TypeKind.Delegate)
+                else if ((tinfo.Type != null) && (tinfo.Type.TypeKind != TypeKind.Delegate))
                 {
                     // bug#12625
                     // GetSymbolInfo -> .ctor (part of members)

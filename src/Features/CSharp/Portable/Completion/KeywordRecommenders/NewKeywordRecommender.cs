@@ -65,8 +65,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 // we must be on a nested type.
                 var token = context.LeftToken;
                 return token.GetAncestors<TypeDeclarationSyntax>()
-                    .Any(t => token.SpanStart > t.OpenBraceToken.Span.End &&
-                              token.Span.End < t.CloseBraceToken.SpanStart);
+                    .Any(t => (token.SpanStart > t.OpenBraceToken.Span.End) &&
+                              (token.Span.End < t.CloseBraceToken.SpanStart));
             }
 
             return false;
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
             var token = context.TargetToken;
 
-            if (token.Kind() == SyntaxKind.CommaToken &&
+            if ((token.Kind() == SyntaxKind.CommaToken) &&
                 token.Parent.IsKind(SyntaxKind.TypeParameterConstraintClause))
             {
                 var constraintClause = token.Parent as TypeParameterConstraintClauseSyntax;

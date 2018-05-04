@@ -112,7 +112,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         private bool TryGetLastSnapshot(int version, out ITableEntriesSnapshot lastSnapshot)
         {
             return _lastSnapshotWeakReference.TryGetTarget(out lastSnapshot) &&
-                   lastSnapshot.VersionNumber == version;
+                   (lastSnapshot.VersionNumber == version);
         }
 
         private ITableEntriesSnapshot CreateSnapshot(int version, ImmutableArray<TableItem<TData>> items)
@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 public void OnDataAddedOrChanged(object data, AbstractTableDataSource<TData> tableSource)
                 {
                     var key = tableSource.GetItemKey(data);
-                    if (_primary != null && _primary.Key.Equals(key))
+                    if ((_primary != null) && _primary.Key.Equals(key))
                     {
                         return;
                     }
@@ -281,7 +281,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 public bool OnDataRemoved(object data, AbstractTableDataSource<TData> tableSource)
                 {
                     var key = tableSource.GetItemKey(data);
-                    if (_primary != null && _primary.Key.Equals(key))
+                    if ((_primary != null) && _primary.Key.Equals(key))
                     {
                         return true;
                     }

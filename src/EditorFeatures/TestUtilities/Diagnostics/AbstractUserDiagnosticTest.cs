@@ -434,7 +434,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Diagnostics
                     Assert.True(assertClassName == testState.TestGenerateTypeOptionsService.ClassName);
                 }
 
-                if (assertGenerateTypeDialogOptions != null || assertTypeKindPresent != null || assertTypeKindAbsent != null)
+                if ((assertGenerateTypeDialogOptions != null) || (assertTypeKindPresent != null) || (assertTypeKindAbsent != null))
                 {
                     var generateTypeDialogOptions = testState.TestGenerateTypeOptionsService.GenerateTypeDialogOptions;
 

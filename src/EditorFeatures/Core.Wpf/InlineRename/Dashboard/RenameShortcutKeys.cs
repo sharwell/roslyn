@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         {
             int underscoreIndex = localizedLabel.IndexOf('_');
 
-            if (underscoreIndex >= 0 && underscoreIndex < localizedLabel.Length - 1)
+            if ((underscoreIndex >= 0) && (underscoreIndex < (localizedLabel.Length - 1)))
             {
                 return new string(new char[] { char.ToUpperInvariant(localizedLabel[underscoreIndex + 1]) });
             }

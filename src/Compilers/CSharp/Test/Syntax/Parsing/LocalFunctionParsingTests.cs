@@ -438,7 +438,7 @@ class c
     }
 }", parseOptions: TestOptions.Regular.WithLanguageVersion(LanguageVersion.CSharp6));
             Assert.NotNull(file);
-            Assert.False(file.DescendantNodes().Any(n => n.Kind() == SyntaxKind.LocalFunctionStatement && !n.ContainsDiagnostics));
+            Assert.False(file.DescendantNodes().Any(n => (n.Kind() == SyntaxKind.LocalFunctionStatement) && !n.ContainsDiagnostics));
             Assert.True(file.HasErrors);
             file.SyntaxTree.GetDiagnostics().Verify(
                 // (6,13): error CS8059: Feature 'local functions' is not available in C# 6. Please use language version 7.0 or greater.

@@ -121,7 +121,7 @@ namespace Microsoft.CodeAnalysis.Emit.NoPia
                         int signatureIndex = TypeManager.GetTargetAttributeSignatureIndex(UnderlyingNamedType, attrData, AttributeDescription.InterfaceTypeAttribute);
                         if (signatureIndex != -1)
                         {
-                            Debug.Assert(signatureIndex == 0 || signatureIndex == 1);
+                            Debug.Assert((signatureIndex == 0) || (signatureIndex == 1));
                             if (attrData.CommonConstructorArguments.Length == 1)
                             {
                                 builder.AddOptional(TypeManager.CreateSynthesizedAttribute(signatureIndex == 0 ? WellKnownMember.System_Runtime_InteropServices_InterfaceTypeAttribute__ctorInt16 :
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.Emit.NoPia
                         }
                         else if (IsTargetAttribute(attrData, AttributeDescription.FlagsAttribute))
                         {
-                            if (attrData.CommonConstructorArguments.Length == 0 && UnderlyingNamedType.IsEnum)
+                            if ((attrData.CommonConstructorArguments.Length == 0) && UnderlyingNamedType.IsEnum)
                             {
                                 builder.AddOptional(TypeManager.CreateSynthesizedAttribute(WellKnownMember.System_FlagsAttribute__ctor, attrData, syntaxNodeOpt, diagnostics));
                             }

@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.ImplementInterface
                 // a) different return types
                 // b) different accessibility
                 // c) different constraints
-                if (member1.DeclaredAccessibility != member2.DeclaredAccessibility ||
+                if ((member1.DeclaredAccessibility != member2.DeclaredAccessibility) ||
                     !SignatureComparer.Instance.HaveSameSignatureAndConstraintsAndReturnTypeAndAccessors(member1, member2, this.IsCaseSensitive))
                 {
                     return true;

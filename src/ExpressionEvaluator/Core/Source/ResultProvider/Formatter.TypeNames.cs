@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             }
             Debug.Assert(nullableCount < 2, "Benign: someone is nesting nullables.");
 
-            Debug.Assert(pointerCount == 0 || nullableCount == 0, "Benign: pointer to nullable?");
+            Debug.Assert((pointerCount == 0) || (nullableCount == 0), "Benign: pointer to nullable?");
 
             AppendQualifiedTypeNameInternal(
                 builder,
@@ -346,7 +346,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             int arity,
             out bool sawInvalidIdentifier)
         {
-            if (typeArguments == null || arity == 0)
+            if ((typeArguments == null) || (arity == 0))
             {
                 AppendIdentifier(builder, escapeKeywordIdentifiers, type.Name, out sawInvalidIdentifier);
                 return;

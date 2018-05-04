@@ -205,24 +205,24 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             CSharpSyntaxNode syntax)
         {
             Debug.Assert(
-                kind == SyntaxKind.ClassDeclaration ||
-                kind == SyntaxKind.StructDeclaration ||
-                kind == SyntaxKind.InterfaceDeclaration ||
-                kind == SyntaxKind.EnumDeclaration ||
-                kind == SyntaxKind.DelegateDeclaration);
+                (kind == SyntaxKind.ClassDeclaration) ||
+                (kind == SyntaxKind.StructDeclaration) ||
+                (kind == SyntaxKind.InterfaceDeclaration) ||
+                (kind == SyntaxKind.EnumDeclaration) ||
+                (kind == SyntaxKind.DelegateDeclaration));
 
             TypeKind typeKind = kind.ToDeclarationKind().ToTypeKind();
 
             foreach (var member in GetTypeMembers(name, arity))
             {
                 var memberT = member as SourceNamedTypeSymbol;
-                if ((object)memberT != null && memberT.TypeKind == typeKind)
+                if (((object)memberT != null) && (memberT.TypeKind == typeKind))
                 {
                     if (syntax != null)
                     {
                         foreach (var loc in memberT.Locations)
                         {
-                            if (loc.IsInSource && loc.SourceTree == syntax.SyntaxTree && syntax.Span.Contains(loc.SourceSpan))
+                            if (loc.IsInSource && (loc.SourceTree == syntax.SyntaxTree) && syntax.Span.Contains(loc.SourceSpan))
                             {
                                 return memberT;
                             }
@@ -265,20 +265,20 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             ImmutableArray<NamedTypeSymbol> namespaceOrTypeMembers;
             bool isTopLevel = scope.IsNamespace;
 
-            Debug.Assert(!isTopLevel || scope.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == emittedTypeName.NamespaceName);
+            Debug.Assert(!isTopLevel || (scope.ToDisplayString(SymbolDisplayFormat.QualifiedNameOnlyFormat) == emittedTypeName.NamespaceName));
 
             if (emittedTypeName.IsMangled)
             {
-                Debug.Assert(!emittedTypeName.UnmangledTypeName.Equals(emittedTypeName.TypeName) && emittedTypeName.InferredArity > 0);
+                Debug.Assert(!emittedTypeName.UnmangledTypeName.Equals(emittedTypeName.TypeName) && (emittedTypeName.InferredArity > 0));
 
-                if (emittedTypeName.ForcedArity == -1 || emittedTypeName.ForcedArity == emittedTypeName.InferredArity)
+                if ((emittedTypeName.ForcedArity == -1) || (emittedTypeName.ForcedArity == emittedTypeName.InferredArity))
                 {
                     // Let's handle mangling case first.
                     namespaceOrTypeMembers = scope.GetTypeMembers(emittedTypeName.UnmangledTypeName);
 
                     foreach (var named in namespaceOrTypeMembers)
                     {
-                        if (emittedTypeName.InferredArity == named.Arity && named.MangleName)
+                        if ((emittedTypeName.InferredArity == named.Arity) && named.MangleName)
                         {
                             if ((object)namedType != null)
                             {
@@ -293,7 +293,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
             else
             {
-                Debug.Assert(ReferenceEquals(emittedTypeName.UnmangledTypeName, emittedTypeName.TypeName) && emittedTypeName.InferredArity == 0);
+                Debug.Assert(ReferenceEquals(emittedTypeName.UnmangledTypeName, emittedTypeName.TypeName) && (emittedTypeName.InferredArity == 0));
             }
 
             // Now try lookup without removing generic arity mangling.
@@ -324,7 +324,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             foreach (var named in namespaceOrTypeMembers)
             {
-                if (!named.MangleName && (forcedArity == -1 || forcedArity == named.Arity))
+                if (!named.MangleName && ((forcedArity == -1) || (forcedArity == named.Arity)))
                 {
                     if ((object)namedType != null)
                     {

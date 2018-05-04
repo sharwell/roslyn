@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting.Indentation
             // A feature like completion handled the return key but did not pass it on to the editor.
             var newCaretPoint = textView.GetCaretPoint(args.SubjectBuffer);
             if (textView.Selection.IsEmpty && oldCaretPoint.HasValue && newCaretPoint.HasValue &&
-                oldCaretPoint.Value.GetContainingLine().LineNumber == newCaretPoint.Value.GetContainingLine().LineNumber)
+                (oldCaretPoint.Value.GetContainingLine().LineNumber == newCaretPoint.Value.GetContainingLine().LineNumber))
             {
                 return;
             }
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting.Indentation
 
             var currentOffset = caretInSubjectBuffer - lineInSubjectBuffer.Start;
             var firstNonWhitespaceIndex = lineInSubjectBuffer.GetFirstNonWhitespaceOffset();
-            if (!firstNonWhitespaceIndex.HasValue || currentOffset >= firstNonWhitespaceIndex.Value)
+            if (!firstNonWhitespaceIndex.HasValue || (currentOffset >= firstNonWhitespaceIndex.Value))
             {
                 return false;
             }
@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting.Indentation
             var startPositionCaret = view.GetPositionInView(containingLineCaret.Start);
             if (!startPositionSubjectBuffer.HasValue ||
                 !startPositionCaret.HasValue ||
-                startPositionCaret.Value != startPositionSubjectBuffer.Value)
+                (startPositionCaret.Value != startPositionSubjectBuffer.Value))
             {
                 // if start position of subject buffer is not equal to start position of view line,
                 // we can't use the indenter

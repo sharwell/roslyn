@@ -20,12 +20,12 @@ namespace Microsoft.CodeAnalysis
                 return true;
             }
 
-            if (x == null || y == null)
+            if ((x == null) || (y == null))
             {
                 return false;
             }
 
-            return x.Location == y.Location && x.Id == y.Id;
+            return (x.Location == y.Location) && (x.Id == y.Id);
         }
 
         public int GetHashCode(Diagnostic obj)

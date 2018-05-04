@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         public static bool IsPartial(this TypeSyntax typeSyntax)
         {
-            return typeSyntax is IdentifierNameSyntax &&
+            return (typeSyntax is IdentifierNameSyntax) &&
                 ((IdentifierNameSyntax)typeSyntax).Identifier.IsKind(SyntaxKind.PartialKeyword);
         }
 
@@ -29,11 +29,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 return false;
             }
 
-            if (typeSyntax is PredefinedTypeSyntax ||
-                typeSyntax is ArrayTypeSyntax ||
-                typeSyntax is GenericNameSyntax ||
-                typeSyntax is PointerTypeSyntax ||
-                typeSyntax is NullableTypeSyntax)
+            if ((typeSyntax is PredefinedTypeSyntax) ||
+                (typeSyntax is ArrayTypeSyntax) ||
+                (typeSyntax is GenericNameSyntax) ||
+                (typeSyntax is PointerTypeSyntax) ||
+                (typeSyntax is NullableTypeSyntax))
             {
                 return true;
             }
@@ -54,11 +54,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             var symbols = semanticModelOpt.LookupName(nameToken, namespacesAndTypesOnly: true, cancellationToken);
             var firstSymbol = symbols.FirstOrDefault();
 
-            var typeSymbol = firstSymbol != null && firstSymbol.Kind == SymbolKind.Alias
+            var typeSymbol = (firstSymbol != null) && (firstSymbol.Kind == SymbolKind.Alias)
                 ? (firstSymbol as IAliasSymbol).Target
                 : firstSymbol as ITypeSymbol;
 
-            return typeSymbol != null
+            return (typeSymbol != null)
                 && !typeSymbol.IsErrorType();
         }
 

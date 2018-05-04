@@ -47,7 +47,7 @@ namespace Roslyn.Test.Utilities.Desktop
 
                 // A workaround for known bug DevDiv 369979 - don't unload the AppDomain if we may have loaded a module
                 var safeToUnload = !(Manager.ContainsNetModules() && (PeverifyRequested || ExecuteRequested));
-                if (safeToUnload && AppDomain != null)
+                if (safeToUnload && (AppDomain != null))
                 {
                     AppDomain.Unload(AppDomain);
                 }
@@ -239,7 +239,7 @@ namespace Roslyn.Test.Utilities.Desktop
                 emitData.RuntimeData.ExecuteRequested = true;
                 var resultCode = emitData.Manager.Execute(moduleName, args, expectedOutput?.Length, out var output);
 
-                if (expectedOutput != null && expectedOutput.Trim() != output.Trim())
+                if ((expectedOutput != null) && (expectedOutput.Trim() != output.Trim()))
                 {
                     GetEmitData().Manager.DumpAssemblyData(out var dumpDir);
                     throw new ExecutionException(expectedOutput, output, dumpDir);
@@ -341,7 +341,7 @@ namespace Roslyn.Test.Utilities.Desktop
             {
                 lock (s_runtimeDataCache)
                 {
-                    if (_emitData.RuntimeData != null && s_runtimeDataCache.Count < MaxCachedRuntimeData)
+                    if ((_emitData.RuntimeData != null) && (s_runtimeDataCache.Count < MaxCachedRuntimeData))
                     {
                         s_runtimeDataCache.Add(_emitData.RuntimeData);
                         _emitData.RuntimeData = null;

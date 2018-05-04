@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             foreach (var pending in PendingBranches)
             {
-                if (pending.Branch == null || !RegionContains(pending.Branch.Syntax.Span)) continue;
+                if ((pending.Branch == null) || !RegionContains(pending.Branch.Syntax.Span)) continue;
                 switch (pending.Branch.Kind)
                 {
                     case BoundKind.GotoStatement:

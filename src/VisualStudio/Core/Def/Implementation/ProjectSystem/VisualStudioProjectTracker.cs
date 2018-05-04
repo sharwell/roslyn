@@ -135,7 +135,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             var shellMonitorSelection = (IVsMonitorSelection)serviceProvider.GetService(typeof(SVsShellMonitorSelection));
             if (ErrorHandler.Succeeded(shellMonitorSelection.GetCmdUIContextCookie(VSConstants.UICONTEXT.SolutionExistsAndFullyLoaded_guid, out var fullyLoadedContextCookie)))
             {
-                if (ErrorHandler.Succeeded(shellMonitorSelection.IsCmdUIContextActive(fullyLoadedContextCookie, out var fActive)) && fActive != 0)
+                if (ErrorHandler.Succeeded(shellMonitorSelection.IsCmdUIContextActive(fullyLoadedContextCookie, out var fActive)) && (fActive != 0))
                 {
                     _solutionLoadComplete = true;
                 }
@@ -272,7 +272,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                     string solutionFilePath = null;
                     VersionStamp? version = default;
                     // Figure out the solution version
-                    if (ErrorHandler.Succeeded(_vsSolution.GetSolutionInfo(out var solutionDirectory, out var solutionFileName, out var userOptsFile)) && solutionFileName != null)
+                    if (ErrorHandler.Succeeded(_vsSolution.GetSolutionInfo(out var solutionDirectory, out var solutionFileName, out var userOptsFile)) && (solutionFileName != null))
                     {
                         solutionFilePath = Path.Combine(solutionDirectory, solutionFileName);
                         if (File.Exists(solutionFilePath))
@@ -489,8 +489,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 return false;
             }
 
-            if (filePath[secondToLastSeparator] != Path.DirectorySeparatorChar
-                && filePath[secondToLastSeparator] != Path.AltDirectorySeparatorChar)
+            if ((filePath[secondToLastSeparator] != Path.DirectorySeparatorChar)
+                && (filePath[secondToLastSeparator] != Path.AltDirectorySeparatorChar))
             {
                 // Failed condition 1
                 binFilePath = null;

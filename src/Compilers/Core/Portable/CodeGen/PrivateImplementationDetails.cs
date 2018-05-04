@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             public int Compare(SynthesizedStaticField x, SynthesizedStaticField y)
             {
                 // Fields are always synthesized with non-null names.
-                Debug.Assert(x.Name != null && y.Name != null);
+                Debug.Assert((x.Name != null) && (y.Name != null));
                 return x.Name.CompareTo(y.Name);
             }
         }

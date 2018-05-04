@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 else
                 {
                     var args = d.Arguments;
-                    if (args == null || args.Count == 0)
+                    if ((args == null) || (args.Count == 0))
                     {
                         _arguments = null;
                     }
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                     }
                 }
 
-                if (_arguments != null && _arguments.Length == 0)
+                if ((_arguments != null) && (_arguments.Length == 0))
                 {
                     _arguments = null;
                 }
@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 var args2 = d.GetArgumentsAsStrings();
                 if (_argumentOrderDoesNotMatter || d._argumentOrderDoesNotMatter)
                 {
-                    if (args1.Count() != args2.Count() || !args1.SetEquals(args2))
+                    if ((args1.Count() != args2.Count()) || !args1.SetEquals(args2))
                         return false;
                 }
                 else
@@ -338,7 +338,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                     sb.Append("\"");
                     sb.Append(argumentStrings.Current);
                     sb.Append("\"");
-                    if (i < _arguments.Length - 1)
+                    if (i < (_arguments.Length - 1))
                     {
                         sb.Append(", ");
                     }
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 sb.Append(".WithWarningAsError(true)");
             }
 
-            if (_syntaxPredicate != null && _showPredicate)
+            if ((_syntaxPredicate != null) && _showPredicate)
             {
                 sb.Append(".WhereSyntax(...)");
             }
@@ -388,7 +388,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 var d = expected[i];
                 AppendDiagnosticDescription(expectedText, d, indentDepth);
 
-                if (i < expected.Length - 1)
+                if (i < (expected.Length - 1))
                 {
                     expectedText.Append(",");
                 }

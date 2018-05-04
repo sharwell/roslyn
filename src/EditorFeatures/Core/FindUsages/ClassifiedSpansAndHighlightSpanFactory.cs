@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindUsages
             // If the document span is providing us with the classified spans up front, then we
             // can just use that.  Otherwise, go back and actually classify the text for the line
             // the document span is on.
-            if (documentSpan.Properties != null &&
+            if ((documentSpan.Properties != null) &&
                 documentSpan.Properties.TryGetValue(ClassifiedSpansAndHighlightSpan.Key, out var value))
             {
                 return (ClassifiedSpansAndHighlightSpan)value;
@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindUsages
                 // when we walk through this list.
                 var intersection = span.TextSpan.Intersection(widenedSpan);
 
-                if (i > 0 && intersection != null)
+                if ((i > 0) && (intersection != null))
                 {
                     if (spans[i - 1].TextSpan.End > intersection.Value.Start)
                     {
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis.Editor.FindUsages
                 // Take the semantic part if it's just 'text'.  We want to keep it if
                 // the semantic classifier actually produced an interesting result 
                 // (as opposed to it just being a 'gap' classification).
-                var part = replacementIndex >= 0 && !IsClassifiedAsText(semanticParts[replacementIndex])
+                var part = (replacementIndex >= 0) && !IsClassifiedAsText(semanticParts[replacementIndex])
                     ? semanticParts[replacementIndex]
                     : syntaxPartAndSpan;
                 finalParts.Add(part);

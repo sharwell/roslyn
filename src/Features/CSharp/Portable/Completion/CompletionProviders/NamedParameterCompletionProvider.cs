@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 // Consider refining this logic to mandate completion with an argument name, if preceded by an out-of-position name
                 // See https://github.com/dotnet/roslyn/issues/20657
                 var languageVersion = ((CSharpParseOptions)document.Project.ParseOptions).LanguageVersion;
-                if (languageVersion < LanguageVersion.CSharp7_2 && token.IsMandatoryNamedParameterPosition())
+                if ((languageVersion < LanguageVersion.CSharp7_2) && token.IsMandatoryNamedParameterPosition())
                 {
                     context.IsExclusive = true;
                 }
@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
         private ISet<string> GetExistingNamedParameters(BaseArgumentListSyntax argumentList, int position)
         {
-            var existingArguments = argumentList.Arguments.Where(a => a.Span.End <= position && a.NameColon != null)
+            var existingArguments = argumentList.Arguments.Where(a => (a.Span.End <= position) && (a.NameColon != null))
                                                           .Select(a => a.NameColon.Name.Identifier.ValueText);
 
             return existingArguments.ToSet();
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         {
             var type = semanticModel.GetTypeInfo(objectCreationExpression, cancellationToken).Type as INamedTypeSymbol;
             var within = semanticModel.GetEnclosingNamedType(position, cancellationToken);
-            if (type != null && within != null && type.TypeKind != TypeKind.Delegate)
+            if ((type != null) && (within != null) && (type.TypeKind != TypeKind.Delegate))
             {
                 return type.InstanceConstructors.Where(c => c.IsAccessibleWithin(within))
                                                 .Select(c => c.Parameters);
@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             var expressionSymbol = semanticModel.GetSymbolInfo(elementAccessExpression.Expression, cancellationToken).GetAnySymbol();
             var expressionType = semanticModel.GetTypeInfo(elementAccessExpression.Expression, cancellationToken).Type;
 
-            if (expressionSymbol != null && expressionType != null)
+            if ((expressionSymbol != null) && (expressionType != null))
             {
                 var indexers = semanticModel.LookupSymbols(position, expressionType, WellKnownMemberNames.Indexer).OfType<IPropertySymbol>();
                 var within = semanticModel.GetEnclosingNamedTypeOrAssembly(position, cancellationToken);
@@ -197,8 +197,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             CancellationToken cancellationToken)
         {
             var within = semanticModel.GetEnclosingNamedType(position, cancellationToken);
-            if (within != null &&
-                (within.TypeKind == TypeKind.Struct || within.TypeKind == TypeKind.Class))
+            if ((within != null) &&
+                ((within.TypeKind == TypeKind.Struct) || (within.TypeKind == TypeKind.Class)))
             {
                 var type = constructorInitializer.Kind() == SyntaxKind.BaseConstructorInitializer
                     ? within.BaseType

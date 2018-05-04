@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             PreprocessingSymbol other = obj as PreprocessingSymbol;
 
-            return (object)other != null &&
+            return ((object)other != null) &&
                 this.Name.Equals(other.Name);
         }
 

@@ -49,8 +49,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
             }
 
             private static bool IsNonTypeCharRetrigger(SignatureHelpTriggerInfo triggerInfo)
-                => triggerInfo.TriggerReason == SignatureHelpTriggerReason.RetriggerCommand &&
-                   triggerInfo.TriggerCharacter == null;
+                => (triggerInfo.TriggerReason == SignatureHelpTriggerReason.RetriggerCommand) &&
+                   (triggerInfo.TriggerCharacter == null);
 
             private async Task<Model> ComputeModelInBackgroundAsync(
                 int localRetriggerId,
@@ -108,12 +108,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                             return null;
                         }
 
-                        if (currentModel != null &&
-                            currentModel.Provider == provider &&
-                            currentModel.GetCurrentSpanInSubjectBuffer(disconnectedBufferGraph.SubjectBufferSnapshot).Span.Start == items.ApplicableSpan.Start &&
-                            currentModel.ArgumentIndex == items.ArgumentIndex &&
-                            currentModel.ArgumentCount == items.ArgumentCount &&
-                            currentModel.ArgumentName == items.ArgumentName)
+                        if ((currentModel != null) &&
+                            (currentModel.Provider == provider) &&
+                            (currentModel.GetCurrentSpanInSubjectBuffer(disconnectedBufferGraph.SubjectBufferSnapshot).Span.Start == items.ApplicableSpan.Start) &&
+                            (currentModel.ArgumentIndex == items.ArgumentIndex) &&
+                            (currentModel.ArgumentCount == items.ArgumentCount) &&
+                            (currentModel.ArgumentName == items.ArgumentName))
                         {
                             // The new model is the same as the current model.  Return the currentModel
                             // so we keep the active selection.
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                             selectedParameter: 0);
 
                         var syntaxFactsService = document.GetLanguageService<ISyntaxFactsService>();
-                        var isCaseSensitive = syntaxFactsService == null || syntaxFactsService.IsCaseSensitive;
+                        var isCaseSensitive = (syntaxFactsService == null) || syntaxFactsService.IsCaseSensitive;
                         var selection = DefaultSignatureHelpSelector.GetSelection(model.Items,
                             model.SelectedItem, model.ArgumentIndex, model.ArgumentCount, model.ArgumentName, isCaseSensitive);
 
@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                     return true;
                 }
 
-                return s1 != null && s2 != null && s1.SequenceEqual(s2);
+                return (s1 != null) && (s2 != null) && s1.SequenceEqual(s2);
             }
 
             private static SignatureHelpItem GetSelectedItem(Model currentModel, SignatureHelpItems items, ISignatureHelpProvider provider)
@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
 
                 // If the provider did not pick a default, and it's the same provider as the previous
                 // model we have, then try to return the same item that we had before. 
-                if (currentModel != null && currentModel.Provider == provider)
+                if ((currentModel != null) && (currentModel.Provider == provider))
                 {
                     return items.Items.FirstOrDefault(i => DisplayPartsMatch(i, currentModel.SelectedItem)) ?? items.Items.First();
                 }
@@ -201,7 +201,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                         // If this is a retrigger command, and another retrigger command has already
                         // been issued then we can bail out immediately.
                         if (IsNonTypeCharRetrigger(triggerInfo) &&
-                            localRetriggerId != _retriggerId)
+                            (localRetriggerId != _retriggerId))
                         {
                             return null;
                         }
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                         cancellationToken.ThrowIfCancellationRequested();
 
                         var currentItems = await provider.GetItemsAsync(document, caretPosition, triggerInfo, cancellationToken).ConfigureAwait(false);
-                        if (currentItems != null && currentItems.ApplicableSpan.IntersectsWith(caretPosition.Position))
+                        if ((currentItems != null) && currentItems.ApplicableSpan.IntersectsWith(caretPosition.Position))
                         {
                             // If another provider provides sig help items, then only take them if they
                             // start after the last batch of items.  i.e. we want the set of items that

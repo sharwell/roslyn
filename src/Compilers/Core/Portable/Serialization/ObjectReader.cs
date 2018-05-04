@@ -92,8 +92,8 @@ namespace Roslyn.Utilities
                 return null;
             }
 
-            if (stream.ReadByte() != VersionByte1 ||
-                stream.ReadByte() != VersionByte2)
+            if ((stream.ReadByte() != VersionByte1) ||
+                (stream.ReadByte() != VersionByte2))
             {
                 return null;
             }
@@ -141,7 +141,7 @@ namespace Roslyn.Utilities
             _recursionDepth++;
 
             object value;
-            if (_recursionDepth % ObjectWriter.MaxRecursionDepth == 0)
+            if ((_recursionDepth % ObjectWriter.MaxRecursionDepth) == 0)
             {
                 // If we're recursing too deep, move the work to another thread to do so we
                 // don't blow the stack.

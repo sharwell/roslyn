@@ -23,11 +23,11 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateEnumMember
             out SyntaxToken identifierToken, out ExpressionSyntax simpleNameOrMemberAccessExpression)
         {
             identifierToken = identifierName.Identifier;
-            if (identifierToken.ValueText != string.Empty &&
+            if ((identifierToken.ValueText != string.Empty) &&
                 !identifierName.IsVar)
             {
                 var memberAccess = identifierName.Parent as MemberAccessExpressionSyntax;
-                simpleNameOrMemberAccessExpression = memberAccess != null && memberAccess.Name == identifierName
+                simpleNameOrMemberAccessExpression = (memberAccess != null) && (memberAccess.Name == identifierName)
                     ? (ExpressionSyntax)memberAccess
                     : identifierName;
 

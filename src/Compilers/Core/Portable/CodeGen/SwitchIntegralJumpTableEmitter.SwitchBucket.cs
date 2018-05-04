@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             internal SwitchBucket(ImmutableArray<KeyValuePair<ConstantValue, object>> allLabels, int startIndex, int endIndex, bool isDegenerate)
             {
                 Debug.Assert((uint)startIndex <= (uint)endIndex);
-                Debug.Assert((uint)startIndex != (uint)endIndex || isDegenerate);
+                Debug.Assert(((uint)startIndex != (uint)endIndex) || isDegenerate);
 
                 _startLabelIndex = startIndex;
                 _endLabelIndex = endIndex;
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
                     {
                         var switchLabel = allLabels[idx];
 
-                        if (lastLabel != switchLabel.Value ||
+                        if ((lastLabel != switchLabel.Value) ||
                             !IsContiguous(lastConst, switchLabel.Key))
                         {
                             if (split != 0)
@@ -204,13 +204,13 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
                 if (startConstant.Discriminator == ConstantValueTypeDiscriminator.Int64)
                 {
-                    return startConstant.Int64Value == Int64.MinValue
-                        && endConstant.Int64Value == Int64.MaxValue;
+                    return (startConstant.Int64Value == Int64.MinValue)
+                        && (endConstant.Int64Value == Int64.MaxValue);
                 }
                 else if (startConstant.Discriminator == ConstantValueTypeDiscriminator.UInt64)
                 {
-                    return startConstant.UInt64Value == UInt64.MinValue
-                        && endConstant.UInt64Value == UInt64.MaxValue;
+                    return (startConstant.UInt64Value == UInt64.MinValue)
+                        && (endConstant.UInt64Value == UInt64.MaxValue);
                 }
 
                 return false;
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             private static bool BucketOverflow(ConstantValue startConstant, ConstantValue endConstant)
             {
                 return BucketOverflowUInt64Limit(startConstant, endConstant)
-                    || GetBucketSize(startConstant, endConstant) > Int32.MaxValue;
+                    || (GetBucketSize(startConstant, endConstant) > Int32.MaxValue);
             }
 
             internal int StartLabelIndex
@@ -258,7 +258,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
             private static bool IsValidSwitchBucketConstant(ConstantValue constant)
             {
-                return constant != null
+                return (constant != null)
                     && SwitchConstantValueHelper.IsValidSwitchCaseLabelConstant(constant)
                     && !constant.IsNull
                     && !constant.IsString;
@@ -268,13 +268,13 @@ namespace Microsoft.CodeAnalysis.CodeGen
             {
                 return IsValidSwitchBucketConstant(startConstant)
                     && IsValidSwitchBucketConstant(endConstant)
-                    && startConstant.IsUnsigned == endConstant.IsUnsigned;
+                    && (startConstant.IsUnsigned == endConstant.IsUnsigned);
             }
 
             private static bool IsSparse(uint labelsCount, ulong bucketSize)
             {
                 // TODO: consider changing threshold bucket density to 33%
-                return bucketSize >= labelsCount * 2;
+                return bucketSize >= (labelsCount * 2);
             }
 
             internal static bool MergeIsAdvantageous(SwitchBucket bucket1, SwitchBucket bucket2)
@@ -301,7 +301,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             /// </summary>
             internal bool TryMergeWith(SwitchBucket prevBucket)
             {
-                Debug.Assert(prevBucket._endLabelIndex + 1 == _startLabelIndex);
+                Debug.Assert((prevBucket._endLabelIndex + 1) == _startLabelIndex);
                 if (MergeIsAdvantageous(prevBucket, this))
                 {
                     this = new SwitchBucket(_allLabels, prevBucket._startLabelIndex, _endLabelIndex);

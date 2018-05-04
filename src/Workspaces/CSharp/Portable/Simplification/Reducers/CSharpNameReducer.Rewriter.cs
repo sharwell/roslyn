@@ -200,11 +200,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
             public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
             {
-                bool isOrAsNode = node.Kind() == SyntaxKind.AsExpression || node.Kind() == SyntaxKind.IsExpression;
+                bool isOrAsNode = (node.Kind() == SyntaxKind.AsExpression) || (node.Kind() == SyntaxKind.IsExpression);
 
                 var result = (ExpressionSyntax)base.VisitBinaryExpression(node);
 
-                if (result != node && isOrAsNode)
+                if ((result != node) && isOrAsNode)
                 {
                     // In order to handle cases in which simplifying a name would result in code
                     // that parses different, we pre-emptively add parentheses that will be

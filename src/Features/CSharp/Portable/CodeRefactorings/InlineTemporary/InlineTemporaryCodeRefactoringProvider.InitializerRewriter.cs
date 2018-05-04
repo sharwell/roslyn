@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
                 }
 
                 var symbol = _semanticModel.GetSymbolInfo(name).Symbol;
-                return symbol != null
+                return (symbol != null)
                     && symbol.Equals(_localSymbol);
             }
 
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
                         ? (IdentifierNameSyntax)assignment.Left
                         : null;
 
-                    if (name != null && IsReference(name))
+                    if ((name != null) && IsReference(name))
                     {
                         return assignment.Right;
                     }
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
                     if (node.Parent is AssignmentExpressionSyntax assignmentExpression)
                     {
                         if (assignmentExpression.IsCompoundAssignExpression() &&
-                            assignmentExpression.Left == node)
+                            (assignmentExpression.Left == node))
                         {
                             return node.Update(node.Identifier.WithAdditionalAnnotations(CreateConflictAnnotation()));
                         }
@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InlineTemporary
             {
                 var newNode = base.VisitParenthesizedExpression(node);
 
-                if (node != newNode && newNode.Kind() == SyntaxKind.ParenthesizedExpression)
+                if ((node != newNode) && (newNode.Kind() == SyntaxKind.ParenthesizedExpression))
                 {
                     return newNode.WithAdditionalAnnotations(Simplifier.Annotation);
                 }

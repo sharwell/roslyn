@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public virtual BoundStatement InstrumentYieldBreakStatement(BoundYieldBreakStatement original, BoundStatement rewritten)
         {
-            Debug.Assert(!original.WasCompilerGenerated || original.Syntax.Kind() == SyntaxKind.Block);
+            Debug.Assert(!original.WasCompilerGenerated || (original.Syntax.Kind() == SyntaxKind.Block));
             return rewritten;
         }
 
@@ -199,9 +199,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public virtual BoundStatement InstrumentLocalInitialization(BoundLocalDeclaration original, BoundStatement rewritten)
         {
-            Debug.Assert(original.Syntax.Kind() == SyntaxKind.VariableDeclarator ||
-                         (original.Syntax.Kind() == SyntaxKind.LocalDeclarationStatement &&
-                                ((LocalDeclarationStatementSyntax)original.Syntax).Declaration.Variables.Count == 1));
+            Debug.Assert((original.Syntax.Kind() == SyntaxKind.VariableDeclarator) ||
+                         ((original.Syntax.Kind() == SyntaxKind.LocalDeclarationStatement) &&
+                                (((LocalDeclarationStatementSyntax)original.Syntax).Declaration.Variables.Count == 1)));
             return InstrumentStatement(original, rewritten);
         }
 
@@ -259,7 +259,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public virtual BoundExpression InstrumentSwitchStatementExpression(BoundStatement original, BoundExpression rewrittenExpression, SyntheticBoundNodeFactory factory)
         {
-            Debug.Assert(original.Kind == BoundKind.SwitchStatement || original.Kind == BoundKind.PatternSwitchStatement);
+            Debug.Assert((original.Kind == BoundKind.SwitchStatement) || (original.Kind == BoundKind.PatternSwitchStatement));
             Debug.Assert(!original.WasCompilerGenerated);
             Debug.Assert(original.Syntax.Kind() == SyntaxKind.SwitchStatement);
             Debug.Assert(factory != null);

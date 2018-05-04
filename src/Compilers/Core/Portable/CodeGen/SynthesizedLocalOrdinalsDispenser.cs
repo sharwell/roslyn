@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         private static long MakeKey(SynthesizedLocalKind localKind, int syntaxOffset)
         {
-            return (long)syntaxOffset << 8 | (long)localKind;
+            return ((long)syntaxOffset << 8) | (long)localKind;
         }
 
         public void Free()
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
             }
 
             _lazyMap[key] = ordinal + 1;
-            Debug.Assert(ordinal == 0 || localKind != SynthesizedLocalKind.UserDefined);
+            Debug.Assert((ordinal == 0) || (localKind != SynthesizedLocalKind.UserDefined));
             return ordinal;
         }
     }

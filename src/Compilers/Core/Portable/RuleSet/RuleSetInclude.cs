@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis
         private static string ResolveIncludePath(string includePath, string parentRulesetPath)
         {
             var resolvedIncludePath = ResolveIncludePathCore(includePath, parentRulesetPath);
-            if (resolvedIncludePath == null && PathUtilities.IsUnixLikePlatform)
+            if ((resolvedIncludePath == null) && PathUtilities.IsUnixLikePlatform)
             {
                 // Attempt to resolve legacy ruleset includes after replacing Windows style directory separator char with current plaform's directory separator char.
                 includePath = includePath.Replace('\\', Path.DirectorySeparatorChar);

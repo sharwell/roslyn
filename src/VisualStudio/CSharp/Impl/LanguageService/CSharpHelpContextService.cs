@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
             }
 
             var trivia = root.FindTrivia(span.Start, findInsideTrivia: true);
-            if (trivia.Span.IntersectsWith(span) && trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia &&
-                trivia.Token.GetAncestor<RegionDirectiveTriviaSyntax>() != null)
+            if (trivia.Span.IntersectsWith(span) && (trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia) &&
+                (trivia.Token.GetAncestor<RegionDirectiveTriviaSyntax>() != null))
             {
                 return "#region";
             }
@@ -82,12 +82,12 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
                 int start = span.Start;
                 int end = span.Start;
 
-                while (start > 0 && syntaxFacts.IsIdentifierPartCharacter(text[start - 1]))
+                while ((start > 0) && syntaxFacts.IsIdentifierPartCharacter(text[start - 1]))
                 {
                     start--;
                 }
 
-                while (end < text.Length - 1 && syntaxFacts.IsIdentifierPartCharacter(text[end]))
+                while ((end < (text.Length - 1)) && syntaxFacts.IsIdentifierPartCharacter(text[end]))
                 {
                     end++;
                 }
@@ -101,7 +101,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
         private bool IsValid(SyntaxToken token, TextSpan span)
         {
             // If the token doesn't actually intersect with our position, give up
-            return token.Kind() == SyntaxKind.EndIfDirectiveTrivia || token.Span.IntersectsWith(span);
+            return (token.Kind() == SyntaxKind.EndIfDirectiveTrivia) || token.Span.IntersectsWith(span);
         }
 
         private string TryGetText(SyntaxToken token, SemanticModel semanticModel, Document document, ISyntaxFactsService syntaxFacts, CancellationToken cancellationToken)
@@ -126,7 +126,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
                 var genericName = token.GetAncestor<GenericNameSyntax>();
                 symbol = semanticModel.GetSymbolInfo(genericName, cancellationToken).Symbol ?? semanticModel.GetTypeInfo(genericName, cancellationToken).Type;
             }
-            else if (token.Parent is NullableTypeSyntax && token.IsKind(SyntaxKind.QuestionToken))
+            else if ((token.Parent is NullableTypeSyntax) && token.IsKind(SyntaxKind.QuestionToken))
             {
                 text = "System.Nullable`1";
                 return true;
@@ -145,7 +145,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
             }
 
             // Local: return the name if it's the declaration, otherwise the type
-            if (symbol is ILocalSymbol && !symbol.DeclaringSyntaxReferences.Any(d => d.GetSyntax().DescendantTokens().Contains(token)))
+            if ((symbol is ILocalSymbol) && !symbol.DeclaringSyntaxReferences.Any(d => d.GetSyntax().DescendantTokens().Contains(token)))
             {
                 symbol = ((ILocalSymbol)symbol).Type;
             }
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
             }
 
             // Just use syntaxfacts for operators
-            if (symbol is IMethodSymbol && ((IMethodSymbol)symbol).MethodKind == MethodKind.BuiltinOperator)
+            if ((symbol is IMethodSymbol) && (((IMethodSymbol)symbol).MethodKind == MethodKind.BuiltinOperator))
             {
                 text = null;
                 return false;
@@ -183,13 +183,13 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
                 return true;
             }
 
-            if (token.Kind() == SyntaxKind.ColonToken && token.Parent is NameColonSyntax)
+            if ((token.Kind() == SyntaxKind.ColonToken) && (token.Parent is NameColonSyntax))
             {
                 text = "cs_namedParameter";
                 return true;
             }
 
-            if (token.IsKind(SyntaxKind.QuestionToken) && token.Parent is ConditionalExpressionSyntax)
+            if (token.IsKind(SyntaxKind.QuestionToken) && (token.Parent is ConditionalExpressionSyntax))
             {
                 text = "?_CSharpKeyword";
                 return true;
@@ -225,7 +225,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
                 return true;
             }
 
-            if (token.IsKind(SyntaxKind.EndOfDirectiveToken) && token.GetAncestor<RegionDirectiveTriviaSyntax>() != null)
+            if (token.IsKind(SyntaxKind.EndOfDirectiveToken) && (token.GetAncestor<RegionDirectiveTriviaSyntax>() != null))
             {
                 text = "#region";
                 return true;
@@ -296,8 +296,8 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
                 return true;
             }
 
-            if (token.ValueText == "var" && token.IsKind(SyntaxKind.IdentifierToken) &&
-                token.Parent.Parent is VariableDeclarationSyntax && token.Parent == ((VariableDeclarationSyntax)token.Parent.Parent).Type)
+            if ((token.ValueText == "var") && token.IsKind(SyntaxKind.IdentifierToken) &&
+                (token.Parent.Parent is VariableDeclarationSyntax) && (token.Parent == ((VariableDeclarationSyntax)token.Parent.Parent).Type))
             {
                 text = "var_CSharpKeyword";
                 return true;
@@ -317,7 +317,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
         {
             var displayString = symbol.ToDisplayString(TypeFormat);
 
-            if (symbol is ITypeSymbol type && type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+            if (symbol is ITypeSymbol type && (type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T))
             {
                 return "System.Nullable`1";
             }
@@ -332,7 +332,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.LanguageService
 
         public override string FormatSymbol(ISymbol symbol)
         {
-            if (symbol is ITypeSymbol || symbol is INamespaceSymbol)
+            if ((symbol is ITypeSymbol) || (symbol is INamespaceSymbol))
             {
                 return FormatNamespaceOrTypeSymbol((INamespaceOrTypeSymbol)symbol);
             }

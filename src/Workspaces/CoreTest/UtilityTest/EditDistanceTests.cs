@@ -287,7 +287,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
                     for (var k = 0; k < top.Length; k++)
                     {
-                        if (k == i || k == j)
+                        if ((k == i) || (k == j))
                         {
                             continue;
                         }
@@ -300,7 +300,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                         var editDistance13 = EditDistance.GetEditDistance(string1, string3);
                         var editDistance23 = EditDistance.GetEditDistance(string2, string3);
 
-                        Assert.True(editDistance13 <= editDistance12 + editDistance23);
+                        Assert.True(editDistance13 <= (editDistance12 + editDistance23));
                     }
                 }
             }

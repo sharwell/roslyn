@@ -60,14 +60,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         // If at least one Roslyn active item with location is selected, we enable suppress in source.
         // Note that we do not support suppress in source when mix of Roslyn and non-Roslyn items are selected as in-source suppression has different meaning and implementation for these.
-        public bool CanSuppressSelectedEntriesInSource => _selectedActiveItems > 0 &&
-            _selectedRoslynItems == _selectedActiveItems &&
-            (_selectedRoslynItems - _selectedNoLocationDiagnosticItems) > 0;
+        public bool CanSuppressSelectedEntriesInSource => (_selectedActiveItems > 0) &&
+            (_selectedRoslynItems == _selectedActiveItems) &&
+            ((_selectedRoslynItems - _selectedNoLocationDiagnosticItems) > 0);
 
         // If at least one Roslyn active item is selected, we enable suppress in suppression file.
         // Also, compiler diagnostics cannot be suppressed in suppression file, so there must be at least one non-compiler item.
-        public bool CanSuppressSelectedEntriesInSuppressionFiles => _selectedActiveItems > 0 &&
-            (_selectedRoslynItems - _selectedCompilerDiagnosticItems) > 0;
+        public bool CanSuppressSelectedEntriesInSuppressionFiles => (_selectedActiveItems > 0) &&
+            ((_selectedRoslynItems - _selectedCompilerDiagnosticItems) > 0);
 
         private void ClearState()
         {
@@ -183,7 +183,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
         {
             // Compiler diagnostics with severity 'Error' are not configurable.
             // Additionally, diagnostics coming from build are from a snapshot (as opposed to live diagnostics) and cannot be configured.
-            return entry != null &&
+            return (entry != null) &&
                 !SuppressionHelpers.IsNotConfigurableDiagnostic(entry) &&
                 !entry.IsBuildDiagnostic();
         }
@@ -260,10 +260,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
                         Document document = null;
                         var hasLocation = entryHandle.TryGetValue(StandardTableColumnDefinitions.DocumentName, out filePath) && !string.IsNullOrEmpty(filePath) &&
-                            entryHandle.TryGetValue(StandardTableColumnDefinitions.Line, out line) && line >= 0;
+                            entryHandle.TryGetValue(StandardTableColumnDefinitions.Line, out line) && (line >= 0);
                         if (hasLocation)
                         {
-                            if (string.IsNullOrEmpty(filePath) || line < 0)
+                            if (string.IsNullOrEmpty(filePath) || (line < 0))
                             {
                                 // bail out
                                 continue;

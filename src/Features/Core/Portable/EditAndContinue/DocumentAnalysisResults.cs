@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             {
                 Debug.Assert(!rudeEdits.IsDefault);
 
-                if (hasSemanticErrors.Value || rudeEdits.Length > 0)
+                if (hasSemanticErrors.Value || (rudeEdits.Length > 0))
                 {
                     Debug.Assert(semanticEditsOpt.IsDefault);
                     Debug.Assert(exceptionRegionsOpt.IsDefault);
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 Debug.Assert(semanticEditsOpt.IsEmpty);
                 Debug.Assert(lineEditsOpt.IsEmpty);
 
-                Debug.Assert(exceptionRegionsOpt.IsDefault || exceptionRegionsOpt.Length == activeStatements.Length);
+                Debug.Assert(exceptionRegionsOpt.IsDefault || (exceptionRegionsOpt.Length == activeStatements.Length));
             }
 
             this.RudeEditErrors = rudeEdits;

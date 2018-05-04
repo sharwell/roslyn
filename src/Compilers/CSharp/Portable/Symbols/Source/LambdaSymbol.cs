@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public override bool ReturnsVoid
         {
-            get { return (object)this.ReturnType != null && this.ReturnType.SpecialType == SpecialType.System_Void; }
+            get { return ((object)this.ReturnType != null) && (this.ReturnType.SpecialType == SpecialType.System_Void); }
         }
 
         public override RefKind RefKind
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         // IDE might inspect the symbol and want to know the return type.
         internal void SetInferredReturnType(RefKind refKind, TypeSymbol inferredReturnType)
         {
-            Debug.Assert((object)inferredReturnType != null && (object)_returnType == null);
+            Debug.Assert(((object)inferredReturnType != null) && ((object)_returnType == null));
             _refKind = refKind;
             _returnType = inferredReturnType;
         }
@@ -305,7 +305,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             Debug.Assert(parameterTypes.Length == parameterRefKinds.Length);
 
-            if (!unboundLambda.HasSignature || unboundLambda.ParameterCount == 0)
+            if (!unboundLambda.HasSignature || (unboundLambda.ParameterCount == 0))
             {
                 // The parameters may be omitted in source, but they are still present on the symbol.
                 return parameterTypes.SelectAsArray((type, ordinal, arg) =>
@@ -366,10 +366,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((object)this == symbol) return true;
 
             var lambda = symbol as LambdaSymbol;
-            return (object)lambda != null
-                && lambda._syntax == _syntax
-                && lambda._refKind == _refKind
-                && lambda.ReturnType == this.ReturnType
+            return ((object)lambda != null)
+                && (lambda._syntax == _syntax)
+                && (lambda._refKind == _refKind)
+                && (lambda.ReturnType == this.ReturnType)
                 && System.Linq.ImmutableArrayExtensions.SequenceEqual(lambda.ParameterTypes, this.ParameterTypes)
                 && Equals(lambda.ContainingSymbol, this.ContainingSymbol);
         }

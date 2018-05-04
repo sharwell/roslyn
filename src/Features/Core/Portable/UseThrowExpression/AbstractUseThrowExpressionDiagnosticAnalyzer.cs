@@ -179,7 +179,7 @@ namespace Microsoft.CodeAnalysis.UseThrowExpression
             var ifOperationIndex = statements.IndexOf(ifOperation);
             var expressionStatementIndex = statements.IndexOf(expressionStatement);
 
-            if (expressionStatementIndex > ifOperationIndex + 1)
+            if (expressionStatementIndex > (ifOperationIndex + 1))
             {
                 // There are intermediary statements between the check and the assignment.
                 // Make sure they don't try to access the local.
@@ -301,7 +301,7 @@ namespace Microsoft.CodeAnalysis.UseThrowExpression
         private bool IsNull(IOperation operation)
         {
             return operation.ConstantValue.HasValue &&
-                   operation.ConstantValue.Value == null;
+                   (operation.ConstantValue.Value == null);
         }
 
         private IConditionalOperation GetContainingIfOperation(

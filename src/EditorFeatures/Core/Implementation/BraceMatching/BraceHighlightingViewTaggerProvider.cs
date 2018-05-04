@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BraceMatching
         protected override Task ProduceTagsAsync(TaggerContext<BraceHighlightTag> context, DocumentSnapshotSpan documentSnapshotSpan, int? caretPosition)
         {
             var document = documentSnapshotSpan.Document;
-            if (!caretPosition.HasValue || document == null)
+            if (!caretPosition.HasValue || (document == null))
             {
                 return SpecializedTasks.EmptyTask;
             }
@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BraceMatching
         {
             using (Logger.LogBlock(FunctionId.Tagger_BraceHighlighting_TagProducer_ProduceTags, context.CancellationToken))
             {
-                if (position >= 0 && position <= snapshot.Length)
+                if ((position >= 0) && (position <= snapshot.Length))
                 {
                     var (bracesLeftOfPosition, bracesRightOfPosition) = await GetAllMatchingBracesAsync(
                         _braceMatcherService, document, position, context.CancellationToken).ConfigureAwait(false);
@@ -135,8 +135,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.BraceMatching
             var leftOfPosition = await service.GetMatchingBracesAsync(document, position - 1, cancellationToken).ConfigureAwait(false);
 
             if (leftOfPosition.HasValue &&
-                position <= leftOfPosition.Value.RightSpan.End &&
-                position > leftOfPosition.Value.RightSpan.Start)
+                (position <= leftOfPosition.Value.RightSpan.End) &&
+                (position > leftOfPosition.Value.RightSpan.Start))
             {
                 // Found a valid pair on the left of us.
                 return (leftOfPosition, rightOfPosition);

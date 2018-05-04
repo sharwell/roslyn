@@ -83,7 +83,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Options
             var codeStyleOption = (CodeStyleOption<T>)options.GetOption(new OptionKey(option, language));
 
             var enumIndex = _enumValues.IndexOf(codeStyleOption.Value);
-            if (enumIndex < 0 || enumIndex >= Preferences.Count)
+            if ((enumIndex < 0) || (enumIndex >= Preferences.Count))
             {
                 enumIndex = 0;
             }

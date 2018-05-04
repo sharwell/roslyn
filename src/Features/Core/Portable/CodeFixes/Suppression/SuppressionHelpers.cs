@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
 
         private static bool CanBeSuppressedOrUnsuppressed(Diagnostic diagnostic, bool checkCanBeSuppressed)
         {
-            if (diagnostic.IsSuppressed == checkCanBeSuppressed ||
+            if ((diagnostic.IsSuppressed == checkCanBeSuppressed) ||
                 IsNotConfigurableDiagnostic(diagnostic))
             {
                 // Don't offer suppression fixes for:
@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
 
         public static bool HasCustomTag(IEnumerable<string> customTags, string tagToFind)
         {
-            return customTags != null && customTags.Any(c => CultureInfo.InvariantCulture.CompareInfo.Compare(c, tagToFind) == 0);
+            return (customTags != null) && customTags.Any(c => CultureInfo.InvariantCulture.CompareInfo.Compare(c, tagToFind) == 0);
         }
     }
 }

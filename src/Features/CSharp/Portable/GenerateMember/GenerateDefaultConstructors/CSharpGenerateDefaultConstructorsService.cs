@@ -37,11 +37,11 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateMember.GenerateDefaultConstructo
             var node = document.Root.FindToken(textSpan.Start).GetAncestor<TypeSyntax>();
             if (node != null)
             {
-                if (node.Parent is BaseTypeSyntax && node.Parent.IsParentKind(SyntaxKind.BaseList))
+                if ((node.Parent is BaseTypeSyntax) && node.Parent.IsParentKind(SyntaxKind.BaseList))
                 {
                     var baseList = (BaseListSyntax)node.Parent.Parent;
-                    if (baseList.Types.Count > 0 &&
-                        baseList.Types[0].Type == node &&
+                    if ((baseList.Types.Count > 0) &&
+                        (baseList.Types[0].Type == node) &&
                         baseList.IsParentKind(SyntaxKind.ClassDeclaration))
                     {
                         var semanticModel = document.SemanticModel;

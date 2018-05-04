@@ -60,8 +60,8 @@ namespace Microsoft.CodeAnalysis
 
             public bool Equals(Key other)
             {
-                return _useCLSCompliantNameArityEncoding == other._useCLSCompliantNameArityEncoding &&
-                    _forcedArity == other._forcedArity &&
+                return (_useCLSCompliantNameArityEncoding == other._useCLSCompliantNameArityEncoding) &&
+                    (_forcedArity == other._forcedArity) &&
                     EqualNames(ref other);
             }
 
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(object obj)
             {
-                return obj is Key && this.Equals((Key)obj);
+                return (obj is Key) && this.Equals((Key)obj);
             }
 
             public override int GetHashCode()

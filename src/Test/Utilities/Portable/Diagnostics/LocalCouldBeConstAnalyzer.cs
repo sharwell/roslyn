@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                                 IInvocationOperation invocation = (IInvocationOperation)operationContext.Operation;
                                 foreach (IArgumentOperation argument in invocation.Arguments)
                                 {
-                                    if (argument.Parameter.RefKind == RefKind.Out || argument.Parameter.RefKind == RefKind.Ref)
+                                    if ((argument.Parameter.RefKind == RefKind.Out) || (argument.Parameter.RefKind == RefKind.Ref))
                                     {
                                         AssignTo(argument.Value, assignedToLocals, mightBecomeConstLocals);
                                     }
@@ -82,10 +82,10 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                                     if (!local.IsConst && !assignedToLocals.Contains(local))
                                     {
                                         var localType = local.Type;
-                                        if ((!localType.IsReferenceType || localType.SpecialType == SpecialType.System_String) && localType.SpecialType != SpecialType.None)
+                                        if ((!localType.IsReferenceType || (localType.SpecialType == SpecialType.System_String)) && (localType.SpecialType != SpecialType.None))
                                         {
                                             IVariableInitializerOperation initializer = variable.GetVariableInitializer();
-                                            if (initializer != null && initializer.Value.ConstantValue.HasValue)
+                                            if ((initializer != null) && initializer.Value.ConstantValue.HasValue)
                                             {
                                                 mightBecomeConstLocals.Add(local);
                                             }
@@ -119,7 +119,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             else if (target.Kind == OperationKind.FieldReference)
             {
                 IFieldReferenceOperation fieldReference = (IFieldReferenceOperation)target;
-                if (fieldReference.Instance != null && fieldReference.Instance.Type.IsValueType)
+                if ((fieldReference.Instance != null) && fieldReference.Instance.Type.IsValueType)
                 {
                     AssignTo(fieldReference.Instance, assignedToLocals, mightBecomeConstLocals);
                 }

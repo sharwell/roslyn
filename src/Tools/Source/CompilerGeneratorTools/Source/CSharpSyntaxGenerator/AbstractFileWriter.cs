@@ -114,7 +114,7 @@ namespace CSharpSyntaxGenerator
 
         protected static bool CanBeField(Field field)
         {
-            return field.Type != "SyntaxToken" && !IsAnyList(field.Type) && !IsOverride(field) && !IsNew(field);
+            return (field.Type != "SyntaxToken") && !IsAnyList(field.Type) && !IsOverride(field) && !IsNew(field);
         }
 
         protected static string GetFieldType(Field field, bool green)
@@ -153,7 +153,7 @@ namespace CSharpSyntaxGenerator
 
         protected bool IsNodeOrNodeList(string typeName)
         {
-            return IsNode(typeName) || IsNodeList(typeName) || IsSeparatedNodeList(typeName) || typeName == "SyntaxNodeOrTokenList";
+            return IsNode(typeName) || IsNodeList(typeName) || IsSeparatedNodeList(typeName) || (typeName == "SyntaxNodeOrTokenList");
         }
 
         protected static string GetElementType(string typeName)
@@ -170,14 +170,14 @@ namespace CSharpSyntaxGenerator
 
         protected static bool IsAnyList(string typeName)
         {
-            return IsNodeList(typeName) || IsSeparatedNodeList(typeName) || typeName == "SyntaxNodeOrTokenList";
+            return IsNodeList(typeName) || IsSeparatedNodeList(typeName) || (typeName == "SyntaxNodeOrTokenList");
         }
 
         protected bool IsDerivedType(string typeName, string derivedTypeName)
         {
             if (typeName == derivedTypeName)
                 return true;
-            if (derivedTypeName != null && _parentMap.TryGetValue(derivedTypeName, out var baseType))
+            if ((derivedTypeName != null) && _parentMap.TryGetValue(derivedTypeName, out var baseType))
             {
                 return IsDerivedType(typeName, baseType);
             }
@@ -186,7 +186,7 @@ namespace CSharpSyntaxGenerator
 
         protected static bool IsRoot(Node n)
         {
-            return n.Root != null && string.Compare(n.Root, "true", true) == 0;
+            return (n.Root != null) && (string.Compare(n.Root, "true", true) == 0);
         }
 
         protected bool IsNode(string typeName)
@@ -202,22 +202,22 @@ namespace CSharpSyntaxGenerator
 
         protected static bool IsOptional(Field f)
         {
-            return f.Optional != null && string.Compare(f.Optional, "true", true) == 0;
+            return (f.Optional != null) && (string.Compare(f.Optional, "true", true) == 0);
         }
 
         protected static bool IsOverride(Field f)
         {
-            return f.Override != null && string.Compare(f.Override, "true", true) == 0;
+            return (f.Override != null) && (string.Compare(f.Override, "true", true) == 0);
         }
 
         protected static bool IsNew(Field f)
         {
-            return f.New != null && string.Compare(f.New, "true", true) == 0;
+            return (f.New != null) && (string.Compare(f.New, "true", true) == 0);
         }
 
         protected static bool HasErrors(Node n)
         {
-            return n.Errors == null || string.Compare(n.Errors, "true", true) == 0;
+            return (n.Errors == null) || (string.Compare(n.Errors, "true", true) == 0);
         }
 
         protected static string CamelCase(string name)

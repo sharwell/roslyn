@@ -357,7 +357,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
 
                         // "this" for non-static methods that are not display class methods or
                         // display class methods where the display class contains "<>4__this".
-                        if ((!m.IsStatic && !IsDisplayClassType(m.ContainingType)) || GetThisProxy(_displayClassVariables) != null)
+                        if ((!m.IsStatic && !IsDisplayClassType(m.ContainingType)) || (GetThisProxy(_displayClassVariables) != null))
                         {
                             var methodName = GetNextMethodName(methodBuilder);
                             var method = this.GetThisMethod(container, methodName);
@@ -373,7 +373,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                     foreach (var parameter in m.Parameters)
                     {
                         var parameterName = parameter.Name;
-                        if (GeneratedNames.GetKind(parameterName) == GeneratedNameKind.None &&
+                        if ((GeneratedNames.GetKind(parameterName) == GeneratedNameKind.None) &&
                             !IsDisplayClassParameter(parameter))
                         {
                             itemsAdded.Add(parameterName);
@@ -385,7 +385,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
 
                     // In case of iterator or async state machine, the 'm' method has no parameters
                     // but the source method can have parameters to iterate over.
-                    if (itemsAdded.Count == 0 && _sourceMethodParametersInOrder.Length != 0)
+                    if ((itemsAdded.Count == 0) && (_sourceMethodParametersInOrder.Length != 0))
                     {
                         var localsDictionary = PooledDictionary<string, (LocalSymbol, int)>.GetInstance();
                         int localIndex = 0;
@@ -667,7 +667,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             }
 
             var node = (AssignmentExpressionSyntax)syntax;
-            return node.Left.Kind() == SyntaxKind.TupleExpression || node.Left.Kind() == SyntaxKind.DeclarationExpression;
+            return (node.Left.Kind() == SyntaxKind.TupleExpression) || (node.Left.Kind() == SyntaxKind.DeclarationExpression);
         }
 
         private static BoundStatement BindStatement(Binder binder, StatementSyntax syntax, DiagnosticBag diagnostics, out ResultProperties properties)
@@ -982,7 +982,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                                 // valid in the original source but unnecessary.
                                 continue; // Don't add anything for this import.
                             }
-                            else if (importRecord.Alias == null && !typeSymbol.IsStatic)
+                            else if ((importRecord.Alias == null) && !typeSymbol.IsStatic)
                             {
                                 // Only static types can be directly imported.
                                 continue;
@@ -1135,7 +1135,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             }
 
             NameSyntax nameSyntax;
-            if (!SyntaxHelpers.TryParseDottedName(name, out nameSyntax) || nameSyntax.Kind() != SyntaxKind.IdentifierName)
+            if (!SyntaxHelpers.TryParseDottedName(name, out nameSyntax) || (nameSyntax.Kind() != SyntaxKind.IdentifierName))
             {
                 syntax = null;
                 return false;
@@ -1212,14 +1212,14 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
         {
             var containingType = method.ContainingType;
             bool isIteratorOrAsyncMethod = IsDisplayClassType(containingType) &&
-                GeneratedNames.GetKind(containingType.Name) == GeneratedNameKind.StateMachineType;
+                (GeneratedNames.GetKind(containingType.Name) == GeneratedNameKind.StateMachineType);
 
             var parameterNamesInOrder = ArrayBuilder<string>.GetInstance();
             // For version before .NET 4.5, we cannot find the sourceMethod properly:
             // The source method coincides with the original method in the case.
             // Therefore, for iterators and async state machines, we have to get parameters from the containingType.
             // This does not guarantee the proper order of parameters.
-            if (isIteratorOrAsyncMethod && method == sourceMethod)
+            if (isIteratorOrAsyncMethod && (method == sourceMethod))
             {
                 Debug.Assert(IsDisplayClassType(containingType));
                 foreach (var member in containingType.GetMembers())
@@ -1271,7 +1271,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
 
             foreach (var parameter in method.Parameters)
             {
-                if (GeneratedNames.GetKind(parameter.Name) == GeneratedNameKind.TransparentIdentifier ||
+                if ((GeneratedNames.GetKind(parameter.Name) == GeneratedNameKind.TransparentIdentifier) ||
                     IsDisplayClassParameter(parameter))
                 {
                     var instance = new DisplayClassInstanceFromParameter(parameter);
@@ -1422,8 +1422,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
         private static bool IsDisplayClassParameter(ParameterSymbol parameter)
         {
             var type = parameter.Type;
-            var result = type.Kind == SymbolKind.NamedType && IsDisplayClassType((NamedTypeSymbol)type);
-            Debug.Assert(!result || parameter.MetadataName == "");
+            var result = (type.Kind == SymbolKind.NamedType) && IsDisplayClassType((NamedTypeSymbol)type);
+            Debug.Assert(!result || (parameter.MetadataName == ""));
             return result;
         }
 
@@ -1519,13 +1519,13 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                         Debug.Assert((variableKind == DisplayClassVariableKind.Parameter) ||
                             (variableKind == DisplayClassVariableKind.This));
 
-                        if (variableKind == DisplayClassVariableKind.Parameter && GeneratedNames.GetKind(instance.Type.Name) == GeneratedNameKind.LambdaDisplayClass)
+                        if ((variableKind == DisplayClassVariableKind.Parameter) && (GeneratedNames.GetKind(instance.Type.Name) == GeneratedNameKind.LambdaDisplayClass))
                         {
                             displayClassVariablesBuilder[variableName] = instance.ToVariable(variableName, variableKind, field);
                         }
                     }
                 }
-                else if (variableKind != DisplayClassVariableKind.This || GeneratedNames.GetKind(instance.Type.ContainingType.Name) != GeneratedNameKind.LambdaDisplayClass)
+                else if ((variableKind != DisplayClassVariableKind.This) || (GeneratedNames.GetKind(instance.Type.ContainingType.Name) != GeneratedNameKind.LambdaDisplayClass))
                 {
                     // In async lambdas, the hoisted "this" field in the state machine type will point to the display class instance, if there is one.
                     // In such cases, we want to add the display class "this" to the map instead (or nothing, if it lacks one).
@@ -1666,7 +1666,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             return
                 !candidateMethod.IsAbstract &&
                 (!(desiredMethodMustBeInstance && candidateMethod.IsStatic)) &&
-                candidateMethod.Name == desiredMethodName &&
+                (candidateMethod.Name == desiredMethodName) &&
                 HaveSameConstraints(candidateMethod.TypeParameters, desiredTypeParameters);
         }
 
@@ -1699,7 +1699,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 this(instance, ConsList<FieldSymbol>.Empty)
             {
                 Debug.Assert(IsDisplayClassType(instance.Type) ||
-                    GeneratedNames.GetKind(instance.Type.Name) == GeneratedNameKind.AnonymousType);
+                    (GeneratedNames.GetKind(instance.Type.Name) == GeneratedNameKind.AnonymousType));
             }
 
             private DisplayClassInstanceAndFields(DisplayClassInstance instance, ConsList<FieldSymbol> fields)
@@ -1721,7 +1721,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             internal DisplayClassInstanceAndFields FromField(FieldSymbol field)
             {
                 Debug.Assert(IsDisplayClassType(field.Type) ||
-                    GeneratedNames.GetKind(field.Type.Name) == GeneratedNameKind.AnonymousType);
+                    (GeneratedNames.GetKind(field.Type.Name) == GeneratedNameKind.AnonymousType));
                 return new DisplayClassInstanceAndFields(this.Instance, this.Fields.Prepend(field));
             }
 

@@ -29,10 +29,10 @@ namespace Microsoft.CodeAnalysis.QualifyMemberAccess
             var qualifyMethodAccessOption = workspace.Options.GetOption(CodeStyleOptions.QualifyMethodAccess, GetLanguageName()).Notification;
             var qualifyEventAccessOption = workspace.Options.GetOption(CodeStyleOptions.QualifyEventAccess, GetLanguageName()).Notification;
 
-            return !(qualifyFieldAccessOption == NotificationOption.Warning || qualifyFieldAccessOption == NotificationOption.Error ||
-                     qualifyPropertyAccessOption == NotificationOption.Warning || qualifyPropertyAccessOption == NotificationOption.Error ||
-                     qualifyMethodAccessOption == NotificationOption.Warning || qualifyMethodAccessOption == NotificationOption.Error ||
-                     qualifyEventAccessOption == NotificationOption.Warning || qualifyEventAccessOption == NotificationOption.Error);
+            return !((qualifyFieldAccessOption == NotificationOption.Warning) || (qualifyFieldAccessOption == NotificationOption.Error) ||
+                     (qualifyPropertyAccessOption == NotificationOption.Warning) || (qualifyPropertyAccessOption == NotificationOption.Error) ||
+                     (qualifyMethodAccessOption == NotificationOption.Warning) || (qualifyMethodAccessOption == NotificationOption.Error) ||
+                     (qualifyEventAccessOption == NotificationOption.Warning) || (qualifyEventAccessOption == NotificationOption.Error));
         }
 
         protected abstract string GetLanguageName();
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.QualifyMemberAccess
 
             // if we can't find a member then we can't do anything.  Also, we shouldn't qualify
             // accesses to static members.  
-            if (memberReference.Member == null ||
+            if ((memberReference.Member == null) ||
                 memberReference.Member.IsStatic)
             {
                 return;

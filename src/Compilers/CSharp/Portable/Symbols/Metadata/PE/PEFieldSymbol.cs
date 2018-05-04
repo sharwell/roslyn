@@ -329,7 +329,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         {
             get
             {
-                return (_flags & FieldAttributes.Literal) != 0 || GetConstantValue(ConstantFieldsInProgress.Empty, earlyDecodingWellKnownAttributes: false) != null;
+                return ((_flags & FieldAttributes.Literal) != 0) || (GetConstantValue(ConstantFieldsInProgress.Empty, earlyDecodingWellKnownAttributes: false) != null);
             }
         }
 
@@ -458,9 +458,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         private bool FilterOutDecimalConstantAttribute()
         {
             ConstantValue value;
-            return this.Type.SpecialType == SpecialType.System_Decimal &&
-                   (object)(value = GetConstantValue(ConstantFieldsInProgress.Empty, earlyDecodingWellKnownAttributes: false)) != null &&
-                   value.Discriminator == ConstantValueTypeDiscriminator.Decimal;
+            return (this.Type.SpecialType == SpecialType.System_Decimal) &&
+                   ((object)(value = GetConstantValue(ConstantFieldsInProgress.Empty, earlyDecodingWellKnownAttributes: false)) != null) &&
+                   (value.Discriminator == ConstantValueTypeDiscriminator.Decimal);
         }
 
         internal override IEnumerable<CSharpAttributeData> GetCustomAttributesToEmit(PEModuleBuilder moduleBuilder)

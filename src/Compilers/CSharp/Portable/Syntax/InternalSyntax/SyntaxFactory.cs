@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             Debug.Assert(kind != SyntaxKind.NumericLiteralToken);
 
             string defaultText = SyntaxFacts.GetText(kind);
-            return kind >= SyntaxToken.FirstTokenWithWellKnownText && kind <= SyntaxToken.LastTokenWithWellKnownText && text == defaultText && valueText == defaultText
+            return (kind >= SyntaxToken.FirstTokenWithWellKnownText) && (kind <= SyntaxToken.LastTokenWithWellKnownText) && (text == defaultText) && (valueText == defaultText)
                 ? Token(leading, kind, trailing)
                 : SyntaxToken.WithValue(kind, leading, text, valueText, trailing);
         }
@@ -220,7 +220,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         internal static SyntaxToken XmlTextNewLine(GreenNode leading, string text, string value, GreenNode trailing)
         {
-            if (leading == null && trailing == null && text == CrLf && value == CrLf)
+            if ((leading == null) && (trailing == null) && (text == CrLf) && (value == CrLf))
             {
                 return XmlCarriageReturnLineFeed;
             }

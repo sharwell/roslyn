@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis
             protected override bool AreEqual(object other)
             {
                 var fixedStr = other as FixedLocalizableString;
-                return fixedStr != null && string.Equals(_fixedString, fixedStr._fixedString);
+                return (fixedStr != null) && string.Equals(_fixedString, fixedStr._fixedString);
             }
 
             protected override int GetHash()

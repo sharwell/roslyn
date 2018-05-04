@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public override string GetMessagePrefix(string id, DiagnosticSeverity severity, bool isWarningAsError, CultureInfo culture)
         {
             return String.Format(culture, "{0} {1}",
-                severity == DiagnosticSeverity.Error || isWarningAsError ? "error" : "warning",
+                (severity == DiagnosticSeverity.Error) || isWarningAsError ? "error" : "warning",
                 id);
         }
 
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public override string GetErrorDisplayString(ISymbol symbol)
         {
             // show extra info for assembly if possible such as version, public key token etc.
-            if (symbol.Kind == SymbolKind.Assembly || symbol.Kind == SymbolKind.Namespace)
+            if ((symbol.Kind == SymbolKind.Assembly) || (symbol.Kind == SymbolKind.Namespace))
             {
                 return symbol.ToString();
             }

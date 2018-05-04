@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
             string interactiveHostPath,
             Type replType)
         {
-            Debug.Assert(responseFilePath == null || PathUtilities.IsAbsolute(responseFilePath));
+            Debug.Assert((responseFilePath == null) || PathUtilities.IsAbsolute(responseFilePath));
 
             _contentType = contentType;
             _responseFilePath = responseFilePath;
@@ -437,7 +437,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
 
         public virtual bool CanExecuteCode(string text)
         {
-            if (_interactiveCommands != null && _interactiveCommands.InCommand)
+            if ((_interactiveCommands != null) && _interactiveCommands.InCommand)
             {
                 return true;
             }
@@ -537,7 +537,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
 
         private void UpdateResolvers(ImmutableArray<string> changedReferenceSearchPaths, ImmutableArray<string> changedSourceSearchPaths, string changedWorkingDirectory)
         {
-            if (changedReferenceSearchPaths.IsDefault && changedSourceSearchPaths.IsDefault && changedWorkingDirectory == null)
+            if (changedReferenceSearchPaths.IsDefault && changedSourceSearchPaths.IsDefault && (changedWorkingDirectory == null))
             {
                 return;
             }
@@ -562,7 +562,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
                 SourceSearchPaths = changedSourceSearchPaths;
             }
 
-            if (!changedReferenceSearchPaths.IsDefault || changedWorkingDirectory != null)
+            if (!changedReferenceSearchPaths.IsDefault || (changedWorkingDirectory != null))
             {
                 _metadataReferenceResolver = CreateMetadataReferenceResolver(_workspace.CurrentSolution.Services.MetadataService, ReferenceSearchPaths, WorkingDirectory);
 
@@ -572,7 +572,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
                 }
             }
 
-            if (!changedSourceSearchPaths.IsDefault || changedWorkingDirectory != null)
+            if (!changedSourceSearchPaths.IsDefault || (changedWorkingDirectory != null))
             {
                 _sourceReferenceResolver = CreateSourceReferenceResolver(SourceSearchPaths, WorkingDirectory);
 
@@ -604,7 +604,7 @@ namespace Microsoft.CodeAnalysis.Editor.Interactive
         public string GetPrompt()
         {
             var buffer = GetCurrentWindowOrThrow().CurrentLanguageBuffer;
-            return buffer != null && buffer.CurrentSnapshot.LineCount > 1
+            return (buffer != null) && (buffer.CurrentSnapshot.LineCount > 1)
                 ? ". "
                 : "> ";
         }

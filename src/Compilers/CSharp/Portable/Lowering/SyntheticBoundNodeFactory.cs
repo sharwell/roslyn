@@ -63,9 +63,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             set
             {
                 _currentFunction = value;
-                if ((object)value != null &&
-                    value.MethodKind != MethodKind.AnonymousFunction &&
-                    value.MethodKind != MethodKind.LocalFunction)
+                if (((object)value != null) &&
+                    (value.MethodKind != MethodKind.AnonymousFunction) &&
+                    (value.MethodKind != MethodKind.LocalFunction))
                 {
                     _topLevelMethod = value;
                     _currentType = value.ContainingType;
@@ -101,7 +101,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ImmutableArray<TypeSymbol> typeArgs = default(ImmutableArray<TypeSymbol>),
             bool allowUnexpandedForm = true)
         {
-            if (_binder == null || _binder.Flags != flags)
+            if ((_binder == null) || (_binder.Flags != flags))
             {
                 _binder = new SyntheticBinderImpl(this).WithFlags(flags);
             }
@@ -171,16 +171,16 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             if ((object)CurrentType != null)
             {
-                Debug.Assert((object)TopLevelMethod == null || TopLevelMethod.ContainingType == CurrentType);
+                Debug.Assert(((object)TopLevelMethod == null) || (TopLevelMethod.ContainingType == CurrentType));
 
                 // In EE scenarios, lambdas and local functions are considered to be contained by the
                 // user-defined methods, rather than the EE-defined methods for which we are generating
                 // bound nodes. This is because the containing symbols are used to determine the type
                 // of the "this" parameter, which we need to be the user-defined types.
-                Debug.Assert((object)CurrentFunction == null ||
-                    CurrentFunction.MethodKind == MethodKind.AnonymousFunction ||
-                    CurrentFunction.MethodKind == MethodKind.LocalFunction ||
-                    CurrentFunction.ContainingType == CurrentType);
+                Debug.Assert(((object)CurrentFunction == null) ||
+                    (CurrentFunction.MethodKind == MethodKind.AnonymousFunction) ||
+                    (CurrentFunction.MethodKind == MethodKind.LocalFunction) ||
+                    (CurrentFunction.ContainingType == CurrentType));
             }
         }
 
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundThisReference This()
         {
-            Debug.Assert((object)CurrentFunction != null && !CurrentFunction.IsStatic);
+            Debug.Assert(((object)CurrentFunction != null) && !CurrentFunction.IsStatic);
             return new BoundThisReference(Syntax, CurrentFunction.ThisParameter.Type) { WasCompilerGenerated = true };
         }
 
@@ -249,7 +249,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundBaseReference Base()
         {
-            Debug.Assert((object)CurrentFunction != null && !CurrentFunction.IsStatic);
+            Debug.Assert(((object)CurrentFunction != null) && !CurrentFunction.IsStatic);
             return new BoundBaseReference(Syntax, CurrentFunction.ThisParameter.Type.BaseTypeNoUseSiteDiagnostics) { WasCompilerGenerated = true };
         }
 
@@ -276,8 +276,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         public BoundExpression Property(BoundExpression receiverOpt, WellKnownMember member)
         {
             var propertySym = (PropertySymbol)WellKnownMember(member);
-            Debug.Assert(receiverOpt == null ||
-                receiverOpt.Type.GetMembers(propertySym.Name).OfType<PropertySymbol>().Single() == propertySym);
+            Debug.Assert((receiverOpt == null) ||
+                (receiverOpt.Type.GetMembers(propertySym.Name).OfType<PropertySymbol>().Single() == propertySym));
             Binder.ReportUseSiteDiagnostics(propertySym, Diagnostics, Syntax);
             return Property(receiverOpt, propertySym);
         }
@@ -318,7 +318,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public Symbol WellKnownMember(WellKnownMember wm, bool isOptional = false)
         {
             Symbol wellKnownMember = Binder.GetWellKnownTypeMember(Compilation, wm, Diagnostics, syntax: Syntax, isOptional: true);
-            if (wellKnownMember == null && !isOptional)
+            if ((wellKnownMember == null) && !isOptional)
             {
                 RuntimeMembers.MemberDescriptor memberDescriptor = WellKnownMembers.GetDescriptor(wm);
                 var diagnostic = new CSDiagnostic(new CSDiagnosticInfo(ErrorCode.ERR_MissingPredefinedMember, memberDescriptor.DeclaringTypeMetadataName, memberDescriptor.Name), Syntax.Location);
@@ -758,7 +758,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public BoundExpression MakeSequence(ImmutableArray<LocalSymbol> locals, params BoundExpression[] parts)
         {
             var builder = ArrayBuilder<BoundExpression>.GetInstance();
-            for (int i = 0; i < parts.Length - 1; i++)
+            for (int i = 0; i < (parts.Length - 1); i++)
             {
                 var part = parts[i];
                 if (LocalRewriter.ReadIsSideeffecting(part))
@@ -768,7 +768,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             var lastExpression = parts[parts.Length - 1];
 
-            if (locals.IsDefaultOrEmpty && builder.Count == 0)
+            if (locals.IsDefaultOrEmpty && (builder.Count == 0))
             {
                 builder.Free();
                 return lastExpression;
@@ -902,13 +902,13 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundArrayLength ArrayLength(BoundExpression array)
         {
-            Debug.Assert((object)array.Type != null && array.Type.IsArray());
+            Debug.Assert(((object)array.Type != null) && array.Type.IsArray());
             return new BoundArrayLength(Syntax, array, SpecialType(Microsoft.CodeAnalysis.SpecialType.System_Int32));
         }
 
         public BoundArrayAccess ArrayAccessFirstElement(BoundExpression array)
         {
-            Debug.Assert((object)array.Type != null && array.Type.IsArray());
+            Debug.Assert(((object)array.Type != null) && array.Type.IsArray());
             int rank = ((ArrayTypeSymbol)array.Type).Rank;
             ImmutableArray<BoundExpression> firstElementIndices = ArrayBuilder<BoundExpression>.GetInstance(rank, Literal(0)).ToImmutableAndFree();
             return ArrayAccess(array, firstElementIndices);
@@ -921,7 +921,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public BoundArrayAccess ArrayAccess(BoundExpression array, ImmutableArray<BoundExpression> indices)
         {
-            Debug.Assert((object)array.Type != null && array.Type.IsArray());
+            Debug.Assert(((object)array.Type != null) && array.Type.IsArray());
             return new BoundArrayAccess(Syntax, array, indices, ((ArrayTypeSymbol)array.Type).ElementType);
         }
 
@@ -1096,7 +1096,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private MethodSymbol GetMethodFromHandleMethod(NamedTypeSymbol methodContainer)
         {
             return WellKnownMethod(
-                (methodContainer.AllTypeArgumentCount() == 0 && !methodContainer.IsAnonymousType) ?
+                ((methodContainer.AllTypeArgumentCount() == 0) && !methodContainer.IsAnonymousType) ?
                 CodeAnalysis.WellKnownMember.System_Reflection_MethodBase__GetMethodFromHandle :
                 CodeAnalysis.WellKnownMember.System_Reflection_MethodBase__GetMethodFromHandle2);
         }
@@ -1131,17 +1131,17 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             // NOTE: We can see user-defined conversions at this point because there are places in the bound tree where
             // the binder stashes Conversion objects for later consumption (e.g. foreach, nullable, increment).
-            if ((object)conversion.Method != null && conversion.Method.Parameters[0].Type != arg.Type)
+            if (((object)conversion.Method != null) && (conversion.Method.Parameters[0].Type != arg.Type))
             {
                 arg = Convert(conversion.Method.Parameters[0].Type, arg);
             }
 
-            if (conversion.Kind == ConversionKind.ImplicitReference && arg.IsLiteralNull())
+            if ((conversion.Kind == ConversionKind.ImplicitReference) && arg.IsLiteralNull())
             {
                 return Null(type);
             }
 
-            if (conversion.Kind == ConversionKind.ExplicitNullable &&
+            if ((conversion.Kind == ConversionKind.ExplicitNullable) &&
                 arg.Type.IsNullableType() &&
                 arg.Type.GetNullableUnderlyingType().Equals(type, TypeCompareKind.AllIgnoreOptions))
             {

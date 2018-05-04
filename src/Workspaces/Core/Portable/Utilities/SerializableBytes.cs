@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis
 
                 set
                 {
-                    if (value < 0 || value >= length)
+                    if ((value < 0) || (value >= length))
                     {
                         throw new ArgumentOutOfRangeException(nameof(value));
                     }
@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis
 
             public override int Read(byte[] buffer, int index, int count)
             {
-                if (count <= 0 || position >= length)
+                if ((count <= 0) || (position >= length))
                 {
                     return 0;
                 }
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis
             {
                 var oldPosition = position;
 
-                while (count > 0 && position < length)
+                while ((count > 0) && (position < length))
                 {
                     var chunk = chunks[GetChunkIndex(position)];
                     var currentOffset = GetChunkOffset(position);

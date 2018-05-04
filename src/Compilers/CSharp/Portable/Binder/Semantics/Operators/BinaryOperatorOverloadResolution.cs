@@ -130,9 +130,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var leftType = left.Type;
-            var leftDelegate = (object)leftType != null && leftType.IsDelegateType();
+            var leftDelegate = ((object)leftType != null) && leftType.IsDelegateType();
             var rightType = right.Type;
-            var rightDelegate = (object)rightType != null && rightType.IsDelegateType();
+            var rightDelegate = ((object)rightType != null) && rightType.IsDelegateType();
 
             // If no operands have delegate types then add nothing.
             if (!leftDelegate && !rightDelegate)
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // There is no reason why we can't compare instances of delegate types that are identity convertible.
                 // We can't perform + or - operation on them since it is not clear what the return type of such operation should be.
-                bool useIdentityConversion = kind == BinaryOperatorKind.Equal || kind == BinaryOperatorKind.NotEqual;
+                bool useIdentityConversion = (kind == BinaryOperatorKind.Equal) || (kind == BinaryOperatorKind.NotEqual);
 
                 if (!(useIdentityConversion ? Conversions.HasIdentityConversion(leftType, rightType) : leftType.Equals(rightType)))
                 {
@@ -223,8 +223,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeSymbol delegateType = leftDelegate ? leftType : rightType;
             BoundExpression nonDelegate = leftDelegate ? right : left;
 
-            if ((kind == BinaryOperatorKind.Equal || kind == BinaryOperatorKind.NotEqual)
-                && nonDelegate.Kind == BoundKind.UnboundLambda)
+            if (((kind == BinaryOperatorKind.Equal) || (kind == BinaryOperatorKind.NotEqual))
+                && (nonDelegate.Kind == BoundKind.UnboundLambda))
             {
                 return;
             }
@@ -435,7 +435,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 GetEnumOperation(kind, leftType, left, right, results);
             }
 
-            if ((object)rightType != null && ((object)leftType == null || !(useIdentityConversion ? Conversions.HasIdentityConversion(rightType, leftType) : rightType.Equals(leftType))))
+            if (((object)rightType != null) && (((object)leftType == null) || !(useIdentityConversion ? Conversions.HasIdentityConversion(rightType, leftType) : rightType.Equals(leftType))))
             {
                 GetEnumOperation(kind, rightType, left, right, results);
             }
@@ -462,12 +462,12 @@ namespace Microsoft.CodeAnalysis.CSharp
             // The only arithmetic operator that is applicable on two distinct pointer types is
             //   long operator –(T* x, T* y)
             // This operator returns long and so it's not ambiguous to apply it on T1 and T2 that are identity convertible to each other.
-            if ((object)rightType != null && ((object)leftType == null || !Conversions.HasIdentityConversion(rightType, leftType)))
+            if (((object)rightType != null) && (((object)leftType == null) || !Conversions.HasIdentityConversion(rightType, leftType)))
             {
                 GetPointerArithmeticOperators(kind, rightType, results);
             }
 
-            if ((object)leftType != null || (object)rightType != null)
+            if (((object)leftType != null) || ((object)rightType != null))
             {
                 // The pointer comparison operators are all "void* OP void*".
                 GetPointerComparisonOperators(kind, results);
@@ -480,7 +480,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // are applicable.
             kind = kind.OperatorWithLogical();
             var operators = ArrayBuilder<BinaryOperatorSignature>.GetInstance();
-            bool isEquality = kind == BinaryOperatorKind.Equal || kind == BinaryOperatorKind.NotEqual;
+            bool isEquality = (kind == BinaryOperatorKind.Equal) || (kind == BinaryOperatorKind.NotEqual);
             if (isEquality && UseOnlyReferenceEquality(left, right, ref useSiteDiagnostics))
             {
                 // As a special case, if the reference equality operator is applicable (and it
@@ -511,8 +511,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             // We consider the `null` literal, but not the `default` literal, since the latter does not require a reference equality
             return
                 BuiltInOperators.IsValidObjectEquality(Conversions, left.Type, left.IsLiteralNull(), right.Type, right.IsLiteralNull(), ref useSiteDiagnostics) &&
-                ((object)left.Type == null || (!left.Type.IsDelegateType() && left.Type.SpecialType != SpecialType.System_String && left.Type.SpecialType != SpecialType.System_Delegate)) &&
-                ((object)right.Type == null || (!right.Type.IsDelegateType() && right.Type.SpecialType != SpecialType.System_String && right.Type.SpecialType != SpecialType.System_Delegate));
+                (((object)left.Type == null) || (!left.Type.IsDelegateType() && (left.Type.SpecialType != SpecialType.System_String) && (left.Type.SpecialType != SpecialType.System_Delegate))) &&
+                (((object)right.Type == null) || (!right.Type.IsDelegateType() && (right.Type.SpecialType != SpecialType.System_String) && (right.Type.SpecialType != SpecialType.System_Delegate)));
         }
 
         private void GetReferenceEquality(BinaryOperatorKind kind, ArrayBuilder<BinaryOperatorSignature> operators)
@@ -577,7 +577,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             bool hadApplicableCandidate = false;
 
-            if ((object)strippedLeftType != null && !OperatorFacts.DefinitelyHasNoUserDefinedOperators(strippedLeftType))
+            if (((object)strippedLeftType != null) && !OperatorFacts.DefinitelyHasNoUserDefinedOperators(strippedLeftType))
             {
                 hadApplicableCandidate = GetUserDefinedOperators(kind, strippedLeftType, left, right, operators, ref useSiteDiagnostics);
                 if (!hadApplicableCandidate)
@@ -588,7 +588,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             TypeSymbol rightType = right.Type;
             TypeSymbol strippedRightType = rightType?.StrippedType();
-            if ((object)strippedRightType != null && !strippedRightType.Equals(strippedLeftType) &&
+            if (((object)strippedRightType != null) && !strippedRightType.Equals(strippedLeftType) &&
                 !OperatorFacts.DefinitelyHasNoUserDefinedOperators(strippedRightType))
             {
                 var rightOperators = ArrayBuilder<BinaryOperatorAnalysisResult>.GetInstance();
@@ -622,7 +622,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Debug.Assert(op.Signature.Kind.Operator() == existingSignature.Kind.Operator());
 
                     // Return types must match exactly, parameters might match modulo identity conversion.
-                    if (op.Signature.Kind == existingSignature.Kind && // Easy out
+                    if ((op.Signature.Kind == existingSignature.Kind) && // Easy out
                         op.Signature.ReturnType.Equals(existingSignature.ReturnType, TypeCompareKind.ConsiderEverything) &&
                         op.Signature.LeftType.Equals(existingSignature.LeftType, TypeCompareKind.IgnoreDynamicAndTupleNames) &&
                         op.Signature.RightType.Equals(existingSignature.RightType, TypeCompareKind.IgnoreDynamicAndTupleNames) &&
@@ -676,7 +676,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 current = type0.BaseTypeWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics);
             }
 
-            if ((object)current == null && type0.IsTypeParameter())
+            if (((object)current == null) && type0.IsTypeParameter())
             {
                 current = ((TypeParameterSymbol)type0).EffectiveBaseClass(ref useSiteDiagnostics);
             }
@@ -707,7 +707,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             foreach (MethodSymbol op in type.GetOperators(name))
             {
                 // If we're in error recovery, we might have bad operators. Just ignore it.
-                if (op.ParameterCount != 2 || op.ReturnsVoid)
+                if ((op.ParameterCount != 2) || op.ReturnsVoid)
                 {
                     continue;
                 }
@@ -819,7 +819,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // Mark all other candidates as worse
                 for (int index = 0; index < candidates.Count; ++index)
                 {
-                    if (candidates[index].Kind != OperatorAnalysisResultKind.Inapplicable && index != bestIndex)
+                    if ((candidates[index].Kind != OperatorAnalysisResultKind.Inapplicable) && (index != bestIndex))
                     {
                         candidates[index] = candidates[index].Worse();
                     }
@@ -914,7 +914,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             // We use Priority as a tie-breaker to help match native compiler bugs.
             Debug.Assert(op1.Priority.HasValue == op2.Priority.HasValue);
-            if (op1.Priority.HasValue && op1.Priority.GetValueOrDefault() != op2.Priority.GetValueOrDefault())
+            if (op1.Priority.HasValue && (op1.Priority.GetValueOrDefault() != op2.Priority.GetValueOrDefault()))
             {
                 return (op1.Priority.GetValueOrDefault() < op2.Priority.GetValueOrDefault()) ? BetterResult.Left : BetterResult.Right;
             }
@@ -941,14 +941,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             // op2 better               neither better            op2 better
             // op2 better               op2 better                op2 better
 
-            if (leftBetter == BetterResult.Left && rightBetter != BetterResult.Right ||
-                leftBetter != BetterResult.Right && rightBetter == BetterResult.Left)
+            if (((leftBetter == BetterResult.Left) && (rightBetter != BetterResult.Right)) ||
+                ((leftBetter != BetterResult.Right) && (rightBetter == BetterResult.Left)))
             {
                 return BetterResult.Left;
             }
 
-            if (leftBetter == BetterResult.Right && rightBetter != BetterResult.Left ||
-                leftBetter != BetterResult.Left && rightBetter == BetterResult.Right)
+            if (((leftBetter == BetterResult.Right) && (rightBetter != BetterResult.Left)) ||
+                ((leftBetter != BetterResult.Left) && (rightBetter == BetterResult.Right)))
             {
                 return BetterResult.Right;
             }
@@ -983,7 +983,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // SPEC: If Mp has more specific parameter types than Mq then Mp is better than Mq.
                 BetterResult result = MoreSpecificOperator(op1, op2, ref useSiteDiagnostics);
-                if (result == BetterResult.Left || result == BetterResult.Right)
+                if ((result == BetterResult.Left) || (result == BetterResult.Right))
                 {
                     return result;
                 }
@@ -1007,11 +1007,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Always prefer operators with val parameters over operators with in parameters:
             BetterResult valOverInPreference;
 
-            if (op1.LeftRefKind == RefKind.None && op2.LeftRefKind == RefKind.In)
+            if ((op1.LeftRefKind == RefKind.None) && (op2.LeftRefKind == RefKind.In))
             {
                 valOverInPreference = BetterResult.Left;
             }
-            else if (op2.LeftRefKind == RefKind.None && op1.LeftRefKind == RefKind.In)
+            else if ((op2.LeftRefKind == RefKind.None) && (op1.LeftRefKind == RefKind.In))
             {
                 valOverInPreference = BetterResult.Right;
             }
@@ -1020,7 +1020,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 valOverInPreference = BetterResult.Neither;
             }
 
-            if (op1.RightRefKind == RefKind.None && op2.RightRefKind == RefKind.In)
+            if ((op1.RightRefKind == RefKind.None) && (op2.RightRefKind == RefKind.In))
             {
                 if (valOverInPreference == BetterResult.Right)
                 {
@@ -1031,7 +1031,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     valOverInPreference = BetterResult.Left;
                 }
             }
-            else if (op2.RightRefKind == RefKind.None && op1.RightRefKind == RefKind.In)
+            else if ((op2.RightRefKind == RefKind.None) && (op1.RightRefKind == RefKind.In))
             {
                 if (valOverInPreference == BetterResult.Left)
                 {

@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
             }
 
             var ourSnapshot = newerSnapshot as AbstractTableEntriesSnapshot<TData>;
-            if (ourSnapshot == null || ourSnapshot.Count == 0)
+            if ((ourSnapshot == null) || (ourSnapshot.Count == 0))
             {
                 // not ours, we don't know how to track index
                 return -1;
@@ -82,7 +82,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
                 if (newData != null)
                 {
                     var newItem = newData.Primary;
-                    if (newItem != null && newItem.Equals(item))
+                    if ((newItem != null) && newItem.Equals(item))
                     {
                         return index;
                     }
@@ -121,7 +121,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         internal TableItem<TData> GetItem(int index)
         {
-            if (index < 0 || _items.Length <= index)
+            if ((index < 0) || (_items.Length <= index))
             {
                 return default;
             }
@@ -131,14 +131,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 
         protected LinePosition GetTrackingLineColumn(Workspace workspace, DocumentId documentId, int index)
         {
-            if (documentId == null || _trackingPoints.IsDefaultOrEmpty)
+            if ((documentId == null) || _trackingPoints.IsDefaultOrEmpty)
             {
                 return LinePosition.Zero;
             }
 
             var solution = workspace.CurrentSolution;
             var document = solution.GetDocument(documentId);
-            if (document == null || !document.IsOpen())
+            if ((document == null) || !document.IsOpen())
             {
                 return LinePosition.Zero;
             }

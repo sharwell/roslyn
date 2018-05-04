@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.MakeMethodSynchronous
 
             bool isOrdinaryOrLocalFunction = methodSymbolOpt.IsOrdinaryMethodOrLocalFunction();
             if (isOrdinaryOrLocalFunction &&
-                methodSymbolOpt.Name.Length > AsyncSuffix.Length &&
+                (methodSymbolOpt.Name.Length > AsyncSuffix.Length) &&
                 methodSymbolOpt.Name.EndsWith(AsyncSuffix))
             {
                 return await RenameThenRemoveAsyncTokenAsync(document, node, methodSymbolOpt, cancellationToken).ConfigureAwait(false);

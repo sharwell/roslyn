@@ -14,7 +14,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
         public void Dispose()
         {
-            if (Path != null && Directory.Exists(Path))
+            if ((Path != null) && Directory.Exists(Path))
             {
                 try
                 {

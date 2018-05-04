@@ -83,14 +83,14 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
             var enclosingSymbol = semanticModel.GetEnclosingSymbol(position, cancellationToken) as INamedTypeSymbol;
 
             // Only inside classes and structs
-            if (enclosingSymbol == null || !(enclosingSymbol.TypeKind == TypeKind.Struct || enclosingSymbol.TypeKind == TypeKind.Class))
+            if ((enclosingSymbol == null) || !((enclosingSymbol.TypeKind == TypeKind.Struct) || (enclosingSymbol.TypeKind == TypeKind.Class)))
             {
                 return null;
             }
 
             var symbols = semanticModel.LookupSymbols(position, container: enclosingSymbol)
                                         .OfType<IMethodSymbol>()
-                                        .Where(m => IsPartial(m) && m.PartialImplementationPart == null);
+                                        .Where(m => IsPartial(m) && (m.PartialImplementationPart == null));
 
             var text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
             var line = text.Lines.IndexOf(position);

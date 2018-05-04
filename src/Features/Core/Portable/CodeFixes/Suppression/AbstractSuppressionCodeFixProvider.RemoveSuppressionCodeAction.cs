@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
                 {
                     return AttributeRemoveAction.Create(attribute, project, diagnostic, fixer);
                 }
-                else if (documentOpt != null && !SuppressionHelpers.IsSynthesizedExternalSourceDiagnostic(diagnostic))
+                else if ((documentOpt != null) && !SuppressionHelpers.IsSynthesizedExternalSourceDiagnostic(diagnostic))
                 {
                     return PragmaRemoveAction.Create(suppressionTargetInfo, documentOpt, diagnostic, fixer);
                 }

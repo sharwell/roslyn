@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
                     // too small items in the list. give out one list
                     int perPartition = _operationPairs.Length / partitionCount;
-                    if (perPartition < 10 || partitionCount <= 1 || _operationPairs.Length < MinimumItemsPerPartition)
+                    if ((perPartition < 10) || (partitionCount <= 1) || (_operationPairs.Length < MinimumItemsPerPartition))
                     {
                         list.Add(GetOperationPairsFromTo(0, _operationPairs.Length));
                         return list;

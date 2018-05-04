@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis
                 get
                 {
                     var state = this.ReadState();
-                    return state.Compilation.HasValue || state.DeclarationOnlyCompilation != null;
+                    return state.Compilation.HasValue || (state.DeclarationOnlyCompilation != null);
                 }
             }
 
@@ -204,8 +204,8 @@ namespace Microsoft.CodeAnalysis
 
                 // all changes left for this document is modifying the given document.
                 // we can use current state as it is since we will replace the document with latest document anyway.
-                if (inProgressState != null &&
-                    inProgressCompilation != null &&
+                if ((inProgressState != null) &&
+                    (inProgressCompilation != null) &&
                     inProgressState.IntermediateProjects.All(t => IsTouchDocumentActionForDocument(t, id)))
                 {
                     inProgressProject = this.ProjectState;
@@ -215,7 +215,7 @@ namespace Microsoft.CodeAnalysis
                 inProgressProject = inProgressState != null ? inProgressState.IntermediateProjects.First().Item1 : this.ProjectState;
 
                 // if we already have a final compilation we are done.
-                if (inProgressCompilation != null && state is FinalState)
+                if ((inProgressCompilation != null) && (state is FinalState))
                 {
                     return;
                 }
@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis
             private static bool IsTouchDocumentActionForDocument(ValueTuple<ProjectState, CompilationTranslationAction> tuple, DocumentId id)
             {
                 var touchDocumentAction = tuple.Item2 as CompilationTranslationAction.TouchDocumentAction;
-                return touchDocumentAction != null && touchDocumentAction.DocumentId == id;
+                return (touchDocumentAction != null) && (touchDocumentAction.DocumentId == id);
             }
 
             /// <summary>
@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis
             public bool TryGetCompilation(out Compilation compilation)
             {
                 var state = this.ReadState();
-                return state.FinalCompilation.TryGetValue(out compilation) && compilation != null;
+                return state.FinalCompilation.TryGetValue(out compilation) && (compilation != null);
             }
 
             public Task<Compilation> GetCompilationAsync(SolutionState solution, CancellationToken cancellationToken)
@@ -696,7 +696,7 @@ namespace Microsoft.CodeAnalysis
                 {
 
                     // if we already have the compilation and its right kind then use it.
-                    if (this.ProjectState.LanguageServices == fromProject.LanguageServices
+                    if ((this.ProjectState.LanguageServices == fromProject.LanguageServices)
                         && this.TryGetCompilation(out var compilation))
                     {
                         return compilation.ToMetadataReference(projectReference.Aliases, projectReference.EmbedInteropTypes);
@@ -731,8 +731,8 @@ namespace Microsoft.CodeAnalysis
                 var state = this.ReadState();
                 // get compilation in any state it happens to be in right now.
                 if (state.Compilation.TryGetValue(out var compilation)
-                    && compilation != null
-                    && this.ProjectState.LanguageServices == fromProject.LanguageServices)
+                    && (compilation != null)
+                    && (this.ProjectState.LanguageServices == fromProject.LanguageServices))
                 {
                     // if we have a compilation and its the correct language, use a simple compilation reference
                     return compilation.ToMetadataReference(projectReference.Aliases, projectReference.EmbedInteropTypes);

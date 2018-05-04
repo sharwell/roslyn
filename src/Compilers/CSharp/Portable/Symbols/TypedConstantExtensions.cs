@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return "{" + string.Join(", ", constant.Values.Select(v => v.ToCSharpString())) + "}";
             }
 
-            if (constant.Kind == TypedConstantKind.Type || constant.Type.SpecialType == SpecialType.System_Object)
+            if ((constant.Kind == TypedConstantKind.Type) || (constant.Type.SpecialType == SpecialType.System_Object))
             {
                 return "typeof(" + constant.Value.ToString() + ")";
             }
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var field = member as IFieldSymbol;
 
-                if ((object)field != null && field.HasConstantValue)
+                if (((object)field != null) && field.HasConstantValue)
                 {
                     ConstantValue memberConstant = ConstantValue.Create(field.ConstantValue, specialType);
                     ulong memberValue = memberConstant.UInt64Value;
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             foreach (var member in members)
             {
                 var field = member as IFieldSymbol;
-                if ((object)field != null && field.HasConstantValue)
+                if (((object)field != null) && field.HasConstantValue)
                 {
                     ConstantValue memberConstant = ConstantValue.Create(field.ConstantValue, specialType);
                     long memberValue = memberConstant.Int64Value;

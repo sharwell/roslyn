@@ -33,9 +33,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.GenerateMethod
                    node.IsKind(SyntaxKind.MethodDeclaration) ||
                    node.IsKind(SyntaxKind.InvocationExpression) ||
                    node.IsKind(SyntaxKind.CastExpression) ||
-                   node is LiteralExpressionSyntax ||
-                   node is SimpleNameSyntax ||
-                   node is ExpressionSyntax;
+                   (node is LiteralExpressionSyntax) ||
+                   (node is SimpleNameSyntax) ||
+                   (node is ExpressionSyntax);
         }
 
         protected override SyntaxNode GetTargetNode(SyntaxNode node)

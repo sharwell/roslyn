@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 }
                 
                 // Don't bother to check the forwarded-to assembly if we've already seen it.
-                if (visitedAssemblies != null && visitedAssemblies.Contains(firstSymbol))
+                if ((visitedAssemblies != null) && visitedAssemblies.Contains(firstSymbol))
                 {
                     return CreateCycleInTypeForwarderErrorTypeSymbol(ref emittedName);
                 }
@@ -212,7 +212,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         internal override bool AreInternalsVisibleToThisAssembly(AssemblySymbol potentialGiverOfAccess)
         {
             IVTConclusion conclusion = MakeFinalIVTDetermination(potentialGiverOfAccess);
-            return conclusion == IVTConclusion.Match || conclusion == IVTConclusion.OneSignedOneNot;
+            return (conclusion == IVTConclusion.Match) || (conclusion == IVTConclusion.OneSignedOneNot);
         }
 
         internal override IEnumerable<ImmutableArray<byte>> GetInternalsVisibleToPublicKeys(string simpleName)

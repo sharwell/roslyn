@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral
             var spans = textView.Selection.GetSnapshotSpansOnBuffer(subjectBuffer);
 
             // Don't split strings if there is any actual selection.
-            if (spans.Count == 1 && spans[0].IsEmpty)
+            if ((spans.Count == 1) && spans[0].IsEmpty)
             {
                 var caret = textView.GetCaretPoint(subjectBuffer);
                 if (caret != null)

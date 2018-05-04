@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis
             {
                 string combinedPath = PathUtilities.CombineAbsoluteAndRelativePaths(searchPath, path);
 
-                Debug.Assert(combinedPath == null || PathUtilities.IsAbsolute(combinedPath));
+                Debug.Assert((combinedPath == null) || PathUtilities.IsAbsolute(combinedPath));
 
                 if (FileExists(combinedPath))
                 {
@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis
 
         internal virtual bool FileExists(string fullPath)
         {
-            Debug.Assert(fullPath == null || PathUtilities.IsAbsolute(fullPath));
+            Debug.Assert((fullPath == null) || PathUtilities.IsAbsolute(fullPath));
             return File.Exists(fullPath);
         }
     }

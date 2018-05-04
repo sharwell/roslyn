@@ -92,8 +92,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
                 // a using can't come before externs
                 var nextToken = originalToken.GetNextToken(includeSkipped: true);
-                if (nextToken.Kind() == SyntaxKind.ExternKeyword ||
-                    ((CompilationUnitSyntax)context.SyntaxTree.GetRoot(cancellationToken)).Externs.Count > 0)
+                if ((nextToken.Kind() == SyntaxKind.ExternKeyword) ||
+                    (((CompilationUnitSyntax)context.SyntaxTree.GetRoot(cancellationToken)).Externs.Count > 0))
                 {
                     return false;
                 }
@@ -101,7 +101,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 return true;
             }
 
-            if (token.Kind() == SyntaxKind.OpenBraceToken &&
+            if ((token.Kind() == SyntaxKind.OpenBraceToken) &&
                 token.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
             {
                 var ns = (NamespaceDeclarationSyntax)token.Parent;

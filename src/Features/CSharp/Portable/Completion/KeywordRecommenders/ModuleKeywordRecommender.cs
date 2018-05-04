@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 var token = context.LeftToken;
                 var type = token.GetAncestor<MemberDeclarationSyntax>();
 
-                return type == null || type.IsParentKind(SyntaxKind.CompilationUnit);
+                return (type == null) || type.IsParentKind(SyntaxKind.CompilationUnit);
             }
 
             return false;

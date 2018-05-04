@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // If we're before the start of the first token, just return
             // the binder for the compilation unit.
-            if (position == 0 && position != token.SpanStart)
+            if ((position == 0) && (position != token.SpanStart))
             {
                 return _binderFactory.GetBinder(this.Root, position).WithAdditionalFlags(GetSemanticModelBinderFlags());
             }
@@ -168,13 +168,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             switch (node)
             {
                 case ConstructorDeclarationSyntax constructor:
-                    model = (constructor.HasAnyBody() || constructor.Initializer != null) ? GetOrAddModel(node) : null;
+                    model = (constructor.HasAnyBody() || (constructor.Initializer != null)) ? GetOrAddModel(node) : null;
                     break;
                 case BaseMethodDeclarationSyntax method:
                     model = method.HasAnyBody() ? GetOrAddModel(node) :  null;
                     break;
                 case AccessorDeclarationSyntax accessor:
-                    model = (accessor.Body != null || accessor.ExpressionBody != null) ? GetOrAddModel(node) : null;
+                    model = ((accessor.Body != null) || (accessor.ExpressionBody != null)) ? GetOrAddModel(node) : null;
                     break;
                 default:
                     model = this.GetMemberModel(node);
@@ -212,7 +212,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // If we didn't get anything and were in Type/Namespace only context, let's bind normally and see
                 // if any symbol comes out.
-                if ((object)result.Symbol == null && result.CandidateReason == CandidateReason.None && node is ExpressionSyntax && SyntaxFacts.IsInNamespaceOrTypeContext((ExpressionSyntax)node))
+                if (((object)result.Symbol == null) && (result.CandidateReason == CandidateReason.None) && (node is ExpressionSyntax) && SyntaxFacts.IsInNamespaceOrTypeContext((ExpressionSyntax)node))
                 {
                     var binder = this.GetEnclosingBinder(GetAdjustedNodePosition(node));
 
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
                 }
             }
-            else if (node.Parent.Kind() == SyntaxKind.XmlNameAttribute && (attrSyntax = (XmlNameAttributeSyntax)node.Parent).Identifier == node)
+            else if ((node.Parent.Kind() == SyntaxKind.XmlNameAttribute) && ((attrSyntax = (XmlNameAttributeSyntax)node.Parent).Identifier == node))
             {
                 result = SymbolInfo.None;
 
@@ -250,7 +250,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     // NOTE: We don't need to call GetSymbolInfoForSymbol because the symbols
                     // can only be parameters or type parameters.
-                    Debug.Assert(symbols.All(s => s.Kind == SymbolKind.TypeParameter || s.Kind == SymbolKind.Parameter));
+                    Debug.Assert(symbols.All(s => (s.Kind == SymbolKind.TypeParameter) || (s.Kind == SymbolKind.Parameter)));
 
                     switch (symbols.Length)
                     {
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             // probably need to have the FieldSymbol retain alias info when it does its own
                             // binding and expose it to us here.
 
-                            if ((object)result == null || result.Kind == SymbolKind.ErrorType)
+                            if (((object)result == null) || (result.Kind == SymbolKind.ErrorType))
                             {
                                 // We might be in a field declaration with "var" keyword as the type name.
                                 // Implicitly typed field symbols are not allowed in regular C#,
@@ -369,7 +369,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                 // Note that for regular C#, fieldSymbol.Type would be an error type.
 
                                 var variableDecl = type.Parent as VariableDeclarationSyntax;
-                                if (variableDecl != null && variableDecl.Variables.Any())
+                                if ((variableDecl != null) && variableDecl.Variables.Any())
                                 {
                                     var fieldSymbol = GetDeclaredFieldSymbol(variableDecl.Variables.First());
                                     if ((object)fieldSymbol != null)
@@ -504,10 +504,10 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             // if the expression is the child of a base-list node, then the expression should be
             // bound in the context of the containing symbols base being resolved.
-            for (; expression != null && expression.Parent != null; expression = expression.Parent as TypeSyntax)
+            for (; (expression != null) && (expression.Parent != null); expression = expression.Parent as TypeSyntax)
             {
                 var parent = expression.Parent;
-                if (parent is BaseTypeSyntax && parent.Parent != null && parent.Parent.Kind() == SyntaxKind.BaseList && ((BaseTypeSyntax)parent).Type == expression)
+                if ((parent is BaseTypeSyntax) && (parent.Parent != null) && (parent.Parent.Kind() == SyntaxKind.BaseList) && (((BaseTypeSyntax)parent).Type == expression))
                 {
                     // we have a winner
                     var decl = (BaseTypeDeclarationSyntax)parent.Parent.Parent;
@@ -777,7 +777,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         {
                             var methodDecl = (BaseMethodDeclarationSyntax)memberDecl;
                             var expressionBody = methodDecl.GetExpressionBodySyntax();
-                            return (expressionBody?.FullSpan.Contains(span) == true || methodDecl.Body?.FullSpan.Contains(span) == true) ?
+                            return ((expressionBody?.FullSpan.Contains(span) == true) || (methodDecl.Body?.FullSpan.Contains(span) == true)) ?
                                    GetOrAddModel(methodDecl) : null;
                         }
 
@@ -785,9 +785,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                         {
                             ConstructorDeclarationSyntax constructorDecl = (ConstructorDeclarationSyntax)memberDecl;
                             var expressionBody = constructorDecl.GetExpressionBodySyntax();
-                            return (constructorDecl.Initializer?.FullSpan.Contains(span) == true ||
-                                    expressionBody?.FullSpan.Contains(span) == true ||
-                                    constructorDecl.Body?.FullSpan.Contains(span) == true) ?
+                            return ((constructorDecl.Initializer?.FullSpan.Contains(span) == true) ||
+                                    (expressionBody?.FullSpan.Contains(span) == true) ||
+                                    (constructorDecl.Body?.FullSpan.Contains(span) == true)) ?
                                    GetOrAddModel(constructorDecl) : null;
                         }
 
@@ -795,7 +795,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         {
                             DestructorDeclarationSyntax destructorDecl = (DestructorDeclarationSyntax)memberDecl;
                             var expressionBody = destructorDecl.GetExpressionBodySyntax();
-                            return (expressionBody?.FullSpan.Contains(span) == true || destructorDecl.Body?.FullSpan.Contains(span) == true) ?
+                            return ((expressionBody?.FullSpan.Contains(span) == true) || (destructorDecl.Body?.FullSpan.Contains(span) == true)) ?
                                    GetOrAddModel(destructorDecl) : null;
                         }
 
@@ -806,7 +806,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // NOTE: not UnknownAccessorDeclaration since there's no corresponding method symbol from which to build a member model.
                         {
                             var accessorDecl = (AccessorDeclarationSyntax)memberDecl;
-                            return (accessorDecl.ExpressionBody?.FullSpan.Contains(span) == true || accessorDecl.Body?.FullSpan.Contains(span) == true) ?
+                            return ((accessorDecl.ExpressionBody?.FullSpan.Contains(span) == true) || (accessorDecl.Body?.FullSpan.Contains(span) == true)) ?
                                    GetOrAddModel(accessorDecl) : null;
                         }
 
@@ -904,7 +904,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return GetOrAddModelIfContains(defaultValueSyntax, span);
             }
 
-            if (defaultValueSyntax != null && defaultValueSyntax.FullSpan.Contains(span))
+            if ((defaultValueSyntax != null) && defaultValueSyntax.FullSpan.Contains(span))
             {
                 var parameterSymbol = (ParameterSymbol)containing.GetDeclaredSymbol(paramDecl);
                 if ((object)parameterSymbol != null)
@@ -937,7 +937,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private MemberSemanticModel GetOrAddModelIfContains(CSharpSyntaxNode node, TextSpan span)
         {
-            if (node != null && node.FullSpan.Contains(span))
+            if ((node != null) && node.FullSpan.Contains(span))
             {
                 return GetOrAddModel(node);
             }
@@ -1102,9 +1102,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                     {
                         var parent = node.Parent;
                         // TODO (tomat): handle misplaced global statements
-                        if (parent.Kind() == SyntaxKind.CompilationUnit &&
+                        if ((parent.Kind() == SyntaxKind.CompilationUnit) &&
                             !this.IsRegularCSharp &&
-                            (object)_compilation.ScriptClass != null)
+                            ((object)_compilation.ScriptClass != null))
                         {
                             var scriptInitializer = _compilation.ScriptClass.GetScriptInitializer();
                             Debug.Assert((object)scriptInitializer != null);
@@ -1653,7 +1653,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             foreach (var symbol in collection)
             {
                 var namedType = symbol as ImplicitNamedTypeSymbol;
-                if ((object)namedType != null && namedType.IsImplicitClass)
+                if (((object)namedType != null) && namedType.IsImplicitClass)
                 {
                     // look inside wrapper around illegally placed members in namespaces
                     var result = GetDeclaredMember(namedType, declarationSpan, name);
@@ -1665,9 +1665,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 foreach (var loc in symbol.Locations)
                 {
-                    if (loc.IsInSource && loc.SourceTree == this.SyntaxTree && declarationSpan.Contains(loc.SourceSpan))
+                    if (loc.IsInSource && (loc.SourceTree == this.SyntaxTree) && declarationSpan.Contains(loc.SourceSpan))
                     {
-                        if (loc.SourceSpan.IsEmpty && loc.SourceSpan.End == declarationSpan.Start)
+                        if (loc.SourceSpan.IsEmpty && (loc.SourceSpan.End == declarationSpan.Start))
                         {
                             // exclude decls created via syntax recovery
                             zeroWidthMatch = symbol;
@@ -1686,7 +1686,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if ((object)partial != null)
                 {
                     var loc = partial.Locations[0];
-                    if (loc.IsInSource && loc.SourceTree == this.SyntaxTree && declarationSpan.Contains(loc.SourceSpan))
+                    if (loc.IsInSource && (loc.SourceTree == this.SyntaxTree) && declarationSpan.Contains(loc.SourceSpan))
                     {
                         return partial;
                     }
@@ -1947,7 +1947,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var delegateInvoke = delegateType.DelegateInvokeMethod;
-            if ((object)delegateInvoke == null || delegateInvoke.HasUseSiteError)
+            if (((object)delegateInvoke == null) || delegateInvoke.HasUseSiteError)
             {
                 return null;
             }
@@ -2038,7 +2038,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 foreach (var location in symbol.Locations)
                 {
-                    if (location.SourceTree == this.SyntaxTree && parameter.Span.Contains(location.SourceSpan))
+                    if ((location.SourceTree == this.SyntaxTree) && parameter.Span.Contains(location.SourceSpan))
                     {
                         return symbol;
                     }
@@ -2073,7 +2073,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 throw new ArgumentException("statements not within tree");
             }
 
-            if (firstStatement.Parent == null || firstStatement.Parent != lastStatement.Parent)
+            if ((firstStatement.Parent == null) || (firstStatement.Parent != lastStatement.Parent))
             {
                 throw new ArgumentException("statements not within the same statement list");
             }
@@ -2151,7 +2151,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // a namespace or a type in an explicitly declared namespace:
-            if (memberDeclaration.Kind() == SyntaxKind.NamespaceDeclaration || SyntaxFacts.IsTypeDeclaration(memberDeclaration.Kind()))
+            if ((memberDeclaration.Kind() == SyntaxKind.NamespaceDeclaration) || SyntaxFacts.IsTypeDeclaration(memberDeclaration.Kind()))
             {
                 return container;
             }

@@ -263,7 +263,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
             var relativePath = PathUtilities.GetRelativePath(_loadedProject.DirectoryPath, filePath);
 
             Dictionary<string, string> metadata = null;
-            if (logicalPath != null && relativePath != logicalPath)
+            if ((logicalPath != null) && (relativePath != logicalPath))
             {
                 metadata = new Dictionary<string, string>
                 {
@@ -291,7 +291,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
 
         public void AddMetadataReference(MetadataReference reference, AssemblyIdentity identity)
         {
-            if (reference is PortableExecutableReference peRef && peRef.FilePath != null)
+            if (reference is PortableExecutableReference peRef && (peRef.FilePath != null))
             {
                 var metadata = new Dictionary<string, string>();
                 if (!peRef.Properties.Aliases.IsEmpty)
@@ -299,7 +299,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
                     metadata.Add(MetadataNames.Aliases, string.Join(",", peRef.Properties.Aliases));
                 }
 
-                if (IsInGAC(peRef.FilePath) && identity != null)
+                if (IsInGAC(peRef.FilePath) && (identity != null))
                 {
                     // Since the location of the reference is in GAC, need to use full identity name to find it again.
                     // This typically happens when you base the reference off of a reflection assembly location.
@@ -348,7 +348,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
 
         public void RemoveMetadataReference(MetadataReference reference, AssemblyIdentity identity)
         {
-            if (reference is PortableExecutableReference peRef && peRef.FilePath != null)
+            if (reference is PortableExecutableReference peRef && (peRef.FilePath != null))
             {
                 var item = FindReferenceItem(identity, peRef.FilePath);
                 if (item != null)
@@ -392,7 +392,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
             }
 
             // check for partial name match
-            if (item == null && identity != null)
+            if ((item == null) && (identity != null))
             {
                 var partialName = identity.Name + ",";
                 var items = references.Where(it => it.EvaluatedInclude.StartsWith(partialName, StringComparison.OrdinalIgnoreCase)).ToList();

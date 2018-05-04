@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis.InitializeParameter
                 var statement = TryFindFieldOrPropertyAssignmentStatement(
                     methodSymbol.Parameters[i], blockStatementOpt, out var fieldOrProperty);
 
-                if (statement != null &&
+                if ((statement != null) &&
                     fieldOrProperty is TSymbol symbol)
                 {
                     var symbolSyntax = symbol.DeclaringSyntaxReferences[0].GetSyntax(cancellationToken);
@@ -302,7 +302,7 @@ namespace Microsoft.CodeAnalysis.InitializeParameter
                 var statement = TryFindFieldOrPropertyAssignmentStatement(
                     methodSymbol.Parameters[i], blockStatementOpt, out var fieldOrProperty);
 
-                if (statement != null &&
+                if ((statement != null) &&
                     fieldOrProperty is TSymbol symbol)
                 {
                     // Found an existing field/property that corresponds to a following parameter.

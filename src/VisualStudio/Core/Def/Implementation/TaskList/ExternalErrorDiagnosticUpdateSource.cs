@@ -192,7 +192,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
                         // REVIEW: current design is that we special case compiler analyzer case and we accept only document level
                         //         diagnostic as live. otherwise, we let them be build errors. we changed compiler analyzer accordingly as well
                         //         so that it doesn't report project level diagnostic as live errors.
-                        if (_diagnosticService.IsCompilerDiagnostic(project.Language, d) && d.DocumentId == null)
+                        if (_diagnosticService.IsCompilerDiagnostic(project.Language, d) && (d.DocumentId == null))
                         {
                             // compiler error but project level error
                             return false;
@@ -597,24 +597,24 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
                 var lineColumn1 = GetOriginalOrMappedLineColumn(item1);
                 var lineColumn2 = GetOriginalOrMappedLineColumn(item2);
 
-                if (item1.DocumentId != null && item2.DocumentId != null)
+                if ((item1.DocumentId != null) && (item2.DocumentId != null))
                 {
-                    return item1.Id == item2.Id &&
-                           item1.Message == item2.Message &&
-                           item1.ProjectId == item2.ProjectId &&
-                           item1.DocumentId == item2.DocumentId &&
-                           lineColumn1.Item1 == lineColumn2.Item1 &&
-                           lineColumn1.Item2 == lineColumn2.Item2 &&
-                           item1.Severity == item2.Severity;
+                    return (item1.Id == item2.Id) &&
+                           (item1.Message == item2.Message) &&
+                           (item1.ProjectId == item2.ProjectId) &&
+                           (item1.DocumentId == item2.DocumentId) &&
+                           (lineColumn1.Item1 == lineColumn2.Item1) &&
+                           (lineColumn1.Item2 == lineColumn2.Item2) &&
+                           (item1.Severity == item2.Severity);
                 }
 
-                return item1.Id == item2.Id &&
-                       item1.Message == item2.Message &&
-                       item1.ProjectId == item2.ProjectId &&
-                       item1.DataLocation?.OriginalFilePath == item2.DataLocation?.OriginalFilePath &&
-                       lineColumn1.Item1 == lineColumn2.Item1 &&
-                       lineColumn1.Item2 == lineColumn2.Item2 &&
-                       item1.Severity == item2.Severity;
+                return (item1.Id == item2.Id) &&
+                       (item1.Message == item2.Message) &&
+                       (item1.ProjectId == item2.ProjectId) &&
+                       (item1.DataLocation?.OriginalFilePath == item2.DataLocation?.OriginalFilePath) &&
+                       (lineColumn1.Item1 == lineColumn2.Item1) &&
+                       (lineColumn1.Item2 == lineColumn2.Item2) &&
+                       (item1.Severity == item2.Severity);
             }
 
             public int GetHashCode(DiagnosticData obj)

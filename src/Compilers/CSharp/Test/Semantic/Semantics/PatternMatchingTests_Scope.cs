@@ -4385,7 +4385,7 @@ public class X
             Assert.Equal(6, x1Ref.Length);
             for (int i = 0; i < x1Decl.Length; i++)
             {
-                VerifyModelForDeclarationPattern(model, x1Decl[i], x1Ref[i * 2], x1Ref[i * 2 + 1]);
+                VerifyModelForDeclarationPattern(model, x1Decl[i], x1Ref[i * 2], x1Ref[(i * 2) + 1]);
             }
 
             var x2Decl = GetPatternDeclarations(tree, "x2").Single();
@@ -4785,7 +4785,7 @@ public class X
             Assert.Equal(6, x1Ref.Length);
             for (int i = 0; i < x1Decl.Length; i++)
             {
-                VerifyModelForDeclarationPattern(model, x1Decl[i], x1Ref[i * 2], x1Ref[i * 2 + 1]);
+                VerifyModelForDeclarationPattern(model, x1Decl[i], x1Ref[i * 2], x1Ref[(i * 2) + 1]);
             }
 
             var x2Decl = GetPatternDeclarations(tree, "x2").Single();
@@ -10902,7 +10902,7 @@ public class X
             Assert.Equal(6, x1Ref.Length);
             for (int i = 0; i < x1Decl.Length; i++)
             {
-                VerifyModelForDeclarationPattern(model, x1Decl[i], x1Ref[i * 2], x1Ref[i * 2 + 1]);
+                VerifyModelForDeclarationPattern(model, x1Decl[i], x1Ref[i * 2], x1Ref[(i * 2) + 1]);
             }
 
             var x2Decl = GetPatternDeclarations(tree, "x2").Single();

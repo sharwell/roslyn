@@ -191,13 +191,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return;
             }
 
-            if (symbol.IsExtensionMethod && format.ExtensionMethodStyle != SymbolDisplayExtensionMethodStyle.Default)
+            if (symbol.IsExtensionMethod && (format.ExtensionMethodStyle != SymbolDisplayExtensionMethodStyle.Default))
             {
-                if (symbol.MethodKind == MethodKind.ReducedExtension && format.ExtensionMethodStyle == SymbolDisplayExtensionMethodStyle.StaticMethod)
+                if ((symbol.MethodKind == MethodKind.ReducedExtension) && (format.ExtensionMethodStyle == SymbolDisplayExtensionMethodStyle.StaticMethod))
                 {
                     symbol = symbol.GetConstructedReducedFrom();
                 }
-                else if (symbol.MethodKind != MethodKind.ReducedExtension && format.ExtensionMethodStyle == SymbolDisplayExtensionMethodStyle.InstanceMethod)
+                else if ((symbol.MethodKind != MethodKind.ReducedExtension) && (format.ExtensionMethodStyle == SymbolDisplayExtensionMethodStyle.InstanceMethod))
                 {
                     // If we cannot reduce this to an instance form then display in the static form
                     symbol = symbol.ReduceExtensionMethod(symbol.Parameters.First().Type) ?? symbol;
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // symbol then we do not know its accessibility, modifiers, etc, all of which require knowing
             // the containing type, so we'll skip them.
 
-            if ((object)symbol.ContainingType != null || (symbol.ContainingSymbol is ITypeSymbol))
+            if (((object)symbol.ContainingType != null) || (symbol.ContainingSymbol is ITypeSymbol))
             {
                 AddAccessibilityIfRequired(symbol);
                 AddMemberModifiersIfRequired(symbol);
@@ -341,14 +341,14 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // Note: we are using the metadata name also in the case that
                     // symbol.containingType is null (which should never be the case here) or is an
                     //       anonymous type (which 'does not have a name').
-                    var name = format.CompilerInternalOptions.IncludesOption(SymbolDisplayCompilerInternalOptions.UseMetadataMethodNames) || symbol.ContainingType == null || symbol.ContainingType.IsAnonymousType
+                    var name = format.CompilerInternalOptions.IncludesOption(SymbolDisplayCompilerInternalOptions.UseMetadataMethodNames) || (symbol.ContainingType == null) || symbol.ContainingType.IsAnonymousType
                         ? symbol.Name
                         : symbol.ContainingType.Name;
                     builder.Add(CreatePart(SymbolDisplayPartKind.MethodName, symbol, name));
                     break;
                 case MethodKind.Destructor:
                     // Note: we are using the metadata name also in the case that symbol.containingType is null, which should never be the case here.
-                    if (format.CompilerInternalOptions.IncludesOption(SymbolDisplayCompilerInternalOptions.UseMetadataMethodNames) || symbol.ContainingType == null)
+                    if (format.CompilerInternalOptions.IncludesOption(SymbolDisplayCompilerInternalOptions.UseMetadataMethodNames) || (symbol.ContainingType == null))
                     {
                         builder.Add(CreatePart(SymbolDisplayPartKind.MethodName, symbol, symbol.Name));
                     }
@@ -446,7 +446,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 AddPunctuation(SyntaxKind.OpenParenToken);
                 AddParametersIfRequired(
-                    hasThisParameter: symbol.IsExtensionMethod && symbol.MethodKind != MethodKind.ReducedExtension,
+                    hasThisParameter: symbol.IsExtensionMethod && (symbol.MethodKind != MethodKind.ReducedExtension),
                     isVarargs: symbol.IsVararg,
                     parameters: symbol.Parameters);
                 AddPunctuation(SyntaxKind.CloseParenToken);
@@ -525,7 +525,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return true;
             }
 
-            return value.GetType().GetTypeInfo().IsPrimitive || value is string || value is decimal;
+            return value.GetType().GetTypeInfo().IsPrimitive || (value is string) || (value is decimal);
         }
 
         private void AddFieldModifiersIfRequired(IFieldSymbol symbol)
@@ -560,13 +560,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             INamedTypeSymbol containingType = symbol.ContainingType;
 
             // all members (that end up here) must have a containing type or a containing symbol should be a TypeSymbol.
-            Debug.Assert(containingType != null || (symbol.ContainingSymbol is ITypeSymbol));
+            Debug.Assert((containingType != null) || (symbol.ContainingSymbol is ITypeSymbol));
 
             if (format.MemberOptions.IncludesOption(SymbolDisplayMemberOptions.IncludeModifiers) &&
-                (containingType == null ||
-                 (containingType.TypeKind != TypeKind.Interface && !IsEnumMember(symbol) && !IsLocalFunction(symbol))))
+                ((containingType == null) ||
+                 ((containingType.TypeKind != TypeKind.Interface) && !IsEnumMember(symbol) && !IsLocalFunction(symbol))))
             {
-                var isConst = symbol is IFieldSymbol && ((IFieldSymbol)symbol).IsConst;
+                var isConst = (symbol is IFieldSymbol) && ((IFieldSymbol)symbol).IsConst;
                 if (symbol.IsStatic && !isConst)
                 {
                     AddKeyword(SyntaxKind.StaticKeyword);

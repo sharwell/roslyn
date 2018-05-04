@@ -481,10 +481,10 @@ namespace Microsoft.CodeAnalysis.SymbolSearch
                 patchBytes = null;
 
                 var upToDateAttribute = patchElement.Attribute(UpToDateAttributeName);
-                upToDate = upToDateAttribute != null && (bool)upToDateAttribute;
+                upToDate = (upToDateAttribute != null) && (bool)upToDateAttribute;
 
                 var tooOldAttribute = patchElement.Attribute(TooOldAttributeName);
-                tooOld = tooOldAttribute != null && (bool)tooOldAttribute;
+                tooOld = (tooOldAttribute != null) && (bool)tooOldAttribute;
 
                 var contentsAttribute = patchElement.Attribute(ContentAttributeName);
                 if (contentsAttribute != null)

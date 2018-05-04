@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
 
         public bool Equals(Location x, Location y)
         {
-            if (x != null && x.IsInSource && y != null && y.IsInSource)
+            if ((x != null) && x.IsInSource && (y != null) && y.IsInSource)
             {
                 return x.SourceSpan.Equals(y.SourceSpan) &&
                        x.SourceTree.FilePath.Equals(y.SourceTree.FilePath, StringComparison.OrdinalIgnoreCase);
@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CodeLens
 
         public int GetHashCode(Location obj)
         {
-            if (obj != null && obj.IsInSource)
+            if ((obj != null) && obj.IsInSource)
             {
                 return Hash.Combine(obj.SourceSpan.GetHashCode(),
                    StringComparer.OrdinalIgnoreCase.GetHashCode(obj.SourceTree.FilePath));

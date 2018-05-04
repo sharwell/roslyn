@@ -72,11 +72,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     return false;
                 }
 
-                var argument = token.Parent.Parent as ArgumentSyntax // var is child of ArgumentSyntax, eg. Goo(out var $$
-                    ?? token.Parent.Parent.Parent as ArgumentSyntax; // var is child of DeclarationExpression 
+                var argument = (token.Parent.Parent as ArgumentSyntax) // var is child of ArgumentSyntax, eg. Goo(out var $$
+                    ?? (token.Parent.Parent.Parent as ArgumentSyntax); // var is child of DeclarationExpression 
                                                                      // under ArgumentSyntax, eg. Goo(out var a$$
 
-                if (argument == null || !argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
+                if ((argument == null) || !argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
                 {
                     result = default;
                     return false;
@@ -157,7 +157,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     return default;
                 }
 
-                if (token.IsKind(SyntaxKind.CommaToken) && token.Parent != target)
+                if (token.IsKind(SyntaxKind.CommaToken) && (token.Parent != target))
                 {
                     return default;
                 }
@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     return default;
                 }
 
-                if (!token.IsKind(SyntaxKind.CommaToken) && token != typeSyntax.GetLastToken())
+                if (!token.IsKind(SyntaxKind.CommaToken) && (token != typeSyntax.GetLastToken()))
                 {
                     return default;
                 }
@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 }
 
                 var typeSyntax = typeSyntaxGetter(target);
-                if (typeSyntax == null || token != typeSyntax.GetLastToken())
+                if ((typeSyntax == null) || (token != typeSyntax.GetLastToken()))
                 {
                     return default;
                 }

@@ -56,12 +56,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return;
             }
 
-            if (node is BaseTypeDeclarationSyntax ||
-                node is DelegateDeclarationSyntax ||
-                node is EnumMemberDeclarationSyntax ||
-                node is BaseMethodDeclarationSyntax ||
-                node is BasePropertyDeclarationSyntax || //includes EventDeclarationSyntax
-                node is BaseFieldDeclarationSyntax) //includes EventFieldDeclarationSyntax
+            if ((node is BaseTypeDeclarationSyntax) ||
+                (node is DelegateDeclarationSyntax) ||
+                (node is EnumMemberDeclarationSyntax) ||
+                (node is BaseMethodDeclarationSyntax) ||
+                (node is BasePropertyDeclarationSyntax) || //includes EventDeclarationSyntax
+                (node is BaseFieldDeclarationSyntax)) //includes EventFieldDeclarationSyntax
             {
                 // Will be cleared the next time we visit a token,
                 // after the leading trivia, if there is any.

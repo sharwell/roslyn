@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets.Snippe
             : base(snippetExpansionClient, textView, subjectBuffer)
         {
             this.CaseGenerationLocationField = caseGenerationLocationField;
-            this.SwitchExpressionField = (switchExpressionField.Length >= 2 && switchExpressionField[0] == '$' && switchExpressionField[switchExpressionField.Length - 1] == '$')
+            this.SwitchExpressionField = ((switchExpressionField.Length >= 2) && (switchExpressionField[0] == '$') && (switchExpressionField[switchExpressionField.Length - 1] == '$'))
                 ? switchExpressionField.Substring(1, switchExpressionField.Length - 2) : switchExpressionField;
         }
 
@@ -42,12 +42,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets.Snippe
             // If the switch expression is invalid, still show the default case
             value = DefaultCase;
             hasCurrentValue = 1;
-            if (!TryGetEnumTypeSymbol(cancellationToken, out var typeSymbol) || typeSymbol.TypeKind != TypeKind.Enum)
+            if (!TryGetEnumTypeSymbol(cancellationToken, out var typeSymbol) || (typeSymbol.TypeKind != TypeKind.Enum))
             {
                 return VSConstants.S_OK;
             }
 
-            var enumFields = typeSymbol.GetMembers().Where(m => m.Kind == SymbolKind.Field && m.IsStatic);
+            var enumFields = typeSymbol.GetMembers().Where(m => (m.Kind == SymbolKind.Field) && m.IsStatic);
 
             // Find and use the most simplified legal version of the enum type name in this context
             string simplifiedTypeName = string.Empty;

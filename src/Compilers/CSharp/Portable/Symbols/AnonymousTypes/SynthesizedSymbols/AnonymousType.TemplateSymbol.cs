@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 int fieldsCount = typeDescr.Fields.Length;
 
                 // members
-                Symbol[] members = new Symbol[fieldsCount * 3 + 1];
+                Symbol[] members = new Symbol[(fieldsCount * 3) + 1];
                 int memberIndex = 0;
 
                 // The array storing property symbols to be used in 
@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 set
                 {
                     var oldValue = Interlocked.CompareExchange(ref _nameAndIndex, value, null);
-                    Debug.Assert(oldValue == null ||
+                    Debug.Assert((oldValue == null) ||
                         ((oldValue.Name == value.Name) && (oldValue.Index == value.Index)));
                 }
             }
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     // in case 'location' in type descriptor is bigger that the one in smallestLocation
 
                     Location currentSmallestLocation = _smallestLocation;
-                    if (currentSmallestLocation != null && this.Manager.Compilation.CompareSourceLocations(currentSmallestLocation, location) < 0)
+                    if ((currentSmallestLocation != null) && (this.Manager.Compilation.CompareSourceLocations(currentSmallestLocation, location) < 0))
                     {
                         // The template's smallest location do not need to be changed
                         return;

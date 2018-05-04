@@ -42,7 +42,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Interop
 
         public ComHandle(THandle handle, TObject managedObject)
         {
-            if (handle == null && managedObject == null)
+            if ((handle == null) && (managedObject == null))
             {
                 _handle = null;
                 _managedObject = null;
@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Interop
                 // NOTE: This might get triggered if you do testing with the "NoWrap"
                 // ComAggregatePolicy, since both handle will not be a ComObject in that
                 // case.
-                if (handle != null && !Marshal.IsComObject(handle))
+                if ((handle != null) && !Marshal.IsComObject(handle))
                 {
                     throw new ArgumentException("must be null or a Com object", nameof(handle));
                 }
@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Interop
         {
             get
             {
-                Debug.Assert(_handle == null || Marshal.IsComObject(_handle), "Invariant broken!");
+                Debug.Assert((_handle == null) || Marshal.IsComObject(_handle), "Invariant broken!");
 
                 if (_handle == null)
                 {

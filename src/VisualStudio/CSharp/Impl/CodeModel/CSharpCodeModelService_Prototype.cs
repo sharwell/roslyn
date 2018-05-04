@@ -254,9 +254,9 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
             AppendVariablePrototype(builder, symbol, flags, GetName(node));
 
-            if ((flags & PrototypeFlags.Initializer) != 0 &&
-                node.Initializer != null &&
-                node.Initializer.Value != null &&
+            if (((flags & PrototypeFlags.Initializer) != 0) &&
+                (node.Initializer != null) &&
+                (node.Initializer.Value != null) &&
                 !node.Initializer.Value.IsMissing)
             {
                 builder.Append(" = ");
@@ -284,9 +284,9 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
             AppendVariablePrototype(builder, symbol, flags, GetName(node));
 
-            if ((flags & PrototypeFlags.Initializer) != 0 &&
-                node.EqualsValue != null &&
-                node.EqualsValue.Value != null &&
+            if (((flags & PrototypeFlags.Initializer) != 0) &&
+                (node.EqualsValue != null) &&
+                (node.EqualsValue.Value != null) &&
                 !node.EqualsValue.Value.IsMissing)
             {
                 builder.Append(" = ");
@@ -582,7 +582,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 if (current.Kind == SymbolKind.NamedType)
                 {
                     var namedType = (INamedTypeSymbol)current;
-                    if (includeGenerics && namedType.Arity > 0)
+                    if (includeGenerics && (namedType.Arity > 0))
                     {
                         builder.Append('<');
                         builder.Append(',', namedType.Arity - 1);

@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var expression = BindValue(node.Expression, diagnostics, BindValueKind.RValue);
             var hasErrors = IsOperandErrors(node, ref expression, diagnostics);
             var expressionType = expression.Type;
-            if ((object)expressionType == null || expressionType.SpecialType == SpecialType.System_Void)
+            if (((object)expressionType == null) || (expressionType.SpecialType == SpecialType.System_Void))
             {
                 expressionType = CreateErrorType();
                 if (!hasErrors)
@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var pattern = BindPattern(node.Pattern, expressionType, hasErrors, diagnostics);
-            if (!hasErrors && pattern is BoundDeclarationPattern p && !p.IsVar && expression.ConstantValue == ConstantValue.Null)
+            if (!hasErrors && pattern is BoundDeclarationPattern p && !p.IsVar && (expression.ConstantValue == ConstantValue.Null))
             {
                 diagnostics.Add(ErrorCode.WRN_IsAlwaysFalse, node.Location, p.DeclaredType.Type);
             }
@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ConstantValue constantValueOpt = null;
             var convertedExpression = ConvertPatternExpression(operandType, patternExpression, expression, ref constantValueOpt, diagnostics);
             wasExpression = expression.Type?.IsErrorType() != true;
-            if (!convertedExpression.HasErrors && constantValueOpt == null)
+            if (!convertedExpression.HasErrors && (constantValueOpt == null))
             {
                 diagnostics.Add(ErrorCode.ERR_ConstantExpected, patternExpression.Location);
                 hasErrors = true;
@@ -109,15 +109,15 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var conversion = (BoundConversion)convertedExpression;
                 var operand = conversion.Operand;
-                if (inputType.IsNullableType() && (convertedExpression.ConstantValue == null || !convertedExpression.ConstantValue.IsNull))
+                if (inputType.IsNullableType() && ((convertedExpression.ConstantValue == null) || !convertedExpression.ConstantValue.IsNull))
                 {
                     // Null is a special case here because we want to compare null to the Nullable<T> itself, not to the underlying type.
                     var discardedDiagnostics = DiagnosticBag.GetInstance(); // We are not intested in the diagnostic that get created here
                     convertedExpression = CreateConversion(operand, inputType.GetNullableUnderlyingType(), discardedDiagnostics);
                     discardedDiagnostics.Free();
                 }
-                else if ((conversion.ConversionKind == ConversionKind.Boxing || conversion.ConversionKind == ConversionKind.ImplicitReference)
-                    && operand.ConstantValue != null && convertedExpression.ConstantValue == null)
+                else if (((conversion.ConversionKind == ConversionKind.Boxing) || (conversion.ConversionKind == ConversionKind.ImplicitReference))
+                    && (operand.ConstantValue != null) && (convertedExpression.ConstantValue == null))
                 {
                     // A boxed constant (or string converted to object) is a special case because we prefer
                     // to compare to the pre-converted value by casting the input value to the type of the constant
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // input value among many constant tests.
                     convertedExpression = operand;
                 }
-                else if (conversion.ConversionKind == ConversionKind.NoConversion && convertedExpression.Type?.IsErrorType() == true)
+                else if ((conversion.ConversionKind == ConversionKind.NoConversion) && (convertedExpression.Type?.IsErrorType() == true))
                 {
                     convertedExpression = operand;
                 }
@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (localSymbol != (object)null)
             {
-                if ((InConstructorInitializer || InFieldInitializer) && ContainingMemberOrLambda.ContainingSymbol.Kind == SymbolKind.NamedType)
+                if ((InConstructorInitializer || InFieldInitializer) && (ContainingMemberOrLambda.ContainingSymbol.Kind == SymbolKind.NamedType))
                 {
                     CheckFeatureAvailability(node, MessageID.IDS_FeatureExpressionVariablesInQueriesAndInitializers, diagnostics);
                 }

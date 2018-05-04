@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
 
                 return
                     StringComparer.OrdinalIgnoreCase.Equals(serverIdentity.name, clientIdentity.name) &&
-                    serverIdentity.admin == clientIdentity.admin;
+                    (serverIdentity.admin == clientIdentity.admin);
             }
             else
             {

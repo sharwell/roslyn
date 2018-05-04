@@ -164,9 +164,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             // if the entire using is in a directive or there is a using list at the end outside of the directive add the using at the end, 
             // else place it before the last directive.
             usings.AddRange(root.Usings);
-            if ((startOfLastDirective == 0 && (endOfLastDirective == endOfList || endOfLastDirective == -1)) ||
-                (startOfLastDirective == -1 && endOfLastDirective == -1) ||
-                (endOfLastDirective != endOfList && endOfLastDirective != -1))
+            if (((startOfLastDirective == 0) && ((endOfLastDirective == endOfList) || (endOfLastDirective == -1))) ||
+                ((startOfLastDirective == -1) && (endOfLastDirective == -1)) ||
+                ((endOfLastDirective != endOfList) && (endOfLastDirective != -1)))
             {
                 usings.AddRange(usingDirectives);
             }

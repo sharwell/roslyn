@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     var typeArgumentList = leftToken.GetAncestor<TypeArgumentListSyntax>();
                     if (typeArgumentList != null)
                     {
-                        if (typeArgumentList.LessThanToken != default && typeArgumentList.GreaterThanToken != default)
+                        if ((typeArgumentList.LessThanToken != default) && (typeArgumentList.GreaterThanToken != default))
                         {
                             testPosition = typeArgumentList.LessThanToken.SpanStart;
                         }

@@ -149,12 +149,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Recommendations
             // using System;
             // |
 
-            if (token.Kind() == SyntaxKind.SemicolonToken &&
+            if ((token.Kind() == SyntaxKind.SemicolonToken) &&
                 token.Parent.IsKind(SyntaxKind.UsingDirective) &&
-                position >= token.Span.End)
+                (position >= token.Span.End))
             {
                 var compUnit = (CompilationUnitSyntax)syntaxTree.GetRoot(cancellationToken);
-                if (compUnit.Usings.Count > 0 && compUnit.Usings.Last().GetLastToken() == token)
+                if ((compUnit.Usings.Count > 0) && (compUnit.Usings.Last().GetLastToken() == token))
                 {
                     token = token.GetNextToken(includeZeroWidth: true);
                 }
@@ -354,7 +354,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Recommendations
                 //    using static | -- Show namespace and types
                 //    using A = B.| -- Show namespace and types
                 var usingDirective = name.GetAncestorOrThis<UsingDirectiveSyntax>();
-                if (usingDirective != null && usingDirective.Alias == null)
+                if ((usingDirective != null) && (usingDirective.Alias == null))
                 {
                     return usingDirective.StaticKeyword.IsKind(SyntaxKind.StaticKeyword)
                         ? symbols.WhereAsArray(s => !s.IsDelegateType() && !s.IsInterfaceType())
@@ -457,22 +457,22 @@ namespace Microsoft.CodeAnalysis.CSharp.Recommendations
                 }
 
                 // If the thing on the left is a lambda expression, we shouldn't show anything.
-                if (symbol.Kind == SymbolKind.Method &&
-                    ((IMethodSymbol)symbol).MethodKind == MethodKind.AnonymousFunction)
+                if ((symbol.Kind == SymbolKind.Method) &&
+                    (((IMethodSymbol)symbol).MethodKind == MethodKind.AnonymousFunction))
                 {
                     return ImmutableArray<ISymbol>.Empty;
                 }
 
                 // If the thing on the left is a method name identifier, we shouldn't show anything.
                 var originalExpressionKind = originalExpression.Kind();
-                if (symbol.Kind == SymbolKind.Method &&
-                    (originalExpressionKind == SyntaxKind.IdentifierName || originalExpressionKind == SyntaxKind.GenericName))
+                if ((symbol.Kind == SymbolKind.Method) &&
+                    ((originalExpressionKind == SyntaxKind.IdentifierName) || (originalExpressionKind == SyntaxKind.GenericName)))
                 {
                     return ImmutableArray<ISymbol>.Empty;
                 }
 
                 // If the thing on the left is an event that can't be used as a field, we shouldn't show anything
-                if (symbol.Kind == SymbolKind.Event &&
+                if ((symbol.Kind == SymbolKind.Event) &&
                     !context.SemanticModel.IsEventUsableAsField(originalExpression.SpanStart, (IEventSymbol)symbol))
                 {
                     return ImmutableArray<ISymbol>.Empty;

@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
                 // comments.
                 if (!span.IsEmpty && 
                     !SpanIncludesAllTextOnIncludedLines(span) &&
-                    firstLine.LineNumber == lastLine.LineNumber)
+                    (firstLine.LineNumber == lastLine.LineNumber))
                 {
                     AddBlockComment(span, textChanges, trackingSpans, commentInfo);
                 }
@@ -347,7 +347,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
                     {
                         positionOfEnd = text.IndexOf(info.BlockCommentEndString, span.End, caseSensitive: true);
                     }
-                    else if (lastEnd + info.BlockCommentEndString.Length > span.End)
+                    else if ((lastEnd + info.BlockCommentEndString.Length) > span.End)
                     {
                         // The end of the span is *inside* the end marker, so searching backwards found it.
                         positionOfEnd = lastEnd;
@@ -355,7 +355,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
                 }
             }
 
-            if (positionOfStart < 0 || positionOfEnd < 0)
+            if ((positionOfStart < 0) || (positionOfEnd < 0))
             {
                 return;
             }
@@ -440,7 +440,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
         {
             var firstLine = span.Snapshot.GetLineFromPosition(span.Start.Position);
             var lastLine = span.Snapshot.GetLineFromPosition(span.End.Position);
-            if (lastLine.Start == span.End.Position && !span.IsEmpty)
+            if ((lastLine.Start == span.End.Position) && !span.IsEmpty)
             {
                 lastLine = lastLine.GetPreviousMatchingLine(_ => true);
             }
@@ -459,9 +459,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.CommentSelection
             var lastNonWhitespacePosition = firstAndLastLine.lastLine.GetLastNonWhitespacePosition();
 
             var allOnFirst = !firstNonWhitespacePosition.HasValue ||
-                              span.Start.Position <= firstNonWhitespacePosition.Value;
+                              (span.Start.Position <= firstNonWhitespacePosition.Value);
             var allOnLast = !lastNonWhitespacePosition.HasValue ||
-                             span.End.Position > lastNonWhitespacePosition.Value;
+                             (span.End.Position > lastNonWhitespacePosition.Value);
 
             return allOnFirst && allOnLast;
         }

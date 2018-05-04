@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseObjectInitializer
                 var newAssignment = assignment.WithLeft(
                     match.MemberAccessExpression.Name.WithLeadingTrivia(match.MemberAccessExpression.GetLeadingTrivia()));
 
-                if (i < matches.Length - 1)
+                if (i < (matches.Length - 1))
                 {
                     nodesAndTokens.Add(newAssignment);
                     var commaToken = SyntaxFactory.Token(SyntaxKind.CommaToken)

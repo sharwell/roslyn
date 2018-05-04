@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion.P
                 // If we were canceled, or didn't run all the way to completion, then don't bother
                 // updating the UI.
                 if (_cancellationTokenSource.IsCancellationRequested ||
-                    obj.Status != TaskStatus.RanToCompletion)
+                    (obj.Status != TaskStatus.RanToCompletion))
                 {
                     return;
                 }
@@ -121,8 +121,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion.P
                 if (includeLeftToRightMarker)
                 {
                     var classificationTypeName = ClassificationTags.GetClassificationTypeName(part.Tag);
-                    if (classificationTypeName == ClassificationTypeNames.Punctuation ||
-                        classificationTypeName == ClassificationTypeNames.WhiteSpace)
+                    if ((classificationTypeName == ClassificationTypeNames.Punctuation) ||
+                        (classificationTypeName == ClassificationTypeNames.WhiteSpace))
                     {
                         text = LeftToRightMarkerPrefix + text;
                     }

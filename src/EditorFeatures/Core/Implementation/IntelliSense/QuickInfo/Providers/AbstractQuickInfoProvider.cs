@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
             int position,
             CancellationToken cancellationToken)
         {
-            if (token != default &&
+            if ((token != default) &&
                 token.Span.IntersectsWith(position))
             {
                 var deferredContent = await BuildContentAsync(document, token, cancellationToken).ConfigureAwait(false);

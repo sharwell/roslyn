@@ -136,8 +136,8 @@ namespace Roslyn.Test.Utilities.Desktop
                 return false;
             }
 
-            return _mainMvids.Count == 0
-                || (assembly.ManifestModule != null && _mainMvids.Contains(assembly.ManifestModule.ModuleVersionId))
+            return (_mainMvids.Count == 0)
+                || ((assembly.ManifestModule != null) && _mainMvids.Contains(assembly.ManifestModule.ModuleVersionId))
                 || _loadedAssemblies.Contains(assembly);
         }
 
@@ -219,7 +219,7 @@ namespace Roslyn.Test.Utilities.Desktop
         {
             if (_fullNameToAssemblyDataMap.TryGetValue(id.FullName, out assemblyData))
             {
-                fullMatch = _preloadedSet.Contains(id.SimpleName) || id.Mvid == assemblyData.Id.Mvid;
+                fullMatch = _preloadedSet.Contains(id.SimpleName) || (id.Mvid == assemblyData.Id.Mvid);
                 return true;
             }
 
@@ -431,7 +431,7 @@ namespace Roslyn.Test.Utilities.Desktop
                 }
             }
 
-            if (throwOnError && errors.Length > 0)
+            if (throwOnError && (errors.Length > 0))
             {
                 RuntimeEnvironmentUtilities.DumpAssemblyData(ModuleDatas, out var dumpDir);
                 throw new RuntimePeVerifyException(errors.ToString(), dumpDir);

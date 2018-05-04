@@ -43,11 +43,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             bool hasBlockBody = syntax.Body != null;
-            _isExpressionBodied = !hasBlockBody && syntax.ExpressionBody != null;
+            _isExpressionBodied = !hasBlockBody && (syntax.ExpressionBody != null);
 
             if (IsExtern)
             {
-                if (methodKind == MethodKind.Constructor && syntax.Initializer != null)
+                if ((methodKind == MethodKind.Constructor) && (syntax.Initializer != null))
                 {
                     diagnostics.Add(ErrorCode.ERR_ExternHasConstructorInitializer, location, this);
                 }
@@ -96,14 +96,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             _lazyReturnType = bodyBinder.GetSpecialType(SpecialType.System_Void, diagnostics, syntax);
 
             var location = this.Locations[0];
-            if (MethodKind == MethodKind.StaticConstructor && (_lazyParameters.Length != 0))
+            if ((MethodKind == MethodKind.StaticConstructor) && (_lazyParameters.Length != 0))
             {
                 diagnostics.Add(ErrorCode.ERR_StaticConstParam, location, this);
             }
 
             this.CheckEffectiveAccessibility(_lazyReturnType, _lazyParameters, diagnostics);
 
-            if (_lazyIsVararg && (IsGenericMethod || ContainingType.IsGenericType || _lazyParameters.Length > 0 && _lazyParameters[_lazyParameters.Length - 1].IsParams))
+            if (_lazyIsVararg && (IsGenericMethod || ContainingType.IsGenericType || ((_lazyParameters.Length > 0) && _lazyParameters[_lazyParameters.Length - 1].IsParams)))
             {
                 diagnostics.Add(ErrorCode.ERR_BadVarargs, location);
             }
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 diagnostics.Add(AccessCheck.GetProtectedMemberInSealedTypeError(ContainingType), location, this);
             }
-            else if (ContainingType.IsStatic && methodKind == MethodKind.Constructor)
+            else if (ContainingType.IsStatic && (methodKind == MethodKind.Constructor))
             {
                 diagnostics.Add(ErrorCode.ERR_ConstructorInStaticClass, location);
             }
@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal override int CalculateLocalSyntaxOffset(int position, SyntaxTree tree)
         {
-            Debug.Assert(position >= 0 && tree != null);
+            Debug.Assert((position >= 0) && (tree != null));
 
             TextSpan span;
 

@@ -128,14 +128,14 @@ namespace Roslyn.Test.Utilities
             bool is32bit = peHeaders.PEHeader.Magic == PEMagic.PE32;
             int peHeadersSize = peHeaders.PEHeaderStartOffset
                 + PEHeaderSize(is32bit)
-                + SectionHeaderSize * peHeaders.SectionHeaders.Length;
+                + (SectionHeaderSize * peHeaders.SectionHeaders.Length);
 
             // Signature is calculated with the checksum and authenticode signature zeroed
             new BlobWriter(checksumBlob).WriteUInt32(0);
             var buffer = peImage.GetBlobs().Single().GetBytes().Array;
             int authenticodeOffset = GetAuthenticodeOffset(peHeaders, is32bit);
             var authenticodeDir = peHeaders.PEHeader.CertificateTableDirectory;
-            for (int i = 0; i < 2 * sizeof(int); i++)
+            for (int i = 0; i < (2 * sizeof(int)); i++)
             {
                 buffer[authenticodeOffset + i] = 0;
             }
@@ -151,8 +151,8 @@ namespace Roslyn.Test.Utilities
                     int sectionOffset = sectionHeader.PointerToRawData;
                     int sectionSize = sectionHeader.SizeOfRawData;
 
-                    if ((strongNameOffset + strongNameSize) < sectionOffset ||
-                        strongNameOffset >= (sectionOffset + sectionSize))
+                    if (((strongNameOffset + strongNameSize) < sectionOffset) ||
+                        (strongNameOffset >= (sectionOffset + sectionSize)))
                     {
                         // No signature overlap, hash the whole section
                         hash.AppendData(buffer, sectionOffset, sectionSize);
@@ -177,10 +177,10 @@ namespace Roslyn.Test.Utilities
                 + sizeof(int)                                  // Checksum
                 + sizeof(short)                                // Subsystem
                 + sizeof(short)                                // DllCharacteristics
-                + 4 * (is32bit ? sizeof(int) : sizeof(long)) + // SizeOfStackReserve, SizeOfStackCommit, SizeOfHeapReserve, SizeOfHeapCommit
+                + (4 * (is32bit ? sizeof(int) : sizeof(long))) + // SizeOfStackReserve, SizeOfStackCommit, SizeOfHeapReserve, SizeOfHeapCommit
                 + sizeof(int) +                                // LoaderFlags
                 + sizeof(int) +                                // NumberOfRvaAndSizes
-                + 4 * sizeof(long);                            // directory entries before Authenticode
+                (+ 4 * sizeof(long));                            // directory entries before Authenticode
         }
 
         private static MethodInfo s_peheaderSizeMethod;
@@ -265,7 +265,7 @@ namespace Roslyn.Test.Utilities
                 while (true)
                 {
                     // skip padding:
-                    while (offset < ilArray.Length && ilArray[offset] == 0)
+                    while ((offset < ilArray.Length) && (ilArray[offset] == 0))
                     {
                         offset++;
                     }

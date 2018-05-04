@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             public LabelSymbol ProxyLabelIfNeeded(LabelSymbol label)
             {
                 // no need to proxy a label in the current frame or when we are at the root
-                if (this.IsRoot() || (labels != null && labels.Contains(label)))
+                if (this.IsRoot() || ((labels != null) && labels.Contains(label)))
                 {
                     return label;
                 }

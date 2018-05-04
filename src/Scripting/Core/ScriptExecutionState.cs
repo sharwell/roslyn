@@ -58,7 +58,7 @@ namespace Microsoft.CodeAnalysis.Scripting
 
         public object GetSubmissionState(int index)
         {
-            Debug.Assert(index >= 0 && index < _count);
+            Debug.Assert((index >= 0) && (index < _count));
             return _submissionStates[index];
         }
 

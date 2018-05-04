@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
         {
             AssertIsForeground();
 
-            if (_readOnlyRegions == null || _readOnlyRegions.ContainsKey(documentId))
+            if ((_readOnlyRegions == null) || _readOnlyRegions.ContainsKey(documentId))
             {
                 return;
             }

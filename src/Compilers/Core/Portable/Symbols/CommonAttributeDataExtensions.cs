@@ -10,7 +10,7 @@ namespace Microsoft.CodeAnalysis
             {
                 object value = attrData.CommonConstructorArguments[0].Value;
 
-                if (value == null || value is string)
+                if ((value == null) || (value is string))
                 {
                     guidString = (string)value;
                     return true;

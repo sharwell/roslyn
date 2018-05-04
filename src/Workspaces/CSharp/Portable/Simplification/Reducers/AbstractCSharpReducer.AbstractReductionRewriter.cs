@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                     return newNode;
                 }
 
-                if (node != newNode || _processedParentNodes.Contains(parentNode))
+                if ((node != newNode) || _processedParentNodes.Contains(parentNode))
                 {
                     this.HasMoreWork = true;
                     return newNode;

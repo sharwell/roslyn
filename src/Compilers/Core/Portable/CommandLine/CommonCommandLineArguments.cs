@@ -289,7 +289,7 @@ namespace Microsoft.CodeAnalysis
             bool fallback =
                 !CoreClrShim.IsRunningOnCoreClr ||
                 ParseOptionsCore.Features.ContainsKey("UseLegacyStrongNameProvider") ||
-                CompilationOptionsCore.CryptoKeyContainer != null;
+                (CompilationOptionsCore.CryptoKeyContainer != null);
             return fallback ?
                 new DesktopStrongNameProvider(KeyFileSearchPaths, tempDirectory, fileSystem) :
                 (StrongNameProvider)new PortableStrongNameProvider(KeyFileSearchPaths, fileSystem);
@@ -371,14 +371,14 @@ namespace Microsoft.CodeAnalysis
             {
                 references = metadataResolver.ResolveReference(cmdReference.Reference, baseFilePath: null, properties: cmdReference.Properties);
             }
-            catch (Exception e) when (diagnosticsOpt != null && (e is BadImageFormatException || e is IOException))
+            catch (Exception e) when ((diagnosticsOpt != null) && ((e is BadImageFormatException) || (e is IOException)))
             {
                 var diagnostic = PortableExecutableReference.ExceptionToDiagnostic(e, messageProviderOpt, Location.None, cmdReference.Reference, cmdReference.Properties.Kind);
                 diagnosticsOpt.Add(((DiagnosticWithInfo)diagnostic).Info);
                 return ImmutableArray<PortableExecutableReference>.Empty;
             }
 
-            if (references.IsDefaultOrEmpty && diagnosticsOpt != null)
+            if (references.IsDefaultOrEmpty && (diagnosticsOpt != null))
             {
                 diagnosticsOpt.Add(new DiagnosticInfo(messageProviderOpt, messageProviderOpt.ERR_MetadataFileNotFound, cmdReference.Reference));
                 return ImmutableArray<PortableExecutableReference>.Empty;

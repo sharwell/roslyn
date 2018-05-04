@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion.P
             SuggestionModeItem = suggestionModeItem;
 
             // If more than one filter was provided, then present it to the user.
-            if (_showFilters && _filters == null && completionItemFilters.Length > 1)
+            if (_showFilters && (_filters == null) && (completionItemFilters.Length > 1))
             {
                 _filters = completionItemFilters.Select(f => new IntellisenseFilter2(this, f))
                                                .ToArray();
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion.P
 
         public override IReadOnlyList<Span> GetHighlightedSpansInDisplayText(string displayText)
         {
-            if (SuggestionModeItem != null && SuggestionModeItem.DisplayText == displayText)
+            if ((SuggestionModeItem != null) && (SuggestionModeItem.DisplayText == displayText))
             {
                 // Don't highlight the builder-completion-item.
                 return null;

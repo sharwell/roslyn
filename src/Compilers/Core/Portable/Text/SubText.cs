@@ -18,10 +18,10 @@ namespace Microsoft.CodeAnalysis.Text
                 throw new ArgumentNullException(nameof(text));
             }
 
-            if (span.Start < 0
-                || span.Start >= text.Length
-                || span.End < 0
-                || span.End > text.Length)
+            if ((span.Start < 0)
+                || (span.Start >= text.Length)
+                || (span.End < 0)
+                || (span.End > text.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(span));
             }
@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.Text
         {
             get
             {
-                if (position < 0 || position > this.Length)
+                if ((position < 0) || (position > this.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(position));
                 }

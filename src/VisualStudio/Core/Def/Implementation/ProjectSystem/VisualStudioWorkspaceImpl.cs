@@ -589,7 +589,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             {
                 var items = GetAllItems(project.ProjectItems);
                 var folderItem = items.FirstOrDefault(p => StringComparer.OrdinalIgnoreCase.Compare(p.Name, folder) == 0);
-                if (folderItem == null || folderItem.Kind != EnvDTE.Constants.vsProjectItemKindPhysicalFile)
+                if ((folderItem == null) || (folderItem.Kind != EnvDTE.Constants.vsProjectItemKindPhysicalFile))
                 {
                     yield return folder;
                 }
@@ -790,7 +790,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             }
 
             var document = this.GetHostDocument(documentId);
-            if (document != null && document.Project != null)
+            if ((document != null) && (document.Project != null))
             {
                 if (TryGetFrame(document, out var frame))
                 {
@@ -839,7 +839,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 // use here.
 
                 var vsProject = document.Project.Hierarchy as IVsProject;
-                return vsProject != null &&
+                return (vsProject != null) &&
                     ErrorHandler.Succeeded(vsProject.OpenItem(itemId, VSConstants.LOGVIEWID.TextView_guid, s_docDataExisting_Unknown, out frame));
             }
         }
@@ -1070,7 +1070,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             // This is a closed shared document, so we must determine the correct context.
             var hostProject = LinkedFileUtilities.GetContextHostProject(sharedHierarchy, DeferredState.ProjectTracker);
             var matchingProject = CurrentSolution.GetProject(hostProject.Id);
-            if (matchingProject == null || hostProject.Hierarchy == sharedHierarchy)
+            if ((matchingProject == null) || (hostProject.Hierarchy == sharedHierarchy))
             {
                 return base.GetDocumentIdInCurrentContext(documentId);
             }
@@ -1174,7 +1174,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 prgfMoreInfo: out var editResultFlags);
 
             if (ErrorHandler.Failed(result) ||
-                editVerdict != (uint)tagVSQueryEditResult.QER_EditOK)
+                (editVerdict != (uint)tagVSQueryEditResult.QER_EditOK))
             {
                 throw new Exception("Unable to check out the files from source control.");
             }
@@ -1242,8 +1242,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             // Neither project denied the reference being added.  At this point, if either project
             // allows the reference to be added, and the other doesn't block it, then we can add
             // the reference.
-            if (canAddProjectReference == (int)__VSREFERENCEQUERYRESULT.REFERENCE_ALLOW ||
-                canBeReferenced == (int)__VSREFERENCEQUERYRESULT.REFERENCE_ALLOW)
+            if ((canAddProjectReference == (int)__VSREFERENCEQUERYRESULT.REFERENCE_ALLOW) ||
+                (canBeReferenced == (int)__VSREFERENCEQUERYRESULT.REFERENCE_ALLOW))
             {
                 return true;
             }

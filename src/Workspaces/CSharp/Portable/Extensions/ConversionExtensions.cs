@@ -19,9 +19,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         public static bool IsImplicitUserDefinedConversion(this Conversion conversion)
         {
             return conversion.IsUserDefined &&
-                conversion.MethodSymbol != null &&
-                conversion.MethodSymbol.MethodKind == MethodKind.Conversion &&
-                conversion.MethodSymbol.Name == "op_Implicit";
+                (conversion.MethodSymbol != null) &&
+                (conversion.MethodSymbol.MethodKind == MethodKind.Conversion) &&
+                (conversion.MethodSymbol.Name == "op_Implicit");
         }
     }
 }

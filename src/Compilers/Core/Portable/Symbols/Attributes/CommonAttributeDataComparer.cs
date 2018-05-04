@@ -23,10 +23,10 @@ namespace Microsoft.CodeAnalysis
             Debug.Assert(attr1 != null);
             Debug.Assert(attr2 != null);
 
-            return attr1.AttributeClass == attr2.AttributeClass &&
-                attr1.AttributeConstructor == attr2.AttributeConstructor &&
-                attr1.HasErrors == attr2.HasErrors &&
-                attr1.IsConditionallyOmitted == attr2.IsConditionallyOmitted &&
+            return (attr1.AttributeClass == attr2.AttributeClass) &&
+                (attr1.AttributeConstructor == attr2.AttributeConstructor) &&
+                (attr1.HasErrors == attr2.HasErrors) &&
+                (attr1.IsConditionallyOmitted == attr2.IsConditionallyOmitted) &&
                 attr1.CommonConstructorArguments.SequenceEqual(attr2.CommonConstructorArguments) &&
                 attr1.NamedArguments.SequenceEqual(attr2.NamedArguments);
         }

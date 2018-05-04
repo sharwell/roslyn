@@ -48,13 +48,13 @@ namespace Microsoft.CodeAnalysis.CSharp.RemoveUnnecessaryImports
                         currentUsings[i] = null;
 
                         var leadingTrivia = currentUsing.GetLeadingTrivia();
-                        if (leadingTrivia.Any(t => t.Kind() != SyntaxKind.EndOfLineTrivia && t.Kind() != SyntaxKind.WhitespaceTrivia))
+                        if (leadingTrivia.Any(t => (t.Kind() != SyntaxKind.EndOfLineTrivia) && (t.Kind() != SyntaxKind.WhitespaceTrivia)))
                         {
                             // This using had trivia we want to preserve.  If we're the last
                             // directive, then copy this trivia out so that our caller can place
                             // it on the next token.  If there is any directive following us,
                             // then place it on that.
-                            if (i < usings.Count - 1)
+                            if (i < (usings.Count - 1))
                             {
                                 currentUsings[i + 1] = currentUsings[i + 1].WithPrependedLeadingTrivia(leadingTrivia);
                             }
@@ -108,9 +108,9 @@ namespace Microsoft.CodeAnalysis.CSharp.RemoveUnnecessaryImports
                 }
 
                 var resultCompilationUnit = compilationUnit.WithUsings(finalUsings);
-                if (finalUsings.Count == 0 &&
-                    resultCompilationUnit.Externs.Count == 0 &&
-                    resultCompilationUnit.Members.Count >= 1)
+                if ((finalUsings.Count == 0) &&
+                    (resultCompilationUnit.Externs.Count == 0) &&
+                    (resultCompilationUnit.Members.Count >= 1))
                 {
                     // We've removed all the usings and now the first thing in the namespace is a
                     // type.  In this case, remove any newlines preceding the type.
@@ -142,9 +142,9 @@ namespace Microsoft.CodeAnalysis.CSharp.RemoveUnnecessaryImports
                 }
 
                 var resultNamespace = namespaceDeclaration.WithUsings(finalUsings);
-                if (finalUsings.Count == 0 &&
-                    resultNamespace.Externs.Count == 0 &&
-                    resultNamespace.Members.Count >= 1)
+                if ((finalUsings.Count == 0) &&
+                    (resultNamespace.Externs.Count == 0) &&
+                    (resultNamespace.Members.Count >= 1))
                 {
                     // We've removed all the usings and now the first thing in the namespace is a
                     // type.  In this case, remove any newlines preceding the type.

@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
         public override PortableExecutableReference ResolveMissingAssembly(MetadataReference definition, AssemblyIdentity referenceIdentity)
         {
             // look in the GAC:
-            if (GacFileResolver != null && referenceIdentity.IsStrongName)
+            if ((GacFileResolver != null) && referenceIdentity.IsStrongName)
             {
                 var path = GacFileResolver.Resolve(referenceIdentity.GetDisplayName());
                 if (path != null)
@@ -213,11 +213,11 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
         public bool Equals(RuntimeMetadataReferenceResolver other)
         {
             return ReferenceEquals(this, other) ||
-                other != null &&
+                (((((other != null) &&
                 Equals(PathResolver, other.PathResolver) &&
                 Equals(PackageResolver, other.PackageResolver) &&
                 Equals(GacFileResolver, other.GacFileResolver) && 
-                _useCoreResolver == other._useCoreResolver;
+                (_useCoreResolver == other._useCoreResolver)))));
         }
 
         public override bool Equals(object other) => Equals(other as RuntimeMetadataReferenceResolver);

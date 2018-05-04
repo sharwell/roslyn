@@ -99,8 +99,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // ReferenceEquals.
 
             var other = obj as SubstitutedParameterSymbol;
-            return (object)other != null &&
-                this.Ordinal == other.Ordinal &&
+            return ((object)other != null) &&
+                (this.Ordinal == other.Ordinal) &&
                 this.ContainingSymbol.Equals(other.ContainingSymbol);
         }
 

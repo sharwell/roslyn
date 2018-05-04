@@ -18,13 +18,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             out ArrowExpressionClauseSyntax arrowExpression,
             out SyntaxToken semicolonToken)
         {
-            if (preference != ExpressionBodyPreference.Never &&
-                block != null && block.Statements.Count == 1)
+            if ((preference != ExpressionBodyPreference.Never) &&
+                (block != null) && (block.Statements.Count == 1))
             {
                 var version = ((CSharpParseOptions)options).LanguageVersion;
                 var acceptableVersion =
-                    version >= LanguageVersion.CSharp7 ||
-                    (version >= LanguageVersion.CSharp6 && IsSupportedInCSharp6(declarationKind));
+                    (version >= LanguageVersion.CSharp7) ||
+                    ((version >= LanguageVersion.CSharp6) && IsSupportedInCSharp6(declarationKind));
 
                 if (acceptableVersion)
                 {
@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             }
             else if (firstStatement is ThrowStatementSyntax throwStatement)
             {
-                if (version >= LanguageVersion.CSharp7 && throwStatement.Expression != null)
+                if ((version >= LanguageVersion.CSharp7) && (throwStatement.Expression != null))
                 {
                     expression = SyntaxFactory.ThrowExpression(throwStatement.ThrowKeyword, throwStatement.Expression);
                     semicolonToken = throwStatement.SemicolonToken;

@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.Remote
             }
 
             var current = DateTime.UtcNow;
-            if (current - _lastActivityTime < _gcAfterTimeSpan)
+            if ((current - _lastActivityTime) < _gcAfterTimeSpan)
             {
                 // we are having activities.
                 return;
@@ -201,7 +201,7 @@ namespace Microsoft.CodeAnalysis.Remote
             {
                 foreach (var kvp in _assets.ToArray())
                 {
-                    if (current - kvp.Value.LastAccessed <= _purgeAfterTimeSpan)
+                    if ((current - kvp.Value.LastAccessed) <= _purgeAfterTimeSpan)
                     {
                         continue;
                     }

@@ -69,7 +69,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
 
                 // We want to get whichever window is currently in focus (including toolbars) as we could have had an exception thrown from the error list
                 // or interactive window
-                if (monitorSelectionService == null ||
+                if ((monitorSelectionService == null) ||
                     ErrorHandler.Failed(monitorSelectionService.GetCurrentElementValue((uint)VSConstants.VSSELELEMID.SEID_WindowFrame, out var value)))
                 {
                     return false;
@@ -87,7 +87,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
 
             // global error info, show it on main window info bar
             var shell = _serviceProvider.GetService(typeof(SVsShell)) as IVsShell;
-            if (shell == null ||
+            if ((shell == null) ||
                 ErrorHandler.Failed(shell.GetProperty((int)__VSSPROPID7.VSSPROPID_MainWindowInfoBarHost, out var globalInfoBar)))
             {
                 return false;

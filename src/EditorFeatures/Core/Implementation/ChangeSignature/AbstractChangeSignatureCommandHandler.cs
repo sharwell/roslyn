@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
         private static VSCommanding.CommandState GetCommandState(ITextBuffer subjectBuffer)
         {
             var document = subjectBuffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null ||
+            if ((document == null) ||
                 !document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
             {
                 return VSCommanding.CommandState.Unspecified;
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
                     context.WaitContext.UserCancellationToken);
             }
 
-            if (result == null || !result.Succeeded)
+            if ((result == null) || !result.Succeeded)
             {
                 return true;
             }
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ChangeSignature
             var finalSolution = result.UpdatedSolution;
 
             var previewService = workspace.Services.GetService<IPreviewDialogService>();
-            if (previewService != null && result.PreviewChanges)
+            if ((previewService != null) && result.PreviewChanges)
             {
                 // We are about to show a modal UI dialog so we should take over the command execution
                 // wait context. That means the command system won't attempt to show its own wait dialog 

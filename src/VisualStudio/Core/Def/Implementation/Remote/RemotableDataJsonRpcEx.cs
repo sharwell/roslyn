@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
             catch (Exception ex) when (ReportUnlessCanceled(ex, cancellationToken))
             {
                 // only expected exception will be catched. otherwise, NFW and let it propagate
-                Debug.Assert(cancellationToken.IsCancellationRequested || ex is IOException);
+                Debug.Assert(cancellationToken.IsCancellationRequested || (ex is IOException));
             }
         }
 

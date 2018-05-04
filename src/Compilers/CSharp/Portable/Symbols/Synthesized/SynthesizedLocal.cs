@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             )
         {
             Debug.Assert(type.SpecialType != SpecialType.System_Void);
-            Debug.Assert(!kind.IsLongLived() || syntaxOpt != null);
+            Debug.Assert(!kind.IsLongLived() || (syntaxOpt != null));
             Debug.Assert(refKind != RefKind.Out);
 
             _containingMethodOpt = containingMethodOpt;

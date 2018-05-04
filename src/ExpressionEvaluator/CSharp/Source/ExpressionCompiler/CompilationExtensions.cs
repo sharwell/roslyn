@@ -125,7 +125,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
         {
             var builder = ArrayBuilder<bool>.GetInstance();
             CSharpCompilation.DynamicTransformsEncoder.Encode(type, customModifiersCount, refKind, builder, addCustomModifierFlags: true);
-            var bytes = builder.Count > 0 && compilation.HasDynamicEmitAttributes() ?
+            var bytes = (builder.Count > 0) && compilation.HasDynamicEmitAttributes() ?
                 DynamicFlagsCustomTypeInfo.ToBytes(builder) :
                 null;
             builder.Free();

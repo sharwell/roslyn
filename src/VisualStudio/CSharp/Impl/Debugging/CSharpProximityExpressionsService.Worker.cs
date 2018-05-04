@@ -77,10 +77,10 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
                 var block = GetImmediatelyContainingBlock();
 
                 // if we're the start of a "catch(Goo e)" clause, then add "e".
-                if (block != null && block.IsParentKind(SyntaxKind.CatchClause))
+                if ((block != null) && block.IsParentKind(SyntaxKind.CatchClause))
                 {
                     var catchClause = (CatchClauseSyntax)block.Parent;
-                    if (catchClause.Declaration != null && catchClause.Declaration.Identifier.Kind() != SyntaxKind.None)
+                    if ((catchClause.Declaration != null) && (catchClause.Declaration.Identifier.Kind() != SyntaxKind.None))
                     {
                         _expressions.Add(catchClause.Declaration.Identifier.ValueText);
                     }
@@ -91,7 +91,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
             {
                 return IsFirstBlockStatement()
                     ? (BlockSyntax)_parentStatement.Parent
-                    : _parentStatement is BlockSyntax && ((BlockSyntax)_parentStatement).OpenBraceToken == _token
+                    : (_parentStatement is BlockSyntax) && (((BlockSyntax)_parentStatement).OpenBraceToken == _token)
                         ? (BlockSyntax)_parentStatement
                         : null;
             }
@@ -99,7 +99,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
             private bool IsFirstBlockStatement()
             {
                 var parentBlockOpt = _parentStatement.Parent as BlockSyntax;
-                return parentBlockOpt != null && parentBlockOpt.Statements.FirstOrDefault() == _parentStatement;
+                return (parentBlockOpt != null) && (parentBlockOpt.Statements.FirstOrDefault() == _parentStatement);
             }
 
             private void AddCurrentDeclaration()
@@ -116,7 +116,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
                 // the proximity expressions.
                 var block = GetImmediatelyContainingBlock();
 
-                if (block != null && block.Parent is MemberDeclarationSyntax)
+                if ((block != null) && (block.Parent is MemberDeclarationSyntax))
                 {
                     var parameterList = ((MemberDeclarationSyntax)block.Parent).GetParameterList();
                     AddParameters(parameterList);
@@ -129,10 +129,10 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
 
                 // and we're the start of a method, then also add the parameters of that method to
                 // the proximity expressions.
-                if (block != null &&
-                    block.Parent is AccessorDeclarationSyntax &&
-                    block.Parent.Parent is AccessorListSyntax &&
-                    block.Parent.Parent.Parent is IndexerDeclarationSyntax)
+                if ((block != null) &&
+                    (block.Parent is AccessorDeclarationSyntax) &&
+                    (block.Parent.Parent is AccessorListSyntax) &&
+                    (block.Parent.Parent.Parent is IndexerDeclarationSyntax))
                 {
                     var parameterList = ((IndexerDeclarationSyntax)block.Parent.Parent.Parent).ParameterList;
                     AddParameters(parameterList);
@@ -156,7 +156,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
                 // If there's are more statements following us on the same line, then add them as
                 // well. 
                 for (var nextStatement = _parentStatement.GetNextStatement();
-                     nextStatement != null && _syntaxTree.GetText(cancellationToken).Lines.IndexOf(nextStatement.SpanStart) == line;
+                     (nextStatement != null) && (_syntaxTree.GetText(cancellationToken).Lines.IndexOf(nextStatement.SpanStart) == line);
                      nextStatement = nextStatement.GetNextStatement())
                 {
                     AddRelevantExpressions(nextStatement, _expressions, includeDeclarations: false);
@@ -172,7 +172,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Debugging
                 StatementSyntax previousStatement;
 
                 if (_parentStatement is BlockSyntax block &&
-                    block.CloseBraceToken == _token)
+                    (block.CloseBraceToken == _token))
                 {
                     // If we're at the last brace of a block, use the last
                     // statement in the block.

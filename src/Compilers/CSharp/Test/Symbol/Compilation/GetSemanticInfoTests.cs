@@ -2267,7 +2267,7 @@ class Program
                 var task1 = new Task(() => comp.GlobalNamespace.GetMember<NamedTypeSymbol>("A").GetMembers());
                 var task2 = new Task(() => comp.GlobalNamespace.GetMember<NamedTypeSymbol>("IA").GetMembers());
 
-                if (i % 2 == 0)
+                if ((i % 2) == 0)
                 {
                     task1.Start();
                     task2.Start();

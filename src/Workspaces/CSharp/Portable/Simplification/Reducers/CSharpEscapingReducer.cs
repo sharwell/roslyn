@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             var enclosingXmlNameAttr = token.GetAncestors(n => n is XmlNameAttributeSyntax).FirstOrDefault();
 
             // always escape keywords
-            if (SyntaxFacts.GetKeywordKind(unescapedIdentifier) != SyntaxKind.None && enclosingXmlNameAttr == null)
+            if ((SyntaxFacts.GetKeywordKind(unescapedIdentifier) != SyntaxKind.None) && (enclosingXmlNameAttr == null))
             {
                 return CreateNewIdentifierTokenFromToken(token, escape: true);
             }
@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
             if (SyntaxFacts.GetContextualKeywordKind(unescapedIdentifier) == SyntaxKind.AwaitKeyword)
             {
-                var enclosingLambdaExpression = parent.GetAncestorsOrThis(n => n is SimpleLambdaExpressionSyntax || n is ParenthesizedLambdaExpressionSyntax).FirstOrDefault();
+                var enclosingLambdaExpression = parent.GetAncestorsOrThis(n => (n is SimpleLambdaExpressionSyntax) || (n is ParenthesizedLambdaExpressionSyntax)).FirstOrDefault();
                 if (enclosingLambdaExpression != null)
                 {
                     if (enclosingLambdaExpression is SimpleLambdaExpressionSyntax simpleLambda)
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
 
                 var enclosingMethodBlock = parent.GetAncestorsOrThis(n => n is MethodDeclarationSyntax).FirstOrDefault();
 
-                if (enclosingMethodBlock != null && ((MethodDeclarationSyntax)enclosingMethodBlock).Modifiers.Any(n => n.Kind() == SyntaxKind.AsyncKeyword))
+                if ((enclosingMethodBlock != null) && ((MethodDeclarationSyntax)enclosingMethodBlock).Modifiers.Any(n => n.Kind() == SyntaxKind.AsyncKeyword))
                 {
                     return token;
                 }

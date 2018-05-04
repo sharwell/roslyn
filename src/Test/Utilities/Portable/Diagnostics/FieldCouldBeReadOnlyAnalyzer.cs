@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                                          IInvocationOperation invocation = (IInvocationOperation)operationContext.Operation;
                                          foreach (IArgumentOperation argument in invocation.Arguments)
                                          {
-                                             if (argument.Parameter.RefKind == RefKind.Out || argument.Parameter.RefKind == RefKind.Ref)
+                                             if ((argument.Parameter.RefKind == RefKind.Out) || (argument.Parameter.RefKind == RefKind.Ref))
                                              {
                                                  AssignTo(argument.Value, inConstructor, staticConstructorType, assignedToFields, mightBecomeReadOnlyFields);
                                              }
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             if (target.Kind == OperationKind.FieldReference)
             {
                 IFieldReferenceOperation fieldReference = (IFieldReferenceOperation)target;
-                if (inConstructor && fieldReference.Instance != null)
+                if (inConstructor && (fieldReference.Instance != null))
                 {
                     switch (fieldReference.Instance.Kind)
                     {
@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
                 IFieldSymbol targetField = fieldReference.Field;
 
-                if (staticConstructorType != null && targetField.IsStatic && targetField.ContainingType == staticConstructorType)
+                if ((staticConstructorType != null) && targetField.IsStatic && (targetField.ContainingType == staticConstructorType))
                 {
                     return;
                 }
@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 assignedToFields.Add(targetField);
                 mightBecomeReadOnlyFields.Remove(targetField);
 
-                if (fieldReference.Instance != null && fieldReference.Instance.Type.IsValueType)
+                if ((fieldReference.Instance != null) && fieldReference.Instance.Type.IsValueType)
                 {
                     AssignTo(fieldReference.Instance, inConstructor, staticConstructorType, assignedToFields, mightBecomeReadOnlyFields);
                 }

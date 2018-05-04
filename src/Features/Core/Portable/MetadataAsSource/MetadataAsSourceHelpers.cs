@@ -57,8 +57,8 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
             {
                 var referencedSymbol = compilation.GetAssemblyOrModuleSymbol(r) as IAssemblySymbol;
                 return
-                    referencedSymbol != null &&
-                    referencedSymbol.MetadataName == assemblySymbol.MetadataName;
+                    (referencedSymbol != null) &&
+                    (referencedSymbol.MetadataName == assemblySymbol.MetadataName);
             })
             .FirstOrDefault();
 
@@ -69,8 +69,8 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
         {
             // Traverse up until we find a named type that is parented by the namespace
             var topLevelNamedType = symbol;
-            while (topLevelNamedType.ContainingSymbol != symbol.ContainingNamespace ||
-                topLevelNamedType.Kind != SymbolKind.NamedType)
+            while ((topLevelNamedType.ContainingSymbol != symbol.ContainingNamespace) ||
+                (topLevelNamedType.Kind != SymbolKind.NamedType))
             {
                 topLevelNamedType = topLevelNamedType.ContainingSymbol;
             }

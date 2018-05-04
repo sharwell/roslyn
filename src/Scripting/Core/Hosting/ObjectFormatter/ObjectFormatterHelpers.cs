@@ -87,8 +87,8 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
         private static bool IsApplicableAttribute(TypeInfo type, TypeInfo targetType, string targetTypeName)
         {
-            return type != null && AreEquivalent(targetType, type)
-                || targetTypeName != null && type.FullName == targetTypeName;
+            return ((type != null) && AreEquivalent(targetType, type))
+                || ((targetTypeName != null) && (type.FullName == targetTypeName));
         }
 
         private static bool AreEquivalent(TypeInfo type, TypeInfo other)
@@ -404,21 +404,21 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
         // <clr-member-name> '(' ')' ',' 'nq'
         internal static string ParseSimpleMemberName(string str, int start, int end, out bool noQuotes, out bool isCallable)
         {
-            Debug.Assert(str != null && start >= 0 && end >= start);
+            Debug.Assert((str != null) && (start >= 0) && (end >= start));
 
             isCallable = false;
             noQuotes = false;
 
             // no-quotes suffix:
-            if (end - 3 >= start && str[end - 2] == 'n' && str[end - 1] == 'q')
+            if (((end - 3) >= start) && (str[end - 2] == 'n') && (str[end - 1] == 'q'))
             {
                 int j = end - 3;
-                while (j >= start && Char.IsWhiteSpace(str[j]))
+                while ((j >= start) && Char.IsWhiteSpace(str[j]))
                 {
                     j--;
                 }
 
-                if (j >= start && str[j] == ',')
+                if ((j >= start) && (str[j] == ','))
                 {
                     noQuotes = true;
                     end = j;
@@ -427,7 +427,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
             int i = end - 1;
             EatTrailingWhiteSpace(str, start, ref i);
-            if (i > start && str[i] == ')')
+            if ((i > start) && (str[i] == ')'))
             {
                 int closingParen = i;
                 i--;
@@ -451,7 +451,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
         private static void EatTrailingWhiteSpace(string str, int start, ref int i)
         {
-            while (i >= start && Char.IsWhiteSpace(str[i]))
+            while ((i >= start) && Char.IsWhiteSpace(str[i]))
             {
                 i--;
             }
@@ -459,7 +459,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
         private static void EatLeadingWhiteSpace(string str, ref int i, int end)
         {
-            while (i < end && Char.IsWhiteSpace(str[i]))
+            while ((i < end) && Char.IsWhiteSpace(str[i]))
             {
                 i++;
             }

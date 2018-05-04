@@ -56,8 +56,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             // An interpolated string expression may be converted to the types
             // System.IFormattable and System.FormattableString
-            return (destination == Compilation.GetWellKnownType(WellKnownType.System_IFormattable) ||
-                    destination == Compilation.GetWellKnownType(WellKnownType.System_FormattableString))
+            return ((destination == Compilation.GetWellKnownType(WellKnownType.System_IFormattable)) ||
+                    (destination == Compilation.GetWellKnownType(WellKnownType.System_FormattableString)))
                 ? Conversion.InterpolatedString : Conversion.NoConversion;
         }
 
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             MethodSymbol methodSymbol = delegateType.DelegateInvokeMethod;
-            if ((object)methodSymbol == null || methodSymbol.HasUseSiteError)
+            if (((object)methodSymbol == null) || methodSymbol.HasUseSiteError)
             {
                 return null;
             }
@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                 hasErrors = true;
                             }
                         }
-                        else if (method.OriginalDefinition.ContainingType.SpecialType == SpecialType.System_Nullable_T && !method.IsOverride)
+                        else if ((method.OriginalDefinition.ContainingType.SpecialType == SpecialType.System_Nullable_T) && !method.IsOverride)
                         {
                             // CS1728: Cannot bind delegate to '{0}' because it is a member of 'System.Nullable<T>'
                             diagnostics.Add(
@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
                     else if (!hasErrors &&
                             !resolution.IsEmpty &&
-                            resolution.ResultKind == LookupResultKind.Viable)
+                            (resolution.ResultKind == LookupResultKind.Viable))
                     {
                         var overloadDiagnostics = DiagnosticBag.GetInstance();
 
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var result = OverloadResolutionResult<MethodSymbol>.GetInstance();
             var delegateInvokeMethod = delegateType.DelegateInvokeMethod;
 
-            Debug.Assert((object)delegateInvokeMethod != null && !delegateInvokeMethod.HasUseSiteError,
+            Debug.Assert(((object)delegateInvokeMethod != null) && !delegateInvokeMethod.HasUseSiteError,
                          "This method should only be called for valid delegate types");
             GetDelegateArguments(syntax, analyzedArguments, delegateInvokeMethod.Parameters, Compilation);
             _binder.OverloadResolution.MethodInvocationOverloadResolution(
@@ -270,12 +270,12 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             //cannot capture stack-only types.
-            if (!method.IsStatic && methodGroup.Receiver?.Type?.IsRestrictedType() == true)
+            if (!method.IsStatic && (methodGroup.Receiver?.Type?.IsRestrictedType() == true))
             {
                 return Conversion.NoConversion;
             }
 
-            if (method.OriginalDefinition.ContainingType.SpecialType == SpecialType.System_Nullable_T &&
+            if ((method.OriginalDefinition.ContainingType.SpecialType == SpecialType.System_Nullable_T) &&
                 !method.IsOverride)
             {
                 return Conversion.NoConversion;
@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // NOTE: Delegate type compatibility is important, but is not part of the existence check.
 
-            Debug.Assert(method.ParameterCount == delegateType.DelegateInvokeMethod.ParameterCount + (methodGroup.IsExtensionMethodGroup ? 1 : 0));
+            Debug.Assert(method.ParameterCount == (delegateType.DelegateInvokeMethod.ParameterCount + (methodGroup.IsExtensionMethodGroup ? 1 : 0)));
 
             return new Conversion(ConversionKind.MethodGroup, method, methodGroup.IsExtensionMethodGroup);
         }
@@ -314,7 +314,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 else
                 {
                     var spanType = _binder.GetWellKnownType(WellKnownType.System_Span_T, ref useSiteDiagnostics);
-                    if (spanType.TypeKind == TypeKind.Struct && spanType.IsByRefLikeType)
+                    if ((spanType.TypeKind == TypeKind.Struct) && spanType.IsByRefLikeType)
                     {
                         var spanType_T = spanType.Construct(sourceExpression.ElementType);
                         var spanConversion = ClassifyImplicitConversionFromType(spanType_T, destination, ref useSiteDiagnostics);

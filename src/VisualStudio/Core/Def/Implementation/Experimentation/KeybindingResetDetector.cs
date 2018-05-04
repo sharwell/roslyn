@@ -307,7 +307,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Experimentation
         {
             // Technically can be called on any thread, though VS will only ever call it on the UI thread.
             ThisCanBeCalledOnAnyThread();
-            if (pguidCmdGroup == ReSharperCommandGroup && nCmdID >= ResumeId && nCmdID <= ToggleSuspendId)
+            if ((pguidCmdGroup == ReSharperCommandGroup) && (nCmdID >= ResumeId) && (nCmdID <= ToggleSuspendId))
             {
                 // Don't delay command processing to update resharper status
                 Task.Run(() => InvokeBelowInputPriority(UpdateStateMachine));

@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsValid(this OutputKind value)
         {
-            return value >= OutputKind.ConsoleApplication && value <= OutputKind.WindowsRuntimeApplication;
+            return (value >= OutputKind.ConsoleApplication) && (value <= OutputKind.WindowsRuntimeApplication);
         }
 
         internal static string GetDefaultExtension(this OutputKind kind)

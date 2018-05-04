@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis
                     var specificOptions = _specificDiagnosticOptions.ToBuilder();
                     foreach (var item in _specificDiagnosticOptions)
                     {
-                        if (item.Value != ReportDiagnostic.Suppress && item.Value != ReportDiagnostic.Default)
+                        if ((item.Value != ReportDiagnostic.Suppress) && (item.Value != ReportDiagnostic.Default))
                         {
                             specificOptions[item.Key] = action;
                         }
@@ -226,11 +226,11 @@ namespace Microsoft.CodeAnalysis
                 case ReportDiagnostic.Suppress:
                     return true;
                 case ReportDiagnostic.Default:
-                    return action1 == ReportDiagnostic.Warn || action1 == ReportDiagnostic.Error || action1 == ReportDiagnostic.Info || action1 == ReportDiagnostic.Hidden;
+                    return (action1 == ReportDiagnostic.Warn) || (action1 == ReportDiagnostic.Error) || (action1 == ReportDiagnostic.Info) || (action1 == ReportDiagnostic.Hidden);
                 case ReportDiagnostic.Hidden:
-                    return action1 == ReportDiagnostic.Warn || action1 == ReportDiagnostic.Error || action1 == ReportDiagnostic.Info;
+                    return (action1 == ReportDiagnostic.Warn) || (action1 == ReportDiagnostic.Error) || (action1 == ReportDiagnostic.Info);
                 case ReportDiagnostic.Info:
-                    return action1 == ReportDiagnostic.Warn || action1 == ReportDiagnostic.Error;
+                    return (action1 == ReportDiagnostic.Warn) || (action1 == ReportDiagnostic.Error);
                 case ReportDiagnostic.Warn:
                     return action1 == ReportDiagnostic.Error;
                 case ReportDiagnostic.Error:
@@ -314,23 +314,23 @@ namespace Microsoft.CodeAnalysis
             }
             catch (InvalidRuleSetException e)
             {
-                if (diagnosticsOpt != null && messageProviderOpt != null)
+                if ((diagnosticsOpt != null) && (messageProviderOpt != null))
                 {
                     diagnosticsOpt.Add(Diagnostic.Create(messageProviderOpt, messageProviderOpt.ERR_CantReadRulesetFile, resolvedPath, e.Message));
                 }
             }
             catch (IOException e)
             {
-                if (e is FileNotFoundException || e.GetType().Name == "DirectoryNotFoundException")
+                if ((e is FileNotFoundException) || (e.GetType().Name == "DirectoryNotFoundException"))
                 {
-                    if (diagnosticsOpt != null && messageProviderOpt != null)
+                    if ((diagnosticsOpt != null) && (messageProviderOpt != null))
                     {
                         diagnosticsOpt.Add(Diagnostic.Create(messageProviderOpt, messageProviderOpt.ERR_CantReadRulesetFile, resolvedPath, new CodeAnalysisResourcesLocalizableErrorArgument(nameof(CodeAnalysisResources.FileNotFound))));
                     }
                 }
                 else
                 {
-                    if (diagnosticsOpt != null && messageProviderOpt != null)
+                    if ((diagnosticsOpt != null) && (messageProviderOpt != null))
                     {
                         diagnosticsOpt.Add(Diagnostic.Create(messageProviderOpt, messageProviderOpt.ERR_CantReadRulesetFile, resolvedPath, e.Message));
                     }

@@ -61,8 +61,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
 
             DateTime? fileUpdateTimeUtc = GetLastUpdateTimeUtc(analyzerPath);
 
-            if (fileUpdateTimeUtc != null &&
-                loadedAssemblyUpdateTimeUtc != fileUpdateTimeUtc)
+            if ((fileUpdateTimeUtc != null) &&
+                (loadedAssemblyUpdateTimeUtc != fileUpdateTimeUtc))
             {
                 RaiseAnalyzerChangedWarning(projectId, analyzerPath);
             }

@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 var name = names[i];
                 var collisionIndices = GetCollisionIndices(names, name, isCaseSensitive);
 
-                if (canUse(name) && collisionIndices.Count < 2)
+                if (canUse(name) && (collisionIndices.Count < 2))
                 {
                     // no problems with this parameter name, move onto the next one.
                     continue;
@@ -137,7 +137,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         public static string GenerateUniqueName(string baseName, string extension, Func<string, bool> canUse)
         {
-            if (!string.IsNullOrEmpty(extension) && extension[0] != '.')
+            if (!string.IsNullOrEmpty(extension) && (extension[0] != '.'))
             {
                 extension = "." + extension;
             }

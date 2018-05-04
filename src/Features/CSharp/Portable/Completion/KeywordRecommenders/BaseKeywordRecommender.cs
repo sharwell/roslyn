@@ -46,8 +46,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
             var token = context.TargetToken;
 
-            if (token.Kind() == SyntaxKind.ColonToken &&
-                token.Parent is ConstructorInitializerSyntax &&
+            if ((token.Kind() == SyntaxKind.ColonToken) &&
+                (token.Parent is ConstructorInitializerSyntax) &&
                 token.Parent.IsParentKind(SyntaxKind.ConstructorDeclaration) &&
                 token.Parent.GetParent().IsParentKind(SyntaxKind.ClassDeclaration))
             {

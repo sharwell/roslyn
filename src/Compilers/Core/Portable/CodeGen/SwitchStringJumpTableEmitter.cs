@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         internal void EmitJumpTable()
         {
-            Debug.Assert(_keyHash == null || ShouldGenerateHashTableSwitch(_caseLabels.Length));
+            Debug.Assert((_keyHash == null) || ShouldGenerateHashTableSwitch(_caseLabels.Length));
 
             if (_keyHash != null)
             {
@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         private void EmitCondBranchForStringSwitch(ConstantValue stringConstant, object targetLabel)
         {
-            Debug.Assert(stringConstant != null &&
+            Debug.Assert((stringConstant != null) &&
                 (stringConstant.IsString || stringConstant.IsNull));
             Debug.Assert(targetLabel != null);
 

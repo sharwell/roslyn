@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var hostObjectTypeSymbol = _compilation.GetHostObjectTypeSymbol();
-            if ((object)hostObjectTypeSymbol != null && hostObjectTypeSymbol.Kind != SymbolKind.ErrorType)
+            if (((object)hostObjectTypeSymbol != null) && (hostObjectTypeSymbol.Kind != SymbolKind.ErrorType))
             {
                 return _hostObjectField = new SynthesizedFieldSymbol(
                     _declaringSubmissionClass, hostObjectTypeSymbol, "<host-object>", isPublic: false, isReadOnly: true, isStatic: false);

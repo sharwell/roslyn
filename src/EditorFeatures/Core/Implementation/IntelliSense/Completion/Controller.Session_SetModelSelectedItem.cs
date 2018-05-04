@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 
                 // Switch to hard selection.
                 var selectedItem = selector(model);
-                Contract.Assert(model.TotalItems.Contains(selectedItem) || model.SuggestionModeItem == selectedItem);
+                Contract.Assert(model.TotalItems.Contains(selectedItem) || (model.SuggestionModeItem == selectedItem));
 
                 if (model.FilteredItems.Contains(selectedItem))
                 {
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                         ReferenceEqualityComparer.Instance);
 
                     var newFilteredItems = model.TotalItems.Where(
-                        i => filteredItemsSet.Contains(i) || i == selectedItem).ToImmutableArrayOrEmpty();
+                        i => filteredItemsSet.Contains(i) || (i == selectedItem)).ToImmutableArrayOrEmpty();
                     return model.WithFilteredItems(newFilteredItems)
                                 .WithSelectedItem(selectedItem)
                                 .WithHardSelection(true);

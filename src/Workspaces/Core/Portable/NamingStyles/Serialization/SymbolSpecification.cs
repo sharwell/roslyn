@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
             }
 
             if (ApplicableAccessibilityList.Any() &&
-                accessibility != Accessibility.NotApplicable &&
+                (accessibility != Accessibility.NotApplicable) &&
                 !ApplicableAccessibilityList.Any(k => k == accessibility))
             {
                 return false;
@@ -300,7 +300,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
             public bool MatchesSymbol(ISymbol symbol)
                 => SymbolKind.HasValue
                     ? symbol.IsKind(SymbolKind.Value)
-                    : symbol is ITypeSymbol s && s.TypeKind == TypeKind.Value;
+                    : symbol is ITypeSymbol s && (s.TypeKind == TypeKind.Value);
 
             internal XElement CreateXElement()
                 => SymbolKind.HasValue
@@ -317,7 +317,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
                 => Equals((SymbolKindOrTypeKind)obj);
 
             public bool Equals(SymbolKindOrTypeKind other)
-                => this.SymbolKind == other.SymbolKind && this.TypeKind == other.TypeKind;
+                => (this.SymbolKind == other.SymbolKind) && (this.TypeKind == other.TypeKind);
 
             public override int GetHashCode()
                 => Hash.Combine((int)this.SymbolKind.GetValueOrDefault(),
@@ -381,14 +381,14 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
                 }
 
                 var kind = symbol.Kind;
-                if (Modifier.IsAsync && kind == SymbolKind.Method && ((IMethodSymbol)symbol).IsAsync)
+                if (Modifier.IsAsync && (kind == SymbolKind.Method) && ((IMethodSymbol)symbol).IsAsync)
                 {
                     return true;
                 }
 
                 if (Modifier.IsReadOnly)
                 {
-                    if (kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsReadOnly)
+                    if ((kind == SymbolKind.Field) && ((IFieldSymbol)symbol).IsReadOnly)
                     {
                         return true;
                     }
@@ -396,8 +396,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
 
                 if (Modifier.IsConst)
                 {
-                    if ((kind == SymbolKind.Field && ((IFieldSymbol)symbol).IsConst) ||
-                        (kind == SymbolKind.Local && ((ILocalSymbol)symbol).IsConst))
+                    if (((kind == SymbolKind.Field) && ((IFieldSymbol)symbol).IsConst) ||
+                        ((kind == SymbolKind.Local) && ((ILocalSymbol)symbol).IsConst))
                     {
                         return true;
                     }

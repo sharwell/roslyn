@@ -69,8 +69,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression MakeIsDeclarationPattern(BoundDeclarationPattern loweredPattern, BoundExpression loweredInput)
         {
-            Debug.Assert(((object)loweredPattern.Variable == null && loweredPattern.VariableAccess.Kind == BoundKind.DiscardExpression) ||
-                         loweredPattern.Variable.GetTypeOrReturnType() == loweredPattern.DeclaredType.Type);
+            Debug.Assert((((object)loweredPattern.Variable == null) && (loweredPattern.VariableAccess.Kind == BoundKind.DiscardExpression)) ||
+                         (loweredPattern.Variable.GetTypeOrReturnType() == loweredPattern.DeclaredType.Type));
 
             if (loweredPattern.IsVar)
             {
@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return _factory.MakeSequence(loweredInput, result);
                 }
 
-                Debug.Assert((object)loweredPattern.Variable != null && loweredInput.Type.Equals(loweredPattern.Variable.GetTypeOrReturnType(), TypeCompareKind.AllIgnoreOptions));
+                Debug.Assert(((object)loweredPattern.Variable != null) && loweredInput.Type.Equals(loweredPattern.Variable.GetTypeOrReturnType(), TypeCompareKind.AllIgnoreOptions));
 
                 var assignment = _factory.AssignmentExpression(loweredPattern.VariableAccess, loweredInput);
                 return _factory.MakeSequence(assignment, result);
@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // is irrefutable, and we can just do the assignment and return true (or perform the null test).
             if (matchConstantValue == true)
             {
-                requiresNullTest = requiresNullTest && MatchConstantValue(loweredInput, type, true) != true;
+                requiresNullTest = requiresNullTest && (MatchConstantValue(loweredInput, type, true) != true);
                 if (loweredInput.Type.IsNullableType())
                 {
                     var getValueOrDefault = _factory.SpecialMethod(SpecialMember.System_Nullable_T_GetValueOrDefault).AsMember((NamedTypeSymbol)loweredInput.Type);

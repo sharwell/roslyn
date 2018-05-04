@@ -44,11 +44,11 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
                 if (ctor != null)
                 {
                     var type = ctor.ContainingType;
-                    if (!ctor.Parameters.Any() && type.Name == "FlagsAttribute")
+                    if (!ctor.Parameters.Any() && (type.Name == "FlagsAttribute"))
                     {
                         var containingSymbol = type.ContainingSymbol;
-                        if (containingSymbol.Kind == SymbolKind.Namespace &&
-                            containingSymbol.Name == "System" &&
+                        if ((containingSymbol.Kind == SymbolKind.Namespace) &&
+                            (containingSymbol.Name == "System") &&
                             ((INamespaceSymbol)containingSymbol.ContainingSymbol).IsGlobalNamespace)
                         {
                             return true;
@@ -85,12 +85,12 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             // boundary checks that can be applied to minimize the comparisons required. This code
             // works the same for the best/worst case. In general the number of items in an enum are
             // sufficiently small and not worth the optimization.
-            for (int index = allFieldsAndValues.Count - 1; index >= 0 && result != 0; index--)
+            for (int index = allFieldsAndValues.Count - 1; (index >= 0) && (result != 0); index--)
             {
                 var fieldAndValue = allFieldsAndValues[index];
                 var valueAtIndex = fieldAndValue.value;
 
-                if (valueAtIndex != 0 && (result & valueAtIndex) == valueAtIndex)
+                if ((valueAtIndex != 0) && ((result & valueAtIndex) == valueAtIndex))
                 {
                     result -= valueAtIndex;
                     usedFieldsAndValues.Add(fieldAndValue);
@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             var syntaxFactory = GetSyntaxGenerator();
 
             // We were able to represent this number as a bitwise OR of valid flags.
-            if (result == 0 && usedFieldsAndValues.Count > 0)
+            if ((result == 0) && (usedFieldsAndValues.Count > 0))
             {
                 // We want to emit the fields in lower to higher value.  So we walk backward.
                 SyntaxNode finalNode = null;
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
                 // If we had 0 as the value, and there's an enum value equal to 0, then use that.
                 var zeroField = GetZeroField(allFieldsAndValues);
-                if (constantValueULong == 0 && zeroField != null)
+                if ((constantValueULong == 0) && (zeroField != null))
                 {
                     return CreateMemberAccessExpression(zeroField, enumType, underlyingSpecialType);
                 }

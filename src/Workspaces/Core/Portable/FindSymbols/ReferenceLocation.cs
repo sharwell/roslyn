@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
         public override bool Equals(object obj)
         {
-            return obj is ReferenceLocation &&
+            return (obj is ReferenceLocation) &&
                 Equals((ReferenceLocation)obj);
         }
 
@@ -91,8 +91,8 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 EqualityComparer<IAliasSymbol>.Default.Equals(this.Alias, other.Alias) &&
                 EqualityComparer<Location>.Default.Equals(this.Location, other.Location) &&
                 EqualityComparer<DocumentId>.Default.Equals(this.Document.Id, other.Document.Id) &&
-                this.CandidateReason == other.CandidateReason &&
-                this.IsImplicit == other.IsImplicit;
+                (this.CandidateReason == other.CandidateReason) &&
+                (this.IsImplicit == other.IsImplicit);
         }
 
         public override int GetHashCode()
@@ -111,8 +111,8 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             var thisPath = this.Location.SourceTree.FilePath;
             var otherPath = other.Location.SourceTree.FilePath;
 
-            if ((compare = StringComparer.OrdinalIgnoreCase.Compare(thisPath, otherPath)) != 0 ||
-                (compare = this.Location.SourceSpan.CompareTo(other.Location.SourceSpan)) != 0)
+            if (((compare = StringComparer.OrdinalIgnoreCase.Compare(thisPath, otherPath)) != 0) ||
+                ((compare = this.Location.SourceSpan.CompareTo(other.Location.SourceSpan)) != 0))
             {
                 return compare;
             }

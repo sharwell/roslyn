@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis
 
         public bool Equals(SyntaxAnnotation other)
         {
-            return (object)other != null && _id == other._id;
+            return ((object)other != null) && (_id == other._id);
         }
 
         public static bool operator ==(SyntaxAnnotation left, SyntaxAnnotation right)
@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis
                 return true;
             }
 
-            if ((object)left == null || (object)right == null)
+            if (((object)left == null) || ((object)right == null))
             {
                 return false;
             }
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis
                 return false;
             }
 
-            if ((object)left == null || (object)right == null)
+            if (((object)left == null) || ((object)right == null))
             {
                 return true;
             }

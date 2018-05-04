@@ -261,7 +261,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
 
             prgCmds[0].cmdf = (uint)(enabled | latched | OLECMDF.OLECMDF_SUPPORTED);
 
-            if (!string.IsNullOrEmpty(commandState.DisplayText) && GetText(commandText) != commandState.DisplayText)
+            if (!string.IsNullOrEmpty(commandState.DisplayText) && (GetText(commandText) != commandState.DisplayText))
             {
                 SetText(commandText, commandState.DisplayText);
             }

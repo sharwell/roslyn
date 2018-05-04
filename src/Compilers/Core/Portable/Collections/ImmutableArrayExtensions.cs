@@ -336,7 +336,7 @@ namespace Microsoft.CodeAnalysis
             {
                 return false;
             }
-            else if (count1 == 1 && count2 == 1)
+            else if ((count1 == 1) && (count2 == 1))
             {
                 var item1 = array1[0];
                 var item2 = array2[0];
@@ -404,7 +404,7 @@ namespace Microsoft.CodeAnalysis
         // Used in DEBUG to make sure that read-only array is not sorted.
         internal static ImmutableArray<T> DeOrder<T>(this ImmutableArray<T> array)
         {
-            if (!array.IsDefault && array.Length >= 2)
+            if (!array.IsDefault && (array.Length >= 2))
             {
                 T[] copy = array.ToArray();
                 int last = copy.Length - 1;
@@ -435,7 +435,7 @@ namespace Microsoft.CodeAnalysis
                 builder.AddRange(kvp.Value);
             }
 
-            if (comparer != null && builder.Count > 1)
+            if ((comparer != null) && (builder.Count > 1))
             {
                 // PERF: Beware ImmutableArray<T>.Builder.Sort allocates a Comparer wrapper object
                 builder.Sort(comparer);

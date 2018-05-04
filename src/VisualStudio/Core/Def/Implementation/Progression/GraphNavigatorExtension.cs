@@ -94,7 +94,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 var symbol = symbolId.Value.Resolve(project.GetCompilationAsync(CancellationToken.None).WaitAndGetResult(CancellationToken.None)).Symbol;
 
                 // Do not allow third party navigation to types or constructors
-                if (symbol != null &&
+                if ((symbol != null) &&
                     !(symbol is ITypeSymbol) &&
                     !symbol.IsConstructor() &&
                     symbolNavigationService.TrySymbolNavigationNotify(symbol, project, CancellationToken.None))
@@ -130,7 +130,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 var sourceLocation = graphNode.GetValue<SourceLocation>(CodeNodeProperties.SourceLocation);
                 var projectId = graphNode.GetValue<ProjectId>(RoslynGraphProperties.ContextProjectId);
 
-                if (sourceLocation.IsValid && projectId != null)
+                if (sourceLocation.IsValid && (projectId != null))
                 {
                     return GraphNavigateToItemRanks.OwnItem;
                 }

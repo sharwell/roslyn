@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.Editor.Extensibility.NavigationBar
             var symbol = symbolInfo.GetAnySymbol();
 
             // Do not allow third party navigation to types or constructors
-            if (symbol != null &&
+            if ((symbol != null) &&
                 !(symbol is ITypeSymbol) &&
                 !symbol.IsConstructor() &&
                 symbolNavigationService.TrySymbolNavigationNotify(symbol, document.Project, cancellationToken))

@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.Host
 
         private bool PartOfP2PReferences(ProjectId key)
         {
-            if (_activeCaches.Count == 0 || _workspace == null)
+            if ((_activeCaches.Count == 0) || (_workspace == null))
             {
                 return false;
             }
@@ -128,7 +128,7 @@ namespace Microsoft.CodeAnalysis.Host
         {
             lock (_gate)
             {
-                if (owner.CachedObject == null && _activeCaches.TryGetValue(key, out var cache))
+                if ((owner.CachedObject == null) && _activeCaches.TryGetValue(key, out var cache))
                 {
                     owner.CachedObject = instance;
                     cache.CreateOwnerEntry(owner);

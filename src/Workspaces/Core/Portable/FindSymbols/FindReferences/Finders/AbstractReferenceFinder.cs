@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
         protected async Task<ImmutableArray<Document>> FindDocumentsAsync(Project project, IImmutableSet<Document> scope, Func<Document, CancellationToken, Task<bool>> predicateAsync, CancellationToken cancellationToken)
         {
             // special case for HR
-            if (scope != null && scope.Count == 1)
+            if ((scope != null) && (scope.Count == 1))
             {
                 var document = scope.First();
                 if (document.Project == project)
@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             var documents = ArrayBuilder<Document>.GetInstance();
             foreach (var document in project.Documents)
             {
-                if (scope != null && !scope.Contains(document))
+                if ((scope != null) && !scope.Contains(document))
                 {
                     continue;
                 }
@@ -496,7 +496,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
 
         private static bool Matches(ISymbol symbol1, ISymbol notNulloriginalUnreducedSymbol2)
         {
-            return symbol1 != null && SymbolEquivalenceComparer.Instance.Equals(
+            return (symbol1 != null) && SymbolEquivalenceComparer.Instance.Equals(
                 symbol1.GetOriginalUnreducedDefinition(),
                 notNulloriginalUnreducedSymbol2);
         }
@@ -511,14 +511,14 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
 
         public override Task<ImmutableArray<Project>> DetermineProjectsToSearchAsync(ISymbol symbol, Solution solution, IImmutableSet<Project> projects, CancellationToken cancellationToken)
         {
-            return symbol is TSymbol && CanFind((TSymbol)symbol)
+            return (symbol is TSymbol) && CanFind((TSymbol)symbol)
                 ? DetermineProjectsToSearchAsync((TSymbol)symbol, solution, projects, cancellationToken)
                 : SpecializedTasks.EmptyImmutableArray<Project>();
         }
 
         public override Task<ImmutableArray<Document>> DetermineDocumentsToSearchAsync(ISymbol symbol, Project project, IImmutableSet<Document> documents, CancellationToken cancellationToken)
         {
-            return symbol is TSymbol && CanFind((TSymbol)symbol)
+            return (symbol is TSymbol) && CanFind((TSymbol)symbol)
                 ? DetermineDocumentsToSearchAsync((TSymbol)symbol, project, documents, cancellationToken)
                 : SpecializedTasks.EmptyImmutableArray<Document>();
         }
@@ -527,7 +527,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             SymbolAndProjectId symbolAndProjectId, Document document, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             var symbol = symbolAndProjectId.Symbol;
-            return symbol is TSymbol && CanFind((TSymbol)symbol)
+            return (symbol is TSymbol) && CanFind((TSymbol)symbol)
                 ? FindReferencesInDocumentAsync((TSymbol)symbol, document, semanticModel, cancellationToken)
                 : SpecializedTasks.EmptyImmutableArray<ReferenceLocation>();
         }
@@ -536,7 +536,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
             SymbolAndProjectId symbolAndProjectId, Solution solution, IImmutableSet<Project> projects, CancellationToken cancellationToken)
         {
             var symbol = symbolAndProjectId.Symbol;
-            if (symbol is TSymbol && CanFind((TSymbol)symbol))
+            if ((symbol is TSymbol) && CanFind((TSymbol)symbol))
             {
                 return DetermineCascadedSymbolsAsync(
                     symbolAndProjectId.WithSymbol((TSymbol)symbol),

@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             var node = LookupNode();
 
             var attributeNodes = CodeModelService.GetAttributeNodes(node);
-            if (index >= 0 && index < attributeNodes.Count())
+            if ((index >= 0) && (index < attributeNodes.Count()))
             {
                 var child = attributeNodes.ElementAt(index);
 

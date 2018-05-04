@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         private static SyntaxNode GetAbsoluteRoot(this SyntaxNode node)
         {
-            while (node != null && (node.Parent != null || node is StructuredTriviaSyntax))
+            while ((node != null) && ((node.Parent != null) || (node is StructuredTriviaSyntax)))
             {
                 if (node.Parent != null)
                 {

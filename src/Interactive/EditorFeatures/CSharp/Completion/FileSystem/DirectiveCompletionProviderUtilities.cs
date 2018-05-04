@@ -13,12 +13,12 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Completion.FileSystem
             if (tree.IsEntirelyWithinStringLiteral(position, cancellationToken))
             {
                 var token = tree.GetRoot(cancellationToken).FindToken(position, findInsideTrivia: true);
-                if (token.Kind() == SyntaxKind.EndOfDirectiveToken || token.Kind() == SyntaxKind.EndOfFileToken)
+                if ((token.Kind() == SyntaxKind.EndOfDirectiveToken) || (token.Kind() == SyntaxKind.EndOfFileToken))
                 {
                     token = token.GetPreviousToken(includeSkipped: true, includeDirectives: true);
                 }
 
-                if (token.Kind() == SyntaxKind.StringLiteralToken && token.Parent.Kind() == directiveKind)
+                if ((token.Kind() == SyntaxKind.StringLiteralToken) && (token.Parent.Kind() == directiveKind))
                 {
                     stringLiteral = token;
                     return true;

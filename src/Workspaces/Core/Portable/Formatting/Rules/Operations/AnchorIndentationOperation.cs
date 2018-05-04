@@ -14,7 +14,7 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
         internal AnchorIndentationOperation(SyntaxToken anchorToken, SyntaxToken startToken, SyntaxToken endToken, TextSpan textSpan)
         {
             Contract.ThrowIfTrue(anchorToken.RawKind == 0);
-            Contract.ThrowIfTrue(textSpan.Start < 0 || textSpan.Length < 0);
+            Contract.ThrowIfTrue((textSpan.Start < 0) || (textSpan.Length < 0));
 
             Contract.ThrowIfTrue(startToken.RawKind == 0);
             Contract.ThrowIfTrue(endToken.RawKind == 0);

@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Internal.Log
 
         public bool IsEnabled(FunctionId functionId)
         {
-            return _loggingChecker == null || _loggingChecker(functionId);
+            return (_loggingChecker == null) || _loggingChecker(functionId);
         }
 
         public void Log(FunctionId functionId, LogMessage logMessage)

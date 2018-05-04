@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
             return RoundTrip(value, 
                 (w, v) =>
                 {
-                    if (v != null && v.GetType().IsEnum)
+                    if ((v != null) && v.GetType().IsEnum)
                     {
                         w.WriteInt64(Convert.ToInt64((object)v));
                     }
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                         w.WriteValue(v);
                     }
                 },
-                r => value != null && value.GetType().IsEnum 
+                r => (value != null) && value.GetType().IsEnum 
                     ? (T)Enum.ToObject(typeof(T), r.ReadInt64()) 
                     : (T)r.ReadValue(), recursive);
         }
@@ -115,16 +115,16 @@ namespace Microsoft.CodeAnalysis.UnitTests
         private static bool Equalish<T>(T value1, T value2)
         {
             return object.Equals(value1, value2)
-                || (value1 is Array && value2 is Array && ArrayEquals((Array)(object)value1, (Array)(object)value2));
+                || ((value1 is Array) && (value2 is Array) && ArrayEquals((Array)(object)value1, (Array)(object)value2));
         }
 
         private static bool ArrayEquals(Array seq1, Array seq2)
         {
-            if (seq1 == null && seq2 == null)
+            if ((seq1 == null) && (seq2 == null))
             {
                 return true;
             }
-            else if (seq1 == null || seq2 == null)
+            else if ((seq1 == null) || (seq2 == null))
             {
                 return false;
             }
@@ -199,7 +199,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
             public bool Equals(TypeWithOneMember<T> other)
             {
-                return other != null && Equalish(_member, other._member);
+                return (other != null) && Equalish(_member, other._member);
             }
         }
 
@@ -252,7 +252,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
             public bool Equals(TypeWithTwoMembers<T, S> other)
             {
-                return other != null
+                return (other != null)
                     && Equalish(_member1, other._member1)
                     && Equalish(_member2, other._member2);
             }
@@ -605,7 +605,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
                 for (var j = 0; j < i; j++)
                 {
-                    inputBool[j] = j % 2 == 0;
+                    inputBool[j] = (j % 2) == 0;
                 }
 
                 TestRoundTripValue(inputBool);
@@ -1116,7 +1116,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                 var instances = new List<TypeWithTwoMembers<int, string>>();
 
                 // We need enough items to exercise all sizes of ObjectRef
-                for (int i = 0; i < ushort.MaxValue + 1; i++)
+                for (int i = 0; i < (ushort.MaxValue + 1); i++)
                 {
                     instances.Add(new TypeWithTwoMembers<int, string>(i, i.ToString()));
                 }
@@ -1280,7 +1280,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
             public bool Equals(Node node)
             {
-                if (node == null || this.Name != node.Name)
+                if ((node == null) || (this.Name != node.Name))
                 {
                     return false;
                 }

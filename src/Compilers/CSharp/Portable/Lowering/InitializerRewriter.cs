@@ -44,9 +44,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     lastStatement = ((BoundGlobalStatementInitializer)initializer).Statement;
                     var expression = GetTrailingScriptExpression(lastStatement);
-                    if (expression != null &&
-                        (object)expression.Type != null &&
-                        expression.Type.SpecialType != SpecialType.System_Void)
+                    if ((expression != null) &&
+                        ((object)expression.Type != null) &&
+                        (expression.Type.SpecialType != SpecialType.System_Void))
                     {
                         trailingExpression = expression;
                         continue;

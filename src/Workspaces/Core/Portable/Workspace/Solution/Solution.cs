@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis
             {
                 // is this tree known to be associated with a document?
                 var documentId = DocumentState.GetDocumentIdForTree(syntaxTree);
-                if (documentId != null && (projectId == null || documentId.ProjectId == projectId))
+                if ((documentId != null) && ((projectId == null) || (documentId.ProjectId == projectId)))
                 {
                     // does this solution even have the document?
                     if (this.ContainsDocument(documentId))
@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public TextDocument GetAdditionalDocument(DocumentId documentId)
         {
-            if (documentId != null && this.ContainsAdditionalDocument(documentId))
+            if ((documentId != null) && this.ContainsAdditionalDocument(documentId))
             {
                 return this.GetProject(documentId.ProjectId).GetAdditionalDocument(documentId);
             }
@@ -197,14 +197,14 @@ namespace Microsoft.CodeAnalysis
             {
                 // is this tree known to be associated with a document?
                 var docId = DocumentState.GetDocumentIdForTree(syntaxTree);
-                if (docId != null && (projectId == null || docId.ProjectId == projectId))
+                if ((docId != null) && ((projectId == null) || (docId.ProjectId == projectId)))
                 {
                     // does this solution even have the document?
                     var document = this.GetDocument(docId);
                     if (document != null)
                     {
                         // does this document really have the syntax tree?
-                        if (document.TryGetSyntaxTree(out var documentTree) && documentTree == syntaxTree)
+                        if (document.TryGetSyntaxTree(out var documentTree) && (documentTree == syntaxTree))
                         {
                             return document;
                         }

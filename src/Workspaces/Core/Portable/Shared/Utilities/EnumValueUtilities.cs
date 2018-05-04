@@ -127,9 +127,9 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         private static bool LooksLikeFlagsEnum(INamedTypeSymbol enumType, List<IComparable> existingConstants)
         {
-            if (existingConstants.Count >= 1 &&
+            if ((existingConstants.Count >= 1) &&
                IntegerUtilities.HasOneBitSet(existingConstants[0]) &&
-               Multiply(existingConstants[0], 2).CompareTo(existingConstants[0]) > 0 &&
+               (Multiply(existingConstants[0], 2).CompareTo(existingConstants[0]) > 0) &&
                existingConstants.All(GreaterThanOrEqualsZero))
             {
                 if (existingConstants.Count == 1)

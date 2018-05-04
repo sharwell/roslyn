@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
                 var diagnostics = await getDiagnosticsTask.ConfigureAwait(false);
                 if (diagnostics != null)
                 {
-                    return diagnostics.Where(d => d != null && diagnosticIds.Contains(d.Id)).ToImmutableArray();
+                    return diagnostics.Where(d => (d != null) && diagnosticIds.Contains(d.Id)).ToImmutableArray();
                 }
             }
 

@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
 
             private void AddEndOfLine()
             {
-                if (_residualTrivia.Count == 0 || !IsEndOfLine(_residualTrivia[_residualTrivia.Count - 1]))
+                if ((_residualTrivia.Count == 0) || !IsEndOfLine(_residualTrivia[_residualTrivia.Count - 1]))
                 {
                     _residualTrivia.Add(SyntaxFactory.CarriageReturnLineFeed);
                 }
@@ -116,8 +116,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             /// </summary>
             private static bool IsEndOfLine(SyntaxTrivia trivia)
             {
-                return trivia.Kind() == SyntaxKind.EndOfLineTrivia
-                    || trivia.Kind() == SyntaxKind.SingleLineCommentTrivia
+                return (trivia.Kind() == SyntaxKind.EndOfLineTrivia)
+                    || (trivia.Kind() == SyntaxKind.SingleLineCommentTrivia)
                     || trivia.IsDirective;
             }
 
@@ -133,7 +133,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
 
             private bool ShouldVisit(SyntaxNode node)
             {
-                return node.FullSpan.IntersectsWith(_searchSpan) || (_residualTrivia != null && _residualTrivia.Count > 0);
+                return node.FullSpan.IntersectsWith(_searchSpan) || ((_residualTrivia != null) && (_residualTrivia.Count > 0));
             }
 
             public override SyntaxNode Visit(SyntaxNode node)
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 }
 
                 // the next token gets the accrued trivia.
-                if (result.Kind() != SyntaxKind.None && _residualTrivia != null && _residualTrivia.Count > 0)
+                if ((result.Kind() != SyntaxKind.None) && (_residualTrivia != null) && (_residualTrivia.Count > 0))
                 {
                     _residualTrivia.Add(result.LeadingTrivia);
                     result = result.WithLeadingTrivia(_residualTrivia.ToList());
@@ -218,7 +218,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                                 out bool nextTokenIsSeparator, out bool nextSeparatorBelongsToNode);
 
                             if (!nextSeparatorBelongsToNode &&
-                                alternate.Count > 0 &&
+                                (alternate.Count > 0) &&
                                 alternate[alternate.Count - 1].IsToken)
                             {
                                 var separator = alternate[alternate.Count - 1].AsToken();
@@ -244,13 +244,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                         }
                     }
 
-                    if (item != visited && alternate == null)
+                    if ((item != visited) && (alternate == null))
                     {
                         alternate = new SyntaxNodeOrTokenListBuilder(n);
                         alternate.Add(withSeps, 0, i);
                     }
 
-                    if (alternate != null && visited.Kind() != SyntaxKind.None)
+                    if ((alternate != null) && (visited.Kind() != SyntaxKind.None))
                     {
                         alternate.Add(visited);
                     }
@@ -270,7 +270,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 {
                     this.AddResidualTrivia(node.GetLeadingTrivia());
                 }
-                else if ((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0
+                else if (((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0)
                     && HasEndOfLine(node.GetLeadingTrivia()))
                 {
                     this.AddEndOfLine();
@@ -285,7 +285,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 {
                     this.AddResidualTrivia(node.GetTrailingTrivia());
                 }
-                else if ((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0
+                else if (((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0)
                     && HasEndOfLine(node.GetTrailingTrivia()))
                 {
                     this.AddEndOfLine();
@@ -305,7 +305,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     this.AddResidualTrivia(token.TrailingTrivia);
                     this.AddResidualTrivia(node.GetLeadingTrivia());
                 }
-                else if ((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0
+                else if (((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0)
                     && (HasEndOfLine(token.LeadingTrivia) ||
                         HasEndOfLine(token.TrailingTrivia) ||
                         HasEndOfLine(node.GetLeadingTrivia())))
@@ -324,7 +324,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 {
                     this.AddResidualTrivia(node.GetTrailingTrivia());
                 }
-                else if ((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0
+                else if (((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0)
                     && HasEndOfLine(node.GetTrailingTrivia()))
                 {
                     this.AddEndOfLine();
@@ -342,7 +342,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 {
                     this.AddResidualTrivia(node.GetLeadingTrivia());
                 }
-                else if ((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0
+                else if (((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0)
                     && HasEndOfLine(node.GetLeadingTrivia()))
                 {
                     this.AddEndOfLine();
@@ -361,7 +361,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     this.AddResidualTrivia(token.LeadingTrivia);
                     this.AddResidualTrivia(token.TrailingTrivia);
                 }
-                else if ((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0
+                else if (((_options & SyntaxRemoveOptions.KeepEndOfLine) != 0)
                     && (HasEndOfLine(node.GetTrailingTrivia()) ||
                         HasEndOfLine(token.LeadingTrivia) ||
                         HasEndOfLine(token.TrailingTrivia)))
@@ -415,8 +415,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                         {
                             _directivesToKeep.Add(directive);
                         }
-                        else if (directive.Kind() == SyntaxKind.DefineDirectiveTrivia ||
-                            directive.Kind() == SyntaxKind.UndefDirectiveTrivia)
+                        else if ((directive.Kind() == SyntaxKind.DefineDirectiveTrivia) ||
+                            (directive.Kind() == SyntaxKind.UndefDirectiveTrivia))
                         {
                             // always keep #define and #undef, even if we are only keeping unbalanced directives
                             _directivesToKeep.Add(directive);

@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.MSBuild
             using (_dataGuard.DisposableWait())
             {
                 var extension = Path.GetExtension(projectFilePath);
-                if (extension.Length > 0 && extension[0] == '.')
+                if ((extension.Length > 0) && (extension[0] == '.'))
                 {
                     extension = extension.Substring(1);
                 }

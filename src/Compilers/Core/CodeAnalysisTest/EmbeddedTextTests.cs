@@ -188,7 +188,7 @@ class Program
             Assert.Equal("pathToLarge", text.FilePath);
             Assert.Equal(SourceHashAlgorithm.Sha256, text.ChecksumAlgorithm);
             AssertEx.Equal(source.GetChecksum(), text.Checksum);
-            AssertEx.Equal(BitConverter.GetBytes(Encoding.Unicode.GetPreamble().Length + LargeSource.Length * sizeof(char)), text.Blob.Take(4));
+            AssertEx.Equal(BitConverter.GetBytes(Encoding.Unicode.GetPreamble().Length + (LargeSource.Length * sizeof(char))), text.Blob.Take(4));
             AssertEx.Equal(Encoding.Unicode.GetPreamble().Concat(Encoding.Unicode.GetBytes(LargeSource)), Decompress(text.Blob.Skip(4)));
         }
 

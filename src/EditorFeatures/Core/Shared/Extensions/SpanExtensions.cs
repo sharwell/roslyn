@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Extensions
 
         public static bool IntersectsWith(this Span span, int position)
         {
-            return position >= span.Start && position <= span.End;
+            return (position >= span.Start) && (position <= span.End);
         }
     }
 }

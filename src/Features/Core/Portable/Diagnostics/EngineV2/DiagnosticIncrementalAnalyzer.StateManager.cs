@@ -163,7 +163,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     // we include it in build only analyzer.
                     foreach (var analyzer in kv.Value)
                     {
-                        if (hostStateSetMap.TryGetValue(analyzer, out var stateSet) && stateSet != compilerStateSet)
+                        if (hostStateSetMap.TryGetValue(analyzer, out var stateSet) && (stateSet != compilerStateSet))
                         {
                             stateSets.Add(stateSet);
                         }

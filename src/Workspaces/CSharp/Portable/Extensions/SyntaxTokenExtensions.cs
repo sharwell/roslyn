@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
     {
         public static bool IsKindOrHasMatchingText(this SyntaxToken token, SyntaxKind kind)
         {
-            return token.Kind() == kind || token.HasMatchingText(kind);
+            return (token.Kind() == kind) || token.HasMatchingText(kind);
         }
 
         public static bool HasMatchingText(this SyntaxToken token, SyntaxKind kind)
@@ -27,15 +27,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2)
         {
-            return token.Kind() == kind1
-                || token.Kind() == kind2;
+            return (token.Kind() == kind1)
+                || (token.Kind() == kind2);
         }
 
         public static bool IsKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
         {
-            return token.Kind() == kind1
-                || token.Kind() == kind2
-                || token.Kind() == kind3;
+            return (token.Kind() == kind1)
+                || (token.Kind() == kind2)
+                || (token.Kind() == kind3);
         }
 
         public static bool IsKind(this SyntaxToken token, params SyntaxKind[] kinds)
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
         public static bool IsRegularStringLiteral(this SyntaxToken token)
         {
-            return token.Kind() == SyntaxKind.StringLiteralToken && !token.IsVerbatimStringLiteral();
+            return (token.Kind() == SyntaxKind.StringLiteralToken) && !token.IsVerbatimStringLiteral();
         }
 
         public static bool IsValidAttributeTarget(this SyntaxToken token)
@@ -315,9 +315,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             if (token.Kind() == SyntaxKind.IdentifierToken)
             {
                 var simpleNameText = token.ValueText;
-                return simpleNameText == "var" ||
-                       simpleNameText == "dynamic" ||
-                       SyntaxFacts.GetContextualKeywordKind(simpleNameText) != SyntaxKind.None;
+                return (simpleNameText == "var") ||
+                       (simpleNameText == "dynamic") ||
+                       (SyntaxFacts.GetContextualKeywordKind(simpleNameText) != SyntaxKind.None);
             }
 
             return false;

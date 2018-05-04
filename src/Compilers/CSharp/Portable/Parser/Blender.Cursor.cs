@@ -41,14 +41,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 get
                 {
                     return
-                        this.CurrentNodeOrToken.Kind() == SyntaxKind.None ||
-                        this.CurrentNodeOrToken.Kind() == SyntaxKind.EndOfFileToken;
+                        (this.CurrentNodeOrToken.Kind() == SyntaxKind.None) ||
+                        (this.CurrentNodeOrToken.Kind() == SyntaxKind.EndOfFileToken);
                 }
             }
 
             private static bool IsNonZeroWidthOrIsEndOfFile(SyntaxNodeOrToken token)
             {
-                return token.Kind() == SyntaxKind.EndOfFileToken || token.FullWidth != 0;
+                return (token.Kind() == SyntaxKind.EndOfFileToken) || (token.FullWidth != 0);
             }
 
             public Cursor MoveToNextSibling()
@@ -155,7 +155,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 var cursor = this;
                 if (!cursor.IsFinished)
                 {
-                    for (var node = cursor.CurrentNodeOrToken; node.Kind() != SyntaxKind.None && !SyntaxFacts.IsAnyToken(node.Kind()); node = cursor.CurrentNodeOrToken)
+                    for (var node = cursor.CurrentNodeOrToken; (node.Kind() != SyntaxKind.None) && !SyntaxFacts.IsAnyToken(node.Kind()); node = cursor.CurrentNodeOrToken)
                     {
                         cursor = cursor.MoveToFirstChild();
                     }

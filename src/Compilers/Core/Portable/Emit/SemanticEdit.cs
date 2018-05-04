@@ -71,17 +71,17 @@ namespace Microsoft.CodeAnalysis.Emit
         /// </exception>
         public SemanticEdit(SemanticEditKind kind, ISymbol oldSymbol, ISymbol newSymbol, Func<SyntaxNode, SyntaxNode> syntaxMap = null, bool preserveLocalVariables = false)
         {
-            if (oldSymbol == null && kind != SemanticEditKind.Insert)
+            if ((oldSymbol == null) && (kind != SemanticEditKind.Insert))
             {
                 throw new ArgumentNullException(nameof(oldSymbol));
             }
 
-            if (newSymbol == null && kind != SemanticEditKind.Delete)
+            if ((newSymbol == null) && (kind != SemanticEditKind.Delete))
             {
                 throw new ArgumentNullException(nameof(newSymbol));
             }
 
-            if (kind <= SemanticEditKind.None || kind > SemanticEditKind.Delete)
+            if ((kind <= SemanticEditKind.None) || (kind > SemanticEditKind.Delete))
             {
                 throw new ArgumentOutOfRangeException(nameof(kind));
             }
@@ -102,12 +102,12 @@ namespace Microsoft.CodeAnalysis.Emit
 
         public override bool Equals(object obj)
         {
-            return obj is SemanticEdit && Equals((SemanticEdit)obj);
+            return (obj is SemanticEdit) && Equals((SemanticEdit)obj);
         }
 
         public bool Equals(SemanticEdit other)
         {
-            return this.Kind == other.Kind
+            return (this.Kind == other.Kind)
                 && (this.OldSymbol == null ? other.OldSymbol == null : this.OldSymbol.Equals(other.OldSymbol))
                 && (this.NewSymbol == null ? other.NewSymbol == null : this.NewSymbol.Equals(other.NewSymbol));
         }

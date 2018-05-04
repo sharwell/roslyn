@@ -62,7 +62,7 @@ namespace Roslyn.Utilities
                 throw new ArgumentException(nameof(length), $"{length} < {0}");
             }
 
-            if (start + length > _array.Length)
+            if ((start + length) > _array.Length)
             {
                 throw new ArgumentException(nameof(start), $"{start} + {length} > {_array.Length}");
             }

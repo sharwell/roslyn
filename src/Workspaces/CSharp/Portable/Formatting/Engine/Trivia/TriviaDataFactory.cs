@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             }
 
             // tab is used in a place where it is not an indentation
-            if (result.LineBreaks == 0 && result.Tab > 0)
+            if ((result.LineBreaks == 0) && (result.Tab > 0))
             {
                 // calculate actual space size from tab
                 var spaces = CalculateSpaces(token1, token2);
@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             Debug.Assert(result.Tab >= 0);
             Debug.Assert(result.LineBreaks >= 0);
 
-            var indentation = result.Tab * this.OptionSet.GetOption(FormattingOptions.TabSize, LanguageNames.CSharp) + result.Space;
+            var indentation = (result.Tab * this.OptionSet.GetOption(FormattingOptions.TabSize, LanguageNames.CSharp)) + result.Space;
             if (result.HasTrailingSpace || result.HasUnknownWhitespace)
             {
                 return ValueTuple.Create(false, result.LineBreaks, indentation);
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
         private int GetSpaceOnSingleLine(Analyzer.AnalysisResult result)
         {
-            if (result.HasTrailingSpace || result.HasUnknownWhitespace || result.LineBreaks > 0 || result.Tab > 0)
+            if (result.HasTrailingSpace || result.HasUnknownWhitespace || (result.LineBreaks > 0) || (result.Tab > 0))
             {
                 return -1;
             }

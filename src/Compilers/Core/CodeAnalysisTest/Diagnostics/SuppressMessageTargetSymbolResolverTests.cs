@@ -1289,7 +1289,7 @@ End Class
             MarkupTestFile.GetPositionAndSpans(markup, 
                 out var source, out var pos, out IDictionary<string, ImmutableArray<TextSpan>> spans);
 
-            Assert.True(pos != null || spans.Count > 0, "Must specify a position or spans marking expected symbols for resolution");
+            Assert.True((pos != null) || (spans.Count > 0), "Must specify a position or spans marking expected symbols for resolution");
 
             // Get the expected symbol from the given position
             var syntaxTree = CreateSyntaxTree(source, language);
@@ -1351,7 +1351,7 @@ End Class
             var location = token.GetLocation();
             var q = from node in token.Parent.AncestorsAndSelf()
                     let candidate = model.GetDeclaredSymbol(node)
-                    where candidate != null && candidate.Locations.Contains(location)
+                    where (candidate != null) && candidate.Locations.Contains(location)
                     select candidate;
 
             var symbol = q.FirstOrDefault();

@@ -279,8 +279,8 @@ namespace Microsoft.CodeAnalysis.BuildTasks
             // If a tool has a large amount of output that isn't an error or warning (eg., "dir /s %hugetree%")
             // the regex below is slow. It's faster to pre-scan for "warning" and "error" 
             // and bail out if neither are present.
-            if (message.IndexOf("warning", StringComparison.OrdinalIgnoreCase) == -1 &&
-                message.IndexOf("error", StringComparison.OrdinalIgnoreCase) == -1)
+            if ((message.IndexOf("warning", StringComparison.OrdinalIgnoreCase) == -1) &&
+                (message.IndexOf("error", StringComparison.OrdinalIgnoreCase) == -1))
             {
                 return null;
             }

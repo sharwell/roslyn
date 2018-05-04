@@ -564,7 +564,7 @@ Error for double input ""{s}""
         private static void TestRoundTripFloat(float d)
         {
             string s = InvariantToString(d);
-            if (s != "NaN" && s != "Infinity") CheckOneFloat(s, d);
+            if ((s != "NaN") && (s != "Infinity")) CheckOneFloat(s, d);
         }
 
         private static void CheckOneFloat(string s, uint expectedBits)

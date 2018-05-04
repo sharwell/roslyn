@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigationBar
             }
 
             // If the displayed project is being renamed, retrigger the update
-            if (args.Kind == WorkspaceChangeKind.ProjectChanged && args.ProjectId != null)
+            if ((args.Kind == WorkspaceChangeKind.ProjectChanged) && (args.ProjectId != null))
             {
                 var oldProject = args.OldSolution.GetProject(args.ProjectId);
                 var newProject = args.NewSolution.GetProject(args.ProjectId);
@@ -158,18 +158,18 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.NavigationBar
                 {
                     var currentContextDocumentId = _workspace.GetDocumentIdInCurrentContext(_subjectBuffer.AsTextContainer());
 
-                    if (currentContextDocumentId != null && currentContextDocumentId.ProjectId == args.ProjectId)
+                    if ((currentContextDocumentId != null) && (currentContextDocumentId.ProjectId == args.ProjectId))
                     {
                         StartModelUpdateAndSelectedItemUpdateTasks(modelUpdateDelay: 0, selectedItemUpdateDelay: 0, updateUIWhenDone: true);
                     }
                 }
             }
 
-            if (args.Kind == WorkspaceChangeKind.DocumentChanged &&
-                args.OldSolution == args.NewSolution)
+            if ((args.Kind == WorkspaceChangeKind.DocumentChanged) &&
+                (args.OldSolution == args.NewSolution))
             {
                 var currentContextDocumentId = _workspace.GetDocumentIdInCurrentContext(_subjectBuffer.AsTextContainer());
-                if (currentContextDocumentId != null && currentContextDocumentId == args.DocumentId)
+                if ((currentContextDocumentId != null) && (currentContextDocumentId == args.DocumentId))
                 {
                     // The context has changed, so update everything.
                     StartModelUpdateAndSelectedItemUpdateTasks(modelUpdateDelay: 0, selectedItemUpdateDelay: 0, updateUIWhenDone: true);

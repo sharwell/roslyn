@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 var firstChar = identifier[wordStart];
                 if (char.IsUpper(firstChar))
                 {
-                    if (wordStart + 1 == length)
+                    if ((wordStart + 1) == length)
                     {
                         return new TextSpan(wordStart, 1);
                     }
@@ -119,12 +119,12 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
                 // scan all the upper case letters until we hit one followed by a lower
                 // case letter.
-                while (current < length && char.IsUpper(identifier[current]))
+                while ((current < length) && char.IsUpper(identifier[current]))
                 {
                     current++;
                 }
 
-                if (current < length && IsLower(identifier[current]))
+                if ((current < length) && IsLower(identifier[current]))
                 {
                     // hit the 'o' in XMLDo.  Return "XML"
                     Debug.Assert(char.IsUpper(identifier[current - 1]));
@@ -154,7 +154,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
         private static TextSpan ScanLowerCaseRun(string identifier, int length, int wordStart)
         {
             var current = wordStart + 1;
-            while (current < length && IsLower(identifier[current]))
+            while ((current < length) && IsLower(identifier[current]))
             {
                 current++;
             }
@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
         private static TextSpan ScanNumber(string identifier, int length, int wordStart)
         {
             var current = wordStart + 1;
-            while (current < length && char.IsDigit(identifier[current]))
+            while ((current < length) && char.IsDigit(identifier[current]))
             {
                 current++;
             }
@@ -178,7 +178,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             while (wordStart < length)
             {
                 var ch = identifier[wordStart];
-                if (ch != '_' && char.IsPunctuation(ch))
+                if ((ch != '_') && char.IsPunctuation(ch))
                 {
                     wordStart++;
                     continue;
@@ -194,7 +194,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
         {
             if (IsAscii(c))
             {
-                return c >= 'a' && c <= 'z';
+                return (c >= 'a') && (c <= 'z');
             }
 
             return char.IsLower(c);

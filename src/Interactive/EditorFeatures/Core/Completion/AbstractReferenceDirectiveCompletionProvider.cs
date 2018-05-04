@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.Editor.Completion.FileSystem
 
         protected override async Task ProvideCompletionsAsync(CompletionContext context, string pathThroughLastSlash)
         {
-            if (GacFileResolver.IsAvailable && pathThroughLastSlash.IndexOfAny(s_pathIndicators) < 0)
+            if (GacFileResolver.IsAvailable && (pathThroughLastSlash.IndexOfAny(s_pathIndicators) < 0))
             {
                 var gacHelper = new GlobalAssemblyCacheCompletionHelper(s_rules);
                 context.AddItems(await gacHelper.GetItemsAsync(pathThroughLastSlash, context.CancellationToken).ConfigureAwait(false));

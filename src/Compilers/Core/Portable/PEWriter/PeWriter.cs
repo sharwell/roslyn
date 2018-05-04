@@ -83,7 +83,7 @@ namespace Microsoft.Cci
             CancellationToken cancellationToken)
         {
             // If PDB writer is given, we have to have PDB path.
-            Debug.Assert(nativePdbWriterOpt == null || pdbPathOpt != null);
+            Debug.Assert((nativePdbWriterOpt == null) || (pdbPathOpt != null));
 
             var mdWriter = FullMetadataWriter.Create(context, messageProvider, metadataOnly, isDeterministic,
                 emitTestCoverageData, getPortablePdbStreamOpt != null, cancellationToken);
@@ -202,7 +202,7 @@ namespace Microsoft.Cci
                 mdWriter.AddRemainingEmbeddedDocuments(mdWriter.Module.DebugDocumentsBuilder.EmbeddedDocuments);
 
                 // The algorithm must be specified for deterministic builds (checked earlier).
-                Debug.Assert(!isDeterministic || context.Module.PdbChecksumAlgorithm.Name != null);
+                Debug.Assert(!isDeterministic || (context.Module.PdbChecksumAlgorithm.Name != null));
 
                 var portablePdbIdProvider = (context.Module.PdbChecksumAlgorithm.Name != null) ?
                     new Func<IEnumerable<Blob>, BlobContentId>(content => BlobContentId.FromHash(portablePdbContentHash = CryptographicHashProvider.ComputeHash(context.Module.PdbChecksumAlgorithm, content))) :
@@ -237,7 +237,7 @@ namespace Microsoft.Cci
             }
 
             DebugDirectoryBuilder debugDirectoryBuilder;
-            if (pdbPathOpt != null || isDeterministic || portablePdbToEmbed != null)
+            if ((pdbPathOpt != null) || isDeterministic || (portablePdbToEmbed != null))
             {
                 debugDirectoryBuilder = new DebugDirectoryBuilder();
                 if (pdbPathOpt != null)
@@ -338,7 +338,7 @@ namespace Microsoft.Cci
 
             PatchModuleVersionIds(mvidFixup, mvidSectionFixup, mvidStringFixup, peContentId.Guid);
 
-            if (privateKeyOpt != null && corFlags.HasFlag(CorFlags.StrongNameSigned))
+            if ((privateKeyOpt != null) && corFlags.HasFlag(CorFlags.StrongNameSigned))
             {
                 Debug.Assert(strongNameProvider.Capability == SigningCapability.SignsPeBuilder);
                 strongNameProvider.SignPeBuilder(peBuilder, peBlob, privateKeyOpt.Value);
@@ -388,7 +388,7 @@ namespace Microsoft.Cci
             if (s_calculateChecksumMethod == null)
             {
                 s_calculateChecksumMethod = typeof(PEBuilder).GetRuntimeMethods()
-                    .Where(m => m.Name == "CalculateChecksum" && m.GetParameters().Length == 2)
+                    .Where(m => (m.Name == "CalculateChecksum") && (m.GetParameters().Length == 2))
                     .Single();
             }
 

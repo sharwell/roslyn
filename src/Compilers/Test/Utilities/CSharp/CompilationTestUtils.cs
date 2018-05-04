@@ -269,7 +269,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
         public static List<string> LookupNames(this SemanticModel model, int position, INamespaceOrTypeSymbol container = null, bool namespacesAndTypesOnly = false, bool useBaseReferenceAccessibility = false)
         {
-            Assert.True(!useBaseReferenceAccessibility || (object)container == null);
+            Assert.True(!useBaseReferenceAccessibility || ((object)container == null));
             Assert.True(!useBaseReferenceAccessibility || !namespacesAndTypesOnly);
             var symbols = useBaseReferenceAccessibility
                 ? model.LookupBaseMembers(position)

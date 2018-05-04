@@ -121,7 +121,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
             var currentContentType = snapshot.ContentType;
 
             // if a file's content-type changes (e.g., File.cs is renamed to File.vb) after the list of providers has been populated, then we need to re-filter
-            if (_providers == null || currentContentType != _lastSeenContentType)
+            if ((_providers == null) || (currentContentType != _lastSeenContentType))
             {
                 var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
                 if (document != null)

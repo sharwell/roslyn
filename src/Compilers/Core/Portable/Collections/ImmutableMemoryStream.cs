@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.Collections
             }
             set
             {
-                if (value < 0 || value >= _array.Length)
+                if ((value < 0) || (value >= _array.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.Collections
                 throw new ArgumentOutOfRangeException(nameof(offset));
             }
 
-            if (target < 0 || target >= _array.Length)
+            if ((target < 0) || (target >= _array.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(offset));
             }

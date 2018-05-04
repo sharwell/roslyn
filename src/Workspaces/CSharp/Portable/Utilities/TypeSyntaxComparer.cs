@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Utilities
             x = UnwrapType(x);
             y = UnwrapType(y);
 
-            if (x is NameSyntax && y is NameSyntax)
+            if ((x is NameSyntax) && (y is NameSyntax))
             {
                 return NameComparer.Compare((NameSyntax)x, (NameSyntax)y);
             }

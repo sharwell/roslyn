@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var methodGroup = (BoundMethodGroup)rewrittenOperand;
                 BoundExpression receiver = methodGroup.ReceiverOpt;
-                if (receiver != null && receiver.Kind != BoundKind.ThisReference)
+                if ((receiver != null) && (receiver.Kind != BoundKind.ThisReference))
                 {
                     // possible side-effect
                     return RewriteConstantIsOperator(receiver.Syntax, receiver, ConstantValue.False, rewrittenType);
@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var operandType = rewrittenOperand.Type;
             var targetType = rewrittenTargetType.Type;
 
-            Debug.Assert((object)operandType != null || rewrittenOperand.ConstantValue.IsNull);
+            Debug.Assert(((object)operandType != null) || rewrittenOperand.ConstantValue.IsNull);
             Debug.Assert((object)targetType != null);
 
             // TODO: Handle dynamic operand type and target type
@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ConstantValue constantValue,
             TypeSymbol type)
         {
-            Debug.Assert(constantValue == ConstantValue.True || constantValue == ConstantValue.False);
+            Debug.Assert((constantValue == ConstantValue.True) || (constantValue == ConstantValue.False));
             Debug.Assert((object)type != null);
 
             return new BoundSequence(

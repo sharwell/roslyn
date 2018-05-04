@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
         {
             var targetSymbol = semanticModel.GetSymbolInfo(expressionName);
 
-            if (targetSymbol.Symbol != null && targetSymbol.Symbol.Kind == SymbolKind.Method)
+            if ((targetSymbol.Symbol != null) && (targetSymbol.Symbol.Kind == SymbolKind.Method))
             {
                 var targetMethodSymbol = (IMethodSymbol)targetSymbol.Symbol;
                 if (!targetMethodSymbol.IsReducedExtension())
@@ -112,9 +112,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                             candidateRewrittenNode,
                             SpeculativeBindingOption.BindAsExpression).Symbol;
 
-                        if (oldSymbol != null && newSymbol != null)
+                        if ((oldSymbol != null) && (newSymbol != null))
                         {
-                            if (newSymbol.Kind == SymbolKind.Method && oldSymbol.Equals(((IMethodSymbol)newSymbol).GetConstructedReducedFrom()))
+                            if ((newSymbol.Kind == SymbolKind.Method) && oldSymbol.Equals(((IMethodSymbol)newSymbol).GetConstructedReducedFrom()))
                             {
                                 rewrittenNode = candidateRewrittenNode;
                             }

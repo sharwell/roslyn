@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Text
             if (Workspace.TryGetWorkspace(text.Container, out var workspace))
             {
                 var id = workspace.GetDocumentIdInCurrentContext(text.Container);
-                if (id == null || !workspace.CurrentSolution.ContainsDocument(id))
+                if ((id == null) || !workspace.CurrentSolution.ContainsDocument(id))
                 {
                     return null;
                 }

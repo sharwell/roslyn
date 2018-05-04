@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.ExtractInterface
 
             var semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             var type = semanticModel.GetDeclaredSymbol(typeNode, cancellationToken);
-            if (type == null || type.Kind != SymbolKind.NamedType)
+            if ((type == null) || (type.Kind != SymbolKind.NamedType))
             {
                 var errorMessage = FeaturesResources.Could_not_extract_interface_colon_The_selection_is_not_inside_a_class_interface_struct;
                 return new ExtractInterfaceTypeAnalysisResult(errorMessage);
@@ -382,12 +382,12 @@ namespace Microsoft.CodeAnalysis.ExtractInterface
         internal virtual bool IsExtractableMember(ISymbol m)
         {
             if (m.IsStatic ||
-                m.DeclaredAccessibility != Accessibility.Public)
+                (m.DeclaredAccessibility != Accessibility.Public))
             {
                 return false;
             }
 
-            if (m.Kind == SymbolKind.Event || m.IsOrdinaryMethod())
+            if ((m.Kind == SymbolKind.Event) || m.IsOrdinaryMethod())
             {
                 return true;
             }
@@ -395,8 +395,8 @@ namespace Microsoft.CodeAnalysis.ExtractInterface
             if (m.Kind == SymbolKind.Property)
             {
                 var prop = m as IPropertySymbol;
-                return (prop.GetMethod != null && prop.GetMethod.DeclaredAccessibility == Accessibility.Public) ||
-                    (prop.SetMethod != null && prop.SetMethod.DeclaredAccessibility == Accessibility.Public);
+                return ((prop.GetMethod != null) && (prop.GetMethod.DeclaredAccessibility == Accessibility.Public)) ||
+                    ((prop.SetMethod != null) && (prop.SetMethod.DeclaredAccessibility == Accessibility.Public));
             }
 
             return false;
@@ -499,14 +499,14 @@ namespace Microsoft.CodeAnalysis.ExtractInterface
                 return false;
             }
 
-            if (type == typeParameter ||
+            if ((type == typeParameter) ||
                 type.GetTypeArguments().Any(t => DoesTypeReferenceTypeParameter(t, typeParameter, checkedTypes)))
             {
                 return true;
             }
 
-            if (type.ContainingType != null &&
-                type.Kind != SymbolKind.TypeParameter &&
+            if ((type.ContainingType != null) &&
+                (type.Kind != SymbolKind.TypeParameter) &&
                 DoesTypeReferenceTypeParameter(type.ContainingType, typeParameter, checkedTypes))
             {
                 return true;

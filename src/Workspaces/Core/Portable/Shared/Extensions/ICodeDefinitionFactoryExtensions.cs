@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             INamedTypeSymbol containingTypeOpt,
             IDictionary<string, ISymbol> parameterToExistingFieldMap)
         {
-            if (containingTypeOpt != null && containingTypeOpt.TypeKind == TypeKind.Struct)
+            if ((containingTypeOpt != null) && (containingTypeOpt.TypeKind == TypeKind.Struct))
             {
                 // Special case.  If we're generating a struct constructor, then we'll need
                 // to initialize all fields in the struct, not just the ones we're creating.  To
@@ -154,14 +154,14 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         {
             value = null;
             return
-                dictionary != null &&
+                (dictionary != null) &&
                 dictionary.TryGetValue(key, out value);
         }
 
         private static bool TryGetValue(IDictionary<string, ISymbol> dictionary, string key, out string value)
         {
             value = null;
-            if (dictionary != null && dictionary.TryGetValue(key, out var symbol))
+            if ((dictionary != null) && dictionary.TryGetValue(key, out var symbol))
             {
                 value = symbol.Name;
                 return true;
@@ -313,7 +313,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 getBody = statement;
                 setBody = statement;
             }
-            else if (overriddenProperty.IsIndexer() && document.Project.Language == LanguageNames.CSharp)
+            else if (overriddenProperty.IsIndexer() && (document.Project.Language == LanguageNames.CSharp))
             {
                 // Indexer: return or set base[]. Only in C#, since VB must refer to these by name.
 
@@ -333,9 +333,9 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             else if (overriddenProperty.GetParameters().Any())
             {
                 // Call accessors directly if C# overriding VB
-                if (document.Project.Language == LanguageNames.CSharp
-                    && (await SymbolFinder.FindSourceDefinitionAsync(overriddenProperty, document.Project.Solution, cancellationToken).ConfigureAwait(false))
-                        .Language == LanguageNames.VisualBasic)
+                if ((document.Project.Language == LanguageNames.CSharp)
+                    && ((await SymbolFinder.FindSourceDefinitionAsync(overriddenProperty, document.Project.Solution, cancellationToken).ConfigureAwait(false))
+                        .Language == LanguageNames.VisualBasic))
                 {
                     var getName = overriddenProperty.GetMethod?.Name;
                     var setName = overriddenProperty.SetMethod?.Name;
@@ -396,7 +396,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
             // Only generate a getter if the base getter is accessible.
             IMethodSymbol accessorGet = null;
-            if (overriddenProperty.GetMethod != null && overriddenProperty.GetMethod.IsAccessibleWithin(containingType))
+            if ((overriddenProperty.GetMethod != null) && overriddenProperty.GetMethod.IsAccessibleWithin(containingType))
             {
                 accessorGet = CodeGenerationSymbolFactory.CreateMethodSymbol(
                     overriddenProperty.GetMethod,
@@ -407,9 +407,9 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
             // Only generate a setter if the base setter is accessible.
             IMethodSymbol accessorSet = null;
-            if (overriddenProperty.SetMethod != null &&
+            if ((overriddenProperty.SetMethod != null) &&
                 overriddenProperty.SetMethod.IsAccessibleWithin(containingType) &&
-                overriddenProperty.SetMethod.DeclaredAccessibility != Accessibility.Private)
+                (overriddenProperty.SetMethod.DeclaredAccessibility != Accessibility.Private))
             {
                 accessorSet = CodeGenerationSymbolFactory.CreateMethodSymbol(
                     overriddenProperty.SetMethod,

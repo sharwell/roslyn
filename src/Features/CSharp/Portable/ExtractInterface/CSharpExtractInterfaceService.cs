@@ -28,8 +28,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractInterface
             var token = root.FindToken(position != tree.Length ? position : Math.Max(0, position - 1));
             var typeDeclaration = token.GetAncestor<TypeDeclarationSyntax>();
 
-            if (typeDeclaration == null ||
-                typeDiscoveryRule == TypeDiscoveryRule.TypeDeclaration)
+            if ((typeDeclaration == null) ||
+                (typeDiscoveryRule == TypeDiscoveryRule.TypeDeclaration))
             {
                 return typeDeclaration;
             }

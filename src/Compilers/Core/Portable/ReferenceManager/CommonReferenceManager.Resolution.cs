@@ -303,7 +303,7 @@ namespace Microsoft.CodeAnalysis
 
                 var peReference = (PortableExecutableReference)boundReference;
                 Metadata metadata = GetMetadata(peReference, MessageProvider, location, diagnostics);
-                Debug.Assert(metadata != null || diagnostics.HasAnyErrors());
+                Debug.Assert((metadata != null) || diagnostics.HasAnyErrors());
 
                 if (metadata != null)
                 {
@@ -426,7 +426,7 @@ namespace Microsoft.CodeAnalysis
             ImmutableArray<string> aliasesOpt, recursiveAliasesOpt;
 
             MergedAliases mergedProperties;
-            if (propertyMapOpt != null && propertyMapOpt.TryGetValue(reference, out mergedProperties))
+            if ((propertyMapOpt != null) && propertyMapOpt.TryGetValue(reference, out mergedProperties))
             {
                 aliasesOpt = mergedProperties.AliasesOpt?.ToImmutableAndFree() ?? default(ImmutableArray<string>);
                 recursiveAliasesOpt = mergedProperties.RecursiveAliasesOpt?.ToImmutableAndFree() ?? default(ImmutableArray<string>);
@@ -481,7 +481,7 @@ namespace Microsoft.CodeAnalysis
                     bool dummy = ((ModuleMetadata)newMetadata).Module.IsLinkedModule;
                 }
             }
-            catch (Exception e) when (e is BadImageFormatException || e is IOException)
+            catch (Exception e) when ((e is BadImageFormatException) || (e is IOException))
             {
                 newDiagnostic = PortableExecutableReference.ExceptionToDiagnostic(e, messageProvider, location, peReference.Display, peReference.Properties.Kind);
                 newMetadata = null;
@@ -509,7 +509,7 @@ namespace Microsoft.CodeAnalysis
             MetadataOrDiagnostic existing;
             if (ObservedMetadata.TryGetValue(peReference, out existing))
             {
-                Debug.Assert(existing is Metadata || existing is Diagnostic);
+                Debug.Assert((existing is Metadata) || (existing is Diagnostic));
 
                 metadata = existing as Metadata;
                 if (metadata == null)
@@ -766,7 +766,7 @@ namespace Microsoft.CodeAnalysis
                     }
 
                     // we already successfully bound #r with the same value:
-                    if (boundReferenceDirectives != null && boundReferenceDirectives.ContainsKey((referenceDirective.Location.SourceTree.FilePath, referenceDirective.File)))
+                    if ((boundReferenceDirectives != null) && boundReferenceDirectives.ContainsKey((referenceDirective.Location.SourceTree.FilePath, referenceDirective.File)))
                     {
                         continue;
                     }
@@ -822,7 +822,7 @@ namespace Microsoft.CodeAnalysis
         private static PortableExecutableReference ResolveReferenceDirective(string reference, Location location, TCompilation compilation)
         {
             var tree = location.SourceTree;
-            string basePath = (tree != null && tree.FilePath.Length > 0) ? tree.FilePath : null;
+            string basePath = ((tree != null) && (tree.FilePath.Length > 0)) ? tree.FilePath : null;
 
             // checked earlier:
             Debug.Assert(compilation.Options.MetadataReferenceResolver != null);
@@ -901,7 +901,7 @@ namespace Microsoft.CodeAnalysis
                         if (reference.Version < definition.Version)
                         {
                             // Refers to an older assembly than we have
-                            if (minHigherVersionDefinition == -1 || definition.Version < definitions[minHigherVersionDefinition].Identity.Version)
+                            if ((minHigherVersionDefinition == -1) || (definition.Version < definitions[minHigherVersionDefinition].Identity.Version))
                             {
                                 minHigherVersionDefinition = i;
                             }
@@ -911,7 +911,7 @@ namespace Microsoft.CodeAnalysis
                             Debug.Assert(reference.Version > definition.Version);
 
                             // Refers to a newer assembly than we have
-                            if (maxLowerVersionDefinition == -1 || definition.Version > definitions[maxLowerVersionDefinition].Identity.Version)
+                            if ((maxLowerVersionDefinition == -1) || (definition.Version > definitions[maxLowerVersionDefinition].Identity.Version))
                             {
                                 maxLowerVersionDefinition = i;
                             }
@@ -965,11 +965,11 @@ namespace Microsoft.CodeAnalysis
                 {
                     var definition = definitions[i].Identity;
                     var sourceCompilation = definitions[i].SourceCompilation;
-                    if (definition.ContentType == AssemblyContentType.Default &&
-                        sourceCompilation?.Options.OutputKind == OutputKind.WindowsRuntimeMetadata &&
+                    if ((definition.ContentType == AssemblyContentType.Default) &&
+                        (sourceCompilation?.Options.OutputKind == OutputKind.WindowsRuntimeMetadata) &&
                         AssemblyIdentityComparer.SimpleNameComparer.Equals(reference.Name, definition.Name) &&
                         reference.Version.Equals(definition.Version) &&
-                        reference.IsRetargetable == definition.IsRetargetable &&
+                        (reference.IsRetargetable == definition.IsRetargetable) &&
                         AssemblyIdentityComparer.CultureComparer.Equals(reference.CultureName, definition.CultureName) &&
                         AssemblyIdentity.KeysEqual(reference, definition))
                     {

@@ -174,7 +174,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         protected static IEnumerable<INamespaceSymbol> GetContainingNamespacesAndThis(INamespaceSymbol namespaceSymbol)
         {
-            while (namespaceSymbol != null && !namespaceSymbol.IsGlobalNamespace)
+            while ((namespaceSymbol != null) && !namespaceSymbol.IsGlobalNamespace)
             {
                 yield return namespaceSymbol;
                 namespaceSymbol = namespaceSymbol.ContainingNamespace;

@@ -21,9 +21,9 @@ namespace RepoUtil
         public static bool operator ==(NuGetPackage left, NuGetPackage right) =>
             Constants.NugetPackageNameComparer.Equals(left.Name, right.Name) &&
             Constants.NugetPackageVersionComparer.Equals(left.Version, right.Version) &&
-            left.GenerateNameOpt == right.GenerateNameOpt;
+            (left.GenerateNameOpt == right.GenerateNameOpt);
         public static bool operator !=(NuGetPackage left, NuGetPackage right) => !(left == right);
-        public override bool Equals(object obj) => obj is NuGetPackage && Equals((NuGetPackage)obj);
+        public override bool Equals(object obj) => (obj is NuGetPackage) && Equals((NuGetPackage)obj);
         public override int GetHashCode() => Name?.GetHashCode() ?? 0;
         public override string ToString() => GenerateNameOpt == null
             ? $"{Name}-{Version}"

@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         {
             // if position is within already read character range then just use what we have
             int relative = position - _basis;
-            if (relative >= 0 && relative <= _characterWindowCount)
+            if ((relative >= 0) && (relative <= _characterWindowCount))
             {
                 _offset = relative;
             }
@@ -248,7 +248,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         /// <returns></returns>
         internal bool IsReallyAtEnd()
         {
-            return _offset >= _characterWindowCount && Position >= _textEnd;
+            return (_offset >= _characterWindowCount) && (Position >= _textEnd);
         }
 
         /// <summary>
@@ -295,7 +295,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
         /// </returns>
         public char PeekChar()
         {
-            if (_offset >= _characterWindowCount
+            if ((_offset >= _characterWindowCount)
                 && !MoreChars())
             {
                 return InvalidCharacter;
@@ -318,7 +318,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             this.AdvanceChar(delta);
 
             char ch;
-            if (_offset >= _characterWindowCount
+            if ((_offset >= _characterWindowCount)
                 && !MoreChars())
             {
                 ch = InvalidCharacter;
@@ -338,7 +338,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             if (this.PeekChar() == '\\')
             {
                 var ch2 = this.PeekChar(1);
-                if (ch2 == 'U' || ch2 == 'u')
+                if ((ch2 == 'U') || (ch2 == 'u'))
                 {
                     return true;
                 }
@@ -379,7 +379,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             if (ch == '\\')
             {
                 var ch2 = this.PeekChar(1);
-                if (ch2 == 'U' || ch2 == 'u')
+                if ((ch2 == 'U') || (ch2 == 'u'))
                 {
                     return this.ScanUnicodeEscape(peek: false, surrogateCharacter: out surrogateCharacter, info: out info);
                 }
@@ -453,7 +453,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             }
             else
             {
-                Debug.Assert(character == 'u' || character == 'x');
+                Debug.Assert((character == 'u') || (character == 'x'));
 
                 int intChar = 0;
                 this.AdvanceChar();
@@ -676,18 +676,18 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
                 case 2:
                     char firstChar = _characterWindow[offset];
-                    if (firstChar == '\r' && _characterWindow[offset + 1] == '\n')
+                    if ((firstChar == '\r') && (_characterWindow[offset + 1] == '\n'))
                     {
                         return "\r\n";
                     }
-                    if (firstChar == '/' && _characterWindow[offset + 1] == '/')
+                    if ((firstChar == '/') && (_characterWindow[offset + 1] == '/'))
                     {
                         return "//";
                     }
                     break;
 
                 case 3:
-                    if (_characterWindow[offset] == '/' && _characterWindow[offset + 1] == '/' && _characterWindow[offset + 2] == ' ')
+                    if ((_characterWindow[offset] == '/') && (_characterWindow[offset + 1] == '/') && (_characterWindow[offset + 2] == ' '))
                     {
                         return "// ";
                     }
@@ -713,9 +713,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             }
             else
             {
-                Debug.Assert(codepoint > 0x0000FFFF && codepoint <= 0x0010FFFF);
-                lowSurrogate = (char)((codepoint - 0x00010000) % 0x0400 + 0xDC00);
-                return (char)((codepoint - 0x00010000) / 0x0400 + 0xD800);
+                Debug.Assert((codepoint > 0x0000FFFF) && (codepoint <= 0x0010FFFF));
+                lowSurrogate = (char)(((codepoint - 0x00010000) % 0x0400) + 0xDC00);
+                return (char)(((codepoint - 0x00010000) / 0x0400) + 0xD800);
             }
         }
     }

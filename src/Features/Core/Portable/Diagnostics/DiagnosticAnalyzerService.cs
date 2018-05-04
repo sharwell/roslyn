@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             {
                 var id = kv.Key;
                 var descriptors = kv.Value;
-                if (!map.TryGetValue(id, out var reference) || reference == null)
+                if (!map.TryGetValue(id, out var reference) || (reference == null))
                 {
                     continue;
                 }
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         public void Reanalyze(Workspace workspace, IEnumerable<ProjectId> projectIds = null, IEnumerable<DocumentId> documentIds = null, bool highPriority = false)
         {
             var service = workspace.Services.GetService<ISolutionCrawlerService>();
-            if (service != null && _map.TryGetValue(workspace, out var analyzer))
+            if ((service != null) && _map.TryGetValue(workspace, out var analyzer))
             {
                 service.Reanalyze(workspace, analyzer, projectIds, documentIds, highPriority);
             }

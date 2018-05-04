@@ -26,8 +26,8 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Common
             }
 
             return FilePath.Equals(other.FilePath, StringComparison.OrdinalIgnoreCase)
-                && Line == other.Line
-                && Column == other.Column
+                && (Line == other.Line)
+                && (Column == other.Column)
                 && Code.Equals(other.Code);
         }
 

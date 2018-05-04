@@ -233,7 +233,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             {
                 AssertIsForeground();
 
-                if (_itemMoniker == null || Project.Hierarchy == null)
+                if ((_itemMoniker == null) || (Project.Hierarchy == null))
                 {
                     return (uint)VSConstants.VSITEMID.Nil;
                 }

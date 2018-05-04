@@ -80,7 +80,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.UnitTests.Debugging
             int lastSpanEnd = 0;
             while (position < endPosition)
             {
-                if (BreakpointSpans.TryGetClosestBreakpointSpan(root, position, out var span) && span.End > lastSpanEnd)
+                if (BreakpointSpans.TryGetClosestBreakpointSpan(root, position, out var span) && (span.End > lastSpanEnd))
                 {
                     position = lastSpanEnd = span.End;
                     yield return span;

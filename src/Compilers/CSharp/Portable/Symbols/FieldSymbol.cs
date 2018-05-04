@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 ConstantValue constantValue = GetConstantValue(ConstantFieldsInProgress.Empty, earlyDecodingWellKnownAttributes: false);
-                return constantValue != null && !constantValue.IsBad; //can be null in error scenarios
+                return (constantValue != null) && !constantValue.IsBad; //can be null in error scenarios
             }
         }
 
@@ -367,7 +367,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 DiagnosticInfo info = GetUseSiteDiagnostic();
-                return (object)info != null && info.Code == (int)ErrorCode.ERR_BindToBogus;
+                return ((object)info != null) && (info.Code == (int)ErrorCode.ERR_BindToBogus);
             }
         }
 

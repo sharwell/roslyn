@@ -183,7 +183,7 @@ namespace Microsoft.Cci
             //first by typeId, then by Id.
             foreach (IWin32Resource r in theResources)
             {
-                bool typeDifferent = (r.TypeId < 0 && r.TypeName != lastTypeName) || r.TypeId > lastTypeID;
+                bool typeDifferent = ((r.TypeId < 0) && (r.TypeName != lastTypeName)) || (r.TypeId > lastTypeID);
                 if (typeDifferent)
                 {
                     lastTypeID = r.TypeId;
@@ -202,7 +202,7 @@ namespace Microsoft.Cci
                     typeDirectory.Entries.Add(nameDirectory = new Directory(lastTypeName, lastTypeID));
                 }
 
-                if (typeDifferent || (r.Id < 0 && r.Name != lastName) || r.Id > lastID)
+                if (typeDifferent || ((r.Id < 0) && (r.Name != lastName)) || (r.Id > lastID))
                 {
                     lastID = r.Id;
                     lastName = r.Name;
@@ -242,7 +242,7 @@ namespace Microsoft.Cci
             writer.WriteUInt16(directory.NumberOfNamedEntries);
             writer.WriteUInt16(directory.NumberOfIdEntries);
             uint n = (uint)directory.Entries.Count;
-            uint k = offset + 16 + n * 8;
+            uint k = offset + 16 + (n * 8);
             for (int i = 0; i < n; i++)
             {
                 int id;
@@ -260,7 +260,7 @@ namespace Microsoft.Cci
                     }
                     else
                     {
-                        k += 16 + 8 * (uint)subDir.Entries.Count;
+                        k += 16 + (8 * (uint)subDir.Entries.Count);
                     }
                 }
                 else
@@ -313,7 +313,7 @@ namespace Microsoft.Cci
                 }
             }
 
-            k = offset + 16 + n * 8;
+            k = offset + 16 + (n * 8);
             for (int i = 0; i < n; i++)
             {
                 Directory subDir = directory.Entries[i] as Directory;
@@ -326,7 +326,7 @@ namespace Microsoft.Cci
                     }
                     else
                     {
-                        k += 16 + 8 * (uint)subDir.Entries.Count;
+                        k += 16 + (8 * (uint)subDir.Entries.Count);
                     }
                 }
             }
@@ -335,13 +335,13 @@ namespace Microsoft.Cci
         private static uint SizeOfDirectory(Directory/*!*/ directory)
         {
             uint n = (uint)directory.Entries.Count;
-            uint size = 16 + 8 * n;
+            uint size = 16 + (8 * n);
             for (int i = 0; i < n; i++)
             {
                 Directory subDir = directory.Entries[i] as Directory;
                 if (subDir != null)
                 {
-                    size += 16 + 8 * (uint)subDir.Entries.Count;
+                    size += 16 + (8 * (uint)subDir.Entries.Count);
                 }
             }
 

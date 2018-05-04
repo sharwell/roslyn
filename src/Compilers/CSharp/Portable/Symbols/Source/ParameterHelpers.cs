@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 if (mustBeLastParameter == null)
                 {
                     if (parameterSyntax.Modifiers.Any(SyntaxKind.ParamsKeyword) ||
-                        parameterSyntax.Identifier.Kind() == SyntaxKind.ArgListKeyword)
+                        (parameterSyntax.Identifier.Kind() == SyntaxKind.ArgListKeyword))
                     {
                         mustBeLastParameter = parameterSyntax;
                     }
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 CheckParameterModifiers(parameterSyntax, diagnostics);
 
                 var refKind = GetModifiers(parameterSyntax.Modifiers, out SyntaxToken refnessKeyword, out SyntaxToken paramsKeyword, out SyntaxToken thisKeyword);
-                if (thisKeyword.Kind() != SyntaxKind.None && !allowThis)
+                if ((thisKeyword.Kind() != SyntaxKind.None) && !allowThis)
                 {
                     diagnostics.Add(ErrorCode.ERR_ThisInBadContext, thisKeyword.GetLocation());
                 }
@@ -53,9 +53,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     arglistToken = parameterSyntax.Identifier;
                     // The native compiler produces "Expected type" here, in the parser. Roslyn produces
                     // the somewhat more informative "arglist not valid" error.
-                    if (paramsKeyword.Kind() != SyntaxKind.None
-                        || refnessKeyword.Kind() != SyntaxKind.None
-                        || thisKeyword.Kind() != SyntaxKind.None)
+                    if ((paramsKeyword.Kind() != SyntaxKind.None)
+                        || (refnessKeyword.Kind() != SyntaxKind.None)
+                        || (thisKeyword.Kind() != SyntaxKind.None))
                     {
                         // CS1669: __arglist is not valid in this context
                         diagnostics.Add(ErrorCode.ERR_IllegalVarArgs, arglistToken.GetLocation());
@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     continue;
                 }
 
-                if (parameterSyntax.Default != null && firstDefault == -1)
+                if ((parameterSyntax.Default != null) && (firstDefault == -1))
                 {
                     firstDefault = parameterIndex;
                 }
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 Debug.Assert(parameterSyntax.Type != null);
                 var parameterType = binder.BindType(parameterSyntax.Type, diagnostics);
 
-                if (!allowRefOrOut && (refKind == RefKind.Ref || refKind == RefKind.Out))
+                if (!allowRefOrOut && ((refKind == RefKind.Ref) || (refKind == RefKind.Out)))
                 {
                     Debug.Assert(refnessKeyword.Kind() != SyntaxKind.None);
 
@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     parameterSyntax.Identifier,
                     parameterIndex,
                     paramsKeyword.Kind() != SyntaxKind.None,
-                    parameterIndex == 0 && thisKeyword.Kind() != SyntaxKind.None,
+                    (parameterIndex == 0) && (thisKeyword.Kind() != SyntaxKind.None),
                     addRefReadOnlyModifier,
                     diagnostics);
 
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 ++parameterIndex;
             }
 
-            if (mustBeLastParameter != null && mustBeLastParameter != syntax.Parameters.Last())
+            if ((mustBeLastParameter != null) && (mustBeLastParameter != syntax.Parameters.Last()))
             {
                 diagnostics.Add(
                     mustBeLastParameter.Identifier.Kind() == SyntaxKind.ArgListKeyword
@@ -282,7 +282,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             int parameterIndex = parameter.Ordinal;
             bool isDefault = parameterSyntax.Default != null;
 
-            if (thisKeyword.Kind() == SyntaxKind.ThisKeyword && parameterIndex != 0)
+            if ((thisKeyword.Kind() == SyntaxKind.ThisKeyword) && (parameterIndex != 0))
             {
                 // Report CS1100 on "this". Note that is a change from Dev10
                 // which reports the error on the type following "this".
@@ -305,13 +305,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // error CS0721: '{0}': static types cannot be used as parameters
                 diagnostics.Add(ErrorCode.ERR_ParameterIsStaticClass, owner.Locations[0], parameter.Type);
             }
-            else if (firstDefault != -1 && parameterIndex > firstDefault && !isDefault && !parameter.IsParams)
+            else if ((firstDefault != -1) && (parameterIndex > firstDefault) && !isDefault && !parameter.IsParams)
             {
                 // error CS1737: Optional parameters must appear after all required parameters
                 Location loc = parameterSyntax.Identifier.GetNextToken(includeZeroWidth: true).GetLocation(); //could be missing
                 diagnostics.Add(ErrorCode.ERR_DefaultValueBeforeRequiredValue, loc);
             }
-            else if (parameter.RefKind != RefKind.None && 
+            else if ((parameter.RefKind != RefKind.None) && 
                 parameter.Type.IsRestrictedType(ignoreSpanLikeTypes: true))
             {
                 // CS1601: Cannot make reference to variable of type 'System.TypedReference'
@@ -357,7 +357,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // CONSIDER: reported on the parameter name, or on the value of the initializer?
             // CONSIDER: Consider making this consistent.
 
-            if (refKind == RefKind.Ref || refKind == RefKind.Out)
+            if ((refKind == RefKind.Ref) || (refKind == RefKind.Out))
             {
                 // error CS1741: A ref or out parameter cannot have a default value
                 diagnostics.Add(ErrorCode.ERR_RefOutDefaultValue, refnessKeyword.GetLocation());
@@ -388,7 +388,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
             else if (!conversion.Exists ||
                 conversion.IsUserDefined ||
-                conversion.IsIdentity && parameterType.SpecialType == SpecialType.System_Object && defaultExpression.Type.IsDynamic())
+                ((conversion.IsIdentity && (parameterType.SpecialType == SpecialType.System_Object) && defaultExpression.Type.IsDynamic())))
             {
                 // If we had no implicit conversion, or a user-defined conversion, report an error.
                 //
@@ -401,10 +401,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 hasErrors = true;
             }
-            else if (conversion.IsReference &&
-                (parameterType.SpecialType == SpecialType.System_Object || parameterType.Kind == SymbolKind.DynamicType) &&
-                (object)defaultExpression.Type != null &&
-                defaultExpression.Type.SpecialType == SpecialType.System_String ||
+            else if ((((conversion.IsReference &&
+                ((parameterType.SpecialType == SpecialType.System_Object) || (parameterType.Kind == SymbolKind.DynamicType)) &&
+                ((object)defaultExpression.Type != null) &&
+                (defaultExpression.Type.SpecialType == SpecialType.System_String)))) ||
                 conversion.IsBoxing)
             {
                 // We don't allow object x = "hello", object x = 123, dynamic x = "hello", etc.
@@ -482,13 +482,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // new S() is clearly not a constant expression and should produce an error
             return (expression.ConstantValue != null) ||
                    (expression.Kind == BoundKind.DefaultExpression) ||
-                   (expression.Kind == BoundKind.ObjectCreationExpression &&
+                   ((expression.Kind == BoundKind.ObjectCreationExpression) &&
                        IsValidDefaultValue((BoundObjectCreationExpression)expression));
         }
 
         private static bool IsValidDefaultValue(BoundObjectCreationExpression expression)
         {
-            return expression.Constructor.IsDefaultValueTypeConstructor() && expression.InitializerExpressionOpt == null;
+            return expression.Constructor.IsDefaultValueTypeConstructor() && (expression.InitializerExpressionOpt == null);
         }
 
         internal static MethodSymbol FindContainingGenericMethod(Symbol symbol)

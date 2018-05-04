@@ -41,8 +41,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 
             // Ensure the analyzed session matches the current session and that the caret is still
             // in the session's tracking span.
-            if (CurrentSession == analyzedSession &&
-                QuickInfoSession == null &&
+            if ((CurrentSession == analyzedSession) &&
+                (QuickInfoSession == null) &&
                 caretPoint.HasValue &&
                 analyzedSession.TrackingSpan.GetSpan(CurrentSession.TextView.TextSnapshot).Contains(caretPoint.Value))
             {
@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 
             foreach (var change in e.Changes)
             {
-                if (change.OldText.Length > 0 || change.NewText.Any(c => c != ' '))
+                if ((change.OldText.Length > 0) || change.NewText.Any(c => c != ' '))
                 {
                     CancelAndDismissExistingSessions();
                     return;
@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
             }
 
             var snapshotSpan = CurrentSession.TrackingSpan.GetSpan(CurrentSession.TextView.TextSnapshot);
-            if (snapshotSpan.Snapshot != caretPoint.Value.Snapshot || !snapshotSpan.Contains(caretPoint.Value))
+            if ((snapshotSpan.Snapshot != caretPoint.Value.Snapshot) || !snapshotSpan.Contains(caretPoint.Value))
             {
                 CancelAndDismissExistingSessions();
             }
@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
 
         internal bool IsTrackingSession()
         {
-            return CurrentSession != null && QuickInfoSession != null;
+            return (CurrentSession != null) && (QuickInfoSession != null);
         }
     }
 }

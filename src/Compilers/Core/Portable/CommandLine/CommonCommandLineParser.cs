@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis
 
         private static bool IsOption(string arg)
         {
-            return !string.IsNullOrEmpty(arg) && (arg[0] == '/' || arg[0] == '-');
+            return !string.IsNullOrEmpty(arg) && ((arg[0] == '/') || (arg[0] == '-'));
         }
 
         internal static bool TryParseOption(string arg, out string name, out string value)
@@ -91,10 +91,10 @@ namespace Microsoft.CodeAnalysis
             // pattern /goo/*  or  //* will not be treated as a compiler option
             //
             // TODO: consider introducing "/s:path" to disambiguate paths starting with /
-            if (arg.Length > 1 && arg[0] != '-')
+            if ((arg.Length > 1) && (arg[0] != '-'))
             {
                 int separator = arg.IndexOf('/', 1);
-                if (separator > 0 && (colon < 0 || separator < colon))
+                if ((separator > 0) && ((colon < 0) || (separator < colon)))
                 {
                     //   "/goo/
                     //   "//
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis
                 }
             }
 
-            if (resolvedPath == null ||
+            if ((resolvedPath == null) ||
                 // NUL-terminated, non-empty, valid Unicode strings
                 !MetadataHelpers.IsValidMetadataIdentifier(outputDirectory) ||
                 !MetadataHelpers.IsValidMetadataIdentifier(outputFileName))
@@ -179,7 +179,7 @@ namespace Microsoft.CodeAnalysis
             for (int i = length - 1; i >= 0; i--)
             {
                 char c = path[i];
-                if (!char.IsWhiteSpace(c) && c != '.')
+                if (!char.IsWhiteSpace(c) && (c != '.'))
                 {
                     return i == (length - 1) ? path : path.Substring(0, i + 1);
                 }
@@ -207,7 +207,7 @@ namespace Microsoft.CodeAnalysis
                 var from = kv[0];
                 var to = kv[1];
 
-                if (from.Length == 0 || to.Length == 0)
+                if ((from.Length == 0) || (to.Length == 0))
                 {
                     errors.Add(Diagnostic.Create(_messageProvider, _messageProvider.ERR_InvalidPathMap, kEqualsV));
                 }
@@ -235,7 +235,7 @@ namespace Microsoft.CodeAnalysis
 
             string unquoted = RemoveQuotesAndSlashes(value);
             ParseAndNormalizeFile(unquoted, baseDirectory, out outputFileName, out outputDirectory, out invalidPath);
-            if (outputFileName == null ||
+            if ((outputFileName == null) ||
                 !MetadataHelpers.IsValidAssemblyOrModuleName(outputFileName))
             {
                 errors.Add(Diagnostic.Create(_messageProvider, _messageProvider.FTL_InvalidInputFileName, invalidPath));
@@ -256,8 +256,8 @@ namespace Microsoft.CodeAnalysis
 
             string unquoted = RemoveQuotesAndSlashes(value);
             ParseAndNormalizeFile(unquoted, baseDirectory, out outputFileName, out outputDirectory, out invalidPath);
-            if (outputFileName == null ||
-                PathUtilities.ChangeExtension(outputFileName, extension: null).Length == 0)
+            if ((outputFileName == null) ||
+                (PathUtilities.ChangeExtension(outputFileName, extension: null).Length == 0))
             {
                 errors.Add(Diagnostic.Create(_messageProvider, _messageProvider.FTL_InvalidInputFileName, invalidPath));
             }
@@ -339,7 +339,7 @@ namespace Microsoft.CodeAnalysis
                         continue;
                     }
 
-                    if (!optionsEnded && arg == "--")
+                    if (!optionsEnded && (arg == "--"))
                     {
                         // csi/vbi: no argument past "--" should be treated as an option/response file
                         optionsEnded = true;
@@ -475,7 +475,7 @@ namespace Microsoft.CodeAnalysis
                 newArgs.Add(arg);
             }
 
-            if (keepAliveValue != null && !containsShared)
+            if ((keepAliveValue != null) && !containsShared)
             {
                 errorMessage = CodeAnalysisResources.KeepAliveWithoutShared;
                 return false;
@@ -497,7 +497,7 @@ namespace Microsoft.CodeAnalysis
                 return false;
             }
 
-            if (arg.Length > optionName.Length && !(arg[optionName.Length] == ':' || arg[optionName.Length] == '='))
+            if ((arg.Length > optionName.Length) && !((arg[optionName.Length] == ':') || (arg[optionName.Length] == '=')))
             {
                 return false;
             }
@@ -583,7 +583,7 @@ namespace Microsoft.CodeAnalysis
 
             if (skipLeadingSeparators)
             {
-                for (; offset < length && string.IsNullOrEmpty(parts[offset]); offset++)
+                for (; (offset < length) && string.IsNullOrEmpty(parts[offset]); offset++)
                 {
                 }
 
@@ -680,13 +680,13 @@ namespace Microsoft.CodeAnalysis
             Debug.Assert(i < arg.Length);
 
             var slashCount = 0;
-            while (i < arg.Length && arg[i] == '\\')
+            while ((i < arg.Length) && (arg[i] == '\\'))
             {
                 slashCount++;
                 i++;
             }
 
-            if (i < arg.Length && arg[i] == '"')
+            if ((i < arg.Length) && (arg[i] == '"'))
             {
                 // Before a quote slashes are interpretted as escape sequences for other slashes so
                 // output one for every two.
@@ -809,7 +809,7 @@ namespace Microsoft.CodeAnalysis
 
         internal IEnumerable<CommandLineSourceFile> ParseFileArgument(string arg, string baseDirectory, IList<Diagnostic> errors)
         {
-            Debug.Assert(IsScriptCommandLineParser || !arg.StartsWith("-", StringComparison.Ordinal) && !arg.StartsWith("@", StringComparison.Ordinal));
+            Debug.Assert(IsScriptCommandLineParser || (!arg.StartsWith("-", StringComparison.Ordinal) && !arg.StartsWith("@", StringComparison.Ordinal)));
 
             // We remove all doubles quotes from a file name. So that, for example:
             //   "Path With Spaces"\goo.cs

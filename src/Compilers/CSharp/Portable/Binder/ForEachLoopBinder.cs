@@ -197,9 +197,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // These should only occur when special types are missing or malformed.
             hasErrors = hasErrors ||
-                (object)builder.GetEnumeratorMethod == null ||
-                (object)builder.MoveNextMethod == null ||
-                (object)builder.CurrentPropertyGetter == null;
+                ((object)builder.GetEnumeratorMethod == null) ||
+                ((object)builder.MoveNextMethod == null) ||
+                ((object)builder.CurrentPropertyGetter == null);
 
             TypeSymbol iterationVariableType;
             BoundTypeExpression boundIterationVariableType;
@@ -421,7 +421,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 (builder.ElementType.IsPointerType() && collectionExpr.Type.IsArray()) ||
                 (builder.ElementType.IsNullableType() && builder.ElementType.GetMemberTypeArgumentsNoUseSiteDiagnostics().Single().IsErrorType() && collectionExpr.Type.IsArray()));
             Debug.Assert(builder.EnumeratorConversion.IsValid ||
-                this.Compilation.GetSpecialType(SpecialType.System_Object).TypeKind == TypeKind.Error ||
+                (this.Compilation.GetSpecialType(SpecialType.System_Object).TypeKind == TypeKind.Error) ||
                 !useSiteDiagnostics.IsNullOrEmpty(),
                 "Conversions to object succeed unless there's a problem with the object type or the source type");
 
@@ -485,7 +485,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // If the enumerator is dynamic, it yields dynamic values 
                 inferredType = DynamicTypeSymbol.Instance;
             }
-            else if (collectionExpr.Type.SpecialType == SpecialType.System_String && builder.CollectionType.SpecialType == SpecialType.System_Collections_IEnumerable)
+            else if ((collectionExpr.Type.SpecialType == SpecialType.System_String) && (builder.CollectionType.SpecialType == SpecialType.System_Collections_IEnumerable))
             {
                 // Reproduce dev11 behavior: we're always going to lower a foreach loop over a string to a for loop 
                 // over the string's Chars indexer.  Therefore, we should infer "char", regardless of what the spec
@@ -507,7 +507,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // If collectionExprType is a nullable type, then use the underlying type and take the value (i.e. .Value) of collectionExpr.
             // This behavior is not spec'd, but it's what Dev10 does.
-            if ((object)collectionExprType != null && collectionExprType.IsNullableType())
+            if (((object)collectionExprType != null) && collectionExprType.IsNullableType())
             {
                 SyntaxNode exprSyntax = collectionExpr.Syntax;
 
@@ -594,7 +594,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // The spec specifically lists the collection, enumerator, and element types for arrays and dynamic.
-            if (collectionExprType.Kind == SymbolKind.ArrayType || collectionExprType.Kind == SymbolKind.DynamicType)
+            if ((collectionExprType.Kind == SymbolKind.ArrayType) || (collectionExprType.Kind == SymbolKind.DynamicType))
             {
                 builder = GetDefaultEnumeratorInfo(builder, diagnostics, collectionExprType);
                 return true;
@@ -687,8 +687,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     builder.CurrentPropertyGetter = (MethodSymbol)GetSpecialTypeMember(SpecialMember.System_Collections_IEnumerator__get_Current, diagnostics, errorLocationSyntax);
                     builder.MoveNextMethod = (MethodSymbol)GetSpecialTypeMember(SpecialMember.System_Collections_IEnumerator__MoveNext, diagnostics, errorLocationSyntax);
 
-                    Debug.Assert((object)builder.GetEnumeratorMethod == null ||
-                        builder.GetEnumeratorMethod.ReturnType == GetSpecialType(SpecialType.System_Collections_IEnumerator, diagnostics, errorLocationSyntax));
+                    Debug.Assert(((object)builder.GetEnumeratorMethod == null) ||
+                        (builder.GetEnumeratorMethod.ReturnType == GetSpecialType(SpecialType.System_Collections_IEnumerator, diagnostics, errorLocationSyntax)));
                 }
 
                 // We don't know the runtime type, so we will have to insert a runtime check for IDisposable (with a conditional call to IDisposable.Dispose).
@@ -740,8 +740,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             builder.CurrentPropertyGetter = (MethodSymbol)GetSpecialTypeMember(SpecialMember.System_Collections_IEnumerator__get_Current, diagnostics, _syntax);
             builder.MoveNextMethod = (MethodSymbol)GetSpecialTypeMember(SpecialMember.System_Collections_IEnumerator__MoveNext, diagnostics, _syntax);
 
-            Debug.Assert((object)builder.GetEnumeratorMethod == null ||
-                builder.GetEnumeratorMethod.ReturnType == this.Compilation.GetSpecialType(SpecialType.System_Collections_IEnumerator));
+            Debug.Assert(((object)builder.GetEnumeratorMethod == null) ||
+                (builder.GetEnumeratorMethod.ReturnType == this.Compilation.GetSpecialType(SpecialType.System_Collections_IEnumerator)));
 
             // We don't know the runtime type, so we will have to insert a runtime check for IDisposable (with a conditional call to IDisposable.Dispose).
             builder.NeedsDisposeMethod = true;
@@ -866,7 +866,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 result = overloadResolutionResult.ValidResult.Member;
 
-                if (result.IsStatic || result.DeclaredAccessibility != Accessibility.Public)
+                if (result.IsStatic || (result.DeclaredAccessibility != Accessibility.Public))
                 {
                     if (warningsOnly)
                     {
@@ -965,7 +965,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 Symbol lookupSymbol = lookupResult.SingleSymbolOrDefault;
                 Debug.Assert((object)lookupSymbol != null);
 
-                if (lookupSymbol.IsStatic || lookupSymbol.DeclaredAccessibility != Accessibility.Public || lookupSymbol.Kind != SymbolKind.Property)
+                if (lookupSymbol.IsStatic || (lookupSymbol.DeclaredAccessibility != Accessibility.Public) || (lookupSymbol.Kind != SymbolKind.Property))
                 {
                     return false;
                 }
@@ -997,9 +997,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // SPEC VIOLATION: Dev10 checks the return type of the original definition, rather than the return type of the actual method.
 
-                if ((object)moveNextMethodCandidate == null ||
-                    moveNextMethodCandidate.IsStatic || moveNextMethodCandidate.DeclaredAccessibility != Accessibility.Public ||
-                    ((MethodSymbol)moveNextMethodCandidate.OriginalDefinition).ReturnType.SpecialType != SpecialType.System_Boolean)
+                if (((object)moveNextMethodCandidate == null) ||
+                    moveNextMethodCandidate.IsStatic || (moveNextMethodCandidate.DeclaredAccessibility != Accessibility.Public) ||
+                    (((MethodSymbol)moveNextMethodCandidate.OriginalDefinition).ReturnType.SpecialType != SpecialType.System_Boolean))
                 {
                     return false;
                 }

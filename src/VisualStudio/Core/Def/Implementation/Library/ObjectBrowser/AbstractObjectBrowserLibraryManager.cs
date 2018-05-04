@@ -346,7 +346,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
 
         protected override int CreateNavInfo(SYMBOL_DESCRIPTION_NODE[] rgSymbolNodes, uint ulcNodes, out IVsNavInfo ppNavInfo)
         {
-            Debug.Assert(rgSymbolNodes != null || ulcNodes > 0, "Invalid input parameters into CreateNavInfo");
+            Debug.Assert((rgSymbolNodes != null) || (ulcNodes > 0), "Invalid input parameters into CreateNavInfo");
 
             ppNavInfo = null;
 
@@ -367,7 +367,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                 // which NavInfo is generated is a 'referenced' node in CV
                 // First package node ---> project item under which referenced node is displayed
                 // Second package node ---> actual lib item node i.e., referenced assembly
-                if (ulcNodes > 1 && rgSymbolNodes[1].dwType == (uint)_LIB_LISTTYPE.LLT_PACKAGE)
+                if ((ulcNodes > 1) && (rgSymbolNodes[1].dwType == (uint)_LIB_LISTTYPE.LLT_PACKAGE))
                 {
                     count++;
 
@@ -497,7 +497,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                         var streamingPresenter = _streamingPresenters.FirstOrDefault()?.Value;
                         var symbolListItem = _activeListItem as SymbolListItem;
 
-                        if (streamingPresenter != null && symbolListItem?.ProjectId != null)
+                        if ((streamingPresenter != null) && (symbolListItem?.ProjectId != null))
                         {
                             var project = this.Workspace.CurrentSolution.GetProject(symbolListItem.ProjectId);
                             if (project != null)

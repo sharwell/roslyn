@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         protected internal override bool TryGetParent(SyntaxNode node, out SyntaxNode parent)
         {
             parent = node.Parent;
-            while (parent != null && !HasLabel(parent))
+            while ((parent != null) && !HasLabel(parent))
             {
                 parent = parent.Parent;
             }
@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         {
             Debug.Assert(HasLabel(node));
 
-            if (node == _oldRoot || node == _newRoot)
+            if ((node == _oldRoot) || (node == _newRoot))
             {
                 return EnumerateRootChildren(node);
             }
@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
         private IEnumerable<SyntaxNode> EnumerateRootChildren(SyntaxNode root)
         {
-            Debug.Assert(_oldRoot != null && _newRoot != null);
+            Debug.Assert((_oldRoot != null) && (_newRoot != null));
 
             var child = (root == _oldRoot) ? _oldRootChild : _newRootChild;
 
@@ -109,9 +109,9 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
         protected internal sealed override IEnumerable<SyntaxNode> GetDescendants(SyntaxNode node)
         {
-            if (node == _oldRoot || node == _newRoot)
+            if ((node == _oldRoot) || (node == _newRoot))
             {
-                Debug.Assert(_oldRoot != null && _newRoot != null);
+                Debug.Assert((_oldRoot != null) && (_newRoot != null));
 
                 var rootChild = (node == _oldRoot) ? _oldRootChild : _newRootChild;
 
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             }
 
             // TODO: avoid allocation of closure
-            foreach (var descendant in node.DescendantNodes(descendIntoChildren: c => !IsLeaf(c) && (c == node || !LambdaUtilities.IsLambdaBodyStatementOrExpression(c))))
+            foreach (var descendant in node.DescendantNodes(descendIntoChildren: c => !IsLeaf(c) && ((c == node) || !LambdaUtilities.IsLambdaBodyStatementOrExpression(c))))
             {
                 if (!LambdaUtilities.IsLambdaBodyStatementOrExpression(descendant) && HasLabel(descendant))
                 {
@@ -267,7 +267,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             // We need to capture it in the match since these expressions can be "active statements" and as such we need to map them.
             //
             // The parent is not available only when comparing nodes for value equality.
-            if (nodeOpt != null && nodeOpt.Parent.IsKind(SyntaxKind.ForStatement) && nodeOpt is ExpressionSyntax)
+            if ((nodeOpt != null) && nodeOpt.Parent.IsKind(SyntaxKind.ForStatement) && (nodeOpt is ExpressionSyntax))
             {
                 return Label.ForStatementPart;
             }
@@ -412,7 +412,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                     // 
                     // The parent is not available only when comparing nodes for value equality.
                     // In that case it doesn't matter what label the node has as long as it has some.
-                    if (nodeOpt == null || nodeOpt.Parent.IsKind(SyntaxKind.QueryExpression))
+                    if ((nodeOpt == null) || nodeOpt.Parent.IsKind(SyntaxKind.QueryExpression))
                     {
                         return Label.FromClause;
                     }
@@ -602,7 +602,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                     var leftUsing = (UsingStatementSyntax)leftNode;
                     var rightUsing = (UsingStatementSyntax)rightNode;
 
-                    if (leftUsing.Declaration != null && rightUsing.Declaration != null)
+                    if ((leftUsing.Declaration != null) && (rightUsing.Declaration != null))
                     {
                         distance = ComputeWeightedDistance(
                             leftUsing.Declaration,
@@ -701,12 +701,12 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             double bodyDistance = ComputeDistance(leftBody, rightBody);
 
             return
-                modifierDistance * 0.1 +
-                returnTypeDistance * 0.1 +
-                identifierDistance * 0.2 +
-                typeParameterDistance * 0.2 +
-                parameterDistance * 0.2 +
-                bodyDistance * 0.2;
+                (modifierDistance * 0.1) +
+                (returnTypeDistance * 0.1) +
+                (identifierDistance * 0.2) +
+                (typeParameterDistance * 0.2) +
+                (parameterDistance * 0.2) +
+                (bodyDistance * 0.2);
         }
 
         private static void GetNestedFunctionsParts(
@@ -783,8 +783,8 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             // No block can be matched with the root block.
             // Note that in constructors the root is the constructor declaration, since we need to include 
             // the constructor initializer in the match.
-            if (leftBlock.Parent == null ||
-                rightBlock.Parent == null ||
+            if ((leftBlock.Parent == null) ||
+                (rightBlock.Parent == null) ||
                 leftBlock.Parent.IsKind(SyntaxKind.ConstructorDeclaration) ||
                 rightBlock.Parent.IsKind(SyntaxKind.ConstructorDeclaration))
             {
@@ -794,7 +794,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
             if (GetLabel(leftBlock.Parent) != GetLabel(rightBlock.Parent))
             {
-                distance = 0.2 + 0.8 * ComputeWeightedBlockDistance(leftBlock, rightBlock);
+                distance = 0.2 + (0.8 * ComputeWeightedBlockDistance(leftBlock, rightBlock));
                 return true;
             }
 
@@ -820,14 +820,14 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 case SyntaxKind.CatchClause:
                     var leftCatch = (CatchClauseSyntax)leftBlock.Parent;
                     var rightCatch = (CatchClauseSyntax)rightBlock.Parent;
-                    if (leftCatch.Declaration == null && leftCatch.Filter == null &&
-                        rightCatch.Declaration == null && rightCatch.Filter == null)
+                    if ((leftCatch.Declaration == null) && (leftCatch.Filter == null) &&
+                        (rightCatch.Declaration == null) && (rightCatch.Filter == null))
                     {
                         var leftTry = (TryStatementSyntax)leftCatch.Parent;
                         var rightTry = (TryStatementSyntax)rightCatch.Parent;
 
-                        distance = 0.5 * ComputeValueDistance(leftTry.Block, rightTry.Block) +
-                                   0.5 * ComputeValueDistance(leftBlock, rightBlock);
+                        distance = (0.5 * ComputeValueDistance(leftTry.Block, rightTry.Block)) +
+                                   (0.5 * ComputeValueDistance(leftBlock, rightBlock));
                     }
                     else
                     {
@@ -861,9 +861,9 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             double distance = ComputeDistance(leftNode, rightNode);
             double parentDistance;
 
-            if (leftNode.Parent != null && 
-                rightNode.Parent != null &&
-                GetLabel(leftNode.Parent) == GetLabel(rightNode.Parent))
+            if ((leftNode.Parent != null) && 
+                (rightNode.Parent != null) &&
+                (GetLabel(leftNode.Parent) == GetLabel(rightNode.Parent)))
             {
                 parentDistance = ComputeDistance(leftNode.Parent, rightNode.Parent);
             }
@@ -872,7 +872,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 parentDistance = 1;
             }
 
-            return 0.5 * parentDistance + 0.5 * distance;
+            return (0.5 * parentDistance) + (0.5 * distance);
         }
 
         private static double ComputeWeightedBlockDistance(BlockSyntax leftBlock, BlockSyntax rightBlock)
@@ -906,7 +906,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
             double localNamesDistance = ComputeDistance(leftLocals, rightLocals);
 
-            double distance = localNamesDistance * 0.6 + expressionDistance * 0.2 + statementDistance * 0.2;
+            double distance = (localNamesDistance * 0.6) + (expressionDistance * 0.2) + (statementDistance * 0.2);
             return AdjustForLocalsInBlock(distance, leftCommonForEach.Statement, rightCommonForEach.Statement, localsWeight: 0.6);
         }
 
@@ -918,10 +918,10 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             double incDistance = ComputeDistance(
                 GetDescendantTokensIgnoringSeparators(left.Incrementors), GetDescendantTokensIgnoringSeparators(right.Incrementors));
 
-            double distance = conditionDistance * 0.3 + incDistance * 0.3 + statementDistance * 0.4;
+            double distance = (conditionDistance * 0.3) + (incDistance * 0.3) + (statementDistance * 0.4);
             if (TryComputeLocalsDistance(left.Declaration, right.Declaration, out var localsDistance))
             {
-                distance = distance * 0.4 + localsDistance * 0.6;
+                distance = (distance * 0.4) + (localsDistance * 0.6);
             }
 
             return distance;
@@ -937,7 +937,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             // Put maximum weight behind the variables declared in the header of the statement.
             if (TryComputeLocalsDistance(leftVariables, rightVariables, out var localsDistance))
             {
-                distance = distance * 0.4 + localsDistance * 0.6;
+                distance = (distance * 0.4) + (localsDistance * 0.6);
             }
 
             // If the statement is a block that declares local variables, 
@@ -956,7 +956,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
             double headerDistance = ComputeDistance(leftHeaderOpt, rightHeaderOpt);
             double statementDistance = ComputeDistance(leftStatement, rightStatement);
-            double distance = headerDistance * 0.6 + statementDistance * 0.4;
+            double distance = (headerDistance * 0.6) + (statementDistance * 0.4);
 
             return AdjustForLocalsInBlock(distance, leftStatement, rightStatement, localsWeight: 0.5);
         }
@@ -969,11 +969,11 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         {
             // If the statement is a block that declares local variables, 
             // weight them more than the rest of the statement.
-            if (leftStatement.Kind() == SyntaxKind.Block && rightStatement.Kind() == SyntaxKind.Block)
+            if ((leftStatement.Kind() == SyntaxKind.Block) && (rightStatement.Kind() == SyntaxKind.Block))
             {
                 if (TryComputeLocalsDistance((BlockSyntax)leftStatement, (BlockSyntax)rightStatement, out var localsDistance))
                 {
-                    return localsDistance * localsWeight + distance * (1 - localsWeight);
+                    return (localsDistance * localsWeight) + (distance * (1 - localsWeight));
                 }
             }
 
@@ -995,7 +995,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 GetLocalNames(rightOpt, ref rightLocals);
             }
 
-            if (leftLocals == null || rightLocals == null)
+            if ((leftLocals == null) || (rightLocals == null))
             {
                 distance = 0;
                 return false;
@@ -1013,7 +1013,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             GetLocalNames(left, ref leftLocals);
             GetLocalNames(right, ref rightLocals);
 
-            if (leftLocals == null || rightLocals == null)
+            if ((leftLocals == null) || (rightLocals == null))
             {
                 distance = 0;
                 return false;
@@ -1124,8 +1124,8 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             double weight0 = 0.8,
             double weight1 = 0.5)
         {
-            bool one = leftOpt1 != null || rightOpt1 != null;
-            bool two = leftOpt2 != null || rightOpt2 != null;
+            bool one = (leftOpt1 != null) || (rightOpt1 != null);
+            bool two = (leftOpt2 != null) || (rightOpt2 != null);
 
             if (!one && !two)
             {
@@ -1138,7 +1138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             double d;
             if (one && two)
             {
-                d = distance1 * weight1 + distance2 * (1 - weight1);
+                d = (distance1 * weight1) + (distance2 * (1 - weight1));
             }
             else if (one)
             {
@@ -1149,7 +1149,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 d = distance2;
             }
 
-            return distance0 * weight0 + d * (1 - weight0);
+            return (distance0 * weight0) + (d * (1 - weight0));
         }
 
         #endregion

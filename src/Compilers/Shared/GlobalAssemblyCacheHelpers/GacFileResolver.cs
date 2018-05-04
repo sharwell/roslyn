@@ -73,9 +73,9 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
         public bool Equals(GacFileResolver other)
         {
             return ReferenceEquals(this, other) ||
-                other != null &&
+                (((other != null) &&
                 Architectures.SequenceEqual(other.Architectures) &&
-                PreferredCulture == other.PreferredCulture;
+                (PreferredCulture == other.PreferredCulture)));
         }
 
         public override bool Equals(object obj) => Equals(obj as GacFileResolver);

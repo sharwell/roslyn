@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
     {
         public override bool IsTriggerCharacter(char ch)
         {
-            return ch == '(' || ch == ',';
+            return (ch == '(') || (ch == ',');
         }
 
         public override bool IsRetriggerCharacter(char ch)
@@ -44,17 +44,17 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
         private bool IsTriggerToken(SyntaxToken token)
         {
             return !token.IsKind(SyntaxKind.None) &&
-                token.ValueText.Length == 1 &&
+                (token.ValueText.Length == 1) &&
                 IsTriggerCharacter(token.ValueText[0]) &&
-                token.Parent is AttributeArgumentListSyntax &&
-                token.Parent.Parent is AttributeSyntax;
+                (token.Parent is AttributeArgumentListSyntax) &&
+                (token.Parent.Parent is AttributeSyntax);
         }
 
         private static bool IsArgumentListToken(AttributeSyntax expression, SyntaxToken token)
         {
-            return expression.ArgumentList != null &&
+            return (expression.ArgumentList != null) &&
                 expression.ArgumentList.Span.Contains(token.SpanStart) &&
-                token != expression.ArgumentList.CloseParenToken;
+                (token != expression.ArgumentList.CloseParenToken);
         }
 
         protected override async Task<SignatureHelpItems> GetItemsWorkerAsync(Document document, int position, SignatureHelpTriggerInfo triggerInfo, CancellationToken cancellationToken)
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
         public override SignatureHelpState GetCurrentArgumentState(SyntaxNode root, int position, ISyntaxFactsService syntaxFacts, TextSpan currentSpan, CancellationToken cancellationToken)
         {
             if (TryGetAttributeExpression(root, position, syntaxFacts, SignatureHelpTriggerReason.InvokeSignatureHelpCommand, cancellationToken, out var expression) &&
-                currentSpan.Start == SignatureHelpUtilities.GetSignatureHelpSpan(expression.ArgumentList).Start)
+                (currentSpan.Start == SignatureHelpUtilities.GetSignatureHelpSpan(expression.ArgumentList).Start))
             {
                 return SignatureHelpUtilities.GetSignatureHelpState(expression.ArgumentList, position);
             }
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                 .ToList();
 
             var isVariadic =
-                constructor.Parameters.Length > 0 && constructor.Parameters.Last().IsParams && namedParameters.Count == 0;
+                (constructor.Parameters.Length > 0) && constructor.Parameters.Last().IsParams && (namedParameters.Count == 0);
 
             var item = CreateItem(
                 constructor, semanticModel, position,

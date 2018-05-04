@@ -785,7 +785,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             {
                                 AddDiagnostic(diagnostics, ErrorCode.ERR_SwitchNeedsNumber, name);
                             }
-                            else if (newWarningLevel < 0 || newWarningLevel > 4)
+                            else if ((newWarningLevel < 0) || (newWarningLevel > 4))
                             {
                                 AddDiagnostic(diagnostics, ErrorCode.ERR_BadWarningLevel, name);
                             }
@@ -1184,12 +1184,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                 diagnosticOptions[o.Key] = o.Value;
             }
 
-            if (refOnly && outputRefFilePath != null)
+            if (refOnly && (outputRefFilePath != null))
             {
                 AddDiagnostic(diagnostics, diagnosticOptions, ErrorCode.ERR_NoRefOutWhenRefOnly);
             }
 
-            if (outputKind == OutputKind.NetModule && (refOnly || outputRefFilePath != null))
+            if ((outputKind == OutputKind.NetModule) && (refOnly || (outputRefFilePath != null)))
             {
                 AddDiagnostic(diagnostics, diagnosticOptions, ErrorCode.ERR_NoNetModuleOutputWhenRefOutOrRefOnly);
             }
@@ -1199,14 +1199,14 @@ namespace Microsoft.CodeAnalysis.CSharp
                 AddDiagnostic(diagnostics, diagnosticOptions, ErrorCode.WRN_NoSources);
             }
 
-            if (!noStdLib && sdkDirectory != null)
+            if (!noStdLib && (sdkDirectory != null))
             {
                 metadataReferences.Insert(0, new CommandLineReference(Path.Combine(sdkDirectory, "mscorlib.dll"), MetadataReferenceProperties.Assembly));
             }
 
             if (!platform.Requires64Bit())
             {
-                if (baseAddress > uint.MaxValue - 0x8000)
+                if (baseAddress > (uint.MaxValue - 0x8000))
                 {
                     AddDiagnostic(diagnostics, ErrorCode.ERR_BadBaseNumber, string.Format("0x{0:X}", baseAddress));
                     baseAddress = 0;
@@ -1237,7 +1237,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 keyFileSetting = ParseGenericPathToFile(keyFileSetting, diagnostics, baseDirectory);
             }
 
-            if (sourceLink != null && !emitPdb)
+            if ((sourceLink != null) && !emitPdb)
             {
                 AddDiagnostic(diagnostics, ErrorCode.ERR_SourceLinkRequiresPdb);
             }
@@ -1247,7 +1247,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 embeddedFiles.AddRange(sourceFiles);
             }
 
-            if (embeddedFiles.Count > 0 && !emitPdb)
+            if ((embeddedFiles.Count > 0) && !emitPdb)
             {
                 AddDiagnostic(diagnostics, ErrorCode.ERR_CannotEmbedWithoutPdb);
             }
@@ -1301,7 +1301,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var emitOptions = new EmitOptions
             (
                 metadataOnly: refOnly,
-                includePrivateMembers: !refOnly && outputRefFilePath == null,
+                includePrivateMembers: !refOnly && (outputRefFilePath == null),
                 debugInformationFormat: debugInformationFormat,
                 pdbFilePath: null, // to be determined later
                 outputNameOverride: null, // to be determined later
@@ -1322,7 +1322,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             return new CSharpCommandLineArguments
             {
                 IsScriptRunner = IsScriptCommandLineParser,
-                InteractiveMode = interactiveMode || IsScriptCommandLineParser && sourceFiles.Count == 0,
+                InteractiveMode = interactiveMode || (IsScriptCommandLineParser && (sourceFiles.Count == 0)),
                 BaseDirectory = baseDirectory,
                 PathMap = pathMap,
                 Errors = diagnostics.AsImmutable(),
@@ -1449,7 +1449,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     simpleName = PathUtilities.RemoveExtension(PathUtilities.GetFileName(sourceFiles.FirstOrDefault().Path));
                     outputFileName = simpleName + outputKind.GetDefaultExtension();
 
-                    if (simpleName.Length == 0 && !outputKind.IsNetModule())
+                    if ((simpleName.Length == 0) && !outputKind.IsNetModule())
                     {
                         AddDiagnostic(diagnostics, ErrorCode.FTL_InvalidInputFileName, outputFileName);
                         outputFileName = simpleName = null;
@@ -1525,7 +1525,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             value = value.TrimEnd(null);
             // Allow a trailing semicolon or comma in the options
             if (!value.IsEmpty() &&
-                (value.Last() == ';' || value.Last() == ','))
+                ((value.Last() == ';') || (value.Last() == ',')))
             {
                 value = value.Substring(0, value.Length - 1);
             }
@@ -1663,7 +1663,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             int eqlOrQuote = value.IndexOfAny(s_quoteOrEquals);
 
             string alias;
-            if (eqlOrQuote >= 0 && value[eqlOrQuote] == '=')
+            if ((eqlOrQuote >= 0) && (value[eqlOrQuote] == '='))
             {
                 alias = value.Substring(0, eqlOrQuote);
                 value = value.Substring(eqlOrQuote + 1);
@@ -1722,7 +1722,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
             }
 
-            if (outputKind.IsNetModule() && win32ManifestFile != null)
+            if (outputKind.IsNetModule() && (win32ManifestFile != null))
             {
                 AddDiagnostic(diagnostics, ErrorCode.WRN_CantHaveManifestForModule);
             }
@@ -1796,7 +1796,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return null;
             }
 
-            if (fullPath == null || !PathUtilities.IsValidFilePath(fileName))
+            if ((fullPath == null) || !PathUtilities.IsValidFilePath(fileName))
             {
                 AddDiagnostic(diagnostics, ErrorCode.FTL_InvalidInputFileName, filePath);
                 return null;

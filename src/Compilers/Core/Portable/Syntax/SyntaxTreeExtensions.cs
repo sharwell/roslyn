@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var lineVisibility = tree.GetLineVisibility(position, cancellationToken);
-            return lineVisibility == LineVisibility.Hidden || lineVisibility == LineVisibility.BeforeFirstLineDirective;
+            return (lineVisibility == LineVisibility.Hidden) || (lineVisibility == LineVisibility.BeforeFirstLineDirective);
         }
     }
 }

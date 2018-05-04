@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Extensions
 
             private static bool IsNormal(double value)
             {
-                return !double.IsNaN(value) && !double.IsInfinity(value) && value > 0.0;
+                return !double.IsNaN(value) && !double.IsInfinity(value) && (value > 0.0);
             }
         }
 

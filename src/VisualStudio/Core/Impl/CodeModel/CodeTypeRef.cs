@@ -114,7 +114,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             {
                 var namedTypeSymbol = LookupTypeSymbol() as INamedTypeSymbol;
 
-                return namedTypeSymbol != null
+                return (namedTypeSymbol != null)
                     && namedTypeSymbol.GetAllTypeArguments().Any();
             }
         }

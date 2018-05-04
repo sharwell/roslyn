@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             SyntaxList<MemberDeclarationSyntax> members,
             CoreInternalSyntax.SyntaxList<Syntax.InternalSyntax.MemberDeclarationSyntax> internalMembers)
         {
-            Debug.Assert(node.Kind() == SyntaxKind.NamespaceDeclaration || (node.Kind() == SyntaxKind.CompilationUnit && _syntaxTree.Options.Kind == SourceCodeKind.Regular));
+            Debug.Assert((node.Kind() == SyntaxKind.NamespaceDeclaration) || ((node.Kind() == SyntaxKind.CompilationUnit) && (_syntaxTree.Options.Kind == SourceCodeKind.Regular)));
 
             if (members.Count == 0)
             {
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
                 else
                 {
-                    hasGlobalMembers = hasGlobalMembers || member.Kind() != SyntaxKind.IncompleteMember;
+                    hasGlobalMembers = hasGlobalMembers || (member.Kind() != SyntaxKind.IncompleteMember);
                 }
             }
 
@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ImmutableHashSet<string> memberNames,
             SingleTypeDeclaration.TypeDeclarationFlags declFlags)
         {
-            Debug.Assert(parent.Kind() == SyntaxKind.CompilationUnit && _syntaxTree.Options.Kind != SourceCodeKind.Regular);
+            Debug.Assert((parent.Kind() == SyntaxKind.CompilationUnit) && (_syntaxTree.Options.Kind != SourceCodeKind.Regular));
 
             // script type is represented by the parent node:
             var parentReference = _syntaxTree.GetReference(parent);
@@ -575,7 +575,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     var baseProp = (Syntax.InternalSyntax.BasePropertyDeclarationSyntax)member;
                     bool hasAttributes = baseProp.AttributeLists.Any();
 
-                    if (!hasAttributes && baseProp.AccessorList != null)
+                    if (!hasAttributes && (baseProp.AccessorList != null))
                     {
                         foreach (var accessor in baseProp.AccessorList.Accessors)
                         {

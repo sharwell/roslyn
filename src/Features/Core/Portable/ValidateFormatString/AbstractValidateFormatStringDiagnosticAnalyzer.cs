@@ -167,8 +167,8 @@ namespace Microsoft.CodeAnalysis.ValidateFormatString
             {
                 var nameOfMemberAccessExpression = syntaxFacts.GetNameOfMemberAccessExpression(expression);
                 return !syntaxFacts.IsGenericName(nameOfMemberAccessExpression)
-                    && syntaxFacts.GetIdentifierOfSimpleName(nameOfMemberAccessExpression).ValueText
-                    == nameof(string.Format);
+                    && (syntaxFacts.GetIdentifierOfSimpleName(nameOfMemberAccessExpression).ValueText
+                    == nameof(string.Format));
             }
 
             // When using static System.String and calling Format(...), the expression will be
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.ValidateFormatString
 
             // Multiple arguments could have been converted to a single params array, 
             // so there wouldn't be a corresponding argument
-            if (parameterWithMatchingName.IsParams && parameters.Length != arguments.Count)
+            if (parameterWithMatchingName.IsParams && (parameters.Length != arguments.Count))
             {
                 return null;
             }
@@ -380,7 +380,7 @@ namespace Microsoft.CodeAnalysis.ValidateFormatString
                 : textInsideBrackets.Split(':')[0];
 
             // placeholders cannot begin with whitespace
-            if (placeholderIndexText.Length > 0 && char.IsWhiteSpace(placeholderIndexText, 0))
+            if ((placeholderIndexText.Length > 0) && char.IsWhiteSpace(placeholderIndexText, 0))
             {
                 return false;
             }

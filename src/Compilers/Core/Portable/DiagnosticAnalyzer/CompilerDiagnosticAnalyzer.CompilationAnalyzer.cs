@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
             private static bool IsSourceLocation(Location location)
             {
-                return location != null && location.Kind == LocationKind.SourceFile;
+                return (location != null) && (location.Kind == LocationKind.SourceFile);
             }
 
             private static void ReportDiagnostics(
@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 foreach (var diagnostic in diagnostics)
                 {
                     if (locationFilter(diagnostic.Location) &&
-                        diagnostic.Severity != DiagnosticSeverity.Hidden)
+                        (diagnostic.Severity != DiagnosticSeverity.Hidden))
                     {
                         var current = properties == null ? diagnostic : new CompilerDiagnostic(diagnostic, properties);
                         reportDiagnostic(current);

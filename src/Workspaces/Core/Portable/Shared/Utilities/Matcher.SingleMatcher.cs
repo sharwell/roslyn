@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
             public override bool TryMatch(IList<T> sequence, ref int index)
             {
-                if (index < sequence.Count && _predicate(sequence[index]))
+                if ((index < sequence.Count) && _predicate(sequence[index]))
                 {
                     index++;
                     return true;

@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 return true;
             }
 
-            if (before == null || after == null)
+            if ((before == null) || (after == null))
             {
                 return false;
             }
@@ -26,9 +26,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
 
         public static bool AreEquivalent(SyntaxNode before, SyntaxNode after, Func<SyntaxKind, bool> ignoreChildNode, bool topLevel)
         {
-            Debug.Assert(!topLevel || ignoreChildNode == null);
+            Debug.Assert(!topLevel || (ignoreChildNode == null));
 
-            if (before == null || after == null)
+            if ((before == null) || (after == null))
             {
                 return before == after;
             }
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
 
         public static bool AreEquivalent(SyntaxToken before, SyntaxToken after)
         {
-            return before.RawKind == after.RawKind && (before.Node == null || AreTokensEquivalent(before.Node, after.Node));
+            return (before.RawKind == after.RawKind) && ((before.Node == null) || AreTokensEquivalent(before.Node, after.Node));
         }
 
         private static bool AreTokensEquivalent(GreenNode before, GreenNode after)
@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                 return true;
             }
 
-            if (before == null || after == null)
+            if ((before == null) || (after == null))
             {
                 return false;
             }
@@ -157,7 +157,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     while (e1.MoveNext())
                     {
                         var c = e1.Current;
-                        if (c != null && (c.IsToken || !ignoreChildNode((SyntaxKind)c.RawKind)))
+                        if ((c != null) && (c.IsToken || !ignoreChildNode((SyntaxKind)c.RawKind)))
                         {
                             child1 = c;
                             break;
@@ -167,14 +167,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     while (e2.MoveNext())
                     {
                         var c = e2.Current;
-                        if (c != null && (c.IsToken || !ignoreChildNode((SyntaxKind)c.RawKind)))
+                        if ((c != null) && (c.IsToken || !ignoreChildNode((SyntaxKind)c.RawKind)))
                         {
                             child2 = c;
                             break;
                         }
                     }
 
-                    if (child1 == null || child2 == null)
+                    if ((child1 == null) || (child2 == null))
                     {
                         // false if some children remained
                         return child1 == child2;

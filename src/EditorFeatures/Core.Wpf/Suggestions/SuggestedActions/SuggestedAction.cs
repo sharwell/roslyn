@@ -293,7 +293,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
             }
 
             var otherCodeAction = otherSuggestedAction.CodeAction;
-            if (CodeAction.EquivalenceKey == null || otherCodeAction.EquivalenceKey == null)
+            if ((CodeAction.EquivalenceKey == null) || (otherCodeAction.EquivalenceKey == null))
             {
                 return false;
             }

@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseLocalFunction
 
             var delegateType = semanticModel.GetTypeInfo(anonymousFunction, cancellationToken).ConvertedType as INamedTypeSymbol;
             if (!delegateType.IsDelegateType() ||
-                delegateType.DelegateInvokeMethod == null)
+                (delegateType.DelegateInvokeMethod == null))
             {
                 return;
             }
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseLocalFunction
                 if (descendentNode.IsKind(SyntaxKind.IdentifierName))
                 {
                     var identifierName = (IdentifierNameSyntax)descendentNode;
-                    if (identifierName.Identifier.ValueText == local.Name &&
+                    if ((identifierName.Identifier.ValueText == local.Name) &&
                         local.Equals(semanticModel.GetSymbolInfo(identifierName, cancellationToken).GetAnySymbol()))
                     {
                         if (identifierName.IsWrittenTo())

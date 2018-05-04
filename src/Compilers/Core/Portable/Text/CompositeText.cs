@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.Text
             GetIndexAndOffset(sourceIndex, out segIndex, out segOffset);
 
             var newSegments = ArrayBuilder<SourceText>.GetInstance();
-            while (segIndex < _segments.Length && count > 0)
+            while ((segIndex < _segments.Length) && (count > 0))
             {
                 var segment = _segments[segIndex];
                 var copyLength = Math.Min(count, segment.Length - segOffset);
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.Text
             if (destinationIndex < 0)
                 throw new ArgumentOutOfRangeException(nameof(destinationIndex));
 
-            if (count < 0 || count > this.Length - sourceIndex || count > destination.Length - destinationIndex)
+            if ((count < 0) || (count > (this.Length - sourceIndex)) || (count > (destination.Length - destinationIndex)))
                 throw new ArgumentOutOfRangeException(nameof(count));
 
             return count > 0;
@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.Text
             int segOffset;
             GetIndexAndOffset(sourceIndex, out segIndex, out segOffset);
 
-            while (segIndex < _segments.Length && count > 0)
+            while ((segIndex < _segments.Length) && (count > 0))
             {
                 var segment = _segments[segIndex];
                 var copyLength = Math.Min(count, segment.Length - segOffset);
@@ -243,7 +243,7 @@ namespace Microsoft.CodeAnalysis.Text
         {
             int numberOfSegmentsReduced = 0;
 
-            for (int i = 0; i < segments.Count - 1; i++)
+            for (int i = 0; i < (segments.Count - 1); i++)
             {
                 if (segments[i].Length <= segmentSize)
                 {
@@ -274,7 +274,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </summary>
         private static void CombineSegments(ArrayBuilder<SourceText> segments, int segmentSize)
         {
-            for (int i = 0; i < segments.Count - 1; i++)
+            for (int i = 0; i < (segments.Count - 1); i++)
             {
                 if (segments[i].Length <= segmentSize)
                 {
@@ -351,7 +351,7 @@ namespace Microsoft.CodeAnalysis.Text
             ComputeLengthAndStorageSize(segments, out length, out size);
 
             // if more than half of the storage is unused, compress into a single new segment
-            if (length < size / 2)
+            if (length < (size / 2))
             {
                 var encoding = segments[0].Encoding;
                 var algorithm = segments[0].ChecksumAlgorithm;

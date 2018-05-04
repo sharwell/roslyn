@@ -31,8 +31,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var symbol = obj as SourceParameterSymbolBase;
-            return (object)symbol != null
-                && symbol.Ordinal == this.Ordinal
+            return ((object)symbol != null)
+                && (symbol.Ordinal == this.Ordinal)
                 && Equals(symbol._containingSymbol, _containingSymbol);
         }
 
@@ -71,9 +71,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             // Synthesize DecimalConstantAttribute if we don't have an explicit custom attribute already:
             var defaultValue = this.ExplicitDefaultConstantValue;
-            if (defaultValue != ConstantValue.NotAvailable &&
-                defaultValue.SpecialType == SpecialType.System_Decimal &&
-                DefaultValueFromAttributes == ConstantValue.NotAvailable)
+            if ((defaultValue != ConstantValue.NotAvailable) &&
+                (defaultValue.SpecialType == SpecialType.System_Decimal) &&
+                (DefaultValueFromAttributes == ConstantValue.NotAvailable))
             {
                 AddSynthesizedAttribute(ref attributes, compilation.SynthesizeDecimalConstantAttribute(defaultValue.DecimalValue));
             }

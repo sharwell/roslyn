@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
         {
             return ns.GetMembers()
                    .OfType<NamedTypeSymbol>()
-                   .Single(n => n.Name.Equals(name) && n.Arity == arity);
+                   .Single(n => n.Name.Equals(name) && (n.Arity == arity));
         }
 
         public static Symbol ChildSymbol(this NamespaceOrTypeSymbol parent, string name)

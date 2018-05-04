@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Classification
                 // of the last classification we performed.
                 var cachedTaggedSpan = this.CachedTaggedSpan;
                 var canReuseCache =
-                    cachedTaggedSpan?.Snapshot == snapshot &&
+                    (cachedTaggedSpan?.Snapshot == snapshot) &&
                     cachedTaggedSpan.Value.Contains(spanToTag);
 
                 if (!canReuseCache)

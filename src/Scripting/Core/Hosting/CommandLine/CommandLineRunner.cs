@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
             if (!sourceFiles.IsEmpty)
             {
-                if (sourceFiles.Length > 1 || !sourceFiles[0].IsScript)
+                if ((sourceFiles.Length > 1) || !sourceFiles[0].IsScript)
                 {
                     diagnosticsInfos.Add(new DiagnosticInfo(_compiler.MessageProvider, _compiler.MessageProvider.ERR_ExpectedSingleScript));
                 }
@@ -325,7 +325,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
             {
                 _console.ForegroundColor = ConsoleColor.Red;
 
-                if (e is FileLoadException && e.InnerException is InteractiveAssemblyLoaderException)
+                if ((e is FileLoadException) && (e.InnerException is InteractiveAssemblyLoaderException))
                 {
                     _console.Error.WriteLine(e.InnerException.Message);
                 }

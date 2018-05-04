@@ -208,8 +208,8 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     continue;
                 }
 
-                var valueIEquatable = memberType?.IsValueType == true && ImplementsIEquatable(memberType, iequatableType);
-                if (valueIEquatable || memberType?.IsTupleType == true)
+                var valueIEquatable = (memberType?.IsValueType == true) && ImplementsIEquatable(memberType, iequatableType);
+                if (valueIEquatable || (memberType?.IsTupleType == true))
                 {
                     // If it's a value type and implements IEquatable<T>, Or if it's a tuple, then 
                     // just call directly into .Equals. This keeps the code simple and avoids an 
@@ -293,7 +293,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 for (var i = parts.Count - 1; i >= 0; i--)
                 {
                     var p = parts[i];
-                    if (p.Length > 0 && char.IsLetter(name[p.Start]))
+                    if ((p.Length > 0) && char.IsLetter(name[p.Start]))
                     {
                         return name.Substring(p.Start, p.Length).ToCamelCase();
                     }
@@ -377,11 +377,11 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 from baseType in containingType.GetBaseTypes()
                 from method in baseType.GetMembers(EqualsName).OfType<IMethodSymbol>()
                 where method.IsOverride &&
-                      method.DeclaredAccessibility == Accessibility.Public &&
+                      (method.DeclaredAccessibility == Accessibility.Public) &&
                       !method.IsStatic &&
-                      method.Parameters.Length == 1 &&
-                      method.ReturnType.SpecialType == SpecialType.System_Boolean &&
-                      method.Parameters[0].Type.SpecialType == SpecialType.System_Object
+                      (method.Parameters.Length == 1) &&
+                      (method.ReturnType.SpecialType == SpecialType.System_Boolean) &&
+                      (method.Parameters[0].Type.SpecialType == SpecialType.System_Object)
                 select method;
 
             return existingMethods.Any();

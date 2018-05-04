@@ -14,7 +14,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
     {
         private void EmitStackAllocInitializers(TypeSymbol type, BoundArrayInitialization inits)
         {
-            Debug.Assert(type is PointerTypeSymbol || type is NamedTypeSymbol);
+            Debug.Assert((type is PointerTypeSymbol) || (type is NamedTypeSymbol));
 
             var elementType = type.TypeKind == TypeKind.Pointer
                 ? ((PointerTypeSymbol)type).PointedAtType
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             int elementTypeSizeInBytes = elementType.SpecialType.SizeInBytes();
             foreach (BoundExpression init in inits)
             {
-                if (includeConstants || init.ConstantValue == null)
+                if (includeConstants || (init.ConstantValue == null))
                 {
                     _builder.EmitOpCode(ILOpCode.Dup);
                     EmitPointerElementAccess(init, elementType, elementTypeSizeInBytes, index);

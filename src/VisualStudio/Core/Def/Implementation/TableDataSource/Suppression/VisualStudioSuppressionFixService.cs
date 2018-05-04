@@ -119,7 +119,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
             else
             {
                 var projectIdsForHierarchy = (workspace.DeferredState?.ProjectTracker.ImmutableProjects ?? ImmutableArray<AbstractProject>.Empty)
-                    .Where(p => p.Language == LanguageNames.CSharp || p.Language == LanguageNames.VisualBasic)
+                    .Where(p => (p.Language == LanguageNames.CSharp) || (p.Language == LanguageNames.VisualBasic))
                     .Where(p => p.Hierarchy == projectHierarchyOpt)
                     .Select(p => workspace.CurrentSolution.GetProject(p.Id).Id)
                     .ToImmutableHashSet();
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
         {
             var builder = ArrayBuilder<DiagnosticData>.GetInstance();
 
-            var buildDiagnostics = _buildErrorDiagnosticService.GetBuildErrors().Where(d => d.ProjectId != null && d.Severity != DiagnosticSeverity.Hidden);
+            var buildDiagnostics = _buildErrorDiagnosticService.GetBuildErrors().Where(d => (d.ProjectId != null) && (d.Severity != DiagnosticSeverity.Hidden));
             var solution = _workspace.CurrentSolution;
             foreach (var diagnosticsByProject in buildDiagnostics.GroupBy(d => d.ProjectId))
             {
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
                 }
 
                 var project = solution.GetProject(diagnosticsByProject.Key);
-                if (project != null && shouldFixInProject(project))
+                if ((project != null) && shouldFixInProject(project))
                 {
                     var diagnosticsByDocument = diagnosticsByProject.GroupBy(d => d.DocumentId);
                     foreach (var group in diagnosticsByDocument)
@@ -258,8 +258,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
                     GetProjectDiagnosticsToFixAsync(diagnosticsToFix, shouldFixInProject, filterStaleDiagnostics: filterStaleDiagnostics, cancellationToken: cancellationToken)
                         .WaitAndGetResult(cancellationToken);
 
-                if (documentDiagnosticsToFixMap == null ||
-                    projectDiagnosticsToFixMap == null ||
+                if ((documentDiagnosticsToFixMap == null) ||
+                    (projectDiagnosticsToFixMap == null) ||
                     (documentDiagnosticsToFixMap.IsEmpty && projectDiagnosticsToFixMap.IsEmpty))
                 {
                     // Nothing to fix.
@@ -341,11 +341,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
             var result = InvokeWithWaitDialog(computeDiagnosticsAndFix, title, waitDialogMessage);
 
             // Bail out if the user cancelled.
-            if (cancelled || result == WaitIndicatorResult.Canceled)
+            if (cancelled || (result == WaitIndicatorResult.Canceled))
             {
                 return false;
             }
-            else if (noDiagnosticsToFix || newSolution == _workspace.CurrentSolution)
+            else if (noDiagnosticsToFix || (newSolution == _workspace.CurrentSolution))
             {
                 // No changes.
                 return true;
@@ -496,7 +496,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
 
         private async Task<ImmutableDictionary<Document, ImmutableArray<Diagnostic>>> GetDocumentDiagnosticsToFixAsync(IEnumerable<DiagnosticData> diagnosticsToFix, Func<Project, bool> shouldFixInProject, bool filterStaleDiagnostics, CancellationToken cancellationToken)
         {
-            bool isDocumentDiagnostic(DiagnosticData d) => d.DataLocation != null && d.HasTextSpan;
+            bool isDocumentDiagnostic(DiagnosticData d) => (d.DataLocation != null) && d.HasTextSpan;
 
             var builder = ImmutableDictionary.CreateBuilder<DocumentId, List<DiagnosticData>>();
             foreach (var diagnosticData in diagnosticsToFix.Where(isDocumentDiagnostic))
@@ -521,7 +521,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
             {
                 var projectId = group.Key;
                 var project = _workspace.CurrentSolution.GetProject(projectId);
-                if (project == null || !shouldFixInProject(project))
+                if ((project == null) || !shouldFixInProject(project))
                 {
                     continue;
                 }
@@ -577,7 +577,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
 
         private async Task<ImmutableDictionary<Project, ImmutableArray<Diagnostic>>> GetProjectDiagnosticsToFixAsync(IEnumerable<DiagnosticData> diagnosticsToFix, Func<Project, bool> shouldFixInProject, bool filterStaleDiagnostics, CancellationToken cancellationToken)
         {
-            bool isProjectDiagnostic(DiagnosticData d) => d.DataLocation == null && d.ProjectId != null;
+            bool isProjectDiagnostic(DiagnosticData d) => (d.DataLocation == null) && (d.ProjectId != null);
             var builder = ImmutableDictionary.CreateBuilder<ProjectId, List<DiagnosticData>>();
             foreach (var diagnosticData in diagnosticsToFix.Where(isProjectDiagnostic))
             {
@@ -601,7 +601,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Suppression
             {
                 var projectId = kvp.Key;
                 var project = _workspace.CurrentSolution.GetProject(projectId);
-                if (project == null || !shouldFixInProject(project))
+                if ((project == null) || !shouldFixInProject(project))
                 {
                     continue;
                 }

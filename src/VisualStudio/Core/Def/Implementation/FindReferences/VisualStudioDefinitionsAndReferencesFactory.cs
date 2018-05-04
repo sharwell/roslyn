@@ -67,9 +67,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.FindReferences
                 _serviceProvider, filePath, projectOpt: null, needsSave: false, needsUndoDisabled: false))
             {
                 var vsTextLines = invisibleEditor.VsTextLines;
-                if (vsTextLines != null &&
-                    vsTextLines.GetLengthOfLine(lineNumber, out var lineLength) == VSConstants.S_OK &&
-                    vsTextLines.GetLineText(lineNumber, 0, lineNumber, lineLength, out var lineText) == VSConstants.S_OK)
+                if ((vsTextLines != null) &&
+                    (vsTextLines.GetLengthOfLine(lineNumber, out var lineLength) == VSConstants.S_OK) &&
+                    (vsTextLines.GetLineText(lineNumber, 0, lineNumber, lineLength, out var lineText) == VSConstants.S_OK))
                 {
                     return lineText;
                 }

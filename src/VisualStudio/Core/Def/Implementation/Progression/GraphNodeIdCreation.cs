@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 {
                     items.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.Namespace, "System"));
                 }
-                else if (underlyingType.ContainingNamespace != null && !underlyingType.ContainingNamespace.IsGlobalNamespace)
+                else if ((underlyingType.ContainingNamespace != null) && !underlyingType.ContainingNamespace.IsGlobalNamespace)
                 {
                     items.Add(GraphNodeId.GetPartial(CodeGraphNodeIdName.Namespace, underlyingType.ContainingNamespace.ToDisplayString()));
                 }
@@ -150,7 +150,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
         private static async Task<GraphNodeId> GetPartialForNamedTypeAsync(INamedTypeSymbol namedType, GraphNodeIdName nodeName, Solution solution, CancellationToken cancellationToken, bool isInGenericArguments = false)
         {
             // If this is a simple type, then we don't have much to do
-            if (namedType.ContainingType == null && namedType.ConstructedFrom == namedType && namedType.Arity == 0)
+            if ((namedType.ContainingType == null) && (namedType.ConstructedFrom == namedType) && (namedType.Arity == 0))
             {
                 return GraphNodeId.GetPartial(nodeName, namedType.Name);
             }
@@ -180,7 +180,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 // because a symbol is not marked as "constructed" when a type is constructed using its own type parameters.
                 // To distinguish this case, we use "isInGenericArguments" flag which we pass either to populate arguments recursively or to populate "ParentType".
 
-                bool hasGenericArguments = (namedType.ConstructedFrom != namedType || isInGenericArguments) && namedType.TypeArguments != null && namedType.TypeArguments.Any();
+                bool hasGenericArguments = ((namedType.ConstructedFrom != namedType) || isInGenericArguments) && (namedType.TypeArguments != null) && namedType.TypeArguments.Any();
 
                 if (hasGenericArguments)
                 {
@@ -287,7 +287,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
             partials.AddRange(await GetPartialsForNamespaceAndTypeAsync(member.ContainingType, true, solution, cancellationToken).ConfigureAwait(false));
 
             var parameters = member.GetParameters();
-            if (parameters.Any() || member.GetArity() > 0)
+            if (parameters.Any() || (member.GetArity() > 0))
             {
                 var memberPartials = new List<GraphNodeId>();
 
@@ -313,7 +313,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                         parameterTypeIds.Add(GraphNodeId.GetNested(nodes.ToArray()));
                     }
 
-                    if (member is IMethodSymbol methodSymbol && methodSymbol.MethodKind == MethodKind.Conversion)
+                    if (member is IMethodSymbol methodSymbol && (methodSymbol.MethodKind == MethodKind.Conversion))
                     {
                         // For explicit/implicit conversion operators, we need to include the return type in the method Id,
                         // because there can be several conversion operators with same parameters and only differ by return type.
@@ -435,7 +435,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
 
             // If we are not in VS, return project.OutputFilePath as a reasonable fallback.
             // For an example, it could be AdhocWorkspace for unit tests.
-            if (foundProject != null && !string.IsNullOrEmpty(foundProject.OutputFilePath))
+            if ((foundProject != null) && !string.IsNullOrEmpty(foundProject.OutputFilePath))
             {
                 return new Uri(foundProject.OutputFilePath, UriKind.Absolute);
             }
@@ -458,15 +458,15 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
 
         internal static async Task<GraphNodeId> GetIdForParameterAsync(IParameterSymbol symbol, Solution solution, CancellationToken cancellationToken)
         {
-            if (symbol.ContainingSymbol == null ||
-                (symbol.ContainingSymbol.Kind != SymbolKind.Method && symbol.ContainingSymbol.Kind != SymbolKind.Property))
+            if ((symbol.ContainingSymbol == null) ||
+                ((symbol.ContainingSymbol.Kind != SymbolKind.Method) && (symbol.ContainingSymbol.Kind != SymbolKind.Property)))
             {
                 // We are only support parameters inside methods or properties.
                 throw new ArgumentException("symbol");
             }
 
             ISymbol containingSymbol = symbol.ContainingSymbol;
-            if (containingSymbol is IMethodSymbol method && method.AssociatedSymbol != null && method.AssociatedSymbol.Kind == SymbolKind.Property)
+            if (containingSymbol is IMethodSymbol method && (method.AssociatedSymbol != null) && (method.AssociatedSymbol.Kind == SymbolKind.Property))
             {
                 IPropertySymbol property = (IPropertySymbol)method.AssociatedSymbol;
                 if (property.Parameters.Any(p => p.Name == symbol.Name))
@@ -486,8 +486,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
 
         internal static async Task<GraphNodeId> GetIdForLocalVariableAsync(ISymbol symbol, Solution solution, CancellationToken cancellationToken)
         {
-            if (symbol.ContainingSymbol == null ||
-                (symbol.ContainingSymbol.Kind != SymbolKind.Method && symbol.ContainingSymbol.Kind != SymbolKind.Property))
+            if ((symbol.ContainingSymbol == null) ||
+                ((symbol.ContainingSymbol.Kind != SymbolKind.Method) && (symbol.ContainingSymbol.Kind != SymbolKind.Property)))
             {
                 // We are only support local variables inside methods or properties.
                 throw new ArgumentException("symbol");
@@ -524,7 +524,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
 
                 // For VB, we have to ask its parent to get local variables within this method body
                 // since DeclaringSyntaxReferences return statement rather than enclosing block.
-                if (currentNode != null && symbol.Language == LanguageNames.VisualBasic)
+                if ((currentNode != null) && (symbol.Language == LanguageNames.VisualBasic))
                 {
                     currentNode = currentNode.Parent;
                 }
@@ -541,7 +541,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                     foreach (var node in currentNode.DescendantNodes())
                     {
                         ISymbol current = semanticModel.GetDeclaredSymbol(node, cancellationToken);
-                        if (current != null && current.Name == symbol.Name && (current.Kind == SymbolKind.Local || current.Kind == SymbolKind.RangeVariable))
+                        if ((current != null) && (current.Name == symbol.Name) && ((current.Kind == SymbolKind.Local) || (current.Kind == SymbolKind.RangeVariable)))
                         {
                             if (!current.Equals(symbol))
                             {

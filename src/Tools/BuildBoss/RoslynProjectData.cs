@@ -49,14 +49,14 @@ namespace BuildBoss
         internal static bool IsAnyUnitTest(RoslynProjectKind kind)
         {
             return
-                kind == RoslynProjectKind.UnitTest ||
-                kind == RoslynProjectKind.UnitTestPortable;
+                (kind == RoslynProjectKind.UnitTest) ||
+                (kind == RoslynProjectKind.UnitTestPortable);
         }
 
         internal static bool IsDeploymentProject(RoslynProjectKind kind)
         {
             return
-                kind == RoslynProjectKind.Exe ||
+                (kind == RoslynProjectKind.Exe) ||
                 IsAnyUnitTest(kind);
         }
     }

@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
             IVsUIShell shell = Package.GetGlobalService(typeof(SVsUIShell)) as IVsUIShell;
             Guid guidContextMenu = Guids.RoslynGroupId;
             POINTS[] locationPoints = new[] { new POINTS() { x = (short)location.X, y = (short)location.Y } };
-            return shell != null && ErrorHandler.Succeeded(shell.ShowContextMenu(
+            return (shell != null) && ErrorHandler.Succeeded(shell.ShowContextMenu(
                 0,
                 ref guidContextMenu,
                 _menuId,

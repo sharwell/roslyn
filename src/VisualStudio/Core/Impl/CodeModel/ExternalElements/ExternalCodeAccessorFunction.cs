@@ -24,11 +24,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Exter
         private ExternalCodeAccessorFunction(CodeModelState state, ProjectId projectId, IMethodSymbol symbol, AbstractExternalCodeMember parent)
             : base(state, projectId, symbol)
         {
-            Debug.Assert(symbol.MethodKind == MethodKind.EventAdd ||
-                         symbol.MethodKind == MethodKind.EventRaise ||
-                         symbol.MethodKind == MethodKind.EventRemove ||
-                         symbol.MethodKind == MethodKind.PropertyGet ||
-                         symbol.MethodKind == MethodKind.PropertySet);
+            Debug.Assert((symbol.MethodKind == MethodKind.EventAdd) ||
+                         (symbol.MethodKind == MethodKind.EventRaise) ||
+                         (symbol.MethodKind == MethodKind.EventRemove) ||
+                         (symbol.MethodKind == MethodKind.PropertyGet) ||
+                         (symbol.MethodKind == MethodKind.PropertySet));
 
             _parentHandle = new ParentHandle<AbstractExternalCodeMember>(parent);
         }
@@ -41,8 +41,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Exter
         private bool IsPropertyAccessor()
         {
             var methodKind = MethodSymbol.MethodKind;
-            return methodKind == MethodKind.PropertyGet
-                || methodKind == MethodKind.PropertySet;
+            return (methodKind == MethodKind.PropertyGet)
+                || (methodKind == MethodKind.PropertySet);
         }
 
         protected override EnvDTE.vsCMAccess GetAccess()

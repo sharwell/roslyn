@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
 
                     await AddImplementedSymbols(graphBuilder, node, implementedSymbols).ConfigureAwait(false);
                 }
-                else if (symbol is IMethodSymbol || symbol is IPropertySymbol || symbol is IEventSymbol)
+                else if ((symbol is IMethodSymbol) || (symbol is IPropertySymbol) || (symbol is IEventSymbol))
                 {
                     var implements = await SymbolFinder.FindImplementedInterfaceMembersAsync(symbol, solution, cancellationToken: cancellationToken).ConfigureAwait(false);
                     await AddImplementedSymbols(graphBuilder, node, implements).ConfigureAwait(false);

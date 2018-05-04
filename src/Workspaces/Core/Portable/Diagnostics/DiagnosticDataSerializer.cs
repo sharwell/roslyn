@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis.Workspaces.Diagnostics
                     }
 
                     var version = VersionStamp.ReadFrom(reader);
-                    if (version != VersionStamp.Default && version != Version)
+                    if ((version != VersionStamp.Default) && (version != Version))
                     {
                         return null;
                     }

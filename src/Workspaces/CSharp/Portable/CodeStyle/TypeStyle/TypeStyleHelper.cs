@@ -213,8 +213,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeStyle.TypeStyle
         {
             var returnType = UnwrapTupleType(methodSymbol.ReturnType);
 
-            if (UnwrapTupleType(typeInDeclaration)?.GetTypeArguments().Length > 0 ||
-                containingType.GetTypeArguments().Length > 0)
+            if ((UnwrapTupleType(typeInDeclaration)?.GetTypeArguments().Length > 0) ||
+                (containingType.GetTypeArguments().Length > 0))
             {
                 return UnwrapTupleType(containingType).Name.Equals(returnType.Name);
             }
@@ -237,12 +237,12 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeStyle.TypeStyle
 
         private static ExpressionSyntax GetRightmostInvocationExpression(ExpressionSyntax node)
         {
-            if (node is AwaitExpressionSyntax awaitExpression && awaitExpression.Expression != null)
+            if (node is AwaitExpressionSyntax awaitExpression && (awaitExpression.Expression != null))
             {
                 return GetRightmostInvocationExpression(awaitExpression.Expression);
             }
 
-            if (node is InvocationExpressionSyntax invocationExpression && invocationExpression.Expression != null)
+            if (node is InvocationExpressionSyntax invocationExpression && (invocationExpression.Expression != null))
             {
                 return GetRightmostInvocationExpression(invocationExpression.Expression);
             }

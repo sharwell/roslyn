@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         Normalize(ref this.State);
                     }
 
-                    if (slot > 0 && !this.State.IsAssigned(slot))
+                    if ((slot > 0) && !this.State.IsAssigned(slot))
                     {
                         // Local functions can "call forward" to after a variable has
                         // been declared but before it has been assigned, so we can never
@@ -231,7 +231,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 foreach (var field in _emptyStructTypeCache.GetStructInstanceFields(type))
                 {
                     int fieldSlot = GetOrCreateSlot(field, slot);
-                    if (fieldSlot > 0 && !State.IsAssigned(fieldSlot))
+                    if ((fieldSlot > 0) && !State.IsAssigned(fieldSlot))
                     {
                         RecordReadInLocalFunction(fieldSlot);
                     }
@@ -313,8 +313,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             while (symbol != null)
             {
-                if (symbol.Kind == SymbolKind.Method &&
-                    ((MethodSymbol)symbol).MethodKind == MethodKind.LocalFunction)
+                if ((symbol.Kind == SymbolKind.Method) &&
+                    (((MethodSymbol)symbol).MethodKind == MethodKind.LocalFunction))
                 {
                     return (LocalFunctionSymbol)symbol;
                 }

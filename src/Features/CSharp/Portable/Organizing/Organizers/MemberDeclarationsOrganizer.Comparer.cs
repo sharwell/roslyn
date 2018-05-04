@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Organizing.Organizers
                     return -1;
                 }
 
-                if (xOuterOrdering == OuterOrdering.Fields || yOuterOrdering == OuterOrdering.Fields)
+                if ((xOuterOrdering == OuterOrdering.Fields) || (yOuterOrdering == OuterOrdering.Fields))
                 {
                     // Fields with initializers can't be reordered relative to 
                     // themselves due to ordering issues.

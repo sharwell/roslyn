@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis
 
         internal TypedConstant(ITypeSymbol type, TypedConstantKind kind, object value)
         {
-            Debug.Assert(kind == TypedConstantKind.Array || !(value is ImmutableArray<TypedConstant>));
+            Debug.Assert((kind == TypedConstantKind.Array) || !(value is ImmutableArray<TypedConstant>));
             _kind = kind;
             _type = type;
             _value = value;
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis
                 return default(T);
             }
 
-            if (_type.SpecialType == specialType || (_type.TypeKind == TypeKind.Enum && specialType == SpecialType.System_Enum))
+            if ((_type.SpecialType == specialType) || ((_type.TypeKind == TypeKind.Enum) && (specialType == SpecialType.System_Enum)))
             {
                 return (T)_value;
             }
@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis
                             return TypedConstantKind.Error;
                     }
 
-                    if (compilation != null &&
+                    if ((compilation != null) &&
                         compilation.IsSystemTypeReference(type))
                     {
                         return TypedConstantKind.Type;
@@ -162,12 +162,12 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is TypedConstant && Equals((TypedConstant)obj);
+            return (obj is TypedConstant) && Equals((TypedConstant)obj);
         }
 
         public bool Equals(TypedConstant other)
         {
-            return _kind == other._kind
+            return (_kind == other._kind)
                 && object.Equals(_value, other._value)
                 && object.Equals(_type, other._type);
         }

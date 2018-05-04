@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             var startPosition = member.GetFirstToken().SpanStart;
             var line = text.Lines.GetLineFromPosition(startPosition);
             var lineOffset = line.GetFirstNonWhitespaceOffset();
-            if (!lineOffset.HasValue || line.Start + lineOffset.Value < startPosition)
+            if (!lineOffset.HasValue || ((line.Start + lineOffset.Value) < startPosition))
             {
                 return null;
             }
@@ -194,7 +194,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
             // Add indents
             var lineOffset = line.GetColumnOfFirstNonWhitespaceCharacterOrEndOfLine(options.GetOption(FormattingOptions.TabSize));
             var indentText = lineOffset.CreateIndentationString(options.GetOption(FormattingOptions.UseTabs), options.GetOption(FormattingOptions.TabSize));
-            for (int i = 1; i < lines.Count - 1; i++)
+            for (int i = 1; i < (lines.Count - 1); i++)
             {
                 lines[i] = indentText + lines[i];
             }
@@ -366,7 +366,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
                 return false;
             }
 
-            var nextLineStartsWithDocComment = text.Lines.Count > currentLine.LineNumber + 1 &&
+            var nextLineStartsWithDocComment = (text.Lines.Count > (currentLine.LineNumber + 1)) &&
                 text.Lines[currentLine.LineNumber + 1].ToString().Trim().StartsWith(ExteriorTriviaText, StringComparison.Ordinal);
 
             // if previous line has only exterior trivia, current line is empty and next line doesn't begin
@@ -424,7 +424,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 
             // Add indents
             var lineOffset = line.GetColumnOfFirstNonWhitespaceCharacterOrEndOfLine(options.GetOption(FormattingOptions.TabSize));
-            Contract.Assume(line.Start + lineOffset == startPosition);
+            Contract.Assume((line.Start + lineOffset) == startPosition);
 
             var indentText = lineOffset.CreateIndentationString(options.GetOption(FormattingOptions.UseTabs), options.GetOption(FormattingOptions.TabSize));
             for (int i = 1; i < lines.Count; i++)

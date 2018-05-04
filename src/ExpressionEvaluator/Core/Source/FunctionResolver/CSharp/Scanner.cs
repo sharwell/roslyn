@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             private Token Scan()
             {
                 int length = _text.Length;
-                while (_offset < length && char.IsWhiteSpace(_text[_offset]))
+                while ((_offset < length) && char.IsWhiteSpace(_text[_offset]))
                 {
                     _offset++;
                 }
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 {
                     return ScanIdentifierAfterStartCharacter(verbatim: false);
                 }
-                else if (c == '@' && _offset < length && UnicodeCharacterUtilities.IsIdentifierStartCharacter(_text[_offset]))
+                else if ((c == '@') && (_offset < length) && UnicodeCharacterUtilities.IsIdentifierStartCharacter(_text[_offset]))
                 {
                     _offset++;
                     return ScanIdentifierAfterStartCharacter(verbatim: true);
@@ -111,7 +111,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 // Assert the offset is immediately following the start character.
                 Debug.Assert(_offset > 0);
                 Debug.Assert(UnicodeCharacterUtilities.IsIdentifierStartCharacter(_text[_offset - 1]));
-                Debug.Assert(_offset == 1 || !UnicodeCharacterUtilities.IsIdentifierPartCharacter(_text[_offset - 2]));
+                Debug.Assert((_offset == 1) || !UnicodeCharacterUtilities.IsIdentifierPartCharacter(_text[_offset - 2]));
 
                 int length = _text.Length;
                 int start = _offset - 1;

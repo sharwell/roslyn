@@ -59,7 +59,7 @@ namespace RepoUtil
         internal static RepoData Create(RepoConfig config, string sourcesDir, bool ignoreConflicts)
         {
             var repoData = Create(config, sourcesDir, out var conflicts);
-            if (conflicts?.Count > 0 && !ignoreConflicts)
+            if ((conflicts?.Count > 0) && !ignoreConflicts)
             {
                 throw new ConflictingPackagesException(conflicts);
             }

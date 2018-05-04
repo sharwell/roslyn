@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis
 
         private static bool Matches(Func<SyntaxToken, bool> predicate, SyntaxToken token)
         {
-            return predicate == null || ReferenceEquals(predicate, SyntaxToken.Any) || predicate(token);
+            return (predicate == null) || ReferenceEquals(predicate, SyntaxToken.Any) || predicate(token);
         }
 
         internal SyntaxToken GetFirstToken(in SyntaxNode current, bool includeZeroWidth, bool includeSkipped, bool includeDirectives, bool includeDocumentationComments)
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis
         {
             token = default(SyntaxToken);
 
-            if (!trivia.HasStructure || stepInto == null || !stepInto(trivia))
+            if (!trivia.HasStructure || (stepInto == null) || !stepInto(trivia))
             {
                 return false;
             }
@@ -320,7 +320,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // consider containing token if current trivia was in the leading trivia
-            if (returnNext && (predicate == null || predicate == SyntaxToken.Any || predicate(current.Token)))
+            if (returnNext && ((predicate == null) || (predicate == SyntaxToken.Any) || predicate(current.Token)))
             {
                 return current.Token;
             }
@@ -380,7 +380,7 @@ namespace Microsoft.CodeAnalysis
             {
                 if (returnNext)
                 {
-                    if (trivia.HasStructure && stepInto != null && stepInto(trivia))
+                    if (trivia.HasStructure && (stepInto != null) && stepInto(trivia))
                     {
                         var structure = trivia.GetStructure();
                         var token = GetFirstToken(structure, predicate, stepInto);
@@ -456,7 +456,7 @@ namespace Microsoft.CodeAnalysis
                             }
                         }
                     }
-                    else if (child.IsNode && child.AsNode() == node)
+                    else if (child.IsNode && (child.AsNode() == node))
                     {
                         returnNext = true;
                     }
@@ -505,7 +505,7 @@ namespace Microsoft.CodeAnalysis
                             }
                         }
                     }
-                    else if (child.IsNode && child.AsNode() == node)
+                    else if (child.IsNode && (child.AsNode() == node))
                     {
                         returnPrevious = true;
                     }
@@ -525,7 +525,7 @@ namespace Microsoft.CodeAnalysis
 
         internal SyntaxToken GetNextToken(in SyntaxToken current, Func<SyntaxToken, bool> predicate, bool searchInsideCurrentTokenTrailingTrivia, Func<SyntaxTrivia, bool> stepInto)
         {
-            Debug.Assert(searchInsideCurrentTokenTrailingTrivia == false || stepInto != null);
+            Debug.Assert((searchInsideCurrentTokenTrailingTrivia == false) || (stepInto != null));
             if (current.Parent != null)
             {
                 // look inside trailing trivia for structure
@@ -562,7 +562,7 @@ namespace Microsoft.CodeAnalysis
                             }
                         }
                     }
-                    else if (child.IsToken && child.AsToken() == current)
+                    else if (child.IsToken && (child.AsToken() == current))
                     {
                         returnNext = true;
                     }
@@ -578,7 +578,7 @@ namespace Microsoft.CodeAnalysis
         internal SyntaxToken GetPreviousToken(in SyntaxToken current, Func<SyntaxToken, bool> predicate, bool searchInsideCurrentTokenLeadingTrivia,
             Func<SyntaxTrivia, bool> stepInto)
         {
-            Debug.Assert(searchInsideCurrentTokenLeadingTrivia == false || stepInto != null);
+            Debug.Assert((searchInsideCurrentTokenLeadingTrivia == false) || (stepInto != null));
             if (current.Parent != null)
             {
                 // look inside trailing trivia for structure
@@ -615,7 +615,7 @@ namespace Microsoft.CodeAnalysis
                             }
                         }
                     }
-                    else if (child.IsToken && child.AsToken() == current)
+                    else if (child.IsToken && (child.AsToken() == current))
                     {
                         returnPrevious = true;
                     }

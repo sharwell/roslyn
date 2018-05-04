@@ -65,8 +65,8 @@ namespace Microsoft.CodeAnalysis.Editor.Host
                 return false;
             }
 
-            if (nonExternalItems.Length == 1 &&
-                nonExternalItems[0].SourceSpans.Length <= 1)
+            if ((nonExternalItems.Length == 1) &&
+                (nonExternalItems[0].SourceSpans.Length <= 1))
             {
                 // There was only one location to navigate to.  Just directly go to that location.
                 return nonExternalItems[0].TryNavigateTo(workspace, isPreview: true);

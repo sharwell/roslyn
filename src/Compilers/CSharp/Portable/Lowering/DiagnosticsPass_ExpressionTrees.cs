@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private void CheckUnsafeType(BoundExpression e)
         {
-            if (e != null && (object)e.Type != null && e.Type.TypeKind == TypeKind.Pointer) NoteUnsafe(e);
+            if ((e != null) && ((object)e.Type != null) && (e.Type.TypeKind == TypeKind.Pointer)) NoteUnsafe(e);
         }
 
         private void NoteUnsafe(BoundNode node)
@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public override BoundNode VisitArrayCreation(BoundArrayCreation node)
         {
             var arrayType = (ArrayTypeSymbol)node.Type;
-            if (_inExpressionLambda && node.InitializerOpt != null && !arrayType.IsSZArray)
+            if (_inExpressionLambda && (node.InitializerOpt != null) && !arrayType.IsSZArray)
             {
                 Error(ErrorCode.ERR_ExpressionTreeContainsMultiDimensionalArrayInitializer, node);
             }
@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override BoundNode VisitSizeOfOperator(BoundSizeOfOperator node)
         {
-            if (_inExpressionLambda && node.ConstantValue == null)
+            if (_inExpressionLambda && (node.ConstantValue == null))
             {
                 Error(ErrorCode.ERR_ExpressionTreeContainsPointerOp, node);
             }
@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             CheckForAssignmentToSelf(node);
 
-            if (_inExpressionLambda && node.Left.Kind != BoundKind.ObjectInitializerMember && node.Left.Kind != BoundKind.DynamicObjectInitializerMember)
+            if (_inExpressionLambda && (node.Left.Kind != BoundKind.ObjectInitializerMember) && (node.Left.Kind != BoundKind.DynamicObjectInitializerMember))
             {
                 Error(ErrorCode.ERR_ExpressionTreeContainsAssignment, node);
             }
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // (specifically, we can't use it as a field here).
             if (node.IsUsableAsField)
             {
-                bool hasBaseReceiver = node.ReceiverOpt != null && node.ReceiverOpt.Kind == BoundKind.BaseReference;
+                bool hasBaseReceiver = (node.ReceiverOpt != null) && (node.ReceiverOpt.Kind == BoundKind.BaseReference);
                 Binder.ReportDiagnosticsIfObsolete(_diagnostics, node.EventSymbol.AssociatedField, node.Syntax, hasBaseReceiver, _containingSymbol, _containingSymbol.ContainingType, BinderFlags.None);
             }
             CheckReceiverIfField(node.ReceiverOpt);
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 Error(ErrorCode.ERR_ExpressionTreeContainsAssignment, node);
             }
 
-            bool hasBaseReceiver = node.ReceiverOpt != null && node.ReceiverOpt.Kind == BoundKind.BaseReference;
+            bool hasBaseReceiver = (node.ReceiverOpt != null) && (node.ReceiverOpt.Kind == BoundKind.BaseReference);
             Binder.ReportDiagnosticsIfObsolete(_diagnostics, node.Event, ((AssignmentExpressionSyntax)node.Syntax).Left, hasBaseReceiver, _containingSymbol, _containingSymbol.ContainingType, BinderFlags.None);
             CheckReceiverIfField(node.ReceiverOpt);
             return base.VisitEventAssignmentOperator(node);
@@ -184,11 +184,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     Error(ErrorCode.ERR_PartialMethodInExpressionTree, node);
                 }
-                else if ((object)propertyAccess != null && propertyAccess.IsIndexedProperty() && !propertyAccess.IsIndexer)
+                else if (((object)propertyAccess != null) && propertyAccess.IsIndexedProperty() && !propertyAccess.IsIndexer)
                 {
                     Error(ErrorCode.ERR_ExpressionTreeContainsIndexedProperty, node);
                 }
-                else if (arguments.Length < (((object)propertyAccess != null) ? propertyAccess.ParameterCount : method.ParameterCount) + (expanded ? -1 : 0))
+                else if (arguments.Length < ((((object)propertyAccess != null) ? propertyAccess.ParameterCount : method.ParameterCount) + (expanded ? -1 : 0)))
                 {
                     Error(ErrorCode.ERR_ExpressionTreeContainsOptionalArgument, node);
                 }
@@ -330,7 +330,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var property = node.PropertySymbol;
             var method = property.GetMethod; // This is only checking for ref returns, so we don't fall back to the set method.
-            if ((object)method != null && _inExpressionLambda && method.RefKind != RefKind.None)
+            if (((object)method != null) && _inExpressionLambda && (method.RefKind != RefKind.None))
             {
                 Error(ErrorCode.ERR_RefReturningCallInExpressionTree, node);
             }
@@ -365,7 +365,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             {
                                 foreach (var p in lambda.Parameters)
                                 {
-                                    if (p.RefKind != RefKind.None && p.Locations.Length != 0)
+                                    if ((p.RefKind != RefKind.None) && (p.Locations.Length != 0))
                                     {
                                         _diagnostics.Add(ErrorCode.ERR_ByRefParameterInExpressionTree, p.Locations[0]);
                                     }
@@ -553,7 +553,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 this.Visit(node.Argument);
             }
-            else if (_inExpressionLambda && node.MethodOpt?.MethodKind == MethodKind.LocalFunction)
+            else if (_inExpressionLambda && (node.MethodOpt?.MethodKind == MethodKind.LocalFunction))
             {
                 Error(ErrorCode.ERR_ExpressionTreeContainsLocalFunction, node);
             }
@@ -573,7 +573,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // a failed conversion).
             Debug.Assert(!(!parentIsConversion && _inExpressionLambda));
 
-            if (_inExpressionLambda && (node.LookupSymbolOpt as MethodSymbol)?.MethodKind == MethodKind.LocalFunction)
+            if (_inExpressionLambda && ((node.LookupSymbolOpt as MethodSymbol)?.MethodKind == MethodKind.LocalFunction))
             {
                 Error(ErrorCode.ERR_ExpressionTreeContainsLocalFunction, node);
             }

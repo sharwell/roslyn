@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.Emit.NoPia
             protected CommonEmbeddedProperty(TPropertySymbol underlyingProperty, TEmbeddedMethod getter, TEmbeddedMethod setter) :
                 base(underlyingProperty)
             {
-                Debug.Assert(getter != null || setter != null);
+                Debug.Assert((getter != null) || (setter != null));
 
                 _getter = getter;
                 _setter = setter;

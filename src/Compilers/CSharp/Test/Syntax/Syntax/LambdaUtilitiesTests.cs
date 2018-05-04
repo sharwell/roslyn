@@ -41,7 +41,7 @@ class C
 
             var enclosingMethod = (IMethodSymbol)model.GetEnclosingSymbol(span.Value.Start);
             var enclosingSyntax = enclosingMethod.DeclaringSyntaxReferences.Single().GetSyntax();
-            bool expected = enclosingMethod.MethodKind == MethodKind.LambdaMethod && enclosingSyntax.Span.Contains(span.Value);
+            bool expected = (enclosingMethod.MethodKind == MethodKind.LambdaMethod) && enclosingSyntax.Span.Contains(span.Value);
 
             var node = tree.GetRoot().FindNode(span.Value);
             Assert.False(isLambdaBody && isReducedLambdaBody);

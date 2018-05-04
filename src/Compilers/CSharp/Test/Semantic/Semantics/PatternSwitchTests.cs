@@ -3233,7 +3233,7 @@ static class Ex
             var model = compilation.GetSemanticModel(tree);
             var node = tree.GetRoot().DescendantNodes()
                 .OfType<IdentifierNameSyntax>()
-                .Where(n => n.Identifier.ValueText == "q" && n.ToFullString().Contains("/*BIND*/"))
+                .Where(n => (n.Identifier.ValueText == "q") && n.ToFullString().Contains("/*BIND*/"))
                 .Single();
             var type = model.GetTypeInfo(node);
         }
@@ -3265,7 +3265,7 @@ static class Ex
             var model = compilation.GetSemanticModel(tree);
             var node = tree.GetRoot().DescendantNodes()
                 .OfType<IdentifierNameSyntax>()
-                .Where(n => n.Identifier.ValueText == "q" && n.ToFullString().Contains("/*BIND*/"))
+                .Where(n => (n.Identifier.ValueText == "q") && n.ToFullString().Contains("/*BIND*/"))
                 .Single();
             var type = model.GetTypeInfo(node);
             Assert.Equal(SpecialType.System_Boolean, type.Type.SpecialType);

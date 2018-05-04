@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
     {
         private static bool IsPotentialKeyword(string identifier)
         {
-            return SyntaxFacts.GetKeywordKind(identifier) != SyntaxKind.None || SyntaxFacts.GetContextualKeywordKind(identifier) != SyntaxKind.None;
+            return (SyntaxFacts.GetKeywordKind(identifier) != SyntaxKind.None) || (SyntaxFacts.GetContextualKeywordKind(identifier) != SyntaxKind.None);
         }
 
         protected override void AppendIdentifierEscapingPotentialKeywords(StringBuilder builder, string identifier, out bool sawInvalidIdentifier)

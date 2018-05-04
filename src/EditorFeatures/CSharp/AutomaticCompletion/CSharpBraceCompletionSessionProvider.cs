@@ -45,13 +45,13 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
         protected override bool CheckCodeContext(Document document, int position, char openingBrace, CancellationToken cancellationToken)
         {
             // SPECIAL CASE: Allow in curly braces in string literals to support interpolated strings.
-            if (openingBrace == BraceCompletionSessionProvider.CurlyBrace.OpenCharacter &&
+            if ((openingBrace == BraceCompletionSessionProvider.CurlyBrace.OpenCharacter) &&
                 InterpolationCompletionSession.IsContext(document, position, cancellationToken))
             {
                 return true;
             }
 
-            if (openingBrace == BraceCompletionSessionProvider.DoubleQuote.OpenCharacter &&
+            if ((openingBrace == BraceCompletionSessionProvider.DoubleQuote.OpenCharacter) &&
                 InterpolatedStringCompletionSession.IsContext(document, position, cancellationToken))
             {
                 return true;

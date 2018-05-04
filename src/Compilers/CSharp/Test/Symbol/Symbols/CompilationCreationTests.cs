@@ -1081,7 +1081,7 @@ public class Class6
             var retval15 = type4.GetMembers("Foo1").OfType<MethodSymbol>().Single().ReturnType;
 
             Assert.Equal("MTTestLib1", retval15.ContainingAssembly.Name);
-            Assert.Equal(0, (from a in asm7 where a != null && a.Name == "MTTestLib1" select a).Count());
+            Assert.Equal(0, (from a in asm7 where (a != null) && (a.Name == "MTTestLib1") select a).Count());
 
             var retval16 = type4.GetMembers("Foo2").OfType<MethodSymbol>().Single().ReturnType;
 
@@ -1354,7 +1354,7 @@ public class Class6
             retval15 = type4.GetMembers("Foo1").OfType<MethodSymbol>().Single().ReturnType;
 
             Assert.Equal("MTTestLib1", retval15.ContainingAssembly.Name);
-            Assert.Equal(0, (from a in asm7 where a != null && a.Name == "MTTestLib1" select a).Count());
+            Assert.Equal(0, (from a in asm7 where (a != null) && (a.Name == "MTTestLib1") select a).Count());
 
             retval16 = type4.GetMembers("Foo2").OfType<MethodSymbol>().Single().ReturnType;
 
@@ -2590,7 +2590,7 @@ class Module1
                 current = (NamespaceOrTypeSymbol)matchingSym.First();
             }
 
-            return current is TypeSymbol && ((TypeSymbol)current).TypeKind == kind;
+            return (current is TypeSymbol) && (((TypeSymbol)current).TypeKind == kind);
         }
 
         [Fact]

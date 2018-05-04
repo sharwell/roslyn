@@ -44,12 +44,12 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsValid(this Platform value)
         {
-            return value >= Platform.AnyCpu && value <= Platform.Arm64;
+            return (value >= Platform.AnyCpu) && (value <= Platform.Arm64);
         }
 
         internal static bool Requires64Bit(this Platform value)
         {
-            return value == Platform.X64 || value == Platform.Itanium || value == Platform.Arm64;
+            return (value == Platform.X64) || (value == Platform.Itanium) || (value == Platform.Arm64);
         }
 
         internal static bool Requires32Bit(this Platform value)

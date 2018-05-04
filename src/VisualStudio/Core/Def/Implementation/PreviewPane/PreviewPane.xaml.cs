@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.PreviewPane
 
         private FrameworkElement CreatePreviewElement(IReadOnlyList<object> previewItems)
         {
-            if (previewItems == null || previewItems.Count == 0)
+            if ((previewItems == null) || (previewItems.Count == 0))
             {
                 return null;
             }
@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.PreviewPane
 
         private static bool IsNormal(double size)
         {
-            return size > 0 && !double.IsNaN(size) && !double.IsInfinity(size);
+            return (size > 0) && !double.IsNaN(size) && !double.IsInfinity(size);
         }
 
         private bool HasDescription

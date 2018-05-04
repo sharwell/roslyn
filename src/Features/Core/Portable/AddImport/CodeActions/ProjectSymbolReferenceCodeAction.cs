@@ -23,7 +23,7 @@ namespace Microsoft.CodeAnalysis.AddImport
             }
 
             private bool ShouldAddProjectReference()
-                => FixData.ProjectReferenceToAdd != null && FixData.ProjectReferenceToAdd != OriginalDocument.Project.Id;
+                => (FixData.ProjectReferenceToAdd != null) && (FixData.ProjectReferenceToAdd != OriginalDocument.Project.Id);
 
             internal override bool PerformFinalApplicabilityCheck
                 => ShouldAddProjectReference();

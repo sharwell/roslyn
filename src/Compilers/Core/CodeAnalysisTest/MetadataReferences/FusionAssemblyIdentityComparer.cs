@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
             AssemblyComparisonResult result;
             IntPtr asmConfigCookie = policy == null ? IntPtr.Zero : policy.ConfigCookie;
             int hr = DefaultModelCompareAssemblyIdentity(fullName1, ignoreVersion, fullName2, ignoreVersion, out equivalent, out result, asmConfigCookie);
-            if (hr != 0 || !equivalent)
+            if ((hr != 0) || !equivalent)
             {
                 return AssemblyIdentityComparer.ComparisonResult.NotEquivalent;
             }

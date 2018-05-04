@@ -206,7 +206,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 // First make sure 'this' even exists
                 if (!_topLevelMethod.TryGetThisParameter(out var thisParam) ||
-                    thisParam == null)
+                    (thisParam == null))
                 {
                     return;
                 }
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var env = topLevelEnvs[0];
 
                 // The environment must contain only 'this' to be inlined
-                if (env.CapturedVariables.Count > 1 || 
+                if ((env.CapturedVariables.Count > 1) || 
                     !env.CapturedVariables.Contains(thisParam))
                 {
                     return;
@@ -236,7 +236,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     bool cantRemove = CheckClosures(ScopeTree, (scope, closure) =>
                     {
                         return closure.CapturedEnvironments.Contains(env) &&
-                            closure.ContainingEnvironmentOpt != null;
+                            (closure.ContainingEnvironmentOpt != null);
                     });
                     
                     if (!cantRemove)
@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     foreach (var closure in closures)
                     {
                         closure.CapturedEnvironments.Add(env);
-                        if (thisParam != null && env.CapturedVariables.Contains(thisParam))
+                        if ((thisParam != null) && env.CapturedVariables.Contains(thisParam))
                         {
                             closure.CapturesThis = true;
                         }
@@ -353,7 +353,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 DebugId closureId;
                 DebugId previousClosureId;
-                if (_slotAllocatorOpt != null && _slotAllocatorOpt.TryGetPreviousClosure(syntax, out previousClosureId))
+                if ((_slotAllocatorOpt != null) && _slotAllocatorOpt.TryGetPreviousClosure(syntax, out previousClosureId))
                 {
                     closureId = previousClosureId;
                 }

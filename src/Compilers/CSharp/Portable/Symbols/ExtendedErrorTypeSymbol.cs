@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 (containingSymbol.Kind == SymbolKind.ErrorType));
 
             Debug.Assert(name != null);
-            Debug.Assert(unreported == false || errorInfo != null);
+            Debug.Assert((unreported == false) || (errorInfo != null));
 
             _name = name;
             _errorInfo = errorInfo;
@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             _candidateSymbols = UnwrapErrorCandidates(candidateSymbols);
             _resultKind = resultKind;
-            Debug.Assert(candidateSymbols.IsEmpty || resultKind != LookupResultKind.Viable, "Shouldn't use LookupResultKind.Viable with candidate symbols");
+            Debug.Assert(candidateSymbols.IsEmpty || (resultKind != LookupResultKind.Viable), "Shouldn't use LookupResultKind.Viable with candidate symbols");
         }
 
         internal ExtendedErrorTypeSymbol AsUnreported()
@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private static ImmutableArray<Symbol> UnwrapErrorCandidates(ImmutableArray<Symbol> candidateSymbols)
         {
             var candidate = candidateSymbols.IsEmpty ? null : candidateSymbols[0] as ErrorTypeSymbol;
-            return ((object)candidate != null && !candidate.CandidateSymbols.IsEmpty) ? candidate.CandidateSymbols : candidateSymbols;
+            return (((object)candidate != null) && !candidate.CandidateSymbols.IsEmpty) ? candidate.CandidateSymbols : candidateSymbols;
         }
 
         internal override DiagnosticInfo ErrorInfo
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         internal static TypeSymbol ExtractNonErrorType(TypeSymbol oldSymbol)
         {
-            if ((object)oldSymbol == null || oldSymbol.TypeKind != TypeKind.Error)
+            if (((object)oldSymbol == null) || (oldSymbol.TypeKind != TypeKind.Error))
             {
                 return oldSymbol;
             }
@@ -229,7 +229,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // If the original definition isn't a CSErrorTypeSymbol, then we don't know how to
             // pull out a non-error type.  If it is, then if there is a unambiguous type inside it,
             // use that.
-            if ((object)oldError != null && !oldError._candidateSymbols.IsDefault && oldError._candidateSymbols.Length == 1)
+            if (((object)oldError != null) && !oldError._candidateSymbols.IsDefault && (oldError._candidateSymbols.Length == 1))
             {
                 TypeSymbol type = oldError._candidateSymbols[0] as TypeSymbol;
                 if ((object)type != null)
@@ -258,12 +258,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // pull out a non-error type.  If it is, then if there is a unambiguous type inside it,
             // use that.
             TypeKind commonTypeKind = TypeKind.Error;
-            if ((object)oldError != null && !oldError._candidateSymbols.IsDefault && oldError._candidateSymbols.Length > 0)
+            if (((object)oldError != null) && !oldError._candidateSymbols.IsDefault && (oldError._candidateSymbols.Length > 0))
             {
                 foreach (Symbol sym in oldError._candidateSymbols)
                 {
                     TypeSymbol type = sym as TypeSymbol;
-                    if ((object)type != null && type.TypeKind != TypeKind.Error)
+                    if (((object)type != null) && (type.TypeKind != TypeKind.Error))
                     {
                         if (commonTypeKind == TypeKind.Error)
                             commonTypeKind = type.TypeKind;
@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var other = t2 as ExtendedErrorTypeSymbol;
-            if ((object)other == null || _unreported || other._unreported)
+            if (((object)other == null) || _unreported || other._unreported)
             {
                 return false;
             }
@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             return
                 ((object)this.ContainingType != null ? this.ContainingType.Equals(other.ContainingType, comparison) :
                  (object)this.ContainingSymbol == null ? (object)other.ContainingSymbol == null : this.ContainingSymbol.Equals(other.ContainingSymbol)) &&
-                this.Name == other.Name && this.Arity == other.Arity;
+                (this.Name == other.Name) && (this.Arity == other.Arity);
         }
 
         public override int GetHashCode()

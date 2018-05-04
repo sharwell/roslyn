@@ -213,7 +213,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 case BoundKind.Local:
                     {
-                        Debug.Assert(!isRef || ((BoundLocal)rewrittenLeft).LocalSymbol.RefKind != RefKind.None);
+                        Debug.Assert(!isRef || (((BoundLocal)rewrittenLeft).LocalSymbol.RefKind != RefKind.None));
                         return new BoundAssignmentOperator(
                             syntax,
                             rewrittenLeft,
@@ -224,7 +224,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 case BoundKind.Parameter:
                     {
-                        Debug.Assert(!isRef || rewrittenLeft.GetRefKind() != RefKind.None);
+                        Debug.Assert(!isRef || (rewrittenLeft.GetRefKind() != RefKind.None));
                         return new BoundAssignmentOperator(
                             syntax,
                             rewrittenLeft,

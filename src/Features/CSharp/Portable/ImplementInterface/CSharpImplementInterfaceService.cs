@@ -25,9 +25,9 @@ namespace Microsoft.CodeAnalysis.CSharp.ImplementInterface
         {
             if (!cancellationToken.IsCancellationRequested)
             {
-                if (node is TypeSyntax interfaceNode && interfaceNode.Parent is BaseTypeSyntax &&
+                if (node is TypeSyntax interfaceNode && (interfaceNode.Parent is BaseTypeSyntax) &&
                     interfaceNode.Parent.IsParentKind(SyntaxKind.BaseList) &&
-                    ((BaseTypeSyntax)interfaceNode.Parent).Type == interfaceNode)
+                    (((BaseTypeSyntax)interfaceNode.Parent).Type == interfaceNode))
                 {
                     if (interfaceNode.Parent.Parent.IsParentKind(SyntaxKind.ClassDeclaration) ||
                         interfaceNode.Parent.Parent.IsParentKind(SyntaxKind.StructDeclaration))
@@ -38,13 +38,13 @@ namespace Microsoft.CodeAnalysis.CSharp.ImplementInterface
                             var interfaceType = interfaceSymbolInfo.GetAnySymbol() as INamedTypeSymbol;
                             cancellationToken.ThrowIfCancellationRequested();
 
-                            if (interfaceType != null && interfaceType.TypeKind == TypeKind.Interface)
+                            if ((interfaceType != null) && (interfaceType.TypeKind == TypeKind.Interface))
                             {
                                 classOrStructDecl = interfaceNode.Parent.Parent.Parent as TypeDeclarationSyntax;
                                 classOrStructType = model.GetDeclaredSymbol(classOrStructDecl, cancellationToken) as INamedTypeSymbol;
                                 interfaceTypes = SpecializedCollections.SingletonEnumerable(interfaceType);
 
-                                return interfaceTypes != null && classOrStructType != null;
+                                return (interfaceTypes != null) && (classOrStructType != null);
                             }
                         }
                     }

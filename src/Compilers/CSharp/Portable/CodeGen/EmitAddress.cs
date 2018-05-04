@@ -120,8 +120,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                     var call = (BoundCall)expression;
                     var methodRefKind = call.Method.RefKind;
 
-                    if (methodRefKind == RefKind.Ref || 
-                        (IsReadOnly(addressKind) && methodRefKind == RefKind.RefReadOnly))
+                    if ((methodRefKind == RefKind.Ref) || 
+                        (IsReadOnly(addressKind) && (methodRefKind == RefKind.RefReadOnly)))
                     {
                         EmitCallExpression(call, UseKind.UsedAsAddress);
                         break;
@@ -382,7 +382,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             switch (expression.Kind)
             {
                 case BoundKind.ArrayAccess:
-                    if (addressKind == AddressKind.ReadOnly && 
+                    if ((addressKind == AddressKind.ReadOnly) && 
                         !expression.Type.IsValueType &&
                         EnablePEVerifyCompat())
                     {
@@ -418,25 +418,25 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
                 case BoundKind.Parameter:
                     return IsReadOnly(addressKind) || 
-                        ((BoundParameter)expression).ParameterSymbol.RefKind != RefKind.In;
+                        (((BoundParameter)expression).ParameterSymbol.RefKind != RefKind.In);
 
                 case BoundKind.Local:
                     // locals have home unless they are byval stack locals or ref-readonly
                     // locals in a mutating call
                     var local = ((BoundLocal)expression).LocalSymbol;
-                    return !((IsStackLocal(local) && local.RefKind == RefKind.None) || 
-                        (!IsReadOnly(addressKind) && local.RefKind == RefKind.RefReadOnly));
+                    return !((IsStackLocal(local) && (local.RefKind == RefKind.None)) || 
+                        (!IsReadOnly(addressKind) && (local.RefKind == RefKind.RefReadOnly)));
 
                 case BoundKind.Call:
                     var methodRefKind = ((BoundCall)expression).Method.RefKind;
-                    return methodRefKind == RefKind.Ref ||
-                           (IsReadOnly(addressKind) && methodRefKind == RefKind.RefReadOnly);
+                    return (methodRefKind == RefKind.Ref) ||
+                           (IsReadOnly(addressKind) && (methodRefKind == RefKind.RefReadOnly));
 
                 case BoundKind.Dup:
                     //NB: Dup represents locals that do not need IL slot
                     var dupRefKind = ((BoundDup)expression).RefKind;
-                    return dupRefKind == RefKind.Ref ||
-                        (IsReadOnly(addressKind) && dupRefKind == RefKind.RefReadOnly);
+                    return (dupRefKind == RefKind.Ref) ||
+                        (IsReadOnly(addressKind) && (dupRefKind == RefKind.RefReadOnly));
 
                 case BoundKind.FieldAccess:
                     return HasHome((BoundFieldAccess)expression, addressKind);
@@ -451,8 +451,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                         return false;
                     }
                     var lhsRefKind = assignment.Left.GetRefKind();
-                    return lhsRefKind == RefKind.Ref ||
-                        (IsReadOnly(addressKind) && lhsRefKind == RefKind.RefReadOnly);
+                    return (lhsRefKind == RefKind.Ref) ||
+                        (IsReadOnly(addressKind) && (lhsRefKind == RefKind.RefReadOnly));
 
                 case BoundKind.ComplexConditionalReceiver:
                     Debug.Assert(HasHome(((BoundComplexConditionalReceiver)expression).ValueTypeReceiver, addressKind));
@@ -505,7 +505,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             }
 
             // ReadOnly references can always be taken unless we are in peverify compat mode
-            if (addressKind == AddressKind.ReadOnly && !EnablePEVerifyCompat())
+            if ((addressKind == AddressKind.ReadOnly) && !EnablePEVerifyCompat())
             {
                 return true;
             }
@@ -554,8 +554,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             }
             else
             {
-                return _method.MethodKind == MethodKind.Constructor &&
-                    fieldAccess.ReceiverOpt.Kind == BoundKind.ThisReference;
+                return (_method.MethodKind == MethodKind.Constructor) &&
+                    (fieldAccess.ReceiverOpt.Kind == BoundKind.ThisReference);
             }
         }
 

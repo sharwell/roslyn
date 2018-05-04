@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.UseCollectionInitializer
             // Object creation can only be converted to collection initializer if it
             // implements the IEnumerable type.
             var objectType = context.SemanticModel.GetTypeInfo(objectCreationExpression, cancellationToken);
-            if (objectType.Type == null || !objectType.Type.AllInterfaces.Contains(ienumerableType))
+            if ((objectType.Type == null) || !objectType.Type.AllInterfaces.Contains(ienumerableType))
             {
                 return;
             }
@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.UseCollectionInitializer
             var matches = ObjectCreationExpressionAnalyzer<TExpressionSyntax, TStatementSyntax, TObjectCreationExpressionSyntax, TMemberAccessExpressionSyntax, TInvocationExpressionSyntax, TExpressionStatementSyntax, TVariableDeclaratorSyntax>.Analyze(
                 semanticModel, GetSyntaxFactsService(), objectCreationExpression, cancellationToken);
 
-            if (matches == null || matches.Value.Length == 0)
+            if ((matches == null) || (matches.Value.Length == 0))
             {
                 return;
             }

@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure.MetadataAsSource
             var startToken = node.GetFirstToken();
             var endToken = GetEndToken(node);
 
-            if (startToken.Kind() == SyntaxKind.None || endToken.Kind() == SyntaxKind.None)
+            if ((startToken.Kind() == SyntaxKind.None) || (endToken.Kind() == SyntaxKind.None))
             {
                 // if valid tokens can't be found then a meaningful span can't be generated
                 return;

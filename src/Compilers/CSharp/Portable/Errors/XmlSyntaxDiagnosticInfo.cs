@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             System.Diagnostics.Debug.Assert(!string.IsNullOrEmpty(message));
 
-            if (this.Arguments == null || this.Arguments.Length == 0)
+            if ((this.Arguments == null) || (this.Arguments.Length == 0))
             {
                 return String.Format(formatProvider, messagePrefix, message);
             }

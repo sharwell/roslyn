@@ -37,8 +37,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
         public bool Equals(SyntaxNodeKey other)
         {
-            return _name == other._name
-                && _ordinal == other._ordinal;
+            return (_name == other._name)
+                && (_ordinal == other._ordinal);
         }
 
         public override bool Equals(object obj)
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
         public bool IsEmpty
         {
-            get { return _name == null && _ordinal == 0; }
+            get { return (_name == null) && (_ordinal == 0); }
         }
 
         public static bool operator ==(SyntaxNodeKey left, SyntaxNodeKey right)

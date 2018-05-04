@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         public static int ConvertTabToSpace(this string textSnippet, int tabSize, int initialColumn, int endPosition)
         {
             Contract.Requires(tabSize > 0);
-            Contract.Requires(endPosition >= 0 && endPosition <= textSnippet.Length);
+            Contract.Requires((endPosition >= 0) && (endPosition <= textSnippet.Length));
 
             int column = initialColumn;
 
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             {
                 if (textSnippet[i] == '\t')
                 {
-                    column += tabSize - column % tabSize;
+                    column += tabSize - (column % tabSize);
                 }
                 else
                 {
@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         {
             foreach (char ch in text)
             {
-                if (ch == '\n' || ch == '\r')
+                if ((ch == '\n') || (ch == '\r'))
                 {
                     return true;
                 }
@@ -132,7 +132,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 }
                 else if (text[i] == '\r')
                 {
-                    if (i + 1 == text.Length || text[i + 1] != '\n')
+                    if (((i + 1) == text.Length) || (text[i + 1] != '\n'))
                     {
                         lineBreaks++;
                     }
@@ -179,7 +179,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         public static int GetColumnFromLineOffset(this string line, int endPosition, int tabSize)
         {
             Contract.ThrowIfNull(line);
-            Contract.ThrowIfFalse(0 <= endPosition && endPosition <= line.Length);
+            Contract.ThrowIfFalse((0 <= endPosition) && (endPosition <= line.Length));
             Contract.ThrowIfFalse(tabSize > 0);
 
             return ConvertTabToSpace(line, tabSize, 0, endPosition);
@@ -224,7 +224,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             builder.Add(alias);
 
             var caseSensitive = builder.KeyComparer == StringComparer.Ordinal;
-            Contract.Requires(builder.KeyComparer == StringComparer.Ordinal || builder.KeyComparer == StringComparer.OrdinalIgnoreCase);
+            Contract.Requires((builder.KeyComparer == StringComparer.Ordinal) || (builder.KeyComparer == StringComparer.OrdinalIgnoreCase));
             if (alias.TryGetWithoutAttributeSuffix(caseSensitive, out var aliasWithoutAttribute))
             {
                 builder.Add(aliasWithoutAttribute);

@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
 
         protected override int GetDataTipTextImpl(TextSpan[] pSpan, out string pbstrText)
         {
-            if (pSpan == null || pSpan.Length != 1)
+            if ((pSpan == null) || (pSpan.Length != 1))
             {
                 pbstrText = null;
                 return VSConstants.E_INVALIDARG;

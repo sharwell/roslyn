@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis
 
         internal TypedConstantValue(object value)
         {
-            Debug.Assert(value == null || value is string || value.GetType().GetTypeInfo().IsEnum || (value.GetType().GetTypeInfo().IsPrimitive && !(value is System.IntPtr) && !(value is System.UIntPtr)) || value is ITypeSymbol);
+            Debug.Assert((value == null) || (value is string) || value.GetType().GetTypeInfo().IsEnum || (value.GetType().GetTypeInfo().IsPrimitive && !(value is System.IntPtr) && !(value is System.UIntPtr)) || (value is ITypeSymbol));
             _value = value;
         }
 
@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is TypedConstantValue && Equals((TypedConstantValue)obj);
+            return (obj is TypedConstantValue) && Equals((TypedConstantValue)obj);
         }
 
         public bool Equals(TypedConstantValue other)

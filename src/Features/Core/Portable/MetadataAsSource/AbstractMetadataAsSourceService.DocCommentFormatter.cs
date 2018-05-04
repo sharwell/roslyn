@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
 
                         for (int j = 0; j < rawExceptionTexts.Length; j++)
                         {
-                            if (i != 0 || j != 0)
+                            if ((i != 0) || (j != 0))
                             {
                                 formattedCommentLinesBuilder.Add(string.Empty);
                             }
@@ -137,15 +137,15 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
                 }
 
                 // Eliminate any blank lines at the beginning.
-                while (formattedCommentLinesBuilder.Count > 0 &&
-                       formattedCommentLinesBuilder[0].Length == 0)
+                while ((formattedCommentLinesBuilder.Count > 0) &&
+                       (formattedCommentLinesBuilder[0].Length == 0))
                 {
                     formattedCommentLinesBuilder.RemoveAt(0);
                 }
 
                 // Eliminate any blank lines at the end.
-                while (formattedCommentLinesBuilder.Count > 0 &&
-                       formattedCommentLinesBuilder[formattedCommentLinesBuilder.Count - 1].Length == 0)
+                while ((formattedCommentLinesBuilder.Count > 0) &&
+                       (formattedCommentLinesBuilder[formattedCommentLinesBuilder.Count - 1].Length == 0))
                 {
                     formattedCommentLinesBuilder.RemoveAt(formattedCommentLinesBuilder.Count - 1);
                 }

@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
         public bool HasLoadErrors
         {
-            get { return _analyzerLoadErrors != null && _analyzerLoadErrors.Count > 0; }
+            get { return (_analyzerLoadErrors != null) && (_analyzerLoadErrors.Count > 0); }
         }
 
         public AnalyzerReference GetReference()
@@ -96,7 +96,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             {
                 analyzerFileReference.AnalyzerLoadFailed -= OnAnalyzerLoadError;
 
-                if (_analyzerLoadErrors != null && _analyzerLoadErrors.Count > 0)
+                if ((_analyzerLoadErrors != null) && (_analyzerLoadErrors.Count > 0))
                 {
                     _hostDiagnosticUpdateSource.ClearDiagnosticsForProject(_projectId, this);
                 }

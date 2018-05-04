@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             {
                 get
                 {
-                    Contract.ThrowIfFalse(!_useAsReturnValue || _variableStyle.ReturnStyle.ReturnBehavior != ReturnBehavior.None);
+                    Contract.ThrowIfFalse(!_useAsReturnValue || (_variableStyle.ReturnStyle.ReturnBehavior != ReturnBehavior.None));
                     return _useAsReturnValue;
                 }
             }
@@ -47,8 +47,8 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             {
                 get
                 {
-                    return (!_useAsReturnValue && _variableStyle.ParameterStyle.ParameterBehavior != ParameterBehavior.None) ||
-                           (_useAsReturnValue && _variableStyle.ReturnStyle.ParameterBehavior != ParameterBehavior.None);
+                    return (!_useAsReturnValue && (_variableStyle.ParameterStyle.ParameterBehavior != ParameterBehavior.None)) ||
+                           (_useAsReturnValue && (_variableStyle.ReturnStyle.ParameterBehavior != ParameterBehavior.None));
                 }
             }
 
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             {
                 Contract.ThrowIfNull(variable);
                 Contract.ThrowIfFalse(variable.CanBeUsedAsReturnValue);
-                Contract.ThrowIfFalse(variable.ParameterModifier == ParameterBehavior.Out || variable.ParameterModifier == ParameterBehavior.Ref);
+                Contract.ThrowIfFalse((variable.ParameterModifier == ParameterBehavior.Out) || (variable.ParameterModifier == ParameterBehavior.Ref));
 
                 return new VariableInfo(variable._variableSymbol, variable._variableStyle, useAsReturnValue: true);
             }

@@ -37,9 +37,9 @@ namespace Microsoft.CodeAnalysis.CSharp
         private BoundExpression RewriteStringConcatenation(SyntaxNode syntax, BinaryOperatorKind operatorKind, BoundExpression loweredLeft, BoundExpression loweredRight, TypeSymbol type)
         {
             Debug.Assert(
-                operatorKind == BinaryOperatorKind.StringConcatenation ||
-                operatorKind == BinaryOperatorKind.StringAndObjectConcatenation ||
-                operatorKind == BinaryOperatorKind.ObjectAndStringConcatenation);
+                (operatorKind == BinaryOperatorKind.StringConcatenation) ||
+                (operatorKind == BinaryOperatorKind.StringAndObjectConcatenation) ||
+                (operatorKind == BinaryOperatorKind.ObjectAndStringConcatenation));
 
             if (_inExpressionLambda)
             {
@@ -125,21 +125,21 @@ namespace Microsoft.CodeAnalysis.CSharp
                     var boundCall = (BoundCall)lowered;
 
                     var method = boundCall.Method;
-                    if (method.IsStatic && method.ContainingType.SpecialType == SpecialType.System_String)
+                    if (method.IsStatic && (method.ContainingType.SpecialType == SpecialType.System_String))
                     {
-                        if ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringString) ||
-                            (object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringStringString) ||
-                            (object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringStringStringString) ||
-                            (object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObject) ||
-                            (object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObjectObject) ||
-                            (object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObjectObjectObject))
+                        if (((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringString)) ||
+                            ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringStringString)) ||
+                            ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringStringStringString)) ||
+                            ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObject)) ||
+                            ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObjectObject)) ||
+                            ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObjectObjectObject)))
                         {
                             flattened.AddRange(boundCall.Arguments);
                             return;
                         }
 
-                        if ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringArray) ||
-                            (object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObjectArray))
+                        if (((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatStringArray)) ||
+                            ((object)method == (object)_compilation.GetSpecialTypeMember(SpecialMember.System_String__ConcatObjectArray)))
                         {
                             var args = boundCall.Arguments[0] as BoundArrayCreation;
                             if (args != null)
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // attempting to access its value as a string.
 
                         var rightConstant = boundCoalesce.RightOperand.ConstantValue;
-                        if (rightConstant != null && rightConstant.IsString && rightConstant.StringValue.Length == 0)
+                        if ((rightConstant != null) && rightConstant.IsString && (rightConstant.StringValue.Length == 0))
                         {
                             flattened.Add(boundCoalesce.LeftOperand);
                             return;
@@ -190,7 +190,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var leftConst = loweredLeft.ConstantValue;
             var rightConst = loweredRight.ConstantValue;
 
-            if (leftConst != null && rightConst != null)
+            if ((leftConst != null) && (rightConst != null))
             {
                 // const concat may fail to fold if strings are huge. 
                 // This would be unusual.
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool IsNullOrEmptyStringConstant(BoundExpression operand)
         {
-            return (operand.ConstantValue != null && string.IsNullOrEmpty(operand.ConstantValue.StringValue)) ||
+            return ((operand.ConstantValue != null) && string.IsNullOrEmpty(operand.ConstantValue.StringValue)) ||
                     operand.IsDefaultValue();
         }
 
@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if (!leftConst.IsDefaultValue && !rightConst.IsDefaultValue)
             {
-                if (leftVal.Length + rightVal.Length < 0)
+                if ((leftVal.Length + rightVal.Length) < 0)
                 {
                     return null;
                 }
@@ -269,7 +269,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression RewriteStringConcatenationTwoExprs(SyntaxNode syntax, BoundExpression loweredLeft, BoundExpression loweredRight)
         {
-            SpecialMember member = (loweredLeft.Type.SpecialType == SpecialType.System_String && loweredRight.Type.SpecialType == SpecialType.System_String) ?
+            SpecialMember member = ((loweredLeft.Type.SpecialType == SpecialType.System_String) && (loweredRight.Type.SpecialType == SpecialType.System_String)) ?
                 SpecialMember.System_String__ConcatStringString :
                 SpecialMember.System_String__ConcatObjectObject;
 
@@ -281,9 +281,9 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private BoundExpression RewriteStringConcatenationThreeExprs(SyntaxNode syntax, BoundExpression loweredFirst, BoundExpression loweredSecond, BoundExpression loweredThird)
         {
-            SpecialMember member = (loweredFirst.Type.SpecialType == SpecialType.System_String &&
-                                    loweredSecond.Type.SpecialType == SpecialType.System_String &&
-                                    loweredThird.Type.SpecialType == SpecialType.System_String) ?
+            SpecialMember member = ((loweredFirst.Type.SpecialType == SpecialType.System_String) &&
+                                    (loweredSecond.Type.SpecialType == SpecialType.System_String) &&
+                                    (loweredThird.Type.SpecialType == SpecialType.System_String)) ?
                 SpecialMember.System_String__ConcatStringStringString :
                 SpecialMember.System_String__ConcatObjectObjectObject;
 
@@ -296,7 +296,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private BoundExpression RewriteStringConcatenationManyExprs(SyntaxNode syntax, ImmutableArray<BoundExpression> loweredArgs)
         {
             Debug.Assert(loweredArgs.Length > 3);
-            Debug.Assert(loweredArgs.All(a => a.HasErrors || a.Type.SpecialType == SpecialType.System_Object || a.Type.SpecialType == SpecialType.System_String));
+            Debug.Assert(loweredArgs.All(a => a.HasErrors || (a.Type.SpecialType == SpecialType.System_Object) || (a.Type.SpecialType == SpecialType.System_String)));
 
             bool isObject = false;
             TypeSymbol elementType = null;
@@ -313,7 +313,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // Count == 4 is handled differently because there is a Concat method with 4 arguments
             // for strings, but there is no such method for objects.
-            if (!isObject && loweredArgs.Length == 4)
+            if (!isObject && (loweredArgs.Length == 4))
             {
                 SpecialMember member = SpecialMember.System_String__ConcatStringStringStringString;
                 var method = UnsafeGetSpecialTypeMethod(syntax, member);
@@ -373,7 +373,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         if (operand.Kind == BoundKind.Literal)
                         {
                             ConstantValue cv = ((BoundLiteral)operand).ConstantValue;
-                            if (cv != null && cv.SpecialType == SpecialType.System_Char)
+                            if ((cv != null) && (cv.SpecialType == SpecialType.System_Char))
                             {
                                 return _factory.StringLiteral(cv.CharValue.ToString());
                             }

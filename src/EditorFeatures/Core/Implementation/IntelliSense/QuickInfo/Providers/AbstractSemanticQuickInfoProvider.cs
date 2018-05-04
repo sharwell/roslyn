@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
             var linkedDocumentIds = document.GetLinkedDocumentIds();
 
             var modelAndSymbols = await this.BindTokenAsync(document, token, cancellationToken).ConfigureAwait(false);
-            if (modelAndSymbols.Item2.Length == 0 && !linkedDocumentIds.Any())
+            if ((modelAndSymbols.Item2.Length == 0) && !linkedDocumentIds.Any())
             {
                 return null;
             }
@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 
             // Take the first result with no errors.
             var bestBinding = candidateResults.FirstOrDefault(
-                c => c.Item3.Length > 0 && !ErrorVisitor.ContainsError(c.Item3.FirstOrDefault()));
+                c => (c.Item3.Length > 0) && !ErrorVisitor.ContainsError(c.Item3.FirstOrDefault()));
 
             // Every file binds with errors. Take the first candidate, which is from the current file.
             if (bestBinding == null)
@@ -86,7 +86,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
                 bestBinding = candidateResults.First();
             }
 
-            if (bestBinding.Item3 == null || !bestBinding.Item3.Any())
+            if ((bestBinding.Item3 == null) || !bestBinding.Item3.Any())
             {
                 return null;
             }
@@ -213,11 +213,11 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
             var formatter = workspace.Services.GetLanguageServices(semanticModel.Language).GetService<IDocumentationCommentFormattingService>();
             var syntaxFactsService = workspace.Services.GetLanguageServices(semanticModel.Language).GetService<ISyntaxFactsService>();
             var documentationContent = GetDocumentationContent(symbols, sections, semanticModel, token, formatter, syntaxFactsService, cancellationToken);
-            var showWarningGlyph = supportedPlatforms != null && supportedPlatforms.HasValidAndInvalidProjects();
+            var showWarningGlyph = (supportedPlatforms != null) && supportedPlatforms.HasValidAndInvalidProjects();
             var showSymbolGlyph = true;
 
             if (workspace.Services.GetLanguageServices(semanticModel.Language).GetService<ISyntaxFactsService>().IsAwaitKeyword(token) &&
-                (symbols.First() as INamedTypeSymbol)?.SpecialType == SpecialType.System_Void)
+                ((symbols.First() as INamedTypeSymbol)?.SpecialType == SpecialType.System_Void))
             {
                 documentationContent = CreateDocumentationCommentDeferredContent(null);
                 showSymbolGlyph = false;
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 
                 // if generating quick info for an attribute, bind to the class instead of the constructor
                 if (syntaxFactsService.IsAttributeName(token.Parent) &&
-                    symbol.ContainingType?.IsAttribute() == true)
+                    (symbol.ContainingType?.IsAttribute() == true))
                 {
                     symbol = symbol.ContainingType;
                 }
@@ -326,12 +326,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 
         private static bool IsOk(ISymbol symbol)
         {
-            return symbol != null && !symbol.IsErrorType();
+            return (symbol != null) && !symbol.IsErrorType();
         }
 
         private static bool IsAccessible(ISymbol symbol, INamedTypeSymbol within)
         {
-            return within == null || symbol.IsAccessibleWithin(within);
+            return (within == null) || symbol.IsAccessibleWithin(within);
         }
     }
 }

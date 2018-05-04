@@ -29,10 +29,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
                 externsAndUsings, autoCollapse: true, 
                 type: BlockTypes.Imports, isCollapsible: true));
 
-            if (compilationUnit.Usings.Count > 0 ||
-                compilationUnit.Externs.Count > 0 ||
-                compilationUnit.Members.Count > 0 ||
-                compilationUnit.AttributeLists.Count > 0)
+            if ((compilationUnit.Usings.Count > 0) ||
+                (compilationUnit.Externs.Count > 0) ||
+                (compilationUnit.Members.Count > 0) ||
+                (compilationUnit.AttributeLists.Count > 0))
             {
                 CSharpStructureHelpers.CollectCommentBlockSpans(compilationUnit.EndOfFileToken.LeadingTrivia, spans);
             }

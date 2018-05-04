@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             }
 
             // returns void or int
-            if (!symbol.ReturnsVoid && symbol.ReturnType.SpecialType != SpecialType.System_Int32)
+            if (!symbol.ReturnsVoid && (symbol.ReturnType.SpecialType != SpecialType.System_Int32))
             {
                 return;
             }

@@ -20,19 +20,19 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             CheckDefinitionInvariant();
 
             MethodSymbol getMethod = this.GetMethod;
-            if (getMethod != null && getMethod.ShouldInclude(context))
+            if ((getMethod != null) && getMethod.ShouldInclude(context))
             {
                 yield return getMethod;
             }
 
             MethodSymbol setMethod = this.SetMethod;
-            if (setMethod != null && setMethod.ShouldInclude(context))
+            if ((setMethod != null) && setMethod.ShouldInclude(context))
             {
                 yield return setMethod;
             }
 
             SourcePropertySymbol sourceProperty = this as SourcePropertySymbol;
-            if ((object)sourceProperty != null && sourceProperty.ShouldInclude(context))
+            if (((object)sourceProperty != null) && sourceProperty.ShouldInclude(context))
             {
                 SynthesizedSealedPropertyAccessor synthesizedAccessor = sourceProperty.SynthesizedSealedAccessorOpt;
                 if ((object)synthesizedAccessor != null)
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 CheckDefinitionInvariant();
                 MethodSymbol getMethod = this.GetMethod;
-                if ((object)getMethod != null || !this.IsSealed)
+                if (((object)getMethod != null) || !this.IsSealed)
                 {
                     return getMethod;
                 }
@@ -117,7 +117,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 CheckDefinitionInvariant();
                 MethodSymbol setMethod = this.SetMethod;
-                if ((object)setMethod != null || !this.IsSealed)
+                if (((object)setMethod != null) || !this.IsSealed)
                 {
                     return setMethod;
                 }
@@ -137,7 +137,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(this.IsDefinition);
 
             // must be declared in the module we are building
-            Debug.Assert(this.ContainingModule is SourceModuleSymbol || this.ContainingAssembly.IsLinked);
+            Debug.Assert((this.ContainingModule is SourceModuleSymbol) || this.ContainingAssembly.IsLinked);
         }
 
         CallingConvention ISignature.CallingConvention
@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((object)sourceProperty != null)
             {
                 SynthesizedSealedPropertyAccessor synthesized = sourceProperty.SynthesizedSealedAccessorOpt;
-                return (object)synthesized != null && synthesized.MethodKind == targetMethodKind ? synthesized : null;
+                return ((object)synthesized != null) && (synthesized.MethodKind == targetMethodKind) ? synthesized : null;
             }
 
             return null;

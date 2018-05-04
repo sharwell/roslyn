@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis
         internal string GetDisplayPath(TextSpan span, SourceReferenceResolver resolver)
         {
             var mappedSpan = GetMappedLineSpan(span);
-            if (resolver == null || mappedSpan.Path.IsEmpty())
+            if ((resolver == null) || mappedSpan.Path.IsEmpty())
             {
                 return mappedSpan.Path;
             }

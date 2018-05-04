@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
             if (state.NamespaceToGenerateInOpt != null)
             {
                 var workspace = document.Project.Solution.Workspace;
-                if (workspace == null || workspace.CanApplyChange(ApplyChangesKind.AddDocument))
+                if ((workspace == null) || workspace.CanApplyChange(ApplyChangesKind.AddDocument))
                 {
                     generateNewTypeInDialog = true;
                     result.Add(new GenerateTypeCodeAction((TService)this, document.Document, state, intoNamespace: true, inNewFile: true));
@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
                                          .FirstOrDefault(node.GetAncestorsOrThis<SyntaxNode>().Contains);
 
             return
-                decl != null &&
+                (decl != null) &&
                 document.Project.LanguageServices.GetService<ICodeGenerationService>().CanAddTo(decl, document.Project.Solution, cancellationToken);
         }
 
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
             var uniqueNames = NameGenerator.EnsureUniqueness(names, isFixed, canUse: canUse);
             for (int i = 0; i < uniqueNames.Count; i++)
             {
-                if (typeParameters[i] == null || typeParameters[i].Name != uniqueNames[i])
+                if ((typeParameters[i] == null) || (typeParameters[i].Name != uniqueNames[i]))
                 {
                     typeParameters[i] = CodeGenerationSymbolFactory.CreateTypeParameterSymbol(uniqueNames[i]);
                 }
@@ -245,11 +245,11 @@ namespace Microsoft.CodeAnalysis.GenerateType
 
             // If we're a nested type of the type being generated into, then the new type can be
             // private.  otherwise, it needs to be internal.
-            if (!intoNamespace && state.TypeToGenerateInOpt != null)
+            if (!intoNamespace && (state.TypeToGenerateInOpt != null))
             {
                 var outerTypeSymbol = semanticModel.GetEnclosingNamedType(state.SimpleName.SpanStart, cancellationToken);
 
-                if (outerTypeSymbol != null && outerTypeSymbol.IsContainedWithin(state.TypeToGenerateInOpt))
+                if ((outerTypeSymbol != null) && outerTypeSymbol.IsContainedWithin(state.TypeToGenerateInOpt))
                 {
                     return Accessibility.Private;
                 }
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
             CancellationToken cancellationToken)
         {
             var availableInnerTypeParameters = GetTypeParameters(state, semanticModel, cancellationToken);
-            var availableOuterTypeParameters = !intoNamespace && state.TypeToGenerateInOpt != null
+            var availableOuterTypeParameters = !intoNamespace && (state.TypeToGenerateInOpt != null)
                 ? state.TypeToGenerateInOpt.GetAllTypeParameters()
                 : SpecializedCollections.EmptyEnumerable<ITypeParameterSymbol>();
 
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis.GenerateType
             if (semanticModel != null)
             {
                 var namespaceSymbol = semanticModel.GetEnclosingNamespace(triggeringPosition, cancellationToken);
-                if (namespaceSymbol != null && namespaceSymbol.ToDisplayString().StartsWith(includeUsingsOrImports, StringComparison.Ordinal))
+                if ((namespaceSymbol != null) && namespaceSymbol.ToDisplayString().StartsWith(includeUsingsOrImports, StringComparison.Ordinal))
                 {
                     return true;
                 }

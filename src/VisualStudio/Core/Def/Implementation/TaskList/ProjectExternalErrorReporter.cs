@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
             var documentErrorsMap = new Dictionary<DocumentId, HashSet<DiagnosticData>>();
 
             var errors = new ExternalError[1];
-            while (pErrors.Next(1, errors, out var fetched) == VSConstants.S_OK && fetched == 1)
+            while ((pErrors.Next(1, errors, out var fetched) == VSConstants.S_OK) && (fetched == 1))
             {
                 var error = errors[0];
 
@@ -162,9 +162,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
                 throw new NotImplementedException();
             }
 
-            if (iEndLine >= 0 && iEndColumn >= 0 &&
+            if ((iEndLine >= 0) && (iEndColumn >= 0) &&
                ((iEndLine < iStartLine) ||
-                (iEndLine == iStartLine && iEndColumn < iStartColumn)))
+                ((iEndLine == iStartLine) && (iEndColumn < iStartColumn))))
             {
                 throw new ArgumentException(ServicesVSResources.End_position_must_be_start_position);
             }
@@ -186,7 +186,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
                     throw new ArgumentException(ServicesVSResources.Not_a_valid_value, nameof(nPriority));
             }
 
-            if (bstrFileName == null || iStartLine < 0 || iStartColumn < 0)
+            if ((bstrFileName == null) || (iStartLine < 0) || (iStartColumn < 0))
             {
                 // we now takes care of errors that is not belong to file as well.
                 var projectDiagnostic = GetDiagnosticData(
@@ -259,7 +259,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TaskList
 
         private static bool IsCompilerDiagnostic(string errorId)
         {
-            if (!string.IsNullOrEmpty(errorId) && errorId.Length > 2)
+            if (!string.IsNullOrEmpty(errorId) && (errorId.Length > 2))
             {
                 var prefix = errorId.Substring(0, 2);
                 if (prefix.Equals("CS", StringComparison.OrdinalIgnoreCase) || prefix.Equals("BC", StringComparison.OrdinalIgnoreCase))

@@ -41,13 +41,13 @@ namespace Roslyn.Utilities
 
             while (start < end)
             {
-                int mid = start + (end - start) / 2;
+                int mid = start + ((end - start) / 2);
 
                 long diff = unchecked((long)value - (long)sortedFields[mid].Value); // NOTE: Has to match the comparer below.
 
                 if (diff == 0)
                 {
-                    while (mid >= start && sortedFields[mid].Value == value)
+                    while ((mid >= start) && (sortedFields[mid].Value == value))
                     {
                         mid--;
                     }

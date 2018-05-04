@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             var leading = this.VisitList(token.LeadingTrivia);
             var trailing = this.VisitList(token.TrailingTrivia);
 
-            if (leading != token.LeadingTrivia || trailing != token.TrailingTrivia)
+            if ((leading != token.LeadingTrivia) || (trailing != token.TrailingTrivia))
             {
                 if (leading != token.LeadingTrivia)
                 {
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
             {
                 var item = list[i];
                 var visited = this.Visit(item);
-                if (item != visited && alternate == null)
+                if ((item != visited) && (alternate == null))
                 {
                     alternate = new SyntaxListBuilder(n);
                     alternate.AddRange(list, 0, i);
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
                 if (alternate != null)
                 {
-                    Debug.Assert(visited != null && visited.Kind != SyntaxKind.None, "Cannot remove node using Syntax.InternalSyntax.SyntaxRewriter.");
+                    Debug.Assert((visited != null) && (visited.Kind != SyntaxKind.None), "Cannot remove node using Syntax.InternalSyntax.SyntaxRewriter.");
                     alternate.Add(visited);
                 }
             }

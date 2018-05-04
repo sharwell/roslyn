@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
             {
                 Assert.True(CS.CSharpExtensions.IsCSharpKind((int)kind), kind + " should be C# kind");
 
-                if (kind != CS.SyntaxKind.None && kind != CS.SyntaxKind.List)
+                if ((kind != CS.SyntaxKind.None) && (kind != CS.SyntaxKind.List))
                 {
                     Assert.False(VB.VisualBasicExtensions.IsVisualBasicKind((int)kind), kind + " should not be VB kind");
                 }
@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
             {
                 Assert.True(VB.VisualBasicExtensions.IsVisualBasicKind((int)kind), kind + " should be VB kind");
 
-                if (kind != VB.SyntaxKind.None && kind != VB.SyntaxKind.List)
+                if ((kind != VB.SyntaxKind.None) && (kind != VB.SyntaxKind.List))
                 {
                     Assert.False(CS.CSharpExtensions.IsCSharpKind((int)kind), kind + " should not be C# kind");
                 }

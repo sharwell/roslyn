@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         {
             Contract.ThrowIfNull(tokenStream);
 
-            Contract.ThrowIfFalse(0 <= tokenPairIndex && tokenPairIndex < tokenStream.TokenCount - 1);
+            Contract.ThrowIfFalse((0 <= tokenPairIndex) && (tokenPairIndex < (tokenStream.TokenCount - 1)));
 
             this.TokenStream = tokenStream;
             this.PairIndex = tokenPairIndex;

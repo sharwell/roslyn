@@ -33,11 +33,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             bool hasErrors,
             bool isConditionallyOmitted)
         {
-            Debug.Assert(!isConditionallyOmitted || (object)attributeClass != null && attributeClass.IsConditional);
+            Debug.Assert(!isConditionallyOmitted || (((object)attributeClass != null) && attributeClass.IsConditional));
             Debug.Assert(!constructorArguments.IsDefault);
             Debug.Assert(!namedArguments.IsDefault);
             Debug.Assert(constructorArgumentsSourceIndices.IsDefault ||
-                constructorArgumentsSourceIndices.Any() && constructorArgumentsSourceIndices.Length == constructorArguments.Length);
+                (constructorArgumentsSourceIndices.Any() && (constructorArgumentsSourceIndices.Length == constructorArguments.Length)));
 
             _attributeClass = attributeClass;
             _attributeConstructor = attributeConstructor;
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     {
                         j++;
 
-                        if (parameterType.Kind != SymbolKind.NamedType && parameterType.Kind != SymbolKind.ErrorType)
+                        if ((parameterType.Kind != SymbolKind.NamedType) && (parameterType.Kind != SymbolKind.ErrorType))
                         {
                             foundMatch = false;
                             break;

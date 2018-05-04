@@ -78,9 +78,9 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue.UnitTests
             var match = Analyzer.ComputeBodyMatch(m1, m2, Array.Empty<AbstractEditAndContinueAnalyzer.ActiveNode>(), diagnostics, out var oldHasStateMachineSuspensionPoint, out var newHasStateMachineSuspensionPoint);
             bool needsSyntaxMap = oldHasStateMachineSuspensionPoint && newHasStateMachineSuspensionPoint;
 
-            Assert.Equal(kind != MethodKind.Regular && kind != MethodKind.ConstructorWithParameters, needsSyntaxMap);
+            Assert.Equal((kind != MethodKind.Regular) && (kind != MethodKind.ConstructorWithParameters), needsSyntaxMap);
 
-            if (kind == MethodKind.Regular || kind == MethodKind.ConstructorWithParameters)
+            if ((kind == MethodKind.Regular) || (kind == MethodKind.ConstructorWithParameters))
             {
                 Assert.Empty(diagnostics);
             }

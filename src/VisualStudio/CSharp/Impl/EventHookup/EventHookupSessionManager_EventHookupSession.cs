@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
                 this.TESTSessionHookupMutex = testSessionHookupMutex;
 
                 var document = textView.TextSnapshot.GetOpenDocumentInCurrentContextWithChanges();
-                if (document != null && document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
+                if ((document != null) && document.Project.Solution.Workspace.CanApplyChange(ApplyChangesKind.ChangeDocument))
                 {
                     var position = textView.GetCaretPoint(subjectBuffer).Value.Position;
                     _trackingPoint = textView.TextSnapshot.CreateTrackingPoint(position, PointTrackingMode.Negative);

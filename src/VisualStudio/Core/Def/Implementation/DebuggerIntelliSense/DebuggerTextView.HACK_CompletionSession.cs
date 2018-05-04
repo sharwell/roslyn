@@ -47,7 +47,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.DebuggerIntelli
         private void HACK_SetShimCompletionSessionWorker(ICompletionSession completionSession)
         {
             var propertyList = _innerTextView.Properties.PropertyList;
-            var shimController = propertyList.Single(x => x.Value != null && x.Value.GetType().Name == "ShimCompletionController").Value;
+            var shimController = propertyList.Single(x => (x.Value != null) && (x.Value.GetType().Name == "ShimCompletionController")).Value;
             var shimControllerType = shimController.GetType();
             var sessionFieldInfo = shimControllerType.GetField("_session", BindingFlags.NonPublic | BindingFlags.Instance);
             sessionFieldInfo.SetValue(shimController, completionSession);

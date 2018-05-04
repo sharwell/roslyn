@@ -32,8 +32,8 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
             public bool Equals(LocalNameAndScope other)
             {
-                return ScopeStart == other.ScopeStart &&
-                    ScopeEnd == other.ScopeEnd &&
+                return (ScopeStart == other.ScopeStart) &&
+                    (ScopeEnd == other.ScopeEnd) &&
                     string.Equals(LocalName, other.LocalName, StringComparison.Ordinal);
             }
 
@@ -200,7 +200,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
         {
             // E_FAIL indicates "no info".
             // E_NOTIMPL indicates a lack of ISymUnmanagedReader support (in a particular implementation).
-            if (hr < 0 && hr != E_FAIL && hr != E_NOTIMPL)
+            if ((hr < 0) && (hr != E_FAIL) && (hr != E_NOTIMPL))
             {
                 Marshal.ThrowExceptionForHR(hr, s_ignoreIErrorInfo);
             }
@@ -549,7 +549,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             {
                 Debug.Assert(importString != null);
 
-                if (importString.Length > 0 && importString[0] == '*')
+                if ((importString.Length > 0) && (importString[0] == '*'))
                 {
                     string alias = null;
                     string target = null;
@@ -589,7 +589,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                         }
                         else
                         {
-                            Debug.Assert(scope == VBImportScopeKind.File || scope == VBImportScopeKind.Unspecified);
+                            Debug.Assert((scope == VBImportScopeKind.File) || (scope == VBImportScopeKind.Unspecified));
                             fileLevelImportRecords.Add(importRecord);
                         }
                     }
@@ -657,7 +657,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                     {
                         type = symbolProvider.DecodeLocalVariableType(signature);
                     }
-                    catch (Exception e) when (e is UnsupportedSignatureContent || e is BadImageFormatException)
+                    catch (Exception e) when ((e is UnsupportedSignatureContent) || (e is BadImageFormatException))
                     {
                         // ignore 
                         continue;

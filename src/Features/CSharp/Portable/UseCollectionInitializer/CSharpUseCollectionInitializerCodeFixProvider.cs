@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseCollectionInitializer
                     .WithoutTrivia()
                     .WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
 
-                if (i < matches.Length - 1)
+                if (i < (matches.Length - 1))
                 {
                     nodesAndTokens.Add(newExpression);
                     var commaToken = SyntaxFactory.Token(SyntaxKind.CommaToken)

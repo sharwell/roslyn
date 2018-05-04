@@ -78,9 +78,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             // Reason: Calling AddProperty on a propertysymbol that can't be generated (like one with params) causes
             // the getter and setter to get generated instead. Since the list of members is going to include
             // the method symbols for the getter and setter, we don't want to generate them twice.
-            declaration = options.GenerateMembers && namedType.TypeKind != TypeKind.Delegate
+            declaration = options.GenerateMembers && (namedType.TypeKind != TypeKind.Delegate)
                 ? service.AddMembers(declaration,
-                                     GetMembers(namedType).Where(s => s.Kind != SymbolKind.Property || PropertyGenerator.CanBeGenerated((IPropertySymbol)s)),
+                                     GetMembers(namedType).Where(s => (s.Kind != SymbolKind.Property) || PropertyGenerator.CanBeGenerated((IPropertySymbol)s)),
                                      options,
                                      cancellationToken)
                 : declaration;
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             CodeGenerationDestination destination,
             CodeGenerationOptions options)
         {
-            var baseList = namedType.EnumUnderlyingType != null && namedType.EnumUnderlyingType.SpecialType != SpecialType.System_Int32
+            var baseList = (namedType.EnumUnderlyingType != null) && (namedType.EnumUnderlyingType.SpecialType != SpecialType.System_Int32)
                 ? SyntaxFactory.BaseList(SyntaxFactory.SingletonSeparatedList<BaseTypeSyntax>(SyntaxFactory.SimpleBaseType(namedType.EnumUnderlyingType.GenerateTypeSyntax())))
                 : null;
 
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
         {
             var tokens = new List<SyntaxToken>();
 
-            var defaultAccessibility = destination == CodeGenerationDestination.CompilationUnit || destination == CodeGenerationDestination.Namespace
+            var defaultAccessibility = (destination == CodeGenerationDestination.CompilationUnit) || (destination == CodeGenerationDestination.Namespace)
                 ? Accessibility.Internal
                 : Accessibility.Private;
 
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
         private static BaseListSyntax GenerateBaseList(INamedTypeSymbol namedType)
         {
             var types = new List<BaseTypeSyntax>();
-            if (namedType.TypeKind == TypeKind.Class && namedType.BaseType != null && namedType.BaseType.SpecialType != Microsoft.CodeAnalysis.SpecialType.System_Object)
+            if ((namedType.TypeKind == TypeKind.Class) && (namedType.BaseType != null) && (namedType.BaseType.SpecialType != Microsoft.CodeAnalysis.SpecialType.System_Object))
             {
                 types.Add(SyntaxFactory.SimpleBaseType(namedType.BaseType.GenerateTypeSyntax()));
             }

@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
                 member.IsKind(SyntaxKind.OperatorDeclaration))
             {
                 var returnType = member.GetMemberType();
-                if (returnType != null &&
+                if ((returnType != null) &&
                     !(returnType.IsKind(SyntaxKind.PredefinedType) && ((PredefinedTypeSyntax)returnType).Keyword.IsKindOrHasMatchingText(SyntaxKind.VoidKeyword)))
                 {
                     list.Add("/// <returns></returns>");
@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
                 return false;
             }
 
-            if (!allowWhitespace && textTokens.Count != 1)
+            if (!allowWhitespace && (textTokens.Count != 1))
             {
                 return false;
             }
@@ -217,11 +217,11 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
             var lastTextToken = textTokens.Last();
             var firstTextToken = textTokens.First();
 
-            return lastTextToken.Kind() == SyntaxKind.XmlTextLiteralNewLineToken
-                && firstTextToken.LeadingTrivia.Count == 1
-                && firstTextToken.LeadingTrivia.ElementAt(0).Kind() == SyntaxKind.DocumentationCommentExteriorTrivia
-                && firstTextToken.LeadingTrivia.ElementAt(0).ToString() == ExteriorTriviaText
-                && lastTextToken.TrailingTrivia.Count == 0;
+            return (lastTextToken.Kind() == SyntaxKind.XmlTextLiteralNewLineToken)
+                && (firstTextToken.LeadingTrivia.Count == 1)
+                && (firstTextToken.LeadingTrivia.ElementAt(0).Kind() == SyntaxKind.DocumentationCommentExteriorTrivia)
+                && (firstTextToken.LeadingTrivia.ElementAt(0).ToString() == ExteriorTriviaText)
+                && (lastTextToken.TrailingTrivia.Count == 0);
         }
 
         private IList<SyntaxToken> GetTextTokensFollowingExteriorTrivia(XmlTextSyntax xmlText)
@@ -272,11 +272,11 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
             var lastTextToken = textTokens.LastOrDefault();
             var firstTextToken = textTokens.FirstOrDefault();
 
-            return lastTextToken.Kind() == SyntaxKind.XmlTextLiteralNewLineToken
-                && firstTextToken.LeadingTrivia.Count == 1
-                && firstTextToken.LeadingTrivia.ElementAt(0).Kind() == SyntaxKind.DocumentationCommentExteriorTrivia
-                && firstTextToken.LeadingTrivia.ElementAt(0).ToString() == ExteriorTriviaText
-                && lastTextToken.TrailingTrivia.Count == 0;
+            return (lastTextToken.Kind() == SyntaxKind.XmlTextLiteralNewLineToken)
+                && (firstTextToken.LeadingTrivia.Count == 1)
+                && (firstTextToken.LeadingTrivia.ElementAt(0).Kind() == SyntaxKind.DocumentationCommentExteriorTrivia)
+                && (firstTextToken.LeadingTrivia.ElementAt(0).ToString() == ExteriorTriviaText)
+                && (lastTextToken.TrailingTrivia.Count == 0);
         }
 
         protected override bool IsMultilineDocComment(DocumentationCommentTriviaSyntax documentationComment)

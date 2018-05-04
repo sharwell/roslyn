@@ -41,8 +41,8 @@ namespace Microsoft.CodeAnalysis.AddImport
             {
                 var reference = obj as PackageReference;
                 return base.Equals(obj) &&
-                    _packageName == reference._packageName &&
-                    _versionOpt == reference._versionOpt;
+                    (_packageName == reference._packageName) &&
+                    (_versionOpt == reference._versionOpt);
             }
 
             public override int GetHashCode()

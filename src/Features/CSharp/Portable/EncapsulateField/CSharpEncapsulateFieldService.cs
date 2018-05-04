@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EncapsulateField
                             .WithTrailingTrivia(fieldSyntax.GetTrailingTrivia()));
                 }
             }
-            else if (declaration.Variables.Count > 1 && makePrivate)
+            else if ((declaration.Variables.Count > 1) && makePrivate)
             {
                 document = document.WithSyntaxRoot(root);
                 var codeGenService = document.GetLanguageService<ICodeGenerationService>();
@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EncapsulateField
         protected override Tuple<string, string> GeneratePropertyAndFieldNames(IFieldSymbol field)
         {
             // Special case: if the field is "new", we will preserve its original name and the new keyword.
-            if (field.DeclaredAccessibility == Accessibility.Private || IsNew(field))
+            if ((field.DeclaredAccessibility == Accessibility.Private) || IsNew(field))
             {
                 // Create some capitalized version of the field name for the property
                 return Tuple.Create(field.Name, MakeUnique(GeneratePropertyName(field.Name), field.ContainingType));

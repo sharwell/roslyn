@@ -21,7 +21,7 @@ namespace Microsoft.DiaSymReader
         {
             // E_FAIL indicates "no info".
             // E_NOTIMPL indicates a lack of ISymUnmanagedReader support (in a particular implementation).
-            if (hr < 0 && hr != HResult.E_FAIL && hr != HResult.E_NOTIMPL)
+            if ((hr < 0) && (hr != HResult.E_FAIL) && (hr != HResult.E_NOTIMPL))
             {
                 Marshal.ThrowExceptionForHR(hr, s_ignoreIErrorInfo);
             }
@@ -52,14 +52,14 @@ namespace Microsoft.DiaSymReader
                 }
             }
 
-            if (qualifiedName != null && qualifiedNameBufferLength > 0)
+            if ((qualifiedName != null) && (qualifiedNameBufferLength > 0))
             {
                 char* dst = qualifiedName;
                 char* dstEndPtr = dst + qualifiedNameBufferLength - 1;
 
                 if (namespaceStr.Length > 0)
                 {
-                    for (int i = 0; i < namespaceStr.Length && dst < dstEndPtr; i++)
+                    for (int i = 0; (i < namespaceStr.Length) && (dst < dstEndPtr); i++)
                     {
                         *dst = namespaceStr[i];
                         dst++;
@@ -72,7 +72,7 @@ namespace Microsoft.DiaSymReader
                     }
                 }
 
-                for (int i = 0; i < nameStr.Length && dst < dstEndPtr; i++)
+                for (int i = 0; (i < nameStr.Length) && (dst < dstEndPtr); i++)
                 {
                     *dst = nameStr[i];
                     dst++;

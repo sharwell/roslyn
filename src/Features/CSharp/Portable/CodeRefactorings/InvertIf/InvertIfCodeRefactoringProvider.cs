@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InvertIf
         protected override SyntaxNode GetIfStatement(TextSpan textSpan, SyntaxToken token, CancellationToken cancellationToken)
         {
             var ifStatement = token.GetAncestor<IfStatementSyntax>();
-            if (ifStatement == null || ifStatement.Else == null)
+            if ((ifStatement == null) || (ifStatement.Else == null))
             {
                 return null;
             }
@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.InvertIf
                 newElseStatement = oldIfStatement.Else.WithStatement(oldIfStatement.Statement).WithTrailingTrivia(elseTrailingTrivia);
             }
 
-            var newIfStatment = oldIfStatement.Else.Statement.Kind() == SyntaxKind.IfStatement && newIfNodeStatement.Kind() != SyntaxKind.Block
+            var newIfStatment = (oldIfStatement.Else.Statement.Kind() == SyntaxKind.IfStatement) && (newIfNodeStatement.Kind() != SyntaxKind.Block)
                 ? SyntaxFactory.Block(newIfNodeStatement)
                 : newIfNodeStatement;
 

@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
         private bool IsLegalFieldOrProperty(ISymbol symbol, ISymbol within)
         {
             var type = symbol.GetMemberType();
-            if (type != null && type.CanSupportCollectionInitializer(within))
+            if ((type != null) && type.CanSupportCollectionInitializer(within))
             {
                 return true;
             }

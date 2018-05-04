@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                     // switch from positive to negative tracking so it stays against the closing brace
                     ClosingPoint = SubjectBuffer.CurrentSnapshot.CreateTrackingPoint(ClosingPoint.GetPoint(snapshot), PointTrackingMode.Negative);
 
-                    Debug.Assert(ClosingPoint.GetPoint(snapshot).Position > 0 && new SnapshotSpan(ClosingPoint.GetPoint(snapshot).Subtract(1), 1)
+                    Debug.Assert((ClosingPoint.GetPoint(snapshot).Position > 0) && new SnapshotSpan(ClosingPoint.GetPoint(snapshot).Subtract(1), 1)
                                 .GetText().Equals(ClosingBrace.ToString()), "The closing point does not match the closing brace character");
 
                     // move the caret back between the braces
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                 SnapshotPoint? caretPos = this.GetCaretPosition();
                 ITextSnapshot snapshot = SubjectBuffer.CurrentSnapshot;
 
-                if (caretPos.HasValue && caretPos.Value.Position > 0 && (caretPos.Value.Position - 1) == OpeningPoint.GetPoint(snapshot).Position
+                if (caretPos.HasValue && (caretPos.Value.Position > 0) && ((caretPos.Value.Position - 1) == OpeningPoint.GetPoint(snapshot).Position)
                     && !HasForwardTyping)
                 {
                     using (ITextUndoTransaction undo = CreateUndoTransaction())
@@ -198,10 +198,10 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                 {
                     SnapshotPoint? caretPos = this.GetCaretPosition();
 
-                    Debug.Assert(caretPos.HasValue && caretPos.Value.Position < closingSnapshotPoint.Position);
+                    Debug.Assert(caretPos.HasValue && (caretPos.Value.Position < closingSnapshotPoint.Position));
 
                     // ensure that we are within the session before clearing
-                    if (caretPos.HasValue && caretPos.Value.Position < closingSnapshotPoint.Position && closingSnapshotPoint.Position > 0)
+                    if (caretPos.HasValue && (caretPos.Value.Position < closingSnapshotPoint.Position) && (closingSnapshotPoint.Position > 0))
                     {
                         using (ITextUndoTransaction undo = CreateUndoTransaction())
                         {
@@ -273,7 +273,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
                 {
                     SnapshotPoint closingSnapshotPoint = ClosingPoint.GetPoint(SubjectBuffer.CurrentSnapshot);
 
-                    if (closingSnapshotPoint.Position > 0 && HasNoForwardTyping(this.GetCaretPosition().Value, closingSnapshotPoint.Subtract(1)))
+                    if ((closingSnapshotPoint.Position > 0) && HasNoForwardTyping(this.GetCaretPosition().Value, closingSnapshotPoint.Subtract(1)))
                     {
                         _session.AfterReturn(this, CancellationToken.None);
                     }

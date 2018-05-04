@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
         {
             _cancellationToken.ThrowIfCancellationRequested();
 
-            if (node == null || !_spans.HasIntervalThatIntersectsWith(node.FullSpan))
+            if ((node == null) || !_spans.HasIntervalThatIntersectsWith(node.FullSpan))
             {
                 return node;
             }

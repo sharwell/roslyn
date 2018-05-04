@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         internal override bool IsInsertionTrigger(SourceText text, int characterPosition, OptionSet options)
         {
             var c = text[characterPosition];
-            return c == '<' || c == '"' || CompletionUtilities.IsTriggerAfterSpaceOrStartOfWordCharacter(text, characterPosition, options);
+            return (c == '<') || (c == '"') || CompletionUtilities.IsTriggerAfterSpaceOrStartOfWordCharacter(text, characterPosition, options);
         }
 
         protected override async Task<IEnumerable<CompletionItem>> GetItemsWorkerAsync(
@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     return GetAttributeItems(elementName, existingAttributes);
                 }
 
-                var wasTriggeredAfterSpace = trigger.Kind == CompletionTriggerKind.Insertion && trigger.Character == ' ';
+                var wasTriggeredAfterSpace = (trigger.Kind == CompletionTriggerKind.Insertion) && (trigger.Character == ' ');
                 if (wasTriggeredAfterSpace)
                 {
                     // Nothing below this point should triggered by a space character
@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                     return GetAttributeValueItems(declaredSymbol, elementName, attributeName);
                 }
 
-                if (trigger.Kind == CompletionTriggerKind.Insertion && trigger.Character != '<')
+                if ((trigger.Kind == CompletionTriggerKind.Insertion) && (trigger.Character != '<'))
                 {
                     // With the use of IsTriggerAfterSpaceOrStartOfWordCharacter, the code below is much
                     // too aggressive at suggesting tags, so exit early before degrading the experience
@@ -97,12 +97,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
                 var items = new List<CompletionItem>();
 
-                if (token.Parent.Kind() == SyntaxKind.XmlEmptyElement || token.Parent.Kind() == SyntaxKind.XmlText ||
+                if ((token.Parent.Kind() == SyntaxKind.XmlEmptyElement) || (token.Parent.Kind() == SyntaxKind.XmlText) ||
                     (token.Parent.IsKind(SyntaxKind.XmlElementEndTag) && token.IsKind(SyntaxKind.GreaterThanToken)) ||
                     (token.Parent.IsKind(SyntaxKind.XmlName) && token.Parent.IsParentKind(SyntaxKind.XmlEmptyElement)))
                 {
                     // The user is typing inside an XmlElement
-                    if (token.Parent.Parent.Kind() == SyntaxKind.XmlElement ||
+                    if ((token.Parent.Parent.Kind() == SyntaxKind.XmlElement) ||
                         token.Parent.Parent.IsParentKind(SyntaxKind.XmlElement))
                     {
                         // Avoid including language keywords when following < or <text, since these cases should only be
@@ -127,15 +127,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                         AddXmlElementItems(items, nestedXmlElement.StartTag);
                     }
 
-                    if (token.Parent.Parent is DocumentationCommentTriviaSyntax ||
-                        (token.Parent.Parent.IsKind(SyntaxKind.XmlEmptyElement) && token.Parent.Parent.Parent is DocumentationCommentTriviaSyntax))
+                    if ((token.Parent.Parent is DocumentationCommentTriviaSyntax) ||
+                        (token.Parent.Parent.IsKind(SyntaxKind.XmlEmptyElement) && (token.Parent.Parent.Parent is DocumentationCommentTriviaSyntax)))
                     {
                         items.AddRange(GetTopLevelItems(declaredSymbol, parentTrivia));
                     }
                 }
 
                 if (token.Parent is XmlElementStartTagSyntax startTag &&
-                    token == startTag.GreaterThanToken)
+                    (token == startTag.GreaterThanToken))
                 {
                     AddXmlElementItems(items, startTag);
                 }

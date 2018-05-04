@@ -221,18 +221,18 @@ namespace Microsoft.CodeAnalysis.Emit
             }
 
             return
-                EmitMetadataOnly == other.EmitMetadataOnly &&
-                BaseAddress == other.BaseAddress &&
-                FileAlignment == other.FileAlignment &&
-                HighEntropyVirtualAddressSpace == other.HighEntropyVirtualAddressSpace &&
+                (EmitMetadataOnly == other.EmitMetadataOnly) &&
+                (BaseAddress == other.BaseAddress) &&
+                (FileAlignment == other.FileAlignment) &&
+                (HighEntropyVirtualAddressSpace == other.HighEntropyVirtualAddressSpace) &&
                 SubsystemVersion.Equals(other.SubsystemVersion) &&
-                DebugInformationFormat == other.DebugInformationFormat &&
-                PdbFilePath == other.PdbFilePath &&
-                PdbChecksumAlgorithm == other.PdbChecksumAlgorithm &&
-                OutputNameOverride == other.OutputNameOverride &&
-                RuntimeMetadataVersion == other.RuntimeMetadataVersion &&
-                TolerateErrors == other.TolerateErrors &&
-                IncludePrivateMembers == other.IncludePrivateMembers &&
+                (DebugInformationFormat == other.DebugInformationFormat) &&
+                (PdbFilePath == other.PdbFilePath) &&
+                (PdbChecksumAlgorithm == other.PdbChecksumAlgorithm) &&
+                (OutputNameOverride == other.OutputNameOverride) &&
+                (RuntimeMetadataVersion == other.RuntimeMetadataVersion) &&
+                (TolerateErrors == other.TolerateErrors) &&
+                (IncludePrivateMembers == other.IncludePrivateMembers) &&
                 InstrumentationKinds.NullToEmpty().SequenceEqual(other.InstrumentationKinds.NullToEmpty(), (a, b) => a == b);
         }
 
@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis.Emit
                 MetadataHelpers.CheckAssemblyOrModuleName(OutputNameOverride, messageProvider, messageProvider.ERR_InvalidOutputName, diagnostics);
             }
 
-            if (FileAlignment != 0 && !IsValidFileAlignment(FileAlignment))
+            if ((FileAlignment != 0) && !IsValidFileAlignment(FileAlignment))
             {
                 diagnostics.Add(messageProvider.CreateDiagnostic(messageProvider.ERR_InvalidFileAlignment, Location.None, FileAlignment));
             }
@@ -309,7 +309,7 @@ namespace Microsoft.CodeAnalysis.Emit
                 diagnostics.Add(messageProvider.CreateDiagnostic(messageProvider.ERR_InvalidHashAlgorithmName, Location.None, ""));
             }
 
-            if (PdbFilePath != null && !PathUtilities.IsValidFilePath(PdbFilePath))
+            if ((PdbFilePath != null) && !PathUtilities.IsValidFilePath(PdbFilePath))
             {
                 diagnostics.Add(messageProvider.CreateDiagnostic(messageProvider.FTL_InvalidInputFileName, Location.None, PdbFilePath));
             }

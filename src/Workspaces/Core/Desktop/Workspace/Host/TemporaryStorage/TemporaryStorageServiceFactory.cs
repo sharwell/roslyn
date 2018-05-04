@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.Host
                     // handle to a memory mapped file is obtained in this section, it must either be disposed before
                     // returning or returned to the caller who will own it through the MemoryMappedInfo.
                     var reference = _weakFileReference.TryAddReference();
-                    if (reference == null || _offset + size > _fileSize)
+                    if ((reference == null) || ((_offset + size) > _fileSize))
                     {
                         var mapName = CreateUniqueName(MultiFileBlockSize);
                         var file = MemoryMappedFile.CreateNew(mapName, MultiFileBlockSize);
@@ -285,7 +285,7 @@ namespace Microsoft.CodeAnalysis.Host
                     // Skip the BOM when creating the reader
                     Debug.Assert(*src == 0xFEFF);
 
-                    return new DirectMemoryAccessStreamReader(src + 1, streamLength / sizeof(char) - 1);
+                    return new DirectMemoryAccessStreamReader(src + 1, (streamLength / sizeof(char)) - 1);
                 }
             }
 
@@ -447,12 +447,12 @@ namespace Microsoft.CodeAnalysis.Host
                     throw new ArgumentNullException(nameof(buffer));
                 }
 
-                if (index < 0 || index >= buffer.Length)
+                if ((index < 0) || (index >= buffer.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                if (count < 0 || (index + count) > buffer.Length)
+                if ((count < 0) || ((index + count) > buffer.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(count));
                 }

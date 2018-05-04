@@ -224,7 +224,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             // We will normalize/extend all enum values to ulong to ensure that we are always comparing the full underlying value.
             ulong valueForComparison = ConvertEnumUnderlyingTypeToUInt64(underlyingValue, Type.GetTypeCode(lmrType));
             var typeToDisplayOpt = includeTypeName ? lmrType : null;
-            if (valueForComparison != 0 && IsFlagsEnum(lmrType))
+            if ((valueForComparison != 0) && IsFlagsEnum(lmrType))
             {
                 displayString = GetNamesForFlagsEnumValue(fields, underlyingValue, valueForComparison, options, typeToDisplayOpt);
             }

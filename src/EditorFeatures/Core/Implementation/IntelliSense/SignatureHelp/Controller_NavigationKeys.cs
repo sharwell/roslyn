@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
             //
             // Also, if we only computed one item, then the user doesn't want to select anything
             // else.  Just stop and let the editor handle the nav character.
-            if (model != null && model.Items.Count > 1)
+            if ((model != null) && (model.Items.Count > 1))
             {
                 computationAction();
                 return true;

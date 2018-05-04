@@ -62,7 +62,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 foreach (var documentId in project.DocumentIds)
                 {
                     var document = project.GetDocument(documentId);
-                    if (document.FilePath != null && string.Equals(absoluteFilePath, document.FilePath, StringComparison.OrdinalIgnoreCase))
+                    if ((document.FilePath != null) && string.Equals(absoluteFilePath, document.FilePath, StringComparison.OrdinalIgnoreCase))
                     {
                         foundFile = true;
                         break;
@@ -163,9 +163,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
         {
             var compilation = GetCompilation();
             var typeSymbol = CodeModelService.GetTypeSymbolFromFullName(name, compilation);
-            if (typeSymbol == null ||
-                typeSymbol.TypeKind == TypeKind.Error ||
-                typeSymbol.TypeKind == TypeKind.Unknown)
+            if ((typeSymbol == null) ||
+                (typeSymbol.TypeKind == TypeKind.Error) ||
+                (typeSymbol.TypeKind == TypeKind.Unknown))
             {
                 return null;
             }

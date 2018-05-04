@@ -115,8 +115,8 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
             private async Task<(Document document, bool addedFields)> GenerateThisOrBaseDelegatingConstructorAsync(int argumentCount)
             {
                 (Document document, bool addedField) edit;
-                if ((edit = await GenerateDelegatingConstructorAsync(argumentCount, _state.TypeToGenerateIn).ConfigureAwait(false)).document != null ||
-                    (edit = await GenerateDelegatingConstructorAsync(argumentCount, _state.TypeToGenerateIn.BaseType).ConfigureAwait(false)).document != null)
+                if (((edit = await GenerateDelegatingConstructorAsync(argumentCount, _state.TypeToGenerateIn).ConfigureAwait(false)).document != null) ||
+                    ((edit = await GenerateDelegatingConstructorAsync(argumentCount, _state.TypeToGenerateIn.BaseType).ConfigureAwait(false)).document != null))
                 {
                     return edit;
                 }
@@ -404,7 +404,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
                     return false;
                 }
 
-                if (symbol != null && !symbol.IsStatic)
+                if ((symbol != null) && !symbol.IsStatic)
                 {
                     if (symbol is IFieldSymbol field)
                     {
@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateConstructor
                     else if (symbol is IPropertySymbol property)
                     {
                         return
-                            property.Parameters.Length == 0 &&
+                            (property.Parameters.Length == 0) &&
                             property.IsWritableInConstructor() &&
                             _service.IsConversionImplicit(_document.SemanticModel.Compilation, parameterType, property.Type);
                     }

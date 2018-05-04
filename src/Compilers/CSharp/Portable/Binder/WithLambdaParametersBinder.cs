@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             var oldLocation = parameter.Locations[0];
 
-            Debug.Assert(oldLocation != newLocation || oldLocation == Location.None, "same nonempty location refers to different symbols?");
+            Debug.Assert((oldLocation != newLocation) || (oldLocation == Location.None), "same nonempty location refers to different symbols?");
 
             SymbolKind parameterKind = parameter.Kind;
             // Quirk of the way we represent lambda parameters.                
@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return true;
             }
 
-            if (newSymbolKind == SymbolKind.Parameter || newSymbolKind == SymbolKind.Local)
+            if ((newSymbolKind == SymbolKind.Parameter) || (newSymbolKind == SymbolKind.Local))
             {
                 // Error: A local or parameter named '{0}' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter
                 diagnostics.Add(ErrorCode.ERR_LocalIllegallyOverrides, newLocation, name);
@@ -152,7 +152,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             ParameterSymbol existingDeclaration;
             var map = _definitionMap;
-            if (map != null && map.TryGetValue(name, out existingDeclaration))
+            if ((map != null) && map.TryGetValue(name, out existingDeclaration))
             {
                 return ReportConflictWithParameter(existingDeclaration, symbol, name, location, diagnostics);
             }

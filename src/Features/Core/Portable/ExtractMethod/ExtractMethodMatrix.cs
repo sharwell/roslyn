@@ -198,14 +198,14 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
             public bool Equals(Key key)
             {
-                return this.DataFlowIn == key.DataFlowIn &&
-                       this.DataFlowOut == key.DataFlowOut &&
-                       this.AlwaysAssigned == key.AlwaysAssigned &&
-                       this.VariableDeclared == key.VariableDeclared &&
-                       this.ReadInside == key.ReadInside &&
-                       this.WrittenInside == key.WrittenInside &&
-                       this.ReadOutside == key.ReadOutside &&
-                       this.WrittenOutside == key.WrittenOutside;
+                return (this.DataFlowIn == key.DataFlowIn) &&
+                       (this.DataFlowOut == key.DataFlowOut) &&
+                       (this.AlwaysAssigned == key.AlwaysAssigned) &&
+                       (this.VariableDeclared == key.VariableDeclared) &&
+                       (this.ReadInside == key.ReadInside) &&
+                       (this.WrittenInside == key.WrittenInside) &&
+                       (this.ReadOutside == key.ReadOutside) &&
+                       (this.WrittenOutside == key.WrittenOutside);
             }
 
             public override bool Equals(object obj)
@@ -222,14 +222,14 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             {
                 var hashCode = 0;
 
-                hashCode = this.DataFlowIn ? 1 << 7 | hashCode : hashCode;
-                hashCode = this.DataFlowOut ? 1 << 6 | hashCode : hashCode;
-                hashCode = this.AlwaysAssigned ? 1 << 5 | hashCode : hashCode;
-                hashCode = this.VariableDeclared ? 1 << 4 | hashCode : hashCode;
-                hashCode = this.ReadInside ? 1 << 3 | hashCode : hashCode;
-                hashCode = this.WrittenInside ? 1 << 2 | hashCode : hashCode;
-                hashCode = this.ReadOutside ? 1 << 1 | hashCode : hashCode;
-                hashCode = this.WrittenOutside ? 1 << 0 | hashCode : hashCode;
+                hashCode = this.DataFlowIn ? (1 << 7) | hashCode : hashCode;
+                hashCode = this.DataFlowOut ? (1 << 6) | hashCode : hashCode;
+                hashCode = this.AlwaysAssigned ? (1 << 5) | hashCode : hashCode;
+                hashCode = this.VariableDeclared ? (1 << 4) | hashCode : hashCode;
+                hashCode = this.ReadInside ? (1 << 3) | hashCode : hashCode;
+                hashCode = this.WrittenInside ? (1 << 2) | hashCode : hashCode;
+                hashCode = this.ReadOutside ? (1 << 1) | hashCode : hashCode;
+                hashCode = this.WrittenOutside ? (1 << 0) | hashCode : hashCode;
 
                 return hashCode;
             }

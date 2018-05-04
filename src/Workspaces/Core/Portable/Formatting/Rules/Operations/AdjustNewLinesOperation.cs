@@ -11,9 +11,9 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
     {
         internal AdjustNewLinesOperation(int line, AdjustNewLinesOption option)
         {
-            Contract.ThrowIfFalse(option != AdjustNewLinesOption.ForceLines || line > 0);
-            Contract.ThrowIfFalse(option != AdjustNewLinesOption.PreserveLines || line >= 0);
-            Contract.ThrowIfFalse(option != AdjustNewLinesOption.ForceLinesIfOnSingleLine || line > 0);
+            Contract.ThrowIfFalse((option != AdjustNewLinesOption.ForceLines) || (line > 0));
+            Contract.ThrowIfFalse((option != AdjustNewLinesOption.PreserveLines) || (line >= 0));
+            Contract.ThrowIfFalse((option != AdjustNewLinesOption.ForceLinesIfOnSingleLine) || (line > 0));
 
             this.Line = line;
             this.Option = option;

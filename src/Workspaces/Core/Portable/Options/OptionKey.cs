@@ -12,11 +12,11 @@ namespace Microsoft.CodeAnalysis.Options
 
         public OptionKey(IOption option, string language = null)
         {
-            if (language != null && !option.IsPerLanguage)
+            if ((language != null) && !option.IsPerLanguage)
             {
                 throw new ArgumentException(WorkspacesResources.A_language_name_cannot_be_specified_for_this_option);
             }
-            else if (language == null && option.IsPerLanguage)
+            else if ((language == null) && option.IsPerLanguage)
             {
                 throw new ArgumentNullException(WorkspacesResources.A_language_name_must_be_specified_for_this_option);
             }
@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.Options
 
         public bool Equals(OptionKey other)
         {
-            return Option == other.Option && Language == other.Language;
+            return (Option == other.Option) && (Language == other.Language);
         }
 
         public override int GetHashCode()

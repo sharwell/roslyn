@@ -63,8 +63,8 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         public bool Equals(LocalDebugId other)
         {
-            return SyntaxOffset == other.SyntaxOffset
-                && Ordinal == other.Ordinal;
+            return (SyntaxOffset == other.SyntaxOffset)
+                && (Ordinal == other.Ordinal);
         }
 
         public override int GetHashCode()
@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         public override bool Equals(object obj)
         {
-            return obj is LocalDebugId && Equals((LocalDebugId)obj);
+            return (obj is LocalDebugId) && Equals((LocalDebugId)obj);
         }
 
         public override string ToString()

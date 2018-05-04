@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         protected override bool IsInstrinsic(ISymbol s)
         {
             var ts = s as ITypeSymbol;
-            return ts != null && ts.IsIntrinsicType();
+            return (ts != null) && ts.IsIntrinsicType();
         }
 
         internal override bool IsInsertionTrigger(SourceText text, int characterPosition, OptionSet options)
@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 {
                     for (int tupleLiteral = 0; tupleLiteral < 2; tupleLiteral++)
                     {
-                        if (importDirective == 1 && tupleLiteral == 1)
+                        if ((importDirective == 1) && (tupleLiteral == 1))
                         {
                             // this combination doesn't make sense, we can skip it
                             continue;

@@ -59,9 +59,9 @@ namespace Microsoft.CodeAnalysis.PatternMatching
         public int CompareTo(PatternMatch other, bool ignoreCase)
         {
             int diff;
-            if ((diff = CompareType(this, other)) != 0 ||
-                (diff = CompareCase(this, other, ignoreCase)) != 0 ||
-                (diff = ComparePunctuation(this, other)) != 0)
+            if (((diff = CompareType(this, other)) != 0) ||
+                ((diff = CompareCase(this, other, ignoreCase)) != 0) ||
+                ((diff = ComparePunctuation(this, other)) != 0))
             {
                 return diff;
             }

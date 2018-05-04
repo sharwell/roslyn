@@ -137,7 +137,7 @@ namespace Microsoft.CodeAnalysis
             get
             {
                 var value = (int)ValidTargets;
-                return value != 0 && (value & (int)~AttributeTargets.All) == 0;
+                return (value != 0) && ((value & (int)~AttributeTargets.All) == 0);
             }
         }
 

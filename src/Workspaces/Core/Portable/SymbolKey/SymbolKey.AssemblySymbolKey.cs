@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis
             private static IEnumerable<IAssemblySymbol> GetAssemblySymbols(
                 string assemblyName, Compilation compilation, bool ignoreAssemblyKey)
             {
-                if (ignoreAssemblyKey || compilation.Assembly.Identity.Name == assemblyName)
+                if (ignoreAssemblyKey || (compilation.Assembly.Identity.Name == assemblyName))
                 {
                     yield return compilation.Assembly;
                 }
@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis
                 // Might need keys for symbols from previous script compilations.
                 foreach (var assembly in compilation.GetReferencedAssemblySymbols())
                 {
-                    if (ignoreAssemblyKey || assembly.Identity.Name == assemblyName)
+                    if (ignoreAssemblyKey || (assembly.Identity.Name == assemblyName))
                     {
                         yield return assembly;
                     }

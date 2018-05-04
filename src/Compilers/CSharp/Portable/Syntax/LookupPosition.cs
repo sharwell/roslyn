@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         /// </summary>
         internal static bool IsInBlock(int position, BlockSyntax blockOpt)
         {
-            return blockOpt != null && IsBeforeToken(position, blockOpt, blockOpt.CloseBraceToken);
+            return (blockOpt != null) && IsBeforeToken(position, blockOpt, blockOpt.CloseBraceToken);
         }
 
         internal static bool IsInExpressionBody(
@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             ArrowExpressionClauseSyntax expressionBodyOpt,
             SyntaxToken semicolonToken)
         {
-            return expressionBodyOpt != null
+            return (expressionBodyOpt != null)
                 && IsBeforeToken(position, expressionBodyOpt, semicolonToken);
         }
 
@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
 
         internal static bool IsBetweenTokens(int position, SyntaxToken firstIncluded, SyntaxToken firstExcluded)
         {
-            return position >= firstIncluded.SpanStart && IsBeforeToken(position, firstExcluded);
+            return (position >= firstIncluded.SpanStart) && IsBeforeToken(position, firstExcluded);
         }
 
         /// <summary>
@@ -85,12 +85,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         /// </summary>
         private static bool IsBeforeToken(int position, CSharpSyntaxNode node, SyntaxToken firstExcluded)
         {
-            return IsBeforeToken(position, firstExcluded) && position >= node.SpanStart;
+            return IsBeforeToken(position, firstExcluded) && (position >= node.SpanStart);
         }
 
         private static bool IsBeforeToken(int position, SyntaxToken firstExcluded)
         {
-            return firstExcluded.Kind() == SyntaxKind.None || position < firstExcluded.SpanStart;
+            return (firstExcluded.Kind() == SyntaxKind.None) || (position < firstExcluded.SpanStart);
         }
 
         internal static bool IsInAttributeSpecification(int position, SyntaxList<AttributeListSyntax> attributesSyntaxList)
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
         internal static bool IsInTypeParameterList(int position, TypeDeclarationSyntax typeDecl)
         {
             var typeParameterListOpt = typeDecl.TypeParameterList;
-            return typeParameterListOpt != null && IsBeforeToken(position, typeParameterListOpt, typeParameterListOpt.GreaterThanToken);
+            return (typeParameterListOpt != null) && IsBeforeToken(position, typeParameterListOpt, typeParameterListOpt.GreaterThanToken);
         }
 
         internal static bool IsInParameterList(int position, BaseMethodDeclarationSyntax methodDecl)
@@ -167,13 +167,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             Debug.Assert(constructorDecl != null);
 
             var initializerOpt = constructorDecl.Initializer;
-            var hasBody = constructorDecl.Body != null || constructorDecl.ExpressionBody != null;
+            var hasBody = (constructorDecl.Body != null) || (constructorDecl.ExpressionBody != null);
 
             if (!hasBody)
             {
                 var nextToken = (SyntaxToken)SyntaxNavigator.Instance.GetNextToken(constructorDecl, predicate: null, stepInto: null);
                 return initializerOpt == null ?
-                    position >= constructorDecl.ParameterList.CloseParenToken.Span.End && IsBeforeToken(position, nextToken) :
+                    (position >= constructorDecl.ParameterList.CloseParenToken.Span.End) && IsBeforeToken(position, nextToken) :
                     IsBetweenTokens(position, initializerOpt.ColonToken, nextToken);
             }
 
@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             // CONSIDER: the check for default(SyntaxToken) could go in IsBetweenTokens,
             // but this is where it has special meaning.
             SyntaxToken firstIncludedToken = GetFirstIncludedToken(statement);
-            return firstIncludedToken != default(SyntaxToken) &&
+            return (firstIncludedToken != default(SyntaxToken)) &&
                    IsBetweenTokens(position, firstIncludedToken, GetFirstExcludedToken(statement));
         }
 

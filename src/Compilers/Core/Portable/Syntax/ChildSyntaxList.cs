@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis
 
             // get node that represents this slot
             var red = node.GetNodeSlot(slotIndex);
-            if (greenChild.IsList && red != null)
+            if (greenChild.IsList && (red != null))
             {
                 // it is a red list of nodes (separated or not), most common case
                 return red.GetNodeSlot(idx);
@@ -383,7 +383,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="obj">The object to be compared with the current instance.</param>
         public override bool Equals(object obj)
         {
-            return obj is ChildSyntaxList && Equals((ChildSyntaxList)obj);
+            return (obj is ChildSyntaxList) && Equals((ChildSyntaxList)obj);
         }
 
         /// <summary>Determines whether the specified <see cref="ChildSyntaxList" /> structure is equal to the current instance.</summary>

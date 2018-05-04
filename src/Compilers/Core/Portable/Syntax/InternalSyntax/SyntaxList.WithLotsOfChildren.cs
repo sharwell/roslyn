@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             /// </remarks>
             public override int FindSlotIndexContainingOffset(int offset)
             {
-                Debug.Assert(offset >= 0 && offset < FullWidth);
+                Debug.Assert((offset >= 0) && (offset < FullWidth));
                 return _childOffsets.BinarySearchUpperBound(offset) - 1;
             }
 

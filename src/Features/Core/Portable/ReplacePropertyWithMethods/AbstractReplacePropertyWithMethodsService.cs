@@ -384,7 +384,7 @@ namespace Microsoft.CodeAnalysis.ReplacePropertyWithMethods
 
             private bool ShouldReadFromBackingField()
             {
-                return _propertyBackingField != null && _property.GetMethod == null;
+                return (_propertyBackingField != null) && (_property.GetMethod == null);
             }
 
             private SyntaxNode GetSetInvocationExpression(
@@ -398,7 +398,7 @@ namespace Microsoft.CodeAnalysis.ReplacePropertyWithMethods
 
             private bool ShouldWriteToBackingField()
             {
-                return _propertyBackingField != null && _property.SetMethod == null;
+                return (_propertyBackingField != null) && (_property.SetMethod == null);
             }
 
             private static TIdentifierNameSyntax AddConflictAnnotation(TIdentifierNameSyntax name, string conflictMessage)

@@ -157,7 +157,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Diagnostics
                     Assert.Equal(OpenFileOnlyAnalyzer.s_syntaxRule.Id, a.Diagnostics[0].Id);
                 }
 
-                if (a.DocumentId == document.Id && !workspace.IsDocumentOpen(a.DocumentId))
+                if ((a.DocumentId == document.Id) && !workspace.IsDocumentOpen(a.DocumentId))
                 {
                     // check the diagnostics reported are cleared
                     Assert.Equal(0, a.Diagnostics.Length);

@@ -176,8 +176,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             // add a field: int initialThreadId
             bool addInitialThreadId =
                    _isEnumerable &&
-                   ((object)F.WellKnownMember(WellKnownMember.System_Threading_Thread__ManagedThreadId, isOptional: true) != null ||
-                    (object)F.WellKnownMember(WellKnownMember.System_Environment__CurrentManagedThreadId, isOptional: true) != null);
+                   (((object)F.WellKnownMember(WellKnownMember.System_Threading_Thread__ManagedThreadId, isOptional: true) != null) ||
+                    ((object)F.WellKnownMember(WellKnownMember.System_Environment__CurrentManagedThreadId, isOptional: true) != null));
 
             _initialThreadIdField = addInitialThreadId
                 ? F.StateMachineField(F.SpecialType(SpecialType.System_Int32), GeneratedNames.MakeIteratorCurrentThreadIdFieldName())

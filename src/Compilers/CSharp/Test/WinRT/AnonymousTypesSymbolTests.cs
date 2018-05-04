@@ -600,7 +600,7 @@ class Query
                 var tasks = new Task[10];
                 for (int j = 0; j < tasks.Length; j++)
                 {
-                    var metadataOnly = j % 2 == 0;
+                    var metadataOnly = (j % 2) == 0;
                     tasks[j] = Task.Run(() =>
                     {
                         var stream = new MemoryStream();
@@ -999,7 +999,7 @@ class Query
             int init = 0;
             foreach (var name in names)
             {
-                init = unchecked(init * HASH_FACTOR + Hash.GetFNVHashCode(name));
+                init = unchecked((init * HASH_FACTOR) + Hash.GetFNVHashCode(name));
             }
             return "0x" + init.ToString("X").ToLower();
         }

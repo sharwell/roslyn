@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
 
         protected IEnumerable<CompletionItem> GetAttributeItems(string tagName, ISet<string> existingAttributes)
         {
-            return s_attributeMap.Where(x => x[0] == tagName && !existingAttributes.Contains(x[1]))
+            return s_attributeMap.Where(x => (x[0] == tagName) && !existingAttributes.Contains(x[1]))
                                  .Select(x => CreateCompletionItem(x[1], x[2], x[3]));
         }
 
@@ -165,9 +165,9 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
 
         protected IEnumerable<CompletionItem> GetAttributeValueItems(ISymbol symbol, string tagName, string attributeName)
         {
-            if (attributeName == NameAttributeName && symbol != null)
+            if ((attributeName == NameAttributeName) && (symbol != null))
             {
-                if (tagName == ParameterElementName || tagName == ParameterReferenceElementName)
+                if ((tagName == ParameterElementName) || (tagName == ParameterReferenceElementName))
                 {
                     return symbol.GetParameters()
                                  .Select(parameter => CreateCompletionItem(parameter.Name));
@@ -183,11 +183,11 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
                                  .Select(typeParameter => CreateCompletionItem(typeParameter.Name));
                 }
             }
-            else if (attributeName == LangwordAttributeName && tagName == SeeElementName)
+            else if ((attributeName == LangwordAttributeName) && (tagName == SeeElementName))
             {
                 return GetKeywordNames().Select(CreateCompletionItem);
             }
-            else if (attributeName == TypeAttributeName && tagName == ListElementName)
+            else if ((attributeName == TypeAttributeName) && (tagName == ListElementName))
             {
                 return s_listTypeValues.Select(CreateCompletionItem);
             }
@@ -212,13 +212,13 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
                 items.AddRange(GetParameterItems(symbol.GetTypeParameters(), syntax, TypeParameterElementName));
 
                 var property = symbol as IPropertySymbol;
-                if (property != null && !existingTopLevelTags.Contains(ValueElementName))
+                if ((property != null) && !existingTopLevelTags.Contains(ValueElementName))
                 {
                     items.Add(GetItem(ValueElementName));
                 }
 
                 var method = symbol as IMethodSymbol;
-                var returns = method != null && !method.ReturnsVoid;
+                var returns = (method != null) && !method.ReturnsVoid;
                 if (returns && !existingTopLevelTags.Contains(ReturnsElementName))
                 {
                     items.Add(GetItem(ReturnsElementName));
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
             bool includesCommitCharacter = true;
 
             string beforeCaretText, afterCaretText;
-            if (commitChar == ' ' && XmlDocCommentCompletionItem.TryGetInsertionTextOnSpace(item, out beforeCaretText, out afterCaretText))
+            if ((commitChar == ' ') && XmlDocCommentCompletionItem.TryGetInsertionTextOnSpace(item, out beforeCaretText, out afterCaretText))
             {
                 includesCommitCharacter = false;
             }
@@ -278,12 +278,12 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
             var text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             var itemSpan = item.Span;
-            var replacementSpan = TextSpan.FromBounds(text[itemSpan.Start - 1] == '<' && beforeCaretText[0] == '<' ? itemSpan.Start - 1 : itemSpan.Start, itemSpan.End);
+            var replacementSpan = TextSpan.FromBounds((text[itemSpan.Start - 1] == '<') && (beforeCaretText[0] == '<') ? itemSpan.Start - 1 : itemSpan.Start, itemSpan.End);
 
             var replacementText = beforeCaretText;
             var newPosition = replacementSpan.Start + beforeCaretText.Length;
 
-            if (commitChar.HasValue && !char.IsWhiteSpace(commitChar.Value) && commitChar.Value != replacementText[replacementText.Length - 1])
+            if (commitChar.HasValue && !char.IsWhiteSpace(commitChar.Value) && (commitChar.Value != replacementText[replacementText.Length - 1]))
             {
                 // include the commit character
                 replacementText += commitChar.Value;

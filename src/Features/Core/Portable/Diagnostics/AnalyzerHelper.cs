@@ -44,12 +44,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         public static bool IsWorkspaceDiagnosticAnalyzer(this DiagnosticAnalyzer analyzer)
         {
-            return analyzer is DocumentDiagnosticAnalyzer || analyzer is ProjectDiagnosticAnalyzer;
+            return (analyzer is DocumentDiagnosticAnalyzer) || (analyzer is ProjectDiagnosticAnalyzer);
         }
 
         public static bool IsBuiltInAnalyzer(this DiagnosticAnalyzer analyzer)
         {
-            return analyzer is IBuiltInAnalyzer || analyzer.IsWorkspaceDiagnosticAnalyzer() || analyzer.IsCompilerAnalyzer();
+            return (analyzer is IBuiltInAnalyzer) || analyzer.IsWorkspaceDiagnosticAnalyzer() || analyzer.IsCompilerAnalyzer();
         }
 
         public static bool IsOpenFileOnly(this DiagnosticAnalyzer analyzer, Workspace workspace)
@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         private static VersionStamp GetAnalyzerVersion(string path)
         {
-            if (path == null || !File.Exists(path))
+            if ((path == null) || !File.Exists(path))
             {
                 return VersionStamp.Default;
             }

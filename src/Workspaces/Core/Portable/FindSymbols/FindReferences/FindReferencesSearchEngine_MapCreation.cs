@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                         var documents = await finder.DetermineDocumentsToSearchAsync(symbol, project, _documents, _cancellationToken).ConfigureAwait(false);
                         foreach (var document in documents.Distinct().WhereNotNull())
                         {
-                            if (_documents == null || _documents.Contains(document))
+                            if ((_documents == null) || _documents.Contains(document))
                             {
                                 documentMap.Add(document, symbolAndFinder);
                             }
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                         var projects = await finder.DetermineProjectsToSearchAsync(symbolAndProjectId.Symbol, _solution, scope, _cancellationToken).ConfigureAwait(false);
                         foreach (var project in projects.Distinct().WhereNotNull())
                         {
-                            if (scope == null || scope.Contains(project))
+                            if ((scope == null) || scope.Contains(project))
                             {
                                 projectMap.Add(project, (symbolAndProjectId, finder));
                             }
@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             }
 
             var searchSymbol = searchSymbolAndProjectId.Symbol;
-            if (searchSymbol != null && result.Add(searchSymbolAndProjectId))
+            if ((searchSymbol != null) && result.Add(searchSymbolAndProjectId))
             {
                 await _progress.OnDefinitionFoundAsync(searchSymbolAndProjectId).ConfigureAwait(false);
 
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
             // If they're searching for a delegate constructor, then just search for the delegate
             // itself.  They're practically interchangeable for consumers.
-            if (searchSymbol.IsConstructor() && searchSymbol.ContainingType.TypeKind == TypeKind.Delegate)
+            if (searchSymbol.IsConstructor() && (searchSymbol.ContainingType.TypeKind == TypeKind.Delegate))
             {
                 searchSymbol = symbol.ContainingType;
             }

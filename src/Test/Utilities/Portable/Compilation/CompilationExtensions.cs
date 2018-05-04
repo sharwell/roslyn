@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             var peStream = new MemoryStream();
 
-            if (pdbStream == null && compilation.Options.OptimizationLevel == OptimizationLevel.Debug && options?.DebugInformationFormat != DebugInformationFormat.Embedded)
+            if ((pdbStream == null) && (compilation.Options.OptimizationLevel == OptimizationLevel.Debug) && (options?.DebugInformationFormat != DebugInformationFormat.Embedded))
             {
                 if (MonoHelpers.IsRunningOnMono() || PathUtilities.IsUnixLikePlatform)
                 {
@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 {
                     // Workaround for https://github.com/dotnet/roslyn/issues/11903 - skip the IOperation for EndBlockStatement.
                     ImmutableArray<SyntaxNode> executableCodeBlocks = declaration.ExecutableCodeBlocks;
-                    if (declaration.DeclaredSymbol.Kind == SymbolKind.Method && compilation.Language == LanguageNames.VisualBasic)
+                    if ((declaration.DeclaredSymbol.Kind == SymbolKind.Method) && (compilation.Language == LanguageNames.VisualBasic))
                     {
                         executableCodeBlocks = executableCodeBlocks.RemoveAt(executableCodeBlocks.Length - 1);
                     }

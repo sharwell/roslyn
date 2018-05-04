@@ -80,12 +80,12 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         {
             // Skip syntax actions for implicitly declared symbols, except for implicitly declared global namespace symbols.
             return symbol.IsImplicitlyDeclared &&
-                !(symbol.Kind == SymbolKind.Namespace && ((INamespaceSymbol)symbol).IsGlobalNamespace);
+                !((symbol.Kind == SymbolKind.Namespace) && ((INamespaceSymbol)symbol).IsGlobalNamespace);
         }
 
         public bool ShouldAnalyze(SyntaxTree tree)
         {
-            return FilterTreeOpt == null || FilterTreeOpt == tree;
+            return (FilterTreeOpt == null) || (FilterTreeOpt == tree);
         }
 
         public bool ShouldAnalyze(ISymbol symbol)
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
             foreach (var location in symbol.Locations)
             {
-                if (location.SourceTree != null && FilterTreeOpt == location.SourceTree && ShouldInclude(location.SourceSpan))
+                if ((location.SourceTree != null) && (FilterTreeOpt == location.SourceTree) && ShouldInclude(location.SourceSpan))
                 {
                     return true;
                 }
@@ -133,7 +133,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return true;
             }
 
-            if (!diagnostic.Location.IsInSource || diagnostic.Location.SourceTree != FilterTreeOpt)
+            if (!diagnostic.Location.IsInSource || (diagnostic.Location.SourceTree != FilterTreeOpt))
             {
                 return false;
             }

@@ -27,13 +27,13 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is AssemblyPortabilityPolicy && Equals((AssemblyPortabilityPolicy)obj);
+            return (obj is AssemblyPortabilityPolicy) && Equals((AssemblyPortabilityPolicy)obj);
         }
 
         public bool Equals(AssemblyPortabilityPolicy other)
         {
-            return this.SuppressSilverlightLibraryAssembliesPortability == other.SuppressSilverlightLibraryAssembliesPortability
-                && this.SuppressSilverlightPlatformAssembliesPortability == other.SuppressSilverlightPlatformAssembliesPortability;
+            return (this.SuppressSilverlightLibraryAssembliesPortability == other.SuppressSilverlightLibraryAssembliesPortability)
+                && (this.SuppressSilverlightPlatformAssembliesPortability == other.SuppressSilverlightPlatformAssembliesPortability);
         }
 
         public override int GetHashCode()
@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis
 
         private static bool ReadToChild(XmlReader reader, int depth, string elementName, string elementNamespace = "")
         {
-            return reader.ReadToDescendant(elementName, elementNamespace) && reader.Depth == depth;
+            return reader.ReadToDescendant(elementName, elementNamespace) && (reader.Depth == depth);
         }
 
         private static readonly XmlReaderSettings s_xmlSettings = new XmlReaderSettings()

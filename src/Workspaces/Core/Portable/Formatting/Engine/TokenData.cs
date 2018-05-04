@@ -21,7 +21,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         public TokenData(TokenStream tokenStream, int indexInStream, SyntaxToken token) : this()
         {
             Contract.ThrowIfNull(tokenStream);
-            Contract.ThrowIfFalse((indexInStream == -1) || (0 <= indexInStream && indexInStream < tokenStream.TokenCount));
+            Contract.ThrowIfFalse((indexInStream == -1) || ((0 <= indexInStream) && (indexInStream < tokenStream.TokenCount)));
 
             this.TokenStream = tokenStream;
             this.IndexInStream = indexInStream;
@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 return false;
             }
 
-            if (this.IndexInStream >= 0 && this.IndexInStream == other.IndexInStream)
+            if ((this.IndexInStream >= 0) && (this.IndexInStream == other.IndexInStream))
             {
                 return true;
             }
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         {
             Contract.ThrowIfFalse(this.TokenStream == other.TokenStream);
 
-            if (this.IndexInStream >= 0 && other.IndexInStream >= 0)
+            if ((this.IndexInStream >= 0) && (other.IndexInStream >= 0))
             {
                 return this.IndexInStream - other.IndexInStream;
             }
@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
             var index1 = Index(tokens, this.Token);
             var index2 = Index(tokens, other.Token);
-            Contract.ThrowIfFalse(index1 >= 0 && index2 >= 0);
+            Contract.ThrowIfFalse((index1 >= 0) && (index2 >= 0));
 
             return index1 - index2;
         }

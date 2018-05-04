@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.ConvertForToForEach
 
             var collectionExpression = (TExpressionSyntax)collectionExpressionNode;
             syntaxFacts.GetNameAndArityOfSimpleName(memberAccessNameNode, out var memberAccessName, out _);
-            if (memberAccessName != nameof(Array.Length) && memberAccessName != nameof(IList.Count))
+            if ((memberAccessName != nameof(Array.Length)) && (memberAccessName != nameof(IList.Count)))
             {
                 return;
             }
@@ -111,14 +111,14 @@ namespace Microsoft.CodeAnalysis.ConvertForToForEach
             // after the for-loop.  But, for now, we'll just be conservative and assume this means
             // the user wanted the 'i' for some other purpose and we should keep things as is.
             var operation = semanticModel.GetOperation(forStatement, cancellationToken) as ILoopOperation;
-            if (operation == null || operation.Locals.Length != 1)
+            if ((operation == null) || (operation.Locals.Length != 1))
             {
                 return;
             }
 
             // Make sure we're starting at 0.
             var initializerValue = semanticModel.GetConstantValue(initializer, cancellationToken);
-            if (!(initializerValue.HasValue && initializerValue.Value is 0))
+            if (!(initializerValue.HasValue && (initializerValue.Value is 0)))
             {
                 return;
             }
@@ -127,14 +127,14 @@ namespace Microsoft.CodeAnalysis.ConvertForToForEach
             if (stepValueExpressionOpt != null)
             {
                 var stepValue = semanticModel.GetConstantValue(stepValueExpressionOpt);
-                if (!(stepValue.HasValue && stepValue.Value is 1))
+                if (!(stepValue.HasValue && (stepValue.Value is 1)))
                 {
                     return;
                 }
             }
 
             var collectionType = semanticModel.GetTypeInfo(collectionExpression, cancellationToken);
-            if (collectionType.Type == null && collectionType.Type.TypeKind == TypeKind.Error)
+            if ((collectionType.Type == null) && (collectionType.Type.TypeKind == TypeKind.Error))
             {
                 return;
             }
@@ -512,8 +512,8 @@ namespace Microsoft.CodeAnalysis.ConvertForToForEach
 
         private static bool IsViableIndexer(IPropertySymbol property)
             => property.IsIndexer &&
-               property.Parameters.Length == 1 &&
-               property.Parameters[0].Type?.SpecialType == SpecialType.System_Int32;
+               (property.Parameters.Length == 1) &&
+               (property.Parameters[0].Type?.SpecialType == SpecialType.System_Int32);
 
         private class MyCodeAction : CodeAction.DocumentChangeAction
         {

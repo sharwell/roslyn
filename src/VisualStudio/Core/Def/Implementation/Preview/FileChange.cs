@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Preview
             PreviewEngine engine,
             IVsImageService2 imageService) : base(engine)
         {
-            Contract.ThrowIfFalse(left != null || right != null);
+            Contract.ThrowIfFalse((left != null) || (right != null));
 
             this.Id = left != null ? left.Id : right.Id;
             _left = left;
@@ -166,7 +166,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Preview
 
         public override int OnRequestSource(object pIUnknownTextView)
         {
-            if (pIUnknownTextView != null && Children.Changes != null && Children.Changes.Length > 0)
+            if ((pIUnknownTextView != null) && (Children.Changes != null) && (Children.Changes.Length > 0))
             {
                 engine.SetTextView(pIUnknownTextView);
                 UpdatePreview();
@@ -201,7 +201,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Preview
 
         public TextDocument GetUpdatedDocument()
         {
-            if (_left == null || _right == null)
+            if ((_left == null) || (_right == null))
             {
                 // Added or removed document.
                 return _right;
@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Preview
 
             var leftDocument = left as Document;
             var rightDocument = right as Document;
-            if (leftDocument == null || rightDocument == null)
+            if ((leftDocument == null) || (rightDocument == null))
             {
                 return false;
             }

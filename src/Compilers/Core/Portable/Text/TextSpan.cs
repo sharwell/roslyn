@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Text
                 throw new ArgumentOutOfRangeException(nameof(start));
             }
 
-            if (start + length < start)
+            if ((start + length) < start)
             {
                 throw new ArgumentOutOfRangeException(nameof(length));
             }
@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </returns>
         public bool Contains(TextSpan span)
         {
-            return span.Start >= Start && span.End <= this.End;
+            return (span.Start >= Start) && (span.End <= this.End);
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </returns>
         public bool IntersectsWith(TextSpan span)
         {
-            return span.Start <= this.End && span.End >= Start;
+            return (span.Start <= this.End) && (span.End >= Start);
         }
 
         /// <summary>
@@ -212,7 +212,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </summary>
         public bool Equals(TextSpan other)
         {
-            return Start == other.Start && Length == other.Length;
+            return (Start == other.Start) && (Length == other.Length);
         }
 
         /// <summary>
@@ -220,7 +220,7 @@ namespace Microsoft.CodeAnalysis.Text
         /// </summary>
         public override bool Equals(object obj)
         {
-            return obj is TextSpan && Equals((TextSpan)obj);
+            return (obj is TextSpan) && Equals((TextSpan)obj);
         }
 
         /// <summary>

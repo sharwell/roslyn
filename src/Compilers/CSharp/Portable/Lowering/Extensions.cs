@@ -12,7 +12,7 @@ namespace Microsoft.CodeAnalysis.CSharp
     {
         public static RefKind RefKinds(this ImmutableArray<RefKind> ArgumentRefKinds, int index)
         {
-            if (!ArgumentRefKinds.IsDefault && index < ArgumentRefKinds.Length)
+            if (!ArgumentRefKinds.IsDefault && (index < ArgumentRefKinds.Length))
             {
                 return ArgumentRefKinds[index];
             }
@@ -73,12 +73,12 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             Debug.Assert(expr != null);
 
-            if ((object)expr.Type == null && expr.ConstantValue == ConstantValue.Null)
+            if (((object)expr.Type == null) && (expr.ConstantValue == ConstantValue.Null))
             {
                 return true;
             }
 
-            if ((object)expr.Type == null || !expr.Type.IsNullableType())
+            if (((object)expr.Type == null) || !expr.Type.IsNullableType())
             {
                 return false;
             }
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         public static bool IsNullableNonBoolean(this BoundExpression expr)
         {
             Debug.Assert(expr != null);
-            if (expr.Type.IsNullableType() && expr.Type.GetNullableUnderlyingType().SpecialType != SpecialType.System_Boolean)
+            if (expr.Type.IsNullableType() && (expr.Type.GetNullableUnderlyingType().SpecialType != SpecialType.System_Boolean))
                 return true;
             return false;
         }

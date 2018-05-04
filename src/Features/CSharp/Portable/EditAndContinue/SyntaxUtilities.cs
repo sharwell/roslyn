@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             if (LambdaUtilities.IsLambdaBody(syntax))
             {
                 Debug.Assert(allowLambda);
-                Debug.Assert(syntax is ExpressionSyntax || syntax is BlockSyntax);
+                Debug.Assert((syntax is ExpressionSyntax) || (syntax is BlockSyntax));
                 return;
             }
 
@@ -94,19 +94,19 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
             }
 
             // expression body
-            if (syntax is ExpressionSyntax && syntax.Parent is ArrowExpressionClauseSyntax)
+            if ((syntax is ExpressionSyntax) && (syntax.Parent is ArrowExpressionClauseSyntax))
             {
                 return;
             }
 
             // field initializer
-            if (syntax is ExpressionSyntax && syntax.Parent.Parent is VariableDeclaratorSyntax)
+            if ((syntax is ExpressionSyntax) && (syntax.Parent.Parent is VariableDeclaratorSyntax))
             {
                 return;
             }
 
             // property initializer
-            if (syntax is ExpressionSyntax && syntax.Parent.Parent is PropertyDeclarationSyntax)
+            if ((syntax is ExpressionSyntax) && (syntax.Parent.Parent is PropertyDeclarationSyntax))
             {
                 return;
             }
@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
         public static bool Any(TypeParameterListSyntax listOpt)
         {
-            return listOpt != null && listOpt.ChildNodesAndTokens().Count != 0;
+            return (listOpt != null) && (listOpt.ChildNodesAndTokens().Count != 0);
         }
 
         public static SyntaxNode TryGetEffectiveGetterBody(SyntaxNode declaration)
@@ -254,7 +254,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 return false;
             }
 
-            return property.ExpressionBody == null
+            return (property.ExpressionBody == null)
                 && property.AccessorList.Accessors.Any(e => e.Body == null);
         }
 

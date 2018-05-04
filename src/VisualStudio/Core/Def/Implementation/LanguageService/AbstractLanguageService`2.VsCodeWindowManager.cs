@@ -46,8 +46,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
 
             private void OnOptionChanged(object sender, OptionChangedEventArgs e)
             {
-                if (e.Language != _languageService.RoslynLanguageName ||
-                    e.Option != NavigationBarOptions.ShowNavigationBar)
+                if ((e.Language != _languageService.RoslynLanguageName) ||
+                    (e.Option != NavigationBarOptions.ShowNavigationBar))
                 {
                     return;
                 }
@@ -71,8 +71,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                     if (existingDropdownBar != null)
                     {
                         // Check if the existing dropdown is already one of ours, and do nothing if it is.
-                        if (_dropdownBarClient != null &&
-                            _dropdownBarClient == GetDropdownBarClient(existingDropdownBar))
+                        if ((_dropdownBarClient != null) &&
+                            (_dropdownBarClient == GetDropdownBarClient(existingDropdownBar)))
                         {
                             return;
                         }

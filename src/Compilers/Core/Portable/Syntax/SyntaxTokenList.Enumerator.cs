@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis
             /// has passed the end of the collection.</returns>
             public bool MoveNext()
             {
-                if (_count == 0 || _count <= _index + 1)
+                if ((_count == 0) || (_count <= (_index + 1)))
                 {
                     // invalidate iterator
                     _current = null;

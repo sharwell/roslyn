@@ -2806,7 +2806,7 @@ class C
             var crefSyntax = GetCrefSyntaxes(compilation).Single();
 
             var expectedSymbol = compilation.GlobalNamespace.GetMember<NamedTypeSymbol>("C").GetMembers(WellKnownMemberNames.ImplicitConversionName).OfType<MethodSymbol>().
-                Single(method => method.ParameterTypes.Single().SpecialType == SpecialType.System_Int32 && method.ReturnType.SpecialType == SpecialType.System_Int32);
+                Single(method => (method.ParameterTypes.Single().SpecialType == SpecialType.System_Int32) && (method.ReturnType.SpecialType == SpecialType.System_Int32));
             var actualSymbol = GetReferencedSymbol(crefSyntax, compilation);
 
             Assert.Equal(expectedSymbol, actualSymbol);
@@ -5874,7 +5874,7 @@ enum E { }
             compilation.VerifyDiagnostics();
 
             var expectedSymbol = compilation.GetSpecialType(SpecialType.System_String).
-                InstanceConstructors.Single(ctor => ctor.ParameterCount == 1 && ctor.ParameterTypes[0].IsArray());
+                InstanceConstructors.Single(ctor => (ctor.ParameterCount == 1) && ctor.ParameterTypes[0].IsArray());
 
             var cref = GetCrefSyntaxes(compilation).Single();
 

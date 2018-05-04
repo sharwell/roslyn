@@ -136,9 +136,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 // #If should be the first one in sorted order
                 var ifDirective = condDirectives.First();
                 Contract.Assert(
-                    ifDirective.Kind() == SyntaxKind.IfDirectiveTrivia ||
-                    ifDirective.Kind() == SyntaxKind.ElifDirectiveTrivia ||
-                    ifDirective.Kind() == SyntaxKind.ElseDirectiveTrivia);
+                    (ifDirective.Kind() == SyntaxKind.IfDirectiveTrivia) ||
+                    (ifDirective.Kind() == SyntaxKind.ElifDirectiveTrivia) ||
+                    (ifDirective.Kind() == SyntaxKind.ElseDirectiveTrivia));
 
                 if (directiveOpt != null)
                 {

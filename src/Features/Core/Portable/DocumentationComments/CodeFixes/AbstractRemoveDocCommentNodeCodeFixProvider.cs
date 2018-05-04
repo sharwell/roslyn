@@ -85,11 +85,11 @@ namespace Microsoft.CodeAnalysis.DiagnosticComments.CodeFixes
             {
                 var previousNodeTextTrimmed = paramNodeSiblings[paramNodeIndex - 1].ToFullString().Trim();
 
-                if (previousNodeTextTrimmed == string.Empty ||
-                    previousNodeTextTrimmed == DocCommentSignifierToken)
+                if ((previousNodeTextTrimmed == string.Empty) ||
+                    (previousNodeTextTrimmed == DocCommentSignifierToken))
                 {
                     // Only remove the preceding /// if this param node is also the only thing on this line.
-                    if (paramNodeIndex + 1 < paramNodeSiblings.Count)
+                    if ((paramNodeIndex + 1) < paramNodeSiblings.Count)
                     {
                         var nextSibling = paramNodeSiblings[paramNodeIndex + 1];
                         if (nextSibling is TXmlTextSyntax textSyntax)

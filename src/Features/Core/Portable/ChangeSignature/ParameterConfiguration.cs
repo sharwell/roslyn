@@ -26,13 +26,13 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
             var remainingReorderableParameters = new List<IParameterSymbol>();
             IParameterSymbol paramsParameter = null;
 
-            if (parameters.Count > 0 && isExtensionMethod)
+            if ((parameters.Count > 0) && isExtensionMethod)
             {
                 thisParameter = parameters[0];
                 parameters.RemoveAt(0);
             }
 
-            if (parameters.Count > 0 && parameters[parameters.Count - 1].IsParams)
+            if ((parameters.Count > 0) && parameters[parameters.Count - 1].IsParams)
             {
                 paramsParameter = parameters[parameters.Count - 1];
                 parameters.RemoveAt(parameters.Count - 1);
@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
 
         public bool IsChangeable()
         {
-            return ParametersWithoutDefaultValues.Count > 0 || RemainingEditableParameters.Count > 0 || ParamsParameter != null;
+            return (ParametersWithoutDefaultValues.Count > 0) || (RemainingEditableParameters.Count > 0) || (ParamsParameter != null);
         }
     }
 }

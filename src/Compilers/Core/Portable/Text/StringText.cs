@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.Text
                 throw new ArgumentOutOfRangeException(nameof(span));
             }
 
-            if (span.Start == 0 && span.Length == this.Length)
+            if ((span.Start == 0) && (span.Length == this.Length))
             {
                 return this.Source;
             }
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         public override void Write(TextWriter textWriter, TextSpan span, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (span.Start == 0 && span.End == this.Length)
+            if ((span.Start == 0) && (span.End == this.Length))
             {
                 textWriter.Write(this.Source);
             }

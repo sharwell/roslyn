@@ -226,7 +226,7 @@ namespace Microsoft.CodeAnalysis
         /// </remarks>
         public virtual int FindSlotIndexContainingOffset(int offset)
         {
-            Debug.Assert(0 <= offset && offset < FullWidth);
+            Debug.Assert((0 <= offset) && (offset < FullWidth));
 
             int i;
             int accumulatedWidth = 0;
@@ -422,14 +422,14 @@ namespace Microsoft.CodeAnalysis
             if ((kindBits & ExtendedSerializationInfoMask) != 0)
             {
                 var diagnostics = (DiagnosticInfo[])reader.ReadValue();
-                if (diagnostics != null && diagnostics.Length > 0)
+                if ((diagnostics != null) && (diagnostics.Length > 0))
                 {
                     this.flags |= NodeFlags.ContainsDiagnostics;
                     s_diagnosticsTable.Add(this, diagnostics);
                 }
 
                 var annotations = (SyntaxAnnotation[])reader.ReadValue();
-                if (annotations != null && annotations.Length > 0)
+                if ((annotations != null) && (annotations.Length > 0))
                 {
                     this.flags |= NodeFlags.ContainsAnnotations;
                     s_annotationsTable.Add(this, annotations);
@@ -806,7 +806,7 @@ namespace Microsoft.CodeAnalysis
                 for (int i = node.SlotCount - 1; i >= 0; i--)
                 {
                     var child = node.GetSlot(i);
-                    if (child != null && !child.IsMissing)
+                    if ((child != null) && !child.IsMissing)
                     {
                         nonmissingChild = child;
                         break;
@@ -843,12 +843,12 @@ namespace Microsoft.CodeAnalysis
                 // A single-element list is usually represented as just a single node,
                 // but can be represented as a List node with one child. Move to that
                 // child if necessary.
-                if (node1.IsList && node1.SlotCount == 1)
+                if (node1.IsList && (node1.SlotCount == 1))
                 {
                     node1 = node1.GetSlot(0);
                 }
 
-                if (node2.IsList && node2.SlotCount == 1)
+                if (node2.IsList && (node2.SlotCount == 1))
                 {
                     node2 = node2.GetSlot(0);
                 }
@@ -874,7 +874,7 @@ namespace Microsoft.CodeAnalysis
             {
                 var node1Child = node1.GetSlot(i);
                 var node2Child = node2.GetSlot(i);
-                if (node1Child != null && node2Child != null && !node1Child.IsEquivalentTo(node2Child))
+                if ((node1Child != null) && (node2Child != null) && !node1Child.IsEquivalentTo(node2Child))
                 {
                     return false;
                 }
@@ -940,7 +940,7 @@ namespace Microsoft.CodeAnalysis
             get
             {
                 return ((this.flags & NodeFlags.InheritMask) == NodeFlags.IsNotMissing) &&
-                    this.SlotCount <= GreenNode.MaxCachedChildNum;
+                    (this.SlotCount <= GreenNode.MaxCachedChildNum);
             }
         }
 
@@ -966,30 +966,30 @@ namespace Microsoft.CodeAnalysis
         {
             Debug.Assert(this.IsCacheable);
 
-            return this.RawKind == kind &&
-                this.flags == flags &&
-                this.GetSlot(0) == child1;
+            return (this.RawKind == kind) &&
+                (this.flags == flags) &&
+                (this.GetSlot(0) == child1);
         }
 
         internal bool IsCacheEquivalent(int kind, NodeFlags flags, GreenNode child1, GreenNode child2)
         {
             Debug.Assert(this.IsCacheable);
 
-            return this.RawKind == kind &&
-                this.flags == flags &&
-                this.GetSlot(0) == child1 &&
-                this.GetSlot(1) == child2;
+            return (this.RawKind == kind) &&
+                (this.flags == flags) &&
+                (this.GetSlot(0) == child1) &&
+                (this.GetSlot(1) == child2);
         }
 
         internal bool IsCacheEquivalent(int kind, NodeFlags flags, GreenNode child1, GreenNode child2, GreenNode child3)
         {
             Debug.Assert(this.IsCacheable);
 
-            return this.RawKind == kind &&
-                this.flags == flags &&
-                this.GetSlot(0) == child1 &&
-                this.GetSlot(1) == child2 &&
-                this.GetSlot(2) == child3;
+            return (this.RawKind == kind) &&
+                (this.flags == flags) &&
+                (this.GetSlot(0) == child1) &&
+                (this.GetSlot(1) == child2) &&
+                (this.GetSlot(2) == child3);
         }
         #endregion //Caching
 

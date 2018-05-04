@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.OutOfProcess
 
                 var actions = _textViewWindow.GetLightBulbActions();
 
-                if (expectedItems != null && expectedItems.Any())
+                if ((expectedItems != null) && expectedItems.Any())
                 {
                     if (ensureExpectedItemsAreOrdered)
                     {

@@ -174,17 +174,17 @@ namespace Microsoft.CodeAnalysis.FindSymbols
             ISyntaxFactsService syntaxFacts, SyntaxToken token,
             ArrayBuilder<SyntaxToken> matches)
         {
-            if (_searchKind == SearchKind.StringLiterals &&
+            if ((_searchKind == SearchKind.StringLiterals) &&
                 syntaxFacts.IsStringLiteral(token))
             {
                 CheckToken(token, matches);
             }
-            else if (_searchKind == SearchKind.CharacterLiterals &&
+            else if ((_searchKind == SearchKind.CharacterLiterals) &&
                      syntaxFacts.IsCharacterLiteral(token))
             {
                 CheckToken(token, matches);
             }
-            else if (_searchKind == SearchKind.NumericLiterals &&
+            else if ((_searchKind == SearchKind.NumericLiterals) &&
                      syntaxFacts.IsNumericLiteral(token))
             {
                 CheckToken(token, matches);

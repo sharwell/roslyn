@@ -64,7 +64,7 @@ namespace Microsoft.DiaSymReader
                 foreach (var method in typeof(Environment).GetTypeInfo().GetDeclaredMethods("GetEnvironmentVariable"))
                 {
                     var parameters = method.GetParameters();
-                    if (parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
+                    if ((parameters.Length == 1) && (parameters[0].ParameterType == typeof(string)))
                     {
                         return (Func<string, string>)method.CreateDelegate(typeof(Func<string, string>));
                     }
@@ -127,7 +127,7 @@ namespace Microsoft.DiaSymReader
             }
             finally
             {
-                if (instance == null && !FreeLibrary(moduleHandle))
+                if ((instance == null) && !FreeLibrary(moduleHandle))
                 {
                     Marshal.ThrowExceptionForHR(Marshal.GetHRForLastWin32Error());
                 }

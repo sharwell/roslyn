@@ -250,7 +250,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
                         InjectFault_MvidRead();
                         _mvid = ReadMvid(outputPath);
                     }
-                    catch (Exception e) when (e is FileNotFoundException || e is DirectoryNotFoundException)
+                    catch (Exception e) when ((e is FileNotFoundException) || (e is DirectoryNotFoundException))
                     {
                         // If the project isn't referenced by the project being debugged it might not be built.
                         // In that case EnC is never allowed for the project, and thus we can assume the project hasn't entered debug state.
@@ -439,12 +439,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
                 return VSConstants.E_FAIL;
             }
 
-            if (pMVID != null && pMVID.Length != 0)
+            if ((pMVID != null) && (pMVID.Length != 0))
             {
                 pMVID[0] = _mvid;
             }
 
-            if (pbstrPEName != null && pbstrPEName.Length != 0)
+            if ((pbstrPEName != null) && (pbstrPEName.Length != 0))
             {
                 var outputPath = _vsProject.ObjOutputPath;
                 Debug.Assert(outputPath != null);
@@ -471,7 +471,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
 
                     Debug.Assert(cActiveStatements == (pActiveStatements != null ? pActiveStatements.Length : 0));
                     Debug.Assert(s_breakStateProjectCount < s_debugStateProjectCount);
-                    Debug.Assert(s_breakStateProjectCount > 0 || _exceptionRegions.Count == 0);
+                    Debug.Assert((s_breakStateProjectCount > 0) || (_exceptionRegions.Count == 0));
                     Debug.Assert(s_breakStateProjectCount == s_breakStateEnteredProjects.Count);
                     Debug.Assert(IsDebuggable);
 
@@ -647,7 +647,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
 
                     // If the PDB is out of sync with the source we might get bad spans.
                     var sourceLines = source.Lines;
-                    if (lineSpan.End.Line >= sourceLines.Count || sourceLines.GetPosition(lineSpan.End) > sourceLines[sourceLines.Count - 1].EndIncludingLineBreak)
+                    if ((lineSpan.End.Line >= sourceLines.Count) || (sourceLines.GetPosition(lineSpan.End) > sourceLines[sourceLines.Count - 1].EndIncludingLineBreak))
                     {
                         log.Write("AS out of bounds (line count is {0})", source.Lines.Count);
                         continue;
@@ -765,7 +765,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
                     var ids = _activeStatementIds;
                     // Can be called anytime, even outside of an edit/debug session.
                     // We might not have an active statement available if PDB got out of sync with the source.
-                    if (session == null || ids == null || !ids.TryGetValue(vsId, out var id))
+                    if ((session == null) || (ids == null) || !ids.TryGetValue(vsId, out var id))
                     {
                         log.Write("GetCurrentActiveStatementPosition failed for AS {0}.", unchecked((int)vsId));
                         return VSConstants.E_FAIL;
@@ -778,7 +778,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
                     // We might get an imprecise result if the document analysis hasn't been finished yet and 
                     // the active statement has structurally changed, but that's ok. The user won't see an updated tag
                     // for the statement until the analysis finishes anyways.
-                    if (_trackingService.TryGetSpan(id, text, out var span) && span.Length > 0)
+                    if (_trackingService.TryGetSpan(id, text, out var span) && (span.Length > 0))
                     {
                         lineSpan = text.Lines.GetLinePositionSpan(span);
                     }
@@ -821,7 +821,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
             {
                 using (NonReentrantContext)
                 {
-                    Debug.Assert(pENCBuildState != null && pENCBuildState.Length == 1);
+                    Debug.Assert((pENCBuildState != null) && (pENCBuildState.Length == 1));
 
                     // GetENCBuildState is called outside of edit session (at least) in following cases:
                     // 1) when the debugger is determining whether a source file checksum matches the one in PDB.
@@ -834,7 +834,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
                     //
                     // The debugger seem to expect ENC_NOT_MODIFIED in these cases, otherwise errors occur.
 
-                    if (_changesApplied || _encService.EditSession == null)
+                    if (_changesApplied || (_encService.EditSession == null))
                     {
                         _lastEditSessionSummary = ProjectAnalysisSummary.NoChanges;
                     }
@@ -1005,8 +1005,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
                 // The debugger should have called GetENCBuildState before calling BuildForEnc.
                 // Unfortunately, there is no way how to tell the debugger that the changes were not significant,
                 // so we'll to emit an empty delta. See bug 839558.
-                Debug.Assert(_lastEditSessionSummary == ProjectAnalysisSummary.ValidInsignificantChanges ||
-                             _lastEditSessionSummary == ProjectAnalysisSummary.ValidChanges);
+                Debug.Assert((_lastEditSessionSummary == ProjectAnalysisSummary.ValidInsignificantChanges) ||
+                             (_lastEditSessionSummary == ProjectAnalysisSummary.ValidChanges));
 
                 var updater = (IDebugUpdateInMemoryPE2)pUpdatePE;
 
@@ -1136,7 +1136,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.EditAndContinue
                 }
             }
 
-            if (baseline == null || baseline.OriginalMetadata.IsDisposed)
+            if ((baseline == null) || baseline.OriginalMetadata.IsDisposed)
             {
                 var moduleName = PathUtilities.GetFileName(_vsProject.ObjOutputPath);
 

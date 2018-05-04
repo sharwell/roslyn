@@ -42,9 +42,9 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                      {
                          IConversionOperation conversion = (IConversionOperation)operation;
                          if (conversion.Type.IsReferenceType &&
-                             conversion.Operand.Type != null &&
+                             (conversion.Operand.Type != null) &&
                              conversion.Operand.Type.IsValueType &&
-                             conversion.OperatorMethod == null)
+                             (conversion.OperatorMethod == null))
                          {
                              Report(operationContext, conversion.Syntax);
                          }
@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                      {
                          IInvocationOperation invocation = (IInvocationOperation)operation;
 
-                         if (invocation.Instance != null &&
+                         if ((invocation.Instance != null) &&
                              invocation.Instance.Type.IsValueType &&
                              invocation.TargetMethod.ContainingType.IsReferenceType)
                          {

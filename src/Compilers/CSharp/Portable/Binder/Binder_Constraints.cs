@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             diagnostics.Add(ErrorCode.ERR_NewBoundWithUnmanaged, syntax.GetFirstToken().GetLocation());
                         }
 
-                        if (i != n - 1)
+                        if (i != (n - 1))
                         {
                             diagnostics.Add(ErrorCode.ERR_NewBoundMustBeLast, syntax.GetFirstToken().GetLocation());
                         }
@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             var typeSyntaxKind = typeSyntax.Kind();
 
                             // For pointer types, don't report this error. It is already reported during binding typeSyntax below.
-                            if (typeSyntaxKind != SyntaxKind.PredefinedType && typeSyntaxKind != SyntaxKind.PointerType && !SyntaxFacts.IsName(typeSyntax.Kind()))
+                            if ((typeSyntaxKind != SyntaxKind.PredefinedType) && (typeSyntaxKind != SyntaxKind.PointerType) && !SyntaxFacts.IsName(typeSyntax.Kind()))
                             {
                                 diagnostics.Add(ErrorCode.ERR_BadConstraintType, typeSyntax.GetLocation());
                             }
@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                             if (isUnmanaged)
                             {
-                                if (constraints != 0 || constraintTypes.Any())
+                                if ((constraints != 0) || constraintTypes.Any())
                                 {
                                     diagnostics.Add(ErrorCode.ERR_UnmanagedConstraintMustBeFirst, typeSyntax.GetLocation());
                                     continue;

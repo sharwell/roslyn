@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.SimplifyTypeNames
             var expressionSyntax = node;
             var annotatedexpressionSyntax = expressionSyntax.WithAdditionalAnnotations(Simplifier.Annotation, Formatter.Annotation);
 
-            if (annotatedexpressionSyntax.Kind() == SyntaxKind.IsExpression || annotatedexpressionSyntax.Kind() == SyntaxKind.AsExpression)
+            if ((annotatedexpressionSyntax.Kind() == SyntaxKind.IsExpression) || (annotatedexpressionSyntax.Kind() == SyntaxKind.AsExpression))
             {
                 var right = ((BinaryExpressionSyntax)annotatedexpressionSyntax).Right;
                 annotatedexpressionSyntax = annotatedexpressionSyntax.ReplaceNode(right, right.WithAdditionalAnnotations(Simplifier.Annotation));

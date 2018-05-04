@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return Empty;
             }
 
-            if (usingDirectives.Count == 0 && externAliasDirectives.Count == 0)
+            if ((usingDirectives.Count == 0) && (externAliasDirectives.Count == 0))
             {
                 return Empty;
             }
@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         }
 
                         string identifierValueText = usingDirective.Alias.Name.Identifier.ValueText;
-                        if (usingAliases != null && usingAliases.ContainsKey(identifierValueText))
+                        if ((usingAliases != null) && usingAliases.ContainsKey(identifierValueText))
                         {
                             // Suppress diagnostics if we're already broken.
                             if (!usingDirective.Name.IsMissing)
@@ -258,7 +258,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var usings = compilation.Options.Usings;
 
-            if (usings.Length == 0 && compilation.PreviousSubmission == null)
+            if ((usings.Length == 0) && (compilation.PreviousSubmission == null))
             {
                 return Empty;
             }
@@ -509,7 +509,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static void MarkImportDirective(CSharpCompilation compilation, CSharpSyntaxNode directive, bool callerIsSemanticModel)
         {
             Debug.Assert(compilation != null); // If any directives are used, then there must be a compilation.
-            if (directive != null && !callerIsSemanticModel)
+            if ((directive != null) && !callerIsSemanticModel)
             {
                 compilation.MarkImportDirectiveAsUsed(directive);
             }
@@ -583,7 +583,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 semanticDiagnostics.AddRange(alias.Alias.AliasTargetDiagnostics);
             }
 
-            if (_diagnostics != null && !_diagnostics.IsEmptyWithoutResolution)
+            if ((_diagnostics != null) && !_diagnostics.IsEmptyWithoutResolution)
             {
                 semanticDiagnostics.AddRange(_diagnostics.AsEnumerable());
             }
@@ -617,7 +617,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             LookupSymbolInAliases(originalBinder, result, name, arity, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
 
-            if (!result.IsMultiViable && (options & LookupOptions.NamespaceAliasesOnly) == 0)
+            if (!result.IsMultiViable && ((options & LookupOptions.NamespaceAliasesOnly) == 0))
             {
                 LookupSymbolInUsings(this.Usings, originalBinder, result, name, arity, basesBeingResolved, options, diagnose, ref useSiteDiagnostics);
             }

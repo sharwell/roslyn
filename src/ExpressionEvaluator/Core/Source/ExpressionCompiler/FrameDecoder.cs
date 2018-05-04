@@ -173,7 +173,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                                 {
                                     var formattedArgument = argument as DkmSuccessEvaluationResult;
                                     // Not expecting Expandable bit, at least not from this EE.
-                                    Debug.Assert((formattedArgument == null) || (formattedArgument.Flags & DkmEvaluationResultFlags.Expandable) == 0);
+                                    Debug.Assert((formattedArgument == null) || ((formattedArgument.Flags & DkmEvaluationResultFlags.Expandable) == 0));
                                     builder.Add(formattedArgument?.Value);
                                 }
                             }

@@ -64,15 +64,15 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             var baseHashCode = GetBaseGetHashCodeMethod(containingType, cancellationToken);
             if (baseHashCode != null)
             {
-                initHash = initHash * hashFactor + Hash.GetFNVHashCode(baseHashCode.Name);
+                initHash = (initHash * hashFactor) + Hash.GetFNVHashCode(baseHashCode.Name);
             }
 
             foreach (var symbol in members)
             {
-                initHash = initHash * hashFactor + Hash.GetFNVHashCode(symbol.Name);
+                initHash = (initHash * hashFactor) + Hash.GetFNVHashCode(symbol.Name);
             }
 
-            if (components.Length == 1 && !useInt64)
+            if ((components.Length == 1) && !useInt64)
             {
                 // If there's just one value to hash, then we can compute and directly
                 // return it.  i.e.  The full computation is:
@@ -155,10 +155,10 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 from baseType in containingType.GetBaseTypes()
                 from method in baseType.GetMembers(GetHashCodeName).OfType<IMethodSymbol>()
                 where method.IsOverride &&
-                      method.DeclaredAccessibility == Accessibility.Public &&
+                      (method.DeclaredAccessibility == Accessibility.Public) &&
                       !method.IsStatic &&
-                      method.Parameters.Length == 0 &&
-                      method.ReturnType.SpecialType == SpecialType.System_Int32
+                      (method.Parameters.Length == 0) &&
+                      (method.ReturnType.SpecialType == SpecialType.System_Int32)
                 select method;
 
             return existingMethods.FirstOrDefault();
@@ -181,7 +181,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             }
 
             var memberType = member.GetSymbolType();
-            var primitiveValue = IsPrimitiveValueType(memberType) && memberType.SpecialType != SpecialType.System_String;
+            var primitiveValue = IsPrimitiveValueType(memberType) && (memberType.SpecialType != SpecialType.System_String);
             var isTupleType = memberType?.IsTupleType == true;
             if (primitiveValue || isTupleType)
             {

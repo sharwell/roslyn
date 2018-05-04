@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
             for (int i = 0; i < result.Count; i++)
             {
                 var part = result[i];
-                if (part.Symbol is INamedTypeSymbol type && anonymousTypeToName.TryGetValue(type, out var name) && part.ToString() != name)
+                if (part.Symbol is INamedTypeSymbol type && anonymousTypeToName.TryGetValue(type, out var name) && (part.ToString() != name))
                 {
                     result = result == parts ? new List<SymbolDisplayPart>(parts) : result;
                     result[i] = new SymbolDisplayPart(part.Kind, part.Symbol, name);

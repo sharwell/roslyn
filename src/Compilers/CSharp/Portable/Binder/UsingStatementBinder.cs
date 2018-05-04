@@ -82,7 +82,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (!iDisposableConversion.IsImplicit)
                 {
                     TypeSymbol expressionType = expressionOpt.Type;
-                    if ((object)expressionType == null || !expressionType.IsErrorType())
+                    if (((object)expressionType == null) || !expressionType.IsErrorType())
                     {
                         Error(diagnostics, ErrorCode.ERR_NoConvToIDisp, expressionSyntax, expressionOpt.Display);
                     }

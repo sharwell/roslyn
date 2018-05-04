@@ -290,7 +290,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
         private IEnumerable<TextChange> FilterTextChanges(SourceText originalText, List<TextSpan> editorVisibleSpansInOriginal, IReadOnlyList<TextChange> changes)
         {
             // no visible spans or changes
-            if (editorVisibleSpansInOriginal.Count == 0 || changes.Count == 0)
+            if ((editorVisibleSpansInOriginal.Count == 0) || (changes.Count == 0))
             {
                 // return empty one
                 yield break;
@@ -341,7 +341,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
                         var subChanges = GetSubTextChanges(originalText, change, visibleSpan).ToList();
                         if (subChanges.Count > 0)
                         {
-                            if (subChanges.Count == 1 && subChanges[0] == change)
+                            if ((subChanges.Count == 1) && (subChanges[0] == change))
                             {
                                 // we can't break it. not much we can do here. just don't touch and ignore this change
                                 continue;
@@ -456,7 +456,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
 
         private bool TryGetWhitespaceOnlyChanges(string leftText, string rightText, List<TextSpan> spansInLeftText, List<TextSpan> spansInRightText)
         {
-            return TryGetWhitespaceGroup(leftText, spansInLeftText) && TryGetWhitespaceGroup(rightText, spansInRightText) && spansInLeftText.Count == spansInRightText.Count;
+            return TryGetWhitespaceGroup(leftText, spansInLeftText) && TryGetWhitespaceGroup(rightText, spansInRightText) && (spansInLeftText.Count == spansInRightText.Count);
         }
 
         private bool TryGetWhitespaceGroup(string text, List<TextSpan> groups)
@@ -514,7 +514,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
 
         private bool TextAt(string text, int index, char ch)
         {
-            if (index < 0 || text.Length <= index)
+            if ((index < 0) || (text.Length <= index))
             {
                 return false;
             }
@@ -540,7 +540,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
 
             // 2. there are no intersects
             var snippetInRightText = rightText.Substring(spanInRightText.Start, spanInRightText.Length);
-            if (visibleSpanInOriginalText.Contains(spanInOriginalText) && visibleSpanInOriginalText.End != spanInOriginalText.End)
+            if (visibleSpanInOriginalText.Contains(spanInOriginalText) && (visibleSpanInOriginalText.End != spanInOriginalText.End))
             {
                 textChange = new TextChange(spanInOriginalText, snippetInRightText);
                 return true;
@@ -578,9 +578,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
             }
 
             // 3. replacement intersects with start
-            if (spanInOriginalText.Start < visibleSpanInOriginalText.Start &&
-                visibleSpanInOriginalText.Start <= spanInOriginalText.End &&
-                spanInOriginalText.End < visibleSpanInOriginalText.End)
+            if ((spanInOriginalText.Start < visibleSpanInOriginalText.Start) &&
+                (visibleSpanInOriginalText.Start <= spanInOriginalText.End) &&
+                (spanInOriginalText.End < visibleSpanInOriginalText.End))
             {
                 // header
                 // don't do anything
@@ -598,9 +598,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
             }
 
             // 4. replacement intersects with end
-            if (visibleSpanInOriginalText.Start < spanInOriginalText.Start &&
-                spanInOriginalText.Start <= visibleSpanInOriginalText.End &&
-                visibleSpanInOriginalText.End <= spanInOriginalText.End)
+            if ((visibleSpanInOriginalText.Start < spanInOriginalText.Start) &&
+                (spanInOriginalText.Start <= visibleSpanInOriginalText.End) &&
+                (visibleSpanInOriginalText.End <= spanInOriginalText.End))
             {
                 // body
                 if (spanInOriginalText.Start <= visibleLastLineInOriginalText.Start)
@@ -645,7 +645,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
 
         private static string GetReplacementStrings(string leftText, string rightText, string initialReplacement)
         {
-            if (leftText.IndexOf(initialReplacement, StringComparison.Ordinal) < 0 && rightText.IndexOf(initialReplacement, StringComparison.Ordinal) < 0)
+            if ((leftText.IndexOf(initialReplacement, StringComparison.Ordinal) < 0) && (rightText.IndexOf(initialReplacement, StringComparison.Ordinal) < 0))
             {
                 return initialReplacement;
             }
@@ -655,7 +655,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
             for (var i = 0; true; i++)
             {
                 var replacement = string.Format(format, i.ToString(), initialReplacement);
-                if (leftText.IndexOf(replacement, StringComparison.Ordinal) < 0 && rightText.IndexOf(replacement, StringComparison.Ordinal) < 0)
+                if ((leftText.IndexOf(replacement, StringComparison.Ordinal) < 0) && (rightText.IndexOf(replacement, StringComparison.Ordinal) < 0))
                 {
                     return replacement;
                 }
@@ -753,8 +753,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
                 foreach (var change in changes)
                 {
                     // Find the next visible span that either overlaps or intersects with 
-                    while (currentVisibleSpanIndex < visibleSpansInOriginal.Count &&
-                           visibleSpansInOriginal[currentVisibleSpanIndex].End < change.Span.Start)
+                    while ((currentVisibleSpanIndex < visibleSpansInOriginal.Count) &&
+                           (visibleSpansInOriginal[currentVisibleSpanIndex].End < change.Span.Start))
                     {
                         currentVisibleSpanIndex++;
                     }
@@ -878,7 +878,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
                     if (current.Span.Start < visibleSpan.Start)
                     {
                         var blockType = GetRazorCodeBlockType(visibleSpan.Start);
-                        if (blockType == RazorCodeBlockType.Block || blockType == RazorCodeBlockType.Helper)
+                        if ((blockType == RazorCodeBlockType.Block) || (blockType == RazorCodeBlockType.Helper))
                         {
                             var baseIndentation = GetBaseIndentation(root, text, visibleSpan);
                             return new BaseIndentationFormattingRule(root, TextSpan.FromBounds(visibleSpan.Start, end), baseIndentation, _vbHelperFormattingRule);
@@ -976,7 +976,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
                 if (firstLine.LineNumber < lastLine.LineNumber)
                 {
                     start = (start < firstLine.End) ? start : firstLine.End;
-                    end = (lastLine.Start < end + 1) ? end : lastLine.Start - 1;
+                    end = (lastLine.Start < (end + 1)) ? end : lastLine.Start - 1;
                 }
             }
 
@@ -1005,11 +1005,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
                     {
                         var textSpan = GetVisibleTextSpan(text, span);
                         var end = textSpan.End - 1;
-                        if (end >= 0 && text[end] == '}')
+                        if ((end >= 0) && (text[end] == '}'))
                         {
                             var token = root.FindToken(end);
                             var syntaxFact = _workspace.Services.GetLanguageServices(Project.Language).GetService<ISyntaxFactsService>();
-                            if (token.Span.Start == end && syntaxFact != null)
+                            if ((token.Span.Start == end) && (syntaxFact != null))
                             {
                                 if (syntaxFact.TryGetCorrespondingOpenBrace(token, out var openBrace) && !textSpan.Contains(openBrace.Span))
                                 {
@@ -1033,7 +1033,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
                             {
                                 var token = root.FindToken(end, findInsideTrivia: true);
                                 var syntaxFact = _workspace.Services.GetLanguageServices(Project.Language).GetService<ISyntaxFactsService>();
-                                if (token.Span.End == textSpan.End && syntaxFact != null)
+                                if ((token.Span.End == textSpan.End) && (syntaxFact != null))
                                 {
                                     if (syntaxFact.IsSkippedTokensTrivia(token.Parent))
                                     {
@@ -1106,14 +1106,14 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
 
         private bool CheckCode(ITextSnapshot snapshot, int position, char ch, string tag, bool checkAt = true)
         {
-            if (ch != tag[tag.Length - 1] || position < tag.Length)
+            if ((ch != tag[tag.Length - 1]) || (position < tag.Length))
             {
                 return false;
             }
 
             var start = position - tag.Length;
             var razorTag = snapshot.GetText(start, tag.Length);
-            return string.Equals(razorTag, tag, StringComparison.OrdinalIgnoreCase) && (!checkAt || snapshot[start - 1] == RazorExplicit);
+            return string.Equals(razorTag, tag, StringComparison.OrdinalIgnoreCase) && (!checkAt || (snapshot[start - 1] == RazorExplicit));
         }
 
         private bool CheckCode(ITextSnapshot snapshot, int position, string tag)

@@ -1610,7 +1610,7 @@ class Derived : Base<int>
             int expectedNumExpectedNames = keyPositions.Length - 2 + 1;
             Assert.True(actualNumExpectedNames == expectedNumExpectedNames, string.Format("Expected {0} sets of expected names, but found {1}", expectedNumExpectedNames, actualNumExpectedNames));
 
-            for (int key = 0; key < keyPositions.Length - 1; key++)
+            for (int key = 0; key < (keyPositions.Length - 1); key++)
             {
                 int currPos = keyPositions[key];
                 int nextPos = keyPositions[key + 1];

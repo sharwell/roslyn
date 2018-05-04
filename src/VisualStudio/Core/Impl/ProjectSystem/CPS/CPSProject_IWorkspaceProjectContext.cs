@@ -134,7 +134,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.C
             ExecuteForegroundAction(() =>
             {
                 // Invoke SetOutputPathAndRelatedData to update the project obj output path.
-                if (commandLineArguments.OutputFileName != null && commandLineArguments.OutputDirectory != null)
+                if ((commandLineArguments.OutputFileName != null) && (commandLineArguments.OutputDirectory != null))
                 {
                     var objOutputPath = PathUtilities.CombinePathsUnchecked(commandLineArguments.OutputDirectory, commandLineArguments.OutputFileName);
                     SetObjOutputPathAndRelatedData(objOutputPath);

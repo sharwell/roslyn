@@ -136,7 +136,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(ConstantValue other)
             {
-                return base.Equals(other) && _value == other.StringValue;
+                return base.Equals(other) && (_value == other.StringValue);
             }
 
             internal override string GetValueToDisplay()
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(ConstantValue other)
             {
-                return base.Equals(other) && _value == other.DecimalValue;
+                return base.Equals(other) && (_value == other.DecimalValue);
             }
         }
 
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(ConstantValue other)
             {
-                return base.Equals(other) && _value == other.DateTimeValue;
+                return base.Equals(other) && (_value == other.DateTimeValue);
             }
         }
 
@@ -375,7 +375,7 @@ namespace Microsoft.CodeAnalysis
                     return false;
                 }
 
-                return this.Discriminator == other.Discriminator && other.DecimalValue == 0m;
+                return (this.Discriminator == other.Discriminator) && (other.DecimalValue == 0m);
             }
         }
 
@@ -398,7 +398,7 @@ namespace Microsoft.CodeAnalysis
                     return false;
                 }
 
-                return this.Discriminator == other.Discriminator && other.DoubleValue == 0;
+                return (this.Discriminator == other.Discriminator) && (other.DoubleValue == 0);
             }
         }
 
@@ -421,7 +421,7 @@ namespace Microsoft.CodeAnalysis
                     return false;
                 }
 
-                return this.Discriminator == other.Discriminator && other.SingleValue == 0;
+                return (this.Discriminator == other.Discriminator) && (other.SingleValue == 0);
             }
         }
 
@@ -524,7 +524,7 @@ namespace Microsoft.CodeAnalysis
                     return false;
                 }
 
-                return this.Discriminator == other.Discriminator && other.DecimalValue == 1m;
+                return (this.Discriminator == other.Discriminator) && (other.DecimalValue == 1m);
             }
         }
 
@@ -567,7 +567,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(ConstantValue other)
             {
-                return base.Equals(other) && _value == other.ByteValue;
+                return base.Equals(other) && (_value == other.ByteValue);
             }
         }
 
@@ -624,7 +624,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(ConstantValue other)
             {
-                return base.Equals(other) && _value == other.Int16Value;
+                return base.Equals(other) && (_value == other.Int16Value);
             }
         }
 
@@ -667,7 +667,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(ConstantValue other)
             {
-                return base.Equals(other) && _value == other.Int32Value;
+                return base.Equals(other) && (_value == other.Int32Value);
             }
         }
 
@@ -710,7 +710,7 @@ namespace Microsoft.CodeAnalysis
 
             public override bool Equals(ConstantValue other)
             {
-                return base.Equals(other) && _value == other.Int64Value;
+                return base.Equals(other) && (_value == other.Int64Value);
             }
         }
 

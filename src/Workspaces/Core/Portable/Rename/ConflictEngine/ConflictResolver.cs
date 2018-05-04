@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
         {
             // if we rename an identifier and it now binds to a symbol from metadata this should be treated as
             // an invalid rename.
-            return conflictResolution.ReplacementTextValid && renamedSymbol != null && renamedSymbol.Locations.Any(loc => loc.IsInSource);
+            return conflictResolution.ReplacementTextValid && (renamedSymbol != null) && renamedSymbol.Locations.Any(loc => loc.IsInSource);
         }
 
         private static async Task AddImplicitConflictsAsync(
@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
                     var otherThingsNamedTheSame = renamedSymbol.ContainingType.GetMembers(renamedSymbol.Name)
                                                            .Where(s => !s.Equals(renamedSymbol) &&
                                                                        string.Equals(s.MetadataName, renamedSymbol.MetadataName, StringComparison.Ordinal) &&
-                                                                       (s.Kind != SymbolKind.Method || renamedSymbol.Kind != SymbolKind.Method));
+                                                                       ((s.Kind != SymbolKind.Method) || (renamedSymbol.Kind != SymbolKind.Method)));
 
                     AddConflictingSymbolLocations(otherThingsNamedTheSame, conflictResolution, reverseMappedLocations);
                 }
@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
                     AddConflictingSymbolLocations(otherThingsNamedTheSame, conflictResolution, reverseMappedLocations);
                 }
 
-                if (renamedSymbol.IsKind(SymbolKind.NamedType) && renamedSymbol.ContainingSymbol is INamespaceOrTypeSymbol)
+                if (renamedSymbol.IsKind(SymbolKind.NamedType) && (renamedSymbol.ContainingSymbol is INamespaceOrTypeSymbol))
                 {
                     var otherThingsNamedTheSame = ((INamespaceOrTypeSymbol)renamedSymbol.ContainingSymbol).GetMembers(renamedSymbol.Name)
                                                             .Where(s => !s.Equals(renamedSymbol) &&
@@ -306,12 +306,12 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
                     if (overriddenSymbol != null)
                     {
                         overriddenSymbol = await SymbolFinder.FindSourceDefinitionAsync(overriddenSymbol, solution, cancellationToken).ConfigureAwait(false);
-                        overriddenFromMetadata = overriddenSymbol == null || overriddenSymbol.Locations.All(loc => loc.IsInMetadata);
+                        overriddenFromMetadata = (overriddenSymbol == null) || overriddenSymbol.Locations.All(loc => loc.IsInMetadata);
                     }
                 }
 
                 var location = await GetSymbolLocationAsync(solution, symbol, cancellationToken).ConfigureAwait(false);
-                if (location != null && location.IsInSource)
+                if ((location != null) && location.IsInSource)
                 {
                     renameDeclarationLocations[symbolIndex] = new RenameDeclarationLocationReference(solution.GetDocumentId(location.SourceTree), location.SourceSpan, overriddenFromMetadata, locations.Count());
                 }
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
             if (symbol.IsAnonymousType())
             {
                 return symbol.ToDisplayParts(s_metadataSymbolDisplayFormat)
-                    .WhereAsArray(p => p.Kind != SymbolDisplayPartKind.PropertyName && p.Kind != SymbolDisplayPartKind.FieldName)
+                    .WhereAsArray(p => (p.Kind != SymbolDisplayPartKind.PropertyName) && (p.Kind != SymbolDisplayPartKind.FieldName))
                     .ToDisplayString();
             }
             else
@@ -375,7 +375,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
             StringBuilder newMetadataNameBuilder = new StringBuilder();
 
             // Every loop updates the newMetadataName to resemble the oldMetadataName
-            while (index != -1 && index < oldMetadataName.Length)
+            while ((index != -1) && (index < oldMetadataName.Length))
             {
                 // This check is to ses if the part of string before the string match, matches
                 if (!IsSubStringEqual(oldMetadataName, newMetadataName, index))
@@ -404,7 +404,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
             string str2,
             int index)
         {
-            Debug.Assert(index <= str1.Length && index <= str2.Length, "Index cannot be greater than the string");
+            Debug.Assert((index <= str1.Length) && (index <= str2.Length), "Index cannot be greater than the string");
             int currentIndex = 0;
             while (currentIndex < index)
             {
@@ -441,7 +441,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
             }
 
             // Check for the next char
-            if (index + searchText.Length != metadataName.Length)
+            if ((index + searchText.Length) != metadataName.Length)
             {
                 var nextChar = metadataName[index + searchText.Length];
 

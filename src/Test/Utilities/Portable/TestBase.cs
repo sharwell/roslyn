@@ -335,10 +335,10 @@ namespace Roslyn.Test.Utilities
             Func<SyntaxNode, bool> syntaxNodePredicate = null,
             bool argumentOrderDoesNotMatter = false)
         {
-            Debug.Assert(code is ErrorCode || code is ERRID || code is int || code is string);
+            Debug.Assert((code is ErrorCode) || (code is ERRID) || (code is int) || (code is string));
 
             return new DiagnosticDescription(
-                code as string ?? (object)(int)code,
+                (code as string) ?? (object)(int)code,
                 false,
                 squiggledText,
                 arguments,

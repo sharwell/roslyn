@@ -45,7 +45,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
                 var annotationResolver = GetAnnotationResolver(callsite, method);
                 var triviaResolver = GetTriviaResolver(method);
-                if (annotationResolver == null || triviaResolver == null)
+                if ((annotationResolver == null) || (triviaResolver == null))
                 {
                     // bug # 6644
                     // this could happen in malformed code. return as it was.
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             protected IEnumerable<SyntaxTrivia> FilterTriviaList(IEnumerable<SyntaxTrivia> list)
             {
                 // has noisy token
-                if (list.Any(t => t.RawKind != _endOfLineKind && t.RawKind != _whitespaceKind))
+                if (list.Any(t => (t.RawKind != _endOfLineKind) && (t.RawKind != _whitespaceKind)))
                 {
                     return RemoveLeadingElasticBeforeEndOfLine(list);
                 }
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                         if (seenFirstEndOfLine)
                         {
                             // empty line. remove it
-                            if (currentLine.All(t => t.RawKind == _endOfLineKind || t.RawKind == _whitespaceKind))
+                            if (currentLine.All(t => (t.RawKind == _endOfLineKind) || (t.RawKind == _whitespaceKind)))
                             {
                                 continue;
                             }
@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                         {
                             // get rid of any whitespace trivia from stack
                             var top = stack.Peek();
-                            while (!top.IsElastic() && top.RawKind == _whitespaceKind)
+                            while (!top.IsElastic() && (top.RawKind == _whitespaceKind))
                             {
                                 stack.Pop();
                                 top = stack.Peek();

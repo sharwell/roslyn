@@ -3328,7 +3328,7 @@ class Program{
 
                 var root = (CompilationUnitSyntax)await document.GetSyntaxRootAsync();
                 var endToken = root.FindToken(position);
-                if (position == endToken.SpanStart && !endToken.GetPreviousToken().IsKind(SyntaxKind.None))
+                if ((position == endToken.SpanStart) && !endToken.GetPreviousToken().IsKind(SyntaxKind.None))
                 {
                     endToken = endToken.GetPreviousToken();
                 }

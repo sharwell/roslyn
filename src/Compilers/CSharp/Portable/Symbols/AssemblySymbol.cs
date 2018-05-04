@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return this.GlobalNamespace;
             }
 
-            if (namespaceSymbol.NamespaceKind == NamespaceKind.Assembly && namespaceSymbol.ContainingAssembly == this)
+            if ((namespaceSymbol.NamespaceKind == NamespaceKind.Assembly) && (namespaceSymbol.ContainingAssembly == this))
             {
                 // this is already the correct assembly namespace
                 return namespaceSymbol;
@@ -567,7 +567,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 type = GetTopLevelTypeByMetadataName(ref mdName, assemblyOpt: null, includeReferences: includeReferences, isWellKnownType: isWellKnownType,
                     conflicts: out conflicts, warnings: warnings, ignoreCorLibraryDuplicatedTypes: ignoreCorLibraryDuplicatedTypes);
 
-                for (int i = 1; (object)type != null && !type.IsErrorType() && i < parts.Length; i++)
+                for (int i = 1; ((object)type != null) && !type.IsErrorType() && (i < parts.Length); i++)
                 {
                     mdName = MetadataTypeName.FromTypeName(parts[i]);
                     NamedTypeSymbol temp = type.LookupMetadataType(ref mdName);
@@ -581,7 +581,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     conflicts: out conflicts, warnings: warnings, ignoreCorLibraryDuplicatedTypes: ignoreCorLibraryDuplicatedTypes);
             }
 
-            return ((object)type == null || type.IsErrorType()) ? null : type;
+            return (((object)type == null) || type.IsErrorType()) ? null : type;
         }
 
         private static readonly char[] s_nestedTypeNameSeparators = new char[] { '+' };
@@ -660,7 +660,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     MetadataTypeName mdName = MetadataTypeName.FromTypeName(nestedTypes[i].Name, forcedArity: forcedArity);
 
                     symbol = symbol.LookupMetadataType(ref mdName);
-                    if ((object)symbol == null || symbol.IsErrorType())
+                    if (((object)symbol == null) || symbol.IsErrorType())
                     {
                         return null;
                     }
@@ -687,7 +687,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 NamedTypeSymbol symbol = GetTopLevelTypeByMetadataName(ref mdName, assemblyId, includeReferences, isWellKnownType: false, conflicts: out var _);
 
-                if ((object)symbol == null || symbol.IsErrorType())
+                if (((object)symbol == null) || symbol.IsErrorType())
                 {
                     return null;
                 }
@@ -747,7 +747,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             // ignore any types of the same name that might be in referenced assemblies (prefer the current assembly):
-            if ((object)result != null || !includeReferences)
+            if (((object)result != null) || !includeReferences)
             {
                 return result;
             }
@@ -770,7 +770,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // Lookup in references
             foreach (var assembly in assemblies)
             {
-                Debug.Assert(!(this is SourceAssemblySymbol && assembly.IsMissing)); // Non-source assemblies can have missing references
+                Debug.Assert(!((this is SourceAssemblySymbol) && assembly.IsMissing)); // Non-source assemblies can have missing references
 
                 NamedTypeSymbol candidate = GetTopLevelTypeByMetadataName(assembly, ref metadataName, assemblyOpt);
 
@@ -837,15 +837,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private bool IsValidWellKnownType(NamedTypeSymbol result)
         {
-            if ((object)result == null || result.TypeKind == TypeKind.Error)
+            if (((object)result == null) || (result.TypeKind == TypeKind.Error))
             {
                 return false;
             }
 
-            Debug.Assert((object)result.ContainingType == null || IsValidWellKnownType(result.ContainingType),
+            Debug.Assert(((object)result.ContainingType == null) || IsValidWellKnownType(result.ContainingType),
                 "Checking the containing type is the caller's responsibility.");
 
-            return result.DeclaredAccessibility == Accessibility.Public || IsSymbolAccessible(result, this);
+            return (result.DeclaredAccessibility == Accessibility.Public) || IsSymbolAccessible(result, this);
         }
 
         private static NamedTypeSymbol GetTopLevelTypeByMetadataName(AssemblySymbol assembly, ref MetadataTypeName metadataName, AssemblyIdentity assemblyOpt)
@@ -856,7 +856,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return null;
             }
 
-            if (assemblyOpt != null && !assemblyOpt.Equals(assembly.Identity))
+            if ((assemblyOpt != null) && !assemblyOpt.Equals(assembly.Identity))
             {
                 return null;
             }
@@ -866,7 +866,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private static bool IsAcceptableMatchForGetTypeByMetadataName(NamedTypeSymbol candidate)
         {
-            return candidate.Kind != SymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
+            return (candidate.Kind != SymbolKind.ErrorType) || !(candidate is MissingMetadataTypeSymbol);
         }
 
         /// <summary>
@@ -982,7 +982,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // assume that Jones is going to be compiled into an assembly with a matching strong name, if necessary.
 
             CSharpCompilation compilation = this.DeclaringCompilation;
-            if (compilation != null && compilation.Options.OutputKind.IsNetModule())
+            if ((compilation != null) && compilation.Options.OutputKind.IsNetModule())
             {
                 return IVTConclusion.Match;
             }
@@ -1056,7 +1056,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 IVTConclusion conclusion = assembly.PerformIVTCheck(key, this.Identity);
                 Debug.Assert(conclusion != IVTConclusion.NoRelationshipClaimed);
-                if (conclusion == IVTConclusion.Match || conclusion == IVTConclusion.OneSignedOneNot)
+                if ((conclusion == IVTConclusion.Match) || (conclusion == IVTConclusion.OneSignedOneNot))
                 {
                     return true;
                 }

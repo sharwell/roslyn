@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         public IList<SymbolDisplayPart> ToDisplayParts()
         {
-            if (InvalidProjects == null || InvalidProjects.Count == 0)
+            if ((InvalidProjects == null) || (InvalidProjects.Count == 0))
             {
                 return SpecializedCollections.EmptyList<SymbolDisplayPart>();
             }
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
         public bool HasValidAndInvalidProjects()
         {
-            return InvalidProjects.Any() && InvalidProjects.Count != CandidateProjects.Count();
+            return InvalidProjects.Any() && (InvalidProjects.Count != CandidateProjects.Count());
         }
     }
 }

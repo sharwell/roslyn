@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             for (int i = 0; i < n; i++)
             {
                 int divisor = _divisors[i];
-                indices[i] = _lowerBounds[i] + index / divisor;
+                indices[i] = _lowerBounds[i] + (index / divisor);
                 index = index % divisor;
             }
             return indices;

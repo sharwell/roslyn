@@ -301,7 +301,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // Early bind and decode some well-known attributes.
                 EarlyWellKnownAttributeData earlyData = this.EarlyDecodeWellKnownAttributes(binders, boundAttributeTypes, attributesToBind, symbolPart, attributesBuilder);
-                Debug.Assert(!attributesBuilder.Contains((attr) => attr != null && attr.HasErrors));
+                Debug.Assert(!attributesBuilder.Contains((attr) => (attr != null) && attr.HasErrors));
 
                 // Store data decoded from early bound well-known attributes.
                 // TODO: what if this succeeds on another thread, not ours?
@@ -445,7 +445,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         binder = new ContextualAttributeBinder(binder, this);
                         Debug.Assert(!binder.InAttributeArgument, "Possible cycle in attribute binding");
 
-                        for (int i = 0; i < attributesToBindCount - prevCount; i++)
+                        for (int i = 0; i < (attributesToBindCount - prevCount); i++)
                         {
                             bindersBuilder.Add(binder);
                         }
@@ -471,7 +471,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // Determine if the target symbol owns the attribute declaration. 
             // We need to report diagnostics only once, so do it when visiting attributes for the owner.
-            bool isOwner = symbolPart == AttributeLocation.None && ReferenceEquals(attributesOwner, attributeTarget);
+            bool isOwner = (symbolPart == AttributeLocation.None) && ReferenceEquals(attributesOwner, attributeTarget);
 
             if (targetOpt == null)
             {
@@ -575,7 +575,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     // Early bind some well-known attributes
                     CSharpAttributeData earlyBoundAttributeOpt = this.EarlyDecodeWellKnownAttribute(ref arguments);
-                    Debug.Assert(earlyBoundAttributeOpt == null || !earlyBoundAttributeOpt.HasErrors);
+                    Debug.Assert((earlyBoundAttributeOpt == null) || !earlyBoundAttributeOpt.HasErrors);
 
                     boundAttributesBuilder[i] = earlyBoundAttributeOpt;
                 }

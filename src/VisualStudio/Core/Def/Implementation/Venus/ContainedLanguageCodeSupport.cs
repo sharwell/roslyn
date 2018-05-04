@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
         {
             baseClassName = null;
             var type = document.Project.GetCompilationAsync(cancellationToken).WaitAndGetResult_Venus(cancellationToken).GetTypeByMetadataName(className);
-            if (type == null || type.BaseType == null)
+            if ((type == null) || (type.BaseType == null))
             {
                 return false;
             }
@@ -169,7 +169,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
             }
 
             var eventType = ((IEventSymbol)eventMember).Type;
-            if (eventType.Kind != SymbolKind.NamedType || ((INamedTypeSymbol)eventType).DelegateInvokeMethod == null)
+            if ((eventType.Kind != SymbolKind.NamedType) || (((INamedTypeSymbol)eventType).DelegateInvokeMethod == null))
             {
                 throw new InvalidOperationException(ServicesVSResources.Event_type_is_invalid);
             }
@@ -421,7 +421,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Venus
                 case ContainedLanguageRenameType.CLRT_NAMESPACE:
                     var ns = document.Project.GetCompilationAsync(cancellationToken).WaitAndGetResult_Venus(cancellationToken).GlobalNamespace;
                     var parts = fullyQualifiedName.Split('.');
-                    for (int i = 0; i < parts.Length && ns != null; i++)
+                    for (int i = 0; (i < parts.Length) && (ns != null); i++)
                     {
                         ns = ns.GetNamespaceMembers().SingleOrDefault(n => n.Name == parts[i]);
                     }

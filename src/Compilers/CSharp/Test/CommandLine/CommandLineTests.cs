@@ -2040,7 +2040,7 @@ print Goodbye, World";
                             continue;
                         }
 
-                        Assert.True(embeddedSource.Encoding is UTF8Encoding && embeddedSource.Encoding.GetPreamble().Length == 0);
+                        Assert.True((embeddedSource.Encoding is UTF8Encoding) && (embeddedSource.Encoding.GetPreamble().Length == 0));
                         Assert.Equal(expectedEmbeddedMap[docPath], embeddedSource.ToString());
                         Assert.True(expectedEmbeddedMap.Remove(docPath));
                     }
@@ -2376,7 +2376,7 @@ class C
             Assert.Equal(2, err.Arguments.Count);
             Assert.Equal(file.Path, (string)err.Arguments[0]);
             var currentUICultureName = Thread.CurrentThread.CurrentUICulture.Name;
-            if (currentUICultureName.Length == 0 || currentUICultureName.StartsWith("en", StringComparison.OrdinalIgnoreCase))
+            if ((currentUICultureName.Length == 0) || currentUICultureName.StartsWith("en", StringComparison.OrdinalIgnoreCase))
             {
                 Assert.Equal("Data at the root level is invalid. Line 1, position 1.", (string)err.Arguments[1]);
             }
@@ -9752,7 +9752,7 @@ class C
 
                 if (fileName.StartsWith("csc") ||
                     fileName.StartsWith("System.") ||
-                    fileName.StartsWith("Microsoft.") && !fileName.StartsWith("Microsoft.DiaSymReader.Native"))
+                    (fileName.StartsWith("Microsoft.") && !fileName.StartsWith("Microsoft.DiaSymReader.Native")))
                 {
                     dir.CopyFile(filePath);
                 }

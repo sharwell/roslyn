@@ -162,8 +162,8 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
                 // If the opening and closing curlies are at least two lines apart then place the cursor
                 // on the next line provided that there isn't any token on the line with the open curly.
-                if (openBraceLine.LineNumber + 1 < closeBraceLine.LineNumber &&
-                    openBraceLine.LineNumber < text.Lines.IndexOf(tokenAfterOpenBrace.SpanStart))
+                if (((openBraceLine.LineNumber + 1) < closeBraceLine.LineNumber) &&
+                    (openBraceLine.LineNumber < text.Lines.IndexOf(tokenAfterOpenBrace.SpanStart)))
                 {
                     var lineAfterOpenBrace = text.Lines[openBraceLine.LineNumber + 1];
                     var firstNonWhitespaceOffset = lineAfterOpenBrace.GetFirstNonWhitespaceOffset() ?? -1;
@@ -372,7 +372,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         break;
 
                     case EnvDTE.vsCMPart.vsCMPartNavigate:
-                        if (node.Body != null && !node.Body.OpenBraceToken.IsMissing)
+                        if ((node.Body != null) && !node.Body.OpenBraceToken.IsMissing)
                         {
                             var line = text.Lines.GetLineFromPosition(node.SpanStart);
                             var indentation = line.GetColumnOfFirstNonWhitespaceCharacterOrEndOfLine(GetTabSize(options));
@@ -407,7 +407,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         break;
 
                     case EnvDTE.vsCMPart.vsCMPartBody:
-                        if (node.Body == null || node.Body.OpenBraceToken.IsMissing || node.Body.CloseBraceToken.IsMissing)
+                        if ((node.Body == null) || node.Body.OpenBraceToken.IsMissing || node.Body.CloseBraceToken.IsMissing)
                         {
                             throw Exceptions.ThrowEFail();
                         }
@@ -479,7 +479,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         throw Exceptions.ThrowEFail();
 
                     case EnvDTE.vsCMPart.vsCMPartBody:
-                        if (node.AccessorList != null && !node.AccessorList.OpenBraceToken.IsMissing)
+                        if ((node.AccessorList != null) && !node.AccessorList.OpenBraceToken.IsMissing)
                         {
                             var line = text.Lines.GetLineFromPosition(node.SpanStart);
                             var indentation = line.GetColumnOfFirstNonWhitespaceCharacterOrEndOfLine(GetTabSize(options));
@@ -518,7 +518,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         break;
 
                     case EnvDTE.vsCMPart.vsCMPartNavigate:
-                        if (node.Body != null && !node.Body.OpenBraceToken.IsMissing)
+                        if ((node.Body != null) && !node.Body.OpenBraceToken.IsMissing)
                         {
                             var line = text.Lines.GetLineFromPosition(node.SpanStart);
                             var indentation = line.GetColumnOfFirstNonWhitespaceCharacterOrEndOfLine(GetTabSize(options));
@@ -529,7 +529,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         throw Exceptions.ThrowEFail();
 
                     case EnvDTE.vsCMPart.vsCMPartBody:
-                        if (node.Body == null ||
+                        if ((node.Body == null) ||
                             node.Body.OpenBraceToken.IsMissing ||
                             node.Body.CloseBraceToken.IsMissing)
                         {
@@ -929,7 +929,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         break;
 
                     case EnvDTE.vsCMPart.vsCMPartNavigate:
-                        if (node.Body != null && !node.Body.CloseBraceToken.IsMissing)
+                        if ((node.Body != null) && !node.Body.CloseBraceToken.IsMissing)
                         {
                             return GetBodyEndPoint(text, node.Body.CloseBraceToken);
                         }
@@ -961,7 +961,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         break;
 
                     case EnvDTE.vsCMPart.vsCMPartBody:
-                        if (node.Body == null || node.Body.OpenBraceToken.IsMissing || node.Body.CloseBraceToken.IsMissing)
+                        if ((node.Body == null) || node.Body.OpenBraceToken.IsMissing || node.Body.CloseBraceToken.IsMissing)
                         {
                             throw Exceptions.ThrowEFail();
                         }
@@ -1021,7 +1021,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                         throw Exceptions.ThrowEFail();
 
                     case EnvDTE.vsCMPart.vsCMPartBody:
-                        if (node.AccessorList != null && !node.AccessorList.CloseBraceToken.IsMissing)
+                        if ((node.AccessorList != null) && !node.AccessorList.CloseBraceToken.IsMissing)
                         {
                             return GetBodyEndPoint(text, node.AccessorList.CloseBraceToken);
                         }
@@ -1058,7 +1058,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
                     case EnvDTE.vsCMPart.vsCMPartBody:
                     case EnvDTE.vsCMPart.vsCMPartNavigate:
-                        if (node.Body == null ||
+                        if ((node.Body == null) ||
                             node.Body.OpenBraceToken.IsMissing ||
                             node.Body.CloseBraceToken.IsMissing)
                         {

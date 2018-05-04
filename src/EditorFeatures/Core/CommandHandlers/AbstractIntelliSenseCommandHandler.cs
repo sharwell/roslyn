@@ -61,9 +61,9 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 
         public void ExecuteCommand(EscapeKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
-            if ((_completionCommandHandler != null && _completionCommandHandler.TryHandleEscapeKey(args)) ||
-                (_signatureHelpCommandHandler != null && _signatureHelpCommandHandler.TryHandleEscapeKey(args)) ||
-                (_quickInfoCommandHandler != null && _quickInfoCommandHandler.TryHandleEscapeKey(args)))
+            if (((_completionCommandHandler != null) && _completionCommandHandler.TryHandleEscapeKey(args)) ||
+                ((_signatureHelpCommandHandler != null) && _signatureHelpCommandHandler.TryHandleEscapeKey(args)) ||
+                ((_quickInfoCommandHandler != null) && _quickInfoCommandHandler.TryHandleEscapeKey(args)))
             {
                 return;
             }
@@ -73,8 +73,8 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 
         public void ExecuteCommand(UpKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
-            if ((_completionCommandHandler != null && _completionCommandHandler.TryHandleUpKey(args)) ||
-                (_signatureHelpCommandHandler != null && _signatureHelpCommandHandler.TryHandleUpKey(args)))
+            if (((_completionCommandHandler != null) && _completionCommandHandler.TryHandleUpKey(args)) ||
+                ((_signatureHelpCommandHandler != null) && _signatureHelpCommandHandler.TryHandleUpKey(args)))
             {
                 return;
             }
@@ -84,8 +84,8 @@ namespace Microsoft.CodeAnalysis.Editor.CommandHandlers
 
         public void ExecuteCommand(DownKeyCommandArgs args, Action nextHandler, CommandExecutionContext context)
         {
-            if ((_completionCommandHandler != null && _completionCommandHandler.TryHandleDownKey(args)) ||
-                (_signatureHelpCommandHandler != null && _signatureHelpCommandHandler.TryHandleDownKey(args)))
+            if (((_completionCommandHandler != null) && _completionCommandHandler.TryHandleDownKey(args)) ||
+                ((_signatureHelpCommandHandler != null) && _signatureHelpCommandHandler.TryHandleDownKey(args)))
             {
                 return;
             }

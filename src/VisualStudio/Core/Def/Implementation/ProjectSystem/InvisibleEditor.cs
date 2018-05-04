@@ -164,7 +164,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                     }
                 }
 
-                if (_needsUndoRestored && _manager != null)
+                if (_needsUndoRestored && (_manager != null))
                 {
                     _manager.Enable(1);
                     _manager = null;

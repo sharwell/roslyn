@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 {
                     var @break = breaks[start];
                     var text = baseName.Substring(@break.Start, @break.Length);
-                    if (pluralize && start == end - 1)
+                    if (pluralize && (start == (end - 1)))
                     {
                         // Pluralize the last word if neccessary
                         result.Add(text.Pluralize());
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             private static string TryRemoveInterfacePrefix(ITypeSymbol type)
             {
                 var name = type.Name;
-                if (type.TypeKind == TypeKind.Interface && name.Length > 1)
+                if ((type.TypeKind == TypeKind.Interface) && (name.Length > 1))
                 {
                     if (CanRemoveInterfacePrefix(name))
                     {
@@ -106,6 +106,6 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             }
         }
 
-        private static bool CanRemoveInterfacePrefix(string name) => name.Length > 1 && name[0] == 'I' && char.IsUpper(name[1]);
+        private static bool CanRemoveInterfacePrefix(string name) => (name.Length > 1) && (name[0] == 'I') && char.IsUpper(name[1]);
     }
 }

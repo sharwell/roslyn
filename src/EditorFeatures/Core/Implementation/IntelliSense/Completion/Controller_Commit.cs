@@ -87,8 +87,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                     //      buffer (unless the items asks us not to).  By doing this, we can make sure
                     //      that things like brace-completion or formatting trigger as we expect them
                     //      to.
-                    var characterWasSentIntoBuffer = commitChar != null &&
-                                                     initialTextSnapshot.Version.VersionNumber != this.SubjectBuffer.CurrentSnapshot.Version.VersionNumber;
+                    var characterWasSentIntoBuffer = (commitChar != null) &&
+                                                     (initialTextSnapshot.Version.VersionNumber != this.SubjectBuffer.CurrentSnapshot.Version.VersionNumber);
                     if (characterWasSentIntoBuffer)
                     {
                         RollbackToBeforeTypeChar(initialTextSnapshot);
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             ITextSnapshot initialTextSnapshot, ITextSnapshot currentSnapshot)
         {
             var version = initialTextSnapshot.Version;
-            while (version != null && version.VersionNumber != currentSnapshot.Version.VersionNumber)
+            while ((version != null) && (version.VersionNumber != currentSnapshot.Version.VersionNumber))
             {
                 yield return version;
                 version = version.Next;
@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             var virtualCaretPoint = this.TextView.Caret.Position.VirtualBufferPosition;
 
             if (textChange.Span.IsEmpty &&
-                textChange.Span.Start == caretPoint &&
+                (textChange.Span.Start == caretPoint) &&
                 virtualCaretPoint.IsInVirtualSpace)
             {
                 // They're in virtual space and the text change is specified against the cursor

@@ -47,14 +47,14 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override bool Equals(object obj)
         {
-            return obj is CSharpTypeInfo && Equals((CSharpTypeInfo)obj);
+            return (obj is CSharpTypeInfo) && Equals((CSharpTypeInfo)obj);
         }
 
         public bool Equals(CSharpTypeInfo other)
         {
             return this.ImplicitConversion.Equals(other.ImplicitConversion)
-                && this.Type == other.Type
-                && this.ConvertedType == other.ConvertedType;
+                && (this.Type == other.Type)
+                && (this.ConvertedType == other.ConvertedType);
         }
 
         public override int GetHashCode()

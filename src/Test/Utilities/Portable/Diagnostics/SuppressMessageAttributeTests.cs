@@ -1222,7 +1222,7 @@ public class C2
 
         protected DiagnosticDescription Diagnostic(string id, string squiggledText)
         {
-            var arguments = this.ConsiderArgumentsForComparingDiagnostics && squiggledText != null
+            var arguments = this.ConsiderArgumentsForComparingDiagnostics && (squiggledText != null)
                 ? new[] { squiggledText }
                 : null;
             return new DiagnosticDescription(id, false, squiggledText, arguments, null, null, false);

@@ -21,12 +21,12 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         {
             // First check for syntactic equivalency.  If two nodes aren't structurally equivalent,
             // then they're not semantically equivalent.
-            if (node1 == null && node2 == null)
+            if ((node1 == null) && (node2 == null))
             {
                 return true;
             }
 
-            if (node1 == null || node2 == null)
+            if ((node1 == null) || (node2 == null))
             {
                 return false;
             }
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 return true;
             }
 
-            if (predicate == null || predicate(node1))
+            if ((predicate == null) || predicate(node1))
             {
                 var info1 = semanticModel1.GetSymbolInfo(node1);
                 var info2 = semanticModel2.GetSymbolInfo(node2);

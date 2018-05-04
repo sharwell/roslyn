@@ -4943,7 +4943,7 @@ public class Program{0}
                     for (int i = 1; i <= nCases; i++)
                     {
                         statement.AppendLine($"    case {Pattern()}:");
-                        if (i == nCases || r.Next(2) == 0)
+                        if ((i == nCases) || (r.Next(2) == 0))
                         {
                             statement.AppendLine($"        break;");
                         }

@@ -88,8 +88,8 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 
             internal override SyntaxNode CreateRed(SyntaxNode parent, int position)
             {
-                var separated = this.SlotCount > 1 && HasNodeTokenPattern();
-                if (parent != null && parent.ShouldCreateWeakList())
+                var separated = (this.SlotCount > 1) && HasNodeTokenPattern();
+                if ((parent != null) && parent.ShouldCreateWeakList())
                 {
                     return separated
                         ? new Syntax.SyntaxList.SeparatedWithManyWeakChildren(this, parent, position)

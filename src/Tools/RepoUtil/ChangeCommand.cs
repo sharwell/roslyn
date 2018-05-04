@@ -44,7 +44,7 @@ namespace RepoUtil
             changes = new List<NuGetPackage>();
             var allGood = true;
             var index = 0;
-            while (index < args.Length && allGood)
+            while ((index < args.Length) && allGood)
             {
                 var arg = args[index];
                 index++;

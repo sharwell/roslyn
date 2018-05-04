@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Diagnostics
         private static DiagnosticAnalyzerService CreateDiagnosticAnalyzerService(
             Dictionary<string, DiagnosticAnalyzer[]> analyzerMap, IAsynchronousOperationListener listener)
         {
-            return analyzerMap == null || analyzerMap.Count == 0
+            return (analyzerMap == null) || (analyzerMap.Count == 0)
                 ? new MyDiagnosticAnalyzerService(DiagnosticExtensions.GetCompilerDiagnosticAnalyzersMap(), listener: listener)
                 : new MyDiagnosticAnalyzerService(analyzerMap.ToImmutableDictionary(kvp => kvp.Key, kvp => kvp.Value.ToImmutableArray()), listener: listener);
         }
@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Diagnostics
         {
             _listenerProvider = workspace.ExportProvider.GetExportedValue<IAsynchronousOperationListenerProvider>();
 
-            if (analyzerMap != null || updateSource == null)
+            if ((analyzerMap != null) || (updateSource == null))
             {
                 AnalyzerService = CreateDiagnosticAnalyzerService(analyzerMap, _listenerProvider.GetListener(FeatureAttribute.DiagnosticService));
             }

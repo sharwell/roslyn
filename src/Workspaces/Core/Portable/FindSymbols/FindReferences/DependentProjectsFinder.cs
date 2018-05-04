@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
             public override bool Equals(object obj)
             {
-                return obj is DependentProject && this.Equals((DependentProject)obj);
+                return (obj is DependentProject) && this.Equals((DependentProject)obj);
             }
 
             public override int GetHashCode()
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
             public bool Equals(DependentProject other)
             {
-                return HasInternalsAccess == other.HasInternalsAccess && ProjectId.Equals(other.ProjectId);
+                return (HasInternalsAccess == other.HasInternalsAccess) && ProjectId.Equals(other.ProjectId);
             }
         }
 
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
         private static async Task AddSubmissionDependentProjectsAsync(Solution solution, Project sourceProject, HashSet<DependentProject> dependentProjects, CancellationToken cancellationToken)
         {
-            var isSubmission = sourceProject != null && sourceProject.IsSubmission;
+            var isSubmission = (sourceProject != null) && sourceProject.IsSubmission;
             if (!isSubmission)
             {
                 return;
@@ -291,7 +291,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
         private static async Task AddNonSubmissionDependentProjectsAsync(IAssemblySymbol sourceAssembly, Solution solution, Project sourceProject, HashSet<DependentProject> dependentProjects, CancellationToken cancellationToken)
         {
-            var isSubmission = sourceProject != null && sourceProject.IsSubmission;
+            var isSubmission = (sourceProject != null) && sourceProject.IsSubmission;
             if (isSubmission)
             {
                 return;
@@ -363,7 +363,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 foreach (var attr in assembly.GetAttributes().Where(IsInternalsVisibleToAttribute))
                 {
                     var typeNameConstant = attr.ConstructorArguments.FirstOrDefault();
-                    if (typeNameConstant.Type == null || typeNameConstant.Type.SpecialType != SpecialType.System_String)
+                    if ((typeNameConstant.Type == null) || (typeNameConstant.Type.SpecialType != SpecialType.System_String))
                     {
                         continue;
                     }

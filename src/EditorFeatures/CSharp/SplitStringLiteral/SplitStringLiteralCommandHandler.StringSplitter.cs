@@ -76,9 +76,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral
 
             private static bool IsInterpolationOpenBrace(SyntaxToken token, int position)
             {
-                return token.Kind() == SyntaxKind.OpenBraceToken &&
+                return (token.Kind() == SyntaxKind.OpenBraceToken) &&
                     token.Parent.IsKind(SyntaxKind.Interpolation) &&
-                    position == token.SpanStart;
+                    (position == token.SpanStart);
             }
 
             protected abstract int StringOpenQuoteLength();
@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral
             {
                 var nodeToReplace = GetNodeToReplace();
 
-                if (CursorPosition <= nodeToReplace.SpanStart || CursorPosition >= nodeToReplace.Span.End)
+                if ((CursorPosition <= nodeToReplace.SpanStart) || (CursorPosition >= nodeToReplace.Span.End))
                 {
                     return null;
                 }

@@ -40,12 +40,12 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is CommandLineReference && base.Equals((CommandLineReference)obj);
+            return (obj is CommandLineReference) && base.Equals((CommandLineReference)obj);
         }
 
         public bool Equals(CommandLineReference other)
         {
-            return _reference == other._reference
+            return (_reference == other._reference)
                 && _properties.Equals(other._properties);
         }
 

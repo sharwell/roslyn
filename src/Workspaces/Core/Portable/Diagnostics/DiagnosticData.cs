@@ -192,16 +192,16 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 return false;
             }
 
-            return Id == other.Id &&
-                    Category == other.Category &&
-                    Message == other.Message &&
-                    Severity == other.Severity &&
-                    WarningLevel == other.WarningLevel &&
-                    IsSuppressed == other.IsSuppressed &&
-                    ProjectId == other.ProjectId &&
-                    DocumentId == other.DocumentId &&
-                    DataLocation?.OriginalStartLine == other?.DataLocation?.OriginalStartLine &&
-                    DataLocation?.OriginalStartColumn == other?.DataLocation?.OriginalStartColumn;
+            return (Id == other.Id) &&
+                    (Category == other.Category) &&
+                    (Message == other.Message) &&
+                    (Severity == other.Severity) &&
+                    (WarningLevel == other.WarningLevel) &&
+                    (IsSuppressed == other.IsSuppressed) &&
+                    (ProjectId == other.ProjectId) &&
+                    (DocumentId == other.DocumentId) &&
+                    (DataLocation?.OriginalStartLine == other?.DataLocation?.OriginalStartLine) &&
+                    (DataLocation?.OriginalStartColumn == other?.DataLocation?.OriginalStartColumn);
         }
 
         public override int GetHashCode()
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         public static DiagnosticData Create(Workspace workspace, Diagnostic diagnostic)
         {
-            Contract.Requires(diagnostic.Location == null || !diagnostic.Location.IsInSource);
+            Contract.Requires((diagnostic.Location == null) || !diagnostic.Location.IsInSource);
 
             return new DiagnosticData(
                 diagnostic.Id,
@@ -354,7 +354,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
         public static DiagnosticData Create(Project project, Diagnostic diagnostic)
         {
-            Contract.Requires(diagnostic.Location == null || !diagnostic.Location.IsInSource);
+            Contract.Requires((diagnostic.Location == null) || !diagnostic.Location.IsInSource);
 
             return new DiagnosticData(
                 diagnostic.Id,
@@ -533,7 +533,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
         internal bool IsBuildDiagnostic()
         {
             return this.Properties.TryGetValue(WellKnownDiagnosticPropertyNames.Origin, out var value) &&
-                value == WellKnownDiagnosticTags.Build;
+                (value == WellKnownDiagnosticTags.Build);
         }
     }
 }

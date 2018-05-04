@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return _kind == LookupResultKind.Empty && _error == null && _symbolList.Count == 0;
+                return (_kind == LookupResultKind.Empty) && (_error == null) && (_symbolList.Count == 0);
             }
         }
 
@@ -144,7 +144,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             get
             {
-                return Kind == LookupResultKind.Viable && _symbolList.Count == 1;
+                return (Kind == LookupResultKind.Viable) && (_symbolList.Count == 1);
             }
         }
 

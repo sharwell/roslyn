@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                 Contract.ThrowIfFalse(_signatureMap.TryGetKey((Signature)eventArgs.NewSelectedSignature, out var helpItem));
 
                 var helpItemSelected = this.ItemSelected;
-                if (helpItemSelected != null && helpItem != null)
+                if ((helpItemSelected != null) && (helpItem != null))
                 {
                     helpItemSelected(this, new SignatureHelpItemEventArgs(helpItem));
                 }
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.SignatureHel
                     ? _editorSessionOpt.Presenter as IIntellisenseCommandTarget
                     : null;
 
-                return target != null && target.ExecuteKeyboardCommand(command);
+                return (target != null) && target.ExecuteKeyboardCommand(command);
             }
 
             public void SelectPreviousItem()

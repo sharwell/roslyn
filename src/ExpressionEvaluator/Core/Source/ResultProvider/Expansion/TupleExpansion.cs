@@ -228,7 +228,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 Debug.Assert(name != null);
                 Debug.Assert(declaringTypeAndInfo.Type.Equals(fieldInfo.DeclaringType));
                 Debug.Assert(fieldTypeAndInfo.Type.Equals(fieldInfo.FieldType));
-                Debug.Assert(parent == null || parent.FieldInfo.FieldType.Equals(fieldInfo.DeclaringType));
+                Debug.Assert((parent == null) || parent.FieldInfo.FieldType.Equals(fieldInfo.DeclaringType));
 
                 DeclaringTypeAndInfo = declaringTypeAndInfo;
                 FieldTypeAndInfo = fieldTypeAndInfo;

@@ -142,7 +142,7 @@ namespace Microsoft.CodeAnalysis.ReplacePropertyWithMethods
 
         private bool HasAnyMatchingGetMethods(IPropertySymbol property, string name)
         {
-            return property.GetMethod != null &&
+            return (property.GetMethod != null) &&
                    property.ContainingType.GetMembers(GetPrefix + name)
                                           .OfType<IMethodSymbol>()
                                           .Any(m => m.Parameters.Length == 0);
@@ -151,11 +151,11 @@ namespace Microsoft.CodeAnalysis.ReplacePropertyWithMethods
         private bool HasAnyMatchingSetMethods(IPropertySymbol property, string name)
         {
             var comparer = SymbolEquivalenceComparer.Instance.SignatureTypeEquivalenceComparer;
-            return property.SetMethod != null &&
+            return (property.SetMethod != null) &&
                    property.ContainingType
                           .GetMembers(SetPrefix + name)
                           .OfType<IMethodSymbol>()
-                          .Any(m => m.Parameters.Length == 1 &&
+                          .Any(m => (m.Parameters.Length == 1) &&
                                     comparer.Equals(m.Parameters[0].Type, property.Type));
         }
 
@@ -404,7 +404,7 @@ namespace Microsoft.CodeAnalysis.ReplacePropertyWithMethods
                 var property = GetSymbolInCurrentCompilation(compilation, originalDefinition, cancellationToken);
                 var declaration = await GetPropertyDeclarationAsync(property, cancellationToken).ConfigureAwait(false);
 
-                if (declaration != null && updatedSolution.GetDocument(declaration.SyntaxTree)?.Id == documentId)
+                if ((declaration != null) && (updatedSolution.GetDocument(declaration.SyntaxTree)?.Id == documentId))
                 {
                     result.Add((property, declaration));
                 }

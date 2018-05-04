@@ -100,7 +100,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
                                            .ToImmutableArray();
 
             if (!object.ReferenceEquals(oldSelectedHierarchy, this.SelectedHierarchy) ||
-                oldSelectedItemId != this.SelectedItemId)
+                (oldSelectedItemId != this.SelectedItemId))
             {
                 this.SelectedHierarchyItemChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
                 return Array.Empty<object>();
             }
 
-            if (selectionContainer.CountObjects((uint)Constants.GETOBJS_SELECTED, out var selectedObjectCount) < 0 || selectedObjectCount == 0)
+            if ((selectionContainer.CountObjects((uint)Constants.GETOBJS_SELECTED, out var selectedObjectCount) < 0) || (selectedObjectCount == 0))
             {
                 return Array.Empty<object>();
             }

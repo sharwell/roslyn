@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentNullException(nameof(searchPaths));
             }
 
-            if (baseDirectory != null && PathUtilities.GetPathKind(baseDirectory) != PathKind.Absolute)
+            if ((baseDirectory != null) && (PathUtilities.GetPathKind(baseDirectory) != PathKind.Absolute))
             {
                 throw new ArgumentException(CodeAnalysisResources.AbsolutePathExpected, nameof(baseDirectory));
             }
@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis
                 foreach (var kv in pathMap)
                 {
                     var key = kv.Key;
-                    if (key == null || key.Length == 0)
+                    if ((key == null) || (key.Length == 0))
                     {
                         throw new ArgumentException(CodeAnalysisResources.EmptyKeyInPathMap, nameof(pathMap));
                     }
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis
         public override string NormalizePath(string path, string baseFilePath)
         {
             string normalizedPath = FileUtilities.NormalizeRelativePath(path, baseFilePath, _baseDirectory);
-            return (normalizedPath == null || _pathMap.IsDefaultOrEmpty) ? normalizedPath : PathUtilities.NormalizePathPrefix(normalizedPath, _pathMap);
+            return ((normalizedPath == null) || _pathMap.IsDefaultOrEmpty) ? normalizedPath : PathUtilities.NormalizePathPrefix(normalizedPath, _pathMap);
         }
 
         public override string ResolveReference(string path, string baseFilePath)
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis
         public override bool Equals(object obj)
         {
             // Explicitly check that we're not comparing against a derived type
-            if (obj == null || GetType() != obj.GetType())
+            if ((obj == null) || (GetType() != obj.GetType()))
             {
                 return false;
             }

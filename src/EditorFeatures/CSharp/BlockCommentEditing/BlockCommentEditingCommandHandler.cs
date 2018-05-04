@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.BlockCommentEditing
                     //      /*|*/
                     return " ";
                 }
-                else if (caretPosition == firstNonWhitespacePosition + 1)
+                else if (caretPosition == (firstNonWhitespacePosition + 1))
                 {
                     //      /|*
                     return null; // The newline inserted could break the syntax in a way that this handler cannot fix, let's leave it.
@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.BlockCommentEditing
                     //      |*/
                     return " ";
                 }
-                else if (caretPosition == firstNonWhitespacePosition + 1)
+                else if (caretPosition == (firstNonWhitespacePosition + 1))
                 {
                     //      *|/
                     return "*";
@@ -118,18 +118,18 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.BlockCommentEditing
         private static bool BlockCommentEndsRightAfterCaret(SnapshotPoint caretPosition)
         {
             var snapshot = caretPosition.Snapshot;
-            return ((int)caretPosition + 2 <= snapshot.Length) ? snapshot.GetText(caretPosition, 2) == "*/" : false;
+            return (((int)caretPosition + 2) <= snapshot.Length) ? snapshot.GetText(caretPosition, 2) == "*/" : false;
         }
 
         private static string GetPaddingOrIndentation(ITextSnapshotLine currentLine, int caretPosition, int firstNonWhitespacePosition, string exteriorText)
         {
-            Debug.Assert(caretPosition >= firstNonWhitespacePosition + exteriorText.Length);
+            Debug.Assert(caretPosition >= (firstNonWhitespacePosition + exteriorText.Length));
 
             var firstNonWhitespaceOffset = firstNonWhitespacePosition - currentLine.Start;
             Debug.Assert(firstNonWhitespaceOffset > -1);
 
             var lineText = currentLine.GetText();
-            if (lineText.Length == firstNonWhitespaceOffset + exteriorText.Length)
+            if (lineText.Length == (firstNonWhitespaceOffset + exteriorText.Length))
             {
                 //     *|
                 return " ";
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.BlockCommentEditing
             }
 
             var interiorFirstWhitespacePosition = firstNonWhitespacePosition + exteriorText.Length;
-            if (interiorFirstNonWhitespaceOffset == -1 || caretPosition <= interiorFirstWhitespacePosition + interiorFirstNonWhitespaceOffset)
+            if ((interiorFirstNonWhitespaceOffset == -1) || (caretPosition <= (interiorFirstWhitespacePosition + interiorFirstNonWhitespaceOffset)))
             {
                 // *  |
                 // or
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.BlockCommentEditing
             if (isBlockComment)
             {
                 var span = trivia.FullSpan;
-                if (span.Start < caretPosition && caretPosition < span.End)
+                if ((span.Start < caretPosition) && (caretPosition < span.End))
                 {
                     return true;
                 }

@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             {
                 var thatPEAssembly = that as Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE.PEAssemblySymbol;
 
-                return thatPEAssembly != null &&
+                return (thatPEAssembly != null) &&
                     ReferenceEquals(thisPEAssembly.Assembly, thatPEAssembly.Assembly) && @this.HasUnresolvedReferencesByComparisonTo(that);
             }
 
@@ -132,7 +132,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
                 var thatSourceAssembly = that as SourceAssemblySymbol;
 
-                return thatSourceAssembly != null && ReferenceEquals(thisRetargetingAssembly.UnderlyingAssembly, thatSourceAssembly) &&
+                return (thatSourceAssembly != null) && ReferenceEquals(thisRetargetingAssembly.UnderlyingAssembly, thatSourceAssembly) &&
                     @this.HasUnresolvedReferencesByComparisonTo(that);
             }
 
@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             var parts = SplitMemberName(qualifiedName);
 
             lastContainer = container;
-            for (int i = 0; i < parts.Length - 1; i++)
+            for (int i = 0; i < (parts.Length - 1); i++)
             {
                 var nestedContainer = (NamespaceOrTypeSymbol)lastContainer.GetMember(parts[i]);
                 if (nestedContainer == null)
@@ -330,7 +330,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                     }
 
                     // TODO: improve the comparison mechanism for generic types.
-                    if (typeSym.Kind == SymbolKind.NamedType &&
+                    if ((typeSym.Kind == SymbolKind.NamedType) &&
                         ((NamedTypeSymbol)typeSym).IsGenericType)
                     {
                         var s1 = typeSym.ToDisplayString(SymbolDisplayFormat.TestFormat);
@@ -359,7 +359,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
         {
             // namedType
 
-            if (typeSym.TypeKind == TypeKind.Interface || typeSym.TypeKind == TypeKind.Class || typeSym.TypeKind == TypeKind.Struct || typeSym.TypeKind == TypeKind.Delegate)
+            if ((typeSym.TypeKind == TypeKind.Interface) || (typeSym.TypeKind == TypeKind.Class) || (typeSym.TypeKind == TypeKind.Struct) || (typeSym.TypeKind == TypeKind.Delegate))
             {
                 NamedTypeSymbol namedType = (NamedTypeSymbol)typeSym;
                 // name should be same if it's not generic (NO ByRef in attribute)
@@ -391,7 +391,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                     return false;
                 }
 
-                for (var i = 0; i <= expArgs.Count() - 1; i++)
+                for (var i = 0; i <= (expArgs.Count() - 1); i++)
                 {
                     if (!IsEqual(actArgs[i], expArgs[i]))
                     {
@@ -441,7 +441,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
             var a = (Array)o;
             bool ret = true;
-            for (var i = 0; i <= a.Length - 1; i++)
+            for (var i = 0; i <= (a.Length - 1); i++)
             {
                 var v = a.GetValue(i);
                 var c = tc[i];
@@ -531,23 +531,23 @@ internal static class Extensions
         // NOTE: Do not add types to this condition unless you have verified that there is an overload of SemanticModel.GetDeclaredSymbol
         //       that supports the type you're adding.
         if (!(
-            declaration is AnonymousObjectCreationExpressionSyntax ||
-            declaration is AnonymousObjectMemberDeclaratorSyntax ||
-            declaration is BaseTypeDeclarationSyntax ||
-            declaration is CatchDeclarationSyntax ||
-            declaration is ExternAliasDirectiveSyntax ||
-            declaration is ForEachStatementSyntax ||
-            declaration is JoinIntoClauseSyntax ||
-            declaration is LabeledStatementSyntax ||
-            declaration is MemberDeclarationSyntax ||
-            declaration is NamespaceDeclarationSyntax ||
-            declaration is ParameterSyntax ||
-            declaration is QueryClauseSyntax ||
-            declaration is QueryContinuationSyntax ||
-            declaration is SwitchLabelSyntax ||
-            declaration is TypeParameterSyntax ||
-            declaration is UsingDirectiveSyntax ||
-            declaration is VariableDeclaratorSyntax))
+            (declaration is AnonymousObjectCreationExpressionSyntax) ||
+            (declaration is AnonymousObjectMemberDeclaratorSyntax) ||
+            (declaration is BaseTypeDeclarationSyntax) ||
+            (declaration is CatchDeclarationSyntax) ||
+            (declaration is ExternAliasDirectiveSyntax) ||
+            (declaration is ForEachStatementSyntax) ||
+            (declaration is JoinIntoClauseSyntax) ||
+            (declaration is LabeledStatementSyntax) ||
+            (declaration is MemberDeclarationSyntax) ||
+            (declaration is NamespaceDeclarationSyntax) ||
+            (declaration is ParameterSyntax) ||
+            (declaration is QueryClauseSyntax) ||
+            (declaration is QueryContinuationSyntax) ||
+            (declaration is SwitchLabelSyntax) ||
+            (declaration is TypeParameterSyntax) ||
+            (declaration is UsingDirectiveSyntax) ||
+            (declaration is VariableDeclaratorSyntax)))
         {
             throw new NotSupportedException("This node type is not supported.");
         }

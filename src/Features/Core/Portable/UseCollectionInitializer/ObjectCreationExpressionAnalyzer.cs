@@ -200,7 +200,7 @@ namespace Microsoft.CodeAnalysis.UseCollectionInitializer
             _syntaxFacts.GetPartsOfMemberAccessExpression(memberAccess, out var localInstance, out var memberName);
             _syntaxFacts.GetNameAndArityOfSimpleName(memberName, out var name, out var arity);
 
-            if (arity != 0 || !name.Equals(nameof(IList.Add)))
+            if ((arity != 0) || !name.Equals(nameof(IList.Add)))
             {
                 return false;
             }

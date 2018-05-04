@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                 {
                     var workspace = kv.Key;
                     var coordinator = kv.Value;
-                    if (!TryGetProvider(workspace.Kind, lazyProviders, out var picked) || picked != lazyProvider)
+                    if (!TryGetProvider(workspace.Kind, lazyProviders, out var picked) || (picked != lazyProvider))
                     {
                         // check whether new provider belong to current workspace
                         continue;
@@ -132,7 +132,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                 }
 
                 // no specific projects or documents provided
-                if (projectIds == null && documentIds == null)
+                if ((projectIds == null) && (documentIds == null))
                 {
                     coordinator.Reanalyze(analyzer, new ReanalyzeScope(workspace.CurrentSolution.Id), highPriority);
                     return;
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
         private static bool IsDefaultProvider(IncrementalAnalyzerProviderMetadata providerMetadata)
         {
-            return providerMetadata.WorkspaceKinds == null || providerMetadata.WorkspaceKinds.Length == 0;
+            return (providerMetadata.WorkspaceKinds == null) || (providerMetadata.WorkspaceKinds.Length == 0);
         }
 
         private class Registration

@@ -62,9 +62,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.L
 
         int IVsHierarchyEvents.OnPropertyChanged(uint itemid, int propid, uint flags)
         {
-            if ((propid == (int)__VSHPROPID.VSHPROPID_Caption ||
-                 propid == (int)__VSHPROPID.VSHPROPID_Name) &&
-                itemid == (uint)VSConstants.VSITEMID.Root)
+            if (((propid == (int)__VSHPROPID.VSHPROPID_Caption) ||
+                 (propid == (int)__VSHPROPID.VSHPROPID_Name)) &&
+                (itemid == (uint)VSConstants.VSITEMID.Root))
             {
                 string newDisplayName = GetProjectDisplayName(Hierarchy);
                 string newPath = GetProjectFilePath(Hierarchy);
@@ -73,7 +73,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.L
             }
 
             if ((propid == (int)__VSHPROPID.VSHPROPID_ProjectIDGuid) &&
-                 itemid == (uint)VSConstants.VSITEMID.Root)
+                 (itemid == (uint)VSConstants.VSITEMID.Root))
             {
                 // this should happen while project loading if it ever happens
                 Guid = GetProjectIDGuid(Hierarchy);

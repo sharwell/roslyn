@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 indexerGet = (MethodSymbol)_factory.WellKnownMember(WellKnownMember.System_ReadOnlySpan_T__get_Item, isOptional: true)?.SymbolAsMember(spanType);
             }
 
-            return (object)lengthGet != null && (object)indexerGet != null;
+            return ((object)lengthGet != null) && ((object)indexerGet != null);
         }
 
         /// <summary>

@@ -127,7 +127,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
 
                 case ObjectListKind.Hierarchy:
                     var parentKind = this.ParentKind;
-                    categoryField = parentKind == ObjectListKind.Types || parentKind == ObjectListKind.BaseTypes
+                    categoryField = (parentKind == ObjectListKind.Types) || (parentKind == ObjectListKind.BaseTypes)
                         ? (uint)_LIB_LISTTYPE.LLT_CLASSES
                         : (uint)_LIB_LISTTYPE.LLT_PACKAGE;
 
@@ -144,7 +144,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                 case ObjectListKind.Projects:
                     categoryField = (uint)_LIB_LISTTYPE.LLT_NAMESPACES | (uint)_LIB_LISTTYPE.LLT_CLASSES;
 
-                    if (IsClassView() && this.ParentKind == ObjectListKind.None)
+                    if (IsClassView() && (this.ParentKind == ObjectListKind.None))
                     {
                         categoryField |= (uint)_LIB_LISTTYPE.LLT_HIERARCHY;
                     }
@@ -446,7 +446,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                 return false;
             }
 
-            if (typeSymbol.TypeKind == TypeKind.Interface && typeSymbol.Interfaces.IsEmpty)
+            if ((typeSymbol.TypeKind == TypeKind.Interface) && typeSymbol.Interfaces.IsEmpty)
             {
                 return false;
             }
@@ -617,9 +617,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
             {
                 var name = GetText(i, VSTREETEXTOPTIONS.TTO_DISPLAYTEXT);
 
-                if (_kind == ObjectListKind.Types ||
-                    _kind == ObjectListKind.Namespaces ||
-                    _kind == ObjectListKind.Members)
+                if ((_kind == ObjectListKind.Types) ||
+                    (_kind == ObjectListKind.Namespaces) ||
+                    (_kind == ObjectListKind.Members))
                 {
                     if (string.Equals(matchName, name, StringComparison.Ordinal))
                     {

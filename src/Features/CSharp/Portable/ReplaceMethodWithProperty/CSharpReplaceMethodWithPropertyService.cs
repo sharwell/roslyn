@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
 
             // Offer this refactoring anywhere in the signature of the method.
             var position = token.SpanStart;
-            if (position < start || position > containingMethod.ParameterList.Span.End)
+            if ((position < start) || (position > containingMethod.ParameterList.Span.End))
             {
                 return null;
             }
@@ -80,8 +80,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
             var expressionBodyPreference = documentOptions.GetOption(CSharpCodeStyleOptions.PreferExpressionBodiedProperties).Value;
             if (expressionBodyPreference != ExpressionBodyPreference.Never)
             {
-                if (propertyDeclaration.AccessorList?.Accessors.Count == 1 &&
-                    propertyDeclaration.AccessorList?.Accessors[0].Kind() == SyntaxKind.GetAccessorDeclaration)
+                if ((propertyDeclaration.AccessorList?.Accessors.Count == 1) &&
+                    (propertyDeclaration.AccessorList?.Accessors[0].Kind() == SyntaxKind.GetAccessorDeclaration))
                 {
                     var getAccessor = propertyDeclaration.AccessorList.Accessors[0];
                     if (getAccessor.ExpressionBody != null)
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
                                                   .WithSemicolonToken(getAccessor.SemicolonToken)
                                                   .WithAccessorList(null);
                     }
-                    else if (getAccessor.Body != null &&
+                    else if ((getAccessor.Body != null) &&
                              getAccessor.Body.TryConvertToExpressionBody(
                                  propertyDeclaration.Kind(), parseOptions, expressionBodyPreference,
                                  out var arrowExpression, out var semicolonToken))
@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
             }
             else
             {
-                if (propertyDeclaration.ExpressionBody != null &&
+                if ((propertyDeclaration.ExpressionBody != null) &&
                     propertyDeclaration.ExpressionBody.TryConvertToBlock(
                         propertyDeclaration.SemicolonToken,
                         createReturnStatementForExpression: true,
@@ -179,7 +179,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
             AccessorDeclarationSyntax accessorDeclaration)
         {
             var expressionBodyPreference = documentOptions.GetOption(CSharpCodeStyleOptions.PreferExpressionBodiedAccessors).Value;
-            if (accessorDeclaration?.Body != null && expressionBodyPreference != ExpressionBodyPreference.Never)
+            if ((accessorDeclaration?.Body != null) && (expressionBodyPreference != ExpressionBodyPreference.Never))
             {
                 if (accessorDeclaration.Body.TryConvertToExpressionBody(
                         accessorDeclaration.Kind(), parseOptions, expressionBodyPreference,
@@ -191,7 +191,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
                                               .WithAdditionalAnnotations(Formatter.Annotation);
                 }
             }
-            else if (accessorDeclaration?.ExpressionBody != null && expressionBodyPreference == ExpressionBodyPreference.Never)
+            else if ((accessorDeclaration?.ExpressionBody != null) && (expressionBodyPreference == ExpressionBodyPreference.Never))
             {
                 if (accessorDeclaration.ExpressionBody.TryConvertToBlock(
                         accessorDeclaration.SemicolonToken,
@@ -246,7 +246,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
         {
             var setMethodDeclaration = getAndSetMethods.SetMethodDeclaration as MethodDeclarationSyntax;
             var setMethod = getAndSetMethods.SetMethod;
-            if (setMethodDeclaration == null || setMethod?.Parameters.Length != 1)
+            if ((setMethodDeclaration == null) || (setMethod?.Parameters.Length != 1))
             {
                 return null;
             }
@@ -327,8 +327,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
         private static Action<SyntaxEditor, InvocationExpressionSyntax, SimpleNameSyntax, SimpleNameSyntax> s_replaceSetReferenceInvocation =
             (editor, invocation, nameNode, newName) =>
             {
-                if (invocation.ArgumentList?.Arguments.Count != 1 ||
-                    invocation.ArgumentList.Arguments[0].Expression.Kind() == SyntaxKind.DeclarationExpression)
+                if ((invocation.ArgumentList?.Arguments.Count != 1) ||
+                    (invocation.ArgumentList.Arguments[0].Expression.Kind() == SyntaxKind.DeclarationExpression))
                 {
                     var annotation = ConflictAnnotation.Create(FeaturesResources.Only_methods_with_a_single_argument_which_is_not_an_out_variable_declaration_can_be_replaced_with_a_property);
                     editor.ReplaceNode(nameNode, newName.WithIdentifier(newName.Identifier.WithAdditionalAnnotations(annotation)));
@@ -401,7 +401,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeRefactorings.ReplaceMethodWithProper
                 return true;
             }
 
-            if (nameNode.IsAnyMemberAccessExpressionName() && nameNode.Parent == invocationExpression)
+            if (nameNode.IsAnyMemberAccessExpressionName() && (nameNode.Parent == invocationExpression))
             {
                 return true;
             }

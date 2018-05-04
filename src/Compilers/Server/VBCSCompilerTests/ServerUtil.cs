@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer.UnitTests
 
             // The contract of this function is that it will return once the server has started.  Spin here until
             // we can verify the server has started or simply failed to start.
-            while (BuildServerConnection.WasServerMutexOpen(mutexName) != true && thread.IsAlive)
+            while ((BuildServerConnection.WasServerMutexOpen(mutexName) != true) && thread.IsAlive)
             {
                 Thread.Yield();
             }

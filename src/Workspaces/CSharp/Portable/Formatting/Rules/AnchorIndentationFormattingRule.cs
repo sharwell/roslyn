@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             {
                 // if it is not nested block, then its anchor will be first token that this block is
                 // associated with. otherwise, "{" of block is the anchor token its children would follow
-                if (block.Parent == null || block.Parent is BlockSyntax)
+                if ((block.Parent == null) || (block.Parent is BlockSyntax))
                 {
                     AddAnchorIndentationOperation(list, block);
                     return;

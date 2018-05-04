@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
             ImmutableDictionary<DiagnosticAnalyzer, DiagnosticAnalysisResult> oldResult,
             ImmutableDictionary<DiagnosticAnalyzer, DiagnosticAnalysisResult> newResult)
         {
-            if (oldResult.Count == 0 && newResult.Count == 0)
+            if ((oldResult.Count == 0) && (newResult.Count == 0))
             {
                 // there is nothing to update
                 return;
@@ -460,7 +460,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     foreach (var analyzer in analyzerDriverOpt.Analyzers)
                     {
                         var telemetryInfo = await analyzerDriverOpt.GetAnalyzerTelemetryInfoAsync(analyzer, cancellationToken).ConfigureAwait(false);
-                        if (!containsData && telemetryInfo.ExecutionTime.Ticks > 0)
+                        if (!containsData && (telemetryInfo.ExecutionTime.Ticks > 0))
                         {
                             // this is unfortunate tweak due to how GetAnalyzerTelemetryInfoAsync works when analyzers are asked
                             // one by one rather than in bulk.

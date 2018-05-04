@@ -75,7 +75,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldAttribute != null && newAttribute != null);
+                Debug.Assert((oldAttribute != null) && (newAttribute != null));
 
                 bool same = true;
 
@@ -97,7 +97,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
             private bool CompareAttributeArguments(AttributeArgumentListSyntax oldAttributeArguments, AttributeArgumentListSyntax newAttributeArguments)
             {
-                if (oldAttributeArguments == null || newAttributeArguments == null)
+                if ((oldAttributeArguments == null) || (newAttributeArguments == null))
                 {
                     return oldAttributeArguments == newAttributeArguments;
                 }
@@ -131,7 +131,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
             private bool CompareExpressions(ExpressionSyntax oldExpression, ExpressionSyntax newExpression)
             {
-                if (oldExpression == null || newExpression == null)
+                if ((oldExpression == null) || (newExpression == null))
                 {
                     return oldExpression == newExpression;
                 }
@@ -204,7 +204,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
             private bool CompareParameters(ParameterSyntax oldParameter, ParameterSyntax newParameter, SyntaxNode newNodeParent, CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldParameter != null && newParameter != null);
+                Debug.Assert((oldParameter != null) && (newParameter != null));
 
                 bool same = true;
 
@@ -231,7 +231,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldMember != null && newMember != null);
+                Debug.Assert((oldMember != null) && (newMember != null));
 
                 // If the kind doesn't match, it has to be a remove/add.
                 if (oldMember.Kind() != newMember.Kind())
@@ -242,8 +242,8 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                     return false;
                 }
 
-                if (oldMember is BaseTypeDeclarationSyntax ||
-                    oldMember is DelegateDeclarationSyntax)
+                if ((oldMember is BaseTypeDeclarationSyntax) ||
+                    (oldMember is DelegateDeclarationSyntax))
                 {
                     return CompareTypeDeclarations(oldMember, newMember, newNodeParent, eventQueue);
                 }
@@ -273,7 +273,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldEnumMember != null && newEnumMember != null);
+                Debug.Assert((oldEnumMember != null) && (newEnumMember != null));
 
                 bool same = true;
 
@@ -300,7 +300,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldProperty != null && newProperty != null);
+                Debug.Assert((oldProperty != null) && (newProperty != null));
 
                 bool same = true;
 
@@ -353,7 +353,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldVariableDeclarator != null && newVariableDeclarator != null);
+                Debug.Assert((oldVariableDeclarator != null) && (newVariableDeclarator != null));
 
                 if (!StringComparer.Ordinal.Equals(CodeModelService.GetName(oldVariableDeclarator), CodeModelService.GetName(newVariableDeclarator)))
                 {
@@ -370,7 +370,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldField != null && newField != null);
+                Debug.Assert((oldField != null) && (newField != null));
 
                 bool same = true;
                 same &= CompareChildren(
@@ -412,7 +412,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldMethod != null && newMethod != null);
+                Debug.Assert((oldMethod != null) && (newMethod != null));
 
                 if (!StringComparer.Ordinal.Equals(CodeModelService.GetName(oldMethod), CodeModelService.GetName(newMethod)))
                 {
@@ -474,7 +474,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldNamespace != null && newNamespace != null);
+                Debug.Assert((oldNamespace != null) && (newNamespace != null));
 
                 // Check if the namespace nodes are identical w.r.t Name
                 if (!CompareNames(oldNamespace.Name, newNamespace.Name))
@@ -511,9 +511,9 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                 SyntaxNode newNodeParent,
                 CodeModelEventQueue eventQueue)
             {
-                Debug.Assert(oldMember != null && newMember != null);
-                Debug.Assert(oldMember is BaseTypeDeclarationSyntax || oldMember is DelegateDeclarationSyntax);
-                Debug.Assert(newMember is BaseTypeDeclarationSyntax || newMember is DelegateDeclarationSyntax);
+                Debug.Assert((oldMember != null) && (newMember != null));
+                Debug.Assert((oldMember is BaseTypeDeclarationSyntax) || (oldMember is DelegateDeclarationSyntax));
+                Debug.Assert((newMember is BaseTypeDeclarationSyntax) || (newMember is DelegateDeclarationSyntax));
 
                 // If the kind doesn't match, it has to be a remove/add.
                 if (oldMember.Kind() != newMember.Kind())
@@ -662,8 +662,8 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
                     return false;
                 }
 
-                if (oldNamespaceOrType is BaseTypeDeclarationSyntax ||
-                    oldNamespaceOrType is DelegateDeclarationSyntax)
+                if ((oldNamespaceOrType is BaseTypeDeclarationSyntax) ||
+                    (oldNamespaceOrType is DelegateDeclarationSyntax))
                 {
                     return CompareTypeDeclarations(oldNamespaceOrType, newNamespaceOrType, newNodeParent, eventQueue);
                 }
@@ -677,12 +677,12 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
 
             private bool CompareBaseLists(BaseTypeDeclarationSyntax oldType, BaseTypeDeclarationSyntax newType)
             {
-                if (oldType.BaseList == null && newType.BaseList == null)
+                if ((oldType.BaseList == null) && (newType.BaseList == null))
                 {
                     return true;
                 }
 
-                if (oldType.BaseList != null && newType.BaseList != null)
+                if ((oldType.BaseList != null) && (newType.BaseList != null))
                 {
                     var oldTypes = oldType.BaseList.Types;
                     var newTypes = newType.BaseList.Types;
@@ -778,7 +778,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel
             private bool CompareTypes(TypeSyntax oldType, TypeSyntax newType)
             {
                 // Type nodes can be NULL for ctor/dtor/operators ...
-                if (oldType == null || newType == null)
+                if ((oldType == null) || (newType == null))
                 {
                     return oldType == newType;
                 }

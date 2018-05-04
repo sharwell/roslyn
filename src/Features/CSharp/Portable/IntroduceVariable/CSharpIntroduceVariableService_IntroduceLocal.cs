@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.IntroduceVariable
 
             var delegateType = document.SemanticModel.GetTypeInfo(oldLambda, cancellationToken).ConvertedType as INamedTypeSymbol;
 
-            var newBody = delegateType != null && delegateType.DelegateInvokeMethod != null && delegateType.DelegateInvokeMethod.ReturnsVoid
+            var newBody = (delegateType != null) && (delegateType.DelegateInvokeMethod != null) && delegateType.DelegateInvokeMethod.ReturnsVoid
                 ? SyntaxFactory.Block(declarationStatement)
                 : SyntaxFactory.Block(declarationStatement, SyntaxFactory.ReturnStatement(rewrittenBody));
 
@@ -152,7 +152,7 @@ namespace Microsoft.CodeAnalysis.CSharp.IntroduceVariable
 
         private bool CanUseVar(ITypeSymbol typeSymbol)
         {
-            return typeSymbol.TypeKind != TypeKind.Delegate
+            return (typeSymbol.TypeKind != TypeKind.Delegate)
                 && !typeSymbol.IsErrorType()
                 && !typeSymbol.IsFormattableString();
         }
@@ -303,7 +303,7 @@ namespace Microsoft.CodeAnalysis.CSharp.IntroduceVariable
                     nextStatement.WithoutLeadingTrivia() });
         }
 
-        private static bool IsBlockLike(SyntaxNode node) => node is BlockSyntax || node is SwitchSectionSyntax;
+        private static bool IsBlockLike(SyntaxNode node) => (node is BlockSyntax) || (node is SwitchSectionSyntax);
 
         private static SyntaxList<StatementSyntax> GetStatements(SyntaxNode blockLike) =>
             blockLike is BlockSyntax block ? block.Statements :

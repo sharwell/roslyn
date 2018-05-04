@@ -138,25 +138,25 @@ namespace Roslyn.Utilities
         {
             // Invariant #1: thou shalt never have an asynchronous computation running without it
             // being considered a computation
-            Contract.ThrowIfTrue(_asynchronousComputationCancellationSource != null &&
+            Contract.ThrowIfTrue((_asynchronousComputationCancellationSource != null) &&
                                  !_computationActive);
 
             // Invariant #2: thou shalt never waste memory holding onto empty HashSets
-            Contract.ThrowIfTrue(_requests != null &&
-                                 _requests.Count == 0);
+            Contract.ThrowIfTrue((_requests != null) &&
+                                 (_requests.Count == 0));
 
             // Invariant #3: thou shalt never have an request if there is not
             // something trying to compute it
-            Contract.ThrowIfTrue(_requests != null &&
+            Contract.ThrowIfTrue((_requests != null) &&
                                  !_computationActive);
 
             // Invariant #4: thou shalt never have a cached value and any computation function
-            Contract.ThrowIfTrue(_cachedResult != null &&
-                                 (_synchronousComputeFunction != null || _asynchronousComputeFunction != null));
+            Contract.ThrowIfTrue((_cachedResult != null) &&
+                                 ((_synchronousComputeFunction != null) || (_asynchronousComputeFunction != null)));
 
             // Invariant #5: thou shalt never have a synchronous computation function but not an
             // asynchronous one
-            Contract.ThrowIfTrue(_asynchronousComputeFunction == null && _synchronousComputeFunction != null);
+            Contract.ThrowIfTrue((_asynchronousComputeFunction == null) && (_synchronousComputeFunction != null));
         }
 
         #endregion
@@ -393,7 +393,7 @@ namespace Roslyn.Utilities
                     // Note: we want to do this before we do the .ContinueWith below. That way, 
                     // when the async call to CompleteWithTask runs, it sees that we've already
                     // completed and can bail immediately. 
-                    if (requestToCompleteSynchronously != null && task.IsCompleted)
+                    if ((requestToCompleteSynchronously != null) && task.IsCompleted)
                     {
                         using (TakeLock(CancellationToken.None))
                         {
@@ -480,7 +480,7 @@ namespace Roslyn.Utilities
             }
             else
             {
-                if (_cacheResult && task.Status == TaskStatus.RanToCompletion)
+                if (_cacheResult && (task.Status == TaskStatus.RanToCompletion))
                 {
                     // Hold onto the completed task. We can get rid of the computation functions for good
                     _cachedResult = task;

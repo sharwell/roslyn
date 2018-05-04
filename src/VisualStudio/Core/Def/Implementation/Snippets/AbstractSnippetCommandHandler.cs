@@ -260,7 +260,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
             while (startPosition > 0)
             {
                 char c = currentText[startPosition - 1];
-                if (!syntaxFactsService.IsIdentifierPartCharacter(c) && c != '#' && c != '~')
+                if (!syntaxFactsService.IsIdentifierPartCharacter(c) && (c != '#') && (c != '~'))
                 {
                     break;
                 }
@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
         {
             return args.SubjectBuffer.GetFeatureOnOffOption(InternalFeatureOnOffOptions.Snippets) &&
                 // TODO (https://github.com/dotnet/roslyn/issues/5107): enable in interactive
-                !(Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace) && workspace.Kind == WorkspaceKind.Interactive);
+                !(Workspace.TryGetWorkspace(args.SubjectBuffer.AsTextContainer(), out var workspace) && (workspace.Kind == WorkspaceKind.Interactive));
         }
     }
 }

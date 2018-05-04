@@ -139,7 +139,7 @@ namespace Microsoft.CodeAnalysis.ConvertForEachToFor
             TForEachStatement foreachStatement, CancellationToken cancellationToken)
         {
             var operation = model.GetOperation(foreachStatement, cancellationToken) as IForEachLoopOperation;
-            if (operation == null || operation.Locals.Length != 1)
+            if ((operation == null) || (operation.Locals.Length != 1))
             {
                 return null;
             }
@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis.ConvertForEachToFor
             if (!operation.NextVariables.IsEmpty)
             {
                 var nextVariable = operation.NextVariables[0] as ILocalReferenceOperation;
-                if (nextVariable == null || nextVariable.Local?.Equals(foreachVariable) == false)
+                if ((nextVariable == null) || (nextVariable.Local?.Equals(foreachVariable) == false))
                 {
                     // we do not support anything else than local reference for next variable
                     // operation
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.ConvertForEachToFor
             // go through explicit types first.
 
             // check array case
-            if (collectionType is IArrayTypeSymbol array && array.Rank == 1)
+            if (collectionType is IArrayTypeSymbol array && (array.Rank == 1))
             {
                 if (!IsExchangable(semanticFact, array.ElementType, foreachType, model.Compilation))
                 {
@@ -271,10 +271,10 @@ namespace Microsoft.CodeAnalysis.ConvertForEachToFor
             collectionNameSuggestion = "list";
 
             // check type itself is interface case
-            if (collectionType.TypeKind == TypeKind.Interface && knownCollectionInterfaces.Contains(collectionType.OriginalDefinition))
+            if ((collectionType.TypeKind == TypeKind.Interface) && knownCollectionInterfaces.Contains(collectionType.OriginalDefinition))
             {
                 var indexer = GetInterfaceMember(collectionType, get_Item);
-                if (indexer != null &&
+                if ((indexer != null) &&
                     IsExchangable(semanticFact, indexer.ReturnType, foreachType, model.Compilation))
                 {
                     explicitCastInterface = null;
@@ -295,14 +295,14 @@ namespace Microsoft.CodeAnalysis.ConvertForEachToFor
                 // see how the type implements the interface
                 var countSymbol = GetInterfaceMember(current, get_Count);
                 var indexerSymbol = GetInterfaceMember(current, get_Item);
-                if (countSymbol == null || indexerSymbol == null)
+                if ((countSymbol == null) || (indexerSymbol == null))
                 {
                     continue;
                 }
 
                 var countImpl = collectionType.FindImplementationForInterfaceMember(countSymbol) as IMethodSymbol;
                 var indexerImpl = collectionType.FindImplementationForInterfaceMember(indexerSymbol) as IMethodSymbol;
-                if (countImpl == null || indexerImpl == null)
+                if ((countImpl == null) || (indexerImpl == null))
                 {
                     continue;
                 }
@@ -343,7 +343,7 @@ namespace Microsoft.CodeAnalysis.ConvertForEachToFor
         }
 
         private static bool IsNullOrErrorType(ITypeSymbol type)
-            => type == null || type is IErrorTypeSymbol;
+            => (type == null) || (type is IErrorTypeSymbol);
 
         private static IMethodSymbol GetInterfaceMember(ITypeSymbol interfaceType, string memberName)
         {
@@ -394,7 +394,7 @@ namespace Microsoft.CodeAnalysis.ConvertForEachToFor
         private bool CheckIfForEachVariableIsWrittenInside(SemanticModel semanticModel, ISymbol foreachVariable, TForEachStatement foreachStatement)
         {
             var (start, end) = GetForEachBody(foreachStatement);
-            if (start == null || end == null)
+            if ((start == null) || (end == null))
             {
                 // empty body. this can happen in VB
                 return false;

@@ -31,8 +31,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
 
         protected bool MatchesNameOrIndex(string name, int index, string specifiedName, int specifiedIndex)
         {
-            return (specifiedName != null && specifiedName == name)
-                || (specifiedIndex != -1 && specifiedIndex == index);
+            return ((specifiedName != null) && (specifiedName == name))
+                || ((specifiedIndex != -1) && (specifiedIndex == index));
         }
 
         public abstract int Count { get; }
@@ -51,7 +51,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             else if (index is int i)
             {
                 elementIndex = i - 1;
-                if (elementIndex >= 0 && TryGetItemByIndex(elementIndex, out element))
+                if ((elementIndex >= 0) && TryGetItemByIndex(elementIndex, out element))
                 {
                     return VSConstants.S_OK;
                 }

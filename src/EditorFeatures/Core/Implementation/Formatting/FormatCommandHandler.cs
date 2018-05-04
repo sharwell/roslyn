@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
         public void ExecuteReturnOrTypeCommand(EditorCommandArgs args, Action nextHandler, CancellationToken cancellationToken)
         {
             // This method handles only return / type char
-            if (!(args is ReturnKeyCommandArgs || args is TypeCharCommandArgs))
+            if (!((args is ReturnKeyCommandArgs) || (args is TypeCharCommandArgs)))
             {
                 return;
             }

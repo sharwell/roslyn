@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis
         {
             var stream = OpenRead(fullPath);
 
-            if (stream == null || !stream.CanRead)
+            if ((stream == null) || !stream.CanRead)
             {
                 throw new InvalidOperationException(CodeAnalysisResources.ReferenceResolverShouldReturnReadableNonNullStream);
             }

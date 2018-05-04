@@ -158,10 +158,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Debugging
             switch (typeOrNamespace)
             {
                 case INamespaceSymbol namespaceSymbol:
-                    return comparer.Equals(namespaceSymbol.Name, nameAndArity.Name) && nameAndArity.Arity == 0;
+                    return comparer.Equals(namespaceSymbol.Name, nameAndArity.Name) && (nameAndArity.Arity == 0);
                 case INamedTypeSymbol typeSymbol:
                     return comparer.Equals(typeSymbol.Name, nameAndArity.Name) &&
-                        (nameAndArity.Arity == 0 || nameAndArity.Arity == typeSymbol.TypeArguments.Length);
+                        ((nameAndArity.Arity == 0) || (nameAndArity.Arity == typeSymbol.TypeArguments.Length));
                 default:
                     return false;
             }
@@ -237,7 +237,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Debugging
         {
             // You can only set a breakpoint on methods (including constructors/destructors) and properties.
             var kind = methodOrProperty.Kind;
-            if (!(kind == SymbolKind.Method || kind == SymbolKind.Property))
+            if (!((kind == SymbolKind.Method) || (kind == SymbolKind.Property)))
             {
                 return false;
             }

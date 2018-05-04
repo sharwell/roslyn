@@ -1378,16 +1378,16 @@ class D<T>
 
             var symbolsInC = model.LookupSymbols(positionInC);
             var test = symbolsInC.Where(s => s.ContainingAssembly == null).ToList();
-            Assert.Equal(9, symbolsInC.Where(s => s.ContainingType == null || s.ContainingType.SpecialType != SpecialType.System_Object).Count());
-            Assert.True(symbolsInC.Any(s => s.Name == "A" && s.Kind == SymbolKind.NamedType));
-            Assert.True(symbolsInC.Any(s => s.Name == "B" && s.Kind == SymbolKind.NamedType));
-            Assert.True(symbolsInC.Any(s => s.Name == "C" && s.Kind == SymbolKind.NamedType));
-            Assert.True(symbolsInC.Any(s => s.Name == "M" && s.Kind == SymbolKind.Method && s.ContainingType.Name == "A"));
-            Assert.True(symbolsInC.Any(s => s.Name == "M" && s.Kind == SymbolKind.Method && s.ContainingType.Name == "B"));
-            Assert.True(symbolsInC.Any(s => s.Name == "M" && s.Kind == SymbolKind.Method && s.ContainingType.Name == "C"));
-            Assert.True(symbolsInC.Any(s => s.Name == "F" && s.Kind == SymbolKind.Method && s.ContainingType.Name == "C"));
-            Assert.True(symbolsInC.Any(s => s.Name == "System" && s.Kind == SymbolKind.Namespace));
-            Assert.True(symbolsInC.Any(s => s.Name == "Microsoft" && s.Kind == SymbolKind.Namespace));
+            Assert.Equal(9, symbolsInC.Where(s => (s.ContainingType == null) || (s.ContainingType.SpecialType != SpecialType.System_Object)).Count());
+            Assert.True(symbolsInC.Any(s => (s.Name == "A") && (s.Kind == SymbolKind.NamedType)));
+            Assert.True(symbolsInC.Any(s => (s.Name == "B") && (s.Kind == SymbolKind.NamedType)));
+            Assert.True(symbolsInC.Any(s => (s.Name == "C") && (s.Kind == SymbolKind.NamedType)));
+            Assert.True(symbolsInC.Any(s => (s.Name == "M") && (s.Kind == SymbolKind.Method) && (s.ContainingType.Name == "A")));
+            Assert.True(symbolsInC.Any(s => (s.Name == "M") && (s.Kind == SymbolKind.Method) && (s.ContainingType.Name == "B")));
+            Assert.True(symbolsInC.Any(s => (s.Name == "M") && (s.Kind == SymbolKind.Method) && (s.ContainingType.Name == "C")));
+            Assert.True(symbolsInC.Any(s => (s.Name == "F") && (s.Kind == SymbolKind.Method) && (s.ContainingType.Name == "C")));
+            Assert.True(symbolsInC.Any(s => (s.Name == "System") && (s.Kind == SymbolKind.Namespace)));
+            Assert.True(symbolsInC.Any(s => (s.Name == "Microsoft") && (s.Kind == SymbolKind.Namespace)));
         }
 
         [Fact]
@@ -1713,7 +1713,7 @@ static class S2
             Assert.NotNull(type);
 
             Func<ISymbol, bool> isExtensionMethod = symbol =>
-                symbol.Kind == SymbolKind.Method && (((MethodSymbol)symbol).IsExtensionMethod || ((MethodSymbol)symbol).MethodKind == MethodKind.ReducedExtension);
+                (symbol.Kind == SymbolKind.Method) && (((MethodSymbol)symbol).IsExtensionMethod || (((MethodSymbol)symbol).MethodKind == MethodKind.ReducedExtension));
 
             // All extension methods available for specific type.
             var symbols = model.LookupSymbols(typeDeclStart, type, name: null, includeReducedExtensionMethods: true).WhereAsArray(isExtensionMethod);
@@ -1876,7 +1876,7 @@ static class S
             Assert.NotNull(typeB);
 
             Func<ISymbol, bool> isExtensionMethod = symbol =>
-                symbol.Kind == SymbolKind.Method && (((MethodSymbol)symbol).IsExtensionMethod || ((MethodSymbol)symbol).MethodKind == MethodKind.ReducedExtension);
+                (symbol.Kind == SymbolKind.Method) && (((MethodSymbol)symbol).IsExtensionMethod || (((MethodSymbol)symbol).MethodKind == MethodKind.ReducedExtension));
 
             // Extension methods for B<string>
             symbols = model.LookupSymbols(methodStart, typeB, name: null, includeReducedExtensionMethods: true).WhereAsArray(isExtensionMethod);

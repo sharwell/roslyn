@@ -51,8 +51,8 @@ namespace Microsoft.CodeAnalysis
                 return
                     this.IsSealed &&
                     _customAttributes.IsEmpty &&
-                    _decodedWellKnownAttributeData == null &&
-                    _earlyDecodedWellKnownAttributeData == null;
+                    (_decodedWellKnownAttributeData == null) &&
+                    (_earlyDecodedWellKnownAttributeData == null);
             }
         }
 

@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
         protected virtual string GetFilterText(ISymbol symbol, string displayText, SyntaxContext context)
         {
             return (displayText == symbol.Name) ||
-                (displayText.Length > 0 && displayText[0] == '@') ||
+                ((displayText.Length > 0) && (displayText[0] == '@')) ||
                 (context.IsAttributeNameContext && symbol.IsAttribute())
                 ? displayText
                 : symbol.Name;
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
                 // Invalidate the cache if it's for a different position or a different set of Documents.
                 // It's fairly likely that we'll only have to check the first document, unless someone
                 // specially constructed a Solution with mismatched linked files.
-                if (s_cachedPosition != position ||
+                if ((s_cachedPosition != position) ||
                     !relatedDocuments.All((Document d) => s_cachedDocuments.TryGetValue(d, out var value)))
                 {
                     s_cachedPosition = position;

@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
         private bool EnablePEVerifyCompat()
         {
-            return _module.Compilation.LanguageVersion < LanguageVersion.CSharp7_2 || _module.Compilation.FeaturePEVerifyCompatEnabled;
+            return (_module.Compilation.LanguageVersion < LanguageVersion.CSharp7_2) || _module.Compilation.FeaturePEVerifyCompatEnabled;
         }
 
         private LocalDefinition LazyReturnTemp
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
 
                     var bodySyntax = _methodBodySyntaxOpt;
-                    if (_ilEmitStyle == ILEmitStyle.Debug && bodySyntax != null)
+                    if ((_ilEmitStyle == ILEmitStyle.Debug) && (bodySyntax != null))
                     {
                         int syntaxOffset = _method.CalculateLocalSyntaxOffset(bodySyntax.SpanStart, bodySyntax.SyntaxTree);
                         var localSymbol = new SynthesizedLocal(_method, _method.ReturnType, SynthesizedLocalKind.FunctionReturnValue, bodySyntax);
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
         private bool IsStackLocal(LocalSymbol local)
         {
-            return _stackLocals != null && _stackLocals.Contains(local);
+            return (_stackLocals != null) && _stackLocals.Contains(local);
         }
 
         public void Generate()
@@ -358,7 +358,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 instructionsEmitted = this.EmitStatementAndCountInstructions(statement);
             }
 
-            if (instructionsEmitted == 0 && syntax != null && _ilEmitStyle == ILEmitStyle.Debug)
+            if ((instructionsEmitted == 0) && (syntax != null) && (_ilEmitStyle == ILEmitStyle.Debug))
             {
                 // if there was no code emitted, then emit nop 
                 // otherwise this point could get associated with some random statement, possibly in a wrong scope
@@ -369,7 +369,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
         private void EmitSequencePointStatement(BoundSequencePointWithSpan node)
         {
             TextSpan span = node.Span;
-            if (span != default(TextSpan) && _emitPdbSequencePoints)
+            if ((span != default(TextSpan)) && _emitPdbSequencePoints)
             {
                 this.EmitSequencePoint(node.SyntaxTree, span);
             }
@@ -381,7 +381,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 instructionsEmitted = this.EmitStatementAndCountInstructions(statement);
             }
 
-            if (instructionsEmitted == 0 && span != default(TextSpan) && _ilEmitStyle == ILEmitStyle.Debug)
+            if ((instructionsEmitted == 0) && (span != default(TextSpan)) && (_ilEmitStyle == ILEmitStyle.Debug))
             {
                 // if there was no code emitted, then emit nop 
                 // otherwise this point could get associated with some random statement, possibly in a wrong scope
@@ -391,7 +391,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
         private void SetInitialDebugDocument()
         {
-            if (_emitPdbSequencePoints && _methodBodySyntaxOpt != null)
+            if (_emitPdbSequencePoints && (_methodBodySyntaxOpt != null))
             {
                 // If methodBlockSyntax is available (i.e. we're in a SourceMethodSymbol), then
                 // provide the IL builder with our best guess at the appropriate debug document.

@@ -205,7 +205,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                     private void EnableProjectCacheIfNecessary(ProjectId currentProject)
                     {
-                        if (_projectCache != null && currentProject == _currentProjectProcessing)
+                        if ((_projectCache != null) && (currentProject == _currentProjectProcessing))
                         {
                             return;
                         }
@@ -442,8 +442,8 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                     private void ResetLogAggregatorIfNeeded(Solution currentSolution)
                     {
-                        if (currentSolution == null || _processingSolution == null ||
-                            currentSolution.Id == _processingSolution.Id)
+                        if ((currentSolution == null) || (_processingSolution == null) ||
+                            (currentSolution.Id == _processingSolution.Id))
                         {
                             return;
                         }

@@ -43,7 +43,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Xaml
 
         public int OnBeforeLastDocumentUnlock(uint docCookie, uint dwRDTLockType, uint dwReadLocksRemaining, uint dwEditLocksRemaining)
         {
-            if (dwReadLocksRemaining == 0 && dwEditLocksRemaining == 0)
+            if ((dwReadLocksRemaining == 0) && (dwEditLocksRemaining == 0))
             {
                 OnDocumentClosed(docCookie);
             }

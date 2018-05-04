@@ -93,7 +93,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
 
             var expectedDebuggingMode = DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints;
 
-            if (isSynthesized && optimizations == OptimizationLevel.Debug)
+            if (isSynthesized && (optimizations == OptimizationLevel.Debug))
             {
                 expectedDebuggingMode |=
                     DebuggableAttribute.DebuggingModes.Default |

@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     new object[] { instanceArgument.Type, name },
                     symbols), new SourceLocation(fromClause != null ? fromClause.Expression : queryClause));
             }
-            else if (fromClause != null && fromClause.Type == null && HasCastToQueryProvider(instanceArgument.Type, ref useSiteDiagnostics))
+            else if ((fromClause != null) && (fromClause.Type == null) && HasCastToQueryProvider(instanceArgument.Type, ref useSiteDiagnostics))
             {
                 // Could not find an implementation of the query pattern for source type '{0}'.  '{1}' not found.  Consider explicitly specifying the type of the range variable '{2}'.
                 diagnostics.Add(new DiagnosticInfoWithSymbols(
@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private bool ImplementsStandardQueryInterface(TypeSymbol instanceType, string name, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            if (instanceType.TypeKind == TypeKind.Array || name == "Cast" && HasCastToQueryProvider(instanceType, ref useSiteDiagnostics))
+            if ((instanceType.TypeKind == TypeKind.Array) || ((name == "Cast") && HasCastToQueryProvider(instanceType, ref useSiteDiagnostics)))
             {
                 return true;
             }
@@ -84,9 +84,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             var originalType = instanceType.OriginalDefinition;
             var ienumerable_t = Compilation.GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T);
             var iqueryable_t = Compilation.GetWellKnownType(WellKnownType.System_Linq_IQueryable_T);
-            bool isIenumerable = originalType == ienumerable_t || HasUniqueInterface(instanceType, ienumerable_t, ref nonUnique, ref useSiteDiagnostics);
-            bool isQueryable = originalType == iqueryable_t || HasUniqueInterface(instanceType, iqueryable_t, ref nonUnique, ref useSiteDiagnostics);
-            return isIenumerable != isQueryable && !nonUnique;
+            bool isIenumerable = (originalType == ienumerable_t) || HasUniqueInterface(instanceType, ienumerable_t, ref nonUnique, ref useSiteDiagnostics);
+            bool isQueryable = (originalType == iqueryable_t) || HasUniqueInterface(instanceType, iqueryable_t, ref nonUnique, ref useSiteDiagnostics);
+            return (isIenumerable != isQueryable) && !nonUnique;
         }
 
         private static bool HasUniqueInterface(TypeSymbol instanceType, NamedTypeSymbol interfaceType, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
@@ -122,8 +122,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             var originalType = instanceType.OriginalDefinition;
             var ienumerable = Compilation.GetSpecialType(SpecialType.System_Collections_IEnumerable);
             var iqueryable = Compilation.GetWellKnownType(WellKnownType.System_Linq_IQueryable);
-            bool isIenumerable = originalType == ienumerable || HasUniqueInterface(instanceType, ienumerable, ref useSiteDiagnostics);
-            bool isQueryable = originalType == iqueryable || HasUniqueInterface(instanceType, iqueryable, ref useSiteDiagnostics);
+            bool isIenumerable = (originalType == ienumerable) || HasUniqueInterface(instanceType, ienumerable, ref useSiteDiagnostics);
+            bool isQueryable = (originalType == iqueryable) || HasUniqueInterface(instanceType, iqueryable, ref useSiteDiagnostics);
             return isIenumerable != isQueryable;
         }
 
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (parent.Kind() == SyntaxKind.JoinClause)
                 {
                     var join = (JoinClauseSyntax)parent;
-                    if (join.LeftExpression.Span.Contains(node.Span) && join.Identifier.ValueText == node.Identifier.ValueText) return true;
+                    if (join.LeftExpression.Span.Contains(node.Span) && (join.Identifier.ValueText == node.Identifier.ValueText)) return true;
                 }
             }
 
@@ -226,7 +226,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
             }
 
-            if ((object)type == null || type.IsErrorType())
+            if (((object)type == null) || type.IsErrorType())
             {
                 return false;
             }

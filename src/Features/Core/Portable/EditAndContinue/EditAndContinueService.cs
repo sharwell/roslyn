@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         public void StartDebuggingSession(Solution currentSolution)
         {
-            Debug.Assert(_debuggingSession == null && _editSession == null);
+            Debug.Assert((_debuggingSession == null) && (_editSession == null));
 
             Interlocked.CompareExchange(ref _debuggingSession, new DebuggingSession(currentSolution), null);
 
@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             ImmutableDictionary<ProjectId, ProjectReadOnlyReason> projects,
             bool stoppedAtException)
         {
-            Debug.Assert(_debuggingSession != null && _editSession == null);
+            Debug.Assert((_debuggingSession != null) && (_editSession == null));
 
             var newSession = new EditSession(currentSolution, activeStatements, _debuggingSession, projects, stoppedAtException);
 
@@ -59,7 +59,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         public void EndEditSession()
         {
-            Debug.Assert(_debuggingSession != null && _editSession != null);
+            Debug.Assert((_debuggingSession != null) && (_editSession != null));
 
             var session = _editSession;
 
@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         public void EndDebuggingSession()
         {
-            Debug.Assert(_debuggingSession != null && _editSession == null);
+            Debug.Assert((_debuggingSession != null) && (_editSession == null));
             _debuggingSession = null;
         }
 

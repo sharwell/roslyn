@@ -14,7 +14,7 @@ namespace Roslyn.Test.Utilities
             get
             {
                 var currentUICultureName = CultureInfo.CurrentUICulture.Name;
-                if (currentUICultureName.Length == 0 || currentUICultureName.StartsWith("en", StringComparison.OrdinalIgnoreCase))
+                if ((currentUICultureName.Length == 0) || currentUICultureName.StartsWith("en", StringComparison.OrdinalIgnoreCase))
                 {
                     return null;
                 }
@@ -49,7 +49,7 @@ namespace Roslyn.Test.Utilities
         {
             Debug.Assert(_threadId == Thread.CurrentThread.ManagedThreadId);
 
-            if (_needToRestore && _threadId == Thread.CurrentThread.ManagedThreadId)
+            if (_needToRestore && (_threadId == Thread.CurrentThread.ManagedThreadId))
             {
                 _needToRestore = false;
 #if DNX

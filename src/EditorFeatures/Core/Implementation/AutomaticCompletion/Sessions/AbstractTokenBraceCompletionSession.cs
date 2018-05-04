@@ -36,12 +36,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion.Sessi
                 return false;
             }
 
-            return token.RawKind == OpeningTokenKind && token.SpanStart == position;
+            return (token.RawKind == OpeningTokenKind) && (token.SpanStart == position);
         }
 
         protected bool IsValidToken(SyntaxToken token)
         {
-            return token.Parent != null && !_syntaxFactsService.IsSkippedTokensTrivia(token.Parent);
+            return (token.Parent != null) && !_syntaxFactsService.IsSkippedTokensTrivia(token.Parent);
         }
 
         public virtual void AfterStart(IBraceCompletionSession session, CancellationToken cancellationToken)

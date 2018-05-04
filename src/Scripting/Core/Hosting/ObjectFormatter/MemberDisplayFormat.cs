@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
     {
         internal static bool IsValid(this MemberDisplayFormat value)
         {
-            return MemberDisplayFormat.SingleLine <= value && value <= MemberDisplayFormat.Hidden;
+            return (MemberDisplayFormat.SingleLine <= value) && (value <= MemberDisplayFormat.Hidden);
         }
     }
 }

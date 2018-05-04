@@ -303,7 +303,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
                 // See if this is a NoPia local type, which we should unify.
                 // Note, VB should use FullName.
-                if (_lazyNoPiaLocalTypes != null && _lazyNoPiaLocalTypes.TryGetValue(emittedTypeName.TypeName, out typeDef))
+                if ((_lazyNoPiaLocalTypes != null) && _lazyNoPiaLocalTypes.TryGetValue(emittedTypeName.TypeName, out typeDef))
                 {
                     result = (NamedTypeSymbol)new MetadataDecoder(ContainingPEModule).GetTypeOfToken(typeDef, out isNoPiaLocalType);
                     Debug.Assert(isNoPiaLocalType);

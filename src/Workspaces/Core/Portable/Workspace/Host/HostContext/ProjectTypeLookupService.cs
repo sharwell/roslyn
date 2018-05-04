@@ -13,7 +13,7 @@ namespace Microsoft.CodeAnalysis.Host.HostContext
 
         public string GetProjectType(Workspace workspace, ProjectId projectId)
         {
-            if (workspace == null || projectId == null)
+            if ((workspace == null) || (projectId == null))
             {
                 return string.Empty;
             }

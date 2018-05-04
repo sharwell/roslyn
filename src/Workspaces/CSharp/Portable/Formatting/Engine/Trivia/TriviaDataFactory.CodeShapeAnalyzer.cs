@@ -60,8 +60,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                         return false;
                     }
 
-                    if (trivia.Kind() == SyntaxKind.RegionDirectiveTrivia ||
-                        trivia.Kind() == SyntaxKind.EndRegionDirectiveTrivia ||
+                    if ((trivia.Kind() == SyntaxKind.RegionDirectiveTrivia) ||
+                        (trivia.Kind() == SyntaxKind.EndRegionDirectiveTrivia) ||
                         SyntaxFacts.IsPreprocessorDirective(trivia.Kind()))
                     {
                         return false;
@@ -75,8 +75,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             {
                 foreach (var trivia in list)
                 {
-                    if (trivia.Kind() == SyntaxKind.SkippedTokensTrivia ||
-                        trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia)
+                    if ((trivia.Kind() == SyntaxKind.SkippedTokensTrivia) ||
+                        (trivia.Kind() == SyntaxKind.PreprocessingMessageTrivia))
                     {
                         return true;
                     }
@@ -152,7 +152,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 }
 
                 // empty line with spaces. remove it.
-                if (_indentation > 0 && !_touchedNoisyCharacterOnCurrentLine)
+                if ((_indentation > 0) && !_touchedNoisyCharacterOnCurrentLine)
                 {
                     return true;
                 }
@@ -180,7 +180,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 }
 
                 // check whether indentation are right
-                if (this.UseIndentation && _indentation != _context.GetBaseIndentation(trivia.SpanStart))
+                if (this.UseIndentation && (_indentation != _context.GetBaseIndentation(trivia.SpanStart)))
                 {
                     // comment has wrong indentation
                     return true;
@@ -198,8 +198,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
             private bool OnSkippedTokensOrText(SyntaxTrivia trivia)
             {
-                if (trivia.Kind() != SyntaxKind.SkippedTokensTrivia &&
-                    trivia.Kind() != SyntaxKind.PreprocessingMessageTrivia)
+                if ((trivia.Kind() != SyntaxKind.SkippedTokensTrivia) &&
+                    (trivia.Kind() != SyntaxKind.PreprocessingMessageTrivia))
                 {
                     return false;
                 }
@@ -209,8 +209,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 
             private bool OnRegion(SyntaxTrivia trivia, int currentIndex)
             {
-                if (trivia.Kind() != SyntaxKind.RegionDirectiveTrivia &&
-                    trivia.Kind() != SyntaxKind.EndRegionDirectiveTrivia)
+                if ((trivia.Kind() != SyntaxKind.RegionDirectiveTrivia) &&
+                    (trivia.Kind() != SyntaxKind.EndRegionDirectiveTrivia))
                 {
                     return false;
                 }
@@ -254,8 +254,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             private bool OnTouchedNoisyCharacter(SyntaxTrivia trivia)
             {
                 if (trivia.IsElastic() ||
-                    trivia.Kind() == SyntaxKind.WhitespaceTrivia ||
-                    trivia.Kind() == SyntaxKind.EndOfLineTrivia)
+                    (trivia.Kind() == SyntaxKind.WhitespaceTrivia) ||
+                    (trivia.Kind() == SyntaxKind.EndOfLineTrivia))
                 {
                     return false;
                 }

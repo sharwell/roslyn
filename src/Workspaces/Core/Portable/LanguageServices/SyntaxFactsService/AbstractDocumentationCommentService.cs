@@ -41,7 +41,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
 
         private static void AddSpaceIfNotAlreadyThere(StringBuilder sb)
         {
-            if (sb.Length > 0 && sb[sb.Length - 1] != ' ')
+            if ((sb.Length > 0) && (sb[sb.Length - 1] != ' '))
             {
                 sb.Append(' ');
             }
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
                 var tokenText = token.ToString();
 
                 // Collapse all preceding trivia or whitespace for this token to a single space.
-                if (token.LeadingTrivia.Count > 0 || HasLeadingWhitespace(tokenText))
+                if ((token.LeadingTrivia.Count > 0) || HasLeadingWhitespace(tokenText))
                 {
                     AddSpaceIfNotAlreadyThere(sb);
                 }
@@ -174,7 +174,7 @@ namespace Microsoft.CodeAnalysis.LanguageServices
                 sb.Append(tokenText.Trim());
 
                 // Collapse all trailing trivia or whitespace for this token to a single space.
-                if (token.TrailingTrivia.Count > 0 || HasTrailingWhitespace(tokenText))
+                if ((token.TrailingTrivia.Count > 0) || HasTrailingWhitespace(tokenText))
                 {
                     AddSpaceIfNotAlreadyThere(sb);
                 }
@@ -182,10 +182,10 @@ namespace Microsoft.CodeAnalysis.LanguageServices
         }
 
         private static bool HasLeadingWhitespace(string tokenText)
-            => tokenText.Length > 0 && char.IsWhiteSpace(tokenText[0]);
+            => (tokenText.Length > 0) && char.IsWhiteSpace(tokenText[0]);
 
         private static bool HasTrailingWhitespace(string tokenText)
-            => tokenText.Length > 0 && char.IsWhiteSpace(tokenText[tokenText.Length - 1]);
+            => (tokenText.Length > 0) && char.IsWhiteSpace(tokenText[tokenText.Length - 1]);
 
         public string GetBannerText(SyntaxNode documentationCommentTriviaSyntax, int maxBannerLength, CancellationToken cancellationToken)
             => GetBannerText((TDocumentationCommentTriviaSyntax)documentationCommentTriviaSyntax, maxBannerLength, cancellationToken);

@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             foreach (Symbol variable in _dataFlowsIn)
             {
                 int slot = this.GetOrCreateSlot(variable);
-                if (slot > 0 && !this.State.IsAssigned(slot))
+                if ((slot > 0) && !this.State.IsAssigned(slot))
                 {
                     _dataFlowsOut.Add(variable);
                 }
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private bool FlowsOut(ParameterSymbol param)
         {
-            return (object)param != null && param.RefKind != RefKind.None && !param.IsImplicitlyDeclared && !RegionContains(param.Locations[0].SourceSpan);
+            return ((object)param != null) && (param.RefKind != RefKind.None) && !param.IsImplicitlyDeclared && !RegionContains(param.Locations[0].SourceSpan);
         }
 
         private ParameterSymbol Param(BoundNode node)
@@ -246,7 +246,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected override void ReportUnassignedOutParameter(ParameterSymbol parameter, SyntaxNode node, Location location)
         {
-            if (!_dataFlowsOut.Contains(parameter) && (node == null || node is ReturnStatementSyntax))
+            if (!_dataFlowsOut.Contains(parameter) && ((node == null) || (node is ReturnStatementSyntax)))
             {
                 _dataFlowsOut.Add(parameter);
             }

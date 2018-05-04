@@ -249,7 +249,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 }
 
                 int position = startingPosition;
-                while (position > 0 && s_caseInsensitiveComparer.Equals(GetNameSlice(concatenatedNames, nodes, position - 1), nameSlice))
+                while ((position > 0) && s_caseInsensitiveComparer.Equals(GetNameSlice(concatenatedNames, nodes, position - 1), nameSlice))
                 {
                     position--;
                     if (comparer.Equals(GetNameSlice(concatenatedNames, nodes, position), nameSlice))
@@ -259,7 +259,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                 }
 
                 position = startingPosition;
-                while (position + 1 < nodes.Length && s_caseInsensitiveComparer.Equals(GetNameSlice(concatenatedNames, nodes, position + 1), nameSlice))
+                while (((position + 1) < nodes.Length) && s_caseInsensitiveComparer.Equals(GetNameSlice(concatenatedNames, nodes, position + 1), nameSlice))
                 {
                     position++;
                     if (comparer.Equals(GetNameSlice(concatenatedNames, nodes, position), nameSlice))

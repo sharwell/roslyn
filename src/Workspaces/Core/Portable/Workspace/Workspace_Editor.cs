@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis
 
             // If the solution is closing, then setting the updated document context can fail
             // if the host documents are already closed.
-            if (!isSolutionClosing && this.CanChangeActiveContextDocument && currentContextDocumentId != null)
+            if (!isSolutionClosing && this.CanChangeActiveContextDocument && (currentContextDocumentId != null))
             {
                 SetDocumentContext(currentContextDocumentId);
             }
@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis
         private DocumentId ClearOpenDocument_NoLock(DocumentId documentId)
         {
             _stateLock.AssertHasLock();
-            if (_projectToOpenDocumentsMap.TryGetValue(documentId.ProjectId, out var openDocIds) && openDocIds != null)
+            if (_projectToOpenDocumentsMap.TryGetValue(documentId.ProjectId, out var openDocIds) && (openDocIds != null))
             {
                 openDocIds.Remove(documentId);
             }
@@ -197,7 +197,7 @@ namespace Microsoft.CodeAnalysis
             using (_stateLock.DisposableWait())
             {
                 var openDocuments = this.GetProjectOpenDocuments_NoLock(documentId.ProjectId);
-                return openDocuments != null && openDocuments.Contains(documentId);
+                return (openDocuments != null) && openDocuments.Contains(documentId);
             }
         }
 
@@ -536,7 +536,7 @@ namespace Microsoft.CodeAnalysis
                 var newText = textContainer.CurrentText;
                 Solution currentSolution;
 
-                if (oldText == newText || oldText.ContentEquals(newText))
+                if ((oldText == newText) || oldText.ContentEquals(newText))
                 {
                     // if the supplied text is the same as the previous text, then also use same version
                     var version = oldDocument.GetTextVersionAsync(CancellationToken.None).WaitAndGetResult_CanCallOnBackground(CancellationToken.None);
@@ -590,7 +590,7 @@ namespace Microsoft.CodeAnalysis
                 this.RaiseDocumentClosedEventAsync(newDoc); // don't wait for this
             }
 
-            if (updateActiveContext && currentContextDocumentId != null && this.CanChangeActiveContextDocument)
+            if (updateActiveContext && (currentContextDocumentId != null) && this.CanChangeActiveContextDocument)
             {
                 // Closing this document did not result in the buffer closing, so some 
                 // document is now the current context of that buffer. Fire the appropriate

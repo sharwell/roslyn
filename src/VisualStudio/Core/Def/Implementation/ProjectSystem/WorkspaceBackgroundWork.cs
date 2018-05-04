@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis
     {
         public static bool IsValid(this WorkspaceBackgroundWork work)
         {
-            return work >= WorkspaceBackgroundWork.None && work <= WorkspaceBackgroundWork.ParseAndCompile;
+            return (work >= WorkspaceBackgroundWork.None) && (work <= WorkspaceBackgroundWork.ParseAndCompile);
         }
     }
 }

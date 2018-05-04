@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     {
                         version = result.Version;
                     }
-                    else if (version.Value != VersionStamp.Default && version.Value != result.Version)
+                    else if ((version.Value != VersionStamp.Default) && (version.Value != result.Version))
                     {
                         // if not all version is same, set version as default.
                         // this can happen at the initial data loading or

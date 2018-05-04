@@ -141,7 +141,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
 
         private static bool CanBeCached(GreenNode child1)
         {
-            return child1 == null || child1.IsCacheable;
+            return (child1 == null) || child1.IsCacheable;
         }
 
         private static bool CanBeCached(GreenNode child1, GreenNode child2)
@@ -159,7 +159,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
             // for the purpose of this function consider that 
             // null nodes, tokens and trivias are cached somewhere else.
             // TODO: should use slotCount
-            if (child == null || child.SlotCount == 0) return true;
+            if ((child == null) || (child.SlotCount == 0)) return true;
 
             int hash = child.GetCacheHash();
             int idx = hash & CacheMask;
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 int h = hash = GetCacheHash(kind, flags, child1);
                 int idx = h & CacheMask;
                 var e = s_cache[idx];
-                if (e.hash == h && e.node != null && e.node.IsCacheEquivalent(kind, flags, child1))
+                if ((e.hash == h) && (e.node != null) && e.node.IsCacheEquivalent(kind, flags, child1))
                 {
                     GreenStats.CacheHit();
                     return e.node;
@@ -223,7 +223,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 int h = hash = GetCacheHash(kind, flags, child1, child2);
                 int idx = h & CacheMask;
                 var e = s_cache[idx];
-                if (e.hash == h && e.node != null && e.node.IsCacheEquivalent(kind, flags, child1, child2))
+                if ((e.hash == h) && (e.node != null) && e.node.IsCacheEquivalent(kind, flags, child1, child2))
                 {
                     GreenStats.CacheHit();
                     return e.node;
@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.Syntax.InternalSyntax
                 int h = hash = GetCacheHash(kind, flags, child1, child2, child3);
                 int idx = h & CacheMask;
                 var e = s_cache[idx];
-                if (e.hash == h && e.node != null && e.node.IsCacheEquivalent(kind, flags, child1, child2, child3))
+                if ((e.hash == h) && (e.node != null) && e.node.IsCacheEquivalent(kind, flags, child1, child2, child3))
                 {
                     GreenStats.CacheHit();
                     return e.node;

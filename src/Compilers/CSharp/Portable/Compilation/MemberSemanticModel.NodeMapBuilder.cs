@@ -33,9 +33,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             /// <param name="node">The syntax node where to add bound nodes for.</param>
             public static void AddToMap(BoundNode root, Dictionary<SyntaxNode, ImmutableArray<BoundNode>> map, SyntaxNode node = null)
             {
-                Debug.Assert(node == null || root == null || !(root.Syntax is StatementSyntax), "individually added nodes are not supposed to be statements.");
+                Debug.Assert((node == null) || (root == null) || !(root.Syntax is StatementSyntax), "individually added nodes are not supposed to be statements.");
 
-                if (root == null || map.ContainsKey(root.Syntax))
+                if ((root == null) || map.ContainsKey(root.Syntax))
                 {
                     // root node is already in the map, children must be in the map too.
                     return;
@@ -231,7 +231,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 // Do not add if only a specific syntax node should be added.
-                if (_thisSyntaxNodeOnly != null && currentBoundNode.Syntax != _thisSyntaxNodeOnly)
+                if ((_thisSyntaxNodeOnly != null) && (currentBoundNode.Syntax != _thisSyntaxNodeOnly))
                 {
                     return false;
                 }

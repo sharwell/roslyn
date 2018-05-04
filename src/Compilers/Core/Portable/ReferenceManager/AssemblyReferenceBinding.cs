@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis
             {
                 Debug.Assert(referenceIdentity != null);
                 Debug.Assert(definitionIndex >= 0);
-                Debug.Assert(versionDifference >= -1 && versionDifference <= +1);
+                Debug.Assert((versionDifference >= -1) && (versionDifference <= +1));
 
                 _referenceIdentity = referenceIdentity;
                 _definitionIndex = definitionIndex;

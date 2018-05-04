@@ -261,7 +261,7 @@ namespace Microsoft.CodeAnalysis
                         }
 
                         PortableExecutableReference resolvedReference;
-                        if (previouslyResolvedAssembliesOpt == null || !previouslyResolvedAssembliesOpt.TryGetValue(binding.ReferenceIdentity, out resolvedReference))
+                        if ((previouslyResolvedAssembliesOpt == null) || !previouslyResolvedAssembliesOpt.TryGetValue(binding.ReferenceIdentity, out resolvedReference))
                         {
                             resolvedReference = resolver.ResolveMissingAssembly(requestingReference, binding.ReferenceIdentity);
                             if (resolvedReference == null)
@@ -390,7 +390,7 @@ namespace Microsoft.CodeAnalysis
             for (int referenceIndex = 0; referenceIndex < explicitReferenceMap.Length; referenceIndex++)
             {
                 var explicitReferenceMapping = explicitReferenceMap[referenceIndex];
-                if (explicitReferenceMapping.IsSkipped || explicitReferenceMapping.Kind == MetadataImageKind.Module)
+                if (explicitReferenceMapping.IsSkipped || (explicitReferenceMapping.Kind == MetadataImageKind.Module))
                 {
                     continue;
                 }
@@ -402,7 +402,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // we have a reference binding for each module and for each referenced assembly:
-            Debug.Assert(result.Count == explicitModules.Length + totalReferencedAssemblyCount);
+            Debug.Assert(result.Count == (explicitModules.Length + totalReferencedAssemblyCount));
         }
 
         private static ImmutableArray<int> CalculateModuleToReferenceMap(ImmutableArray<PEModule> modules, ImmutableArray<ResolvedReference> resolvedReferences)
@@ -418,7 +418,7 @@ namespace Microsoft.CodeAnalysis
             for (int i = 0; i < resolvedReferences.Length; i++)
             {
                 var resolvedReference = resolvedReferences[i];
-                if (!resolvedReference.IsSkipped && resolvedReference.Kind == MetadataImageKind.Module)
+                if (!resolvedReference.IsSkipped && (resolvedReference.Kind == MetadataImageKind.Module))
                 {
                     result[resolvedReference.Index] = i;
                 }
@@ -471,7 +471,7 @@ namespace Microsoft.CodeAnalysis
             DiagnosticBag diagnostics)
         {
             var metadata = GetMetadata(peReference, MessageProvider, Location.None, diagnostics);
-            Debug.Assert(metadata != null || diagnostics.HasAnyErrors());
+            Debug.Assert((metadata != null) || diagnostics.HasAnyErrors());
 
             if (metadata == null)
             {
@@ -546,7 +546,7 @@ namespace Microsoft.CodeAnalysis
                         for (int j = 1; j < totalAssemblies; j++)
                         {
                             if (assemblies[j].IsMatchingAssembly(assembly) &&
-                                IsLinked(assembly) == assemblies[j].IsLinked)
+                                (IsLinked(assembly) == assemblies[j].IsLinked))
                             {
                                 candidateInputAssemblySymbols[j] = assembly;
                                 match = true;
@@ -644,7 +644,7 @@ namespace Microsoft.CodeAnalysis
             for (int i = 1; i < totalAssemblies; i++)
             {
                 // We could have a match already
-                if (boundInputs[i].AssemblySymbol != null || assemblies[i].ContainsNoPiaLocalTypes)
+                if ((boundInputs[i].AssemblySymbol != null) || assemblies[i].ContainsNoPiaLocalTypes)
                 {
                     continue;
                 }
@@ -670,7 +670,7 @@ namespace Microsoft.CodeAnalysis
                     // symbols from candidateAssembly
                     candidatesToExamine.Enqueue(new AssemblyReferenceCandidate(i, candidateAssembly));
 
-                    while (match && candidatesToExamine.Count > 0)
+                    while (match && (candidatesToExamine.Count > 0))
                     {
                         AssemblyReferenceCandidate candidate = candidatesToExamine.Dequeue();
 
@@ -679,8 +679,8 @@ namespace Microsoft.CodeAnalysis
                         int candidateIndex = candidate.DefinitionIndex;
 
                         // Have we already chosen symbols for the corresponding assembly?
-                        Debug.Assert(boundInputs[candidateIndex].AssemblySymbol == null ||
-                                              candidateInputAssemblySymbols[candidateIndex] == null);
+                        Debug.Assert((boundInputs[candidateIndex].AssemblySymbol == null) ||
+                                              (candidateInputAssemblySymbols[candidateIndex] == null));
 
                         TAssemblySymbol inputAssembly = boundInputs[candidateIndex].AssemblySymbol;
                         if (inputAssembly == null)
@@ -896,7 +896,7 @@ namespace Microsoft.CodeAnalysis
                 // Linked references cannot be used as COR library.
                 // References containing NoPia local types also cannot be used as COR library.
                 if (!assembly.IsLinked &&
-                    assembly.AssemblyReferences.Length == 0 &&
+                    (assembly.AssemblyReferences.Length == 0) &&
                     !assembly.ContainsNoPiaLocalTypes &&
                     (!supersedeLowerVersions || !IsSuperseded(assembly.Identity, assemblyReferencesBySimpleName)))
                 {
@@ -937,7 +937,7 @@ namespace Microsoft.CodeAnalysis
 
             // If we have assembly being built and no references, 
             // assume the assembly we are building is the COR library.
-            if (assemblies.Length == 1 && assemblies[0].AssemblyReferences.Length == 0)
+            if ((assemblies.Length == 1) && (assemblies[0].AssemblyReferences.Length == 0))
             {
                 return 0;
             }

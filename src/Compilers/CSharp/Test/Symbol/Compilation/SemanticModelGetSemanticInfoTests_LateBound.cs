@@ -572,7 +572,7 @@ class C
                 Assert.True(((TypeSymbol)semanticInfo.ConvertedType).IsDynamic());
                 Assert.Equal(ConversionKind.Identity, semanticInfo.ImplicitConversion.Kind);
 
-                if (op == "&&" || op == "||")
+                if ((op == "&&") || (op == "||"))
                 {
                     Assert.Null(semanticInfo.Symbol);
                 }

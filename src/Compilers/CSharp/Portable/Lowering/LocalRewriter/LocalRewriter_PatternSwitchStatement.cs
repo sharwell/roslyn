@@ -178,7 +178,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
                 }
 
-                if (defaultLabel != null && !loweredDecisionTree.MatchIsComplete)
+                if ((defaultLabel != null) && !loweredDecisionTree.MatchIsComplete)
                 {
                     Add(loweredDecisionTree, (e, t) => new DecisionTree.Guarded(
                         expression: loweredExpression,
@@ -432,7 +432,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var sectionBuilder = this._switchSections[guarded.SectionSyntax];
                 var targetLabel = guarded.Label.Label;
                 Debug.Assert(guarded.Guard?.ConstantValue != ConstantValue.False);
-                if (guarded.Guard == null || guarded.Guard.ConstantValue == ConstantValue.True)
+                if ((guarded.Guard == null) || (guarded.Guard.ConstantValue == ConstantValue.True))
                 {
                     // unconditional
                     Debug.Assert(guarded.Default == null);
@@ -604,7 +604,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // generate (if (value.Equals(input)) goto label;
                         var literal = _localRewriter.MakeLiteral(_factory.Syntax, boundSwitchLabel.ConstantValueOpt, expression.Type);
                         var condition = _factory.InstanceCall(literal, "Equals", expression);
-                        if (!condition.HasErrors && condition.Type.SpecialType != SpecialType.System_Boolean)
+                        if (!condition.HasErrors && (condition.Type.SpecialType != SpecialType.System_Boolean))
                         {
                             var call = (BoundCall)condition;
                             // '{1} {0}' has the wrong return type
@@ -672,7 +672,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             LowerDecisionTree(byValue.Expression, falseDecision);
                             _loweredDecisionTree.Add(_factory.Label(tryAnother));
                             // if both true and false (i.e. all values) are fully handled, there should be no default.
-                            Debug.Assert(!trueDecision.MatchIsComplete || !falseDecision.MatchIsComplete || byValue.Default == null);
+                            Debug.Assert(!trueDecision.MatchIsComplete || !falseDecision.MatchIsComplete || (byValue.Default == null));
                             LowerDecisionTree(byValue.Expression, byValue.Default);
                             break;
                         }

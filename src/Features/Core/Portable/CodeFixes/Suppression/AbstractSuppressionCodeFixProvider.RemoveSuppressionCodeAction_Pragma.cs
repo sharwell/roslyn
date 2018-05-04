@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
                     var locationToCheck = Location.Create(tree, spanToCheck);
                     var dummyDiagnosticWithLocationToCheck = Diagnostic.Create(_diagnostic.Descriptor, locationToCheck);
                     var effectiveDiagnostic = CompilationWithAnalyzers.GetEffectiveDiagnostics(new[] { dummyDiagnosticWithLocationToCheck }, model.Compilation).FirstOrDefault();
-                    return effectiveDiagnostic == null || effectiveDiagnostic.IsSuppressed;
+                    return (effectiveDiagnostic == null) || effectiveDiagnostic.IsSuppressed;
                 }
 
                 public SyntaxToken StartToken_TestOnly => _suppressionTargetInfo.StartToken;

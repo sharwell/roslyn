@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
         {
             expression = RemoveComments(expression);
             expression = RemoveFormatSpecifiers(expression, out formatSpecifiers);
-            return RemoveLeadingAndTrailingContent(expression, 0, expression.Length, IsWhitespace, ch => ch == ';' || IsWhitespace(ch));
+            return RemoveLeadingAndTrailingContent(expression, 0, expression.Length, IsWhitespace, ch => (ch == ';') || IsWhitespace(ch));
         }
 
         private static string RemoveComments(string expression)
@@ -52,7 +52,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 var ch = expression[i];
                 if (inMultilineComment)
                 {
-                    if (ch == '*' && i + 1 < length && expression[i + 1] == '/')
+                    if ((ch == '*') && ((i + 1) < length) && (expression[i + 1] == '/'))
                     {
                         i++;
                         inMultilineComment = false;
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 }
                 else
                 {
-                    if (ch == '/' && i + 1 < length)
+                    if ((ch == '/') && ((i + 1) < length))
                     {
                         var next = expression[i + 1];
                         if (next == '*')

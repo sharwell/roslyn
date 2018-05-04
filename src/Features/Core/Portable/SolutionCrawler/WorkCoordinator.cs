@@ -376,7 +376,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                 _shutdownToken.ThrowIfCancellationRequested();
 
                 var priorityService = document.GetLanguageService<IWorkCoordinatorPriorityService>();
-                var isLowPriority = priorityService != null && await priorityService.IsLowPriorityAsync(document, _shutdownToken).ConfigureAwait(false);
+                var isLowPriority = (priorityService != null) && await priorityService.IsLowPriorityAsync(document, _shutdownToken).ConfigureAwait(false);
 
                 var currentMember = GetSyntaxPath(changedMember);
 
@@ -429,7 +429,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
             private async Task EnqueueWorkItemAsync(IIncrementalAnalyzer analyzer, Document document, InvocationReasons invocationReasons)
             {
                 var priorityService = document.GetLanguageService<IWorkCoordinatorPriorityService>();
-                var isLowPriority = priorityService != null && await priorityService.IsLowPriorityAsync(document, _shutdownToken).ConfigureAwait(false);
+                var isLowPriority = (priorityService != null) && await priorityService.IsLowPriorityAsync(document, _shutdownToken).ConfigureAwait(false);
 
                 _documentAndProjectWorkerProcessor.Enqueue(
                     new WorkItem(document.Id, document.Project.Language, invocationReasons,
@@ -622,11 +622,11 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                 }
             }
 
-            public bool HasMultipleDocuments => _solutionId != null || _projectOrDocumentIds?.Count > 1;
+            public bool HasMultipleDocuments => (_solutionId != null) || (_projectOrDocumentIds?.Count > 1);
 
             public string GetLanguages(Solution solution)
             {
-                Contract.ThrowIfFalse(_solutionId == null || solution.Id == _solutionId);
+                Contract.ThrowIfFalse((_solutionId == null) || (solution.Id == _solutionId));
 
                 using (var pool = SharedPools.Default<HashSet<string>>().GetPooledObject())
                 {
@@ -665,7 +665,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
             public int GetDocumentCount(Solution solution)
             {
-                Contract.ThrowIfFalse(_solutionId == null || solution.Id == _solutionId);
+                Contract.ThrowIfFalse((_solutionId == null) || (solution.Id == _solutionId));
 
                 var count = 0;
                 if (_solutionId != null)
@@ -702,7 +702,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
             public IEnumerable<Document> GetDocuments(Solution solution)
             {
-                Contract.ThrowIfFalse(_solutionId == null || solution.Id == _solutionId);
+                Contract.ThrowIfFalse((_solutionId == null) || (solution.Id == _solutionId));
 
                 if (_solutionId != null)
                 {

@@ -69,9 +69,9 @@ namespace Microsoft.CodeAnalysis
 
             public static bool ReachedEnd(XmlReader reader)
             {
-                return reader.Depth == 1
-                    && reader.NodeType == XmlNodeType.EndElement
-                    && reader.Name == s_currentElementName;
+                return (reader.Depth == 1)
+                    && (reader.NodeType == XmlNodeType.EndElement)
+                    && (reader.Name == s_currentElementName);
             }
 
             public bool Eof
@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis
 
             public override int Read(char[] buffer, int index, int count)
             {
-                if (count == 0 || Eof)
+                if ((count == 0) || Eof)
                 {
                     return 0;
                 }
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis
 
             private static int EncodeAndAdvance(string src, int srcIndex, char[] dest, ref int destIndex, ref int destCount)
             {
-                if (destCount == 0 || srcIndex < 0 || srcIndex >= src.Length)
+                if ((destCount == 0) || (srcIndex < 0) || (srcIndex >= src.Length))
                 {
                     return 0;
                 }

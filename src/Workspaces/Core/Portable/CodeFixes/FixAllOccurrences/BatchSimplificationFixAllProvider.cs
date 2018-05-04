@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
                 var node = GetNodeToSimplify(root, model, diagnostic, options,
                     out var codeActionEquivalenceKey, cancellationToken);
 
-                if (node != null && fixAllState.CodeActionEquivalenceKey == codeActionEquivalenceKey)
+                if ((node != null) && (fixAllState.CodeActionEquivalenceKey == codeActionEquivalenceKey))
                 {
                     nodesToSimplify.Add(node);
                 }

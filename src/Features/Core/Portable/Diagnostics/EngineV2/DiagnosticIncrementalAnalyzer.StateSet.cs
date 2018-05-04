@@ -81,7 +81,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                     return SpecializedCollections.EmptyEnumerable<ProjectId>();
                 }
 
-                if (_activeFileStates.Count == 1 && _projectStates.IsEmpty)
+                if ((_activeFileStates.Count == 1) && _projectStates.IsEmpty)
                 {
                     // see whether we actually have diagnostics
                     var kv = _activeFileStates.First();

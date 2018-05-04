@@ -670,7 +670,7 @@ namespace Microsoft.CodeAnalysis.Editing
 
                 foreach (var tp in typeParameters)
                 {
-                    if (tp.HasConstructorConstraint || tp.HasReferenceTypeConstraint || tp.HasValueTypeConstraint || tp.ConstraintTypes.Length > 0)
+                    if (tp.HasConstructorConstraint || tp.HasReferenceTypeConstraint || tp.HasValueTypeConstraint || (tp.ConstraintTypes.Length > 0))
                     {
                         declaration = this.WithTypeConstraint(declaration, tp.Name,
                             kinds: (tp.HasConstructorConstraint ? SpecialTypeConstraintKind.Constructor : SpecialTypeConstraintKind.None)
@@ -1361,7 +1361,7 @@ namespace Microsoft.CodeAnalysis.Editing
         protected static SeparatedSyntaxList<TNode> RemoveRange<TNode>(SeparatedSyntaxList<TNode> list, int offset, int count)
             where TNode : SyntaxNode
         {
-            for (; count > 0 && offset < list.Count; count--)
+            for (; (count > 0) && (offset < list.Count); count--)
             {
                 list = list.RemoveAt(offset);
             }
@@ -1372,7 +1372,7 @@ namespace Microsoft.CodeAnalysis.Editing
         protected static SyntaxList<TNode> RemoveRange<TNode>(SyntaxList<TNode> list, int offset, int count)
             where TNode : SyntaxNode
         {
-            for (; count > 0 && offset < list.Count; count--)
+            for (; (count > 0) && (offset < list.Count); count--)
             {
                 list = list.RemoveAt(offset);
             }

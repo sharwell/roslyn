@@ -120,9 +120,9 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             var languageId = GetLanguageId(request);
             // Handle requests with no language id, a matching language id,
             // or causality breakpoint requests (debugging web services).
-            return languageId == Guid.Empty ||
-                languageId == LanguageId ||
-                languageId == DkmLanguageId.CausalityBreakpoint;
+            return (languageId == Guid.Empty) ||
+                (languageId == LanguageId) ||
+                (languageId == DkmLanguageId.CausalityBreakpoint);
         }
 
         private bool ShouldModuleHandleRequest(TModule module, string moduleName)

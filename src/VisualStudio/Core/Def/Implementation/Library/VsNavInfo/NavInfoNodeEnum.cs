@@ -24,7 +24,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.VsNavIn
         public int Next(uint celt, IVsNavInfoNode[] rgelt, out uint pceltFetched)
         {
             var i = 0;
-            for (; i < celt && _index < _nodes.Length; i++, _index++)
+            for (; (i < celt) && (_index < _nodes.Length); i++, _index++)
             {
                 rgelt[i] = _nodes[_index];
             }

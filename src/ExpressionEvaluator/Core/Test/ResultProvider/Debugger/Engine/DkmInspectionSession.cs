@@ -57,7 +57,7 @@ namespace Microsoft.VisualStudio.Debugger.Evaluation
                 internal readonly MethodId Method;
                 internal bool Equals(InstanceAndMethod other)
                 {
-                    return Instance == other.Instance && Method == other.Method;
+                    return (Instance == other.Instance) && (Method == other.Method);
                 }
             }
 
@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.Debugger.Evaluation
                 var instanceAndMethod = new InstanceAndMethod(instance, method);
                 int n = _calls.Count;
                 int index = 0;
-                while ((n - index > 0) && _calls[n - index - 1].Equals(instanceAndMethod))
+                while (((n - index) > 0) && _calls[n - index - 1].Equals(instanceAndMethod))
                 {
                     index++;
                 }

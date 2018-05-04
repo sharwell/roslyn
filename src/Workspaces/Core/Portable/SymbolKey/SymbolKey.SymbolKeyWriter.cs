@@ -251,9 +251,9 @@ namespace Microsoft.CodeAnalysis
                     return;
                 }
 
-                Debug.Assert(location.Kind == LocationKind.None ||
-                             location.Kind == LocationKind.SourceFile ||
-                             location.Kind == LocationKind.MetadataFile);
+                Debug.Assert((location.Kind == LocationKind.None) ||
+                             (location.Kind == LocationKind.SourceFile) ||
+                             (location.Kind == LocationKind.MetadataFile));
 
                 WriteInteger((int)location.Kind);
                 if (location.Kind == LocationKind.SourceFile)

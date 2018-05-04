@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Extensions
 
                     // If the element already was given a width, then only set the width if we
                     // wouldn't make it any smaller.
-                    if (IsNormal(newWidth) && IsNormal(currentWidth) && newWidth <= currentWidth)
+                    if (IsNormal(newWidth) && IsNormal(currentWidth) && (newWidth <= currentWidth))
                     {
                         return;
                     }

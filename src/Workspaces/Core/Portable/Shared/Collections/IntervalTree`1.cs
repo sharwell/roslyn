@@ -52,10 +52,10 @@ namespace Microsoft.CodeAnalysis.Shared.Collections
             // make sure "Contains" test to be same as what TextSpan does
             if (length == 0)
             {
-                return thisStart <= otherStart && otherEnd < thisEnd;
+                return (thisStart <= otherStart) && (otherEnd < thisEnd);
             }
 
-            return thisStart <= otherStart && otherEnd <= thisEnd;
+            return (thisStart <= otherStart) && (otherEnd <= thisEnd);
         }
 
         private static bool IntersectsWith(T value, int start, int length, IIntervalIntrospector<T> introspector)
@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.Shared.Collections
             var thisEnd = GetEnd(value, introspector);
             var thisStart = introspector.GetStart(value);
 
-            return otherStart <= thisEnd && otherEnd >= thisStart;
+            return (otherStart <= thisEnd) && (otherEnd >= thisStart);
         }
 
         private static bool OverlapsWith(T value, int start, int length, IIntervalIntrospector<T> introspector)
@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.Shared.Collections
 
             if (length == 0)
             {
-                return thisStart < otherStart && otherStart < thisEnd;
+                return (thisStart < otherStart) && (otherStart < thisEnd);
             }
 
             int overlapStart = Math.Max(thisStart, otherStart);
@@ -200,7 +200,7 @@ namespace Microsoft.CodeAnalysis.Shared.Collections
                     if (introspector.GetStart(currentNode.Value) <= end)
                     {
                         var right = currentNode.Right;
-                        if (right != null && GetEnd(right.MaxEndNode.Value, introspector) >= start)
+                        if ((right != null) && (GetEnd(right.MaxEndNode.Value, introspector) >= start))
                         {
                             candidates.Push((right, firstTime: true));
                         }
@@ -211,7 +211,7 @@ namespace Microsoft.CodeAnalysis.Shared.Collections
                     // only if left's maxVal overlaps with interval's start, we should consider 
                     // left subtree
                     var left = currentNode.Left;
-                    if (left != null && GetEnd(left.MaxEndNode.Value, introspector) >= start)
+                    if ((left != null) && (GetEnd(left.MaxEndNode.Value, introspector) >= start))
                     {
                         candidates.Push((left, firstTime: true));
                     }

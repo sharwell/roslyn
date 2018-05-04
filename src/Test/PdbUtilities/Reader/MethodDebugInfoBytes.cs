@@ -38,7 +38,7 @@ namespace Roslyn.Test.Utilities
             public Builder(string[][] importStringGroups = null, bool suppressUsingInfo = false, ISymUnmanagedConstant[] constants = null)
             {
                 _bytesBuilder = ArrayBuilder<byte>.GetInstance();
-                if (importStringGroups != null && !suppressUsingInfo)
+                if ((importStringGroups != null) && !suppressUsingInfo)
                 {
                     var groupSizes = importStringGroups.Select(g => (short)g.Length).ToArray();
                     AddUsingInfo(groupSizes);
@@ -55,7 +55,7 @@ namespace Roslyn.Test.Utilities
             public Builder AddUsingInfo(params short[] groupSizes)
             {
                 var numGroupSizes = groupSizes.Length;
-                var recordSize = BitArithmeticUtilities.Align(4 + 4 + 2 + 2 * numGroupSizes, 4); // Record size, including header.
+                var recordSize = BitArithmeticUtilities.Align(4 + 4 + 2 + (2 * numGroupSizes), 4); // Record size, including header.
 
                 // Record header
                 _bytesBuilder.Add(Version);

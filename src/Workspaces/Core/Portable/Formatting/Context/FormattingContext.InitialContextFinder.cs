@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 while (node != null)
                 {
                     // get all operations for the nodes that contains the formatting span, but not ones contained by the span
-                    node.DescendantNodesAndSelf(n => n != previous && n.Span.IntersectsWith(span) && !span.Contains(n.Span))
+                    node.DescendantNodesAndSelf(n => (n != previous) && n.Span.IntersectsWith(span) && !span.Contains(n.Span))
                         .Do(n =>
                             {
                                 _formattingRules.AddIndentBlockOperations(list, n, _lastToken);
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 }
 
                 // make sure operations we have has effects over the formatting span
-                operations.RemoveAll(o => o == null || !o.TextSpan.IntersectsWith(span));
+                operations.RemoveAll(o => (o == null) || !o.TextSpan.IntersectsWith(span));
 
                 // we couldn't find anything
                 // return initial location so that we can get base indentation correctly

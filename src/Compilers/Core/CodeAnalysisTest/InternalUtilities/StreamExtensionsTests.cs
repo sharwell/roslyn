@@ -46,7 +46,7 @@ namespace Roslyn.Utilities.UnitTests.InternalUtilities
 
             stream = new TestStream(readFunc: (buf, offset, count) =>
             {
-                if (offset + count > buf.Length)
+                if ((offset + count) > buf.Length)
                 {
                     throw new ArgumentException();
                 }

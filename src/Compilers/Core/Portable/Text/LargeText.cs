@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.Text
             }
 
             var maxCharRemainingGuess = encoding.GetMaxCharCountOrThrowIfHuge(stream);
-            Debug.Assert(longLength > 0 && longLength <= int.MaxValue); // GetMaxCharCountOrThrowIfHuge should have thrown.
+            Debug.Assert((longLength > 0) && (longLength <= int.MaxValue)); // GetMaxCharCountOrThrowIfHuge should have thrown.
             int length = (int)longLength;
 
             using (var reader = new StreamReader(stream, encoding, detectEncodingFromByteOrderMarks: true, bufferSize: Math.Min(length, 4096), leaveOpen: true))
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         private static ImmutableArray<char[]> ReadChunksFromTextReader(TextReader reader, int maxCharRemainingGuess, bool throwIfBinaryDetected)
         {
-            var chunks = ArrayBuilder<char[]>.GetInstance(1 + maxCharRemainingGuess / ChunkSize);
+            var chunks = ArrayBuilder<char[]>.GetInstance(1 + (maxCharRemainingGuess / ChunkSize));
 
             while (reader.Peek() != -1)
             {
@@ -206,7 +206,7 @@ namespace Microsoft.CodeAnalysis.Text
 
         public override void Write(TextWriter writer, TextSpan span, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (span.Start < 0 || span.Start > _length || span.End > _length)
+            if ((span.Start < 0) || (span.Start > _length) || (span.End > _length))
             {
                 throw new ArgumentOutOfRangeException(nameof(span));
             }
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis.Text
                 var chunk = _chunks[chunkIndex];
                 int charsToWrite = Math.Min(chunk.Length - chunkStartOffset, count);
 
-                if (chunkWriter != null && chunkStartOffset == 0 && charsToWrite == chunk.Length)
+                if ((chunkWriter != null) && (chunkStartOffset == 0) && (charsToWrite == chunk.Length))
                 {
                     // reuse entire chunk
                     chunkWriter.AppendChunk(chunk);

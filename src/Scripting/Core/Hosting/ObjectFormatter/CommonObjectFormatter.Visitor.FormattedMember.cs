@@ -39,12 +39,12 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
                 public string GetDisplayName()
                 {
-                    return Name ?? "[" + Index.ToString() + "]";
+                    return Name ?? (("[" + Index.ToString() + "]"));
                 }
 
                 public bool HasKeyName()
                 {
-                    return Index >= 0 && Name != null && Name.Length >= 2 && Name[0] == '[' && Name[Name.Length - 1] == ']';
+                    return (Index >= 0) && (Name != null) && (Name.Length >= 2) && (Name[0] == '[') && (Name[Name.Length - 1] == ']');
                 }
 
                 public bool AppendAsCollectionEntry(Builder result)

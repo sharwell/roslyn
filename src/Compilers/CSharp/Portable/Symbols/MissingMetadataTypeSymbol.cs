@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             this.name = name;
             this.arity = arity;
-            this.mangleName = mangleName && arity > 0;
+            this.mangleName = mangleName && (arity > 0);
         }
 
         public override string Name
@@ -157,9 +157,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             private TopLevel(ModuleSymbol module, ref MetadataTypeName fullName, int typeId)
-                : this(module, ref fullName, fullName.ForcedArity == -1 || fullName.ForcedArity == fullName.InferredArity)
+                : this(module, ref fullName, (fullName.ForcedArity == -1) || (fullName.ForcedArity == fullName.InferredArity))
             {
-                Debug.Assert(typeId == -1 || typeId == (int)SpecialType.None || Arity == 0 || MangleName);
+                Debug.Assert((typeId == -1) || (typeId == (int)SpecialType.None) || (Arity == 0) || MangleName);
                 _lazyTypeId = typeId;
             }
 
@@ -254,7 +254,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                         AssemblySymbol containingAssembly = _containingModule.ContainingAssembly;
 
-                        if ((Arity == 0 || MangleName) && (object)containingAssembly != null && ReferenceEquals(containingAssembly, containingAssembly.CorLibrary) && _containingModule.Ordinal == 0)
+                        if (((Arity == 0) || MangleName) && ((object)containingAssembly != null) && ReferenceEquals(containingAssembly, containingAssembly.CorLibrary) && (_containingModule.Ordinal == 0))
                         {
                             // Check the name 
                             string emittedName = MetadataHelpers.BuildQualifiedName(_namespaceName, MetadataName);
@@ -309,19 +309,19 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 // if ignoring dynamic, then treat dynamic the same as the type 'object'
-                if ((comparison & TypeCompareKind.IgnoreDynamic) != 0 &&
-                    (object)t2 != null &&
-                    t2.TypeKind == TypeKind.Dynamic &&
-                    this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object)
+                if (((comparison & TypeCompareKind.IgnoreDynamic) != 0) &&
+                    ((object)t2 != null) &&
+                    (t2.TypeKind == TypeKind.Dynamic) &&
+                    (this.SpecialType == Microsoft.CodeAnalysis.SpecialType.System_Object))
                 {
                     return true;
                 }
 
                 var other = t2 as TopLevel;
 
-                return (object)other != null &&
+                return ((object)other != null) &&
                     string.Equals(MetadataName, other.MetadataName, StringComparison.Ordinal) &&
-                    arity == other.arity &&
+                    (arity == other.arity) &&
                     string.Equals(_namespaceName, other.NamespaceName, StringComparison.Ordinal) &&
                     _containingModule.Equals(other._containingModule);
             }
@@ -377,7 +377,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             public Nested(NamedTypeSymbol containingType, ref MetadataTypeName emittedName)
-                : this(containingType, ref emittedName, emittedName.ForcedArity == -1 || emittedName.ForcedArity == emittedName.InferredArity)
+                : this(containingType, ref emittedName, (emittedName.ForcedArity == -1) || (emittedName.ForcedArity == emittedName.InferredArity))
             {
             }
 
@@ -419,8 +419,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
 
                 var other = t2 as Nested;
-                return (object)other != null && string.Equals(MetadataName, other.MetadataName, StringComparison.Ordinal) &&
-                    arity == other.arity &&
+                return ((object)other != null) && string.Equals(MetadataName, other.MetadataName, StringComparison.Ordinal) &&
+                    (arity == other.arity) &&
                     _containingType.Equals(other._containingType, comparison);
             }
         }

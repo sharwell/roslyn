@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis
                 return true;
             }
 
-            return other != null && other._positionSpan.Equals(_positionSpan);
+            return (other != null) && other._positionSpan.Equals(_positionSpan);
         }
 
         public override bool Equals(object obj)

@@ -451,8 +451,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             NamedTypeSymbol container = _scopeBinder.ContainingType;
-            if ((object)container != null && container.IsScriptClass &&
-                (object)_scopeBinder.LookupDeclaredField(designation) != null)
+            if (((object)container != null) && container.IsScriptClass &&
+                ((object)_scopeBinder.LookupDeclaredField(designation) != null))
             {
                 // This is a field declaration
                 return null;
@@ -473,8 +473,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             NamedTypeSymbol container = _scopeBinder.ContainingType;
 
-            if ((object)container != null && container.IsScriptClass &&
-                (object)_scopeBinder.LookupDeclaredField(designation) != null)
+            if (((object)container != null) && container.IsScriptClass &&
+                ((object)_scopeBinder.LookupDeclaredField(designation) != null))
             {
                 // This is a field declaration
                 return null;
@@ -498,8 +498,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             NamedTypeSymbol container = _scopeBinder.ContainingType;
 
-            if ((object)container != null && container.IsScriptClass &&
-                (object)_scopeBinder.LookupDeclaredField(designation) != null)
+            if (((object)container != null) && container.IsScriptClass &&
+                ((object)_scopeBinder.LookupDeclaredField(designation) != null))
             {
                 // This is a field declaration
                 return null;

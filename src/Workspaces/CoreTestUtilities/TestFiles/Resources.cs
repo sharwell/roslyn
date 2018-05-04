@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.TestFiles
 
         private static TResult GetOrLoadValue<TResult>(string name, Func<string, TResult> loader, ref Dictionary<string, TResult> cache)
         {
-            if (cache != null && cache.TryGetValue(name, out var result))
+            if ((cache != null) && cache.TryGetValue(name, out var result))
             {
                 return result;
             }

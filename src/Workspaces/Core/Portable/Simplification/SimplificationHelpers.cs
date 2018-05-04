@@ -98,15 +98,15 @@ namespace Microsoft.CodeAnalysis.Simplification
         internal static bool IsValidSymbolInfo(ISymbol symbol)
         {
             // name bound to only one symbol is valid
-            return symbol != null && !symbol.IsErrorType();
+            return (symbol != null) && !symbol.IsErrorType();
         }
 
         internal static bool ShouldSimplifyMemberAccessExpression(SemanticModel semanticModel, SyntaxNode expression, OptionSet optionSet)
         {
             var symbol = GetOriginalSymbolInfo(semanticModel, expression);
-            if (symbol == null ||
+            if ((symbol == null) ||
                 (!symbol.IsStatic &&
-                 (symbol.IsKind(SymbolKind.Field) && optionSet.GetOption(CodeStyleOptions.QualifyFieldAccess, semanticModel.Language).Value ||
+                 ((symbol.IsKind(SymbolKind.Field) && optionSet.GetOption(CodeStyleOptions.QualifyFieldAccess, semanticModel.Language).Value) ||
                  (symbol.IsKind(SymbolKind.Property) && optionSet.GetOption(CodeStyleOptions.QualifyPropertyAccess, semanticModel.Language).Value) ||
                  (symbol.IsKind(SymbolKind.Method) && optionSet.GetOption(CodeStyleOptions.QualifyMethodAccess, semanticModel.Language).Value) ||
                  (symbol.IsKind(SymbolKind.Event) && optionSet.GetOption(CodeStyleOptions.QualifyEventAccess, semanticModel.Language).Value))))

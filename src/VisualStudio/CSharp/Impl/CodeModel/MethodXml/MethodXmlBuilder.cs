@@ -492,7 +492,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel.MethodXml
 
                 // If the left-hand side is a named type, we generate a literal expression
                 // with the type name. Otherwise, we generate the expression normally.
-                if (leftHandSymbol != null && leftHandSymbol.Kind == SymbolKind.NamedType)
+                if ((leftHandSymbol != null) && (leftHandSymbol.Kind == SymbolKind.NamedType))
                 {
                     using (ExpressionTag())
                     using (LiteralTag())
@@ -522,7 +522,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.CodeModel.MethodXml
 
             using (NameRefTag(variableKind))
             {
-                if (symbol != null && variableKind != VariableKind.Local)
+                if ((symbol != null) && (variableKind != VariableKind.Local))
                 {
                     using (ExpressionTag())
                     {

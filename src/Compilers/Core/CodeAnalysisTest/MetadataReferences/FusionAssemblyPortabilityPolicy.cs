@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
             // This is not foolproof, but we just assume that if both assembly
             // policies have the same path and the same timestamp that they are the same.
             // We can't do any better because we don't have access to the config cookie internals.
-            return (object)other != null &&
+            return ((object)other != null) &&
                    Enumerable.SequenceEqual(_fileHash, other._fileHash);
         }
 

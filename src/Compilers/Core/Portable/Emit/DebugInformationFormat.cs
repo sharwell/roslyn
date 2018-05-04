@@ -13,12 +13,12 @@ namespace Microsoft.CodeAnalysis.Emit
     {
         internal static bool IsValid(this DebugInformationFormat value)
         {
-            return value >= DebugInformationFormat.Pdb && value <= DebugInformationFormat.Embedded;
+            return (value >= DebugInformationFormat.Pdb) && (value <= DebugInformationFormat.Embedded);
         }
 
         internal static bool IsPortable(this DebugInformationFormat value)
         {
-            return value == DebugInformationFormat.PortablePdb || value == DebugInformationFormat.Embedded;
+            return (value == DebugInformationFormat.PortablePdb) || (value == DebugInformationFormat.Embedded);
         }
     }
 }

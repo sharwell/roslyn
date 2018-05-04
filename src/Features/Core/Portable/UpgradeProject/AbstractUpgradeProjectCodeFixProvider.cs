@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.UpgradeProject
 
         private bool CanUpgrade(Project project, string language, string version)
         {
-            return project.Language == language && IsUpgrade(project.ParseOptions, version);
+            return (project.Language == language) && IsUpgrade(project.ParseOptions, version);
         }
     }
 

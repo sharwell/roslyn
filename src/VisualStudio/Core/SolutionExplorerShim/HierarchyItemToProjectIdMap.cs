@@ -53,8 +53,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
                     // The properties supported and the interpretation of their values varies from one project system
                     // to another. This code is designed with C# and VB in mind, so we need to filter out everything
                     // else.
-                    if (p.Language != LanguageNames.CSharp
-                        && p.Language != LanguageNames.VisualBasic)
+                    if ((p.Language != LanguageNames.CSharp)
+                        && (p.Language != LanguageNames.VisualBasic))
                     {
                         return false;
                     }
@@ -67,7 +67,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
                     // if the two projects are in the same folder.
                     // Note that if a project has been loaded with Lightweight Solution Load it won't even have a
                     // hierarchy, so we need to check for null first.
-                    if (p.Hierarchy != null
+                    if ((p.Hierarchy != null)
                         && p.Hierarchy.TryGetCanonicalName((uint)VSConstants.VSITEMID.Root, out string projectCanonicalName)
                         && p.Hierarchy.TryGetItemName((uint)VSConstants.VSITEMID.Root, out string projectName)
                         && projectCanonicalName.Equals(nestedCanonicalName, System.StringComparison.OrdinalIgnoreCase)

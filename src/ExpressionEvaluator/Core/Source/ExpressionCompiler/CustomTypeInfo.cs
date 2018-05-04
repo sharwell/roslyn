@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
         /// </summary>
         internal static DkmClrCustomTypeInfo WithNoTupleElementNames(this DkmClrCustomTypeInfo typeInfo)
         {
-            if ((typeInfo == null) || (typeInfo.Payload == null) || typeInfo.PayloadTypeId != PayloadTypeId)
+            if ((typeInfo == null) || (typeInfo.Payload == null) || (typeInfo.PayloadTypeId != PayloadTypeId))
             {
                 return typeInfo;
             }
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         internal static string GetTupleElementNameIfAny(ReadOnlyCollection<string> tupleElementNames, int index)
         {
-            return tupleElementNames != null && index < tupleElementNames.Count ?
+            return (tupleElementNames != null) && (index < tupleElementNames.Count) ?
                 tupleElementNames[index] :
                 null;
         }

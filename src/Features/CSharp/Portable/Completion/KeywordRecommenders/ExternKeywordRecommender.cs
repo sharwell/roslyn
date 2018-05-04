@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 return true;
             }
 
-            if (token.Kind() == SyntaxKind.OpenBraceToken &&
+            if ((token.Kind() == SyntaxKind.OpenBraceToken) &&
                 token.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
             {
                 return true;
@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
             // extern alias a;
             // |
-            if (token.Kind() == SyntaxKind.SemicolonToken &&
+            if ((token.Kind() == SyntaxKind.SemicolonToken) &&
                 token.Parent.IsKind(SyntaxKind.ExternAliasDirective))
             {
                 return true;

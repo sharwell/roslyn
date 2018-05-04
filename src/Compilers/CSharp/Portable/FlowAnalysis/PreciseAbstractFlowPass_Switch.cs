@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     foreach (var boundSwitchLabel in section.SwitchLabels)
                     {
                         var label = boundSwitchLabel.Label;
-                        hasDefaultLabel = hasDefaultLabel || boundSwitchLabel.ConstantValueOpt == null;
+                        hasDefaultLabel = hasDefaultLabel || (boundSwitchLabel.ConstantValueOpt == null);
                         SetState(breakState.Clone());
                         var simulatedGoto = new BoundGotoStatement(node.Syntax, label);
                         VisitGotoStatement(simulatedGoto);
@@ -154,7 +154,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 foreach (var label in section.SwitchLabels)
                 {
-                    if (label.IsReachable && label != node.DefaultLabel)
+                    if (label.IsReachable && (label != node.DefaultLabel))
                     {
                         SetState(initialState.Clone());
                         // assign pattern variables
@@ -237,13 +237,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 foreach (var label in section.SwitchLabels)
                 {
-                    if (label.Guard != null && label.Guard.ConstantValue != ConstantValue.True)
+                    if ((label.Guard != null) && (label.Guard.ConstantValue != ConstantValue.True))
                     {
                         continue;
                     }
 
-                    if (label.Pattern.Kind == BoundKind.ConstantPattern &&
-                        ((BoundConstantPattern)label.Pattern).ConstantValue == node.Expression.ConstantValue)
+                    if ((label.Pattern.Kind == BoundKind.ConstantPattern) &&
+                        (((BoundConstantPattern)label.Pattern).ConstantValue == node.Expression.ConstantValue))
                     {
                         return true;
                     }

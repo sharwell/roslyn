@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis
                 }
                 else
                 {
-                    if ((object)set != treeFeatures && !set.SetEquals(treeFeatures))
+                    if (((object)set != treeFeatures) && !set.SetEquals(treeFeatures))
                     {
                         throw new ArgumentException(CodeAnalysisResources.InconsistentSyntaxTreeFeature, nameof(trees));
                     }
@@ -115,12 +115,12 @@ namespace Microsoft.CodeAnalysis
 
         internal static void ValidateScriptCompilationParameters(Compilation previousScriptCompilation, Type returnType, ref Type globalsType)
         {
-            if (globalsType != null && !IsValidHostObjectType(globalsType))
+            if ((globalsType != null) && !IsValidHostObjectType(globalsType))
             {
                 throw new ArgumentException(CodeAnalysisResources.ReturnTypeCannotBeValuePointerbyRefOrOpen, nameof(globalsType));
             }
 
-            if (returnType != null && !IsValidSubmissionReturnType(returnType))
+            if ((returnType != null) && !IsValidSubmissionReturnType(returnType))
             {
                 throw new ArgumentException(CodeAnalysisResources.ReturnTypeCannotBeVoidByRefOrOpen, nameof(returnType));
             }
@@ -155,16 +155,16 @@ namespace Microsoft.CodeAnalysis
                 return;
             }
 
-            if (options.OutputKind.IsValid() && options.OutputKind != OutputKind.DynamicallyLinkedLibrary)
+            if (options.OutputKind.IsValid() && (options.OutputKind != OutputKind.DynamicallyLinkedLibrary))
             {
                 throw new ArgumentException(CodeAnalysisResources.InvalidOutputKindForSubmission, nameof(options));
             }
 
-            if (options.CryptoKeyContainer != null ||
-                options.CryptoKeyFile != null ||
-                options.DelaySign != null ||
+            if ((options.CryptoKeyContainer != null) ||
+                (options.CryptoKeyFile != null) ||
+                (options.DelaySign != null) ||
                 !options.CryptoPublicKey.IsEmpty ||
-                (options.DelaySign == true && options.PublicSign))
+                ((options.DelaySign == true) && options.PublicSign))
             {
                 throw new ArgumentException(CodeAnalysisResources.InvalidCompilationOptions, nameof(options));
             }
@@ -369,7 +369,7 @@ namespace Microsoft.CodeAnalysis
 
         internal static bool IsValidSubmissionReturnType(Type type)
         {
-            return !(type == typeof(void) || type.IsByRef || type.GetTypeInfo().ContainsGenericParameters);
+            return !((type == typeof(void)) || type.IsByRef || type.GetTypeInfo().ContainsGenericParameters);
         }
 
         /// <summary>
@@ -502,9 +502,9 @@ namespace Microsoft.CodeAnalysis
                 }
 
                 var peReference = reference as PortableExecutableReference;
-                if (peReference == null && !(reference is T))
+                if ((peReference == null) && !(reference is T))
                 {
-                    Debug.Assert(reference is UnresolvedMetadataReference || reference is CompilationReference);
+                    Debug.Assert((reference is UnresolvedMetadataReference) || (reference is CompilationReference));
                     throw new ArgumentException(string.Format(CodeAnalysisResources.ReferenceOfTypeIsInvalid1, reference.GetType()),
                                     $"{nameof(references)}[{i}]");
                 }
@@ -838,7 +838,7 @@ namespace Microsoft.CodeAnalysis
             string[] parts = scriptClassName.Split('.');
             INamespaceSymbol container = this.SourceModule.GlobalNamespace;
 
-            for (int i = 0; i < parts.Length - 1; i++)
+            for (int i = 0; i < (parts.Length - 1); i++)
             {
                 INamespaceSymbol next = container.GetNestedNamespace(parts[i]);
                 if (next == null)
@@ -937,7 +937,7 @@ namespace Microsoft.CodeAnalysis
                     throw new ArgumentNullException($"{nameof(elementTypes)}[{i}]");
                 }
 
-                if (!elementLocations.IsDefault && elementLocations[i] == null)
+                if (!elementLocations.IsDefault && (elementLocations[i] == null))
                 {
                     throw new ArgumentNullException($"{nameof(elementLocations)}[{i}]");
                 }
@@ -1053,13 +1053,13 @@ namespace Microsoft.CodeAnalysis
                                                     nameof(memberTypes), nameof(memberNames)));
             }
 
-            if (!memberLocations.IsDefault && memberLocations.Length != memberTypes.Length)
+            if (!memberLocations.IsDefault && (memberLocations.Length != memberTypes.Length))
             {
                 throw new ArgumentException(string.Format(CodeAnalysisResources.AnonymousTypeArgumentCountMismatch2,
                                                     nameof(memberLocations), nameof(memberNames)));
             }
 
-            if (!memberIsReadOnly.IsDefault && memberIsReadOnly.Length != memberTypes.Length)
+            if (!memberIsReadOnly.IsDefault && (memberIsReadOnly.Length != memberTypes.Length))
             {
                 throw new ArgumentException(string.Format(CodeAnalysisResources.AnonymousTypeArgumentCountMismatch2,
                                                     nameof(memberIsReadOnly), nameof(memberNames)));
@@ -1077,7 +1077,7 @@ namespace Microsoft.CodeAnalysis
                     throw new ArgumentNullException($"{nameof(memberNames)}[{i}]");
                 }
 
-                if (!memberLocations.IsDefault && memberLocations[i] == null)
+                if (!memberLocations.IsDefault && (memberLocations[i] == null))
                 {
                     throw new ArgumentNullException($"{nameof(memberLocations)}[{i}]");
                 }
@@ -1179,7 +1179,7 @@ namespace Microsoft.CodeAnalysis
                 }
 
                 var filtered = Options.FilterDiagnostic(d);
-                if (filtered == null ||
+                if ((filtered == null) ||
                     (!reportSuppressedDiagnostics && filtered.IsSuppressed))
                 {
                     continue;
@@ -1284,7 +1284,7 @@ namespace Microsoft.CodeAnalysis
             //RC.EXE output starts with a resource that contains no data.
             if (initial32Bits == 0)
                 return Win32ResourceForm.RES;
-            else if ((initial32Bits & 0xFFFF0000) != 0 || (initial32Bits & 0x0000FFFF) != 0xFFFF)
+            else if (((initial32Bits & 0xFFFF0000) != 0) || ((initial32Bits & 0x0000FFFF) != 0xFFFF))
                 // See CLiteWeightStgdbRW::FindObjMetaData in peparse.cpp
                 return Win32ResourceForm.COFF;
             else
@@ -1410,14 +1410,14 @@ namespace Microsoft.CodeAnalysis
             IEnumerable<string> addedModuleResourceNames,
             DiagnosticBag diagnostics)
         {
-            if (Options.OutputKind == OutputKind.NetModule && !(manifestResources != null && manifestResources.Any()))
+            if ((Options.OutputKind == OutputKind.NetModule) && !((manifestResources != null) && manifestResources.Any()))
             {
                 return;
             }
 
             var uniqueResourceNames = new HashSet<string>();
 
-            if (manifestResources != null && manifestResources.Any())
+            if ((manifestResources != null) && manifestResources.Any())
             {
                 var uniqueFileNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 foreach (var resource in manifestResources)
@@ -1429,7 +1429,7 @@ namespace Microsoft.CodeAnalysis
 
                     // file name could be null if resource is embedded
                     var fileName = resource.FileName;
-                    if (fileName != null && !uniqueFileNames.Add(fileName))
+                    if ((fileName != null) && !uniqueFileNames.Add(fileName))
                     {
                         diagnostics.Add(MessageProvider.CreateDiagnostic(MessageProvider.ERR_ResourceFileNameNotUnique, Location.None, fileName));
                     }
@@ -1486,7 +1486,7 @@ namespace Microsoft.CodeAnalysis
             bool requires32Bit = platform.Requires32Bit();
 
             ushort fileAlignment;
-            if (emitOptions.FileAlignment == 0 || !CompilationOptions.IsValidFileAlignment(emitOptions.FileAlignment))
+            if ((emitOptions.FileAlignment == 0) || !CompilationOptions.IsValidFileAlignment(emitOptions.FileAlignment))
             {
                 fileAlignment = requires64Bit
                     ? Cci.ModulePropertiesForSerialization.DefaultFileAlignment64Bit
@@ -1502,9 +1502,9 @@ namespace Microsoft.CodeAnalysis
             // cover values smaller than 0x8000, overflow and default value 0):
             if (baseAddress == 0)
             {
-                if (outputKind == OutputKind.ConsoleApplication ||
-                    outputKind == OutputKind.WindowsApplication ||
-                    outputKind == OutputKind.WindowsRuntimeApplication)
+                if ((outputKind == OutputKind.ConsoleApplication) ||
+                    (outputKind == OutputKind.WindowsApplication) ||
+                    (outputKind == OutputKind.WindowsRuntimeApplication))
                 {
                     baseAddress = requires64Bit ? Cci.ModulePropertiesForSerialization.DefaultExeBaseAddress64Bit : Cci.ModulePropertiesForSerialization.DefaultExeBaseAddress32Bit;
                 }
@@ -1708,7 +1708,7 @@ namespace Microsoft.CodeAnalysis
             get
             {
                 return !IsDelaySigned
-                    && Options.OutputKind != OutputKind.NetModule
+                    && (Options.OutputKind != OutputKind.NetModule)
                     && StrongNameKeys.CanProvideStrongName;
             }
         }
@@ -1723,7 +1723,7 @@ namespace Microsoft.CodeAnalysis
 
                 return !IsDelaySigned
                     && !Options.PublicSign
-                    && Options.OutputKind != OutputKind.NetModule
+                    && (Options.OutputKind != OutputKind.NetModule)
                     && StrongNameKeys.CanSign;
             }
         }
@@ -1765,7 +1765,7 @@ namespace Microsoft.CodeAnalysis
             bool allTreesDebuggable = true;
             foreach (var tree in SyntaxTrees)
             {
-                if (!string.IsNullOrEmpty(tree.FilePath) && tree.GetText().Encoding == null)
+                if (!string.IsNullOrEmpty(tree.FilePath) && (tree.GetText().Encoding == null))
                 {
                     diagnostics.Add(MessageProvider.CreateDiagnostic(MessageProvider.ERR_EncodinglessSyntaxTree, tree.GetRoot().GetLocation()));
                     allTreesDebuggable = false;
@@ -1897,7 +1897,7 @@ namespace Microsoft.CodeAnalysis
         {
             Debug.Assert(IsSubmission);
 
-            if (this.GetSubmissionSlotIndex() >= 0 && HasCodeToEmit())
+            if ((this.GetSubmissionSlotIndex() >= 0) && HasCodeToEmit())
             {
                 if (!this.CommonAnonymousTypeManager.AreTemplatesSealed)
                 {
@@ -2085,24 +2085,24 @@ namespace Microsoft.CodeAnalysis
                 }
             }
 
-            if (metadataPEStream != null && options?.EmitMetadataOnly == true)
+            if ((metadataPEStream != null) && (options?.EmitMetadataOnly == true))
             {
                 throw new ArgumentException(CodeAnalysisResources.MetadataPeStreamUnexpectedWhenEmittingMetadataOnly, nameof(metadataPEStream));
             }
 
-            if (metadataPEStream != null && options?.IncludePrivateMembers == true)
+            if ((metadataPEStream != null) && (options?.IncludePrivateMembers == true))
             {
                 throw new ArgumentException(CodeAnalysisResources.IncludingPrivateMembersUnexpectedWhenEmittingToMetadataPeStream, nameof(metadataPEStream));
             }
 
-            if (metadataPEStream == null && options?.EmitMetadataOnly == false)
+            if ((metadataPEStream == null) && (options?.EmitMetadataOnly == false))
             {
                 // EmitOptions used to default to IncludePrivateMembers=false, so to preserve binary compatibility we silently correct that unless emitting regular assemblies
                 options = options.WithIncludePrivateMembers(true);
             }
 
-            if (options?.DebugInformationFormat == DebugInformationFormat.Embedded &&
-                options?.EmitMetadataOnly == true)
+            if ((options?.DebugInformationFormat == DebugInformationFormat.Embedded) &&
+                (options?.EmitMetadataOnly == true))
             {
                 throw new ArgumentException(CodeAnalysisResources.EmbeddingPdbUnexpectedWhenEmittingMetadata, nameof(metadataPEStream));
             }
@@ -2127,15 +2127,15 @@ namespace Microsoft.CodeAnalysis
                 }
             }
 
-            if (sourceLinkStream != null && !sourceLinkStream.CanRead)
+            if ((sourceLinkStream != null) && !sourceLinkStream.CanRead)
             {
                 throw new ArgumentException(CodeAnalysisResources.StreamMustSupportRead, nameof(sourceLinkStream));
             }
 
-            if (embeddedTexts != null &&
+            if ((embeddedTexts != null) &&
                 !embeddedTexts.IsEmpty() &&
-                pdbStream == null &&
-                options?.DebugInformationFormat != DebugInformationFormat.Embedded)
+                (pdbStream == null) &&
+                (options?.DebugInformationFormat != DebugInformationFormat.Embedded))
             {
                 throw new ArgumentException(CodeAnalysisResources.EmbeddedTextsRequirePdb, nameof(embeddedTexts));
             }
@@ -2175,8 +2175,8 @@ namespace Microsoft.CodeAnalysis
         {
             options = options ?? EmitOptions.Default.WithIncludePrivateMembers(metadataPEStream == null);
             bool embedPdb = options.DebugInformationFormat == DebugInformationFormat.Embedded;
-            Debug.Assert(!embedPdb || pdbStream == null);
-            Debug.Assert(metadataPEStream == null || !options.IncludePrivateMembers); // you may not use a secondary stream and include private members together
+            Debug.Assert(!embedPdb || (pdbStream == null));
+            Debug.Assert((metadataPEStream == null) || !options.IncludePrivateMembers); // you may not use a secondary stream and include private members together
 
             var diagnostics = DiagnosticBag.GetInstance();
 
@@ -2198,7 +2198,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     success = CompileMethods(
                         moduleBeingBuilt,
-                        emittingPdb: pdbStream != null || embedPdb,
+                        emittingPdb: (pdbStream != null) || embedPdb,
                         emitMetadataOnly: options.EmitMetadataOnly,
                         emitTestCoverageData: options.EmitTestCoverageData,
                         diagnostics: diagnostics,
@@ -2230,7 +2230,7 @@ namespace Microsoft.CodeAnalysis
                 }
 
                 RSAParameters? privateKeyOpt = null;
-                if (Options.StrongNameProvider?.Capability == SigningCapability.SignsPeBuilder && !Options.PublicSign)
+                if ((Options.StrongNameProvider?.Capability == SigningCapability.SignsPeBuilder) && !Options.PublicSign)
                 {
                     privateKeyOpt = StrongNameKeys.PrivateKey;
                 }
@@ -2360,7 +2360,7 @@ namespace Microsoft.CodeAnalysis
                 ValidateDebugEntryPoint(debugEntryPoint, diagnostics);
             }
 
-            if (Options.OutputKind == OutputKind.NetModule && manifestResources != null)
+            if ((Options.OutputKind == OutputKind.NetModule) && (manifestResources != null))
             {
                 foreach (ResourceDescription res in manifestResources)
                 {
@@ -2426,9 +2426,9 @@ namespace Microsoft.CodeAnalysis
             bool deterministic = IsEmitDeterministic;
 
             // PDB Stream provider should not be given if PDB is to be embedded into the PE file:
-            Debug.Assert(moduleBeingBuilt.DebugInformationFormat != DebugInformationFormat.Embedded || pdbStreamProvider == null);
+            Debug.Assert((moduleBeingBuilt.DebugInformationFormat != DebugInformationFormat.Embedded) || (pdbStreamProvider == null));
 
-            if (moduleBeingBuilt.DebugInformationFormat == DebugInformationFormat.Embedded || pdbStreamProvider != null)
+            if ((moduleBeingBuilt.DebugInformationFormat == DebugInformationFormat.Embedded) || (pdbStreamProvider != null))
             {
                 pePdbFilePath = pePdbFilePath ?? FileNameUtilities.ChangeExtension(SourceModule.Name, "pdb");
             }
@@ -2437,7 +2437,7 @@ namespace Microsoft.CodeAnalysis
                 pePdbFilePath = null;
             }
 
-            if (moduleBeingBuilt.DebugInformationFormat == DebugInformationFormat.Embedded && !string.IsNullOrEmpty(pePdbFilePath))
+            if ((moduleBeingBuilt.DebugInformationFormat == DebugInformationFormat.Embedded) && !string.IsNullOrEmpty(pePdbFilePath))
             {
                 pePdbFilePath = PathUtilities.GetFileName(pePdbFilePath);
             }
@@ -2446,10 +2446,10 @@ namespace Microsoft.CodeAnalysis
             {
                 metadataDiagnostics = DiagnosticBag.GetInstance();
 
-                if (moduleBeingBuilt.DebugInformationFormat == DebugInformationFormat.Pdb && pdbStreamProvider != null)
+                if ((moduleBeingBuilt.DebugInformationFormat == DebugInformationFormat.Pdb) && (pdbStreamProvider != null))
                 {
                     // The algorithm must be specified for deterministic builds (checked earlier).
-                    Debug.Assert(!deterministic || moduleBeingBuilt.PdbChecksumAlgorithm.Name != null);
+                    Debug.Assert(!deterministic || (moduleBeingBuilt.PdbChecksumAlgorithm.Name != null));
 
                     // The calls ISymUnmanagedWriter2.GetDebugInfo require a file name in order to succeed.  This is
                     // frequently used during PDB writing.  Ensure a name is provided here in the case we were given
@@ -2470,7 +2470,7 @@ namespace Microsoft.CodeAnalysis
                     : (Func<Stream>) (() => ConditionalGetOrCreateStream(metadataPEStreamProvider, metadataDiagnostics));
 
                 Func<Stream> getPortablePdbStream =
-                    moduleBeingBuilt.DebugInformationFormat != DebugInformationFormat.PortablePdb || pdbStreamProvider == null
+                    (moduleBeingBuilt.DebugInformationFormat != DebugInformationFormat.PortablePdb) || (pdbStreamProvider == null)
                     ? null
                     : (Func<Stream>) (() => ConditionalGetOrCreateStream(pdbStreamProvider, metadataDiagnostics));
 
@@ -2495,7 +2495,7 @@ namespace Microsoft.CodeAnalysis
                         if (nativePdbWriter != null)
                         {
                             var nativePdbStream = pdbStreamProvider.GetOrCreateStream(metadataDiagnostics);
-                            Debug.Assert(nativePdbStream != null || metadataDiagnostics.HasAnyErrors());
+                            Debug.Assert((nativePdbStream != null) || metadataDiagnostics.HasAnyErrors());
 
                             if (nativePdbStream != null)
                             {
@@ -2531,7 +2531,7 @@ namespace Microsoft.CodeAnalysis
                     return false;
                 }
 
-                if (signingInputStream != null && peStream != null)
+                if ((signingInputStream != null) && (peStream != null))
                 {
                     Debug.Assert(Options.StrongNameProvider != null);
 
@@ -2571,7 +2571,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var auxStream = metadataPEStreamProvider.GetOrCreateStream(metadataDiagnostics);
-            Debug.Assert(auxStream != null || metadataDiagnostics.HasAnyErrors());
+            Debug.Assert((auxStream != null) || metadataDiagnostics.HasAnyErrors());
             return auxStream;
         }
 
@@ -2603,7 +2603,7 @@ namespace Microsoft.CodeAnalysis
             // If this binary is configured to be signed, create a temp file, output to that
             // then stream that to the stream that this method was called with. Otherwise output to the
             // stream that this method was called with.
-            if (!metadataOnly && IsRealSigned && Options.StrongNameProvider.Capability == SigningCapability.SignsStream)
+            if (!metadataOnly && IsRealSigned && (Options.StrongNameProvider.Capability == SigningCapability.SignsStream))
             {
                 Debug.Assert(Options.StrongNameProvider != null);
 
@@ -2783,7 +2783,7 @@ namespace Microsoft.CodeAnalysis
         internal void MarkImportDirectiveAsUsed(SyntaxTree syntaxTree, int position)
         {
             // Optimization: Don't initialize TreeToUsedImportDirectivesMap in submissions.
-            if (!IsSubmission && syntaxTree != null)
+            if (!IsSubmission && (syntaxTree != null))
             {
                 var set = TreeToUsedImportDirectivesMap.GetOrAdd(syntaxTree, s_createSetCallback);
                 set.Add(position);
@@ -2799,7 +2799,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             SmallConcurrentSetOfInts usedImports;
-            return syntaxTree != null &&
+            return (syntaxTree != null) &&
                 TreeToUsedImportDirectivesMap.TryGetValue(syntaxTree, out usedImports) &&
                 usedImports.Contains(position);
         }
@@ -2889,7 +2889,7 @@ namespace Microsoft.CodeAnalysis
 
         internal string GetMessage(ITypeSymbol source, ITypeSymbol destination)
         {
-            if (source == null || destination == null) return this.AssemblyName;
+            if ((source == null) || (destination == null)) return this.AssemblyName;
             return string.Format("{0}: {1} {2} -> {3} {4}", this.AssemblyName, source.TypeKind.ToString(), source.Name, destination.TypeKind.ToString(), destination.Name);
         }
 
@@ -2955,7 +2955,7 @@ namespace Microsoft.CodeAnalysis
 
         private bool IsMemberMissing(int member)
         {
-            return _lazyMakeMemberMissingMap != null && _lazyMakeMemberMissingMap.ContainsKey(member);
+            return (_lazyMakeMemberMissingMap != null) && _lazyMakeMemberMissingMap.ContainsKey(member);
         }
 
         internal void MakeTypeMissing(WellKnownType type)
@@ -2970,7 +2970,7 @@ namespace Microsoft.CodeAnalysis
 
         internal bool IsTypeMissing(WellKnownType type)
         {
-            return _lazyMakeWellKnownTypeMissingMap != null && _lazyMakeWellKnownTypeMissingMap.ContainsKey((int)type);
+            return (_lazyMakeWellKnownTypeMissingMap != null) && _lazyMakeWellKnownTypeMissingMap.ContainsKey((int)type);
         }
 
         /// <summary>

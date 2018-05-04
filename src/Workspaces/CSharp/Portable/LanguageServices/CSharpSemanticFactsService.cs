@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var location = token.GetLocation();
             var q = from node in token.GetAncestors<SyntaxNode>()
                     let symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken)
-                    where symbol != null && symbol.Locations.Contains(location)
+                    where (symbol != null) && symbol.Locations.Contains(location)
                     select symbol;
 
             return q.FirstOrDefault();
@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // currently we only support method. field support will be added later.
             var oldMethod = oldNode as BaseMethodDeclarationSyntax;
             var newMethod = newNode as BaseMethodDeclarationSyntax;
-            if (oldMethod == null || newMethod == null || oldMethod.Body == null)
+            if ((oldMethod == null) || (newMethod == null) || (oldMethod.Body == null))
             {
                 speculativeModel = null;
                 return false;
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             foreach (var @using in usings)
             {
-                if (@using.Alias == null || @using.Alias.Name == null)
+                if ((@using.Alias == null) || (@using.Alias.Name == null))
                 {
                     continue;
                 }
@@ -271,8 +271,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public bool IsAssignableTo(ITypeSymbol fromSymbol, ITypeSymbol toSymbol, Compilation compilation)
         {
-            return fromSymbol != null &&
-                toSymbol != null &&
+            return (fromSymbol != null) &&
+                (toSymbol != null) &&
                 ((CSharpCompilation)compilation).ClassifyConversion(fromSymbol, toSymbol).IsImplicit;
         }
 
@@ -326,7 +326,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // See also the proposal at https://github.com/dotnet/roslyn/issues/23394
                         var separators = orderByClauseSyntax.Orderings.GetSeparators().ToImmutableList();
                         var index = separators.IndexOf(token);
-                        if (index >= 0 && (index + 1) < orderByClauseSyntax.Orderings.Count)
+                        if ((index >= 0) && ((index + 1) < orderByClauseSyntax.Orderings.Count))
                         {
                             var ordering = orderByClauseSyntax.Orderings[index + 1];
                             if (ordering.AscendingOrDescendingKeyword.Kind() == SyntaxKind.None)

@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 where TAnalyzerStateData : AnalyzerStateData
             {
                 if (pendingEntities.TryGetValue(analysisEntity, out state) &&
-                    (state == null || state.StateKind == StateKind.ReadyToProcess))
+                    ((state == null) || (state.StateKind == StateKind.ReadyToProcess)))
                 {
                     if (state == null)
                     {
@@ -268,7 +268,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             private static void FreeState_NoLock<TAnalyzerStateData>(TAnalyzerStateData state, ObjectPool<TAnalyzerStateData> pool)
                 where TAnalyzerStateData : AnalyzerStateData
             {
-                if (state != null && !ReferenceEquals(state, AnalyzerStateData.FullyProcessedInstance))
+                if ((state != null) && !ReferenceEquals(state, AnalyzerStateData.FullyProcessedInstance))
                 {
                     state.Free();
                     pool.Free(state);
@@ -289,7 +289,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             {
                 TAnalyzerStateData state;
                 return !pendingEntities.TryGetValue(analysisEntity, out state) ||
-                    state?.StateKind == StateKind.FullyProcessed;
+                    (state?.StateKind == StateKind.FullyProcessed);
             }
 
             private bool IsDeclarationComplete_NoLock(ISymbol symbol, int declarationIndex)
@@ -317,7 +317,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     return true;
                 }
 
-                return declarationDataMap.Count == declarationsCount &&
+                return (declarationDataMap.Count == declarationsCount) &&
                     declarationDataMap.Values.All(state => state.StateKind == StateKind.FullyProcessed);
             }
 
@@ -399,7 +399,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                     {
                         var needsAnalysis = false;
                         var symbol = symbolEvent.Symbol;
-                        if (!AnalysisScope.ShouldSkipSymbolAnalysis(symbolEvent) && actionCounts.SymbolActionsCount > 0)
+                        if (!AnalysisScope.ShouldSkipSymbolAnalysis(symbolEvent) && (actionCounts.SymbolActionsCount > 0))
                         {
                             needsAnalysis = true;
                             _pendingSymbols[symbol] = null;

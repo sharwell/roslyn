@@ -22,13 +22,13 @@ namespace Microsoft.CodeAnalysis.CSharp.MoveDeclarationNearReference
     {
         protected override bool IsMeaningfulBlock(SyntaxNode node)
         {
-            return node is AnonymousFunctionExpressionSyntax ||
-                   node is LocalFunctionStatementSyntax ||
-                   node is CommonForEachStatementSyntax ||
-                   node is ForStatementSyntax ||
-                   node is WhileStatementSyntax ||
-                   node is DoStatementSyntax ||
-                   node is CheckedStatementSyntax;
+            return (node is AnonymousFunctionExpressionSyntax) ||
+                   (node is LocalFunctionStatementSyntax) ||
+                   (node is CommonForEachStatementSyntax) ||
+                   (node is ForStatementSyntax) ||
+                   (node is WhileStatementSyntax) ||
+                   (node is DoStatementSyntax) ||
+                   (node is CheckedStatementSyntax);
         }
 
         protected override SyntaxNode GetVariableDeclaratorSymbolNode(VariableDeclaratorSyntax variableDeclarator)

@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         continue;
                     }
 
-                    if (tpNames != null && tpNames.Contains(name))
+                    if ((tpNames != null) && tpNames.Contains(name))
                     {
                         // CS0412: 'X': a parameter or local variable cannot have the same name as a method type parameter
                         diagnostics.Add(ErrorCode.ERR_LocalSameNameAsTypeParam, GetLocation(p), name);
@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             for (Binder binder = this; binder != null; binder = binder.Next)
             {
                 // no local scopes enclose members
-                if (binder is InContainerBinder || error)
+                if ((binder is InContainerBinder) || error)
                 {
                     break;
                 }

@@ -108,7 +108,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 var decoded = decoder.DecodeType(metadataType);
                 // If not all of the names have been used, the metadata is bad
                 if (!hasTupleElementNamesAttribute ||
-                    decoder._namesIndex == 0)
+                    (decoder._namesIndex == 0))
                 {
                     return decoded;
                 }
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             // Now check the container
             NamedTypeSymbol containingType = type.ContainingType;
             NamedTypeSymbol decodedContainingType;
-            if ((object)containingType != null && containingType.IsGenericType)
+            if (((object)containingType != null) && containingType.IsGenericType)
             {
                 decodedContainingType = DecodeNamedType(containingType);
                 Debug.Assert(decodedContainingType.IsGenericType);
@@ -220,7 +220,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             {
                 var elementNames = EatElementNamesIfAvailable(tupleCardinality);
 
-                Debug.Assert(elementNames.IsDefault || elementNames.Length == tupleCardinality);
+                Debug.Assert(elementNames.IsDefault || (elementNames.Length == tupleCardinality));
 
                 decodedType = TupleTypeSymbol.Create(decodedType, elementNames);
             }

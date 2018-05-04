@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.Storage
                 return false;
             }
 
-            if (checkBranchId && solution.BranchId != solution.Workspace.PrimaryBranchId)
+            if (checkBranchId && (solution.BranchId != solution.Workspace.PrimaryBranchId))
             {
                 // we only use database for primary solution. (Ex, forked solution will not use database)
                 return false;
@@ -126,8 +126,8 @@ namespace Microsoft.CodeAnalysis.Storage
         private bool SolutionSizeAboveThreshold(Solution solution)
         {
             var workspace = solution.Workspace;
-            if (workspace.Kind == WorkspaceKind.RemoteWorkspace ||
-                workspace.Kind == WorkspaceKind.RemoteTemporaryWorkspace)
+            if ((workspace.Kind == WorkspaceKind.RemoteWorkspace) ||
+                (workspace.Kind == WorkspaceKind.RemoteTemporaryWorkspace))
             {
                 // Storage is always available in the remote server.
                 return true;

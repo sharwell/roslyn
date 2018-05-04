@@ -108,10 +108,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Packaging
             var packageUninstaller = componentModel.GetExtensions<IVsPackageUninstaller>().FirstOrDefault();
             var packageSourceProvider = componentModel.GetExtensions<IVsPackageSourceProvider>().FirstOrDefault();
 
-            if (packageInstallerServices == null ||
-                packageInstaller == null ||
-                packageUninstaller == null ||
-                packageSourceProvider == null)
+            if ((packageInstallerServices == null) ||
+                (packageInstaller == null) ||
+                (packageUninstaller == null) ||
+                (packageSourceProvider == null))
             {
                 return;
             }
@@ -154,7 +154,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Packaging
                     .Select(r => new PackageSource(r.Key, r.Value))
                     .ToImmutableArrayOrEmpty();
             }
-            catch (Exception ex) when (ex is InvalidDataException || ex is InvalidOperationException)
+            catch (Exception ex) when ((ex is InvalidDataException) || (ex is InvalidOperationException))
             {
                 // These exceptions can happen when the nuget.config file is broken.
                 PackageSources = ImmutableArray<PackageSource>.Empty;
@@ -177,7 +177,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Packaging
             // The 'workspace == _workspace' line is probably not necessary. However, we include 
             // it just to make sure that someone isn't trying to install a package into a workspace
             // other than the VisualStudioWorkspace.
-            if (workspace == _workspace && _workspace != null && _packageServices != null)
+            if ((workspace == _workspace) && (_workspace != null) && (_packageServices != null))
             {
                 var projectId = documentId.ProjectId;
                 var dte = (EnvDTE.DTE)_serviceProvider.GetService(typeof(SDTE));
@@ -379,7 +379,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Packaging
             }
 
             // If we've been disconnected, then there's no point proceeding.
-            if (_workspace == null || _packageServices == null)
+            if ((_workspace == null) || (_packageServices == null))
             {
                 return;
             }
@@ -445,8 +445,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Packaging
             // Also, the NuGet APIs may throw on some projects that don't implement the 
             // full set of DTE APIs they expect.  So we filter down to just C# and VB here
             // as we know these languages are safe to build up this index for.
-            if (project.Language != LanguageNames.CSharp &&
-                project.Language != LanguageNames.VisualBasic)
+            if ((project.Language != LanguageNames.CSharp) &&
+                (project.Language != LanguageNames.VisualBasic))
             {
                 return;
             }

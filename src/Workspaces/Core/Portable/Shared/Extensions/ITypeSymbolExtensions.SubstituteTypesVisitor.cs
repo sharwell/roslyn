@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
             private ITypeSymbol VisitType(ITypeSymbol symbol)
             {
-                if (symbol is TType1 && _map.TryGetValue((TType1)symbol, out var converted))
+                if ((symbol is TType1) && _map.TryGetValue((TType1)symbol, out var converted))
                 {
                     return converted;
                 }
@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 }
 
                 var elementType = symbol.ElementType.Accept(this);
-                if (elementType != null && elementType.Equals(symbol.ElementType))
+                if ((elementType != null) && elementType.Equals(symbol.ElementType))
                 {
                     return symbol;
                 }
@@ -115,7 +115,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 }
 
                 var pointedAtType = symbol.PointedAtType.Accept(this);
-                if (pointedAtType != null && pointedAtType.Equals(symbol.PointedAtType))
+                if ((pointedAtType != null) && pointedAtType.Equals(symbol.PointedAtType))
                 {
                     return symbol;
                 }

@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var errorType = (ErrorTypeSymbol)attributeTypeForBinding;
                 resultKind = errorType.ResultKind;
-                if (errorType.CandidateSymbols.Length == 1 && errorType.CandidateSymbols[0] is NamedTypeSymbol)
+                if ((errorType.CandidateSymbols.Length == 1) && (errorType.CandidateSymbols[0] is NamedTypeSymbol))
                 {
                     attributeTypeForBinding = (NamedTypeSymbol)errorType.CandidateSymbols[0];
                 }
@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             bool hasErrors = boundAttribute.HasAnyErrors;
 
-            if (attributeType.IsErrorType() || attributeType.IsAbstract || (object)attributeConstructor == null)
+            if (attributeType.IsErrorType() || attributeType.IsAbstract || ((object)attributeConstructor == null))
             {
                 // prevent cascading diagnostics
                 Debug.Assert(hasErrors);
@@ -203,7 +203,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             ImmutableArray<int> constructorArgumentsSourceIndices;
             ImmutableArray<TypedConstant> constructorArguments;
-            if (hasErrors || attributeConstructor.ParameterCount == 0)
+            if (hasErrors || (attributeConstructor.ParameterCount == 0))
             {
                 constructorArgumentsSourceIndices = default(ImmutableArray<int>);
                 constructorArguments = constructorArgsArray;
@@ -258,7 +258,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 }
 
                 var baseType = attributeType.BaseTypeWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics);
-                if ((object)baseType != null && baseType.IsConditional)
+                if (((object)baseType != null) && baseType.IsConditional)
                 {
                     return IsAttributeConditionallyOmitted(baseType, syntaxTree, ref useSiteDiagnostics);
                 }
@@ -350,7 +350,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             ReportDiagnosticsIfObsolete(diagnostics, namedArgumentNameSymbol, namedArgument, hasBaseReceiver: false);
 
-            Debug.Assert(resultKind == LookupResultKind.Viable || wasError);
+            Debug.Assert((resultKind == LookupResultKind.Viable) || wasError);
 
             TypeSymbol namedArgumentType;
             if (wasError)
@@ -444,12 +444,12 @@ namespace Microsoft.CodeAnalysis.CSharp
                         invalidNamedArgument |= propertySymbol.IsReadOnly;
                         var getMethod = propertySymbol.GetMethod;
                         var setMethod = propertySymbol.SetMethod;
-                        invalidNamedArgument = invalidNamedArgument || (object)getMethod == null || (object)setMethod == null;
+                        invalidNamedArgument = invalidNamedArgument || ((object)getMethod == null) || ((object)setMethod == null);
                         if (!invalidNamedArgument)
                         {
                             invalidNamedArgument =
-                                getMethod.DeclaredAccessibility != Accessibility.Public ||
-                                setMethod.DeclaredAccessibility != Accessibility.Public;
+                                (getMethod.DeclaredAccessibility != Accessibility.Public) ||
+                                (setMethod.DeclaredAccessibility != Accessibility.Public);
                         }
                         break;
 
@@ -549,7 +549,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             bool hasNamedCtorArguments = !constructorArgumentNamesOpt.IsDefault;
             Debug.Assert(!hasNamedCtorArguments ||
-                constructorArgumentNamesOpt.Length == argumentsCount);
+                (constructorArgumentNamesOpt.Length == argumentsCount));
 
             // index of the first named constructor argument
             int firstNamedArgIndex = -1;
@@ -567,7 +567,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 ParameterSymbol parameter = parameters[i];
                 TypedConstant reorderedArgument;
 
-                if (parameter.IsParams && parameter.Type.IsSZArray() && i + 1 == parameterCount)
+                if (parameter.IsParams && parameter.Type.IsSZArray() && ((i + 1) == parameterCount))
                 {
                     reorderedArgument = GetParamArrayArgument(parameter, constructorArgsArray, constructorArgumentNamesOpt, argumentsCount,
                         argsConsumedCount, this.Conversions, out bool foundNamed);
@@ -579,7 +579,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 else if (argsConsumedCount < argumentsCount)
                 {
                     if (!hasNamedCtorArguments ||
-                        constructorArgumentNamesOpt[argsConsumedCount] == null)
+                        (constructorArgumentNamesOpt[argsConsumedCount] == null))
                     {
                         // positional constructor argument
                         reorderedArgument = constructorArgsArray[argsConsumedCount];
@@ -622,7 +622,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     {
                         hasErrors = true;
                     }
-                    else if (reorderedArgument.Kind == TypedConstantKind.Array && parameter.Type.TypeKind == TypeKind.Array && (TypeSymbol)reorderedArgument.Type != parameter.Type)
+                    else if ((reorderedArgument.Kind == TypedConstantKind.Array) && (parameter.Type.TypeKind == TypeKind.Array) && ((TypeSymbol)reorderedArgument.Type != parameter.Type))
                     {
                         // NOTE: As in dev11, we don't allow array covariance conversions (presumably, we don't have a way to
                         // represent the conversion in metadata).
@@ -690,7 +690,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static int GetMatchingNamedConstructorArgumentIndex(string parameterName, ImmutableArray<string> argumentNamesOpt, int startIndex, int argumentsCount)
         {
             Debug.Assert(parameterName != null);
-            Debug.Assert(startIndex >= 0 && startIndex < argumentsCount);
+            Debug.Assert((startIndex >= 0) && (startIndex < argumentsCount));
 
             if (parameterName.IsEmpty() || !argumentNamesOpt.Any())
             {
@@ -752,7 +752,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 kind = TypedConstantKind.Primitive;
                 defaultValue = syntax.SyntaxTree.GetDisplayPath(syntax.Name.Span, Compilation.Options.SourceReferenceResolver);
             }
-            else if (!IsEarlyAttributeBinder && parameter.IsCallerMemberName && (object)((ContextualAttributeBinder)this).AttributedMember != null)
+            else if (!IsEarlyAttributeBinder && parameter.IsCallerMemberName && ((object)((ContextualAttributeBinder)this).AttributedMember != null))
             {
                 parameterType = Compilation.GetSpecialType(SpecialType.System_String);
                 kind = TypedConstantKind.Primitive;
@@ -790,7 +790,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // Constant value through syntax had errors, don't generate cascading diagnostics.
                 kind = TypedConstantKind.Error;
             }
-            else if (parameterType.SpecialType == SpecialType.System_Object && !defaultConstantValue.IsNull)
+            else if ((parameterType.SpecialType == SpecialType.System_Object) && !defaultConstantValue.IsNull)
             {
                 // error CS1763: '{0}' is of type '{1}'. A default parameter value of a reference type other than string can only be initialized with null
                 diagnostics.Add(ErrorCode.ERR_NotNullRefDefaultParameter, syntax.Location, parameter.Name, parameterType);
@@ -847,7 +847,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // If there's exactly one argument left, we'll try to use it in normal form
-            if (paramArrayArgCount == 1 &&
+            if ((paramArrayArgCount == 1) &&
                 TryGetNormalParamValue(parameter, constructorArgsArray, argsConsumedCount, conversions, out var lastValue))
             {
                 return lastValue;
@@ -890,7 +890,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // NOTE: Won't always succeed, even though we've performed overload resolution.
             // For example, passing int[] to params object[] actually treats the int[] as an element of the object[].
-            if (conversion.IsValid && conversion.Kind == ConversionKind.ImplicitReference)
+            if (conversion.IsValid && (conversion.Kind == ConversionKind.ImplicitReference))
             {
                 result = argument;
                 return true;
@@ -1004,7 +1004,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 var typedConstantKind = node.Type.GetAttributeParameterTypedConstantKind(_binder.Compilation);
 
-                return VisitExpression(node, typedConstantKind, diagnostics, ref attrHasErrors, curArgumentHasErrors || typedConstantKind == TypedConstantKind.Error);
+                return VisitExpression(node, typedConstantKind, diagnostics, ref attrHasErrors, curArgumentHasErrors || (typedConstantKind == TypedConstantKind.Error));
             }
 
             private TypedConstant VisitExpression(BoundExpression node, TypedConstantKind typedConstantKind, DiagnosticBag diagnostics, ref bool attrHasErrors, bool curArgumentHasErrors)
@@ -1051,11 +1051,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var operand = node.Operand;
                 var operandType = operand.Type;
 
-                if ((object)type != null && (object)operandType != null)
+                if (((object)type != null) && ((object)operandType != null))
                 {
-                    if (type.SpecialType == SpecialType.System_Object ||
-                        operandType.IsArray() && type.IsArray() &&
-                        ((ArrayTypeSymbol)type).ElementType.SpecialType == SpecialType.System_Object)
+                    if ((type.SpecialType == SpecialType.System_Object) ||
+                        ((operandType.IsArray() && type.IsArray() &&
+                        (((ArrayTypeSymbol)type).ElementType.SpecialType == SpecialType.System_Object))))
                     {
                         var typedConstantKind = operandType.GetAttributeParameterTypedConstantKind(_binder.Compilation);
                         return VisitExpression(operand, typedConstantKind, diagnostics, ref attrHasErrors, curArgumentHasErrors);
@@ -1147,7 +1147,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var type = node.Type;
 
-                if (typedConstantKind != TypedConstantKind.Error && type.ContainsTypeParameter())
+                if ((typedConstantKind != TypedConstantKind.Error) && type.ContainsTypeParameter())
                 {
                     // Devdiv Bug #12636: Constant values of open types should not be allowed in attributes
 

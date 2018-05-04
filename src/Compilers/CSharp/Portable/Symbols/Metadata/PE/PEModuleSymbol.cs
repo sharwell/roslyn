@@ -352,7 +352,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             return ImmutableArray<CSharpAttributeData>.Empty;
 
             bool matchesFilter(CustomAttributeHandle handle, AttributeDescription filter)
-                => filter.Signatures != null && Module.GetTargetAttributeSignatureIndex(handle, filter) != -1;
+                => (filter.Signatures != null) && (Module.GetTargetAttributeSignatureIndex(handle, filter) != -1);
         }
 
         internal ImmutableArray<CSharpAttributeData> GetCustomAttributesForToken(EntityHandle token)
@@ -418,7 +418,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         internal void OnNewTypeDeclarationsLoaded(
             Dictionary<string, ImmutableArray<PENamedTypeSymbol>> typesDict)
         {
-            bool keepLookingForDeclaredCorTypes = _ordinal == 0 && _assemblySymbol.KeepLookingForDeclaredSpecialTypes;
+            bool keepLookingForDeclaredCorTypes = (_ordinal == 0) && _assemblySymbol.KeepLookingForDeclaredSpecialTypes;
 
             foreach (var types in typesDict.Values)
             {
@@ -429,7 +429,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                     Debug.Assert(added);
 
                     // Register newly loaded COR types
-                    if (keepLookingForDeclaredCorTypes && type.SpecialType != SpecialType.None)
+                    if (keepLookingForDeclaredCorTypes && (type.SpecialType != SpecialType.None))
                     {
                         _assemblySymbol.RegisterDeclaredSpecialType(type);
                         keepLookingForDeclaredCorTypes = _assemblySymbol.KeepLookingForDeclaredSpecialTypes;
@@ -587,7 +587,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
         private static bool IsAcceptableSystemTypeSymbol(NamedTypeSymbol candidate)
         {
-            return candidate.Kind != SymbolKind.ErrorType || !(candidate is MissingMetadataTypeSymbol);
+            return (candidate.Kind != SymbolKind.ErrorType) || !(candidate is MissingMetadataTypeSymbol);
         }
 
         internal override bool HasAssemblyCompilationRelaxationsAttribute

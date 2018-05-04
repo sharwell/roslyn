@@ -63,7 +63,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
                 // export an ICommandLineParserService like F#
                 var newParseOptions = CreateParseOptions(lastParsedCommandLineArguments);
                 var newCompilationOptions = CreateCompilationOptions(lastParsedCommandLineArguments, newParseOptions);
-                if (newCompilationOptions == CurrentCompilationOptions && newParseOptions == CurrentParseOptions)
+                if ((newCompilationOptions == CurrentCompilationOptions) && (newParseOptions == CurrentParseOptions))
                 {
                     return;
                 }

@@ -91,8 +91,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
             private async Task<DiagnosticAnalysisResultMap<DiagnosticAnalyzer, DiagnosticAnalysisResult>> AnalyzeInProcAsync(
                 CompilationWithAnalyzers analyzerDriver, Project project, RemoteHostClient client, CancellationToken cancellationToken)
             {
-                if (analyzerDriver == null ||
-                    analyzerDriver.Analyzers.Length == 0)
+                if ((analyzerDriver == null) ||
+                    (analyzerDriver.Analyzers.Length == 0))
                 {
                     // quick bail out
                     return DiagnosticAnalysisResultMap.Create(ImmutableDictionary<DiagnosticAnalyzer, DiagnosticAnalysisResult>.Empty, ImmutableDictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo>.Empty);
@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
                 var options = solution.Options;
 
                 // we have cached options
-                if (_lastOptionSetPerLanguage.TryGetValue(language, out var value) && value.Item1 == options)
+                if (_lastOptionSetPerLanguage.TryGetValue(language, out var value) && (value.Item1 == options))
                 {
                     return value.Item2;
                 }

@@ -79,7 +79,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassVi
                     ? semanticModel.GetDeclaredSymbol(memberDeclaration, userCancellationToken)
                     : null;
 
-                while (symbol != null && !IsValidSymbolToSynchronize(symbol))
+                while ((symbol != null) && !IsValidSymbolToSynchronize(symbol))
                 {
                     symbol = symbol.ContainingSymbol;
                 }
@@ -107,11 +107,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ClassVi
         }
 
         private static bool IsValidSymbolToSynchronize(ISymbol symbol) =>
-            symbol.Kind == SymbolKind.Event ||
-            symbol.Kind == SymbolKind.Field ||
-            symbol.Kind == SymbolKind.Method ||
-            symbol.Kind == SymbolKind.NamedType ||
-            symbol.Kind == SymbolKind.Property;
+            (symbol.Kind == SymbolKind.Event) ||
+            (symbol.Kind == SymbolKind.Field) ||
+            (symbol.Kind == SymbolKind.Method) ||
+            (symbol.Kind == SymbolKind.NamedType) ||
+            (symbol.Kind == SymbolKind.Property);
 
         public CommandState GetCommandState(SyncClassViewCommandArgs args)
         {

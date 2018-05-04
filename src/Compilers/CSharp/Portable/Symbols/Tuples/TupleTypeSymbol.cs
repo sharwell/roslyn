@@ -67,8 +67,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             ImmutableArray<string> elementNames, ImmutableArray<TypeSymbol> elementTypes, ImmutableArray<bool> errorPositions)
             : base(underlyingType)
         {
-            Debug.Assert(elementLocations.IsDefault || elementLocations.Length == elementTypes.Length);
-            Debug.Assert(elementNames.IsDefault || elementNames.Length == elementTypes.Length);
+            Debug.Assert(elementLocations.IsDefault || (elementLocations.Length == elementTypes.Length));
+            Debug.Assert(elementNames.IsDefault || (elementNames.Length == elementTypes.Length));
             Debug.Assert(!underlyingType.IsTupleType);
 
             _elementLocations = elementLocations;
@@ -92,8 +92,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             CSharpSyntaxNode syntax = null,
             DiagnosticBag diagnostics = null)
         {
-            Debug.Assert(!shouldCheckConstraints || (object)syntax != null);
-            Debug.Assert(elementNames.IsDefault || elementTypes.Length == elementNames.Length);
+            Debug.Assert(!shouldCheckConstraints || ((object)syntax != null));
+            Debug.Assert(elementNames.IsDefault || (elementTypes.Length == elementNames.Length));
 
             int numElements = elementTypes.Length;
 
@@ -104,14 +104,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             NamedTypeSymbol underlyingType = GetTupleUnderlyingType(elementTypes, syntax, compilation, diagnostics);
 
-            if (diagnostics != null && ((SourceModuleSymbol)compilation.SourceModule).AnyReferencedAssembliesAreLinked)
+            if ((diagnostics != null) && ((SourceModuleSymbol)compilation.SourceModule).AnyReferencedAssembliesAreLinked)
             {
                 // Complain about unembeddable types from linked assemblies.
                 Emit.NoPia.EmbeddedTypesManager.IsValidEmbeddableType(underlyingType, syntax, diagnostics);
             }
 
             var constructedType = Create(underlyingType, elementNames, errorPositions, locationOpt, elementLocations);
-            if (shouldCheckConstraints && diagnostics != null)
+            if (shouldCheckConstraints && (diagnostics != null))
             {
                 constructedType.CheckConstraints(compilation.Conversions, syntax, elementLocations, compilation, diagnostics);
             }
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             var arguments = tupleCompatibleType.TypeArgumentsNoUseSiteDiagnostics;
             typeArgumentsBuilder.Clear();
 
-            for (int i = 0; i < RestPosition - 1; i++)
+            for (int i = 0; i < (RestPosition - 1); i++)
             {
                 typeArgumentsBuilder.Add(new TypeWithModifiers(arguments[i], hasModifiers ? tupleCompatibleType.GetTypeArgumentCustomModifiers(i) : ImmutableArray<CustomModifier>.Empty));
             }
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                                                   Location newLocation,
                                                   ImmutableArray<Location> newElementLocations)
         {
-            Debug.Assert(newElementNames.IsDefault || this._elementTypes.Length == newElementNames.Length);
+            Debug.Assert(newElementNames.IsDefault || (this._elementTypes.Length == newElementNames.Length));
 
             return new TupleTypeSymbol(newLocation, _underlyingType, newElementLocations, newElementNames, _elementTypes, default(ImmutableArray<bool>));
         }
@@ -321,8 +321,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         private static int NumberOfValueTuples(int numElements, out int remainder)
         {
-            remainder = (numElements - 1) % (RestPosition - 1) + 1;
-            return (numElements - 1) / (RestPosition - 1) + 1;
+            remainder = ((numElements - 1) % (RestPosition - 1)) + 1;
+            return ((numElements - 1) / (RestPosition - 1)) + 1;
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             NamedTypeSymbol currentSymbol = default(NamedTypeSymbol);
             NamedTypeSymbol firstTupleType = compilation.GetWellKnownType(GetTupleType(remainder));
 
-            if ((object)diagnostics != null && (object)syntax != null)
+            if (((object)diagnostics != null) && ((object)syntax != null))
             {
                 ReportUseSiteAndObsoleteDiagnostics(syntax, diagnostics, firstTupleType);
             }
@@ -351,7 +351,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 NamedTypeSymbol chainedTupleType = compilation.GetWellKnownType(GetTupleType(RestPosition));
 
-                if ((object)diagnostics != null && (object)syntax != null)
+                if (((object)diagnostics != null) && ((object)syntax != null))
                 {
                     ReportUseSiteAndObsoleteDiagnostics(syntax, diagnostics, chainedTupleType);
                 }
@@ -380,7 +380,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         internal static void VerifyTupleTypePresent(int cardinality, CSharpSyntaxNode syntax, CSharpCompilation compilation, DiagnosticBag diagnostics)
         {
-            Debug.Assert((object)diagnostics != null && (object)syntax != null);
+            Debug.Assert(((object)diagnostics != null) && ((object)syntax != null));
 
             int remainder;
             int chainLength = NumberOfValueTuples(cardinality, out remainder);
@@ -408,14 +408,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             ImmutableArray<string> destinationNames = destination.TupleElementNames;
             int sourceLength = sourceNames.Length;
             bool allMissing = destinationNames.IsDefault;
-            Debug.Assert(allMissing || destinationNames.Length == sourceLength);
+            Debug.Assert(allMissing || (destinationNames.Length == sourceLength));
 
             for (int i = 0; i < sourceLength; i++)
             {
                 var sourceName = sourceNames[i];
                 var wasInferred = noInferredNames ? false : inferredNames[i];
 
-                if (sourceName != null && !wasInferred && (allMissing || string.CompareOrdinal(destinationNames[i], sourceName) != 0))
+                if ((sourceName != null) && !wasInferred && (allMissing || (string.CompareOrdinal(destinationNames[i], sourceName) != 0)))
                 {
                     diagnostics.Add(ErrorCode.WRN_TupleLiteralNameMismatch, literal.Arguments[i].Syntax.Parent.Location, sourceName, destination);
                 }
@@ -594,7 +594,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 int number;
                 if (int.TryParse(tail, out number))
                 {
-                    if (number > 0 && String.Equals(name, TupleMemberName(number), StringComparison.Ordinal))
+                    if ((number > 0) && String.Equals(name, TupleMemberName(number), StringComparison.Ordinal))
                     {
                         return number;
                     }
@@ -614,7 +614,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// <param name="relativeMember">A reference to a well-known member type descriptor. Note however that the type in that descriptor is ignored here.</param>
         internal static Symbol GetWellKnownMemberInType(NamedTypeSymbol type, WellKnownMember relativeMember)
         {
-            Debug.Assert(relativeMember >= WellKnownMember.System_ValueTuple_T1__Item1 && relativeMember <= WellKnownMember.System_ValueTuple_TRest__ctor);
+            Debug.Assert((relativeMember >= WellKnownMember.System_ValueTuple_T1__Item1) && (relativeMember <= WellKnownMember.System_ValueTuple_TRest__ctor));
             Debug.Assert(type.IsDefinition);
 
             MemberDescriptor relativeDescriptor = WellKnownMembers.GetDescriptor(relativeMember);
@@ -637,7 +637,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             else
             {
                 DiagnosticInfo useSiteDiag = member.GetUseSiteDiagnostic();
-                if ((object)useSiteDiag != null && useSiteDiag.Severity == DiagnosticSeverity.Error)
+                if (((object)useSiteDiag != null) && (useSiteDiag.Severity == DiagnosticSeverity.Error))
                 {
                     diagnostics.Add(useSiteDiag, syntax.GetLocation());
                 }
@@ -1190,7 +1190,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            if ((object)other == null || !other._underlyingType.Equals(_underlyingType, comparison))
+            if (((object)other == null) || !other._underlyingType.Equals(_underlyingType, comparison))
             {
                 return false;
             }

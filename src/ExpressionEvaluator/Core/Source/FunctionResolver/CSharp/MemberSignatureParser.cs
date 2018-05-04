@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             while (true)
             {
                 var kind = CurrentToken.KeywordKind;
-                if (kind != SyntaxKind.RefKeyword && kind != SyntaxKind.OutKeyword)
+                if ((kind != SyntaxKind.RefKeyword) && (kind != SyntaxKind.OutKeyword))
                 {
                     break;
                 }

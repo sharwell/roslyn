@@ -31,15 +31,15 @@ namespace Microsoft.CodeAnalysis.EditAndContinue.UnitTests
 
         public bool Equals(RudeEditDiagnosticDescription other)
         {
-            return _rudeEditKind == other._rudeEditKind
-                && _squiggle == other._squiggle
-                && (_firstLine == other._firstLine || _firstLine == null || other._firstLine == null)
+            return (_rudeEditKind == other._rudeEditKind)
+                && (_squiggle == other._squiggle)
+                && ((_firstLine == other._firstLine) || (_firstLine == null) || (other._firstLine == null))
                 && _arguments.SequenceEqual(other._arguments, object.Equals);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is RudeEditDiagnosticDescription && Equals((RudeEditDiagnosticDescription)obj);
+            return (obj is RudeEditDiagnosticDescription) && Equals((RudeEditDiagnosticDescription)obj);
         }
 
         public override int GetHashCode()

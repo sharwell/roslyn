@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis
                     if (symbol.Kind == SymbolKind.Alias)
                     {
                         var aliasSymbol = (IAliasSymbol)symbol;
-                        if (aliasSymbol.Name == name &&
+                        if ((aliasSymbol.Name == name) &&
                             SymbolEquivalenceComparer.Instance.Equals(aliasSymbol.Target, target))
                         {
                             return new SymbolKeyResolution(aliasSymbol);

@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            if (expression is TypeSyntax && expression.IsParentKind(SyntaxKind.TypeArgumentList))
+            if ((expression is TypeSyntax) && expression.IsParentKind(SyntaxKind.TypeArgumentList))
             {
                 var typeArgumentList = (TypeArgumentListSyntax)expression.Parent;
                 var symbolInfo = semanticModel.GetSymbolInfo(typeArgumentList.Parent, cancellationToken);
@@ -71,14 +71,14 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                 {
                     type = type.OriginalDefinition;
                     var typeParameter = parameterIndex < type.TypeParameters.Length ? type.TypeParameters[parameterIndex] : null;
-                    return typeParameter != null && typeParameter.HasValueTypeConstraint;
+                    return (typeParameter != null) && typeParameter.HasValueTypeConstraint;
                 }
 
                 if (symbol is IMethodSymbol method)
                 {
                     method = method.OriginalDefinition;
                     var typeParameter = parameterIndex < method.TypeParameters.Length ? method.TypeParameters[parameterIndex] : null;
-                    return typeParameter != null && typeParameter.HasValueTypeConstraint;
+                    return (typeParameter != null) && typeParameter.HasValueTypeConstraint;
                 }
             }
 
@@ -87,10 +87,10 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
 
         protected override bool IsInInterfaceList(ExpressionSyntax expression)
         {
-            if (expression is TypeSyntax &&
-                expression.Parent is BaseTypeSyntax &&
+            if ((expression is TypeSyntax) &&
+                (expression.Parent is BaseTypeSyntax) &&
                 expression.Parent.IsParentKind(SyntaxKind.BaseList) &&
-                ((BaseTypeSyntax)expression.Parent).Type == expression)
+                (((BaseTypeSyntax)expression.Parent).Type == expression))
             {
                 var baseList = (BaseListSyntax)expression.Parent.Parent;
 
@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                     baseList.IsParentKind(SyntaxKind.StructDeclaration);
             }
 
-            if (expression is TypeSyntax &&
+            if ((expression is TypeSyntax) &&
                 expression.IsParentKind(SyntaxKind.TypeConstraint) &&
                 expression.Parent.IsParentKind(SyntaxKind.TypeParameterConstraintClause))
             {
@@ -151,7 +151,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             // something.  They're really just trying to reference something that exists but
             // isn't available for some reason (i.e. a missing reference).
             var usingDirectiveSyntax = simpleName.GetAncestorOrThis<UsingDirectiveSyntax>();
-            if (usingDirectiveSyntax != null && usingDirectiveSyntax.StaticKeyword.Kind() != SyntaxKind.StaticKeyword)
+            if ((usingDirectiveSyntax != null) && (usingDirectiveSyntax.StaticKeyword.Kind() != SyntaxKind.StaticKeyword))
             {
                 return false;
             }
@@ -186,9 +186,9 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             }
 
             // BUG(5712): Don't offer generate type in an enum's base list.
-            if (nameOrMemberAccessExpression.Parent is BaseTypeSyntax &&
+            if ((nameOrMemberAccessExpression.Parent is BaseTypeSyntax) &&
                 nameOrMemberAccessExpression.Parent.IsParentKind(SyntaxKind.BaseList) &&
-                ((BaseTypeSyntax)nameOrMemberAccessExpression.Parent).Type == nameOrMemberAccessExpression &&
+                (((BaseTypeSyntax)nameOrMemberAccessExpression.Parent).Type == nameOrMemberAccessExpression) &&
                 nameOrMemberAccessExpression.Parent.Parent.IsParentKind(SyntaxKind.EnumDeclaration))
             {
                 return false;
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
 
                 if (!simpleName.IsLeftSideOfDot() && !simpleName.IsInsideNameOf())
                 {
-                    if (nameOrMemberAccessExpression == null || !nameOrMemberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression) || !simpleName.IsRightSideOfDot())
+                    if ((nameOrMemberAccessExpression == null) || !nameOrMemberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression) || !simpleName.IsRightSideOfDot())
                     {
                         return false;
                     }
@@ -228,7 +228,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                     var token = simpleName.GetLastToken().GetNextToken();
 
                     // We let only the Namespace to be left of the Dot
-                    if (leftSymbol == null ||
+                    if ((leftSymbol == null) ||
                         !leftSymbol.IsKind(SymbolKind.Namespace) ||
                         !token.IsKind(SyntaxKind.DotToken))
                     {
@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                 {
                     var token = simpleName.GetLastToken().GetNextToken();
                     if (token.IsKind(SyntaxKind.DotToken) &&
-                            simpleName.Parent == token.Parent)
+                            (simpleName.Parent == token.Parent))
                     {
                         generateTypeServiceStateOptions.IsMembersWithModule = true;
                         generateTypeServiceStateOptions.IsTypeGeneratedIntoNamespaceFromMemberAccess = true;
@@ -256,9 +256,9 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             }
 
             var fieldDeclaration = simpleName.GetAncestor<FieldDeclarationSyntax>();
-            if (fieldDeclaration != null &&
-                fieldDeclaration.Parent is CompilationUnitSyntax &&
-                document.Document.SourceCodeKind == SourceCodeKind.Regular)
+            if ((fieldDeclaration != null) &&
+                (fieldDeclaration.Parent is CompilationUnitSyntax) &&
+                (document.Document.SourceCodeKind == SourceCodeKind.Regular))
             {
                 return false;
             }
@@ -274,7 +274,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                     {
                         var leftSymbol = semanticModel.GetSymbolInfo(parent.Left, cancellationToken).Symbol;
 
-                        if (leftSymbol != null && leftSymbol.IsKind(SymbolKind.Namespace))
+                        if ((leftSymbol != null) && leftSymbol.IsKind(SymbolKind.Namespace))
                         {
                             generateTypeServiceStateOptions.IsMembersWithModule = true;
                         }
@@ -305,7 +305,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                 {
                     // Case : event goo name11
                     // Only Delegate
-                    if (simpleName.Parent != null && !(simpleName.Parent is QualifiedNameSyntax))
+                    if ((simpleName.Parent != null) && !(simpleName.Parent is QualifiedNameSyntax))
                     {
                         generateTypeServiceStateOptions.IsDelegateOnly = true;
                         return true;
@@ -318,7 +318,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                         // Case : event Something.Mytype.<Delegate> Identifier
                         if (nextToken.IsKind(SyntaxKind.DotToken))
                         {
-                            if (nameOrMemberAccessExpression.Parent != null && nameOrMemberAccessExpression.Parent is QualifiedNameSyntax)
+                            if ((nameOrMemberAccessExpression.Parent != null) && (nameOrMemberAccessExpression.Parent is QualifiedNameSyntax))
                             {
                                 return true;
                             }
@@ -339,7 +339,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             else
             {
                 // MemberAccessExpression
-                if ((nameOrMemberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression) || (nameOrMemberAccessExpression.Parent != null && nameOrMemberAccessExpression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)))
+                if ((nameOrMemberAccessExpression.IsKind(SyntaxKind.SimpleMemberAccessExpression) || ((nameOrMemberAccessExpression.Parent != null) && nameOrMemberAccessExpression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)))
                     && nameOrMemberAccessExpression.IsLeftSideOfDot())
                 {
                     // Check to see if the expression is part of Invocation Expression
@@ -354,8 +354,8 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                         outerMostMemberAccessExpression = (ExpressionSyntax)nameOrMemberAccessExpression.Parent;
                     }
 
-                    outerMostMemberAccessExpression = outerMostMemberAccessExpression.GetAncestorsOrThis<ExpressionSyntax>().SkipWhile(n => n != null && n.IsKind(SyntaxKind.SimpleMemberAccessExpression)).FirstOrDefault();
-                    if (outerMostMemberAccessExpression != null && outerMostMemberAccessExpression is InvocationExpressionSyntax)
+                    outerMostMemberAccessExpression = outerMostMemberAccessExpression.GetAncestorsOrThis<ExpressionSyntax>().SkipWhile(n => (n != null) && n.IsKind(SyntaxKind.SimpleMemberAccessExpression)).FirstOrDefault();
+                    if ((outerMostMemberAccessExpression != null) && (outerMostMemberAccessExpression is InvocationExpressionSyntax))
                     {
                         generateTypeServiceStateOptions.IsEnumNotAllowed = true;
                     }
@@ -394,8 +394,8 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
 
                     // Get the Method symbol for the Delegate to be created
                     if (generateTypeServiceStateOptions.IsDelegateAllowed &&
-                        objectCreationExpressionOpt.ArgumentList.Arguments.Count == 1 &&
-                        objectCreationExpressionOpt.ArgumentList.Arguments[0].Expression.Kind() != SyntaxKind.DeclarationExpression)
+                        (objectCreationExpressionOpt.ArgumentList.Arguments.Count == 1) &&
+                        (objectCreationExpressionOpt.ArgumentList.Arguments[0].Expression.Kind() != SyntaxKind.DeclarationExpression))
                     {
                         generateTypeServiceStateOptions.DelegateCreationMethodSymbol = GetMethodSymbolIfPresent(semanticModel, objectCreationExpressionOpt.ArgumentList.Arguments[0].Expression, cancellationToken);
                     }
@@ -434,8 +434,8 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                     var variableDeclaration = (VariableDeclarationSyntax)nameOrMemberAccessExpression.Parent;
                     if (variableDeclaration.Variables.Count != 0)
                     {
-                        var firstVarDeclWithInitializer = variableDeclaration.Variables.FirstOrDefault(var => var.Initializer != null && var.Initializer.Value != null);
-                        if (firstVarDeclWithInitializer != null && firstVarDeclWithInitializer.Initializer != null && firstVarDeclWithInitializer.Initializer.Value != null)
+                        var firstVarDeclWithInitializer = variableDeclaration.Variables.FirstOrDefault(var => (var.Initializer != null) && (var.Initializer.Value != null));
+                        if ((firstVarDeclWithInitializer != null) && (firstVarDeclWithInitializer.Initializer != null) && (firstVarDeclWithInitializer.Initializer.Value != null))
                         {
                             generateTypeServiceStateOptions.DelegateCreationMethodSymbol = GetMethodSymbolIfPresent(semanticModel, firstVarDeclWithInitializer.Initializer.Value, cancellationToken);
                         }
@@ -512,7 +512,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
 
         protected override bool TryGetArgumentList(ObjectCreationExpressionSyntax objectCreationExpression, out IList<ArgumentSyntax> argumentList)
         {
-            if (objectCreationExpression != null && objectCreationExpression.ArgumentList != null)
+            if ((objectCreationExpression != null) && (objectCreationExpression.ArgumentList != null))
             {
                 argumentList = objectCreationExpression.ArgumentList.Arguments.ToList();
                 return true;
@@ -550,8 +550,8 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             {
                 var accessibilityConstraint = DetermineAccessibilityConstraint(state, semanticModel, cancellationToken);
 
-                if (accessibilityConstraint == Accessibility.Public ||
-                    accessibilityConstraint == Accessibility.Internal)
+                if ((accessibilityConstraint == Accessibility.Public) ||
+                    (accessibilityConstraint == Accessibility.Internal))
                 {
                     accessibility = accessibilityConstraint;
                 }
@@ -627,7 +627,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
         private NamespaceDeclarationSyntax GetDeclaringNamespace(List<string> containers, int indexDone, SyntaxNode localRoot)
         {
             var namespaceDecl = localRoot as NamespaceDeclarationSyntax;
-            if (namespaceDecl == null || namespaceDecl.Name is AliasQualifiedNameSyntax)
+            if ((namespaceDecl == null) || (namespaceDecl.Name is AliasQualifiedNameSyntax))
             {
                 return null;
             }
@@ -635,7 +635,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             List<string> namespaceContainers = new List<string>();
             GetNamespaceContainers(namespaceDecl.Name, namespaceContainers);
 
-            if (namespaceContainers.Count + indexDone > containers.Count ||
+            if (((namespaceContainers.Count + indexDone) > containers.Count) ||
                 !IdentifierMatches(indexDone, namespaceContainers, containers))
             {
                 return null;
@@ -701,7 +701,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             {
                 if (node is BaseListSyntax)
                 {
-                    if (node.Parent != null && (node.Parent is InterfaceDeclarationSyntax || node.Parent is StructDeclarationSyntax))
+                    if ((node.Parent != null) && ((node.Parent is InterfaceDeclarationSyntax) || (node.Parent is StructDeclarationSyntax)))
                     {
                         typeKindValue = TypeKindOptions.Interface;
                         return true;
@@ -735,9 +735,9 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
             while (node != null)
             {
                 // Types in BaseList, Type Constraint or Member Types cannot be of more restricted accessibility than the declaring type
-                if ((node is BaseListSyntax || node is TypeParameterConstraintClauseSyntax) &&
-                    node.Parent != null &&
-                    node.Parent is TypeDeclarationSyntax)
+                if (((node is BaseListSyntax) || (node is TypeParameterConstraintClauseSyntax)) &&
+                    (node.Parent != null) &&
+                    (node.Parent is TypeDeclarationSyntax))
                 {
                     if (node.Parent is TypeDeclarationSyntax typeDecl)
                     {
@@ -755,12 +755,12 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                     Contract.Fail("Cannot reach this point");
                 }
 
-                if ((node is EventDeclarationSyntax || node is EventFieldDeclarationSyntax) &&
-                    node.Parent != null &&
-                    node.Parent is TypeDeclarationSyntax)
+                if (((node is EventDeclarationSyntax) || (node is EventFieldDeclarationSyntax)) &&
+                    (node.Parent != null) &&
+                    (node.Parent is TypeDeclarationSyntax))
                 {
                     // Make sure the GFU is not inside the Accessors
-                    if (previousNode != null && previousNode is AccessorListSyntax)
+                    if ((previousNode != null) && (previousNode is AccessorListSyntax))
                     {
                         return false;
                     }
@@ -834,7 +834,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
                 var usingDirective = SyntaxFactory.UsingDirective(SyntaxFactory.ParseName(includeUsingsOrImports));
 
                 // Check if the usings is already present
-                if (compilationRoot.Usings.Where(n => n != null && n.Alias == null)
+                if (compilationRoot.Usings.Where(n => (n != null) && (n.Alias == null))
                                           .Select(n => n.Name.ToString())
                                           .Any(n => n.Equals(includeUsingsOrImports)))
                 {
@@ -908,7 +908,7 @@ namespace Microsoft.CodeAnalysis.CSharp.GenerateType
         {
             property = null;
             var propertyType = GetPropertyType(propertyName, semanticModel, typeInference, cancellationToken);
-            if (propertyType == null || propertyType is IErrorTypeSymbol)
+            if ((propertyType == null) || (propertyType is IErrorTypeSymbol))
             {
                 property = CreatePropertySymbol(propertyName, semanticModel.Compilation.ObjectType);
                 return property != null;

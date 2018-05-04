@@ -52,7 +52,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
             public int OnBeforeLastDocumentUnlock(uint docCookie, uint dwRDTLockType, uint dwReadLocksRemaining, uint dwEditLocksRemaining)
             {
                 // If we have no remaining locks, then we're done
-                if (dwReadLocksRemaining + dwEditLocksRemaining == 0)
+                if ((dwReadLocksRemaining + dwEditLocksRemaining) == 0)
                 {
                     _documentProvider.CloseDocuments(docCookie, monikerToKeep: null);
                 }

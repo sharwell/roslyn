@@ -534,7 +534,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 // IsTrue dynamic operator is invoked at runtime if the condition is of the type dynamic.
                 // The type of the operator itself is Boolean, so we need to check its kind.
-                return this.Condition.Kind == BoundKind.UnaryOperator && ((BoundUnaryOperator)this.Condition).OperatorKind.IsDynamic();
+                return (this.Condition.Kind == BoundKind.UnaryOperator) && ((BoundUnaryOperator)this.Condition).OperatorKind.IsDynamic();
             }
         }
     }
@@ -652,11 +652,11 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool operator ==(BoundTypeOrValueData a, BoundTypeOrValueData b)
         {
-            return (object)a.ValueSymbol == (object)b.ValueSymbol &&
-                (object)a.ValueExpression == (object)b.ValueExpression &&
-                (object)a.ValueDiagnostics == (object)b.ValueDiagnostics &&
-                (object)a.TypeExpression == (object)b.TypeExpression &&
-                (object)a.TypeDiagnostics == (object)b.TypeDiagnostics;
+            return ((object)a.ValueSymbol == (object)b.ValueSymbol) &&
+                ((object)a.ValueExpression == (object)b.ValueExpression) &&
+                ((object)a.ValueDiagnostics == (object)b.ValueDiagnostics) &&
+                ((object)a.TypeExpression == (object)b.TypeExpression) &&
+                ((object)a.TypeDiagnostics == (object)b.TypeDiagnostics);
         }
 
         public static bool operator !=(BoundTypeOrValueData a, BoundTypeOrValueData b)
@@ -666,7 +666,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override bool Equals(object obj)
         {
-            return obj is BoundTypeOrValueData && (BoundTypeOrValueData)obj == this;
+            return (obj is BoundTypeOrValueData) && ((BoundTypeOrValueData)obj == this);
         }
 
         public override int GetHashCode()

@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis
                 if (index >= 0)
                 {
                     //if there's a dot and no following digits, it's an error in the native compiler.
-                    if (str.Length == index + 1)
+                    if (str.Length == (index + 1))
                         return false;
 
                     major = str.Substring(0, index);
@@ -105,9 +105,9 @@ namespace Microsoft.CodeAnalysis
 
                 int majorValue;
 
-                if (major != major.Trim() ||
+                if ((major != major.Trim()) ||
                     !int.TryParse(major, NumberStyles.None, CultureInfo.InvariantCulture, out majorValue) ||
-                    majorValue >= 65356 || majorValue < 0)
+                    (majorValue >= 65356) || (majorValue < 0))
                 {
                     return false;
                 }
@@ -118,9 +118,9 @@ namespace Microsoft.CodeAnalysis
 
                 if (minor != null)
                 {
-                    if (minor != minor.Trim() ||
+                    if ((minor != minor.Trim()) ||
                         !int.TryParse(minor, NumberStyles.None, CultureInfo.InvariantCulture, out minorValue) ||
-                        minorValue >= 65356 || minorValue < 0)
+                        (minorValue >= 65356) || (minorValue < 0))
                     {
                         return false;
                     }
@@ -177,15 +177,15 @@ namespace Microsoft.CodeAnalysis
         {
             get
             {
-                return this.Major >= 0 &&
-                       this.Minor >= 0 &&
-                       this.Major < 65536 && this.Minor < 65536;
+                return (this.Major >= 0) &&
+                       (this.Minor >= 0) &&
+                       (this.Major < 65536) && (this.Minor < 65536);
             }
         }
 
         public override bool Equals(object obj)
         {
-            return obj is SubsystemVersion && Equals((SubsystemVersion)obj);
+            return (obj is SubsystemVersion) && Equals((SubsystemVersion)obj);
         }
 
         public override int GetHashCode()
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis
 
         public bool Equals(SubsystemVersion other)
         {
-            return this.Major == other.Major && this.Minor == other.Minor;
+            return (this.Major == other.Major) && (this.Minor == other.Minor);
         }
 
         public override string ToString()

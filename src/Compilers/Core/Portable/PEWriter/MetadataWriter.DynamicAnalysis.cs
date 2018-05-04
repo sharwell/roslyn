@@ -43,7 +43,7 @@ namespace Microsoft.Cci
         {
             // Most methods will have a span blob, each document has a hash blob and at least two blobs encoding the name 
             // (adding one more blob per document to account for all directory names):
-            _blobs = new Dictionary<ImmutableArray<byte>, BlobHandle>(1 + methodCountEstimate + 4 * documentCountEstimate, ByteSequenceComparer.Instance);
+            _blobs = new Dictionary<ImmutableArray<byte>, BlobHandle>(1 + methodCountEstimate + (4 * documentCountEstimate), ByteSequenceComparer.Instance);
 
             // Each document has a unique guid:
             const int guidSize = 16;
@@ -132,7 +132,7 @@ namespace Microsoft.Cci
             }
 
             // 4 bytes per span plus a header, the builder expands by the same amount.
-            var writer = new BlobBuilder(4 + spans.Length * 4);
+            var writer = new BlobBuilder(4 + (spans.Length * 4));
 
             int previousStartLine = -1;
             int previousStartColumn = -1;
@@ -180,7 +180,7 @@ namespace Microsoft.Cci
             int deltaColumns = span.EndColumn - span.StartColumn;
 
             // spans can't have zero width
-            Debug.Assert(deltaLines != 0 || deltaColumns != 0);
+            Debug.Assert((deltaLines != 0) || (deltaColumns != 0));
 
             writer.WriteCompressedInteger(deltaLines);
 
@@ -235,7 +235,7 @@ namespace Microsoft.Cci
             char[] separator = (c1 >= c2) ? s_separator1 : s_separator2;
 
             // Estimate 2 bytes per part, if the blob heap gets big we expand the builder once.
-            var writer = new BlobBuilder(1 + Math.Max(c1, c2) * 2);
+            var writer = new BlobBuilder(1 + (Math.Max(c1, c2) * 2));
 
             writer.WriteByte((byte)separator[0]);
 

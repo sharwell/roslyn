@@ -18,8 +18,8 @@ namespace Microsoft.CodeAnalysis.Differencing.UnitTests
 
         public TestNode(int label, int value, params TestNode[] children)
         {
-            Debug.Assert(value >= 0 && value <= MaxValue);
-            Debug.Assert(label >= 0 && label <= MaxLabel);
+            Debug.Assert((value >= 0) && (value <= MaxValue));
+            Debug.Assert((label >= 0) && (label <= MaxLabel));
 
             this.Label = label;
             this.Value = value;

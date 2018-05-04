@@ -337,7 +337,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundExpression caseExpressionOpt = (BoundExpression)this.Visit(node.CaseExpressionOpt);
             BoundLabel labelExpressionOpt = (BoundLabel)this.Visit(node.LabelExpressionOpt);
             var proxyLabel = _currentFinallyFrame.ProxyLabelIfNeeded(node.Label);
-            Debug.Assert(node.Label == proxyLabel || !(F.CurrentFunction is IteratorFinallyMethodSymbol), "should not be proxying branches in finally");
+            Debug.Assert((node.Label == proxyLabel) || !(F.CurrentFunction is IteratorFinallyMethodSymbol), "should not be proxying branches in finally");
             return node.Update(proxyLabel, caseExpressionOpt, labelExpressionOpt);
         }
 

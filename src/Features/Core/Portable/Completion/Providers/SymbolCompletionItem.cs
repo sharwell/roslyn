@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
             var item = CommonCompletionItem.Create(
                 displayText: displayText,
                 rules: rules,
-                filterText: filterText ?? (displayText.Length > 0 && displayText[0] == '@' ? displayText : firstSymbol.Name),
+                filterText: filterText ?? ((displayText.Length > 0) && (displayText[0] == '@') ? displayText : firstSymbol.Name),
                 sortText: sortText ?? firstSymbol.Name,
                 glyph: firstSymbol.GetGlyph(),
                 showsWarningIcon: supportedPlatforms != null,
@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis.Completion.Providers
         private static Document FindAppropriateDocumentForDescriptionContext(Document document, SupportedPlatformData supportedPlatforms)
         {
             var contextDocument = document;
-            if (supportedPlatforms != null && supportedPlatforms.InvalidProjects.Contains(document.Id.ProjectId))
+            if ((supportedPlatforms != null) && supportedPlatforms.InvalidProjects.Contains(document.Id.ProjectId))
             {
                 var contextId = document.GetLinkedDocumentIds().FirstOrDefault(id => !supportedPlatforms.InvalidProjects.Contains(id.ProjectId));
                 if (contextId != null)

@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 return true;
             }
-            else if ((object)t1.Type == null || (object)t2.Type == null)
+            else if (((object)t1.Type == null) || ((object)t2.Type == null))
             {
                 // Can't both be null or they would have been equal
                 return false;
@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 case SymbolKind.ArrayType:
                     {
-                        if (t2.Type.TypeKind != t1.Type.TypeKind || !t2.CustomModifiers.SequenceEqual(t1.CustomModifiers))
+                        if ((t2.Type.TypeKind != t1.Type.TypeKind) || !t2.CustomModifiers.SequenceEqual(t1.CustomModifiers))
                         {
                             return false;
                         }
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     }
                 case SymbolKind.PointerType:
                     {
-                        if (t2.Type.TypeKind != t1.Type.TypeKind || !t2.CustomModifiers.SequenceEqual(t1.CustomModifiers))
+                        if ((t2.Type.TypeKind != t1.Type.TypeKind) || !t2.CustomModifiers.SequenceEqual(t1.CustomModifiers))
                         {
                             return false;
                         }
@@ -136,7 +136,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case SymbolKind.NamedType:
                 case SymbolKind.ErrorType:
                     {
-                        if (t2.Type.TypeKind != t1.Type.TypeKind || !t2.CustomModifiers.SequenceEqual(t1.CustomModifiers))
+                        if ((t2.Type.TypeKind != t1.Type.TypeKind) || !t2.CustomModifiers.SequenceEqual(t1.CustomModifiers))
                         {
                             return false;
                         }
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                         if (!nt1.IsGenericType)
                         {
-                            return !nt2.IsGenericType && nt1 == nt2;
+                            return !nt2.IsGenericType && (nt1 == nt2);
                         }
                         else if (!nt2.IsGenericType)
                         {
@@ -165,7 +165,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                         int arity = nt1.Arity;
 
-                        if (nt2.Arity != arity || nt2.OriginalDefinition != nt1.OriginalDefinition)
+                        if ((nt2.Arity != arity) || (nt2.OriginalDefinition != nt1.OriginalDefinition))
                         {
                             return false;
                         }
@@ -188,12 +188,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                         // Note: Dev10 folds this into the loop since GetTypeArgsAll includes type args for containing types
                         // TODO: Calling CanUnifyHelper for the containing type is an overkill, we simply need to go through type arguments for all containers.
-                        return (object)nt1.ContainingType == null || CanUnifyHelper(new TypeWithModifiers(nt1.ContainingType), new TypeWithModifiers(nt2.ContainingType), ref substitution);
+                        return ((object)nt1.ContainingType == null) || CanUnifyHelper(new TypeWithModifiers(nt1.ContainingType), new TypeWithModifiers(nt2.ContainingType), ref substitution);
                     }
                 case SymbolKind.TypeParameter:
                     {
                         // These substitutions are not allowed in C#
-                        if (t2.Type.TypeKind == TypeKind.Pointer || t2.Type.SpecialType == SpecialType.System_Void)
+                        if ((t2.Type.TypeKind == TypeKind.Pointer) || (t2.Type.SpecialType == SpecialType.System_Void))
                         {
                             return false;
                         }
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             return true;
                         }
 
-                        if (t1.CustomModifiers.Length < t2.CustomModifiers.Length &&
+                        if ((t1.CustomModifiers.Length < t2.CustomModifiers.Length) &&
                             t1.CustomModifiers.SequenceEqual(t2.CustomModifiers.Take(t1.CustomModifiers.Length)))
                         {
                             AddSubstitution(ref substitution, tp1,
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                 return true;
                             }
 
-                            if (t2.CustomModifiers.Length < t1.CustomModifiers.Length &&
+                            if ((t2.CustomModifiers.Length < t1.CustomModifiers.Length) &&
                                 t2.CustomModifiers.SequenceEqual(t1.CustomModifiers.Take(t2.CustomModifiers.Length)))
                             {
                                 AddSubstitution(ref substitution, tp2,

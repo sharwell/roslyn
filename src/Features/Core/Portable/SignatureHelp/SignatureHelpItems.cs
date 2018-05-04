@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.SignatureHelp
         {
             Contract.ThrowIfNull(items);
             Contract.ThrowIfTrue(items.IsEmpty());
-            Contract.ThrowIfTrue(selectedItem.HasValue && selectedItem.Value >= items.Count);
+            Contract.ThrowIfTrue(selectedItem.HasValue && (selectedItem.Value >= items.Count));
 
             if (argumentIndex < 0)
             {
@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.SignatureHelp
 
             // Adjust the `selectedItem` index if duplicates are able to be removed.
             var distinctItems = items.Distinct().ToList();
-            if (selectedItem.HasValue && items.Count != distinctItems.Count)
+            if (selectedItem.HasValue && (items.Count != distinctItems.Count))
             {
                 // `selectedItem` index has already been determined to be valid, it now needs to be adjusted to point
                 // to the equivalent item in the reduced list to account for duplicates being removed

@@ -18,13 +18,13 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         public bool Equals(LocalSlotDebugInfo other)
         {
-            return this.SynthesizedKind == other.SynthesizedKind
+            return (this.SynthesizedKind == other.SynthesizedKind)
                 && this.Id.Equals(other.Id);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is LocalSlotDebugInfo && Equals((LocalSlotDebugInfo)obj);
+            return (obj is LocalSlotDebugInfo) && Equals((LocalSlotDebugInfo)obj);
         }
 
         public override int GetHashCode()

@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
 
             private int CompareMethodParameters(IMethodSymbol left, IMethodSymbol right)
             {
-                if (left == null && right == null)
+                if ((left == null) && (right == null))
                 {
                     // not method parameters
                     return 0;

@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
         {
             return
                 syntaxFacts.TryGetPredefinedType(token, out var actualType) &&
-                predefinedType == actualType;
+                (predefinedType == actualType);
         }
 
         protected override Task<ImmutableArray<ReferenceLocation>> FindReferencesInDocumentAsync(

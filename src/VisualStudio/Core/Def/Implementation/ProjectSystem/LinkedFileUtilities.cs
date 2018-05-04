@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         public static bool IsCurrentContextHierarchy(IVisualStudioHostDocument document, IVsRunningDocumentTable4 runningDocumentTable)
         {
             // runningDocumentTable might be null for tests.
-            return runningDocumentTable != null && document.Project.Hierarchy == GetContextHierarchy(document, runningDocumentTable);
+            return (runningDocumentTable != null) && (document.Project.Hierarchy == GetContextHierarchy(document, runningDocumentTable));
         }
 
         /// <summary>
@@ -108,7 +108,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
         private IVsHierarchy GetSharedHierarchyForItemInternal(IVsHierarchy headProjectHierarchy, uint itemId)
         {
             AssertIsForeground();
-            if (headProjectHierarchy.GetProperty(itemId, (int)__VSHPROPID7.VSHPROPID_IsSharedItem, out var isShared) != VSConstants.S_OK || !(bool)isShared)
+            if ((headProjectHierarchy.GetProperty(itemId, (int)__VSHPROPID7.VSHPROPID_IsSharedItem, out var isShared) != VSConstants.S_OK) || !(bool)isShared)
             {
                 return null;
             }
@@ -178,8 +178,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
             if (ErrorHandler.Succeeded(((IVsProject)hierarchy).GetMkDocument(itemId, out var fullPath))
                 && ErrorHandler.Succeeded(((IVsProject)sharedHierarchy).IsDocumentInProject(fullPath, out var found, priority, out itemIdInSharedHierarchy))
-                && found != 0
-                && itemIdInSharedHierarchy != (uint)VSConstants.VSITEMID.Nil)
+                && (found != 0)
+                && (itemIdInSharedHierarchy != (uint)VSConstants.VSITEMID.Nil))
             {
                 return true;
             }

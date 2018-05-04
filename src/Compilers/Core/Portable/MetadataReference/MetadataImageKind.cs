@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsValid(this MetadataImageKind kind)
         {
-            return kind >= MetadataImageKind.Assembly && kind <= MetadataImageKind.Module;
+            return (kind >= MetadataImageKind.Assembly) && (kind <= MetadataImageKind.Module);
         }
     }
 }

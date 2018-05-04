@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis
             Debug.Assert(Frozen);
 
             stateMachineType = null;
-            return _lazyStateMachineTypes != null && _lazyStateMachineTypes.TryGetValue(method, out stateMachineType);
+            return (_lazyStateMachineTypes != null) && _lazyStateMachineTypes.TryGetValue(method, out stateMachineType);
         }
     }
 }

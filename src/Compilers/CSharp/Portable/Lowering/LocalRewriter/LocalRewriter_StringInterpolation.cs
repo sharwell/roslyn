@@ -53,11 +53,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     // this is one of the expression holes
                     formatString.Builder.Append("{").Append(nextFormatPosition++);
-                    if (fillin.Alignment != null && !fillin.Alignment.HasErrors)
+                    if ((fillin.Alignment != null) && !fillin.Alignment.HasErrors)
                     {
                         formatString.Builder.Append(",").Append(fillin.Alignment.ConstantValue.Int64Value);
                     }
-                    if (fillin.Format != null && !fillin.Format.HasErrors)
+                    if ((fillin.Format != null) && !fillin.Format.HasErrors)
                     {
                         formatString.Builder.Append(":").Append(fillin.Format.ConstantValue.StringValue);
                     }
@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (expressions.Count == 0)
             {
                 // There are no fill-ins. Handle the escaping of {{ and }} and return the value.
-                Debug.Assert(!format.HasErrors && format.ConstantValue != null && format.ConstantValue.IsString);
+                Debug.Assert(!format.HasErrors && (format.ConstantValue != null) && format.ConstantValue.IsString);
                 var builder = PooledStringBuilder.GetInstance();
                 var formatText = format.ConstantValue.StringValue;
                 int formatLength = formatText.Length;
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     char c = formatText[i];
                     builder.Builder.Append(c);
-                    if ((c == '{' || c == '}') && (i + 1) < formatLength && formatText[i + 1] == c)
+                    if (((c == '{') || (c == '}')) && ((i + 1) < formatLength) && (formatText[i + 1] == c))
                     {
                         i++;
                     }

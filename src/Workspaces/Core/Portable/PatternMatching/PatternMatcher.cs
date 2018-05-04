@@ -251,7 +251,7 @@ namespace Microsoft.CodeAnalysis.PatternMatching
             for (int i = 0; i < text.Length; i++)
             {
                 char ch = text[i];
-                if (ch == ' ' || ch == '*')
+                if ((ch == ' ') || (ch == '*'))
                 {
                     return true;
                 }
@@ -362,7 +362,7 @@ namespace Microsoft.CodeAnalysis.PatternMatching
         }
 
         private static bool IsWordChar(char ch)
-            => char.IsLetterOrDigit(ch) || ch == '_';
+            => char.IsLetterOrDigit(ch) || (ch == '_');
 
         /// <summary>
         /// Do the two 'parts' match? i.e. Does the candidate part start with the pattern part?

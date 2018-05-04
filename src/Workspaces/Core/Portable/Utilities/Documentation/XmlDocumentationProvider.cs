@@ -117,13 +117,13 @@ So we suppress this error until the reporting for CA3053 has been updated to acc
             public override bool Equals(object obj)
             {
                 var other = obj as ContentBasedXmlDocumentationProvider;
-                return other != null && EqualsHelper(other);
+                return (other != null) && EqualsHelper(other);
             }
 
             private bool EqualsHelper(ContentBasedXmlDocumentationProvider other)
             {
                 // Check for reference equality first
-                if (this == other || _xmlDocCommentBytes == other._xmlDocCommentBytes)
+                if ((this == other) || (_xmlDocCommentBytes == other._xmlDocCommentBytes))
                 {
                     return true;
                 }
@@ -171,7 +171,7 @@ So we suppress this error until the reporting for CA3053 has been updated to acc
             public override bool Equals(object obj)
             {
                 var other = obj as FileBasedXmlDocumentationProvider;
-                return other != null && _filePath == other._filePath;
+                return (other != null) && (_filePath == other._filePath);
             }
 
             public override int GetHashCode()

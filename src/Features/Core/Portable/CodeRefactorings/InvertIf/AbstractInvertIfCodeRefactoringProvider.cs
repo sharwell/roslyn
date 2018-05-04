@@ -151,11 +151,11 @@ namespace Microsoft.CodeAnalysis.CodeRefactorings.InvertIf
 
                 //Workaround for https://github.com/dotnet/roslyn/issues/23956
                 //Issue to remove this when above is merged
-                if (binaryOperation.OperatorKind == BinaryOperatorKind.Or && syntaxFacts.IsConditionalOr(expressionNode))
+                if ((binaryOperation.OperatorKind == BinaryOperatorKind.Or) && syntaxFacts.IsConditionalOr(expressionNode))
                 {
                     negatedKind = BinaryOperatorKind.ConditionalAnd;
                 }
-                else if (binaryOperation.OperatorKind == BinaryOperatorKind.And && syntaxFacts.IsConditionalAnd(expressionNode))
+                else if ((binaryOperation.OperatorKind == BinaryOperatorKind.And) && syntaxFacts.IsConditionalAnd(expressionNode))
                 {
                     negatedKind = BinaryOperatorKind.ConditionalOr;
                 }
@@ -189,11 +189,11 @@ namespace Microsoft.CodeAnalysis.CodeRefactorings.InvertIf
             switch (operationKind)
             {
                 case BinaryOperatorKind.Equals:
-                    return binaryOperation.LeftOperand.Type?.IsValueType == true && binaryOperation.RightOperand.Type?.IsValueType == true
+                    return (binaryOperation.LeftOperand.Type?.IsValueType == true) && (binaryOperation.RightOperand.Type?.IsValueType == true)
                         ? generator.ValueEqualsExpression(leftOperand, rightOperand)
                         : generator.ReferenceEqualsExpression(leftOperand, rightOperand);
                 case BinaryOperatorKind.NotEquals:
-                    return binaryOperation.LeftOperand.Type?.IsValueType == true && binaryOperation.RightOperand.Type?.IsValueType == true
+                    return (binaryOperation.LeftOperand.Type?.IsValueType == true) && (binaryOperation.RightOperand.Type?.IsValueType == true)
                         ? generator.ValueNotEqualsExpression(leftOperand, rightOperand)
                         : generator.ReferenceNotEqualsExpression(leftOperand, rightOperand);
                 case BinaryOperatorKind.LessThanOrEqual:
@@ -257,7 +257,7 @@ namespace Microsoft.CodeAnalysis.CodeRefactorings.InvertIf
         }
 
         private bool IsNumericLiteral(IOperation operation)
-            => operation.Kind == OperationKind.Literal && operation.Type.IsNumericType();
+            => (operation.Kind == OperationKind.Literal) && operation.Type.IsNumericType();
 
         private IOperation RemoveImplicitConversion(IOperation operation)
         {
@@ -272,16 +272,16 @@ namespace Microsoft.CodeAnalysis.CodeRefactorings.InvertIf
             CancellationToken cancellationToken)
         {
             var numericValue = numericLiteralExpression.ConstantValue;
-            if (numericValue.HasValue && numericValue.Value is 0)
+            if (numericValue.HasValue && (numericValue.Value is 0))
             {
                 if (variableExpression is IPropertyReferenceOperation propertyOperation)
                 {
                     var property = propertyOperation.Property;
-                    if (property.Name == nameof(Array.Length) || property.Name == LongLength)
+                    if ((property.Name == nameof(Array.Length)) || (property.Name == LongLength))
                     {
                         var containingType = property.ContainingType;
-                        if (containingType?.SpecialType == SpecialType.System_Array ||
-                            containingType.SpecialType == SpecialType.System_String)
+                        if ((containingType?.SpecialType == SpecialType.System_Array) ||
+                            (containingType.SpecialType == SpecialType.System_String))
                         {
                             return true;
                         }
@@ -313,11 +313,11 @@ namespace Microsoft.CodeAnalysis.CodeRefactorings.InvertIf
             var operation = semanticModel.GetOperation(expression);
             SyntaxNode newLiteralExpression;
 
-            if (operation?.Kind == OperationKind.Literal && operation.ConstantValue.HasValue && operation.ConstantValue.Value is true)
+            if ((operation?.Kind == OperationKind.Literal) && operation.ConstantValue.HasValue && (operation.ConstantValue.Value is true))
             {
                 newLiteralExpression = generator.FalseLiteralExpression();
             }
-            else if (operation?.Kind == OperationKind.Literal && operation.ConstantValue.HasValue && operation.ConstantValue.Value is false)
+            else if ((operation?.Kind == OperationKind.Literal) && operation.ConstantValue.HasValue && (operation.ConstantValue.Value is false))
             {
                 newLiteralExpression = generator.TrueLiteralExpression();
             }

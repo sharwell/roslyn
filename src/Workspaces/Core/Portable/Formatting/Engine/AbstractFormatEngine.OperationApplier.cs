@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             {
                 var triviaInfo = _tokenStream.GetTriviaData(pairIndex);
 
-                if (triviaInfo.LineBreaks == 0 && triviaInfo.Spaces == operation.Space)
+                if ((triviaInfo.LineBreaks == 0) && (triviaInfo.Spaces == operation.Space))
                 {
                     return false;
                 }
@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 var triviaInfo = _tokenStream.GetTriviaData(pairIndex);
 
                 var indentation = _context.GetBaseIndentation(_tokenStream.GetToken(pairIndex + 1));
-                if (triviaInfo.LineBreaks == operation.Line && triviaInfo.Spaces == indentation && !triviaInfo.TreatAsElastic)
+                if ((triviaInfo.LineBreaks == operation.Line) && (triviaInfo.Spaces == indentation) && !triviaInfo.TreatAsElastic)
                 {
                     // things are already in the shape we want, so we don't actually need to do
                     // anything but, conceptually, we handled this case
@@ -197,7 +197,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
                 // lines between tokens are as expected, but indentation is not right
                 if (triviaInfo.SecondTokenIsFirstTokenOnLine &&
-                    indentation != triviaInfo.Spaces)
+                    (indentation != triviaInfo.Spaces))
                 {
                     _tokenStream.ApplyChange(pairIndex, triviaInfo.WithIndentation(indentation, _context, _formattingRules, cancellationToken));
                     return true;
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             {
                 // if there are no tokens to align, or no visible
                 // base token to be aligned to, then don't do anything
-                if (token.Width() <= 0 || operationTokens.IsEmpty())
+                if ((token.Width() <= 0) || operationTokens.IsEmpty())
                 {
                     tokenData = null;
                     return false;
@@ -325,7 +325,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 // due to one being involved in multiple alignment operations
                 previousChangesMap[currentToken.Token] = triviaInfo.Spaces;
 
-                if (previousToken.IndexInStream < 0 || triviaInfo.Spaces == baseSpaceOrIndentation)
+                if ((previousToken.IndexInStream < 0) || (triviaInfo.Spaces == baseSpaceOrIndentation))
                 {
                     return;
                 }
@@ -349,7 +349,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 foreach (var token in tokens)
                 {
                     // if the token is invisible or not exist, skip it.
-                    if (token.RawKind == 0 || token.Width() <= 0)
+                    if ((token.RawKind == 0) || (token.Width() <= 0))
                     {
                         continue;
                     }
@@ -465,7 +465,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 Dictionary<SyntaxToken, int> previousChangesMap,
                 CancellationToken cancellationToken)
             {
-                Contract.ThrowIfFalse(baseToken.RawKind != 0 && startToken.RawKind != 0 && endToken.RawKind != 0);
+                Contract.ThrowIfFalse((baseToken.RawKind != 0) && (startToken.RawKind != 0) && (endToken.RawKind != 0));
 
                 var baseTokenWithIndex = _tokenStream.GetTokenData(baseToken);
                 var firstTokenWithIndex = _tokenStream.GetTokenData(startToken).GetPreviousTokenData();
@@ -501,7 +501,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
                     // okay, this token is not moved, check one before me as long as it is on the same line
                     var tokenPairIndex = tokenWithIndex.IndexInStream - 1;
-                    if (tokenPairIndex < 0 ||
+                    if ((tokenPairIndex < 0) ||
                         _tokenStream.GetTriviaData(tokenPairIndex).SecondTokenIsFirstTokenOnLine)
                     {
                         return false;

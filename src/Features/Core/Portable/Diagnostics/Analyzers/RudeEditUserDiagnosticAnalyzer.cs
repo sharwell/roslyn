@@ -34,8 +34,8 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 }
 
                 EditSession session = encService.EditSession;
-                if (session == null ||
-                    session.BaseSolution.WorkspaceVersion == document.Project.Solution.WorkspaceVersion ||
+                if ((session == null) ||
+                    (session.BaseSolution.WorkspaceVersion == document.Project.Solution.WorkspaceVersion) ||
                     !session.HasProject(document.Project.Id))
                 {
                     return ImmutableArray<Diagnostic>.Empty;

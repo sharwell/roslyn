@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Workspaces
             // Also clear the cache when the solution is cleared or removed.
             workspaceServices.Workspace.WorkspaceChanged += (s, e) =>
             {
-                if (e.Kind == WorkspaceChangeKind.SolutionCleared || e.Kind == WorkspaceChangeKind.SolutionRemoved)
+                if ((e.Kind == WorkspaceChangeKind.SolutionCleared) || (e.Kind == WorkspaceChangeKind.SolutionRemoved))
                 {
                     projectCacheService.ClearImplicitCache();
                 }
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Workspaces
             // Also clear the cache when the solution is cleared or removed.
             workspaceServices.Workspace.WorkspaceChanged += (s, e) =>
             {
-                if (e.Kind == WorkspaceChangeKind.SolutionCleared || e.Kind == WorkspaceChangeKind.SolutionRemoved)
+                if ((e.Kind == WorkspaceChangeKind.SolutionCleared) || (e.Kind == WorkspaceChangeKind.SolutionRemoved))
                 {
                     manager.Clear();
                 }
@@ -101,7 +101,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Workspaces
             {
                 lock (_guard)
                 {
-                    if (activeDocument != null && activeDocument.ProjectId != _mostRecentActiveProjectId)
+                    if ((activeDocument != null) && (activeDocument.ProjectId != _mostRecentActiveProjectId))
                     {
                         ClearMostRecentCache_NoLock();
                         _mostRecentCache = _projectCacheService.EnableCaching(activeDocument.ProjectId);

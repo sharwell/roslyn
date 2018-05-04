@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                 var syntaxFactsService = document.Project.LanguageServices.GetService<ISyntaxFactsService>();
                 var semanticFactsService = document.Project.LanguageServices.GetService<ISemanticFactsService>();
 
-                if (syntaxFactsService == null || semanticFactsService == null || node == null)
+                if ((syntaxFactsService == null) || (semanticFactsService == null) || (node == null))
                 {
                     // it only works if we can track member
                     return await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                     using (_gate.DisposableWrite())
                     {
                         // we still don't have it or if someone has beaten us, check what we have is newer
-                        if (!versionMap.TryGetValue(project.Id, out compilationSet) || version != compilationSet.Version)
+                        if (!versionMap.TryGetValue(project.Id, out compilationSet) || (version != compilationSet.Version))
                         {
                             versionMap[project.Id] = newSet;
                         }
@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                 using (_gate.DisposableRead())
                 {
                     // we still don't have it or if someone has beaten us, check what we have is newer
-                    return versionMap.TryGetValue(projectId, out compilationSet) && version == compilationSet.Version;
+                    return versionMap.TryGetValue(projectId, out compilationSet) && (version == compilationSet.Version);
                 }
             }
 
@@ -399,7 +399,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                     var newTreeCount = compilation.SyntaxTrees.Count();
 
                     // TODO: all this could go away if this is maintained by project itself and one can just get the map from it.
-                    if (oldCompilationSet == null || Math.Abs(oldCompilationSet.Trees.Count - newTreeCount) > RebuildThreshold)
+                    if ((oldCompilationSet == null) || (Math.Abs(oldCompilationSet.Trees.Count - newTreeCount) > RebuildThreshold))
                     {
                         return ImmutableDictionary.CreateRange(GetNewTreeMap(project, compilation));
                     }
@@ -409,7 +409,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                     // check simple case. most of typing case should hit this.
                     // number of items in the map is same as number of new trees and old compilation doesn't have
                     // more trees than current one
-                    if (map.Count == newTreeCount && oldCompilationSet.Trees.Count <= newTreeCount)
+                    if ((map.Count == newTreeCount) && (oldCompilationSet.Trees.Count <= newTreeCount))
                     {
                         return map;
                     }
@@ -436,7 +436,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                         var documentId = oldIdAndTree.Key;
                         // check whether the tree has been updated
                         if (!map.TryGetValue(documentId, out var currentTree) ||
-                            currentTree != oldIdAndTree.Value)
+                            (currentTree != oldIdAndTree.Value))
                         {
                             continue;
                         }
@@ -473,7 +473,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                         // Document once https://github.com/dotnet/roslyn/issues/5260 is fixed.
                         if (documentId == null)
                         {
-                            Debug.Assert(newProject.Solution.Workspace.Kind == WorkspaceKind.Interactive || newProject.Solution.Workspace.Kind == WorkspaceKind.MiscellaneousFiles);
+                            Debug.Assert((newProject.Solution.Workspace.Kind == WorkspaceKind.Interactive) || (newProject.Solution.Workspace.Kind == WorkspaceKind.MiscellaneousFiles));
                             continue;                                
                         }
 
@@ -498,7 +498,7 @@ namespace Microsoft.CodeAnalysis.SemanticModelWorkspaceService
                 private static ValueSource<Compilation> GetCompilation(Project project, Compilation compilation)
                 {
                     var cache = project.Solution.Workspace.Services.GetService<IProjectCacheHostService>();
-                    if (cache != null && project.Solution.BranchId == project.Solution.Workspace.PrimaryBranchId)
+                    if ((cache != null) && (project.Solution.BranchId == project.Solution.Workspace.PrimaryBranchId))
                     {
                         return new WeakConstantValueSource<Compilation>(cache.CacheObjectIfCachingEnabledForKey(project.Id, project, compilation));
                     }

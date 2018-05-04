@@ -187,8 +187,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected override bool NeedsProxy(Symbol localOrParameter)
         {
-            Debug.Assert(localOrParameter is LocalSymbol || localOrParameter is ParameterSymbol ||
-                (localOrParameter as MethodSymbol)?.MethodKind == MethodKind.LocalFunction);
+            Debug.Assert((localOrParameter is LocalSymbol) || (localOrParameter is ParameterSymbol) ||
+                ((localOrParameter as MethodSymbol)?.MethodKind == MethodKind.LocalFunction));
             return _allCapturedVariables.Contains(localOrParameter);
         }
 
@@ -361,7 +361,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 DebugId closureId = _analysis.GetClosureId(syntax, closureDebugInfo);
 
                 var containingMethod = scope.ContainingClosureOpt?.OriginalMethodSymbol ?? _topLevelMethod;
-                if ((object)_substitutedSourceMethod != null && containingMethod == _topLevelMethod)
+                if (((object)_substitutedSourceMethod != null) && (containingMethod == _topLevelMethod))
                 {
                     containingMethod = _substitutedSourceMethod;
                 }
@@ -420,7 +420,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     closureKind = ClosureKind.ThisOnly;
                     closureOrdinal = LambdaDebugInfo.ThisOnlyClosureOrdinal;
                 }
-                else if (closure.CapturedEnvironments.Count == 0 &&
+                else if ((closure.CapturedEnvironments.Count == 0) &&
                          _analysis.MethodsConvertedToDelegates.Contains(originalMethod))
                 {
                     translatedLambdaContainer = containerAsFrame = GetStaticFrame(Diagnostics, syntax);
@@ -570,7 +570,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(frameClass.IsDefinition);
 
             // If in an instance method of the right type, we can just return the "this" pointer.
-            if ((object)_currentFrameThis != null && _currentFrameThis.Type == frameClass)
+            if (((object)_currentFrameThis != null) && (_currentFrameThis.Type == frameClass))
             {
                 return new BoundThisReference(syntax, frameClass);
             }
@@ -728,7 +728,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     case SymbolKind.Local:
                         var local = (LocalSymbol)symbol;
-                        if (_assignLocals == null || !_assignLocals.Contains(local))
+                        if ((_assignLocals == null) || !_assignLocals.Contains(local))
                         {
                             return;
                         }
@@ -748,8 +748,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 var left = proxy.Replacement(syntax, frameType1 => new BoundLocal(syntax, framePointer, null, framePointer.Type));
                 var assignToProxy = new BoundAssignmentOperator(syntax, left, value, value.Type);
-                if (_currentMethod.MethodKind == MethodKind.Constructor &&
-                    symbol == _currentMethod.ThisParameter &&
+                if ((_currentMethod.MethodKind == MethodKind.Constructor) &&
+                    (symbol == _currentMethod.ThisParameter) &&
                     !_seenBaseCall)
                 {
                     // Containing method is a constructor 
@@ -790,14 +790,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             //       Actually, considering that method group expression does not evaluate to a particular value 
             //       why do we have it in the lowered tree at all?
 
-            return _currentMethod == _topLevelMethod || _topLevelMethod.ThisParameter == null ?
+            return (_currentMethod == _topLevelMethod) || (_topLevelMethod.ThisParameter == null) ?
                 node :
                 FramePointer(node.Syntax, (NamedTypeSymbol)node.Type);
         }
 
         public override BoundNode VisitBaseReference(BoundBaseReference node)
         {
-            return (!_currentMethod.IsStatic && _currentMethod.ContainingType == _topLevelMethod.ContainingType)
+            return (!_currentMethod.IsStatic && (_currentMethod.ContainingType == _topLevelMethod.ContainingType))
                 ? node
                 : FramePointer(node.Syntax, _topLevelMethod.ContainingType); // technically, not the correct static type
         }
@@ -963,7 +963,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 realTypeArguments = realTypeArguments.Concat(typeArgumentsOpt);
             }
 
-            if (containerAsFrame != null && containerAsFrame.Arity != 0)
+            if ((containerAsFrame != null) && (containerAsFrame.Arity != 0))
             {
                 var containerTypeArguments = ImmutableArray.Create(realTypeArguments, 0, containerAsFrame.Arity);
                 realTypeArguments = ImmutableArray.Create(realTypeArguments, containerAsFrame.Arity, realTypeArguments.Length - containerAsFrame.Arity);
@@ -1045,7 +1045,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Check if we need to init the 'this' proxy in a ctor call
             if (!_seenBaseCall)
             {
-                if (_currentMethod == _topLevelMethod && node.IsConstructorInitializer())
+                if ((_currentMethod == _topLevelMethod) && node.IsConstructorInitializer())
                 {
                     _seenBaseCall = true;
                     if (_thisProxyInitDeferred != null)
@@ -1382,7 +1382,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             DebugId lambdaId;
             DebugId previousLambdaId;
-            if (slotAllocatorOpt != null && slotAllocatorOpt.TryGetPreviousLambda(lambdaOrLambdaBodySyntax, isLambdaBody, out previousLambdaId))
+            if ((slotAllocatorOpt != null) && slotAllocatorOpt.TryGetPreviousLambda(lambdaOrLambdaBodySyntax, isLambdaBody, out previousLambdaId))
             {
                 lambdaId = previousLambdaId;
             }
@@ -1455,7 +1455,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // switch to the generated method
 
             _currentMethod = synthesizedMethod;
-            if (closureKind == ClosureKind.Static || closureKind == ClosureKind.Singleton)
+            if ((closureKind == ClosureKind.Static) || (closureKind == ClosureKind.Singleton))
             {
                 // no link from a static lambda to its container
                 _innermostFramePointer = _currentFrameThis = null;
@@ -1553,14 +1553,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             // if the block containing the lambda is not the innermost block,
             // or the lambda is static, then the lambda object should be cached in its frame.
             // NOTE: we are not caching static lambdas in static ctors - cannot reuse such cache.
-            var shouldCacheForStaticMethod = closureKind == ClosureKind.Singleton &&
-                _currentMethod.MethodKind != MethodKind.StaticConstructor &&
+            var shouldCacheForStaticMethod = (closureKind == ClosureKind.Singleton) &&
+                (_currentMethod.MethodKind != MethodKind.StaticConstructor) &&
                 !referencedMethod.IsGenericMethod;
 
             // NOTE: We require "lambdaScope != null". 
             //       We do not want to introduce a field into an actual user's class (not a synthetic frame).
-            var shouldCacheInLoop = lambdaScope != null &&
-                lambdaScope != Analysis.GetScopeParent(_analysis.ScopeTree, node.Body).BoundNode &&
+            var shouldCacheInLoop = (lambdaScope != null) &&
+                (lambdaScope != Analysis.GetScopeParent(_analysis.ScopeTree, node.Body).BoundNode) &&
                 InLoopOrLambda(node.Syntax, lambdaScope.Syntax);
 
             if (shouldCacheForStaticMethod || shouldCacheInLoop)
@@ -1570,7 +1570,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 try
                 {
                     BoundExpression cache;
-                    if (shouldCacheForStaticMethod || shouldCacheInLoop && (object)containerAsFrame != null)
+                    if (shouldCacheForStaticMethod || (shouldCacheInLoop && ((object)containerAsFrame != null)))
                     {
                         // Since the cache variable will be in a container with possibly alpha-rewritten generic parameters, we need to
                         // substitute the original type according to the type map for that container. That substituted type may be
@@ -1642,7 +1642,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static bool InLoopOrLambda(SyntaxNode lambdaSyntax, SyntaxNode scopeSyntax)
         {
             var curSyntax = lambdaSyntax.Parent;
-            while (curSyntax != null && curSyntax != scopeSyntax)
+            while ((curSyntax != null) && (curSyntax != scopeSyntax))
             {
                 switch (curSyntax.Kind())
                 {

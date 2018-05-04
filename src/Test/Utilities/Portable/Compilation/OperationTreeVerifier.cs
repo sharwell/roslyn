@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
             var text = syntax.ToString();
             var lines = text.Split(new[] { Environment.NewLine, "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries).Select(l => l.Trim()).ToArray();
-            if (lines.Length <= 1 && text.Length < 25)
+            if ((lines.Length <= 1) && (text.Length < 25))
             {
                 return $"'{text}'";
             }
@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             var operationKind = (int)operation.Kind;
 
             // Expressions
-            if (operationKind >= 0x100 && operationKind < 0x400)
+            if ((operationKind >= 0x100) && (operationKind < 0x400))
             {
                 return true;
             }
@@ -258,7 +258,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 }
             }
 
-            Assert.True(operation.Type == null || !operation.MustHaveNullType(), $"Unexpected non-null type: {operation.Type}");
+            Assert.True((operation.Type == null) || !operation.MustHaveNullType(), $"Unexpected non-null type: {operation.Type}");
 
             if (operation != _root)
             {
@@ -337,7 +337,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             Debug.Assert(operation.Children.All(o => o != null));
 
             var children = operation.Children.ToImmutableArray();
-            if (!children.IsEmpty || operation.Kind != OperationKind.None)
+            if (!children.IsEmpty || (operation.Kind != OperationKind.None))
             {
                 VisitArray(children, "Children", logElementCount: true);
             }
@@ -655,7 +655,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             LogString(nameof(IInvocationOperation));
 
             var isVirtualStr = operation.IsVirtual ? "virtual " : string.Empty;
-            var spacing = !operation.IsVirtual && operation.Instance != null ? " " : string.Empty;
+            var spacing = !operation.IsVirtual && (operation.Instance != null) ? " " : string.Empty;
             LogString($" ({isVirtualStr}{spacing}");
             LogSymbol(operation.TargetMethod, header: string.Empty);
             LogString(")");
@@ -793,11 +793,11 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
             if (operation.IsImplicit)
             {
-                if (operation.Parent is IMemberReferenceOperation memberReference && memberReference.Instance == operation)
+                if (operation.Parent is IMemberReferenceOperation memberReference && (memberReference.Instance == operation))
                 {
                     Assert.False(memberReference.Member.IsStatic);
                 }
-                else if (operation.Parent is IInvocationOperation invocation && invocation.Instance == operation)
+                else if (operation.Parent is IInvocationOperation invocation && (invocation.Instance == operation))
                 {
                     Assert.False(invocation.TargetMethod.IsStatic);
                 }

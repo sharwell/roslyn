@@ -20,13 +20,13 @@ namespace Microsoft.CodeAnalysis.Debugging
         public StateMachineHoistedLocalScope(int startOffset, int endOffset)
         {
             Debug.Assert(startOffset >= 0);
-            Debug.Assert(endOffset > startOffset || startOffset == 0 && endOffset == 0);
+            Debug.Assert((endOffset > startOffset) || ((startOffset == 0) && (endOffset == 0)));
 
             StartOffset = startOffset;
             EndOffset = endOffset;
         }
 
         public int Length => EndOffset - StartOffset;
-        public bool IsDefault => StartOffset == 0 && EndOffset == 0;
+        public bool IsDefault => (StartOffset == 0) && (EndOffset == 0);
     }
 }

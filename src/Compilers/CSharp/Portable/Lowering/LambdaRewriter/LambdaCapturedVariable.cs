@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static LambdaCapturedVariable Create(SynthesizedClosureEnvironment frame, Symbol captured, ref int uniqueId)
         {
-            Debug.Assert(captured is LocalSymbol || captured is ParameterSymbol);
+            Debug.Assert((captured is LocalSymbol) || (captured is ParameterSymbol));
 
             string fieldName = GetCapturedVariableFieldName(captured, ref uniqueId);
             TypeSymbol type = GetCapturedVariableFieldType(frame, captured);
@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static bool IsThis(Symbol captured)
         {
             var parameter = captured as ParameterSymbol;
-            return (object)parameter != null && parameter.IsThis;
+            return ((object)parameter != null) && parameter.IsThis;
         }
 
         private static string GetCapturedVariableFieldName(Symbol variable, ref int uniqueId)
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return GeneratedNames.MakeSynthesizedInstrumentationPayloadLocalFieldName(uniqueId++);
                 }
 
-                if (local.SynthesizedKind == SynthesizedLocalKind.UserDefined && local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection)
+                if ((local.SynthesizedKind == SynthesizedLocalKind.UserDefined) && (local.ScopeDesignatorOpt?.Kind() == SyntaxKind.SwitchSection))
                 {
                     return GeneratedNames.MakeHoistedLocalFieldName(local.SynthesizedKind, uniqueId++, local.Name);
                 }

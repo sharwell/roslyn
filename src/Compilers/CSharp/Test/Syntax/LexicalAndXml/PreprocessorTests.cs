@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                     Assert.Equal(expected.DisableOrRestoreKind, pwd.DisableOrRestoreKeyword.Kind());
                 }
 
-                if (expected.WarningList == null || expected.WarningList.Length == 0)
+                if ((expected.WarningList == null) || (expected.WarningList.Length == 0))
                 {
                     Assert.Equal(0, pwd.ErrorCodes.Count);
                 }

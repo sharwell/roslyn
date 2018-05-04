@@ -32,7 +32,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                    ImmutableArray.Create(syntax.Keyword.GetLocation()))
         {
             Debug.Assert(syntax != null);
-            Debug.Assert(syntax.Kind() == SyntaxKind.AddAccessorDeclaration || syntax.Kind() == SyntaxKind.RemoveAccessorDeclaration);
+            Debug.Assert((syntax.Kind() == SyntaxKind.AddAccessorDeclaration) || (syntax.Kind() == SyntaxKind.RemoveAccessorDeclaration));
 
             bool isAdder = syntax.Kind() == SyntaxKind.AddAccessorDeclaration;
 
@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
             else
             {
-                if (syntax.Body != null || syntax.ExpressionBody != null)
+                if ((syntax.Body != null) || (syntax.ExpressionBody != null))
                 {
                     if (IsExtern && !IsAbstract)
                     {

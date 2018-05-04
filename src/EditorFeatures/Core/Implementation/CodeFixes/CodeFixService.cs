@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
         public async Task<FirstDiagnosticResult> GetMostSevereFixableDiagnostic(
             Document document, TextSpan range, CancellationToken cancellationToken)
         {
-            if (document == null || !document.IsOpen())
+            if ((document == null) || !document.IsOpen())
             {
                 return default;
             }
@@ -200,7 +200,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             }
 
             // TODO (https://github.com/dotnet/roslyn/issues/4932): Don't restrict CodeFixes in Interactive
-            if (document.Project.Solution.Workspace.Kind != WorkspaceKind.Interactive && includeSuppressionFixes)
+            if ((document.Project.Solution.Workspace.Kind != WorkspaceKind.Interactive) && includeSuppressionFixes)
             {
                 foreach (var spanAndDiagnostic in aggregatedDiagnostics)
                 {
@@ -299,7 +299,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             Document document, TextSpan span, IEnumerable<DiagnosticData> diagnostics,
             ArrayBuilder<CodeFixCollection> result, CancellationToken cancellationToken)
         {
-            if (!_suppressionProvidersMap.TryGetValue(document.Project.Language, out var lazySuppressionProvider) || lazySuppressionProvider.Value == null)
+            if (!_suppressionProvidersMap.TryGetValue(document.Project.Language, out var lazySuppressionProvider) || (lazySuppressionProvider.Value == null))
             {
                 return;
             }
@@ -388,7 +388,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
 
         public CodeFixProvider GetSuppressionFixer(string language, IEnumerable<string> diagnosticIds)
         {
-            if (!_suppressionProvidersMap.TryGetValue(language, out var lazySuppressionProvider) || lazySuppressionProvider.Value == null)
+            if (!_suppressionProvidersMap.TryGetValue(language, out var lazySuppressionProvider) || (lazySuppressionProvider.Value == null))
             {
                 return null;
             }
@@ -432,7 +432,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             var hasAnyProjectFixer = GetProjectFixers(document.Project).TryGetValue(diagnostic.Id, out var projectFixers);
 
             // TODO (https://github.com/dotnet/roslyn/issues/4932): Don't restrict CodeFixes in Interactive
-            if (hasAnySharedFixer && document.Project.Solution.Workspace.Kind == WorkspaceKind.Interactive)
+            if (hasAnySharedFixer && (document.Project.Solution.Workspace.Kind == WorkspaceKind.Interactive))
             {
                 workspaceFixers = workspaceFixers.WhereAsArray(IsInteractiveCodeFixProvider);
                 hasAnySharedFixer = workspaceFixers.Any();
@@ -440,7 +440,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
 
             var hasSuppressionFixer =
                 _suppressionProvidersMap.TryGetValue(document.Project.Language, out var lazySuppressionProvider) &&
-                lazySuppressionProvider.Value != null;
+                (lazySuppressionProvider.Value != null);
 
             if (!hasAnySharedFixer && !hasAnyProjectFixer && !hasSuppressionFixer)
             {
@@ -516,8 +516,8 @@ namespace Microsoft.CodeAnalysis.CodeFixes
         private bool IsInteractiveCodeFixProvider(CodeFixProvider provider)
         {
             // TODO (https://github.com/dotnet/roslyn/issues/4932): Don't restrict CodeFixes in Interactive
-            return provider is FullyQualify.AbstractFullyQualifyCodeFixProvider ||
-                   provider is AddImport.AbstractAddImportCodeFixProvider;
+            return (provider is FullyQualify.AbstractFullyQualifyCodeFixProvider) ||
+                   (provider is AddImport.AbstractAddImportCodeFixProvider);
         }
 
         private static readonly Func<DiagnosticId, List<CodeFixProvider>> s_createList = _ => new List<CodeFixProvider>();

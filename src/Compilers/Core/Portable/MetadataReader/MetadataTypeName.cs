@@ -66,10 +66,10 @@ namespace Microsoft.CodeAnalysis
         public static MetadataTypeName FromFullName(string fullName, bool useCLSCompliantNameArityEncoding = false, int forcedArity = -1)
         {
             Debug.Assert(fullName != null);
-            Debug.Assert(forcedArity >= -1 && forcedArity < short.MaxValue);
-            Debug.Assert(forcedArity == -1 ||
+            Debug.Assert((forcedArity >= -1) && (forcedArity < short.MaxValue));
+            Debug.Assert((forcedArity == -1) ||
                          !useCLSCompliantNameArityEncoding ||
-                         forcedArity == MetadataHelpers.InferTypeArityFromMetadataName(fullName),
+                         (forcedArity == MetadataHelpers.InferTypeArityFromMetadataName(fullName)),
                          "Conflicting metadata type name resolution options!");
 
             MetadataTypeName name;
@@ -93,11 +93,11 @@ namespace Microsoft.CodeAnalysis
         {
             Debug.Assert(namespaceName != null);
             Debug.Assert(typeName != null);
-            Debug.Assert(forcedArity >= -1 && forcedArity < short.MaxValue);
+            Debug.Assert((forcedArity >= -1) && (forcedArity < short.MaxValue));
             Debug.Assert(!typeName.Contains(MetadataHelpers.DotDelimiterString));
-            Debug.Assert(forcedArity == -1 ||
+            Debug.Assert((forcedArity == -1) ||
                          !useCLSCompliantNameArityEncoding ||
-                         forcedArity == MetadataHelpers.InferTypeArityFromMetadataName(typeName),
+                         (forcedArity == MetadataHelpers.InferTypeArityFromMetadataName(typeName)),
                          "Conflicting metadata type name resolution options!");
 
             MetadataTypeName name;
@@ -117,11 +117,11 @@ namespace Microsoft.CodeAnalysis
         public static MetadataTypeName FromTypeName(string typeName, bool useCLSCompliantNameArityEncoding = false, int forcedArity = -1)
         {
             Debug.Assert(typeName != null);
-            Debug.Assert(!typeName.Contains(MetadataHelpers.DotDelimiterString) || typeName.IndexOf(MetadataHelpers.MangledNameRegionStartChar) >= 0);
-            Debug.Assert(forcedArity >= -1 && forcedArity < short.MaxValue);
-            Debug.Assert(forcedArity == -1 ||
+            Debug.Assert(!typeName.Contains(MetadataHelpers.DotDelimiterString) || (typeName.IndexOf(MetadataHelpers.MangledNameRegionStartChar) >= 0));
+            Debug.Assert((forcedArity >= -1) && (forcedArity < short.MaxValue));
+            Debug.Assert((forcedArity == -1) ||
                          !useCLSCompliantNameArityEncoding ||
-                         forcedArity == MetadataHelpers.InferTypeArityFromMetadataName(typeName),
+                         (forcedArity == MetadataHelpers.InferTypeArityFromMetadataName(typeName)),
                          "Conflicting metadata type name resolution options!");
 
             MetadataTypeName name;
@@ -284,7 +284,7 @@ namespace Microsoft.CodeAnalysis
         {
             get
             {
-                return _typeName == null && _fullName == null;
+                return (_typeName == null) && (_fullName == null);
             }
         }
 

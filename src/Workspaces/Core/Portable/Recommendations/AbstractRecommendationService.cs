@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Recommendations
             //
             return recommendationSymbol.IsNamespace() &&
                    recommendationSymbol.Locations.Any(
-                       candidateLocation => !(declarationSyntax.SyntaxTree == candidateLocation.SourceTree &&
+                       candidateLocation => !((declarationSyntax.SyntaxTree == candidateLocation.SourceTree) &&
                                               declarationSyntax.Span.IntersectsWith(candidateLocation.SourceSpan)));
         }
 
@@ -95,7 +95,7 @@ namespace Microsoft.CodeAnalysis.Recommendations
 
         private static bool IsFriendlyName(int i, string elementName)
         {
-            return elementName != null && string.Compare(elementName, "Item" + (i + 1), StringComparison.OrdinalIgnoreCase) != 0;
+            return (elementName != null) && (string.Compare(elementName, "Item" + (i + 1), StringComparison.OrdinalIgnoreCase) != 0);
         }
 
         private sealed class ShouldIncludeSymbolContext

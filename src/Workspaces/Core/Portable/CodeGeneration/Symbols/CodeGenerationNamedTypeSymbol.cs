@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             {
                 // NOTE(cyrusn): remember to Construct the result if we implement this.
                 return ImmutableArray.CreateRange(
-                    this.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.Constructor && !m.IsStatic));
+                    this.GetMembers().OfType<IMethodSymbol>().Where(m => (m.MethodKind == MethodKind.Constructor) && !m.IsStatic));
             }
         }
 
@@ -172,7 +172,7 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
             {
                 // NOTE(cyrusn): remember to Construct the result if we implement this.
                 return ImmutableArray.CreateRange(
-                    this.GetMembers().OfType<IMethodSymbol>().Where(m => m.MethodKind == MethodKind.StaticConstructor && m.IsStatic));
+                    this.GetMembers().OfType<IMethodSymbol>().Where(m => (m.MethodKind == MethodKind.StaticConstructor) && m.IsStatic));
             }
         }
 

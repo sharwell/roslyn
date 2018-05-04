@@ -257,15 +257,15 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
         public EnvDTE.CodeElement CreateCodeType(CodeModelState state, ProjectId projectId, ITypeSymbol typeSymbol)
         {
-            if (typeSymbol.TypeKind == TypeKind.Pointer ||
-                typeSymbol.TypeKind == TypeKind.TypeParameter ||
-                typeSymbol.TypeKind == TypeKind.Submission)
+            if ((typeSymbol.TypeKind == TypeKind.Pointer) ||
+                (typeSymbol.TypeKind == TypeKind.TypeParameter) ||
+                (typeSymbol.TypeKind == TypeKind.Submission))
             {
                 throw Exceptions.ThrowEFail();
             }
 
-            if (typeSymbol.TypeKind == TypeKind.Error ||
-                typeSymbol.TypeKind == TypeKind.Unknown)
+            if ((typeSymbol.TypeKind == TypeKind.Error) ||
+                (typeSymbol.TypeKind == TypeKind.Unknown))
             {
                 return ExternalCodeUnknown.Create(state, projectId, typeSymbol);
             }
@@ -627,7 +627,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 }
             }
 
-            if (chosenDocumentId == null && generatedCode != null)
+            if ((chosenDocumentId == null) && (generatedCode != null))
             {
                 chosenDocumentId = generatedCode.Item1;
                 chosenLocation = generatedCode.Item2;
@@ -859,7 +859,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             }
 
             ITypeSymbol typeSymbol;
-            if (type is EnvDTE.vsCMTypeRef || type is int)
+            if ((type is EnvDTE.vsCMTypeRef) || (type is int))
             {
                 typeSymbol = GetSpecialType((EnvDTE.vsCMTypeRef)type, semanticModel.Compilation);
             }
@@ -982,7 +982,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             else if (position is EnvDTE.CodeElement)
             {
                 var codeElement = ComAggregate.TryGetManagedObject<AbstractCodeElement>(position);
-                if (codeElement == null || codeElement.FileCodeModel != fileCodeModel)
+                if ((codeElement == null) || (codeElement.FileCodeModel != fileCodeModel))
                 {
                     throw Exceptions.ThrowEInvalidArg();
                 }
@@ -999,7 +999,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             {
                 result = getIndexInContainer(containerNode, child => GetName(child) == name);
             }
-            else if (position == null || position == Type.Missing)
+            else if ((position == null) || (position == Type.Missing))
             {
                 result = 0;
             }
@@ -1030,7 +1030,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
             // Note: childIndexToInsertAfter is 1-based but can be 0, meaning insert before any other members.
             // If it isn't 0, it means to insert the member node *after* the node at the 1-based index.
-            Debug.Assert(childIndexToInsertAfter >= 0 && childIndexToInsertAfter <= childNodes.Length);
+            Debug.Assert((childIndexToInsertAfter >= 0) && (childIndexToInsertAfter <= childNodes.Length));
 
             // Initialize the nodes that we'll insert the new member before and after.
             insertBeforeNode = null;
@@ -1069,7 +1069,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
             // Note: childIndexToInsertAfter is 1-based but can be 0, meaning insert before any other members.
             // If it isn't 0, it means to insert the member node *after* the node at the 1-based index.
-            Debug.Assert(insertionIndex >= 0 && insertionIndex <= childNodes.Length);
+            Debug.Assert((insertionIndex >= 0) && (insertionIndex <= childNodes.Length));
 
             if (insertionIndex == 0)
             {

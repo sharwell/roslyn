@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
             var model = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
             var methodSymbol = model.GetDeclaredSymbol(node, cancellationToken) as IMethodSymbol;
             // IMethod symbol can either be a regular method or an accessor
-            if (methodSymbol?.ReturnType == null || methodSymbol.ReturnsVoid)
+            if ((methodSymbol?.ReturnType == null) || methodSymbol.ReturnsVoid)
             {
                 return null;
             }
@@ -54,7 +54,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
                     var typeArg = type.GetTypeArguments().First();
                     ienumerableGenericSymbol = ienumerableGenericSymbol.Construct(typeArg);
                 }
-                else if (arity == 0 && type is IArrayTypeSymbol)
+                else if ((arity == 0) && (type is IArrayTypeSymbol))
                 {
                     ienumerableGenericSymbol = ienumerableGenericSymbol.Construct((type as IArrayTypeSymbol).ElementType);
                 }
@@ -110,8 +110,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
             ienumerableSymbol = model.Compilation.GetTypeByMetadataName(typeof(IEnumerable).FullName);
             ienumerableGenericSymbol = model.Compilation.GetTypeByMetadataName(typeof(IEnumerable<>).FullName);
 
-            if (ienumerableGenericSymbol == null ||
-                ienumerableSymbol == null)
+            if ((ienumerableGenericSymbol == null) ||
+                (ienumerableSymbol == null))
             {
                 return false;
             }

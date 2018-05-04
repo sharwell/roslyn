@@ -143,7 +143,7 @@ namespace Roslyn.Utilities
 
         public void WriteValue(object value)
         {
-            Debug.Assert(value == null || !value.GetType().GetTypeInfo().IsEnum, "Enum should not be written with WriteValue.  Write them as ints instead.");
+            Debug.Assert((value == null) || !value.GetType().GetTypeInfo().IsEnum, "Enum should not be written with WriteValue.  Write them as ints instead.");
 
             if (value == null)
             {
@@ -272,16 +272,16 @@ namespace Roslyn.Utilities
 
         private void WriteEncodedInt32(int v)
         {
-            if (v >= 0 && v <= 10)
+            if ((v >= 0) && (v <= 10))
             {
                 _writer.Write((byte)((int)EncodingKind.Int32_0 + v));
             }
-            else if (v >= 0 && v < byte.MaxValue)
+            else if ((v >= 0) && (v < byte.MaxValue))
             {
                 _writer.Write((byte)EncodingKind.Int32_1Byte);
                 _writer.Write((byte)v);
             }
-            else if (v >= 0 && v < ushort.MaxValue)
+            else if ((v >= 0) && (v < ushort.MaxValue))
             {
                 _writer.Write((byte)EncodingKind.Int32_2Bytes);
                 _writer.Write((ushort)v);
@@ -295,16 +295,16 @@ namespace Roslyn.Utilities
 
         private void WriteEncodedUInt32(uint v)
         {
-            if (v >= 0 && v <= 10)
+            if ((v >= 0) && (v <= 10))
             {
                 _writer.Write((byte)((int)EncodingKind.UInt32_0 + v));
             }
-            else if (v >= 0 && v < byte.MaxValue)
+            else if ((v >= 0) && (v < byte.MaxValue))
             {
                 _writer.Write((byte)EncodingKind.UInt32_1Byte);
                 _writer.Write((byte)v);
             }
-            else if (v >= 0 && v < ushort.MaxValue)
+            else if ((v >= 0) && (v < ushort.MaxValue))
             {
                 _writer.Write((byte)EncodingKind.UInt32_2Bytes);
                 _writer.Write((ushort)v);
@@ -504,7 +504,7 @@ namespace Roslyn.Utilities
                 var oldDepth = _recursionDepth;
                 _recursionDepth++;
 
-                if (_recursionDepth % MaxRecursionDepth == 0)
+                if ((_recursionDepth % MaxRecursionDepth) == 0)
                 {
                     // If we're recursing too deep, move the work to another thread to do so we
                     // don't blow the stack.  'LongRunning' ensures that we get a dedicated thread
@@ -733,7 +733,7 @@ namespace Roslyn.Utilities
         private void WriteObject(object instance, IObjectWritable instanceAsWritableOpt)
         {
             Debug.Assert(instance != null);
-            Debug.Assert(instanceAsWritableOpt == null || instance == instanceAsWritableOpt);
+            Debug.Assert((instanceAsWritableOpt == null) || (instance == instanceAsWritableOpt));
 
             _cancellationToken.ThrowIfCancellationRequested();
 
@@ -772,7 +772,7 @@ namespace Roslyn.Utilities
                 var oldDepth = _recursionDepth;
                 _recursionDepth++;
 
-                if (_recursionDepth % MaxRecursionDepth == 0)
+                if ((_recursionDepth % MaxRecursionDepth) == 0)
                 {
                     // If we're recursing too deep, move the work to another thread to do so we
                     // don't blow the stack.  'LongRunning' ensures that we get a dedicated thread

@@ -31,7 +31,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // around because we'll be generating debug info for it.)
             if (localSymbol.IsConst)
             {
-                if (!localSymbol.Type.IsReferenceType && localSymbol.ConstantValue == null)
+                if (!localSymbol.Type.IsReferenceType && (localSymbol.ConstantValue == null))
                 {
                     // This can occur in error scenarios (e.g. bad imported metadata)
                     hasErrors = true;
@@ -71,10 +71,10 @@ namespace Microsoft.CodeAnalysis.CSharp
         private BoundStatement InstrumentLocalDeclarationIfNecessary(BoundLocalDeclaration originalOpt, LocalSymbol localSymbol, BoundStatement rewrittenLocalDeclaration)
         {
             // Add sequence points, if necessary.
-            if (this.Instrument && originalOpt?.WasCompilerGenerated == false && !localSymbol.IsConst && 
-                (originalOpt.Syntax.Kind() == SyntaxKind.VariableDeclarator || 
-                    (originalOpt.Syntax.Kind() == SyntaxKind.LocalDeclarationStatement && 
-                        ((LocalDeclarationStatementSyntax)originalOpt.Syntax).Declaration.Variables.Count == 1)))
+            if (this.Instrument && (originalOpt?.WasCompilerGenerated == false) && !localSymbol.IsConst && 
+                ((originalOpt.Syntax.Kind() == SyntaxKind.VariableDeclarator) || 
+                    ((originalOpt.Syntax.Kind() == SyntaxKind.LocalDeclarationStatement) && 
+                        (((LocalDeclarationStatementSyntax)originalOpt.Syntax).Declaration.Variables.Count == 1))))
             {
                 rewrittenLocalDeclaration = _instrumenter.InstrumentLocalInitialization(originalOpt, rewrittenLocalDeclaration);
             }

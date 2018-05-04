@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.CSharp.DocumentHighlighting
             // results found by the engine.
             var results = ArrayBuilder<Location>.GetInstance();
 
-            if (symbol is INamedTypeSymbol && symbol.Name != "var")
+            if ((symbol is INamedTypeSymbol) && (symbol.Name != "var"))
             {
                 var originalSymbol = symbol.OriginalDefinition;
                 var root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);

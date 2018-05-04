@@ -433,7 +433,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public bool Contains(SyntaxNode node)
         {
-            if (node == null || !this.FullSpan.Contains(node.FullSpan))
+            if ((node == null) || !this.FullSpan.Contains(node.FullSpan))
             {
                 return false;
             }
@@ -681,7 +681,7 @@ namespace Microsoft.CodeAnalysis
         private static SyntaxNode GetParent(SyntaxNode node, bool ascendOutOfTrivia)
         {
             var parent = node.Parent;
-            if (parent == null && ascendOutOfTrivia)
+            if ((parent == null) && ascendOutOfTrivia)
             {
                 var structuredTrivia = node as IStructuredTriviaSyntax;
                 if (structuredTrivia != null)
@@ -702,7 +702,7 @@ namespace Microsoft.CodeAnalysis
             for (var node = this; node != null; node = GetParent(node, ascendOutOfTrivia))
             {
                 var tnode = node as TNode;
-                if (tnode != null && (predicate == null || predicate(tnode)))
+                if ((tnode != null) && ((predicate == null) || predicate(tnode)))
                 {
                     return tnode;
                 }
@@ -825,7 +825,7 @@ namespace Microsoft.CodeAnalysis
                 {
                     var parent = node.Parent;
                     // NOTE: We care about FullSpan equality, but FullWidth is cheaper and equivalent.
-                    if (parent == null || parent.FullWidth != node.FullWidth) break;
+                    if ((parent == null) || (parent.FullWidth != node.FullWidth)) break;
                     // prefer child over compilation unit
                     if (parent == cuRoot) break;
                     node = parent;
@@ -977,7 +977,7 @@ namespace Microsoft.CodeAnalysis
                                 {
                                     if (textOffset < trivia.FullWidth)
                                     {
-                                        if (trivia.HasStructure && stepInto != null && stepInto(trivia))
+                                        if (trivia.HasStructure && (stepInto != null) && stepInto(trivia))
                                         {
                                             node = trivia.GetStructure();
                                             goto recurse;
@@ -989,14 +989,14 @@ namespace Microsoft.CodeAnalysis
                                     textOffset -= trivia.FullWidth;
                                 }
                             }
-                            else if (textOffset >= leading + token.Width)
+                            else if (textOffset >= (leading + token.Width))
                             {
                                 textOffset -= leading + token.Width;
                                 foreach (var trivia in token.TrailingTrivia)
                                 {
                                     if (textOffset < trivia.FullWidth)
                                     {
-                                        if (trivia.HasStructure && stepInto != null && stepInto(trivia))
+                                        if (trivia.HasStructure && (stepInto != null) && stepInto(trivia))
                                         {
                                             node = trivia.GetStructure();
                                             goto recurse;
@@ -1372,11 +1372,11 @@ namespace Microsoft.CodeAnalysis
         {
             var span = token.Span;
             var trivia = new SyntaxTrivia();
-            if (position < span.Start && token.HasLeadingTrivia)
+            if ((position < span.Start) && token.HasLeadingTrivia)
             {
                 trivia = GetTriviaThatContainsPosition(token.LeadingTrivia, position);
             }
-            else if (position >= span.End && token.HasTrailingTrivia)
+            else if ((position >= span.End) && token.HasTrailingTrivia)
             {
                 trivia = GetTriviaThatContainsPosition(token.TrailingTrivia, position);
             }

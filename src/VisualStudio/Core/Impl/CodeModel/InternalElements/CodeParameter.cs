@@ -234,7 +234,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Inter
             var arrayType = this.ParameterSymbol.Type as IArrayTypeSymbol;
             var count = 0;
 
-            while (count < index && arrayType != null)
+            while ((count < index) && (arrayType != null))
             {
                 count++;
                 arrayType = arrayType.ElementType as IArrayTypeSymbol;

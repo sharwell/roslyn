@@ -132,7 +132,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                     spine.Add(stmt);
                 }
 
-                if (textSpan.End <= stmt.Span.End && spine.Any(s => s.Parent == stmt.Parent))
+                if ((textSpan.End <= stmt.Span.End) && spine.Any(s => s.Parent == stmt.Parent))
                 {
                     // malformed code or selection can make spine to have more than an elements
                     firstStatement = spine.First(s => s.Parent == stmt.Parent);
@@ -142,7 +142,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                 }
             }
 
-            if (firstStatement == null || lastStatement == null)
+            if ((firstStatement == null) || (lastStatement == null))
             {
                 return null;
             }
@@ -167,18 +167,18 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                if (firstStatement == null && stmt.SpanStart >= textSpan.Start)
+                if ((firstStatement == null) && (stmt.SpanStart >= textSpan.Start))
                 {
                     firstStatement = stmt;
                 }
 
-                if (firstStatement != null && stmt.Span.End <= textSpan.End && stmt.Parent == firstStatement.Parent)
+                if ((firstStatement != null) && (stmt.Span.End <= textSpan.End) && (stmt.Parent == firstStatement.Parent))
                 {
                     lastStatement = stmt;
                 }
             }
 
-            if (firstStatement == null || lastStatement == null)
+            if ((firstStatement == null) || (lastStatement == null))
             {
                 return null;
             }

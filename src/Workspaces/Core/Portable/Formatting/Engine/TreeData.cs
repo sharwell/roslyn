@@ -16,7 +16,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         public static TreeData Create(SyntaxNode root)
         {
             // either there is no tree or a tree that is not generated from a text.
-            if (root.SyntaxTree == null || !root.SyntaxTree.TryGetText(out var text))
+            if ((root.SyntaxTree == null) || !root.SyntaxTree.TryGetText(out var text))
             {
                 return new Node(root);
             }

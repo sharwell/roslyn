@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.DiagnosticComments.CodeFixes
             => xmlText.TextTokens;
 
         protected override bool IsXmlWhitespaceToken(SyntaxToken token)
-            => token.Kind() == SyntaxKind.XmlTextLiteralToken && IsWhitespace(token.Text);
+            => (token.Kind() == SyntaxKind.XmlTextLiteralToken) && IsWhitespace(token.Text);
 
         protected override bool IsXmlNewLineToken(SyntaxToken token)
             => token.Kind() == SyntaxKind.XmlTextLiteralNewLineToken;

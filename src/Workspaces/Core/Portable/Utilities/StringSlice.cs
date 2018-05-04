@@ -84,8 +84,8 @@ namespace Microsoft.CodeAnalysis.Utilities
         {
             // Do a fast check first before converting to lowercase characters.
             return 
-                thisChar == otherChar ||
-                CaseInsensitiveComparison.ToLower(thisChar) == CaseInsensitiveComparison.ToLower(otherChar);
+                (thisChar == otherChar) ||
+                (CaseInsensitiveComparison.ToLower(thisChar) == CaseInsensitiveComparison.ToLower(otherChar));
         }
 
         public override int GetHashCode() => GetHashCodeOrdinal();
@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis.Utilities
             var thisEnd = this._span.End;
             var otherEnd = other._span.End;
             for (int i = this._span.Start, j = other._span.Start; 
-                 i < thisEnd && j < otherEnd;
+                 (i < thisEnd) && (j < otherEnd);
                  i++, j++)
             {
                 var diff = this._underlyingString[i] - other._underlyingString[j];
@@ -124,7 +124,7 @@ namespace Microsoft.CodeAnalysis.Utilities
             var thisEnd = this._span.End;
             var otherEnd = other._span.End;
             for (int i = this._span.Start, j = other._span.Start;
-                 i < thisEnd && j < otherEnd;
+                 (i < thisEnd) && (j < otherEnd);
                  i++, j++)
             {
                 var diff =

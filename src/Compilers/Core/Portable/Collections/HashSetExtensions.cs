@@ -8,7 +8,7 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsNullOrEmpty<T>(this HashSet<T> hashSet)
         {
-            return hashSet == null || hashSet.Count == 0;
+            return (hashSet == null) || (hashSet.Count == 0);
         }
 
         internal static bool InitializeAndAdd<T>(ref HashSet<T> hashSet, T item) where T : class

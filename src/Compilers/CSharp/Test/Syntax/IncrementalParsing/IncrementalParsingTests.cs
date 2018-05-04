@@ -76,7 +76,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             int diffI = 0;
             foreach (var kind in kinds)
             {
-                if (diffI < diffs.Length && diffs[diffI].IsKind(kind))
+                if ((diffI < diffs.Length) && diffs[diffI].IsKind(kind))
                 {
                     diffI++;
                 }

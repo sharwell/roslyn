@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis
 
         public override bool Equals(object obj)
         {
-            return obj is PreprocessingSymbolInfo && this.Equals((PreprocessingSymbolInfo)obj);
+            return (obj is PreprocessingSymbolInfo) && this.Equals((PreprocessingSymbolInfo)obj);
         }
 
         public override int GetHashCode()

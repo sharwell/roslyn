@@ -81,8 +81,8 @@ namespace Microsoft.CodeAnalysis.Diagnostics.SimplifyTypeNames
             var preferTypeKeywordInMemberAccessOption = workspace.Options.GetOption(
                 CodeStyleOptions.PreferIntrinsicPredefinedTypeKeywordInMemberAccess, GetLanguageName()).Notification;
 
-            return !(preferTypeKeywordInDeclarationOption == NotificationOption.Warning || preferTypeKeywordInDeclarationOption == NotificationOption.Error ||
-                     preferTypeKeywordInMemberAccessOption == NotificationOption.Warning || preferTypeKeywordInMemberAccessOption == NotificationOption.Error);
+            return !((preferTypeKeywordInDeclarationOption == NotificationOption.Warning) || (preferTypeKeywordInDeclarationOption == NotificationOption.Error) ||
+                     (preferTypeKeywordInMemberAccessOption == NotificationOption.Warning) || (preferTypeKeywordInMemberAccessOption == NotificationOption.Error));
         }
 
         public sealed override void Initialize(AnalysisContext context)

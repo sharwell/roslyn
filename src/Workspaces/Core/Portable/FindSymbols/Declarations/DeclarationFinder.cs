@@ -49,7 +49,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols
                                                  .Select(s => new SymbolAndProjectId(s, project.Id))
                                                  .ToImmutableArray();
 
-                if (startingCompilation != null && startingAssembly != null && compilation.Assembly != startingAssembly)
+                if ((startingCompilation != null) && (startingAssembly != null) && (compilation.Assembly != startingAssembly))
                 {
                     // Return symbols from skeleton assembly in this case so that symbols have 
                     // the same language as startingCompilation.
@@ -92,12 +92,12 @@ namespace Microsoft.CodeAnalysis.FindSymbols
         {
             if (!symbol.IsImplicitlyDeclared && !symbol.IsAccessor())
             {
-                if (IsOn(filter, SymbolFilter.Namespace) && symbol.Kind == SymbolKind.Namespace)
+                if (IsOn(filter, SymbolFilter.Namespace) && (symbol.Kind == SymbolKind.Namespace))
                 {
                     return true;
                 }
 
-                if (IsOn(filter, SymbolFilter.Type) && symbol is ITypeSymbol)
+                if (IsOn(filter, SymbolFilter.Type) && (symbol is ITypeSymbol))
                 {
                     return true;
                 }
@@ -113,10 +113,10 @@ namespace Microsoft.CodeAnalysis.FindSymbols
 
         private static bool IsNonTypeMember(ISymbol symbol)
         {
-            return symbol.Kind == SymbolKind.Method ||
-                   symbol.Kind == SymbolKind.Property ||
-                   symbol.Kind == SymbolKind.Event ||
-                   symbol.Kind == SymbolKind.Field;
+            return (symbol.Kind == SymbolKind.Method) ||
+                   (symbol.Kind == SymbolKind.Property) ||
+                   (symbol.Kind == SymbolKind.Event) ||
+                   (symbol.Kind == SymbolKind.Field);
         }
 
         private static bool IsOn(SymbolFilter filter, SymbolFilter flag)

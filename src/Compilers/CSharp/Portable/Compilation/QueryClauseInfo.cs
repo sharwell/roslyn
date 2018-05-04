@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override bool Equals(object obj)
         {
-            return obj is QueryClauseInfo && Equals((QueryClauseInfo)obj);
+            return (obj is QueryClauseInfo) && Equals((QueryClauseInfo)obj);
         }
 
         public bool Equals(QueryClauseInfo other)

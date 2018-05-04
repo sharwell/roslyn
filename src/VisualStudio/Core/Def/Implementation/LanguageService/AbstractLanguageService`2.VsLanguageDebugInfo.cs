@@ -298,7 +298,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                     {
                         var point = nullablePoint.Value;
                         var length = 0;
-                        if (pCodeSpan != null && pCodeSpan.Length > 0)
+                        if ((pCodeSpan != null) && (pCodeSpan.Length > 0))
                         {
                             // If we have a non-empty span then it means that the debugger is asking us to adjust an
                             // existing span.  In Everett we didn't do this so we had some good and some bad
@@ -318,7 +318,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                             // while there are parse errors.  But when there are no parse errors then the span is
                             // adjusted.
                             var initialBreakpointSpan = snapshot.GetSpan(pCodeSpan[0]);
-                            if (initialBreakpointSpan.Length > 0 && document.SupportsSyntaxTree)
+                            if ((initialBreakpointSpan.Length > 0) && document.SupportsSyntaxTree)
                             {
                                 var tree = document.GetSyntaxTreeSynchronously(cancellationToken);
                                 if (tree.GetDiagnostics(cancellationToken).Any(d => d.Severity == DiagnosticSeverity.Error))
@@ -361,7 +361,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                         }
 
                         // There should be a breakpoint at the location passed back.
-                        if (pCodeSpan != null && pCodeSpan.Length > 0)
+                        if ((pCodeSpan != null) && (pCodeSpan.Length > 0))
                         {
                             pCodeSpan[0] = breakpoint.TextSpan.ToSnapshotSpan(snapshot).ToVsTextSpan();
                         }
@@ -378,7 +378,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                 using (Logger.LogBlock(FunctionId.Debugging_VsLanguageDebugInfo_GetDataTipText, CancellationToken.None))
                 {
                     pbstrText = null;
-                    if (pSpan == null || pSpan.Length != 1)
+                    if ((pSpan == null) || (pSpan.Length != 1))
                     {
                         return VSConstants.E_INVALIDARG;
                     }
@@ -395,7 +395,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                         DBGMODE[] debugMode = new DBGMODE[1];
 
                         var cancellationToken = waitContext.CancellationToken;
-                        if (ErrorHandler.Succeeded(debugger.GetMode(debugMode)) && debugMode[0] != DBGMODE.DBGMODE_Design)
+                        if (ErrorHandler.Succeeded(debugger.GetMode(debugMode)) && (debugMode[0] != DBGMODE.DBGMODE_Design))
                         {
                             var editorAdapters = _languageService.EditorAdaptersFactoryService;
 

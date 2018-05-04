@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                 if (registryType != null)
                 {
                     var hKeyCurrentUserField = registryType.GetTypeInfo().GetDeclaredField("CurrentUser");
-                    if (hKeyCurrentUserField != null && hKeyCurrentUserField.IsStatic)
+                    if ((hKeyCurrentUserField != null) && hKeyCurrentUserField.IsStatic)
                     {
                         using (var currentUserKey = (IDisposable)hKeyCurrentUserField.GetValue(null))
                         {
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
         internal static bool GetBoolRegistryValue(string name)
         {
             var value = RegistryHelpers.GetRegistryValue(name);
-            return value is int i && i == 1;
+            return value is int i && (i == 1);
         }
     }
 

@@ -194,9 +194,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private static TypeSymbol GetNextDeclaredBase(NamedTypeSymbol type, ConsList<Symbol> basesBeingResolved, CSharpCompilation compilation, ref PooledHashSet<NamedTypeSymbol> visited)
         {
             // We shouldn't have visited this type earlier.
-            Debug.Assert(visited == null || !visited.Contains(type.OriginalDefinition));
+            Debug.Assert((visited == null) || !visited.Contains(type.OriginalDefinition));
 
-            if (basesBeingResolved != null && basesBeingResolved.ContainsReference(type.OriginalDefinition))
+            if ((basesBeingResolved != null) && basesBeingResolved.ContainsReference(type.OriginalDefinition))
             {
                 return null;
             }

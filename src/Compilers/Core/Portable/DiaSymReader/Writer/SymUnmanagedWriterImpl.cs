@@ -160,7 +160,7 @@ namespace Microsoft.DiaSymReader
 
             _documentWriters.Add(documentWriter);
 
-            if (algorithmId != default(Guid) && checksum.Length > 0)
+            if ((algorithmId != default(Guid)) && (checksum.Length > 0))
             {
                 try
                 {
@@ -189,7 +189,7 @@ namespace Microsoft.DiaSymReader
 
         public override void DefineSequencePoints(int documentIndex, int count, int[] offsets, int[] startLines, int[] startColumns, int[] endLines, int[] endColumns)
         {
-            if (documentIndex < 0 || documentIndex >= _documentWriters.Count)
+            if ((documentIndex < 0) || (documentIndex >= _documentWriters.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(documentIndex));
             }
@@ -200,7 +200,7 @@ namespace Microsoft.DiaSymReader
             if (endLines == null) throw new ArgumentNullException(nameof(endLines));
             if (endColumns == null) throw new ArgumentNullException(nameof(endColumns));
 
-            if (count < 0 || count > startLines.Length || count > startColumns.Length || count > endLines.Length || count > endColumns.Length)
+            if ((count < 0) || (count > startLines.Length) || (count > startColumns.Length) || (count > endLines.Length) || (count > endColumns.Length))
             {
                 throw new ArgumentOutOfRangeException(nameof(count));
             }
@@ -413,7 +413,7 @@ namespace Microsoft.DiaSymReader
                 // (high surrogate, low surrogate) makes a valid pair, anything else is invalid:
                 if (char.IsHighSurrogate(c))
                 {
-                    if (i < str.Length && char.IsLowSurrogate(str[i]))
+                    if ((i < str.Length) && char.IsLowSurrogate(str[i]))
                     {
                         i++;
                     }
@@ -631,7 +631,7 @@ namespace Microsoft.DiaSymReader
 
         public override void MapTokenToSourceSpan(int token, int documentIndex, int startLine, int startColumn, int endLine, int endColumn)
         {
-            if (documentIndex < 0 || documentIndex >= _documentWriters.Count)
+            if ((documentIndex < 0) || (documentIndex >= _documentWriters.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(documentIndex));
             }

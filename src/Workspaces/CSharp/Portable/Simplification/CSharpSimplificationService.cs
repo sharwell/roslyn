@@ -39,16 +39,16 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
         {
             using (Logger.LogBlock(FunctionId.Simplifier_ExpandNode, cancellationToken))
             {
-                if (node is AttributeSyntax ||
-                    node is AttributeArgumentSyntax ||
-                    node is ConstructorInitializerSyntax ||
-                    node is ExpressionSyntax ||
-                    node is FieldDeclarationSyntax ||
-                    node is StatementSyntax ||
-                    node is CrefSyntax ||
-                    node is XmlNameAttributeSyntax ||
-                    node is TypeConstraintSyntax ||
-                    node is BaseTypeSyntax)
+                if ((node is AttributeSyntax) ||
+                    (node is AttributeArgumentSyntax) ||
+                    (node is ConstructorInitializerSyntax) ||
+                    (node is ExpressionSyntax) ||
+                    (node is FieldDeclarationSyntax) ||
+                    (node is StatementSyntax) ||
+                    (node is CrefSyntax) ||
+                    (node is XmlNameAttributeSyntax) ||
+                    (node is TypeConstraintSyntax) ||
+                    (node is BaseTypeSyntax))
                 {
                     var rewriter = new Expander(semanticModel, expandInsideNode, expandParameter, cancellationToken, annotationForReplacedAliasIdentifier);
                     return rewriter.Visit(node);
@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
                 return syntaxToken;
             }
 
-            if (SyntaxFacts.GetKeywordKind(syntaxToken.ValueText) == SyntaxKind.None && SyntaxFacts.GetContextualKeywordKind(syntaxToken.ValueText) == SyntaxKind.None)
+            if ((SyntaxFacts.GetKeywordKind(syntaxToken.ValueText) == SyntaxKind.None) && (SyntaxFacts.GetContextualKeywordKind(syntaxToken.ValueText) == SyntaxKind.None))
             {
                 return syntaxToken;
             }
@@ -95,15 +95,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Simplification
             }
 
             var parent = parentOfToken.Parent;
-            if (parentOfToken is SimpleNameSyntax && parent.Kind() == SyntaxKind.XmlNameAttribute)
+            if ((parentOfToken is SimpleNameSyntax) && (parent.Kind() == SyntaxKind.XmlNameAttribute))
             {
                 // do not try to escape XML name attributes
                 return syntaxToken;
             }
 
             // do not escape global in a namespace qualified name
-            if (parent.Kind() == SyntaxKind.AliasQualifiedName &&
-                syntaxToken.ValueText == "global")
+            if ((parent.Kind() == SyntaxKind.AliasQualifiedName) &&
+                (syntaxToken.ValueText == "global"))
             {
                 return syntaxToken;
             }

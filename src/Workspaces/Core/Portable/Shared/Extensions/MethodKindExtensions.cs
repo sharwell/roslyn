@@ -6,7 +6,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
     {
         public static bool IsPropertyAccessor(this MethodKind kind)
         {
-            return kind == MethodKind.PropertyGet || kind == MethodKind.PropertySet;
+            return (kind == MethodKind.PropertyGet) || (kind == MethodKind.PropertySet);
         }
     }
 }

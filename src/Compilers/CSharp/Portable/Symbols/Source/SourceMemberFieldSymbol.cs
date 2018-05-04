@@ -100,12 +100,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             var value = this.GetConstantValue(ConstantFieldsInProgress.Empty, earlyDecodingWellKnownAttributes: false);
 
             // Synthesize DecimalConstantAttribute when the default value is of type decimal
-            if (this.IsConst && value != null
-                && this.Type.SpecialType == SpecialType.System_Decimal)
+            if (this.IsConst && (value != null)
+                && (this.Type.SpecialType == SpecialType.System_Decimal))
             {
                 var data = GetDecodedWellKnownAttributeData();
 
-                if (data == null || data.ConstValue == CodeAnalysis.ConstantValue.Unset)
+                if ((data == null) || (data.ConstValue == CodeAnalysis.ConstantValue.Unset))
                 {
                     AddSynthesizedAttribute(ref attributes, compilation.SynthesizeDecimalConstantAttribute(value.DecimalValue));
                 }
@@ -377,7 +377,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             foreach (var singleVariable in declaration.Variables)
             {
                 var argList = singleVariable.ArgumentList;
-                if (argList != null && argList.Arguments.Count != 0)
+                if ((argList != null) && (argList.Arguments.Count != 0))
                 {
                     // public int Blah[10];     // fixed buffer
                     return true;
@@ -409,7 +409,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             DiagnosticBag diagnosticsForFirstDeclarator = DiagnosticBag.GetInstance();
 
             Symbol associatedPropertyOrEvent = this.AssociatedSymbol;
-            if ((object)associatedPropertyOrEvent != null && associatedPropertyOrEvent.Kind == SymbolKind.Event)
+            if (((object)associatedPropertyOrEvent != null) && (associatedPropertyOrEvent.Kind == SymbolKind.Event))
             {
                 EventSymbol @event = (EventSymbol)associatedPropertyOrEvent;
                 if (@event.IsWindowsRuntimeEvent)
@@ -441,7 +441,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     bool isVar;
                     type = binder.BindTypeOrVarKeyword(typeSyntax, diagnostics, out isVar);
 
-                    Debug.Assert((object)type != null || isVar);
+                    Debug.Assert(((object)type != null) || isVar);
 
                     if (isVar)
                     {
@@ -473,7 +473,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                             if (initializerOpt != null)
                             {
-                                if ((object)initializerOpt.Type != null && !initializerOpt.Type.IsErrorType())
+                                if (((object)initializerOpt.Type != null) && !initializerOpt.Type.IsErrorType())
                                 {
                                     type = initializerOpt.Type;
                                 }
@@ -545,12 +545,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             GetFieldType(fieldsBeingBound);
 
             // lazyIsImplicitlyTypedField can only transition from value 0 to 1:
-            return _lazyFieldTypeInferred != 0 || Volatile.Read(ref _lazyFieldTypeInferred) != 0;
+            return (_lazyFieldTypeInferred != 0) || (Volatile.Read(ref _lazyFieldTypeInferred) != 0);
         }
 
         protected sealed override ConstantValue MakeConstantValue(HashSet<SourceFieldSymbolWithSyntaxReference> dependencies, bool earlyDecodingWellKnownAttributes, DiagnosticBag diagnostics)
         {
-            if (!this.IsConst || VariableDeclaratorNode.Initializer == null)
+            if (!this.IsConst || (VariableDeclaratorNode.Initializer == null))
             {
                 return null;
             }

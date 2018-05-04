@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
 
                 containingType = containingType ?? this.Document.SemanticModel.Compilation.ScriptClass;
 
-                if (containingType == null || containingType.TypeKind == TypeKind.Interface)
+                if ((containingType == null) || (containingType.TypeKind == TypeKind.Interface))
                 {
                     return false;
                 }
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
 
                 var startToken = root.FindToken(textSpan.Start);
                 var syntaxFacts = this.Document.Project.LanguageServices.GetService<ISyntaxFactsService>();
-                if (startToken.Span.End < textSpan.Start && startToken.TrailingTrivia.All(t => syntaxFacts.IsWhitespaceOrEndOfLineTrivia(t)))
+                if ((startToken.Span.End < textSpan.Start) && startToken.TrailingTrivia.All(t => syntaxFacts.IsWhitespaceOrEndOfLineTrivia(t)))
                 {
                     // We are pointing in the trailing whitespace trivia of a token, we shouldn't include that token
                     startToken = startToken.GetNextToken();
@@ -208,7 +208,7 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
                     stopToken = stopToken.GetPreviousToken(includeSkipped: true);
                 }
 
-                if (startToken.RawKind == 0 || stopToken.RawKind == 0)
+                if ((startToken.RawKind == 0) || (stopToken.RawKind == 0))
                 {
                     return null;
                 }
@@ -222,14 +222,14 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
                     return null;
                 }
 
-                if (!(textSpan.Start >= commonExpression.FullSpan.Start &&
-                      textSpan.Start <= commonExpression.SpanStart))
+                if (!((textSpan.Start >= commonExpression.FullSpan.Start) &&
+                      (textSpan.Start <= commonExpression.SpanStart)))
                 {
                     return null;
                 }
 
-                if (!(textSpan.End >= commonExpression.Span.End &&
-                      textSpan.End <= commonExpression.FullSpan.End))
+                if (!((textSpan.End >= commonExpression.Span.End) &&
+                      (textSpan.End <= commonExpression.FullSpan.End)))
                 {
                     return null;
                 }
@@ -246,13 +246,13 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
                     return false;
                 }
 
-                if (isSpanEmpty && this.Expression is TNameSyntax)
+                if (isSpanEmpty && (this.Expression is TNameSyntax))
                 {
                     // to extract a name, you must have a selection (this avoids making the refactoring too noisy)
                     return false;
                 }
 
-                if (this.Expression is TTypeSyntax && !(this.Expression is TNameSyntax))
+                if ((this.Expression is TTypeSyntax) && !(this.Expression is TNameSyntax))
                 {
                     // name syntax can introduce variables, but not other type syntaxes
                     return false;
@@ -279,7 +279,7 @@ namespace Microsoft.CodeAnalysis.IntroduceVariable
                 }
 
                 var syntax = this.Expression.GetAncestor<TSyntax>();
-                return syntax != null && !syntax.OverlapsHiddenPosition(cancellationToken);
+                return (syntax != null) && !syntax.OverlapsHiddenPosition(cancellationToken);
             }
 
             private bool IsInTypeDeclarationOrValidCompilationUnit()

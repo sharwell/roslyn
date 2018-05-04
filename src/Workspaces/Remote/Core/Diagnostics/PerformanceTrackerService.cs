@@ -200,7 +200,7 @@ namespace Microsoft.CodeAnalysis.Remote.Diagnostics
                     // if result performance is lower than our threshold, don't need to calcuate
                     // LOF value for the analyzer
                     var rawData = rawPerformanceData[analyzerId];
-                    if (rawData.average <= _averageThreshold && rawData.stddev <= _stddevThreshold)
+                    if ((rawData.average <= _averageThreshold) && (rawData.stddev <= _stddevThreshold))
                     {
                         continue;
                     }
@@ -301,7 +301,7 @@ namespace Microsoft.CodeAnalysis.Remote.Diagnostics
                         var value = rowDistances[colIndex];
 
                         // get neighbors closer than k distance
-                        if (value > 0 && value <= kDistance)
+                        if ((value > 0) && (value <= kDistance))
                         {
                             rowKNeighborIndices.Add(colIndex);
                         }
@@ -435,7 +435,7 @@ namespace Microsoft.CodeAnalysis.Remote.Diagnostics
                 }
 
                 // want reversed order
-                if (x.LocalOutlierFactor - y.LocalOutlierFactor > 0)
+                if ((x.LocalOutlierFactor - y.LocalOutlierFactor) > 0)
                 {
                     return -1;
                 }

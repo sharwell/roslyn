@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.SQLite
 
             if (stream.CanSeek)
             {
-                if (stream.Length >= 0 && stream.Length <= int.MaxValue)
+                if ((stream.Length >= 0) && (stream.Length <= int.MaxValue))
                 {
                     var length = (int)stream.Length;
                     byte[] bytes;
@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis.SQLite
         {
             var index = 0;
             int read;
-            while (length > 0 && (read = stream.Read(bytes, index, length)) != 0)
+            while ((length > 0) && ((read = stream.Read(bytes, index, length)) != 0))
             {
                 index += read;
                 length -= read;

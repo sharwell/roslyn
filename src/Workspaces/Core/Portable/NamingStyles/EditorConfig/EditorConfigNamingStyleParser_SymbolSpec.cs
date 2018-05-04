@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         {
             if (conventionsDictionary.TryGetValue($"dotnet_naming_symbols.{symbolSpecName}.applicable_kinds", out object result))
             {
-                return ParseSymbolKindList(result as string ?? string.Empty);
+                return ParseSymbolKindList((result as string) ?? string.Empty);
             }
 
             return ImmutableArray<SymbolKindOrTypeKind>.Empty;
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         {
             if (conventionsDictionary.TryGetValue($"dotnet_naming_symbols.{symbolSpecName}.applicable_accessibilities", out object result))
             {
-                return ParseAccessibilityKindList(result as string ?? string.Empty);
+                return ParseAccessibilityKindList((result as string) ?? string.Empty);
             }
 
             return ImmutableArray<Accessibility>.Empty;
@@ -190,7 +190,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         {
             if (conventionsDictionary.TryGetValue($"dotnet_naming_symbols.{symbolSpecName}.required_modifiers", out object result))
             {
-                return ParseModifiers(result as string ?? string.Empty);
+                return ParseModifiers((result as string) ?? string.Empty);
             }
 
             return ImmutableArray<ModifierKind>.Empty;

@@ -161,7 +161,7 @@ namespace Microsoft.CodeAnalysis.Host
 
         private void ParseIfOpen(Document document)
         {
-            if (document != null && document.IsOpen())
+            if ((document != null) && document.IsOpen())
             {
                 this.Parse(document);
             }
@@ -192,7 +192,7 @@ namespace Microsoft.CodeAnalysis.Host
                         // Check that we are still the active parse in the workmap before we remove it.
                         // Concievably if this continuation got delayed and another parse was put in, we might
                         // end up removing the tracking for another in-flight task.
-                        if (_workMap.TryGetValue(document.Id, out var sourceInMap) && sourceInMap == cancellationTokenSource)
+                        if (_workMap.TryGetValue(document.Id, out var sourceInMap) && (sourceInMap == cancellationTokenSource))
                         {
                             _workMap = _workMap.Remove(document.Id);
                         }

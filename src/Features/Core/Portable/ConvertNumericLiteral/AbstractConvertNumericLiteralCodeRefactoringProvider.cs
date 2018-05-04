@@ -34,8 +34,8 @@ namespace Microsoft.CodeAnalysis.ConvertNumericLiteral
                 return;
             }
 
-            if (context.Span.Length > 0 && 
-                context.Span != numericToken.Span)
+            if ((context.Span.Length > 0) && 
+                (context.Span != numericToken.Span))
             {
                 return;
             }

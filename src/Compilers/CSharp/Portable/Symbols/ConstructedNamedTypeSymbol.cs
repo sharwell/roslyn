@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 map: newContainer.TypeSubstitution,
                 originalDefinition: originalDefinition,
                 // An Arity-0 member of an unbound type, e.g. A<>.B, is unbound.
-                unbound: newContainer.IsUnboundGenericType && originalDefinition.Arity == 0)
+                unbound: newContainer.IsUnboundGenericType && (originalDefinition.Arity == 0))
         {
         }
 

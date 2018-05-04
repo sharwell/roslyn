@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
             // This also works nicely as the close brace for these constructs will always
             // align with the start of these statements.
             if (IsNonBlockStatement(node.Parent) ||
-                parentKind == SyntaxKind.ElseClause)
+                (parentKind == SyntaxKind.ElseClause))
             {
                 var type = GetType(node.Parent);
                 if (type != null)
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
             //
             // Which would obviously be wonky.  So in this case, we just use the
             // spanof the block alone, without consideration for the case clause.
-            if (parentKind == SyntaxKind.Block || parentKind == SyntaxKind.SwitchSection)
+            if ((parentKind == SyntaxKind.Block) || (parentKind == SyntaxKind.SwitchSection))
             {
                 var type = GetType(node.Parent);
 
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
 
         private static bool IsNonBlockStatement(SyntaxNode node)
         {
-            return node is StatementSyntax && !node.IsKind(SyntaxKind.Block);
+            return (node is StatementSyntax) && !node.IsKind(SyntaxKind.Block);
         }
 
         private TextSpan GetHintSpan(BlockSyntax node)

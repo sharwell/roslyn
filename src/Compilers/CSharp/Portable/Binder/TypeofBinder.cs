@@ -33,7 +33,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         protected override bool IsUnboundTypeAllowed(GenericNameSyntax syntax)
         {
             bool allowed;
-            return _allowedMap != null && _allowedMap.TryGetValue(syntax, out allowed) && allowed;
+            return (_allowedMap != null) && _allowedMap.TryGetValue(syntax, out allowed) && allowed;
         }
 
         /////// <summary>

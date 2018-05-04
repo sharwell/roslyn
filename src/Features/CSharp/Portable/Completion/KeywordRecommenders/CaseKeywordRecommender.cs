@@ -25,8 +25,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
         {
             var token = context.TargetToken;
 
-            if (token.Kind() == SyntaxKind.GotoKeyword &&
-                token.GetAncestor<SwitchStatementSyntax>() != null)
+            if ((token.Kind() == SyntaxKind.GotoKeyword) &&
+                (token.GetAncestor<SwitchStatementSyntax>() != null))
             {
                 // todo: what if we're in a lambda... or a try/finally or 
                 // something?  Might want to filter this out.

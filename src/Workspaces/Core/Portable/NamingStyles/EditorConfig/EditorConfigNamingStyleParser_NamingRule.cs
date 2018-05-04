@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         {
             if (conventionsDictionary.TryGetValue($"dotnet_naming_rule.{namingRuleName}.severity", out object result))
             {
-                severity = ParseEnforcementLevel(result as string ?? string.Empty);
+                severity = ParseEnforcementLevel((result as string) ?? string.Empty);
                 return true;
             }
 

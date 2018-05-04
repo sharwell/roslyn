@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis
             public bool ReadBoolean()
             {
                 var val = ReadInteger();
-                Debug.Assert(val == 0 || val == 1);
+                Debug.Assert((val == 0) || (val == 1));
                 return val == 1;
             }
 

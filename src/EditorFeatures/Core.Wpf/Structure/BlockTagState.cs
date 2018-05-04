@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Structure
             => obj is BlockTagState s && Equals(s);
 
         public bool Equals(BlockTagState tag)
-            => IsImplementation == tag.IsImplementation &&
+            => (IsImplementation == tag.IsImplementation) &&
                Equals(this.CollapsedForm, tag.CollapsedForm);
 
         public override int GetHashCode()
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Structure
 
         private Span TrimStartingNewlines(Span span)
         {
-            while (span.Length > 1 && char.IsWhiteSpace(_subjectBuffer.CurrentSnapshot[span.Start]))
+            while ((span.Length > 1) && char.IsWhiteSpace(_subjectBuffer.CurrentSnapshot[span.Start]))
             {
                 span = new Span(span.Start + 1, span.Length - 1);
             }

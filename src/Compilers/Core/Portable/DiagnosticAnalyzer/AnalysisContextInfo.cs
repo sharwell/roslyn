@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             var sb = new StringBuilder();
             foreach (var token in node.DescendantTokens(descendIntoTrivia: false))
             {
-                if (token.Span.Start - lastEnd > 0)
+                if ((token.Span.Start - lastEnd) > 0)
                 {
                     sb.Append(" ");
                 }

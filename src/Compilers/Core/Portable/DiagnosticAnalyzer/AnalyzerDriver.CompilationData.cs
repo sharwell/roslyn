@@ -36,7 +36,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
                 SemanticModel model;
                 lock (_semanticModelsMap)
                 {
-                    if (_semanticModelsMap.TryGetValue(tree, out model) && model.Compilation == compilation)
+                    if (_semanticModelsMap.TryGetValue(tree, out model) && (model.Compilation == compilation))
                     {
                         return model;
                     }

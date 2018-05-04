@@ -341,7 +341,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             TypeSymbol generic = GetTypeOfToken(tokenGeneric, out refersToNoPiaLocalType);
-            Debug.Assert(!refersToNoPiaLocalType || generic.TypeKind == TypeKind.Error);
+            Debug.Assert(!refersToNoPiaLocalType || (generic.TypeKind == TypeKind.Error));
 
             var argumentsBuilder = ArrayBuilder<KeyValuePair<TypeSymbol, ImmutableArray<ModifierInfo<TypeSymbol>>>>.GetInstance(argumentCount);
             var argumentRefersToNoPiaLocalTypeBuilder = ArrayBuilder<bool>.GetInstance(argumentCount);
@@ -444,7 +444,7 @@ namespace Microsoft.CodeAnalysis
             ConcurrentDictionary<TypeReferenceHandle, TypeSymbol> cache = GetTypeRefHandleToTypeMap();
             TypeSymbol result;
 
-            if (cache != null && cache.TryGetValue(typeRef, out result))
+            if ((cache != null) && cache.TryGetValue(typeRef, out result))
             {
                 isNoPiaLocalType = false; // We do not cache otherwise.
                 return result;
@@ -472,7 +472,7 @@ namespace Microsoft.CodeAnalysis
             Debug.Assert(result != null);
 
             // Cache the result, but only if it is not a local type because the cache doesn't retain this information.
-            if (cache != null && !isNoPiaLocalType)
+            if ((cache != null) && !isNoPiaLocalType)
             {
                 TypeSymbol result1 = cache.GetOrAdd(typeRef, result);
                 Debug.Assert(result1.Equals(result));
@@ -562,7 +562,7 @@ namespace Microsoft.CodeAnalysis
 
                 TypeSymbol result;
 
-                if (cache != null && cache.TryGetValue(typeDef, out result))
+                if ((cache != null) && cache.TryGetValue(typeDef, out result))
                 {
                     if (!Module.IsNestedTypeDefOrThrow(typeDef) && Module.IsNoPiaLocalType(typeDef))
                     {
@@ -862,7 +862,7 @@ namespace Microsoft.CodeAnalysis
                         signatureReader.ReadByte();
                     }
 
-                    int n = (i < localCount - 1) ? (offsets[i + 1] - start) : signatureReader.RemainingBytes;
+                    int n = (i < (localCount - 1)) ? (offsets[i + 1] - start) : signatureReader.RemainingBytes;
                     var signature = signatureReader.ReadBytes(n);
 
                     locals[i] = locals[i].WithSignature(signature);
@@ -896,7 +896,7 @@ namespace Microsoft.CodeAnalysis
                                 // Any other modifiers, optional or not, are not allowed: http://vstfdevdiv:8080/DevDiv2/DevDiv/_workitems/edit/528856
                                 Debug.Assert(!modifiers.IsDefaultOrEmpty);
 
-                                if (type.SpecialType == SpecialType.System_ValueType && modifiers.Length == 1)
+                                if ((type.SpecialType == SpecialType.System_ValueType) && (modifiers.Length == 1))
                                 {
                                     isUnmanagedConstraint = true;
                                 }
@@ -954,7 +954,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             // TypedReference can't be by-ref or pinned:
-            if (typeCode == SignatureTypeCode.TypedReference && constraints != LocalSlotConstraints.None)
+            if ((typeCode == SignatureTypeCode.TypedReference) && (constraints != LocalSlotConstraints.None))
             {
                 typeSymbol = GetUnsupportedMetadataTypeSymbol();
             }
@@ -997,7 +997,7 @@ namespace Microsoft.CodeAnalysis
                 else if (sigReader.RemainingBytes == 0)
                 {
                     // default(T)
-                    value = (type.IsReferenceType || type is IPointerTypeSymbol) ? ConstantValue.Null : ConstantValue.Bad;
+                    value = (type.IsReferenceType || (type is IPointerTypeSymbol)) ? ConstantValue.Null : ConstantValue.Bad;
                 }
                 else
                 {
@@ -1010,7 +1010,7 @@ namespace Microsoft.CodeAnalysis
                 value = DecodePrimitiveConstantValue(ref sigReader, typeCode, out isEnumTypeCode);
                 var specialType = typeCode.ToSpecialType();
 
-                if (isEnumTypeCode && sigReader.RemainingBytes > 0)
+                if (isEnumTypeCode && (sigReader.RemainingBytes > 0))
                 {
                     bool refersToNoPiaLocalType;
                     type = GetSymbolForTypeHandleOrThrow(sigReader.ReadTypeHandle(), out refersToNoPiaLocalType, allowTypeSpec: true, requireShortForm: true);
@@ -1097,7 +1097,7 @@ namespace Microsoft.CodeAnalysis
                         return ConstantValue.Null;
                     }
 
-                    if (sigReader.RemainingBytes % 2 != 0)
+                    if ((sigReader.RemainingBytes % 2) != 0)
                     {
                         return ConstantValue.Bad;
                     }
@@ -1209,7 +1209,7 @@ namespace Microsoft.CodeAnalysis
                         int sequenceNumber = Module.GetParameterSequenceNumberOrThrow(param);
 
                         // Ignore possible errors in parameter table.
-                        if (sequenceNumber >= 0 && sequenceNumber < paramInfoLength && paramInfo[sequenceNumber].Handle.IsNil)
+                        if ((sequenceNumber >= 0) && (sequenceNumber < paramInfoLength) && paramInfo[sequenceNumber].Handle.IsNil)
                         {
                             paramInfo[sequenceNumber].Handle = param;
                         }
@@ -1604,7 +1604,7 @@ namespace Microsoft.CodeAnalysis
             // the single byte 0x54.
 
             var kind = (CustomAttributeNamedArgumentKind)argReader.ReadCompressedInteger();
-            if (kind != CustomAttributeNamedArgumentKind.Field && kind != CustomAttributeNamedArgumentKind.Property)
+            if ((kind != CustomAttributeNamedArgumentKind.Field) && (kind != CustomAttributeNamedArgumentKind.Property))
             {
                 throw new UnsupportedSignatureContent();
             }
@@ -1691,7 +1691,7 @@ namespace Microsoft.CodeAnalysis
                     SignatureHeader signatureHeader = sigReader.ReadSignatureHeader();
 
                     // Get the type parameter count.
-                    if (signatureHeader.IsGeneric && sigReader.ReadCompressedInteger() != 0)
+                    if (signatureHeader.IsGeneric && (sigReader.ReadCompressedInteger() != 0))
                     {
                         return false;
                     }
@@ -1731,7 +1731,7 @@ namespace Microsoft.CodeAnalysis
                     return true;
                 }
             }
-            catch (Exception e) when (e is UnsupportedSignatureContent || e is BadImageFormatException)
+            catch (Exception e) when ((e is UnsupportedSignatureContent) || (e is BadImageFormatException))
             {
                 positionalArgs = Array.Empty<TypedConstant>();
                 namedArgs = Array.Empty<KeyValuePair<String, TypedConstant>>();
@@ -1866,7 +1866,7 @@ namespace Microsoft.CodeAnalysis
                     throw new UnsupportedSignatureContent();
                 }
             }
-            catch (Exception e) when (e is UnsupportedSignatureContent || e is BadImageFormatException)
+            catch (Exception e) when ((e is UnsupportedSignatureContent) || (e is BadImageFormatException))
             {
                 for (; paramIndex <= paramCount; paramIndex++)
                 {
@@ -2040,7 +2040,7 @@ namespace Microsoft.CodeAnalysis
                 HashSet<TypeSymbol> visitedTypeSymbols = new HashSet<TypeSymbol>();
 
                 bool hasMoreTypeDefs;
-                while ((hasMoreTypeDefs = typeDefsToSearch.Count > 0) || typeSymbolsToSearch.Count > 0)
+                while ((hasMoreTypeDefs = typeDefsToSearch.Count > 0) || (typeSymbolsToSearch.Count > 0))
                 {
                     if (hasMoreTypeDefs)
                     {
@@ -2178,7 +2178,7 @@ namespace Microsoft.CodeAnalysis
 
         protected override bool IsContainingAssembly(AssemblyIdentity identity)
         {
-            return _containingAssemblyIdentity != null && _containingAssemblyIdentity.Equals(identity);
+            return (_containingAssemblyIdentity != null) && _containingAssemblyIdentity.Equals(identity);
         }
 
         /// <summary>
@@ -2316,15 +2316,15 @@ namespace Microsoft.CodeAnalysis
 
                 HandleKind containerType = container.Kind;
                 Debug.Assert(
-                    containerType == HandleKind.MethodDefinition ||
-                    containerType == HandleKind.ModuleReference ||
-                    containerType == HandleKind.TypeDefinition ||
-                    containerType == HandleKind.TypeReference ||
-                    containerType == HandleKind.TypeSpecification);
+                    (containerType == HandleKind.MethodDefinition) ||
+                    (containerType == HandleKind.ModuleReference) ||
+                    (containerType == HandleKind.TypeDefinition) ||
+                    (containerType == HandleKind.TypeReference) ||
+                    (containerType == HandleKind.TypeSpecification));
 
-                if (containerType != HandleKind.TypeDefinition &&
-                    containerType != HandleKind.TypeReference &&
-                    containerType != HandleKind.TypeSpecification)
+                if ((containerType != HandleKind.TypeDefinition) &&
+                    (containerType != HandleKind.TypeReference) &&
+                    (containerType != HandleKind.TypeSpecification))
                 {
                     // C# symbols don't support global methods
                     return null;
@@ -2341,7 +2341,7 @@ namespace Microsoft.CodeAnalysis
         internal MethodSymbol GetMethodSymbolForMethodDefOrMemberRef(EntityHandle memberToken, TypeSymbol container)
         {
             HandleKind type = memberToken.Kind;
-            Debug.Assert(type == HandleKind.MethodDefinition || type == HandleKind.MemberReference);
+            Debug.Assert((type == HandleKind.MethodDefinition) || (type == HandleKind.MemberReference));
 
             return type == HandleKind.MethodDefinition
                 ? FindMethodSymbolInType(container, (MethodDefinitionHandle)memberToken)
@@ -2351,8 +2351,8 @@ namespace Microsoft.CodeAnalysis
         internal FieldSymbol GetFieldSymbolForFieldDefOrMemberRef(EntityHandle memberToken, TypeSymbol container)
         {
             HandleKind type = memberToken.Kind;
-            Debug.Assert(type == HandleKind.FieldDefinition ||
-                            type == HandleKind.MemberReference);
+            Debug.Assert((type == HandleKind.FieldDefinition) ||
+                            (type == HandleKind.MemberReference));
 
             return type == HandleKind.FieldDefinition
                 ? FindFieldSymbolInType(container, (FieldDefinitionHandle)memberToken)

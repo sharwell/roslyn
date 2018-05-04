@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.Host
                     set
                     {
                         var target = _start + value;
-                        if (target < _start || target >= _end)
+                        if ((target < _start) || (target >= _end))
                         {
                             throw new ArgumentOutOfRangeException(nameof(value));
                         }
@@ -301,7 +301,7 @@ namespace Microsoft.CodeAnalysis.Host
                         throw new ArgumentOutOfRangeException(nameof(offset));
                     }
 
-                    if (target < _start || target >= _end)
+                    if ((target < _start) || (target >= _end))
                     {
                         throw new ArgumentOutOfRangeException(nameof(offset));
                     }

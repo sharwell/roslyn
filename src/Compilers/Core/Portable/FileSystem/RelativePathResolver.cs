@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis
         public RelativePathResolver(ImmutableArray<string> searchPaths, string baseDirectory)
         {
             Debug.Assert(searchPaths.All(PathUtilities.IsAbsolute));
-            Debug.Assert(baseDirectory == null || PathUtilities.GetPathKind(baseDirectory) == PathKind.Absolute);
+            Debug.Assert((baseDirectory == null) || (PathUtilities.GetPathKind(baseDirectory) == PathKind.Absolute));
 
             SearchPaths = searchPaths;
             BaseDirectory = baseDirectory;
@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis
             new RelativePathResolver(SearchPaths, baseDirectory);
 
         public bool Equals(RelativePathResolver other) =>
-            BaseDirectory == other.BaseDirectory && SearchPaths.SequenceEqual(other.SearchPaths);
+            (BaseDirectory == other.BaseDirectory) && SearchPaths.SequenceEqual(other.SearchPaths);
 
         public override int GetHashCode() =>
             Hash.Combine(BaseDirectory, Hash.CombineValues(SearchPaths));

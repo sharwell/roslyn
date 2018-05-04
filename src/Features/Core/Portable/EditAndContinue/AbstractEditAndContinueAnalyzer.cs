@@ -329,7 +329,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
                 // Changes in parse options might change the meaning of the code even if nothing else changed.
                 // The IDE should disallow changing the options during debugging session. 
-                Debug.Assert(oldTreeOpt == null || oldTreeOpt.Options.Equals(newTree.Options));
+                Debug.Assert((oldTreeOpt == null) || oldTreeOpt.Options.Equals(newTree.Options));
 
                 var newRoot = await newTree.GetRootAsync(cancellationToken).ConfigureAwait(false);
                 var newText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
@@ -461,7 +461,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 cancellationToken.ThrowIfCancellationRequested();
 
                 List<SemanticEdit> semanticEdits = null;
-                if (syntacticEdits.Edits.Length > 0 || triviaEdits.Count > 0)
+                if ((syntacticEdits.Edits.Length > 0) || (triviaEdits.Count > 0))
                 {
                     var newModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
                     var oldModel = await oldDocumentOpt.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -534,12 +534,12 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             {
                 // do not include reorder and move edits
 
-                if (edit.Kind == EditKind.Delete || edit.Kind == EditKind.Update)
+                if ((edit.Kind == EditKind.Delete) || (edit.Kind == EditKind.Update))
                 {
                     map.Add(edit.OldNode, edit.Kind);
                 }
 
-                if (edit.Kind == EditKind.Insert || edit.Kind == EditKind.Update)
+                if ((edit.Kind == EditKind.Insert) || (edit.Kind == EditKind.Update))
                 {
                     map.Add(edit.NewNode, edit.Kind);
                 }
@@ -614,7 +614,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 {
                     Contract.ThrowIfFalse(newExceptionRegions[i].IsDefault);
                     TextSpan trackedSpan = default;
-                    bool isTracked = trackingService != null &&
+                    bool isTracked = (trackingService != null) &&
                                      trackingService.TryGetSpan(new ActiveStatementId(documentId, i), newText, out trackedSpan);
                     if (!TryGetTextSpan(oldText.Lines, oldActiveStatements[i].Span, out var oldStatementSpan))
                     {
@@ -640,7 +640,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     SyntaxNode newBody = TryGetDeclarationBody(newMember, isMember: true);
 
                     // Guard against invalid active statement spans (in case PDB was somehow out of sync with the source).
-                    if (oldBody == null || newBody == null)
+                    if ((oldBody == null) || (newBody == null))
                     {
                         DocumentAnalysisResults.Log.Write("Invalid active statement span: [{0}..{1})", oldStatementSpan.Start, oldStatementSpan.End);
                         newExceptionRegions[i] = ImmutableArray.Create<LinePositionSpan>();
@@ -652,7 +652,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
                     // The tracking span might have been deleted or moved outside of the member span.
                     // It is not an error to move the statement - we just ignore it.
-                    if (isTracked && trackedSpan.Length != 0 && newMember.Span.Contains(trackedSpan))
+                    if (isTracked && (trackedSpan.Length != 0) && newMember.Span.Contains(trackedSpan))
                     {
                         var trackedStatement = FindStatement(newBody, trackedSpan.Start, out var trackedStatementPart);
                         Contract.ThrowIfNull(trackedStatement);
@@ -694,7 +694,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     newActiveStatements[i] = newText.Lines.GetLinePositionSpan(newStatementSpan);
 
                     // Update tracking span if we found a matching active statement whose span is different.
-                    if (isTracked && newStatementSpan != trackedSpan)
+                    if (isTracked && (newStatementSpan != trackedSpan))
                     {
                         updatedTrackingSpans.Add(KeyValuePair.Create(new ActiveStatementId(documentId, i), newStatementSpan));
                     }
@@ -713,7 +713,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             [In, Out]ImmutableArray<LinePositionSpan>[] newExceptionRegionsOpt)
         {
             Debug.Assert(oldActiveStatements.Length == newActiveStatements.Length);
-            Debug.Assert(newExceptionRegionsOpt == null || oldActiveStatements.Length == newExceptionRegionsOpt.Length);
+            Debug.Assert((newExceptionRegionsOpt == null) || (oldActiveStatements.Length == newExceptionRegionsOpt.Length));
 
             var updatedTrackingSpans = new List<KeyValuePair<ActiveStatementId, TextSpan>>();
 
@@ -741,10 +741,10 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 newActiveStatements[i] = newText.Lines.GetLinePositionSpan(newStatementSpan);
                 // Update tracking span if we found a matching active statement whose span is different.
                 TextSpan trackedSpan = default;
-                bool isTracked = trackingService != null &&
+                bool isTracked = (trackingService != null) &&
                                  trackingService.TryGetSpan(new ActiveStatementId(documentId, i), newText, out trackedSpan);
 
-                if (isTracked && newStatementSpan != trackedSpan)
+                if (isTracked && (newStatementSpan != trackedSpan))
                 {
                     updatedTrackingSpans.Add(KeyValuePair.Create(new ActiveStatementId(documentId, i), newStatementSpan));
                 }
@@ -878,12 +878,12 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             var edit = topEditScript.Edits[editOrdinal];
 
             // new code can't contain active statements, code that moved doesn't contain updates:
-            if (edit.Kind == EditKind.Insert || edit.Kind == EditKind.Reorder || edit.Kind == EditKind.Move)
+            if ((edit.Kind == EditKind.Insert) || (edit.Kind == EditKind.Reorder) || (edit.Kind == EditKind.Move))
             {
                 return;
             }
 
-            if (!TryGetDeclarationBodyEdit(edit, editMap, out var oldBody, out var newBody) || oldBody == null)
+            if (!TryGetDeclarationBodyEdit(edit, editMap, out var oldBody, out var newBody) || (oldBody == null))
             {
                 return;
             }
@@ -925,7 +925,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     var newSpan = FindClosestActiveSpan(edit.NewNode, 0);
                     for (int i = start; i < end; i++)
                     {
-                        Debug.Assert(newActiveStatements[i] == default && newSpan != default);
+                        Debug.Assert((newActiveStatements[i] == default) && (newSpan != default));
                         newActiveStatements[i] = newText.Lines.GetLinePositionSpan(newSpan);
                         editedActiveStatements[i] = true;
                         newExceptionRegions[i] = ImmutableArray.Create<LinePositionSpan>();
@@ -941,7 +941,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             Dictionary<SyntaxNode, LambdaInfo> lazyActiveOrMatchedLambdas = null;
 
             // finds leaf nodes that correspond to the old active statements:
-            Debug.Assert(end > start || !hasActiveStatement && end == start);
+            Debug.Assert((end > start) || (!hasActiveStatement && (end == start)));
             var activeNodes = new ActiveNode[end - start];
             for (int i = 0; i < activeNodes.Length; i++)
             {
@@ -980,7 +980,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 {
                     // The tracking span might have been deleted or moved outside of the member span.
                     // It is not an error to move the statement - we just ignore it.
-                    if (trackedSpan.Length != 0 && edit.NewNode.Span.Contains(trackedSpan))
+                    if ((trackedSpan.Length != 0) && edit.NewNode.Span.Contains(trackedSpan))
                     {
                         var newStatementSyntax = FindStatement(newBody, trackedSpan.Start, out var part);
                         Contract.ThrowIfNull(newStatementSyntax);
@@ -989,7 +989,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
                         // The tracking span might have been moved outside of the lambda span.
                         // It is not an error to move the statement - we just ignore it.
-                        if (oldEnclosingLambdaBody == newEnclosingLambdaBody &&
+                        if ((oldEnclosingLambdaBody == newEnclosingLambdaBody) &&
                             StatementLabelEquals(oldStatementSyntax, newStatementSyntax))
                         {
                             trackedNode = newStatementSyntax;
@@ -1104,13 +1104,13 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     newExceptionRegions,
                     diagnostics);
 
-                Debug.Assert(newActiveStatements[ordinal] == default && newSpan != default);
+                Debug.Assert((newActiveStatements[ordinal] == default) && (newSpan != default));
                 newActiveStatements[ordinal] = newText.Lines.GetLinePositionSpan(newSpan);
                 editedActiveStatements[ordinal] = true;
 
                 // Update tracking span if we found a matching active statement whose span is different.
                 // It could have been deleted or moved out of the method/lambda body, in which case we set it to empty.
-                if (activeNodes[i].TrackedSpanOpt.HasValue && activeNodes[i].TrackedSpanOpt.Value != newSpan)
+                if (activeNodes[i].TrackedSpanOpt.HasValue && (activeNodes[i].TrackedSpanOpt.Value != newSpan))
                 {
                     updatedTrackingSpans.Add(KeyValuePair.Create(new ActiveStatementId(documentId, ordinal), newSpan));
                 }
@@ -1128,7 +1128,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             ImmutableArray<LinePositionSpan>[] newExceptionRegions,
             List<RudeEditDiagnostic> diagnostics)
         {
-            if (newStatementSyntaxOpt == null && bodyMatch.NewRoot.Span.Contains(newStatementSyntaxSpan.Start))
+            if ((newStatementSyntaxOpt == null) && bodyMatch.NewRoot.Span.Contains(newStatementSyntaxSpan.Start))
             {
                 newStatementSyntaxOpt = bodyMatch.NewRoot.FindToken(newStatementSyntaxSpan.Start).Parent;
             }
@@ -1141,7 +1141,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             var oldAncestors = GetExceptionHandlingAncestors(oldStatementSyntax, isLeaf);
             var newAncestors = GetExceptionHandlingAncestors(newStatementSyntaxOpt, isLeaf);
 
-            if (oldAncestors.Count > 0 || newAncestors.Count > 0)
+            if ((oldAncestors.Count > 0) || (newAncestors.Count > 0))
             {
                 var edits = bodyMatch.GetSequenceEdits(oldAncestors, newAncestors);
                 ReportEnclosingExceptionHandlingRudeEdits(diagnostics, edits, oldStatementSyntax, newStatementSyntaxSpan);
@@ -1212,7 +1212,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 }
 
                 currentLambdaBodyMatch++;
-                if (lambdaBodyMatches == null || currentLambdaBodyMatch == lambdaBodyMatches.Count)
+                if ((lambdaBodyMatches == null) || (currentLambdaBodyMatch == lambdaBodyMatches.Count))
                 {
                     break;
                 }
@@ -1240,7 +1240,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     // The lambda has already been included when enumerating parent body matches.
                     Debug.Assert(
                         !map.ContainsKey(pair.Key) ||
-                        pair.Key == lambdaBodyMatch.OldRoot && pair.Value == lambdaBodyMatch.NewRoot && IsLambda(pair.Key) && IsLambda(pair.Value));
+                        ((((pair.Key == lambdaBodyMatch.OldRoot) && (pair.Value == lambdaBodyMatch.NewRoot) && IsLambda(pair.Key) && IsLambda(pair.Value)))));
 
                     map[pair.Key] = pair.Value;
                     reverseMap[pair.Value] = pair.Key;
@@ -1315,11 +1315,11 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             //    Report rude edit since we can't remap IP from MoveNext to the kickoff method.
             //    Note that iterators in VB don't need to contain yield, so this case is not covered by change in number of yields.
 
-            bool creatingStateMachineAroundActiveStatement = oldStateMachineSuspensionPoints.Length == 0 && newStateMachineSuspensionPoints.Length > 0 && activeNodes.Length > 0;
+            bool creatingStateMachineAroundActiveStatement = (oldStateMachineSuspensionPoints.Length == 0) && (newStateMachineSuspensionPoints.Length > 0) && (activeNodes.Length > 0);
             oldHasStateMachineSuspensionPoint = oldStateMachineSuspensionPoints.Length > 0;
             newHasStateMachineSuspensionPoint = newStateMachineSuspensionPoints.Length > 0;
 
-            if (oldStateMachineSuspensionPoints.Length > 0 || creatingStateMachineAroundActiveStatement)
+            if ((oldStateMachineSuspensionPoints.Length > 0) || creatingStateMachineAroundActiveStatement)
             {
                 AddMatchingStateMachineSuspensionPoints(ref lazyKnownMatches, ref lazyRudeEdits, oldStateMachineSuspensionPoints, newStateMachineSuspensionPoints);
             }
@@ -1368,7 +1368,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 // It is allow to update a regular method to an async method or an iterator.
                 // The only restriction is a presence of an active statement in the method body
                 // since the debugger does not support remapping active statements to a different method.
-                if (oldStateMachineKind == StateMachineKind.None && newStateMachineKind != StateMachineKind.None)
+                if ((oldStateMachineKind == StateMachineKind.None) && (newStateMachineKind != StateMachineKind.None))
                 {
                     diagnostics.Add(new RudeEditDiagnostic(
                         RudeEditKind.UpdatingStateMachineMethodAroundActiveStatement,
@@ -1496,7 +1496,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     return GetDeletedNodeDiagnosticSpan(match.Matches, oldLambdaBody);
                 }
 
-                if (lambdaInfos.TryGetValue(oldParentLambdaBody, out var lambdaInfo) && lambdaInfo.Match != null)
+                if (lambdaInfos.TryGetValue(oldParentLambdaBody, out var lambdaInfo) && (lambdaInfo.Match != null))
                 {
                     return GetDeletedNodeDiagnosticSpan(lambdaInfo.Match.Matches, oldLambdaBody);
                 }
@@ -1595,7 +1595,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             // TODO (tomat): use BinarySearch
 
             int i = 0;
-            while (i < statements.Length && !declarationSpan.OverlapsWith(lines.GetTextSpan(statements[i].Span)))
+            while ((i < statements.Length) && !declarationSpan.OverlapsWith(lines.GetTextSpan(statements[i].Span)))
             {
                 i++;
             }
@@ -1609,7 +1609,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             start = i;
             i++;
 
-            while (i < statements.Length && declarationSpan.OverlapsWith(lines.GetTextSpan(statements[i].Span)))
+            while ((i < statements.Length) && declarationSpan.OverlapsWith(lines.GetTextSpan(statements[i].Span)))
             {
                 i++;
             }
@@ -1640,7 +1640,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         protected static bool HasEdit(Dictionary<SyntaxNode, EditKind> editMap, SyntaxNode node, EditKind editKind)
         {
-            return editMap.TryGetValue(node, out var parentEdit) && parentEdit == editKind;
+            return editMap.TryGetValue(node, out var parentEdit) && (parentEdit == editKind);
         }
 
         #endregion
@@ -1712,7 +1712,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     matchCount = MatchNodes(oldNodes, newNodes, diagnostics: null, match: match, comparer: areEquivalent);
 
                     // Do another pass over the nodes to improve error messages.
-                    if (areSimilar != null && matchCount < Math.Min(oldNodes.Count, newNodes.Count))
+                    if ((areSimilar != null) && (matchCount < Math.Min(oldNodes.Count, newNodes.Count)))
                     {
                         matchCount += MatchNodes(oldNodes, newNodes, diagnostics: diagnostics, match: null, comparer: areSimilar);
                     }
@@ -1742,7 +1742,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     // Any difference can be expressed as insert, delete & insert, edit, or move & edit.
                     // Heuristic: If the nesting levels of the old and new nodes are the same we report an edit.
                     // Otherwise we report an insert.
-                    if (i < oldNodeCount && oldNodes[i] != null)
+                    if ((i < oldNodeCount) && (oldNodes[i] != null))
                     {
                         AddRudeUpdateAroundActiveStatement(diagnostics, newNode);
                     }
@@ -1824,7 +1824,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
             for (int i = startIndex; i < oldNodes.Count; i++)
             {
                 var oldNode = oldNodes[i];
-                if (oldNode != null && comparer((TSyntaxNode)oldNode, (TSyntaxNode)newNode))
+                if ((oldNode != null) && comparer((TSyntaxNode)oldNode, (TSyntaxNode)newNode))
                 {
                     return i;
                 }
@@ -1881,7 +1881,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 if (editMap.ContainsKey(newNode))
                 {
                     // Updated or inserted members will be (re)generated and don't need line edits.
-                    Debug.Assert(editMap[newNode] == EditKind.Update || editMap[newNode] == EditKind.Insert);
+                    Debug.Assert((editMap[newNode] == EditKind.Update) || (editMap[newNode] == EditKind.Insert));
                     continue;
                 }
 
@@ -2032,7 +2032,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 return true;
             }
 
-            if (oldMemberOpt == null || newMemberOpt == null || oldMemberOpt.Kind != newMemberOpt.Kind)
+            if ((oldMemberOpt == null) || (newMemberOpt == null) || (oldMemberOpt.Kind != newMemberOpt.Kind))
             {
                 return false;
             }
@@ -2148,7 +2148,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                             var newType = TryGetPartnerType(oldTypeSyntax, editScript.Match, newModel, cancellationToken);
 
                             newSymbol = TryGetParameterlessConstructor(newType, oldSymbol.IsStatic);
-                            if (newSymbol == null || newSymbol.DeclaredAccessibility != oldSymbol.DeclaredAccessibility)
+                            if ((newSymbol == null) || (newSymbol.DeclaredAccessibility != oldSymbol.DeclaredAccessibility))
                             {
                                 diagnostics.Add(new RudeEditDiagnostic(
                                     RudeEditKind.Delete,
@@ -2179,7 +2179,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
                             SyntaxNode newTypeSyntax = TryGetContainingTypeDeclaration(edit.NewNode);
 
-                            if (newTypeSyntax != null && HasEdit(editMap, newTypeSyntax, EditKind.Insert))
+                            if ((newTypeSyntax != null) && HasEdit(editMap, newTypeSyntax, EditKind.Insert))
                             {
                                 // inserting into a new type
                                 continue;
@@ -2335,7 +2335,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                                 continue;
                             }
 
-                            if (updatedMemberIndex < updatedMembers.Count && updatedMembers[updatedMemberIndex].EditOrdinal == i)
+                            if ((updatedMemberIndex < updatedMembers.Count) && (updatedMembers[updatedMemberIndex].EditOrdinal == i))
                             {
                                 var updatedMember = updatedMembers[updatedMemberIndex];
 
@@ -2624,7 +2624,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
             foreach (var attribute in attributes)
             {
-                if (attribute.AttributeClass.Equals(layoutAttribute) && attribute.ConstructorArguments.Length == 1)
+                if (attribute.AttributeClass.Equals(layoutAttribute) && (attribute.ConstructorArguments.Length == 1))
                 {
                     object layoutValue = attribute.ConstructorArguments.Single().Value;
                     return (layoutValue is int ? (int)layoutValue :
@@ -2728,7 +2728,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
             var method = (IMethodSymbol)symbol;
             var kind = method.MethodKind;
-            if (kind != MethodKind.Constructor && kind != MethodKind.StaticConstructor)
+            if ((kind != MethodKind.Constructor) && (kind != MethodKind.StaticConstructor))
             {
                 return null;
             }
@@ -2772,7 +2772,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 }
 
                 // TODO (bug https://github.com/dotnet/roslyn/issues/2504)
-                if (editKind == SemanticEditKind.Insert && HasMemberInitializerContainingLambda(oldType, newSymbol.IsStatic, cancellationToken))
+                if ((editKind == SemanticEditKind.Insert) && HasMemberInitializerContainingLambda(oldType, newSymbol.IsStatic, cancellationToken))
                 {
                     // rude edit: Adding a constructor to a type with a field or property initializer that contains an anonymous function
                     diagnostics.Add(new RudeEditDiagnostic(RudeEditKind.InsertConstructorToTypeWithInitializersWithLambdas, GetDiagnosticSpan(newDeclaration, EditKind.Insert)));
@@ -2903,7 +2903,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                     //
                     // We will create an aggregate syntax map even in cases when we don't necessarily need it,
                     // for example if none of the edited declarations are active. It's ok to have a map that we don't need.
-                    var aggregateSyntaxMap = (oldCtor != null && update.ChangedDeclarations.Count > 0) ?
+                    var aggregateSyntaxMap = ((oldCtor != null) && (update.ChangedDeclarations.Count > 0)) ?
                         CreateAggregateSyntaxMap(topMatch.ReverseMatches, update.ChangedDeclarations) : null;
 
                     semanticEdits.Add(new SemanticEdit(
@@ -2933,9 +2933,9 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
             foreach (var member in type.GetMembers())
             {
-                if (member.IsStatic == isStatic &&
-                    (member.Kind == SymbolKind.Field || member.Kind == SymbolKind.Property) &&
-                    member.DeclaringSyntaxReferences.Length > 0) // skip generated fields (e.g. VB auto-property backing fields)
+                if ((member.IsStatic == isStatic) &&
+                    ((member.Kind == SymbolKind.Field) || (member.Kind == SymbolKind.Property)) &&
+                    (member.DeclaringSyntaxReferences.Length > 0)) // skip generated fields (e.g. VB auto-property backing fields)
                 {
                     var syntax = GetSymbolSyntax(member, cancellationToken);
                     if (IsDeclarationWithInitializer(syntax) && ContainsLambda(syntax))
@@ -3318,8 +3318,8 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
         private ValueTuple<SyntaxNode, int> GetParameterKey(IParameterSymbol parameter, CancellationToken cancellationToken)
         {
             var containingLambda = parameter.ContainingSymbol as IMethodSymbol;
-            if (containingLambda?.MethodKind == MethodKind.LambdaMethod ||
-                containingLambda?.MethodKind == MethodKind.LocalFunction)
+            if ((containingLambda?.MethodKind == MethodKind.LambdaMethod) ||
+                (containingLambda?.MethodKind == MethodKind.LocalFunction))
             {
                 var oldContainingLambdaSyntax = GetSymbolSyntax(containingLambda, cancellationToken);
                 return ValueTuple.Create(oldContainingLambdaSyntax, parameter.Ordinal);
@@ -3702,7 +3702,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
                 var member = localOrParameter.ContainingSymbol;
 
                 // lambda parameters and C# constructor parameters are lifted to their own scope:
-                if ((member as IMethodSymbol)?.MethodKind == MethodKind.AnonymousFunction || HasParameterClosureScope(member))
+                if (((member as IMethodSymbol)?.MethodKind == MethodKind.AnonymousFunction) || HasParameterClosureScope(member))
                 {
                     var result = GetSymbolSyntax(localOrParameter, cancellationToken);
                     Debug.Assert(IsLambda(result));
@@ -3726,12 +3726,12 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         private bool AreEquivalentClosureScopes(SyntaxNode oldScopeOpt, SyntaxNode newScopeOpt, IReadOnlyDictionary<SyntaxNode, SyntaxNode> reverseMap)
         {
-            if (oldScopeOpt == null || newScopeOpt == null)
+            if ((oldScopeOpt == null) || (newScopeOpt == null))
             {
                 return oldScopeOpt == newScopeOpt;
             }
 
-            return reverseMap.TryGetValue(newScopeOpt, out var mappedScope) && mappedScope == oldScopeOpt;
+            return reverseMap.TryGetValue(newScopeOpt, out var mappedScope) && (mappedScope == oldScopeOpt);
         }
 
         #endregion
@@ -3785,7 +3785,7 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         private static bool TryGetTextSpan(TextLineCollection lines, LinePositionSpan lineSpan, out TextSpan span)
         {
-            if (lineSpan.Start.Line >= lines.Count || lineSpan.End.Line >= lines.Count)
+            if ((lineSpan.Start.Line >= lines.Count) || (lineSpan.End.Line >= lines.Count))
             {
                 span = default;
                 return false;

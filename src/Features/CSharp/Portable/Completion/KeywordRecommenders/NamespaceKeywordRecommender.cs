@@ -88,8 +88,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             {
                 // root namespace
                 var root = syntaxTree.GetRoot(cancellationToken) as CompilationUnitSyntax;
-                if (root.Externs.Count > 0 ||
-                    root.Usings.Count > 0)
+                if ((root.Externs.Count > 0) ||
+                    (root.Usings.Count > 0))
                 {
                     return false;
                 }
@@ -97,7 +97,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 return true;
             }
 
-            if (token.Kind() == SyntaxKind.OpenBraceToken &&
+            if ((token.Kind() == SyntaxKind.OpenBraceToken) &&
                 token.Parent.IsKind(SyntaxKind.NamespaceDeclaration))
             {
                 return true;
@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             // |
             if (token.Kind() == SyntaxKind.CloseBraceToken)
             {
-                if (token.Parent is TypeDeclarationSyntax &&
+                if ((token.Parent is TypeDeclarationSyntax) &&
                     !(token.Parent.GetParent() is TypeDeclarationSyntax))
                 {
                     return true;
@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             // [assembly: goo]
             // |
 
-            if (token.Kind() == SyntaxKind.CloseBracketToken &&
+            if ((token.Kind() == SyntaxKind.CloseBracketToken) &&
                 token.Parent.IsKind(SyntaxKind.AttributeList) &&
                 token.Parent.IsParentKind(SyntaxKind.CompilationUnit))
             {

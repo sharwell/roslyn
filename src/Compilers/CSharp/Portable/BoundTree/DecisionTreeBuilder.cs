@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 localSymbol = local.LocalSymbol;
             }
 
-            if (type.CanContainNull() || type.SpecialType == SpecialType.None)
+            if (type.CanContainNull() || (type.SpecialType == SpecialType.None))
             {
                 // We need the ByType decision tree to separate null from non-null values.
                 // Note that, for the purpose of the decision tree (and subsumption), we
@@ -204,8 +204,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 byValue.ValueAndDecision.Add(valueKey, valueDecision);
             }
 
-            if (byValue.Type.SpecialType == SpecialType.System_Boolean &&
-                byValue.ValueAndDecision.Count == 2 &&
+            if ((byValue.Type.SpecialType == SpecialType.System_Boolean) &&
+                (byValue.ValueAndDecision.Count == 2) &&
                 byValue.ValueAndDecision.Values.All(d => d.MatchIsComplete))
             {
                 byValue.MatchIsComplete = true;
@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 throw ExceptionUtilities.Unreachable;
             }
 
-            if ((object)value.Value.Type == null || value.ConstantValue == null)
+            if (((object)value.Value.Type == null) || (value.ConstantValue == null))
             {
                 return null;
             }
@@ -339,7 +339,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private DecisionTree AddByType(DecisionTree decision, TypeSymbol type, DecisionMaker makeDecision)
         {
-            if (decision.MatchIsComplete || decision.Expression.ConstantValue?.IsNull == true)
+            if (decision.MatchIsComplete || (decision.Expression.ConstantValue?.IsNull == true))
             {
                 return null;
             }
@@ -436,9 +436,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                 byType.TypeAndDecision.Add(new KeyValuePair<TypeSymbol, DecisionTree>(type, result));
             }
 
-            if (ExpressionOfTypeMatchesPatternType(byType.Type, type, ref _useSiteDiagnostics) == true &&
+            if ((ExpressionOfTypeMatchesPatternType(byType.Type, type, ref _useSiteDiagnostics) == true) &&
                 result.MatchIsComplete &&
-                byType.WhenNull?.MatchIsComplete == true)
+                (byType.WhenNull?.MatchIsComplete == true))
             {
                 byType.MatchIsComplete = true;
             }
@@ -509,7 +509,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 var type = td.Key;
                 var decision = td.Value;
-                if (ExpressionOfTypeMatchesPatternType(inputType, type, ref _useSiteDiagnostics) == true &&
+                if ((ExpressionOfTypeMatchesPatternType(inputType, type, ref _useSiteDiagnostics) == true) &&
                     decision.MatchIsComplete)
                 {
                     return true;

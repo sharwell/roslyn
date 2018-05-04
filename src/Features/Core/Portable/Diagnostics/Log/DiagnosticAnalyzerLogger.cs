@@ -46,7 +46,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Log
 
         public static void LogAnalyzerCrashCount(DiagnosticAnalyzer analyzer, Exception ex, LogAggregator logAggregator, ProjectId projectId)
         {
-            if (logAggregator == null || analyzer == null || ex == null || ex is OperationCanceledException)
+            if ((logAggregator == null) || (analyzer == null) || (ex == null) || (ex is OperationCanceledException))
             {
                 return;
             }
@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Log
 
         public static void UpdateAnalyzerTypeCount(DiagnosticAnalyzer analyzer, AnalyzerTelemetryInfo analyzerTelemetryInfo, Project projectOpt, DiagnosticLogAggregator logAggregator)
         {
-            if (analyzerTelemetryInfo == null || analyzer == null || logAggregator == null)
+            if ((analyzerTelemetryInfo == null) || (analyzer == null) || (logAggregator == null))
             {
                 return;
             }

@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.SQLite
 
             var projectId = TryGetProjectId(connection, project);
             var nameId = TryGetStringId(connection, name);
-            if (projectId == null || nameId == null)
+            if ((projectId == null) || (nameId == null))
             {
                 return false;
             }
@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.SQLite
             var projectPathId = TryGetStringId(connection, project.FilePath);
             var projectNameId = TryGetStringId(connection, project.Name);
 
-            if (projectPathId == null || projectNameId == null)
+            if ((projectPathId == null) || (projectNameId == null))
             {
                 return null;
             }

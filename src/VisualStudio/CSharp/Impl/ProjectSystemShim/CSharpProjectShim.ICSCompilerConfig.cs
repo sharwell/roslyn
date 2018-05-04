@@ -60,7 +60,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ProjectSystemShim
 
         public void GetOption(CompilerOptions optionID, IntPtr variant)
         {
-            if (optionID < 0 || optionID >= CompilerOptions.LARGEST_OPTION_ID)
+            if ((optionID < 0) || (optionID >= CompilerOptions.LARGEST_OPTION_ID))
             {
                 throw new ArgumentOutOfRangeException(nameof(optionID));
             }

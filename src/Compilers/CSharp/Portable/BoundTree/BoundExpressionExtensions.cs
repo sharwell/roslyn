@@ -40,12 +40,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool IsLiteralNull(this BoundExpression node)
         {
-            return node.Kind == BoundKind.Literal && node.ConstantValue.Discriminator == ConstantValueTypeDiscriminator.Null;
+            return (node.Kind == BoundKind.Literal) && (node.ConstantValue.Discriminator == ConstantValueTypeDiscriminator.Null);
         }
 
         public static bool IsLiteralDefault(this BoundExpression node)
         {
-            return node.Kind == BoundKind.DefaultExpression && node.Syntax.Kind() == SyntaxKind.DefaultLiteralExpression;
+            return (node.Kind == BoundKind.DefaultExpression) && (node.Syntax.Kind() == SyntaxKind.DefaultLiteralExpression);
         }
 
         // returns true when expression has no side-effects and produces
@@ -79,12 +79,12 @@ namespace Microsoft.CodeAnalysis.CSharp
         public static bool HasDynamicType(this BoundExpression node)
         {
             var type = node.Type;
-            return (object)type != null && type.IsDynamic();
+            return ((object)type != null) && type.IsDynamic();
         }
 
         public static bool MethodGroupReceiverIsDynamic(this BoundMethodGroup node)
         {
-            return node.InstanceOpt != null && node.InstanceOpt.HasDynamicType();
+            return (node.InstanceOpt != null) && node.InstanceOpt.HasDynamicType();
         }
 
         public static bool HasExpressionSymbols(this BoundExpression node)
@@ -117,7 +117,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // Special case: if we are looking for info on "M" in "new Action(M)" in the context of a parent 
                     // then we want to get the symbol that overload resolution chose for M, not on the whole method group M.
                     var delegateCreation = parent as BoundDelegateCreationExpression;
-                    if (delegateCreation != null && (object)delegateCreation.MethodOpt != null)
+                    if ((delegateCreation != null) && ((object)delegateCreation.MethodOpt != null))
                     {
                         symbols.Add(delegateCreation.MethodOpt);
                     }
@@ -201,7 +201,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (expressionOpt == null) return false;
 
             TypeSymbol receiverType = expressionOpt.Type;
-            return (object)receiverType != null && receiverType.Kind == SymbolKind.NamedType && ((NamedTypeSymbol)receiverType).IsComImport;
+            return ((object)receiverType != null) && (receiverType.Kind == SymbolKind.NamedType) && ((NamedTypeSymbol)receiverType).IsComImport;
         }
     }
 }

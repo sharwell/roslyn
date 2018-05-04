@@ -30,7 +30,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.MetadataReferences
             result.CultureInfo = (cultureName != null) ? new CultureInfo(cultureName) : null;
 
             byte[] publicKey = FusionAssemblyIdentity.GetPublicKey(nameObject);
-            if (publicKey != null && publicKey.Length != 0)
+            if ((publicKey != null) && (publicKey.Length != 0))
             {
                 result.SetPublicKey(publicKey);
             }

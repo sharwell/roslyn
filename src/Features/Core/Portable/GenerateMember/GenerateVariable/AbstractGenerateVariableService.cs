@@ -104,12 +104,12 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateVariable
                 return;
             }
 
-            if (state.TypeToGenerateIn.TypeKind == TypeKind.Interface && state.IsStatic)
+            if ((state.TypeToGenerateIn.TypeKind == TypeKind.Interface) && state.IsStatic)
             {
                 return;
             }
 
-            var isOnlyReadAndIsInInterface = state.TypeToGenerateIn.TypeKind == TypeKind.Interface && !state.IsWrittenTo;
+            var isOnlyReadAndIsInInterface = (state.TypeToGenerateIn.TypeKind == TypeKind.Interface) && !state.IsWrittenTo;
 
             if (isOnlyReadAndIsInInterface || state.IsInConstructor)
             {

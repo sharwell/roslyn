@@ -16,7 +16,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Telemetry
     {
         public string GetProjectType(Microsoft.CodeAnalysis.Workspace workspace, ProjectId projectId)
         {
-            if (workspace == null || projectId == null)
+            if ((workspace == null) || (projectId == null))
             {
                 return string.Empty;
             }

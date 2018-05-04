@@ -105,7 +105,7 @@ namespace Microsoft.CodeAnalysis
             else
             {
                 if (!AssemblyIdentity.TryParseDisplayName(referenceDisplayName, out reference, out parts) ||
-                    reference.ContentType != definition.ContentType)
+                    (reference.ContentType != definition.ContentType))
                 {
                     return ComparisonResult.NotEquivalent;
                 }
@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis
             // If any version parts were specified then compare the versions. The comparison fails if some version parts are missing.
             if (definition.IsStrongName &&
                 hasSomeVersionParts &&
-                (hasPartialVersion || reference.Version != definition.Version))
+                (hasPartialVersion || (reference.Version != definition.Version)))
             {
                 // Note:
                 // System.Numerics.Vectors, Version=4.0 is an FX assembly

@@ -329,7 +329,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 Debug.Assert((statementSyntax == null) || !statementDiagnostics.HasAnyErrors());
                 statementDiagnostics.Free();
                 var isExpressionStatement = statementSyntax.IsKind(SyntaxKind.ExpressionStatement);
-                if (statementSyntax != null && !isExpressionStatement)
+                if ((statementSyntax != null) && !isExpressionStatement)
                 {
                     formatSpecifiers = null;
 
@@ -486,7 +486,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                     foreach (var argument in arguments)
                     {
                         var identity = (argument as AssemblyIdentity) ?? (argument as AssemblySymbol)?.Identity;
-                        if (identity != null && !identity.Equals(MissingCorLibrarySymbol.Instance.Identity))
+                        if ((identity != null) && !identity.Equals(MissingCorLibrarySymbol.Instance.Identity))
                         {
                             return ImmutableArray.Create(identity);
                         }
@@ -497,7 +497,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                     {
                         var namespaceName = arguments[0] as string;
                         var containingNamespace = arguments[1] as NamespaceSymbol;
-                        if (namespaceName != null && (object)containingNamespace != null &&
+                        if ((namespaceName != null) && ((object)containingNamespace != null) &&
                             containingNamespace.ConstituentNamespaces.Any(n => n.ContainingAssembly.Identity.IsWindowsAssemblyIdentity()))
                         {
                             // This is just a heuristic, but it has the advantage of being portable, particularly 

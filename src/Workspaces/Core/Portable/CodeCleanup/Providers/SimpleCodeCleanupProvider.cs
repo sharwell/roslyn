@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CodeCleanup.Providers
             Func<Document, ImmutableArray<TextSpan>, CancellationToken, Task<Document>> documentDelegatee = null,
             Func<SyntaxNode, ImmutableArray<TextSpan>, Workspace, CancellationToken, SyntaxNode> syntaxDelegatee = null)
         {
-            Contract.Requires(documentDelegatee != null || syntaxDelegatee != null);
+            Contract.Requires((documentDelegatee != null) || (syntaxDelegatee != null));
 
             this.Name = name;
             _documentDelegatee = documentDelegatee;

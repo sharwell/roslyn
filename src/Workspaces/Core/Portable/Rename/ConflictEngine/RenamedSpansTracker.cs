@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Rename.ConflictEngine
             var appliedTextSpans = new HashSet<TextSpan>();
             foreach (var c in documentComplexifiedSpans.Reverse())
             {
-                if (startingPosition >= c.OriginalSpan.End && !appliedTextSpans.Any(s => s.Contains(c.OriginalSpan)))
+                if ((startingPosition >= c.OriginalSpan.End) && !appliedTextSpans.Any(s => s.Contains(c.OriginalSpan)))
                 {
                     appliedTextSpans.Add(c.OriginalSpan);
                     adjustedStartingPosition += c.NewSpan.Length - c.OriginalSpan.Length;

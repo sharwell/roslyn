@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.PatternMatching
                     .Select(text => new PatternSegment(text.Trim(), allowFuzzyMatching: allowFuzzyMatching))
                     .ToArray();
 
-                _invalidPattern = _patternSegments.Length == 0 || _patternSegments.Any(s => s.IsInvalid);
+                _invalidPattern = (_patternSegments.Length == 0) || _patternSegments.Any(s => s.IsInvalid);
             }
 
             public override void Dispose()

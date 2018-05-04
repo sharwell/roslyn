@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis
             {
                 newAnnotations.Free();
                 var existingAnnotations = node.GetAnnotations();
-                if (existingAnnotations == null || existingAnnotations.Length == 0)
+                if ((existingAnnotations == null) || (existingAnnotations.Length == 0))
                 {
                     return node;
                 }
@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis
         {
             var existingAnnotations = node.GetAnnotations();
 
-            if (annotations == null || existingAnnotations.Length == 0)
+            if ((annotations == null) || (existingAnnotations.Length == 0))
             {
                 return node;
             }
@@ -113,7 +113,7 @@ namespace Microsoft.CodeAnalysis
         public static TNode WithoutDiagnosticsGreen<TNode>(this TNode node) where TNode : GreenNode
         {
             var current = node.GetDiagnostics();
-            if (current == null || current.Length == 0)
+            if ((current == null) || (current.Length == 0))
             {
                 return node;
             }

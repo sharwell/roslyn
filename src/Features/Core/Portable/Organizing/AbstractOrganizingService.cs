@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.Organizing
             {
                 return (from o in organizers
                         where !o.SyntaxNodeTypes.Any() ||
-                              o.SyntaxNodeTypes.Any(t2 => t1 == t2 || t1.GetTypeInfo().IsSubclassOf(t2))
+                              o.SyntaxNodeTypes.Any(t2 => (t1 == t2) || t1.GetTypeInfo().IsSubclassOf(t2))
                         select o).Distinct();
             }
 

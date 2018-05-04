@@ -53,13 +53,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
         {
             var graphQueries = new List<IGraphQuery>();
 
-            if (context.Direction == GraphContextDirection.Self && context.RequestedProperties.Contains(DgmlNodeProperties.ContainsChildren))
+            if ((context.Direction == GraphContextDirection.Self) && context.RequestedProperties.Contains(DgmlNodeProperties.ContainsChildren))
             {
                 graphQueries.Add(new ContainsChildrenGraphQuery());
             }
 
-            if (context.Direction == GraphContextDirection.Contains ||
-                (context.Direction == GraphContextDirection.Target && context.LinkCategories.Contains(CodeLinkCategories.Contains)))
+            if ((context.Direction == GraphContextDirection.Contains) ||
+                ((context.Direction == GraphContextDirection.Target) && context.LinkCategories.Contains(CodeLinkCategories.Contains)))
             {
                 graphQueries.Add(new ContainsGraphQuery());
             }
@@ -316,8 +316,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
 
         private bool IsRoslynNode(GraphNode node)
         {
-            return node[RoslynGraphProperties.SymbolKind] != null
-                && node[RoslynGraphProperties.TypeKind] != null;
+            return (node[RoslynGraphProperties.SymbolKind] != null)
+                && (node[RoslynGraphProperties.TypeKind] != null);
         }
 
         private bool IsAnySymbolKind(GraphNode node, params SymbolKind[] symbolKinds)

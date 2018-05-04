@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ImplementAbstractClass
             classType = model.GetDeclaredSymbol(classNode);
             abstractClassType = classType?.BaseType;
 
-            return classType != null && abstractClassType != null && abstractClassType.IsAbstractClass();
+            return (classType != null) && (abstractClassType != null) && abstractClassType.IsAbstractClass();
         }
     }
 }

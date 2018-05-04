@@ -23,13 +23,13 @@ namespace Microsoft.CodeAnalysis.EditAndContinue
 
         public override bool Equals(object obj)
         {
-            return obj is LineChange && Equals((LineChange)obj);
+            return (obj is LineChange) && Equals((LineChange)obj);
         }
 
         public bool Equals(LineChange other)
         {
-            return this.OldLine == other.OldLine
-                && this.NewLine == other.NewLine;
+            return (this.OldLine == other.OldLine)
+                && (this.NewLine == other.NewLine);
         }
 
         public override int GetHashCode()

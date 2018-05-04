@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.CompilerServer
                 int keepAliveValue;
                 string keepAliveStr = _appSettings[KeepAliveSettingName];
                 if (int.TryParse(keepAliveStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out keepAliveValue) &&
-                    keepAliveValue >= 0)
+                    (keepAliveValue >= 0))
                 {
                     if (keepAliveValue == 0)
                     {

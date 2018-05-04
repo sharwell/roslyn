@@ -238,7 +238,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             for (int i = 0; i < value.Length; i++)
             {
                 char c = value[i];
-                if (escapeNonPrintable && CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.Surrogate)
+                if (escapeNonPrintable && (CharUnicodeInfo.GetUnicodeCategory(c) == UnicodeCategory.Surrogate))
                 {
                     var category = CharUnicodeInfo.GetUnicodeCategory(value, i);
                     if (category == UnicodeCategory.Surrogate)
@@ -264,7 +264,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     builder.Append(replaceWith);
                 }
-                else if (useQuotes && c == quote)
+                else if (useQuotes && (c == quote))
                 {
                     if (isVerbatim)
                     {
@@ -336,7 +336,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 builder.Append(replaceWith);
             }
-            else if (useQuotes && c == quote)
+            else if (useQuotes && (c == quote))
             {
                 builder.Append('\\');
                 builder.Append(quote);

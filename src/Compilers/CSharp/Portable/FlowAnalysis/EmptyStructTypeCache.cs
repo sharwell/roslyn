@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// which to check accessibility.</param>
         internal EmptyStructTypeCache(Compilation compilation, bool dev12CompilerCompatibility)
         {
-            Debug.Assert(compilation != null || !dev12CompilerCompatibility);
+            Debug.Assert((compilation != null) || !dev12CompilerCompatibility);
             _dev12CompilerCompatibility = dev12CompilerCompatibility;
             _sourceAssembly = (SourceAssemblySymbol)compilation?.Assembly;
         }
@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private bool IsEmptyStructType(TypeSymbol type, ConsList<NamedTypeSymbol> typesWithMembersOfThisType)
         {
             var nts = type as NamedTypeSymbol;
-            if ((object)nts == null || !IsTrackableStructType(nts))
+            if (((object)nts == null) || !IsTrackableStructType(nts))
             {
                 return false;
             }
@@ -78,7 +78,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             result = CheckStruct(typesWithMembersOfThisType, nts);
-            Debug.Assert(!Cache.ContainsKey(nts) || Cache[nts] == result);
+            Debug.Assert(!Cache.ContainsKey(nts) || (Cache[nts] == result));
             Cache[nts] = result;
 
             return result;
@@ -102,7 +102,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if ((object)type == null) return false;
             var nts = type.OriginalDefinition as NamedTypeSymbol;
             if ((object)nts == null) return false;
-            return nts.IsStructType() && nts.SpecialType == SpecialType.None && !nts.KnownCircularStruct;
+            return nts.IsStructType() && (nts.SpecialType == SpecialType.None) && !nts.KnownCircularStruct;
         }
 
         /// <summary>
@@ -189,8 +189,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         private bool ShouldIgnoreStructField(Symbol member, TypeSymbol memberType)
         {
             return _dev12CompilerCompatibility &&                             // when we're trying to be compatible with the native compiler, we ignore
-                   ((object)member.ContainingAssembly != _sourceAssembly ||   // imported fields
-                    member.ContainingModule.Ordinal != 0) &&                      //     (an added module is imported)
+                   (((object)member.ContainingAssembly != _sourceAssembly) ||   // imported fields
+                    (member.ContainingModule.Ordinal != 0)) &&                      //     (an added module is imported)
                    IsIgnorableType(memberType) &&                                 // of reference type (but not type parameters, looking through arrays)
                    !IsAccessibleInAssembly(member, _sourceAssembly);          // that are inaccessible to our assembly.
         }
@@ -225,7 +225,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         private static bool IsAccessibleInAssembly(Symbol symbol, SourceAssemblySymbol assembly)
         {
-            for (; symbol != null && symbol.Kind != SymbolKind.Namespace; symbol = symbol.ContainingSymbol)
+            for (; (symbol != null) && (symbol.Kind != SymbolKind.Namespace); symbol = symbol.ContainingSymbol)
             {
                 switch (symbol.DeclaredAccessibility)
                 {

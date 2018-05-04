@@ -89,12 +89,12 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </remarks>
         internal Symbol GetWellKnownTypeMember(WellKnownMember member)
         {
-            Debug.Assert(member >= 0 && member < WellKnownMember.Count);
+            Debug.Assert((member >= 0) && (member < WellKnownMember.Count));
 
             // Test hook: if a member is marked missing, then return null.
             if (IsMemberMissing(member)) return null;
 
-            if (_lazyWellKnownTypeMembers == null || ReferenceEquals(_lazyWellKnownTypeMembers[(int)member], ErrorTypeSymbol.UnknownResultType))
+            if ((_lazyWellKnownTypeMembers == null) || ReferenceEquals(_lazyWellKnownTypeMembers[(int)member], ErrorTypeSymbol.UnknownResultType))
             {
                 if (_lazyWellKnownTypeMembers == null)
                 {
@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             bool ignoreCorLibraryDuplicatedTypes = this.Options.TopLevelBinderFlags.Includes(BinderFlags.IgnoreCorLibraryDuplicatedTypes);
 
             int index = (int)type - (int)WellKnownType.First;
-            if (_lazyWellKnownTypes == null || (object)_lazyWellKnownTypes[index] == null)
+            if ((_lazyWellKnownTypes == null) || ((object)_lazyWellKnownTypes[index] == null))
             {
                 if (_lazyWellKnownTypes == null)
                 {
@@ -191,7 +191,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if ((object)Interlocked.CompareExchange(ref _lazyWellKnownTypes[index], result, null) != null)
                 {
                     Debug.Assert(
-                        result == _lazyWellKnownTypes[index] || (_lazyWellKnownTypes[index].IsErrorType() && result.IsErrorType())
+                        (result == _lazyWellKnownTypes[index]) || (_lazyWellKnownTypes[index].IsErrorType() && result.IsErrorType())
                     );
                 }
                 else
@@ -228,10 +228,10 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal bool IsEqualOrDerivedFromWellKnownClass(TypeSymbol type, WellKnownType wellKnownType, ref HashSet<DiagnosticInfo> useSiteDiagnostics)
         {
-            Debug.Assert(wellKnownType == WellKnownType.System_Attribute ||
-                         wellKnownType == WellKnownType.System_Exception);
+            Debug.Assert((wellKnownType == WellKnownType.System_Attribute) ||
+                         (wellKnownType == WellKnownType.System_Exception));
 
-            if (type.Kind != SymbolKind.NamedType || type.TypeKind != TypeKind.Class)
+            if ((type.Kind != SymbolKind.NamedType) || (type.TypeKind != TypeKind.Class))
             {
                 return false;
             }
@@ -291,8 +291,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 Debug.Assert(member.Name.Equals(descriptor.Name));
 
-                if (member.Kind != targetSymbolKind || member.IsStatic != isStatic ||
-                    !(member.DeclaredAccessibility == Accessibility.Public || ((object)accessWithinOpt != null && Symbol.IsSymbolAccessible(member, accessWithinOpt))))
+                if ((member.Kind != targetSymbolKind) || (member.IsStatic != isStatic) ||
+                    !((member.DeclaredAccessibility == Accessibility.Public) || (((object)accessWithinOpt != null) && Symbol.IsSymbolAccessible(member, accessWithinOpt))))
                 {
                     continue;
                 }
@@ -305,13 +305,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                             MethodKind methodKind = method.MethodKind;
                             // Treat user-defined conversions and operators as ordinary methods for the purpose
                             // of matching them here.
-                            if (methodKind == MethodKind.Conversion || methodKind == MethodKind.UserDefinedOperator)
+                            if ((methodKind == MethodKind.Conversion) || (methodKind == MethodKind.UserDefinedOperator))
                             {
                                 methodKind = MethodKind.Ordinary;
                             }
 
-                            if (method.Arity != descriptor.Arity || methodKind != targetMethodKind ||
-                                (descriptor.Flags & MemberFlags.Virtual) != 0 != (method.IsVirtual || method.IsOverride || method.IsAbstract))
+                            if ((method.Arity != descriptor.Arity) || (methodKind != targetMethodKind) ||
+                                (((descriptor.Flags & MemberFlags.Virtual) != 0 != (method.IsVirtual || method.IsOverride || method.IsAbstract))))
                             {
                                 continue;
                             }
@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 foreach (var arg in namedArguments)
                 {
                     var wellKnownMember = Binder.GetWellKnownTypeMember(this, arg.Key, out diagnosticInfo, isOptional: true);
-                    if (wellKnownMember == null || wellKnownMember is ErrorTypeSymbol)
+                    if ((wellKnownMember == null) || (wellKnownMember is ErrorTypeSymbol))
                     {
                         // if this assert fails, UseSiteErrors for "member" have not been checked before emitting ...
                         Debug.Assert(WellKnownMembers.IsSynthesizedAttributeOptional(constructor));
@@ -594,7 +594,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // The theoretical scenario for not setting it would be a language compiler that wants their sequence points 
             // at specific places, but those places don't match what CLR's heuristics calculate when scanning the IL.
             var ignoreSymbolStoreDebuggingMode = (FieldSymbol)GetWellKnownTypeMember(WellKnownMember.System_Diagnostics_DebuggableAttribute_DebuggingModes__IgnoreSymbolStoreSequencePoints);
-            if ((object)ignoreSymbolStoreDebuggingMode == null || !ignoreSymbolStoreDebuggingMode.HasConstantValue)
+            if (((object)ignoreSymbolStoreDebuggingMode == null) || !ignoreSymbolStoreDebuggingMode.HasConstantValue)
             {
                 return null;
             }
@@ -610,13 +610,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (_options.OptimizationLevel == OptimizationLevel.Debug)
             {
                 var defaultDebuggingMode = (FieldSymbol)GetWellKnownTypeMember(WellKnownMember.System_Diagnostics_DebuggableAttribute_DebuggingModes__Default);
-                if ((object)defaultDebuggingMode == null || !defaultDebuggingMode.HasConstantValue)
+                if (((object)defaultDebuggingMode == null) || !defaultDebuggingMode.HasConstantValue)
                 {
                     return null;
                 }
 
                 var disableOptimizationsDebuggingMode = (FieldSymbol)GetWellKnownTypeMember(WellKnownMember.System_Diagnostics_DebuggableAttribute_DebuggingModes__DisableOptimizations);
-                if ((object)disableOptimizationsDebuggingMode == null || !disableOptimizationsDebuggingMode.HasConstantValue)
+                if (((object)disableOptimizationsDebuggingMode == null) || !disableOptimizationsDebuggingMode.HasConstantValue)
                 {
                     return null;
                 }
@@ -628,7 +628,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (_options.EnableEditAndContinue)
             {
                 var enableEncDebuggingMode = (FieldSymbol)GetWellKnownTypeMember(WellKnownMember.System_Diagnostics_DebuggableAttribute_DebuggingModes__EnableEditAndContinue);
-                if ((object)enableEncDebuggingMode == null || !enableEncDebuggingMode.HasConstantValue)
+                if (((object)enableEncDebuggingMode == null) || !enableEncDebuggingMode.HasConstantValue)
                 {
                     return null;
                 }
@@ -653,7 +653,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert((object)type != null);
             Debug.Assert(type.ContainsDynamic());
 
-            if (type.IsDynamic() && refKindOpt == RefKind.None && customModifiersCount == 0)
+            if (type.IsDynamic() && (refKindOpt == RefKind.None) && (customModifiersCount == 0))
             {
                 return TrySynthesizeAttribute(WellKnownMember.System_Runtime_CompilerServices_DynamicAttribute__ctor);
             }

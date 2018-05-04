@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.Collections
             {
                 // PERF: Not testing for unoccupied slots since it adds complexity. The extra comparisons
                 // would slow down this inner loop such that any benefit of an 'early out' would be lost.
-                if (set._v1 == i || set._v2 == i || set._v3 == i || set._v4 == i)
+                if ((set._v1 == i) || (set._v2 == i) || (set._v3 == i) || (set._v4 == i))
                 {
                     return true;
                 }

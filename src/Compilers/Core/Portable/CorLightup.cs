@@ -217,10 +217,10 @@ namespace Roslyn.Utilities
 
             internal static object GetCurrentAppDomain()
             {
-                if (_AppDomain.get_CurrentDomain == null ||
-                    _AppDomain.add_AssemblyResolve == null ||
-                    _ResolveEventArgs.get_Name == null ||
-                    _ResolveEventArgs.get_RequestingAssembly == null)
+                if ((_AppDomain.get_CurrentDomain == null) ||
+                    (_AppDomain.add_AssemblyResolve == null) ||
+                    (_ResolveEventArgs.get_Name == null) ||
+                    (_ResolveEventArgs.get_RequestingAssembly == null))
                 {
                     throw new PlatformNotSupportedException();
                 }

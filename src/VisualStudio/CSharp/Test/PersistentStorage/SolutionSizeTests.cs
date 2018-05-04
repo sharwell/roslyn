@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.WorkspaceServices
             for (var i = 0; true; i++)
             {
                 var size = current + 1234;
-                if (current + size >= solutionSize)
+                if ((current + size) >= solutionSize)
                 {
                     break;
                 }

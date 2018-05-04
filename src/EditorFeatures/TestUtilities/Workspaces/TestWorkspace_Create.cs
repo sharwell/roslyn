@@ -170,7 +170,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
             string[] files,
             ExportProvider exportProvider)
         {
-            Contract.Requires(parseOptions == null || (files.Length == parseOptions.Length), "Please specify a parse option for each file.");
+            Contract.Requires((parseOptions == null) || (files.Length == parseOptions.Length), "Please specify a parse option for each file.");
 
             var documentElements = new List<XElement>();
             var index = 1;

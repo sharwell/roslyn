@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateParameterizedMember
             {
                 var throwStatement = CodeGenerationHelpers.GenerateThrowStatement(factory, this.Document, "System.NotImplementedException", cancellationToken);
 
-                return isAbstract || State.TypeToGenerateIn.TypeKind == TypeKind.Interface || throwStatement == null
+                return isAbstract || (State.TypeToGenerateIn.TypeKind == TypeKind.Interface) || (throwStatement == null)
                     ? default
                     : ImmutableArray.Create(throwStatement);
             }

@@ -69,9 +69,9 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Suppression
         protected override bool IsAttributeListWithAssemblyAttributes(SyntaxNode node)
         {
             var attributeList = node as AttributeListSyntax;
-            return attributeList != null &&
-                attributeList.Target != null &&
-                attributeList.Target.Identifier.Kind() == SyntaxKind.AssemblyKeyword;
+            return (attributeList != null) &&
+                (attributeList.Target != null) &&
+                (attributeList.Target.Identifier.Kind() == SyntaxKind.AssemblyKeyword);
         }
 
         protected override bool IsEndOfLine(SyntaxTrivia trivia)
@@ -152,7 +152,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Suppression
             if (attribute is AttributeSyntax attributeSyntax)
             {
                 var attributeList = attributeSyntax.Parent as AttributeListSyntax;
-                return attributeList != null && attributeList.Attributes.Count == 1;
+                return (attributeList != null) && (attributeList.Attributes.Count == 1);
             }
 
             return false;
@@ -187,10 +187,10 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Suppression
             SyntaxToken token, SyntaxNode root, TextLineCollection lines, int indexOfLine)
         {
             var nextToken = token.GetNextToken();
-            if (nextToken.Kind() == SyntaxKind.SemicolonToken &&
+            if ((nextToken.Kind() == SyntaxKind.SemicolonToken) &&
                 nextToken.Parent is StatementSyntax statement &&
-                statement.GetLastToken() == nextToken &&
-                token.Parent.FirstAncestorOrSelf<StatementSyntax>() == statement)
+                (statement.GetLastToken() == nextToken) &&
+                (token.Parent.FirstAncestorOrSelf<StatementSyntax>() == statement))
             {
                 // both the current and next tokens belong to the same statement, and the next token
                 // is the final semicolon in a statement.  Do not put the pragma before that

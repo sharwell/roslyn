@@ -75,7 +75,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override bool Equals(object obj)
         {
-            return obj is ForEachStatementInfo && Equals((ForEachStatementInfo)obj);
+            return (obj is ForEachStatementInfo) && Equals((ForEachStatementInfo)obj);
         }
 
         public bool Equals(ForEachStatementInfo other)
@@ -85,8 +85,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 && object.Equals(this.CurrentProperty, other.CurrentProperty)
                 && object.Equals(this.DisposeMethod, other.DisposeMethod)
                 && object.Equals(this.ElementType, other.ElementType)
-                && this.ElementConversion == other.ElementConversion
-                && this.CurrentConversion == other.CurrentConversion;
+                && (this.ElementConversion == other.ElementConversion)
+                && (this.CurrentConversion == other.CurrentConversion);
         }
 
         public override int GetHashCode()

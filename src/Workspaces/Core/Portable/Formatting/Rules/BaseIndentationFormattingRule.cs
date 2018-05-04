@@ -74,7 +74,7 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
                 }
 
                 // if span is same as us, make sure we only include ourselves.
-                if (_span == operation.TextSpan && !Myself(operation))
+                if ((_span == operation.TextSpan) && !Myself(operation))
                 {
                     list[i] = null;
                     continue;
@@ -105,11 +105,11 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
 
         private bool Myself(IndentBlockOperation operation)
         {
-            return operation.TextSpan == _span &&
-                   operation.StartToken == _token1 &&
-                   operation.EndToken == _token2 &&
-                   operation.IndentationDeltaOrPosition == _baseIndentation &&
-                   operation.Option == IndentBlockOption.AbsolutePosition;
+            return (operation.TextSpan == _span) &&
+                   (operation.StartToken == _token1) &&
+                   (operation.EndToken == _token2) &&
+                   (operation.IndentationDeltaOrPosition == _baseIndentation) &&
+                   (operation.Option == IndentBlockOption.AbsolutePosition);
         }
 
         private IndentBlockOperation CloneAndAdjustFormattingOperation(IndentBlockOperation operation)
@@ -139,7 +139,7 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
 
             span = GetSpanFromTokens(span, token1, token2);
 
-            if (token1.RawKind == 0 || token2.RawKind == 0)
+            if ((token1.RawKind == 0) || (token2.RawKind == 0))
             {
                 return;
             }
@@ -203,7 +203,7 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
                 }
             }
 
-            if (token1.Equals(token2) && end < start)
+            if (token1.Equals(token2) && (end < start))
             {
                 // This can happen if `token1.Span` is larger than `span` on each end (due to trivia) and occurs when
                 // only a single token is projected into a buffer and the projection is sandwiched between two other

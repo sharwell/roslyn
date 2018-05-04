@@ -341,8 +341,8 @@ class C : I1, I2
             var interface1GetterImpl = synthesizedExplicitImplementations[0].ExplicitInterfaceImplementations.Single();
             var interface2GetterImpl = synthesizedExplicitImplementations[1].ExplicitInterfaceImplementations.Single();
 
-            Assert.True(interface1Getter == interface1GetterImpl ^ interface1Getter == interface2GetterImpl);
-            Assert.True(interface2Getter == interface1GetterImpl ^ interface2Getter == interface2GetterImpl);
+            Assert.True((interface1Getter == interface1GetterImpl) ^ (interface1Getter == interface2GetterImpl));
+            Assert.True((interface2Getter == interface1GetterImpl) ^ (interface2Getter == interface2GetterImpl));
         }
 
         [ClrOnlyFact(ClrOnlyReason.Ilasm)]
@@ -423,8 +423,8 @@ class C : I1, I2
                 var interface1GetterImpl = synthesizedExplicitImplementations[0].ExplicitInterfaceImplementations.Single();
                 var interface2GetterImpl = synthesizedExplicitImplementations[1].ExplicitInterfaceImplementations.Single();
 
-                Assert.True(interface1Getter == interface1GetterImpl ^ interface1Getter == interface2GetterImpl);
-                Assert.True(interface2Getter == interface1GetterImpl ^ interface2Getter == interface2GetterImpl);
+                Assert.True((interface1Getter == interface1GetterImpl) ^ (interface1Getter == interface2GetterImpl));
+                Assert.True((interface2Getter == interface1GetterImpl) ^ (interface2Getter == interface2GetterImpl));
             });
         }
 
@@ -544,8 +544,8 @@ class C : I1
             // One is implemented, the other is not (unspecified which)
             var indexer0Impl = @class.FindImplementationForInterfaceMember(interfaceIndexers[0]);
             var indexer1Impl = @class.FindImplementationForInterfaceMember(interfaceIndexers[1]);
-            Assert.True(indexer0Impl == classIndexer ^ indexer1Impl == classIndexer);
-            Assert.True(indexer0Impl == null ^ indexer1Impl == null);
+            Assert.True((indexer0Impl == classIndexer) ^ (indexer1Impl == classIndexer));
+            Assert.True((indexer0Impl == null) ^ (indexer1Impl == null));
         }
 
         [ClrOnlyFact(ClrOnlyReason.Ilasm)]

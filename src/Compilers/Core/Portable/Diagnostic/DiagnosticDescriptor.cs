@@ -170,13 +170,13 @@ namespace Microsoft.CodeAnalysis
         public bool Equals(DiagnosticDescriptor other)
         {
             return
-                other != null &&
-                this.Category == other.Category &&
-                this.DefaultSeverity == other.DefaultSeverity &&
+                (other != null) &&
+                (this.Category == other.Category) &&
+                (this.DefaultSeverity == other.DefaultSeverity) &&
                 this.Description.Equals(other.Description) &&
-                this.HelpLinkUri == other.HelpLinkUri &&
-                this.Id == other.Id &&
-                this.IsEnabledByDefault == other.IsEnabledByDefault &&
+                (this.HelpLinkUri == other.HelpLinkUri) &&
+                (this.Id == other.Id) &&
+                (this.IsEnabledByDefault == other.IsEnabledByDefault) &&
                 this.MessageFormat.Equals(other.MessageFormat) &&
                 this.Title.Equals(other.Title);
         }

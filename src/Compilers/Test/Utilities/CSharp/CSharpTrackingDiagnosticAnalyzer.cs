@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Test.Utilities
 
         protected override bool IsOnCodeBlockSupported(SymbolKind symbolKind, MethodKind methodKind, bool returnsVoid)
         {
-            return base.IsOnCodeBlockSupported(symbolKind, methodKind, returnsVoid) && methodKind != MethodKind.EventRaise;
+            return base.IsOnCodeBlockSupported(symbolKind, methodKind, returnsVoid) && (methodKind != MethodKind.EventRaise);
         }
 
         protected override bool IsAnalyzeNodeSupported(SyntaxKind syntaxKind)

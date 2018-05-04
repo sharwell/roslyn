@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
             var position = session.OpeningPoint.GetPosition(snapshot);
             var token = snapshot.FindToken(position, cancellationToken);
 
-            if (!IsValidToken(token) || token.RawKind != OpeningTokenKind)
+            if (!IsValidToken(token) || (token.RawKind != OpeningTokenKind))
             {
                 return false;
             }
@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion.Sessions
                 return true;
             }
 
-            return token.SpanStart + 1 == position && snapshot[token.SpanStart] == VerbatimStringPrefix;
+            return ((token.SpanStart + 1) == position) && (snapshot[token.SpanStart] == VerbatimStringPrefix);
         }
 
         public override bool AllowOverType(IBraceCompletionSession session, CancellationToken cancellationToken)

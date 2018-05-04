@@ -262,7 +262,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var result = base.RemoveReturns();
 
-            if (currentMethodOrLambda?.IsAsync == true &&
+            if ((currentMethodOrLambda?.IsAsync == true) &&
                 !currentMethodOrLambda.IsImplicitlyDeclared)
             {
                 var foundAwait = result.Any(pending => pending.Branch?.Kind == BoundKind.AwaitExpression);
@@ -283,15 +283,15 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected virtual void ReportUnassignedOutParameter(ParameterSymbol parameter, SyntaxNode node, Location location)
         {
-            if (!_requireOutParamsAssigned && topLevelMethod == currentMethodOrLambda)
+            if (!_requireOutParamsAssigned && (topLevelMethod == currentMethodOrLambda))
             {
                 return;
             }
 
             // If node and location are null "new SourceLocation(node);" will throw a NullReferenceException
-            Debug.Assert(node != null || location != null);
+            Debug.Assert((node != null) || (location != null));
 
-            if (Diagnostics != null && this.State.Reachable)
+            if ((Diagnostics != null) && this.State.Reachable)
             {
                 if (location == null)
                 {
@@ -317,7 +317,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             if (backingField?.HasInitializer == true) continue;
 
                             int fieldSlot = VariableSlot(field, thisSlot);
-                            if (fieldSlot == -1 || !this.State.IsAssigned(fieldSlot))
+                            if ((fieldSlot == -1) || !this.State.IsAssigned(fieldSlot))
                             {
                                 Symbol associatedPropertyOrEvent = field.AssociatedSymbol;
                                 if (associatedPropertyOrEvent?.Kind == SymbolKind.Property)
@@ -383,7 +383,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     Location location;
                     if (_unsafeAddressTakenVariables.TryGetValue(captured, out location))
                     {
-                        Debug.Assert(captured.Kind == SymbolKind.Parameter || captured.Kind == SymbolKind.Local || captured.Kind == SymbolKind.RangeVariable);
+                        Debug.Assert((captured.Kind == SymbolKind.Parameter) || (captured.Kind == SymbolKind.Local) || (captured.Kind == SymbolKind.RangeVariable));
                         diagnostics.Add(ErrorCode.ERR_LocalCantBeFixedAndHoisted, location, captured.Name);
                     }
                 }
@@ -492,7 +492,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             if ((object)variable != null)
             {
-                if ((object)_sourceAssembly != null && variable.Kind == SymbolKind.Field)
+                if (((object)_sourceAssembly != null) && (variable.Kind == SymbolKind.Field))
                 {
                     _sourceAssembly.NoteFieldAccess((FieldSymbol)variable.OriginalDefinition,
                                                     read: true,
@@ -505,7 +505,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private void NoteRead(BoundNode fieldOrEventAccess)
         {
-            Debug.Assert(fieldOrEventAccess.Kind == BoundKind.FieldAccess || fieldOrEventAccess.Kind == BoundKind.EventAccess);
+            Debug.Assert((fieldOrEventAccess.Kind == BoundKind.FieldAccess) || (fieldOrEventAccess.Kind == BoundKind.EventAccess));
             BoundNode n = fieldOrEventAccess;
             while (n != null)
             {
@@ -567,14 +567,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             if ((object)variable != null)
             {
                 _writtenVariables.Add(variable);
-                if ((object)_sourceAssembly != null && variable.Kind == SymbolKind.Field)
+                if (((object)_sourceAssembly != null) && (variable.Kind == SymbolKind.Field))
                 {
                     var field = (FieldSymbol)variable.OriginalDefinition;
                     _sourceAssembly.NoteFieldAccess(field, read: read && WriteConsideredUse(field.Type, value), write: true);
                 }
 
                 var local = variable as LocalSymbol;
-                if ((object)local != null && read && WriteConsideredUse(local.Type, value))
+                if (((object)local != null) && read && WriteConsideredUse(local.Type, value))
                 {
                     // A local variable that is written to is considered to also be read,
                     // unless the written value is always a constant. The reasons for this
@@ -613,13 +613,13 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// </summary>
         internal static bool WriteConsideredUse(TypeSymbol type, BoundExpression value)
         {
-            if (value == null || value.HasAnyErrors) return true;
-            if ((object)type != null && type.IsReferenceType && type.SpecialType != SpecialType.System_String)
+            if ((value == null) || value.HasAnyErrors) return true;
+            if (((object)type != null) && type.IsReferenceType && (type.SpecialType != SpecialType.System_String))
             {
                 return value.ConstantValue != ConstantValue.Null;
             }
 
-            if ((object)type != null && type.IsPointerType())
+            if (((object)type != null) && type.IsPointerType())
             {
                 // We always suppress the warning for pointer types. 
                 return true;
@@ -636,7 +636,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // user-defined conversion. Therefore the IntPtr ConversionKind is included
                         // here.
                         if (boundConversion.ConversionKind.IsUserDefinedConversion() ||
-                            boundConversion.ConversionKind == ConversionKind.IntPtr)
+                            (boundConversion.ConversionKind == ConversionKind.IntPtr))
                         {
                             return true;
                         }
@@ -646,7 +646,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return false;
                 case BoundKind.ObjectCreationExpression:
                     var init = (BoundObjectCreationExpression)value;
-                    return !init.Constructor.IsImplicitlyDeclared || init.InitializerExpressionOpt != null;
+                    return !init.Constructor.IsImplicitlyDeclared || (init.InitializerExpressionOpt != null);
                 case BoundKind.TupleLiteral:
                 case BoundKind.ConvertedTupleLiteral:
                     return false;
@@ -667,7 +667,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             if ((object)_sourceAssembly != null)
                             {
                                 var field = fieldAccess.FieldSymbol.OriginalDefinition;
-                                _sourceAssembly.NoteFieldAccess(field, read: value == null || WriteConsideredUse(fieldAccess.FieldSymbol.Type, value), write: true);
+                                _sourceAssembly.NoteFieldAccess(field, read: (value == null) || WriteConsideredUse(fieldAccess.FieldSymbol.Type, value), write: true);
                             }
 
                             if (MayRequireTracking(fieldAccess.ReceiverOpt, fieldAccess.FieldSymbol))
@@ -694,7 +694,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                 if ((object)_sourceAssembly != null)
                                 {
                                     var field = associatedField.OriginalDefinition;
-                                    _sourceAssembly.NoteFieldAccess(field, read: value == null || WriteConsideredUse(associatedField.Type, value), write: true);
+                                    _sourceAssembly.NoteFieldAccess(field, read: (value == null) || WriteConsideredUse(associatedField.Type, value), write: true);
                                 }
 
                                 if (MayRequireTracking(eventAccess.ReceiverOpt, associatedField))
@@ -867,9 +867,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                         var fieldAccess = (BoundFieldAccess)node;
                         var fieldSymbol = fieldAccess.FieldSymbol;
                         var receiverOpt = fieldAccess.ReceiverOpt;
-                        if (fieldSymbol.IsStatic || receiverOpt == null || receiverOpt.Kind == BoundKind.TypeExpression) return -1; // access of static field
+                        if (fieldSymbol.IsStatic || (receiverOpt == null) || (receiverOpt.Kind == BoundKind.TypeExpression)) return -1; // access of static field
                         if (fieldSymbol.IsFixed) return -1; // fixed buffers are not tracked
-                        if ((object)receiverOpt.Type == null || receiverOpt.Type.TypeKind != TypeKind.Struct) return -1; // field of non-struct
+                        if (((object)receiverOpt.Type == null) || (receiverOpt.Type.TypeKind != TypeKind.Struct)) return -1; // field of non-struct
                         int containingSlot = MakeSlot(receiverOpt);
                         return (containingSlot == -1) ? -1 : GetOrCreateSlot(fieldSymbol, containingSlot);
                     }
@@ -878,8 +878,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                         var eventAccess = (BoundEventAccess)node;
                         var eventSymbol = eventAccess.EventSymbol;
                         var receiverOpt = eventAccess.ReceiverOpt;
-                        if (eventSymbol.IsStatic || receiverOpt == null || receiverOpt.Kind == BoundKind.TypeExpression) return -1; // access of static event
-                        if ((object)receiverOpt.Type == null || receiverOpt.Type.TypeKind != TypeKind.Struct) return -1; // event of non-struct
+                        if (eventSymbol.IsStatic || (receiverOpt == null) || (receiverOpt.Kind == BoundKind.TypeExpression)) return -1; // access of static event
+                        if (((object)receiverOpt.Type == null) || (receiverOpt.Type.TypeKind != TypeKind.Struct)) return -1; // event of non-struct
                         if (!eventSymbol.HasAssociatedField) return -1;
                         int containingSlot = MakeSlot(receiverOpt);
                         return (containingSlot == -1) ? -1 : GetOrCreateSlot(eventSymbol.AssociatedField, containingSlot);
@@ -895,8 +895,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                             if (backingField != null)
                             {
                                 var receiverOpt = propAccess.ReceiverOpt;
-                                if (propSymbol.IsStatic || receiverOpt == null || receiverOpt.Kind == BoundKind.TypeExpression) return -1; // access of static property
-                                if ((object)receiverOpt.Type == null || receiverOpt.Type.TypeKind != TypeKind.Struct) return -1; // property of non-struct
+                                if (propSymbol.IsStatic || (receiverOpt == null) || (receiverOpt.Kind == BoundKind.TypeExpression)) return -1; // access of static property
+                                if (((object)receiverOpt.Type == null) || (receiverOpt.Type.TypeKind != TypeKind.Struct)) return -1; // property of non-struct
                                 int containingSlot = MakeSlot(receiverOpt);
                                 return (containingSlot == -1) ? -1 : GetOrCreateSlot(backingField, containingSlot);
                             }
@@ -923,7 +923,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     int slot = VariableSlot(symbol);
                     if (slot >= this.State.Assigned.Capacity) Normalize(ref this.State);
-                    if (slot > 0 && !this.State.IsAssigned(slot))
+                    if ((slot > 0) && !this.State.IsAssigned(slot))
                     {
                         ReportUnassignedIfNotCapturedInLocalFunction(symbol, node, slot);
                     }
@@ -977,13 +977,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             if (skipIfUseBeforeDeclaration &&
-                symbol.Kind == SymbolKind.Local &&
-                (symbol.Locations.Length == 0 || node.Span.End < symbol.Locations[0].SourceSpan.Start))
+                (symbol.Kind == SymbolKind.Local) &&
+                ((symbol.Locations.Length == 0) || (node.Span.End < symbol.Locations[0].SourceSpan.Start)))
             {
                 // We've already reported the use of a local before its declaration.  No need to emit
                 // another diagnostic for the same issue.
             }
-            else if (!_alreadyReported[slot] && VariableType(symbol)?.IsErrorType() != true)
+            else if (!_alreadyReported[slot] && (VariableType(symbol)?.IsErrorType() != true))
             {
                 // CONSIDER: could suppress this diagnostic in cases where the local was declared in a using
                 // or fixed statement because there's a special error code for not initializing those.
@@ -1005,8 +1005,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                         errorCode = ErrorCode.ERR_UseDefViolationField;
                     }
                 }
-                else if (symbol.Kind == SymbolKind.Parameter &&
-                         ((ParameterSymbol)symbol).RefKind == RefKind.Out)
+                else if ((symbol.Kind == SymbolKind.Parameter) &&
+                         (((ParameterSymbol)symbol).RefKind == RefKind.Out))
                 {
                     if (((ParameterSymbol)symbol).IsThis)
                     {
@@ -1223,7 +1223,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case BoundKind.Local:
                     {
                         var local = (BoundLocal)node;
-                        if (local.LocalSymbol.RefKind != RefKind.None && !isRef)
+                        if ((local.LocalSymbol.RefKind != RefKind.None) && !isRef)
                         {
                             // Writing through the (reference) value of a reference local
                             // requires us to read the reference itself.
@@ -1244,7 +1244,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         var param = paramExpr.ParameterSymbol;
                         // If we're ref-reassigning an out parameter we're effectively
                         // leaving the original
-                        if (isRef && param.RefKind == RefKind.Out)
+                        if (isRef && (param.RefKind == RefKind.Out))
                         {
                             LeaveParameter(param, node.Syntax, paramExpr.Syntax.Location);
                         }
@@ -1275,7 +1275,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     {
                         // Sometimes a bad node is not so bad that we cannot analyze it at all.
                         var bad = (BoundBadExpression)node;
-                        if (!bad.ChildBoundNodes.IsDefault && bad.ChildBoundNodes.Length == 1)
+                        if (!bad.ChildBoundNodes.IsDefault && (bad.ChildBoundNodes.Length == 1))
                         {
                             AssignImpl(bad.ChildBoundNodes[0], value, isRef, written, read);
                         }
@@ -1306,7 +1306,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 if (_emptyStructTypeCache.IsEmptyStructType(field.Type)) continue;
                 int slot = VariableSlot(field, containingSlot);
-                if (slot == -1 || !state.IsAssigned(slot)) return false;
+                if ((slot == -1) || !state.IsAssigned(slot)) return false;
             }
 
             return true;
@@ -1443,7 +1443,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         protected virtual void EnterParameter(ParameterSymbol parameter)
         {
-            if (parameter.RefKind == RefKind.Out && !this.currentMethodOrLambda.IsAsync) // out parameters not allowed in async
+            if ((parameter.RefKind == RefKind.Out) && !this.currentMethodOrLambda.IsAsync) // out parameters not allowed in async
             {
                 int slot = GetOrCreateSlot(parameter);
                 if (slot > 0) SetSlotState(slot, initiallyAssignedVariables?.Contains(parameter) == true);
@@ -1477,7 +1477,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (parameter.RefKind != RefKind.None)
             {
                 var slot = VariableSlot(parameter);
-                if (slot > 0 && !this.State.IsAssigned(slot))
+                if ((slot > 0) && !this.State.IsAssigned(slot))
                 {
                     ReportUnassignedOutParameter(parameter, syntax, location);
                 }
@@ -1700,7 +1700,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 symbol.IsConst ||
                 // When data flow analysis determines that the variable is sometimes used without being assigned
                 // first, we want to treat that variable, during region analysis, as assigned where it is introduced.
-                initiallyAssignedVariables?.Contains(symbol) == true;
+                (initiallyAssignedVariables?.Contains(symbol) == true);
             SetSlotState(GetOrCreateSlot(symbol), initiallyAssigned);
         }
 
@@ -1716,7 +1716,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             if (!_usedVariables.Contains(symbol))
             {
-                if (symbol.DeclarationKind != LocalDeclarationKind.PatternVariable && !string.IsNullOrEmpty(symbol.Name)) // avoid diagnostics for parser-inserted names
+                if ((symbol.DeclarationKind != LocalDeclarationKind.PatternVariable) && !string.IsNullOrEmpty(symbol.Name)) // avoid diagnostics for parser-inserted names
                 {
                     Diagnostics.Add(assigned && _writtenVariables.Contains(symbol) ? ErrorCode.WRN_UnreferencedVarAssg : ErrorCode.WRN_UnreferencedVar, symbol.Locations[0], symbol.Name);
                 }
@@ -1751,8 +1751,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             CheckAssigned(localSymbol, node.Syntax);
 
             if (localSymbol.IsFixed &&
-                (this.currentMethodOrLambda.MethodKind == MethodKind.AnonymousFunction ||
-                 this.currentMethodOrLambda.MethodKind == MethodKind.LocalFunction) &&
+                ((this.currentMethodOrLambda.MethodKind == MethodKind.AnonymousFunction) ||
+                 (this.currentMethodOrLambda.MethodKind == MethodKind.LocalFunction)) &&
                 _capturedVariables.Contains(localSymbol))
             {
                 Diagnostics.Add(ErrorCode.ERR_FixedLocalInLambda, new SourceLocation(node.Syntax), localSymbol);
@@ -1795,8 +1795,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public override BoundNode VisitConversion(BoundConversion node)
         {
-            if (node.ConversionKind == ConversionKind.MethodGroup
-                && node.SymbolOpt?.MethodKind == MethodKind.LocalFunction)
+            if ((node.ConversionKind == ConversionKind.MethodGroup)
+                && (node.SymbolOpt?.MethodKind == MethodKind.LocalFunction))
             {
                 var localFunc = (LocalFunctionSymbol)node.SymbolOpt.OriginalDefinition;
                 var syntax = node.Syntax;
@@ -1978,7 +1978,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // we assume that external method may write and/or read all of its fields (recursively).
             // Strangely, the native compiler requires the "ref", even for reference types, to exhibit
             // this behavior.
-            if (refKind != RefKind.None && ((object)method == null || method.IsExtern))
+            if ((refKind != RefKind.None) && (((object)method == null) || method.IsExtern))
             {
                 MarkFieldsUsed(arg.Type);
             }
@@ -2007,7 +2007,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case BoundKind.EventAccess:
                     var @event = (BoundEventAccess)expr;
                     FieldSymbol associatedField = @event.EventSymbol.AssociatedField;
-                    if ((object)associatedField != null && MayRequireTracking(@event.ReceiverOpt, associatedField))
+                    if (((object)associatedField != null) && MayRequireTracking(@event.ReceiverOpt, associatedField))
                     {
                         CheckAssigned(@event, associatedField, node);
                     }
@@ -2165,7 +2165,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var result = base.VisitFieldAccess(node);
             NoteRead(node.FieldSymbol);
 
-            if (node.FieldSymbol.IsFixed && node.Syntax != null && !SyntaxFacts.IsFixedStatementExpression(node.Syntax))
+            if (node.FieldSymbol.IsFixed && (node.Syntax != null) && !SyntaxFacts.IsFixedStatementExpression(node.Syntax))
             {
                 Symbol receiver = UseNonFieldSymbolUnsafely(node.ReceiverOpt);
                 if ((object)receiver != null)
@@ -2244,7 +2244,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             var result = base.VisitObjectInitializerMember(node);
 
-            if ((object)_sourceAssembly != null && node.MemberSymbol != null && node.MemberSymbol.Kind == SymbolKind.Field)
+            if (((object)_sourceAssembly != null) && (node.MemberSymbol != null) && (node.MemberSymbol.Kind == SymbolKind.Field))
             {
                 _sourceAssembly.NoteFieldAccess((FieldSymbol)node.MemberSymbol.OriginalDefinition, read: false, write: true);
             }
@@ -2383,7 +2383,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 get
                 {
-                    return Assigned.Capacity <= 0 || !IsAssigned(0);
+                    return (Assigned.Capacity <= 0) || !IsAssigned(0);
                 }
             }
         }

@@ -47,7 +47,7 @@ namespace Roslyn.Utilities
 
         public override bool Equals(object obj)
         {
-            return obj is FileKey && Equals((FileKey)obj);
+            return (obj is FileKey) && Equals((FileKey)obj);
         }
 
         public override string ToString()
@@ -58,7 +58,7 @@ namespace Roslyn.Utilities
         public bool Equals(FileKey other)
         {
             return
-                this.Timestamp == other.Timestamp &&
+                (this.Timestamp == other.Timestamp) &&
                 string.Equals(this.FullPath, other.FullPath, StringComparison.OrdinalIgnoreCase);
         }
     }

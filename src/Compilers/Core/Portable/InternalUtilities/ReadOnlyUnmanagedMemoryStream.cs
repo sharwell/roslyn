@@ -115,7 +115,7 @@ namespace Microsoft.CodeAnalysis
                 throw new ArgumentOutOfRangeException(nameof(offset));
             }
 
-            if (target < 0 || target >= _length)
+            if ((target < 0) || (target >= _length))
             {
                 throw new ArgumentOutOfRangeException(nameof(offset));
             }

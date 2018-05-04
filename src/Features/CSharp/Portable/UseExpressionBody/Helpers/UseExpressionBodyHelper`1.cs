@@ -43,9 +43,9 @@ namespace Microsoft.CodeAnalysis.CSharp.UseExpressionBody
 
         protected static AccessorDeclarationSyntax GetSingleGetAccessor(AccessorListSyntax accessorList)
         {
-            if (accessorList != null &&
-                accessorList.Accessors.Count == 1 &&
-                accessorList.Accessors[0].AttributeLists.Count == 0 &&
+            if ((accessorList != null) &&
+                (accessorList.Accessors.Count == 1) &&
+                (accessorList.Accessors[0].AttributeLists.Count == 0) &&
                 accessorList.Accessors[0].IsKind(SyntaxKind.GetAccessorDeclaration))
             {
                 return accessorList.Accessors[0];
@@ -142,7 +142,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseExpressionBody
             }
 
             var getAccessor = GetSingleGetAccessor(declaration.AccessorList);
-            if (getAccessor?.ExpressionBody != null &&
+            if ((getAccessor?.ExpressionBody != null) &&
                 BlockSyntaxExtensions.MatchesPreference(getAccessor.ExpressionBody.Expression, conversionPreference))
             {
                 arrowExpression = SyntaxFactory.ArrowExpressionClause(getAccessor.ExpressionBody.Expression);
@@ -169,7 +169,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UseExpressionBody
 
             var languageVersion = ((CSharpParseOptions)declaration.SyntaxTree.Options).LanguageVersion;
             if (expressionBodyOpt.Expression.IsKind(SyntaxKind.ThrowExpression) &&
-                languageVersion < LanguageVersion.CSharp7)
+                (languageVersion < LanguageVersion.CSharp7))
             {
                 // If they're using a throw expression in a declaration and it's prior to C# 7
                 // then always mark this as something that can be fixed by the analyzer.  This way
@@ -177,10 +177,10 @@ namespace Microsoft.CodeAnalysis.CSharp.UseExpressionBody
                 return (canOffer, fixesError: true);
             }
 
-            var isAccessorOrConstructor = declaration is AccessorDeclarationSyntax ||
-                                          declaration is ConstructorDeclarationSyntax;
+            var isAccessorOrConstructor = (declaration is AccessorDeclarationSyntax) ||
+                                          (declaration is ConstructorDeclarationSyntax);
             if (isAccessorOrConstructor &&
-                languageVersion < LanguageVersion.CSharp7)
+                (languageVersion < LanguageVersion.CSharp7))
             {
                 // If they're using expression bodies for accessors/constructors and it's prior to C# 7
                 // then always mark this as something that can be fixed by the analyzer.  This way

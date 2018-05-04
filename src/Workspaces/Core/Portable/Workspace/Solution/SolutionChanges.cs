@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis
             {
                 var newState = _newSolution.GetProjectState(id);
                 var oldState = old.GetProjectState(id);
-                if (oldState != null && newState != null && newState != oldState)
+                if ((oldState != null) && (newState != null) && (newState != oldState))
                 {
                     yield return _newSolution.GetProject(id).GetChanges(_oldSolution.GetProject(id));
                 }

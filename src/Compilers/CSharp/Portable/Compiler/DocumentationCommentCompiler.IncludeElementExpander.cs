@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // Nodes returned by this method are going to be attached to a new parent, so it's
                 // important that they don't already have parents.  If a node with a parent is
                 // attached to a new parent, it is copied and its annotations are dropped.
-                Debug.Assert(builder == null || builder.All(node => node.Parent == null));
+                Debug.Assert((builder == null) || builder.All(node => node.Parent == null));
 
                 return builder == null ? Array.Empty<XNode>() : builder.ToArrayAndFree();
             }
@@ -206,7 +206,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // NOTE: we may modify the values of cref attributes, so don't do this until AFTER we've
                 // made a copy.  Also, we only care if we're included text - otherwise we've already 
                 // processed the cref.
-                if (container.NodeType == XmlNodeType.Element && originatingSyntax != null)
+                if ((container.NodeType == XmlNodeType.Element) && (originatingSyntax != null))
                 {
                     XElement element = (XElement)container;
                     foreach (XAttribute attribute in element.Attributes())
@@ -369,7 +369,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             }
                         }
 
-                        if (loadedElements != null && loadedElements.Length > 0)
+                        if ((loadedElements != null) && (loadedElements.Length > 0))
                         {
                             // change the current XML file path for nodes contained in the document:
                             XNode[] result = RewriteMany(loadedElements, resolvedFilePath, originatingSyntax);

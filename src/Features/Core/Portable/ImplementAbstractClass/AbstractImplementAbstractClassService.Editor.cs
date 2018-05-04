@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.ImplementAbstractClass
             }
 
             private bool ShouldGenerateAccessor(IMethodSymbol method)
-                => method != null && _state.ClassType.FindImplementationForAbstractMember(method) == null;
+                => (method != null) && (_state.ClassType.FindImplementationForAbstractMember(method) == null);
         }
     }
 }

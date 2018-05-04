@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.ReplaceMethodWithProperty
         }
         private static bool HasPrefix(string text, string prefix)
         {
-            return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) && text.Length > prefix.Length && !char.IsLower(text[prefix.Length]);
+            return text.StartsWith(prefix, StringComparison.OrdinalIgnoreCase) && (text.Length > prefix.Length) && !char.IsLower(text[prefix.Length]);
         }
 
         private IMethodSymbol FindSetMethod(IMethodSymbol getMethod)
@@ -116,13 +116,13 @@ namespace Microsoft.CodeAnalysis.ReplaceMethodWithProperty
 
         private static bool IsValidGetMethod(IMethodSymbol getMethod)
         {
-            return getMethod != null &&
-                getMethod.ContainingType != null &&
+            return (getMethod != null) &&
+                (getMethod.ContainingType != null) &&
                 !getMethod.IsGenericMethod &&
                 !getMethod.IsAsync &&
-                getMethod.Parameters.Length == 0 &&
+                (getMethod.Parameters.Length == 0) &&
                 !getMethod.ReturnsVoid &&
-                getMethod.DeclaringSyntaxReferences.Length == 1 &&
+                (getMethod.DeclaringSyntaxReferences.Length == 1) &&
                 !OverridesMethodFromSystemObject(getMethod);
         }
 
@@ -142,19 +142,19 @@ namespace Microsoft.CodeAnalysis.ReplaceMethodWithProperty
         private static bool IsValidSetMethod(IMethodSymbol setMethod, IMethodSymbol getMethod)
         {
             return IsValidSetMethod(setMethod) &&
-                setMethod.Parameters.Length == 1 &&
-                setMethod.Parameters[0].RefKind == RefKind.None &&
+                (setMethod.Parameters.Length == 1) &&
+                (setMethod.Parameters[0].RefKind == RefKind.None) &&
                 Equals(setMethod.Parameters[0].Type, getMethod.ReturnType) &&
-                setMethod.IsAbstract == getMethod.IsAbstract;
+                (setMethod.IsAbstract == getMethod.IsAbstract);
         }
 
         private static bool IsValidSetMethod(IMethodSymbol setMethod)
         {
-            return setMethod != null &&
+            return (setMethod != null) &&
                 !setMethod.IsGenericMethod &&
                 !setMethod.IsAsync &&
                 setMethod.ReturnsVoid &&
-                setMethod.DeclaringSyntaxReferences.Length == 1;
+                (setMethod.DeclaringSyntaxReferences.Length == 1);
         }
 
         private async Task<Solution> ReplaceMethodsWithProperty(
@@ -395,7 +395,7 @@ namespace Microsoft.CodeAnalysis.ReplaceMethodWithProperty
                     var getMethodDeclaration = await GetMethodDeclarationAsync(getMethod, cancellationToken).ConfigureAwait(false);
                     var setMethodDeclaration = await GetMethodDeclarationAsync(setMethod, cancellationToken).ConfigureAwait(false);
 
-                    if (getMethodDeclaration != null && updatedSolution.GetDocument(getMethodDeclaration.SyntaxTree)?.Id == documentId)
+                    if ((getMethodDeclaration != null) && (updatedSolution.GetDocument(getMethodDeclaration.SyntaxTree)?.Id == documentId))
                     {
                         result.Add(new GetAndSetMethods(getMethod, setMethod, getMethodDeclaration, setMethodDeclaration));
                     }

@@ -98,17 +98,17 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
 
         protected void AddTypeLink(ITypeSymbol typeSymbol, LinkFlags flags)
         {
-            if (typeSymbol.TypeKind == TypeKind.Unknown ||
-                typeSymbol.TypeKind == TypeKind.Error ||
-                typeSymbol.TypeKind == TypeKind.TypeParameter ||
-                typeSymbol.SpecialType == SpecialType.System_Void)
+            if ((typeSymbol.TypeKind == TypeKind.Unknown) ||
+                (typeSymbol.TypeKind == TypeKind.Error) ||
+                (typeSymbol.TypeKind == TypeKind.TypeParameter) ||
+                (typeSymbol.SpecialType == SpecialType.System_Void))
             {
                 AddName(typeSymbol.ToDisplayString(s_typeDisplay));
                 return;
             }
 
             var useSpecialTypes = (flags & LinkFlags.ExpandPredefinedTypes) == 0;
-            var splitLink = !useSpecialTypes & (flags & LinkFlags.SplitNamespaceAndType) != 0;
+            var splitLink = !useSpecialTypes & ((flags & LinkFlags.SplitNamespaceAndType) != 0);
 
             if (splitLink && !typeSymbol.ContainingNamespace.IsGlobalNamespace)
             {
@@ -256,7 +256,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
 
         private void BuildMemberOf(ISymbol containingSymbol, _VSOBJDESCOPTIONS options)
         {
-            if (containingSymbol is INamespaceSymbol &&
+            if ((containingSymbol is INamespaceSymbol) &&
                 ((INamespaceSymbol)containingSymbol).IsGlobalNamespace)
             {
                 containingSymbol = containingSymbol.ContainingAssembly;
@@ -373,7 +373,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
                 }
             }
 
-            if (ShowReturnsDocumentation(symbol) && documentationComment.ReturnsText != null)
+            if (ShowReturnsDocumentation(symbol) && (documentationComment.ReturnsText != null))
             {
                 if (emittedDocs)
                 {
@@ -442,9 +442,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
 
         private bool ShowReturnsDocumentation(ISymbol symbol)
         {
-            return (symbol.Kind == SymbolKind.NamedType && ((INamedTypeSymbol)symbol).TypeKind == TypeKind.Delegate)
-                || symbol.Kind == SymbolKind.Method
-                || symbol.Kind == SymbolKind.Property;
+            return ((symbol.Kind == SymbolKind.NamedType) && (((INamedTypeSymbol)symbol).TypeKind == TypeKind.Delegate))
+                || (symbol.Kind == SymbolKind.Method)
+                || (symbol.Kind == SymbolKind.Property);
         }
 
         internal bool TryBuild(_VSOBJDESCOPTIONS options)

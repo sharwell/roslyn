@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             TypeSyntax returnTypeSyntax = _syntax.ReturnType.SkipRef();
             TypeSymbol returnType = _binder.BindType(returnTypeSyntax, diagnostics);
             if (IsAsync &&
-                returnType.SpecialType != SpecialType.System_Void &&
+                (returnType.SpecialType != SpecialType.System_Void) &&
                 !returnType.IsNonGenericTaskType(_binder.Compilation) &&
                 !returnType.IsGenericTaskType(_binder.Compilation))
             {
@@ -227,8 +227,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 DeclaringCompilation.EnsureIsReadOnlyAttributeExists(diagnostics, _syntax.ReturnType.Location, modifyCompilationForRefReadOnly: false);
             }
 
-            Debug.Assert(_refKind == RefKind.None
-                || returnType.SpecialType != SpecialType.System_Void
+            Debug.Assert((_refKind == RefKind.None)
+                || (returnType.SpecialType != SpecialType.System_Void)
                 || returnTypeSyntax.HasErrors);
 
             lock (_declarationDiagnostics)
@@ -259,7 +259,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 // It is an error to be an extension method, but we need to compute it to report it
                 var firstParam = _syntax.ParameterList.Parameters.FirstOrDefault();
-                return firstParam != null &&
+                return (firstParam != null) &&
                     !firstParam.IsArgList &&
                     firstParam.Modifiers.Any(SyntaxKind.ThisKeyword);
             }
@@ -273,7 +273,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
             set
             {
-                Debug.Assert((object)_iteratorElementType == null || _iteratorElementType == value);
+                Debug.Assert(((object)_iteratorElementType == null) || (_iteratorElementType == value));
                 Interlocked.CompareExchange(ref _iteratorElementType, value, null);
             }
         }
@@ -336,7 +336,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public bool IsUnsafe => (_declarationModifiers & DeclarationModifiers.Unsafe) != 0;
 
-        internal bool IsExpressionBodied => _syntax.Body == null && _syntax.ExpressionBody != null;
+        internal bool IsExpressionBodied => (_syntax.Body == null) && (_syntax.ExpressionBody != null);
 
         public override DllImportData GetDllImportData() => null;
 
@@ -459,8 +459,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if ((object)this == symbol) return true;
 
             var localFunction = symbol as LocalFunctionSymbol;
-            return (object)localFunction != null
-                && localFunction._syntax == _syntax;
+            return ((object)localFunction != null)
+                && (localFunction._syntax == _syntax);
         }
     }
 }

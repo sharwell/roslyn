@@ -470,7 +470,7 @@ namespace Microsoft.CodeAnalysis.Interactive
 
             private void DisplayException(Exception e)
             {
-                if (e is FileLoadException && e.InnerException is InteractiveAssemblyLoaderException)
+                if ((e is FileLoadException) && (e.InnerException is InteractiveAssemblyLoaderException))
                 {
                     Console.Error.WriteLine(e.InnerException.Message);
                 }
@@ -509,7 +509,7 @@ namespace Microsoft.CodeAnalysis.Interactive
                 operation.Completed(new RemoteExecutionResult(success, changedSourcePaths, changedReferencePaths, changedWorkingDirectory));
 
                 // no changes in resolvers:
-                if (changedReferencePaths == null && changedSourcePaths == null && changedWorkingDirectory == null)
+                if ((changedReferencePaths == null) && (changedSourcePaths == null) && (changedWorkingDirectory == null))
                 {
                     return state;
                 }
@@ -519,12 +519,12 @@ namespace Microsoft.CodeAnalysis.Interactive
                 var newWorkingDirectory = currentWorkingDirectory;
 
                 ScriptOptions newOptions = state.ScriptOptions;
-                if (changedReferencePaths != null || changedWorkingDirectory != null)
+                if ((changedReferencePaths != null) || (changedWorkingDirectory != null))
                 {
                     newOptions = newOptions.WithMetadataResolver(CreateMetadataReferenceResolver(newReferencePaths, newWorkingDirectory));
                 }
 
-                if (changedSourcePaths != null || changedWorkingDirectory != null)
+                if ((changedSourcePaths != null) || (changedWorkingDirectory != null))
                 {
                     newOptions = newOptions.WithSourceResolver(CreateSourceReferenceResolver(newSourcePaths, newWorkingDirectory));
                 }
@@ -572,7 +572,7 @@ namespace Microsoft.CodeAnalysis.Interactive
                 string initializationFileOpt,
                 bool isRestarting)
             {
-                Debug.Assert(initializationFileOpt == null || PathUtilities.IsAbsolute(initializationFileOpt));
+                Debug.Assert((initializationFileOpt == null) || PathUtilities.IsAbsolute(initializationFileOpt));
 
                 var state = await ReportUnhandledExceptionIfAny(lastTask).ConfigureAwait(false);
 
@@ -610,7 +610,7 @@ namespace Microsoft.CodeAnalysis.Interactive
                             foreach (CommandLineReference cmdLineReference in args.MetadataReferences)
                             {
                                 // interactive command line parser doesn't accept modules or linked assemblies
-                                Debug.Assert(cmdLineReference.Properties.Kind == MetadataImageKind.Assembly && !cmdLineReference.Properties.EmbedInteropTypes);
+                                Debug.Assert((cmdLineReference.Properties.Kind == MetadataImageKind.Assembly) && !cmdLineReference.Properties.EmbedInteropTypes);
 
                                 var resolvedReferences = metadataResolver.ResolveReference(cmdLineReference.Reference, baseFilePath: null, properties: MetadataReferenceProperties.Assembly);
                                 if (!resolvedReferences.IsDefaultOrEmpty)

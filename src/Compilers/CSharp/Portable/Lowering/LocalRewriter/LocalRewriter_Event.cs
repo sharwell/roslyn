@@ -19,14 +19,14 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundExpression rewrittenReceiverOpt = VisitExpression(node.ReceiverOpt);
             BoundExpression rewrittenArgument = VisitExpression(node.Argument);
 
-            if (rewrittenReceiverOpt != null && node.Event.ContainingAssembly.IsLinked && node.Event.ContainingType.IsInterfaceType())
+            if ((rewrittenReceiverOpt != null) && node.Event.ContainingAssembly.IsLinked && node.Event.ContainingType.IsInterfaceType())
             {
                 var @interface = node.Event.ContainingType;
 
                 foreach (var attrData in @interface.GetAttributes())
                 {
                     if (attrData.IsTargetAttribute(@interface, AttributeDescription.ComEventInterfaceAttribute) &&
-                        attrData.CommonConstructorArguments.Length == 2)
+                        (attrData.CommonConstructorArguments.Length == 2))
                     {
                         return RewriteNoPiaEventAssignmentOperator(node, rewrittenReceiverOpt, rewrittenArgument);
                     }
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // In this case, we don't need a sequence.
-            if (boundTemp == null && clearCall == null)
+            if ((boundTemp == null) && (clearCall == null))
             {
                 return marshalCall;
             }

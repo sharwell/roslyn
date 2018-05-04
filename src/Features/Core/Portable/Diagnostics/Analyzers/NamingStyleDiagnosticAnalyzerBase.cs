@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
             var namingStyleRules = namingPreferences.Rules;
 
             if (!namingStyleRules.TryGetApplicableRule(context.Symbol, out var applicableRule) ||
-                applicableRule.EnforcementLevel == DiagnosticSeverity.Hidden)
+                (applicableRule.EnforcementLevel == DiagnosticSeverity.Hidden))
             {
                 return;
             }

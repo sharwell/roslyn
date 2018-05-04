@@ -44,11 +44,11 @@ namespace Microsoft.CodeAnalysis.Shared.Collections
                 var leftEndValue = MaxEndValue(left, introspector);
                 var rightEndValue = MaxEndValue(right, introspector);
 
-                if (thisEndValue >= leftEndValue && thisEndValue >= rightEndValue)
+                if ((thisEndValue >= leftEndValue) && (thisEndValue >= rightEndValue))
                 {
                     MaxEndNode = this;
                 }
-                else if ((leftEndValue >= rightEndValue) && left != null)
+                else if ((leftEndValue >= rightEndValue) && (left != null))
                 {
                     MaxEndNode = left.MaxEndNode;
                 }

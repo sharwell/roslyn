@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             if (fieldSymbol.IsStatic ||
                 !fieldSymbol.ContainingType.IsValueType ||
-                (object)receiver == null) // receiver may be null in error cases
+                ((object)receiver == null)) // receiver may be null in error cases
             {
                 return false;
             }
@@ -94,7 +94,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (!originalMethods.IsEmpty)
                 resultKind = resultKind.WorseResultKind(LookupResultKind.OverloadResolutionFailure);
 
-            Debug.Assert(arguments.IsDefaultOrEmpty || (object)receiverOpt != (object)arguments[0]);
+            Debug.Assert(arguments.IsDefaultOrEmpty || ((object)receiverOpt != (object)arguments[0]));
 
             var call = new BoundCall(node, receiverOpt, method, arguments, namedArguments,
                 refKinds, isDelegateCall: isDelegateCall, expanded: false, invokedAsExtensionMethod: invokedAsExtensionMethod, argsToParamsOpt: default(ImmutableArray<int>),

@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
         public sealed override double GetDistance(SyntaxNode oldNode, SyntaxNode newNode)
         {
-            Debug.Assert(GetLabel(oldNode) == GetLabel(newNode) && GetLabel(oldNode) != IgnoredNode);
+            Debug.Assert((GetLabel(oldNode) == GetLabel(newNode)) && (GetLabel(oldNode) != IgnoredNode));
 
             if (oldNode == newNode)
             {
@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
 
             if (TryComputeWeightedDistance(oldNode, newNode, out var weightedDistance))
             {
-                if (weightedDistance == ExactMatchDist && !SyntaxFactory.AreEquivalent(oldNode, newNode))
+                if ((weightedDistance == ExactMatchDist) && !SyntaxFactory.AreEquivalent(oldNode, newNode))
                 {
                     weightedDistance = EpsilonDist;
                 }
@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 var rightToken = newNodeOrToken.AsToken();
 
                 distance = ComputeDistance(leftToken, rightToken);
-                Debug.Assert(!SyntaxFactory.AreEquivalent(leftToken, rightToken) || distance == ExactMatchDist);
+                Debug.Assert(!SyntaxFactory.AreEquivalent(leftToken, rightToken) || (distance == ExactMatchDist));
             }
             else
             {
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
                 var rightNode = newNodeOrToken.AsNode();
 
                 distance = ComputeDistance(leftNode, rightNode);
-                Debug.Assert(!SyntaxFactory.AreEquivalent(leftNode, rightNode) || distance == ExactMatchDist);
+                Debug.Assert(!SyntaxFactory.AreEquivalent(leftNode, rightNode) || (distance == ExactMatchDist));
             }
 
             return distance;
@@ -121,7 +121,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue
         /// </remarks>
         public static double ComputeDistance(SyntaxNode oldNode, SyntaxNode newNode)
         {
-            if (oldNode == null || newNode == null)
+            if ((oldNode == null) || (newNode == null))
             {
                 return (oldNode == newNode) ? 0.0 : 1.0;
             }

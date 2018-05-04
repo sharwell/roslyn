@@ -26,9 +26,9 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(this.IsDefinition);
 
             // must be declared in the module we are building
-            Debug.Assert(this.ContainingModule is SourceModuleSymbol ||
-                         (this.Kind == SymbolKind.Assembly && this is SourceAssemblySymbol) ||
-                         (this.Kind == SymbolKind.NetModule && this is SourceModuleSymbol));
+            Debug.Assert((this.ContainingModule is SourceModuleSymbol) ||
+                         ((this.Kind == SymbolKind.Assembly) && (this is SourceAssemblySymbol)) ||
+                         ((this.Kind == SymbolKind.NetModule) && (this is SourceModuleSymbol)));
         }
 
         Cci.IDefinition Cci.IReference.AsDefinition(EmitContext context)
@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             CheckDefinitionInvariant();
 
             //PERF: Avoid creating an iterator for the common case of no attributes.
-            if (userDefined.IsEmpty && synthesized == null)
+            if (userDefined.IsEmpty && (synthesized == null))
             {
                 return SpecializedCollections.EmptyEnumerable<CSharpAttributeData>();
             }

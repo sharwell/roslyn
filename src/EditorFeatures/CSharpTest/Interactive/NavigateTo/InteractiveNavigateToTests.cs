@@ -351,7 +351,7 @@ Class Program { FileStyleUriParser f; }", async w =>
     }
 }", async w =>
             {
-                var item = (await _aggregator.GetItemsAsync("Goo")).Single(t => t.Kind == NavigateToItemKind.Method && t.Name != ".ctor");
+                var item = (await _aggregator.GetItemsAsync("Goo")).Single(t => (t.Kind == NavigateToItemKind.Method) && (t.Name != ".ctor"));
                 VerifyNavigateToResultItem(item, "Goo", "[|Goo|].static Goo()", PatternMatchKind.Exact, NavigateToItemKind.Method, Glyph.MethodPrivate, string.Format(FeaturesResources.in_0_project_1, "Goo", "Test"));
             });
         }

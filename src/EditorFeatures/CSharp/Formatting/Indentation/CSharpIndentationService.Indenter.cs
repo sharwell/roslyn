@@ -56,7 +56,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
                     }
 
                     var trivia = Tree.GetRoot(CancellationToken).FindTrivia(firstNonWhitespacePosition.Value, findInsideTrivia: true);
-                    if (trivia.Kind() == SyntaxKind.None || this.LineToBeIndented.LineNumber > previousLine.LineNumber + 1)
+                    if ((trivia.Kind() == SyntaxKind.None) || (this.LineToBeIndented.LineNumber > (previousLine.LineNumber + 1)))
                     {
                         // If the token belongs to the next statement and is also the first token of the statement, then it means the user wants
                         // to start type a new statement. So get indentation from the start of the line but not based on the token.
@@ -71,7 +71,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
                         // }
 
                         var containingStatement = token.GetAncestor<StatementSyntax>();
-                        if (containingStatement != null && containingStatement.GetFirstToken() == token)
+                        if ((containingStatement != null) && (containingStatement.GetFirstToken() == token))
                         {
                             var position = GetCurrentPositionNotBelongToEndOfFileToken(LineToBeIndented.Start);
                             return IndentFromStartOfLine(Finder.GetIndentationOfCurrentPosition(Tree, token, position, CancellationToken));
@@ -125,7 +125,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
 
                 // if previous statement belong to labeled statement, don't follow label's indentation
                 // but its previous one.
-                if (token.Parent is LabeledStatementSyntax || token.IsLastTokenInLabelStatement())
+                if ((token.Parent is LabeledStatementSyntax) || token.IsLastTokenInLabelStatement())
                 {
                     token = token.GetAncestor<LabeledStatementSyntax>().GetFirstToken(includeZeroWidth: true).GetPreviousToken(includeZeroWidth: true);
                 }
@@ -163,8 +163,8 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
                     token.IsCloseBraceOfEmbeddedBlock())
                 {
                     Contract.Requires(
-                        token.Parent != null &&
-                        (token.Parent.Parent is StatementSyntax || token.Parent.Parent is ElseClauseSyntax));
+                        (token.Parent != null) &&
+                        ((token.Parent.Parent is StatementSyntax) || (token.Parent.Parent is ElseClauseSyntax)));
 
                     var embeddedStatementOwner = token.Parent.Parent;
                     while (embeddedStatementOwner.IsEmbeddedStatement())
@@ -371,7 +371,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.Formatting.Indentation
 
             private SyntaxNode GetQueryExpressionClause(SyntaxToken token)
             {
-                var clause = token.GetAncestors<SyntaxNode>().FirstOrDefault(n => n is QueryClauseSyntax || n is SelectOrGroupClauseSyntax);
+                var clause = token.GetAncestors<SyntaxNode>().FirstOrDefault(n => (n is QueryClauseSyntax) || (n is SelectOrGroupClauseSyntax));
 
                 if (clause != null)
                 {

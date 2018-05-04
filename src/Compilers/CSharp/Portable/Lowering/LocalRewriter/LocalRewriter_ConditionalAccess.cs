@@ -125,15 +125,15 @@ namespace Microsoft.CodeAnalysis.CSharp
                 type = nodeType = accessExpressionType;
             }
 
-            if (accessExpressionType != nodeType && nodeType.IsNullableType())
+            if ((accessExpressionType != nodeType) && nodeType.IsNullableType())
             {
                 Debug.Assert(accessExpressionType == nodeType.GetNullableUnderlyingType());
                 loweredAccessExpression = _factory.New((NamedTypeSymbol)nodeType, loweredAccessExpression);
             }
             else
             {
-                Debug.Assert(accessExpressionType == nodeType ||
-                    (nodeType.SpecialType == SpecialType.System_Void && !used));
+                Debug.Assert((accessExpressionType == nodeType) ||
+                    ((nodeType.SpecialType == SpecialType.System_Void) && !used));
             }
 
             BoundExpression result;

@@ -138,7 +138,7 @@ namespace Microsoft.Cci
         /// NetModules and EnC deltas don't have AssemblyDef record.
         /// We don't emit it for EnC deltas since assembly identity has to be preserved across generations (CLR/debugger get confused otherwise).
         /// </summary>
-        private bool EmitAssemblyDefinition => module.OutputKind != OutputKind.NetModule && !IsMinimalDelta;
+        private bool EmitAssemblyDefinition => (module.OutputKind != OutputKind.NetModule) && !IsMinimalDelta;
 
         /// <summary>
         /// Returns metadata generation ordinal. Zero for
@@ -581,7 +581,7 @@ namespace Microsoft.Cci
                     index = (ushort)result.Count;
                 }
 
-                if (typeDef == owner && index == 0)
+                if ((typeDef == owner) && (index == 0))
                 {
                     result.AddRange(typeDef.GenericParameters);
                 }
@@ -599,7 +599,7 @@ namespace Microsoft.Cci
 
         protected ImmutableArray<IParameterDefinition> GetParametersToEmit(IMethodDefinition methodDef)
         {
-            if (methodDef.ParameterCount == 0 && !(methodDef.ReturnValueIsMarshalledExplicitly || IteratorHelper.EnumerableIsNotEmpty(methodDef.GetReturnValueAttributes(Context))))
+            if ((methodDef.ParameterCount == 0) && !(methodDef.ReturnValueIsMarshalledExplicitly || IteratorHelper.EnumerableIsNotEmpty(methodDef.GetReturnValueAttributes(Context))))
             {
                 return ImmutableArray<IParameterDefinition>.Empty;
             }
@@ -624,7 +624,7 @@ namespace Microsoft.Cci
 
                 // No explicit param row is needed if param has no flags (other than optionally IN),
                 // no name and no references to the param row, such as CustomAttribute, Constant, or FieldMarshal
-                if (parDef.Name != String.Empty ||
+                if ((parDef.Name != String.Empty) ||
                     parDef.HasDefaultValue || parDef.IsOptional || parDef.IsOut || parDef.IsMarshalledExplicitly ||
                     IteratorHelper.EnumerableIsNotEmpty(parDef.GetAttributes(Context)))
                 {
@@ -704,7 +704,7 @@ namespace Microsoft.Cci
         {
             var containingAssembly = this.module.GetContainingAssembly(Context);
 
-            if (containingAssembly != null && ReferenceEquals(assemblyReference, containingAssembly))
+            if ((containingAssembly != null) && ReferenceEquals(assemblyReference, containingAssembly))
             {
                 return default(AssemblyReferenceHandle);
             }
@@ -737,7 +737,7 @@ namespace Microsoft.Cci
         {
             IMethodDefinition methodDef = null;
             IUnitReference definingUnit = GetDefiningUnitReference(methodReference.GetContainingType(Context), Context);
-            if (definingUnit != null && ReferenceEquals(definingUnit, this.module))
+            if ((definingUnit != null) && ReferenceEquals(definingUnit, this.module))
             {
                 methodDef = methodReference.GetResolvedMethod(Context);
             }
@@ -840,7 +840,7 @@ namespace Microsoft.Cci
         {
             IFieldDefinition fieldDef = null;
             IUnitReference definingUnit = GetDefiningUnitReference(fieldReference.GetContainingType(Context), Context);
-            if (definingUnit != null && ReferenceEquals(definingUnit, this.module))
+            if ((definingUnit != null) && ReferenceEquals(definingUnit, this.module))
             {
                 fieldDef = fieldReference.GetResolvedField(Context);
             }
@@ -911,7 +911,7 @@ namespace Microsoft.Cci
 
             var mref = (IModuleReference)uref;
             aref = mref.GetContainingAssembly(Context);
-            return aref == null || ReferenceEquals(aref, this.module.GetContainingAssembly(Context))
+            return (aref == null) || ReferenceEquals(aref, this.module.GetContainingAssembly(Context))
                 ? (EntityHandle)GetAssemblyFileHandle(mref)
                 : GetAssemblyReferenceHandle(aref);
         }
@@ -995,7 +995,7 @@ namespace Microsoft.Cci
         {
             IMethodDefinition methodDef = null;
             IUnitReference definingUnit = GetDefiningUnitReference(methodReference.GetContainingType(Context), Context);
-            if (definingUnit != null && ReferenceEquals(definingUnit, this.module))
+            if ((definingUnit != null) && ReferenceEquals(definingUnit, this.module))
             {
                 methodDef = methodReference.GetResolvedMethod(Context);
             }
@@ -1199,12 +1199,12 @@ namespace Microsoft.Cci
             MethodDefinitionHandle methodDefHandle;
             IMethodDefinition methodDef = null;
             IUnitReference definingUnit = GetDefiningUnitReference(methodReference.GetContainingType(Context), Context);
-            if (definingUnit != null && ReferenceEquals(definingUnit, this.module))
+            if ((definingUnit != null) && ReferenceEquals(definingUnit, this.module))
             {
                 methodDef = methodReference.GetResolvedMethod(Context);
             }
 
-            if (methodDef != null && (methodReference == methodDef || !methodReference.AcceptsExtraArguments) && this.TryGetMethodDefinitionHandle(methodDef, out methodDefHandle))
+            if ((methodDef != null) && ((methodReference == methodDef) || !methodReference.AcceptsExtraArguments) && this.TryGetMethodDefinitionHandle(methodDef, out methodDefHandle))
             {
                 return methodDefHandle;
             }
@@ -1322,7 +1322,7 @@ namespace Microsoft.Cci
             var mref = (IModuleReference)unitReference;
             aref = mref.GetContainingAssembly(Context);
 
-            if (aref != null && aref != module.GetContainingAssembly(Context))
+            if ((aref != null) && (aref != module.GetContainingAssembly(Context)))
             {
                 return GetAssemblyReferenceHandle(aref);
             }
@@ -1395,7 +1395,7 @@ namespace Microsoft.Cci
             // of the helpers (esp IsTooLongInternal) in a way that allows us to forego
             // string concatenation (unless a diagnostic is actually reported).
 
-            if (namespaceName.Length + 1 + mangledTypeName.Length > NameLengthLimit / 3)
+            if (((namespaceName.Length + 1 + mangledTypeName.Length)) > (NameLengthLimit / 3))
             {
                 int utf8Length =
                     s_utf8Encoding.GetByteCount(namespaceName) +
@@ -1445,7 +1445,7 @@ namespace Microsoft.Cci
         {
             Debug.Assert(str != null); // No need to handle in an internal utility.
 
-            if (str.Length < maxLength / 3) //UTF-8 uses at most 3 bytes per char
+            if (str.Length < (maxLength / 3)) //UTF-8 uses at most 3 bytes per char
             {
                 return false;
             }
@@ -1461,7 +1461,7 @@ namespace Microsoft.Cci
 
         protected static Location GetSymbolLocation(ISymbol symbolOpt)
         {
-            return symbolOpt != null && !symbolOpt.Locations.IsDefaultOrEmpty ? symbolOpt.Locations[0] : Location.None;
+            return (symbolOpt != null) && !symbolOpt.Locations.IsDefaultOrEmpty ? symbolOpt.Locations[0] : Location.None;
         }
 
         internal TypeAttributes GetTypeAttributes(ITypeDefinition typeDef)
@@ -1574,7 +1574,7 @@ namespace Microsoft.Cci
             }
 
             INamespaceTypeDefinition namespaceTypeDef = typeDef.AsNamespaceTypeDefinition(context);
-            if (namespaceTypeDef != null && namespaceTypeDef.IsPublic)
+            if ((namespaceTypeDef != null) && namespaceTypeDef.IsPublic)
             {
                 result |= TypeAttributes.Public;
             }
@@ -1668,7 +1668,7 @@ namespace Microsoft.Cci
         {
             TypeDefinitionHandle handle;
             var typeDefinition = typeReference.AsTypeDefinition(this.Context);
-            if (typeDefinition != null && this.TryGetTypeDefinitionHandle(typeDefinition, out handle))
+            if ((typeDefinition != null) && this.TryGetTypeDefinitionHandle(typeDefinition, out handle))
             {
                 return handle;
             }
@@ -1715,7 +1715,7 @@ namespace Microsoft.Cci
 
         public void WriteMetadataAndIL(PdbWriter nativePdbWriterOpt, Stream metadataStream, Stream ilStream, Stream portablePdbStreamOpt, out MetadataSizes metadataSizes)
         {
-            Debug.Assert(nativePdbWriterOpt == null ^ portablePdbStreamOpt == null);
+            Debug.Assert((nativePdbWriterOpt == null) ^ (portablePdbStreamOpt == null));
 
             nativePdbWriterOpt?.SetMetadataEmitter(this);
 
@@ -1871,7 +1871,7 @@ namespace Microsoft.Cci
 
                 // debug entry point may be different from PE entry point, it may also be set for libraries
                 IMethodReference debugEntryPoint = module.DebugEntryPoint;
-                if (debugEntryPoint != null && debugEntryPoint != entryPoint)
+                if ((debugEntryPoint != null) && (debugEntryPoint != entryPoint))
                 {
                     debugEntryPointHandle = (MethodDefinitionHandle)GetMethodHandle((IMethodDefinition)debugEntryPoint.AsDefinition(Context));
                 }
@@ -2275,7 +2275,7 @@ namespace Microsoft.Cci
         {
             foreach (IFieldDefinition fieldDef in this.GetFieldDefs())
             {
-                if (fieldDef.ContainingTypeDefinition.Layout != LayoutKind.Explicit || fieldDef.IsStatic)
+                if ((fieldDef.ContainingTypeDefinition.Layout != LayoutKind.Explicit) || fieldDef.IsStatic)
                 {
                     continue;
                 }
@@ -2591,7 +2591,7 @@ namespace Microsoft.Cci
             var eventDefs = this.GetEventDefs();
 
             // an estimate, not necessarily accurate.
-            metadata.SetCapacity(TableIndex.MethodSemantics, propertyDefs.Count * 2 + eventDefs.Count * 2);
+            metadata.SetCapacity(TableIndex.MethodSemantics, (propertyDefs.Count * 2) + (eventDefs.Count * 2));
 
             foreach (IPropertyDefinition propertyDef in this.GetPropertyDefs())
             {
@@ -2759,7 +2759,7 @@ namespace Microsoft.Cci
         {
             foreach (ITypeDefinition typeDef in this.GetTypeDefs())
             {
-                if (typeDef.Alignment == 0 && typeDef.SizeOf == 0)
+                if ((typeDef.Alignment == 0) && (typeDef.SizeOf == 0))
                 {
                     continue;
                 }
@@ -2941,7 +2941,7 @@ namespace Microsoft.Cci
         {
             int ilLength = methodBody.IL.Length;
             var exceptionRegions = methodBody.ExceptionRegions;
-            bool isSmallBody = ilLength < 64 && methodBody.MaxStack <= 8 && localSignatureHandleOpt.IsNil && exceptionRegions.Length == 0;
+            bool isSmallBody = (ilLength < 64) && (methodBody.MaxStack <= 8) && localSignatureHandleOpt.IsNil && (exceptionRegions.Length == 0);
 
             // Check if an identical method body has already been serialized.
             // If so, use the RVA of the already serialized one.
@@ -3048,7 +3048,7 @@ namespace Microsoft.Cci
 
         private static int ReadInt32(ImmutableArray<byte> buffer, int pos)
         {
-            return buffer[pos] | buffer[pos + 1] << 8 | buffer[pos + 2] << 16 | buffer[pos + 3] << 24;
+            return buffer[pos] | (buffer[pos + 1] << 8) | (buffer[pos + 2] << 16) | (buffer[pos + 3] << 24);
         }
 
         private EntityHandle GetHandle(IReference reference)
@@ -3176,7 +3176,7 @@ namespace Microsoft.Cci
                             if (operandType == OperandType.InlineTok)
                             {
                                 int tokenMask = pseudoToken & unchecked((int)0xff000000);
-                                if (tokenMask != 0 && (uint)pseudoToken != 0xffffffff)
+                                if ((tokenMask != 0) && ((uint)pseudoToken != 0xffffffff))
                                 {
                                     Debug.Assert(ReadByte(generatedIL, offset - 1) == (byte)ILOpCode.Ldtoken);
                                     writer.Offset = offset - 1;
@@ -3325,7 +3325,7 @@ namespace Microsoft.Cci
             }
             else
             {
-                Debug.Assert(parameterTypeInformation.RefCustomModifiers.Length == 0 || parameterTypeInformation.IsByReference);
+                Debug.Assert((parameterTypeInformation.RefCustomModifiers.Length == 0) || parameterTypeInformation.IsByReference);
                 SerializeCustomModifiers(encoder.CustomModifiers(), parameterTypeInformation.RefCustomModifiers);
 
                 var typeEncoder = encoder.Type(parameterTypeInformation.IsByReference);
@@ -3449,8 +3449,8 @@ namespace Microsoft.Cci
                     encoder.TaggedScalar(out typeEncoder, out scalarEncoder);
 
                     // special case null argument assigned to Object parameter - treat as null string
-                    if (c != null &&
-                        c.Value == null &&
+                    if ((c != null) &&
+                        (c.Value == null) &&
                         this.module.IsPlatformType(c.Type, PlatformType.SystemObject))
                     {
                         typeEncoder.String();
@@ -3473,7 +3473,7 @@ namespace Microsoft.Cci
                         return;
                     }
 
-                    Debug.Assert(!module.IsPlatformType(c.Type, PlatformType.SystemType) || c.Value == null);
+                    Debug.Assert(!module.IsPlatformType(c.Type, PlatformType.SystemType) || (c.Value == null));
                     scalarEncoder.Constant(c.Value);
                 }
                 else
@@ -3689,7 +3689,7 @@ namespace Microsoft.Cci
             }
             else
             {
-                Debug.Assert(signature.RefCustomModifiers.Length == 0 || signature.ReturnValueIsByRef);
+                Debug.Assert((signature.RefCustomModifiers.Length == 0) || signature.ReturnValueIsByRef);
                 SerializeCustomModifiers(returnTypeEncoder.CustomModifiers(), signature.RefCustomModifiers);
 
                 var typeEncoder = returnTypeEncoder.Type(signature.ReturnValueIsByRef);
@@ -3729,7 +3729,7 @@ namespace Microsoft.Cci
                 }
 
                 var primitiveType = typeReference.TypeCode;
-                if (primitiveType != PrimitiveTypeCode.Pointer && primitiveType != PrimitiveTypeCode.NotPrimitive)
+                if ((primitiveType != PrimitiveTypeCode.Pointer) && (primitiveType != PrimitiveTypeCode.NotPrimitive))
                 {
                     SerializePrimitiveType(encoder, primitiveType);
                     return;

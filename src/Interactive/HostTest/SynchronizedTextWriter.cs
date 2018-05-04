@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.UnitTests.Interactive
                 for (int i = start, n = builder.Length - mark.Length; i <= n; i++)
                 {
                     int j = 0;
-                    while (j < mark.Length && builder[i + j] == mark[j])
+                    while ((j < mark.Length) && (builder[i + j] == mark[j]))
                     {
                         j++;
                     }

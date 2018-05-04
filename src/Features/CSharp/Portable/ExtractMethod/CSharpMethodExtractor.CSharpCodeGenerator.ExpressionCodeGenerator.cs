@@ -45,13 +45,13 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
                 private static string GetMethodNameBasedOnExpression(string methodName, SyntaxNode expression)
                 {
-                    if (expression.Parent != null &&
-                        expression.Parent.Kind() == SyntaxKind.EqualsValueClause &&
-                        expression.Parent.Parent != null &&
-                        expression.Parent.Parent.Kind() == SyntaxKind.VariableDeclarator)
+                    if ((expression.Parent != null) &&
+                        (expression.Parent.Kind() == SyntaxKind.EqualsValueClause) &&
+                        (expression.Parent.Parent != null) &&
+                        (expression.Parent.Parent.Kind() == SyntaxKind.VariableDeclarator))
                     {
                         var name = ((VariableDeclaratorSyntax)expression.Parent.Parent).Identifier.ValueText;
-                        return (name != null && name.Length > 0) ? MakeMethodName("Get", name) : methodName;
+                        return ((name != null) && (name.Length > 0)) ? MakeMethodName("Get", name) : methodName;
                     }
 
                     if (expression is MemberAccessExpressionSyntax memberAccess)
@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                         }
 
                         var unqualifiedNameIdentifierValueText = unqualifiedName.Identifier.ValueText;
-                        return (unqualifiedNameIdentifierValueText != null && unqualifiedNameIdentifierValueText.Length > 0) ? MakeMethodName("Get", unqualifiedNameIdentifierValueText) : methodName;
+                        return ((unqualifiedNameIdentifierValueText != null) && (unqualifiedNameIdentifierValueText.Length > 0)) ? MakeMethodName("Get", unqualifiedNameIdentifierValueText) : methodName;
                     }
 
                     return methodName;
@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                     var returnType = this.AnalyzerResult.ReturnType;
                     var containingScope = this.CSharpSelectionResult.GetContainingScope();
 
-                    if (returnType.TypeKind == TypeKind.Array && containingScope is InitializerExpressionSyntax)
+                    if ((returnType.TypeKind == TypeKind.Array) && (containingScope is InitializerExpressionSyntax))
                     {
                         var typeSyntax = returnType.GenerateTypeSyntax();
 
@@ -151,9 +151,9 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
                     Contract.ThrowIfNull(container);
                     Contract.ThrowIfFalse(container.IsStatementContainerNode() ||
-                                          container is TypeDeclarationSyntax ||
-                                          container is ConstructorDeclarationSyntax ||
-                                          container is CompilationUnitSyntax);
+                                          (container is TypeDeclarationSyntax) ||
+                                          (container is ConstructorDeclarationSyntax) ||
+                                          (container is CompilationUnitSyntax));
 
                     return container;
                 }
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
                     var sourceNode = this.CSharpSelectionResult.GetContainingScope();
                     Contract.ThrowIfTrue(
-                        sourceNode.Parent is MemberAccessExpressionSyntax && ((MemberAccessExpressionSyntax)sourceNode.Parent).Name == sourceNode,
+                        (sourceNode.Parent is MemberAccessExpressionSyntax) && (((MemberAccessExpressionSyntax)sourceNode.Parent).Name == sourceNode),
                         "invalid scope. given scope is not an expression");
 
                     // To lower the chances that replacing sourceNode with callSignature will break the user's
@@ -218,7 +218,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
                     // we want to replace the old identifier with a invocation expression, but because of MakeExplicit we might have
                     // a member access now instead of the identifier. So more syntax fiddling is needed.
-                    if (sourceNode.Parent.Kind() == SyntaxKind.SimpleMemberAccessExpression &&
+                    if ((sourceNode.Parent.Kind() == SyntaxKind.SimpleMemberAccessExpression) &&
                         ((ExpressionSyntax)sourceNode).IsRightSideOfDot())
                     {
                         var explicitMemberAccess = (MemberAccessExpressionSyntax)sourceNode.Parent;

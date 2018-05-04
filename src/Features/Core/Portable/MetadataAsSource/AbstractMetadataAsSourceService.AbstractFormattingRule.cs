@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.MetadataAsSource
             public override AdjustNewLinesOperation GetAdjustNewLinesOperation(
                     SyntaxToken previousToken, SyntaxToken currentToken, OptionSet optionSet, NextOperation<AdjustNewLinesOperation> nextOperation)
             {
-                if (previousToken.RawKind == 0 || currentToken.RawKind == 0)
+                if ((previousToken.RawKind == 0) || (currentToken.RawKind == 0))
                 {
                     nextOperation.Invoke();
                 }

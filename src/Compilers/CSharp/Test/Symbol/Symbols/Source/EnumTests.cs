@@ -982,7 +982,7 @@ class C<T> { enum E4 : T { } }
             if (expectedEnumValues.Length > 0)
             {
                 var first = expectedEnumValues.First();
-                if (first != null && first.GetType() == typeof(long))
+                if ((first != null) && (first.GetType() == typeof(long)))
                     specialType = SpecialType.System_Int64;
             }
             return VerifyEnumsValue(comp, enumName, specialType, expectedEnumValues);

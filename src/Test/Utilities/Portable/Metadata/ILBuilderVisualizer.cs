@@ -52,7 +52,7 @@ namespace Roslyn.Test.Utilities
                 }
 
                 // Check for a raw token value, encoded with a 1 high-order bit.
-                if ((token & 0x80000000) != 0 && token != 0xffffffff)
+                if (((token & 0x80000000) != 0) && (token != 0xffffffff))
                 {
                     token &= 0x7fffffff;
                 }
@@ -87,7 +87,7 @@ namespace Roslyn.Test.Utilities
                 var span = new HandlerSpan(HandlerKind.Try, null, region.TryStartOffset, region.TryEndOffset);
 
                 int n = spans.Count;
-                if (n == 0 || span.CompareTo(spans[n - 1]) != 0)
+                if ((n == 0) || (span.CompareTo(spans[n - 1]) != 0))
                 {
                     spans.Add(span);
                 }

@@ -101,7 +101,7 @@ namespace Microsoft.CodeAnalysis.Execution
 
                         // if checksumGetter return null for given checksum, that means current node doesn't have given checksum
                         var checksumObject = GetRemotableDataFromAdditionalAssets(checksum);
-                        if (checksumObject != null && searchingChecksumsLeft.Contains(checksum))
+                        if ((checksumObject != null) && searchingChecksumsLeft.Contains(checksum))
                         {
                             // found given checksum in current node
                             result[checksum] = checksumObject;

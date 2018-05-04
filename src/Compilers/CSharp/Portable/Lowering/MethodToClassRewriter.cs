@@ -384,7 +384,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             BoundExpression originalRight = node.Right;
 
-            if (leftLocal.LocalSymbol.RefKind != RefKind.None &&
+            if ((leftLocal.LocalSymbol.RefKind != RefKind.None) &&
                 node.IsRef &&
                 NeedsProxy(leftLocal.LocalSymbol))
             {
@@ -411,7 +411,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // If the receiver of the field is on the stack when the stackalloc happens,
             // popping it will free the memory (?) or otherwise cause verification issues.
             // DevDiv Bugs 59454
-            if (rewrittenLeft.Kind != BoundKind.Local && originalRight.Kind == BoundKind.ConvertedStackAllocExpression)
+            if ((rewrittenLeft.Kind != BoundKind.Local) && (originalRight.Kind == BoundKind.ConvertedStackAllocExpression))
             {
                 // From ILGENREC::genAssign:
                 // DevDiv Bugs 59454: Handle hoisted local initialized with a stackalloc
@@ -455,7 +455,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         public override BoundNode VisitObjectCreationExpression(BoundObjectCreationExpression node)
         {
             var rewritten = (BoundObjectCreationExpression)base.VisitObjectCreationExpression(node);
-            if (rewritten.Type != node.Type && (object)node.Constructor != null)
+            if ((rewritten.Type != node.Type) && ((object)node.Constructor != null))
             {
                 MethodSymbol ctor = VisitMethodSymbol(node.Constructor);
                 rewritten = rewritten.Update(
@@ -633,8 +633,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private static bool BaseReferenceInReceiverWasRewritten(BoundExpression originalReceiver, BoundExpression rewrittenReceiver)
         {
-            return originalReceiver != null && originalReceiver.Kind == BoundKind.BaseReference &&
-                   rewrittenReceiver != null && rewrittenReceiver.Kind != BoundKind.BaseReference;
+            return (originalReceiver != null) && (originalReceiver.Kind == BoundKind.BaseReference) &&
+                   (rewrittenReceiver != null) && (rewrittenReceiver.Kind != BoundKind.BaseReference);
         }
 
         /// <summary>

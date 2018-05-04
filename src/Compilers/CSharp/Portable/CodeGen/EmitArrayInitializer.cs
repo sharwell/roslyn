@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                 return false;
             }
 
-            return includeConstants || init.ConstantValue == null;
+            return includeConstants || (init.ConstantValue == null);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                         // emit array ref
                         _builder.EmitOpCode(ILOpCode.Dup);
 
-                        Debug.Assert(indices.Count == arrayType.Rank - 1);
+                        Debug.Assert(indices.Count == (arrayType.Rank - 1));
 
                         // emit values of all indices that are in progress
                         foreach (var row in indices)
@@ -345,7 +345,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
                          inits.All((init) => init.Kind == BoundKind.ArrayInitialization),
                          "all or none should be nested");
 
-            return inits.Length != 0 && inits[0].Kind == BoundKind.ArrayInitialization;
+            return (inits.Length != 0) && (inits[0].Kind == BoundKind.ArrayInitialization);
         }
 
         private bool TryEmitReadonlySpanAsBlobWrapper(NamedTypeSymbol spanType, BoundExpression wrappedExpression, bool used, bool inPlace)

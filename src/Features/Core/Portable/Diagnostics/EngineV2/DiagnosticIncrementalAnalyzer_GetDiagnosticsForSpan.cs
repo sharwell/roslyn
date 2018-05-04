@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
                             // no previous compilation end diagnostics in this file.
                             var version = await GetDiagnosticVersionAsync(_project, cancellationToken).ConfigureAwait(false);
-                            if (state.IsEmpty(_document.Id) || result.Version != version)
+                            if (state.IsEmpty(_document.Id) || (result.Version != version))
                             {
                                 continue;
                             }
@@ -388,17 +388,17 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
             private bool ShouldInclude(DiagnosticData diagnostic)
             {
-                return diagnostic.DocumentId == _document.Id && _range.IntersectsWith(diagnostic.TextSpan) && (_includeSuppressedDiagnostics || !diagnostic.IsSuppressed);
+                return (diagnostic.DocumentId == _document.Id) && _range.IntersectsWith(diagnostic.TextSpan) && (_includeSuppressedDiagnostics || !diagnostic.IsSuppressed);
             }
 
             private bool BlockForData(AnalysisKind kind, bool supportsSemanticInSpan)
             {
-                if (kind == AnalysisKind.Semantic && !supportsSemanticInSpan && !_blockForData)
+                if ((kind == AnalysisKind.Semantic) && !supportsSemanticInSpan && !_blockForData)
                 {
                     return false;
                 }
 
-                if (kind == AnalysisKind.NonLocal && !_blockForData)
+                if ((kind == AnalysisKind.NonLocal) && !_blockForData)
                 {
                     return false;
                 }

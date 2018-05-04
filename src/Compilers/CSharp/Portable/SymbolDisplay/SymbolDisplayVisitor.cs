@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             {
                 ITypeSymbol type = GetRangeVariableType(symbol);
 
-                if (type != null && type.TypeKind != TypeKind.Error)
+                if ((type != null) && (type.TypeKind != TypeKind.Error))
                 {
                     type.Accept(this);
                 }
@@ -284,11 +284,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             INamedTypeSymbol containingType = symbol.ContainingType;
 
             // this method is only called for members and they should have a containingType or a containing symbol should be a TypeSymbol.
-            Debug.Assert((object)containingType != null || (symbol.ContainingSymbol is ITypeSymbol));
+            Debug.Assert(((object)containingType != null) || (symbol.ContainingSymbol is ITypeSymbol));
 
             if (format.MemberOptions.IncludesOption(SymbolDisplayMemberOptions.IncludeAccessibility) &&
-                (containingType == null ||
-                 (containingType.TypeKind != TypeKind.Interface && !IsEnumMember(symbol) & !IsLocalFunction(symbol))))
+                ((containingType == null) ||
+                 ((containingType.TypeKind != TypeKind.Interface) && (!IsEnumMember(symbol) & !IsLocalFunction(symbol)))))
             {
                 AddAccessibility(symbol);
             }
@@ -352,23 +352,23 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             return
                 !namespaceSymbol.IsGlobalNamespace ||
-                format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Included;
+                (format.GlobalNamespaceStyle == SymbolDisplayGlobalNamespaceStyle.Included);
         }
 
         private bool IncludeNamedType(INamedTypeSymbol namedType)
         {
             return
-                namedType != null &&
+                (namedType != null) &&
                 (!namedType.IsScriptClass || format.CompilerInternalOptions.IncludesOption(SymbolDisplayCompilerInternalOptions.IncludeScriptType));
         }
 
         private static bool IsEnumMember(ISymbol symbol)
         {
-            return symbol != null
-                && symbol.Kind == SymbolKind.Field
-                && symbol.ContainingType != null
-                && symbol.ContainingType.TypeKind == TypeKind.Enum
-                && symbol.Name != WellKnownMemberNames.EnumBackingFieldName;
+            return (symbol != null)
+                && (symbol.Kind == SymbolKind.Field)
+                && (symbol.ContainingType != null)
+                && (symbol.ContainingType.TypeKind == TypeKind.Enum)
+                && (symbol.Name != WellKnownMemberNames.EnumBackingFieldName);
         }
     }
 }

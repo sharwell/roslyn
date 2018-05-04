@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                                         IInvocationOperation invocation = (IInvocationOperation)operationContext.Operation;
                                         foreach (IArgumentOperation argument in invocation.Arguments)
                                         {
-                                            if (argument.Parameter.RefKind == RefKind.Out || argument.Parameter.RefKind == RefKind.Ref)
+                                            if ((argument.Parameter.RefKind == RefKind.Out) || (argument.Parameter.RefKind == RefKind.Ref))
                                             {
                                                 AssignTo(argument.Value, localsSourceTypes, fieldsSourceTypes, argument.Parameter.Type);
                                             }
@@ -160,7 +160,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             if (symbolsSourceTypes.TryGetValue(symbol, out var sourceTypes))
             {
                 commonSourceType = CommonType(sourceTypes);
-                if (commonSourceType != null && DerivesFrom(commonSourceType, (INamedTypeSymbol)symbolType))
+                if ((commonSourceType != null) && DerivesFrom(commonSourceType, (INamedTypeSymbol)symbolType))
                 {
                     return true;
                 }
@@ -198,10 +198,10 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
         private static bool DerivesFrom(INamedTypeSymbol derivedType, INamedTypeSymbol baseType)
         {
-            if (derivedType.TypeKind == TypeKind.Class || derivedType.TypeKind == TypeKind.Structure)
+            if ((derivedType.TypeKind == TypeKind.Class) || (derivedType.TypeKind == TypeKind.Structure))
             {
                 INamedTypeSymbol derivedBaseType = derivedType.BaseType;
-                return derivedBaseType != null && (derivedBaseType.Equals(baseType) || DerivesFrom(derivedBaseType, baseType));
+                return (derivedBaseType != null) && (derivedBaseType.Equals(baseType) || DerivesFrom(derivedBaseType, baseType));
             }
 
             else if (derivedType.TypeKind == TypeKind.Interface)
@@ -219,7 +219,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                     }
                 }
 
-                return baseType.TypeKind == TypeKind.Class && baseType.SpecialType == SpecialType.System_Object;
+                return (baseType.TypeKind == TypeKind.Class) && (baseType.SpecialType == SpecialType.System_Object);
             }
 
             return false;
@@ -252,14 +252,14 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
         private static void AssignTo<SymbolType>(SymbolType target, ITypeSymbol targetType, Dictionary<SymbolType, HashSet<INamedTypeSymbol>> sourceTypes, ITypeSymbol sourceType)
         {
-            if (sourceType != null && targetType != null)
+            if ((sourceType != null) && (targetType != null))
             {
                 TypeKind targetTypeKind = targetType.TypeKind;
                 TypeKind sourceTypeKind = sourceType.TypeKind;
 
                 // Don't suggest using an interface type instead of a class type, or vice versa.
-                if ((targetTypeKind == sourceTypeKind && (targetTypeKind == TypeKind.Class || targetTypeKind == TypeKind.Interface)) ||
-                    (targetTypeKind == TypeKind.Class && (sourceTypeKind == TypeKind.Structure || sourceTypeKind == TypeKind.Interface) && targetType.SpecialType == SpecialType.System_Object))
+                if (((targetTypeKind == sourceTypeKind) && ((targetTypeKind == TypeKind.Class) || (targetTypeKind == TypeKind.Interface))) ||
+                    ((targetTypeKind == TypeKind.Class) && ((sourceTypeKind == TypeKind.Structure) || (sourceTypeKind == TypeKind.Interface)) && (targetType.SpecialType == SpecialType.System_Object)))
                 {
                     if (!sourceTypes.TryGetValue(target, out var symbolSourceTypes))
                     {

@@ -36,14 +36,14 @@ namespace Microsoft.Cci
 
             var xf = x as IFieldReference;
             var yf = y as IFieldReference;
-            if (xf != null && yf != null)
+            if ((xf != null) && (yf != null))
             {
                 return _metadataWriter.GetFieldSignatureIndex(xf) == _metadataWriter.GetFieldSignatureIndex(yf);
             }
 
             var xm = x as IMethodReference;
             var ym = y as IMethodReference;
-            if (xm != null && ym != null)
+            if ((xm != null) && (ym != null))
             {
                 return _metadataWriter.GetMethodSignatureHandle(xm) == _metadataWriter.GetMethodSignatureHandle(ym);
             }

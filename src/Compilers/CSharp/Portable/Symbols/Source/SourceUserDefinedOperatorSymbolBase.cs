@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             base(containingType, syntax.GetReference(), location)
         {
             _name = name;
-            _isExpressionBodied = syntax.Body == null && syntax.ExpressionBody != null;
+            _isExpressionBodied = (syntax.Body == null) && (syntax.ExpressionBody != null);
 
             var defaultAccess = DeclarationModifiers.Private;
             var allowedModifiers =
@@ -67,7 +67,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             // SPEC: An operator declaration must include both a public and a
             // SPEC: static modifier
-            if (this.DeclaredAccessibility != Accessibility.Public || !this.IsStatic)
+            if ((this.DeclaredAccessibility != Accessibility.Public) || !this.IsStatic)
             {
                 // CS0558: User-defined operator '...' must be declared static and public
                 diagnostics.Add(ErrorCode.ERR_OperatorsMustBeStatic, this.Locations[0], this);
@@ -176,7 +176,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // SPEC: The parameters of an operator must be value parameters.
             foreach (var p in this.Parameters)
             {
-                if (p.RefKind != RefKind.None && p.RefKind != RefKind.In)
+                if ((p.RefKind != RefKind.None) && (p.RefKind != RefKind.In))
                 {
                     diagnostics.Add(ErrorCode.ERR_IllegalRefParam, this.Locations[0]);
                     break;
@@ -281,9 +281,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // SPEC: Either S0 or T0 is the class or struct type in which the operator
             // SPEC: declaration takes place.
 
-            if (source0.TupleUnderlyingTypeOrSelf() != this.ContainingType && target0.TupleUnderlyingTypeOrSelf() != this.ContainingType &&
+            if ((source0.TupleUnderlyingTypeOrSelf() != this.ContainingType) && (target0.TupleUnderlyingTypeOrSelf() != this.ContainingType) &&
                 // allow conversion between T and Nullable<T> in declaration of Nullable<T>
-                source != this.ContainingType && target != this.ContainingType)
+                (source != this.ContainingType) && (target != this.ContainingType))
             {
                 // CS0556: User-defined conversion must convert to or from the enclosing type
                 diagnostics.Add(ErrorCode.ERR_ConversionNotInvolvingContainedType, this.Locations[0]);
@@ -508,8 +508,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // SPEC: of which must have type T or T? and the second of which must
             // SPEC: have type int or int?, and can return any type.
 
-            if (this.ParameterTypes[0].StrippedType().TupleUnderlyingTypeOrSelf() != this.ContainingType ||
-                this.ParameterTypes[1].StrippedType().SpecialType != SpecialType.System_Int32)
+            if ((this.ParameterTypes[0].StrippedType().TupleUnderlyingTypeOrSelf() != this.ContainingType) ||
+                (this.ParameterTypes[1].StrippedType().SpecialType != SpecialType.System_Int32))
             {
                 // CS0546: The first operand of an overloaded shift operator must have the 
                 //         same type as the containing type, and the type of the second 
@@ -529,8 +529,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             // SPEC: A binary nonshift operator must take two parameters, at least
             // SPEC: one of which must have the type T or T?, and can return any type.
-            if (this.ParameterTypes[0].StrippedType().TupleUnderlyingTypeOrSelf() != this.ContainingType &&
-                this.ParameterTypes[1].StrippedType().TupleUnderlyingTypeOrSelf() != this.ContainingType)
+            if ((this.ParameterTypes[0].StrippedType().TupleUnderlyingTypeOrSelf() != this.ContainingType) &&
+                (this.ParameterTypes[1].StrippedType().TupleUnderlyingTypeOrSelf() != this.ContainingType))
             {
                 // CS0563: One of the parameters of a binary operator must be the containing type
                 diagnostics.Add(ErrorCode.ERR_BadBinaryOperatorSignature, this.Locations[0]);

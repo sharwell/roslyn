@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                     case AssemblyIdentityComparer.ComparisonResult.Equivalent:
                         return pair;
                     case AssemblyIdentityComparer.ComparisonResult.EquivalentIgnoringVersion:
-                        if (best.Identity is null || identity.Version > best.Identity.Version)
+                        if ((best.Identity is null) || (identity.Version > best.Identity.Version))
                         {
                             best = pair;
                         }

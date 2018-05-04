@@ -63,7 +63,7 @@ namespace Microsoft.CodeAnalysis
                 return false;
             }
 
-            return FileSystem == other.FileSystem &&
+            return (FileSystem == other.FileSystem) &&
                 _keyFileSearchPaths.SequenceEqual(other._keyFileSearchPaths);
         }
     }

@@ -61,12 +61,12 @@ namespace Microsoft.CodeAnalysis.CodeGeneration
 
         private static bool GetIsNew(CodeGenerationPropertyInfo info)
         {
-            return info != null && info._isNew;
+            return (info != null) && info._isNew;
         }
 
         private static bool GetIsUnsafe(CodeGenerationPropertyInfo info)
         {
-            return info != null && info._isUnsafe;
+            return (info != null) && info._isUnsafe;
         }
     }
 }

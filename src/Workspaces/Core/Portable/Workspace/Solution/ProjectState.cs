@@ -680,12 +680,12 @@ namespace Microsoft.CodeAnalysis
             {
                 if (oldDocument.TryGetTextVersion(out var oldVersion))
                 {
-                    if (!_lazyLatestDocumentVersion.TryGetValue(out var documentVersion) || documentVersion == oldVersion)
+                    if (!_lazyLatestDocumentVersion.TryGetValue(out var documentVersion) || (documentVersion == oldVersion))
                     {
                         recalculateDocumentVersion = true;
                     }
 
-                    if (!_lazyLatestDocumentTopLevelChangeVersion.TryGetValue(out var semanticVersion) || semanticVersion == oldVersion)
+                    if (!_lazyLatestDocumentTopLevelChangeVersion.TryGetValue(out var semanticVersion) || (semanticVersion == oldVersion))
                     {
                         recalculateSemanticVersion = true;
                     }

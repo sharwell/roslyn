@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
             methodReturnType = null;
             var symbol = model.GetEnclosingSymbol(node.Span.Start, cancellationToken);
             var method = symbol as IMethodSymbol;
-            if (method == null || method.ReturnsVoid)
+            if ((method == null) || method.ReturnsVoid)
             {
                 return false;
             }
@@ -103,10 +103,10 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
             var ienumerableGenericSymbol = model.Compilation.GetTypeByMetadataName(typeof(IEnumerable<>).FullName);
             var ienumeratorGenericSymbol = model.Compilation.GetTypeByMetadataName(typeof(IEnumerator<>).FullName);
 
-            if (ienumerableGenericSymbol == null ||
-                ienumerableSymbol == null ||
-                ienumeratorGenericSymbol == null ||
-                ienumeratorSymbol == null)
+            if ((ienumerableGenericSymbol == null) ||
+                (ienumerableSymbol == null) ||
+                (ienumeratorGenericSymbol == null) ||
+                (ienumeratorSymbol == null))
             {
                 return false;
             }
@@ -143,14 +143,14 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
             var rightArguments = returnExpressionType.GetTypeArguments();
 
             // If we have a mismatch in the number of type arguments we can immediately return as there is no way the types are convertible
-            if (leftArguments != null && rightArguments != null &&
-                leftArguments.Length != rightArguments.Length)
+            if ((leftArguments != null) && (rightArguments != null) &&
+                (leftArguments.Length != rightArguments.Length))
             {
                 return false;
             }
 
             // If there are no more type arguments we assume they are convertible since the outer generic types are convertible
-            if (leftArguments == null || !leftArguments.Any())
+            if ((leftArguments == null) || !leftArguments.Any())
             {
                 return true;
             }
@@ -173,8 +173,8 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
             var ienumerableSymbol = model.Compilation.GetTypeByMetadataName(typeof(IEnumerable).FullName);
             var ienumeratorSymbol = model.Compilation.GetTypeByMetadataName(typeof(IEnumerator).FullName);
 
-            if (ienumerableSymbol == null ||
-                    ienumeratorSymbol == null)
+            if ((ienumerableSymbol == null) ||
+                    (ienumeratorSymbol == null))
             {
                 return false;
             }
@@ -197,7 +197,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeFixes.Iterator
                 return false;
             }
 
-            node = ancestors.FirstOrDefault(n => n.Span.Contains(span) && n != root && n.IsKind(SyntaxKind.ReturnStatement));
+            node = ancestors.FirstOrDefault(n => n.Span.Contains(span) && (n != root) && n.IsKind(SyntaxKind.ReturnStatement));
             return node != null;
         }
 

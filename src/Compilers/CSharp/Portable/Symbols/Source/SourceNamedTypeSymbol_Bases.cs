@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             if (_lazyInterfaces.IsDefault)
             {
-                if (basesBeingResolved != null && basesBeingResolved.ContainsReference(this.OriginalDefinition))
+                if ((basesBeingResolved != null) && basesBeingResolved.ContainsReference(this.OriginalDefinition))
                 {
                     return ImmutableArray<NamedTypeSymbol>.Empty;
                 }
@@ -239,7 +239,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var reportedPartialConflict = false;
-            Debug.Assert(basesBeingResolved == null || !basesBeingResolved.ContainsReference(this.OriginalDefinition));
+            Debug.Assert((basesBeingResolved == null) || !basesBeingResolved.ContainsReference(this.OriginalDefinition));
             var newBasesBeingResolved = basesBeingResolved.Prepend(this.OriginalDefinition);
             var baseInterfaces = ArrayBuilder<NamedTypeSymbol>.GetInstance();
 
@@ -261,14 +261,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         baseType = partBase;
                         baseTypeLocation = decl.NameLocation;
                     }
-                    else if (baseType.TypeKind == TypeKind.Error && (object)partBase != null)
+                    else if ((baseType.TypeKind == TypeKind.Error) && ((object)partBase != null))
                     {
                         // if the old base was an error symbol, copy it to the interfaces list so it doesn't get lost
                         partInterfaces = partInterfaces.Add(baseType);
                         baseType = partBase;
                         baseTypeLocation = decl.NameLocation;
                     }
-                    else if ((object)partBase != null && partBase != baseType && partBase.TypeKind != TypeKind.Error)
+                    else if (((object)partBase != null) && (partBase != baseType) && (partBase.TypeKind != TypeKind.Error))
                     {
                         // the parts do not agree
                         var info = diagnostics.Add(ErrorCode.ERR_PartialMultipleBases, Locations[0], this);
@@ -307,7 +307,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var baseInterfacesRO = baseInterfaces.ToImmutableAndFree();
-            if (DeclaredAccessibility != Accessibility.Private && IsInterface)
+            if ((DeclaredAccessibility != Accessibility.Private) && IsInterface)
             {
                 foreach (var i in baseInterfacesRO)
                 {
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 i++;
                 var typeSyntax = baseTypeSyntax.Type;
-                if (typeSyntax.Kind() != SyntaxKind.PredefinedType && !SyntaxFacts.IsName(typeSyntax.Kind()))
+                if ((typeSyntax.Kind() != SyntaxKind.PredefinedType) && !SyntaxFacts.IsName(typeSyntax.Kind()))
                 {
                     diagnostics.Add(ErrorCode.ERR_BadBaseType, typeSyntax.GetLocation());
                 }
@@ -369,7 +369,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 TypeSymbol baseType;
 
-                if (i == 0 && TypeKind == TypeKind.Class) // allow class in the first position
+                if ((i == 0) && (TypeKind == TypeKind.Class)) // allow class in the first position
                 {
                     baseType = baseBinder.BindType(typeSyntax, diagnostics, newBasesBeingResolved);
 
@@ -377,12 +377,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     if (IsRestrictedBaseType(baseSpecialType))
                     {
                         // check for one of the specific exceptions required for compiling mscorlib
-                        if (this.SpecialType == SpecialType.System_Enum && baseSpecialType == SpecialType.System_ValueType ||
-                            this.SpecialType == SpecialType.System_MulticastDelegate && baseSpecialType == SpecialType.System_Delegate)
+                        if (((this.SpecialType == SpecialType.System_Enum) && (baseSpecialType == SpecialType.System_ValueType)) ||
+                            ((this.SpecialType == SpecialType.System_MulticastDelegate) && (baseSpecialType == SpecialType.System_Delegate)))
                         {
                             // allowed
                         }
-                        else if (baseSpecialType == SpecialType.System_Array && this.ContainingAssembly.CorLibrary == this.ContainingAssembly)
+                        else if ((baseSpecialType == SpecialType.System_Array) && (this.ContainingAssembly.CorLibrary == this.ContainingAssembly))
                         {
                             // Specific exception for System.ArrayContracts, which is only built when CONTRACTS_FULL is defined.
                             // (See InheritanceResolver::CheckForBaseClassErrors).
@@ -420,15 +420,15 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         }
                     }
 
-                    if ((baseType.TypeKind == TypeKind.Class ||
-                         baseType.TypeKind == TypeKind.Delegate ||
-                         baseType.TypeKind == TypeKind.Struct ||
+                    if (((baseType.TypeKind == TypeKind.Class) ||
+                         (baseType.TypeKind == TypeKind.Delegate) ||
+                         (baseType.TypeKind == TypeKind.Struct) ||
                          baseTypeIsErrorWithoutInterfaceGuess) &&
                         ((object)localBase == null))
                     {
                         localBase = (NamedTypeSymbol)baseType;
                         Debug.Assert((object)localBase != null);
-                        if (this.IsStatic && localBase.SpecialType != SpecialType.System_Object)
+                        if (this.IsStatic && (localBase.SpecialType != SpecialType.System_Object))
                         {
                             // Static class '{0}' cannot derive from type '{1}'. Static classes must derive from object.
                             var info = diagnostics.Add(ErrorCode.ERR_StaticDerivedFromNonObject, location, this, localBase);
@@ -513,7 +513,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 }
             }
 
-            if (this.SpecialType == SpecialType.System_Object && ((object)localBase != null || localInterfaces.Count != 0))
+            if ((this.SpecialType == SpecialType.System_Object) && (((object)localBase != null) || (localInterfaces.Count != 0)))
             {
                 var name = GetName(bases.Parent);
                 diagnostics.Add(ErrorCode.ERR_ObjectCantHaveBases, new SourceLocation(name));

@@ -29,7 +29,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
 
         private static bool IsTriggerCharacterInternal(char ch)
         {
-            return ch == '[' || ch == ',';
+            return (ch == '[') || (ch == ',');
         }
 
         public override bool IsRetriggerCharacter(char ch)
@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
             // goo?[$$]
             if (expressionSymbol is INamedTypeSymbol namedType)
             {
-                if (namedType.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T &&
+                if ((namedType.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T) &&
                     expression.IsKind(SyntaxKind.NullableType) &&
                     expression.IsChildNode<ArrayTypeSyntax>(a => a.ElementType))
                 {
@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                 }
             }
 
-            if (expressionSymbol != null && expressionSymbol is INamedTypeSymbol)
+            if ((expressionSymbol != null) && (expressionSymbol is INamedTypeSymbol))
             {
                 return null;
             }
@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                     cancellationToken,
                     out var expression,
                     out var openBracket) ||
-                currentSpan.Start != expression.SpanStart)
+                (currentSpan.Start != expression.SpanStart))
             {
                 return null;
             }
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                 .OfType<IPropertySymbol>()
                 .ToImmutableArray();
 
-            if (indexers.Any() && expression is MemberAccessExpressionSyntax)
+            if (indexers.Any() && (expression is MemberAccessExpressionSyntax))
             {
                 expressionType = semanticModel.GetTypeInfo(((MemberAccessExpressionSyntax)expression).Expression, cancellationToken).Type;
                 return true;
@@ -285,22 +285,22 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
             internal static bool IsTriggerToken(SyntaxToken token)
             {
                 return !token.IsKind(SyntaxKind.None) &&
-                    token.ValueText.Length == 1 &&
+                    (token.ValueText.Length == 1) &&
                     IsTriggerCharacterInternal(token.ValueText[0]) &&
-                    token.Parent is BracketedArgumentListSyntax &&
-                    token.Parent.Parent is ElementAccessExpressionSyntax;
+                    (token.Parent is BracketedArgumentListSyntax) &&
+                    (token.Parent.Parent is ElementAccessExpressionSyntax);
             }
 
             internal static bool IsArgumentListToken(ElementAccessExpressionSyntax expression, SyntaxToken token)
             {
                 return expression.ArgumentList.Span.Contains(token.SpanStart) &&
-                    token != expression.ArgumentList.CloseBracketToken;
+                    (token != expression.ArgumentList.CloseBracketToken);
             }
 
             internal static TextSpan GetTextSpan(SyntaxNode expression, SyntaxToken openBracket)
             {
-                Contract.ThrowIfFalse(openBracket.Parent is BracketedArgumentListSyntax &&
-                    (openBracket.Parent.Parent is ElementAccessExpressionSyntax || openBracket.Parent.Parent is ElementBindingExpressionSyntax));
+                Contract.ThrowIfFalse((openBracket.Parent is BracketedArgumentListSyntax) &&
+                    ((openBracket.Parent.Parent is ElementAccessExpressionSyntax) || (openBracket.Parent.Parent is ElementBindingExpressionSyntax)));
                 return SignatureHelpUtilities.GetSignatureHelpSpan((BracketedArgumentListSyntax)openBracket.Parent);
             }
 
@@ -327,20 +327,20 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
             internal static bool IsArgumentListToken(ArrayTypeSyntax node, SyntaxToken token)
             {
                 return node.RankSpecifiers.Span.Contains(token.SpanStart) &&
-                    token != node.RankSpecifiers.First().CloseBracketToken;
+                    (token != node.RankSpecifiers.First().CloseBracketToken);
             }
 
             internal static bool IsTriggerToken(SyntaxToken token)
             {
                 return !token.IsKind(SyntaxKind.None) &&
-                    token.ValueText.Length == 1 &&
+                    (token.ValueText.Length == 1) &&
                     IsTriggerCharacterInternal(token.ValueText[0]) &&
-                    token.Parent is ArrayRankSpecifierSyntax;
+                    (token.Parent is ArrayRankSpecifierSyntax);
             }
 
             internal static TextSpan GetTextSpan(SyntaxNode expression, SyntaxToken openBracket)
             {
-                Contract.ThrowIfFalse(openBracket.Parent is ArrayRankSpecifierSyntax && openBracket.Parent.Parent is ArrayTypeSyntax);
+                Contract.ThrowIfFalse((openBracket.Parent is ArrayRankSpecifierSyntax) && (openBracket.Parent.Parent is ArrayTypeSyntax));
                 return TextSpan.FromBounds(expression.SpanStart, openBracket.Parent.Span.End);
             }
 
@@ -367,17 +367,17 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
             internal static bool IsTriggerToken(SyntaxToken token)
             {
                 return !token.IsKind(SyntaxKind.None) &&
-                    token.ValueText.Length == 1 &&
+                    (token.ValueText.Length == 1) &&
                     IsTriggerCharacterInternal(token.ValueText[0]) &&
-                    token.Parent is BracketedArgumentListSyntax &&
-                    token.Parent.Parent is ElementBindingExpressionSyntax &&
-                    token.Parent.Parent.Parent is ConditionalAccessExpressionSyntax;
+                    (token.Parent is BracketedArgumentListSyntax) &&
+                    (token.Parent.Parent is ElementBindingExpressionSyntax) &&
+                    (token.Parent.Parent.Parent is ConditionalAccessExpressionSyntax);
             }
 
             internal static bool IsArgumentListToken(ElementBindingExpressionSyntax expression, SyntaxToken token)
             {
                 return expression.ArgumentList.Span.Contains(token.SpanStart) &&
-                    token != expression.ArgumentList.CloseBracketToken;
+                    (token != expression.ArgumentList.CloseBracketToken);
             }
 
             internal static bool TryGetSyntax(SyntaxNode root, int position, ISyntaxFactsService syntaxFacts, SignatureHelpTriggerReason triggerReason, CancellationToken cancellationToken, out ExpressionSyntax identifier, out SyntaxToken openBrace)

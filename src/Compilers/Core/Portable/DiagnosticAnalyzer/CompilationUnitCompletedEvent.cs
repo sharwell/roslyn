@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             {
                 var weakModel = _weakModel;
                 SemanticModel semanticModel;
-                if (weakModel == null || !weakModel.TryGetTarget(out semanticModel))
+                if ((weakModel == null) || !weakModel.TryGetTarget(out semanticModel))
                 {
                     semanticModel = Compilation.GetSemanticModel(CompilationUnit);
                     _weakModel = new WeakReference<SemanticModel>(semanticModel);

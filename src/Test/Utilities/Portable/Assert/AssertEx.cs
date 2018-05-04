@@ -29,7 +29,7 @@ namespace Roslyn.Test.Utilities
             {
                 var type = typeof(T);
                 return !type.GetTypeInfo().IsValueType ||
-                    (type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>));
+                    (type.GetTypeInfo().IsGenericType && (type.GetGenericTypeDefinition() == typeof(Nullable<>)));
             }
 
             public static bool IsNull(T @object)
@@ -85,7 +85,7 @@ namespace Roslyn.Test.Utilities
                 var enumerableX = x as IEnumerable;
                 var enumerableY = y as IEnumerable;
 
-                if (enumerableX != null && enumerableY != null)
+                if ((enumerableX != null) && (enumerableY != null))
                 {
                     var enumeratorX = enumerableX.GetEnumerator();
                     var enumeratorY = enumerableY.GetEnumerator();
@@ -149,7 +149,7 @@ namespace Roslyn.Test.Utilities
 
         public static void Equal<T>(ImmutableArray<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer = null, string message = null)
         {
-            if (actual == null || expected.IsDefault)
+            if ((actual == null) || expected.IsDefault)
             {
                 Assert.True(actual == null == expected.IsDefault, message);
             }
@@ -161,7 +161,7 @@ namespace Roslyn.Test.Utilities
 
         public static void Equal<T>(IEnumerable<T> expected, ImmutableArray<T> actual, IEqualityComparer<T> comparer = null, string message = null, string itemSeparator = null)
         {
-            if (expected == null || actual.IsDefault)
+            if ((expected == null) || actual.IsDefault)
             {
                 Assert.True(expected == null == actual.IsDefault, message);
             }
@@ -218,7 +218,7 @@ namespace Roslyn.Test.Utilities
                 Fail("expected and actual references are identical\r\n" + message);
             }
 
-            if (expected == null || actual == null)
+            if ((expected == null) || (actual == null))
             {
                 return;
             }
@@ -268,7 +268,7 @@ namespace Roslyn.Test.Utilities
         public static void SetEqual<T>(IEnumerable<T> expected, IEnumerable<T> actual, IEqualityComparer<T> comparer = null, string message = null, string itemSeparator = "\r\n", Func<T, string> itemInspector = null)
         {
             var expectedSet = new HashSet<T>(expected, comparer);
-            var result = expected.Count() == actual.Count() && expectedSet.SetEquals(actual);
+            var result = (expected.Count() == actual.Count()) && expectedSet.SetEquals(actual);
             if (!result)
             {
                 if (string.IsNullOrEmpty(message))
@@ -417,7 +417,7 @@ namespace Roslyn.Test.Utilities
                 var trimmedLine = line.Trim();
                 if (trimmedLine.Length > 0)
                 {
-                    if (!(trimmedLine[0] == '{' || trimmedLine[0] == '}'))
+                    if (!((trimmedLine[0] == '{') || (trimmedLine[0] == '}')))
                     {
                         output.Append("  ");
                     }
@@ -498,7 +498,7 @@ namespace Roslyn.Test.Utilities
         internal static bool TryGenerateExpectedSourceFileAndGetDiffLink(string actualString, int expectedLineCount, string expectedValueSourcePath, int expectedValueSourceLine, out string link)
         {
             // add a link to a .cmd file that opens a diff tool:
-            if (DiffToolAvailable && expectedValueSourcePath != null && expectedValueSourceLine != 0)
+            if (DiffToolAvailable && (expectedValueSourcePath != null) && (expectedValueSourceLine != 0))
             {
                 var actualFile = Path.GetTempFileName();
                 var testFileLines = File.ReadAllLines(expectedValueSourcePath);
@@ -569,7 +569,7 @@ namespace Roslyn.Test.Utilities
             }
             catch (Exception e)
             {
-                if (e is AggregateException agg && agg.InnerExceptions.Count == 1)
+                if (e is AggregateException agg && (agg.InnerExceptions.Count == 1))
                 {
                     e = agg.InnerExceptions[0];
                 }

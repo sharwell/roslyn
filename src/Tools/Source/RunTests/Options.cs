@@ -77,7 +77,7 @@ namespace RunTests
 
         internal static Options Parse(string[] args)
         {
-            if (args == null || args.Any(a => a == null) || args.Length < 2)
+            if ((args == null) || args.Any(a => a == null) || (args.Length < 2))
             {
                 return null;
             }
@@ -85,7 +85,7 @@ namespace RunTests
             var comparer = StringComparer.OrdinalIgnoreCase;
             bool isOption(string argument, string optionName, out string value)
             {
-                Debug.Assert(!string.IsNullOrEmpty(optionName) && optionName[0] == '-');
+                Debug.Assert(!string.IsNullOrEmpty(optionName) && (optionName[0] == '-'));
                 if (argument.StartsWith(optionName + ":", StringComparison.OrdinalIgnoreCase))
                 {
                     value = argument.Substring(optionName.Length + 1);

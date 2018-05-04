@@ -1432,7 +1432,7 @@ ulong.MinValue --> 0";
 
         private static string ParseAndGetConstantFoldingSteps(string source)
         {
-            return ParseAndGetConstantFoldingSteps(source, node => node.Kind != BoundKind.Literal && node.Kind != BoundKind.Local);
+            return ParseAndGetConstantFoldingSteps(source, node => (node.Kind != BoundKind.Literal) && (node.Kind != BoundKind.Local));
         }
 
         private static string ParseAndGetConstantFoldingSteps(string source, Func<BoundNode, bool> predicate)

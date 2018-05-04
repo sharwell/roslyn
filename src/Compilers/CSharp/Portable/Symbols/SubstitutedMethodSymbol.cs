@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal SubstitutedMethodSymbol(NamedTypeSymbol containingSymbol, MethodSymbol originalDefinition)
             : this(containingSymbol, containingSymbol.TypeSubstitution, originalDefinition, constructedFrom: null)
         {
-            Debug.Assert(containingSymbol is SubstitutedNamedTypeSymbol || containingSymbol is SubstitutedErrorTypeSymbol);
+            Debug.Assert((containingSymbol is SubstitutedNamedTypeSymbol) || (containingSymbol is SubstitutedErrorTypeSymbol));
             Debug.Assert(originalDefinition.ContainingType == containingSymbol.OriginalDefinition);
         }
 
@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // This will throw if API shouldn't be supported or there is a problem with the argument.
             var notUsed = OriginalDefinition.GetTypeInferredDuringReduction(reducedFromTypeParameter);
 
-            Debug.Assert((object)notUsed == null && (object)OriginalDefinition.ReducedFrom != null);
+            Debug.Assert(((object)notUsed == null) && ((object)OriginalDefinition.ReducedFrom != null));
             return this.TypeArguments[reducedFromTypeParameter.Ordinal];
         }
 
@@ -407,8 +407,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             SubstitutedMethodSymbol other = obj as SubstitutedMethodSymbol;
             if ((object)other == null) return false;
 
-            if ((object)this.OriginalDefinition != (object)other.OriginalDefinition &&
-                this.OriginalDefinition != other.OriginalDefinition)
+            if (((object)this.OriginalDefinition != (object)other.OriginalDefinition) &&
+                (this.OriginalDefinition != other.OriginalDefinition))
             {
                 return false;
             }

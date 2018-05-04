@@ -80,8 +80,8 @@ namespace Microsoft.CodeAnalysis
     {
         internal static bool IsValid(this SymbolDisplayPartKind value)
         {
-            return (value >= SymbolDisplayPartKind.AliasName && value <= SymbolDisplayPartKind.RangeVariableName) ||
-                (value >= InternalSymbolDisplayPartKind.Arity && value <= InternalSymbolDisplayPartKind.Other);
+            return ((value >= SymbolDisplayPartKind.AliasName) && (value <= SymbolDisplayPartKind.RangeVariableName)) ||
+                ((value >= InternalSymbolDisplayPartKind.Arity) && (value <= InternalSymbolDisplayPartKind.Other));
         }
     }
 }

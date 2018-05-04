@@ -22,7 +22,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Utilities
         {
             pbstrMkDoc = _document;
 
-            if (pspanLocation != null && pspanLocation.Length > 0)
+            if ((pspanLocation != null) && (pspanLocation.Length > 0))
             {
                 pspanLocation[0] = _textSpan;
             }

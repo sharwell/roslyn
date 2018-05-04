@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
                 var walkedPastDiagnosticSpan = false;
                 var seenEndOfLineTrivia = false;
                 var index = isStartToken ? triviaList.Length - 1 : 0;
-                while (index >= 0 && index < triviaList.Length)
+                while ((index >= 0) && (index < triviaList.Length))
                 {
                     var trivia = triviaList[index];
 
@@ -88,7 +88,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes.Suppression
                     index = getNextIndex(index);
                 }
 
-                triviaAtIndex = index >= 0 && index < triviaList.Length ?
+                triviaAtIndex = (index >= 0) && (index < triviaList.Length) ?
                     triviaList[index] :
                     default;
 

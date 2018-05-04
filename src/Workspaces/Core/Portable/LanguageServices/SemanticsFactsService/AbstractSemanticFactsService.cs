@@ -38,11 +38,11 @@ namespace Microsoft.CodeAnalysis.LanguageServices
             // so to be safe, we consider field and property in scope when
             // creating unique name for local
             Func<ISymbol, bool> filter = s =>
-                s.Kind == SymbolKind.Local ||
-                s.Kind == SymbolKind.Parameter ||
-                s.Kind == SymbolKind.RangeVariable ||
-                s.Kind == SymbolKind.Field ||
-                s.Kind == SymbolKind.Property;
+                (s.Kind == SymbolKind.Local) ||
+                (s.Kind == SymbolKind.Parameter) ||
+                (s.Kind == SymbolKind.RangeVariable) ||
+                (s.Kind == SymbolKind.Field) ||
+                (s.Kind == SymbolKind.Property);
 
             return GenerateUniqueName(
                 semanticModel, location, containerOpt, baseName, filter, usedNames: Enumerable.Empty<string>(), cancellationToken);

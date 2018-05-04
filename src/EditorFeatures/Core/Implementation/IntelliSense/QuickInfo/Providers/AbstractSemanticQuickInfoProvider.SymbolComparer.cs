@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 
             public bool Equals(ISymbol x, ISymbol y)
             {
-                if (x is ILabelSymbol || x is ILocalSymbol || x is IRangeVariableSymbol)
+                if ((x is ILabelSymbol) || (x is ILocalSymbol) || (x is IRangeVariableSymbol))
                 {
                     return object.ReferenceEquals(x, y);
                 }
@@ -27,7 +27,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 
             public int GetHashCode(ISymbol obj)
             {
-                if (obj is ILabelSymbol || obj is ILocalSymbol || obj is IRangeVariableSymbol)
+                if ((obj is ILabelSymbol) || (obj is ILocalSymbol) || (obj is IRangeVariableSymbol))
                 {
                     return obj.GetHashCode();
                 }

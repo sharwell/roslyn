@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             GeneratedLabelSymbol continueLabel,
             bool hasErrors)
         {
-            Debug.Assert(loop.Kind == BoundKind.WhileStatement || loop.Kind == BoundKind.ForEachStatement);
+            Debug.Assert((loop.Kind == BoundKind.WhileStatement) || (loop.Kind == BoundKind.ForEachStatement));
 
             // while (condition) 
             //   body;

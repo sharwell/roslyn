@@ -21,7 +21,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Utilities
             checked
             {
                 int i;
-                for (i = 0; i < celt && _next + i < _items.Length; i++)
+                for (i = 0; (i < celt) && ((_next + i) < _items.Length); i++)
                 {
                     rgelt[i] = _items[_next + i];
                 }

@@ -89,7 +89,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             ImmutableArray<Conversion> underlyingConversions = conversion.UnderlyingConversions;
             Debug.Assert(!underlyingConversions.IsDefault);
-            Debug.Assert(leftTargets.Count == rightParts.Length && leftTargets.Count == conversion.UnderlyingConversions.Length);
+            Debug.Assert((leftTargets.Count == rightParts.Length) && (leftTargets.Count == conversion.UnderlyingConversions.Length));
 
             var builder = isUsed ? ArrayBuilder<BoundExpression>.GetInstance(leftTargets.Count) : null;
             for (int i = 0; i < leftTargets.Count; i++)
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (right.Kind == BoundKind.Conversion)
             {
                 var tupleConversion = (BoundConversion)right;
-                if ((tupleConversion.Conversion.Kind == ConversionKind.ImplicitTupleLiteral || tupleConversion.Conversion.Kind == ConversionKind.Identity)
+                if (((tupleConversion.Conversion.Kind == ConversionKind.ImplicitTupleLiteral) || (tupleConversion.Conversion.Kind == ConversionKind.Identity))
                     && IsTupleExpression(tupleConversion.Operand.Kind))
                 {
                     return ((BoundTupleExpression)tupleConversion.Operand).Arguments;
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static bool IsTupleExpression(BoundKind kind)
         {
-            return kind == BoundKind.TupleLiteral || kind == BoundKind.ConvertedTupleLiteral;
+            return (kind == BoundKind.TupleLiteral) || (kind == BoundKind.ConvertedTupleLiteral);
         }
 
         // This returns accessors and may create a temp for the tuple, but will not create temps for the tuple elements.

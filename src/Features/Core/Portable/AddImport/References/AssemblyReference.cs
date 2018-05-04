@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.AddImport
             {
                 var reference = obj as AssemblyReference;
                 return base.Equals(obj) &&
-                    _referenceAssemblyWithType.AssemblyName == reference._referenceAssemblyWithType.AssemblyName;
+                    (_referenceAssemblyWithType.AssemblyName == reference._referenceAssemblyWithType.AssemblyName);
             }
 
             public override int GetHashCode()

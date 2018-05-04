@@ -77,18 +77,18 @@ namespace Microsoft.CodeAnalysis.Editor
 
         public static bool Equals(TodoItem item1, TodoItem item2)
         {
-            if (item1.DocumentId != null && item2.DocumentId != null)
+            if ((item1.DocumentId != null) && (item2.DocumentId != null))
             {
-                return item1.DocumentId == item2.DocumentId &&
-                       item1.Priority == item2.Priority &&
-                       item1.Message == item2.Message &&
-                       item1.OriginalLine == item2.OriginalLine &&
-                       item1.OriginalColumn == item2.OriginalColumn;
+                return (item1.DocumentId == item2.DocumentId) &&
+                       (item1.Priority == item2.Priority) &&
+                       (item1.Message == item2.Message) &&
+                       (item1.OriginalLine == item2.OriginalLine) &&
+                       (item1.OriginalColumn == item2.OriginalColumn);
             }
 
-            return item1.DocumentId == item2.DocumentId &&
-                   item1.Priority == item2.Priority &&
-                   item1.Message == item2.Message;
+            return (item1.DocumentId == item2.DocumentId) &&
+                   (item1.Priority == item2.Priority) &&
+                   (item1.Message == item2.Message);
         }
 
         public static int GetHashCode(TodoItem item)

@@ -49,7 +49,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
             pfBlockAvailable = foundBlock != null ? 1 : 0;
             pbstrDescription = foundBlock?.description;
 
-            if (foundBlock != null && ptsBlockSpan != null && ptsBlockSpan.Length >= 1)
+            if ((foundBlock != null) && (ptsBlockSpan != null) && (ptsBlockSpan.Length >= 1))
             {
                 ptsBlockSpan[0] = foundBlock.Value.span.ToSnapshotSpan(snapshot).ToVsTextSpan();
             }
@@ -66,7 +66,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
             CancellationToken cancellationToken)
         {
             var document = snapshot.GetOpenDocumentInCurrentContextWithChanges();
-            if (document == null || !document.SupportsSyntaxTree)
+            if ((document == null) || !document.SupportsSyntaxTree)
             {
                 return null;
             }

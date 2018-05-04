@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis
 
         internal static bool IsValid(this SourceCodeKind value)
         {
-            return value >= SourceCodeKind.Regular && value <= SourceCodeKind.Script;
+            return (value >= SourceCodeKind.Regular) && (value <= SourceCodeKind.Script);
         }
     }
 }

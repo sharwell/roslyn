@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         {
             var escaped = identifier.EscapeIdentifier(isQueryContext);
 
-            if (escaped.Length == 0 || escaped[0] != '@')
+            if ((escaped.Length == 0) || (escaped[0] != '@'))
             {
                 return SyntaxFactory.Identifier(escaped);
             }

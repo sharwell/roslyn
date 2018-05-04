@@ -31,8 +31,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             var lastToken = join.LeftExpression.GetLastToken(includeSkipped: true);
 
             // join a in expr |
-            if (join.LeftExpression.Width() > 0 &&
-                token == lastToken)
+            if ((join.LeftExpression.Width() > 0) &&
+                (token == lastToken))
             {
                 return true;
             }

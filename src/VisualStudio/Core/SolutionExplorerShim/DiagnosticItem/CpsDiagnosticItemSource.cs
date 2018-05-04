@@ -51,9 +51,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
 
         private void OnWorkspaceChangedLookForAnalyzer(object sender, WorkspaceChangeEventArgs e)
         {
-            if (e.Kind == WorkspaceChangeKind.SolutionCleared ||
-                e.Kind == WorkspaceChangeKind.SolutionReloaded ||
-                e.Kind == WorkspaceChangeKind.SolutionRemoved)
+            if ((e.Kind == WorkspaceChangeKind.SolutionCleared) ||
+                (e.Kind == WorkspaceChangeKind.SolutionReloaded) ||
+                (e.Kind == WorkspaceChangeKind.SolutionRemoved))
             {
                 _workspace.WorkspaceChanged -= OnWorkspaceChangedLookForAnalyzer;
             }
@@ -73,8 +73,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
                 {
                     _workspace.WorkspaceChanged -= OnWorkspaceChangedLookForAnalyzer;
                 }
-                else if (e.Kind == WorkspaceChangeKind.ProjectAdded
-                         || e.Kind == WorkspaceChangeKind.ProjectChanged)
+                else if ((e.Kind == WorkspaceChangeKind.ProjectAdded)
+                         || (e.Kind == WorkspaceChangeKind.ProjectChanged))
                 {
                     _analyzerReference = TryGetAnalyzerReference(e.NewSolution);
                     if (_analyzerReference != null)

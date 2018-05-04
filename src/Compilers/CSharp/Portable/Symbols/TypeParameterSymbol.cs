@@ -522,7 +522,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            if ((object)other == null || !ReferenceEquals(other.OriginalDefinition, this.OriginalDefinition))
+            if (((object)other == null) || !ReferenceEquals(other.OriginalDefinition, this.OriginalDefinition))
             {
                 return false;
             }

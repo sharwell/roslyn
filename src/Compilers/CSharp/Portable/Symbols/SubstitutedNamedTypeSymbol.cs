@@ -255,7 +255,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             ImmutableArray<Symbol> result;
             var cache = _lazyMembersByNameCache;
-            if (cache != null && cache.TryGetValue(name, out result))
+            if ((cache != null) && cache.TryGetValue(name, out result))
             {
                 return result;
             }

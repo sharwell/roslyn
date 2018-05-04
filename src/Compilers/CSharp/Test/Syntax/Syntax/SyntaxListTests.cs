@@ -260,7 +260,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                 var item = ChildSyntaxList.ChildThatContainsPosition(parsedArgumentList, position);
                 Assert.Equal(position, item.Position);
                 Assert.Equal(1, item.Width);
-                if (position % 2 == 0)
+                if ((position % 2) == 0)
                 {
                     // Even. We should get a node
                     Assert.True(item.IsNode);

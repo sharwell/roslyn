@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ProjectSystemShim
 
         public unsafe object ConvertToObject()
         {
-            if (_type == (short)VarEnum.VT_BOOL && _booleanValue == 4)
+            if ((_type == (short)VarEnum.VT_BOOL) && (_booleanValue == 4))
             {
                 return null;
             }

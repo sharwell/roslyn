@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         public static bool MatchesKind(this SyntaxTrivia trivia, SyntaxKind kind1, SyntaxKind kind2)
         {
             var triviaKind = trivia.Kind();
-            return triviaKind == kind1 || triviaKind == kind2;
+            return (triviaKind == kind1) || (triviaKind == kind2);
         }
 
         public static bool MatchesKind(this SyntaxTrivia trivia, params SyntaxKind[] kinds)
@@ -61,9 +61,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             }
 
             var text = trivia.ToFullString();
-            return text.Length >= 4
-                && text[text.Length - 1] == '/'
-                && text[text.Length - 2] == '*';
+            return (text.Length >= 4)
+                && (text[text.Length - 1] == '/')
+                && (text[text.Length - 2] == '*');
         }
 
         public static bool IsDocComment(this SyntaxTrivia trivia)

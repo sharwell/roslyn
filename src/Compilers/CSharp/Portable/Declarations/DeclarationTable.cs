@@ -355,7 +355,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 {
                     if (child is MergedNamespaceOrTypeDeclaration childNamespaceOrType)
                     {
-                        if (includeMember || includeType || childNamespaceOrType.Kind == DeclarationKind.Namespace)
+                        if (includeMember || includeType || (childNamespaceOrType.Kind == DeclarationKind.Namespace))
                         {
                             stack.Push(childNamespaceOrType);
                         }

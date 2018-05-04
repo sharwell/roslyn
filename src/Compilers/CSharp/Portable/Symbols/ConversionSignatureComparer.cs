@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // We might be in an error recovery situation in which there are too many or too
             // few formal parameters declared. If we are, just say that they are unequal.
 
-            if (member1.ParameterCount != 1 || member2.ParameterCount != 1)
+            if ((member1.ParameterCount != 1) || (member2.ParameterCount != 1))
             {
                 return false;
             }

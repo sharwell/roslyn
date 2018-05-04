@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static TextSpan CreateSpan(SyntaxTokenList startOpt, SyntaxNodeOrToken startFallbackOpt, SyntaxNodeOrToken endOpt)
         {
-            Debug.Assert(startFallbackOpt != default(SyntaxNodeOrToken) || endOpt != default(SyntaxNodeOrToken));
+            Debug.Assert((startFallbackOpt != default(SyntaxNodeOrToken)) || (endOpt != default(SyntaxNodeOrToken)));
 
             int startPos;
             if (startOpt.Count > 0)

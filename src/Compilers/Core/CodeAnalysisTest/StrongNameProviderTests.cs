@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
                 internal override bool FileExists(string fullPath)
                 {
-                    return fullPath != null && _existingFullPaths != null && _existingFullPaths.Contains(FileUtilities.NormalizeAbsolutePath(fullPath));
+                    return (fullPath != null) && (_existingFullPaths != null) && _existingFullPaths.Contains(FileUtilities.NormalizeAbsolutePath(fullPath));
                 }
             }
 

@@ -150,7 +150,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             public override bool Equals(object obj)
             {
-                return obj is TypeDeclarationIdentity && Equals((TypeDeclarationIdentity)obj);
+                return (obj is TypeDeclarationIdentity) && Equals((TypeDeclarationIdentity)obj);
             }
 
             public bool Equals(TypeDeclarationIdentity other)
@@ -172,7 +172,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return false;
                 }
 
-                if (thisDecl._kind == DeclarationKind.Enum || thisDecl._kind == DeclarationKind.Delegate)
+                if ((thisDecl._kind == DeclarationKind.Enum) || (thisDecl._kind == DeclarationKind.Delegate))
                 {
                     // oh, so close, but enums and delegates cannot be partial
                     return false;

@@ -42,7 +42,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
             if (token.Kind() == SyntaxKind.IdentifierToken)
             {
-                if (token.Parent is ForEachStatementSyntax statement && token == statement.Identifier)
+                if (token.Parent is ForEachStatementSyntax statement && (token == statement.Identifier))
                 {
                     return true;
                 }
@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             else if (token.Kind() == SyntaxKind.CloseParenToken)
             {
                 var statement = token.GetAncestor<ForEachVariableStatementSyntax>();
-                if (statement != null && token.Span.End == statement.Variable.Span.End)
+                if ((statement != null) && (token.Span.End == statement.Variable.Span.End))
                 {
                     return true;
                 }
@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 {
                     // case:
                     //   from int x |
-                    if (token == fromClause.Identifier && fromClause.Type != null)
+                    if ((token == fromClause.Identifier) && (fromClause.Type != null))
                     {
                         return true;
                     }
@@ -101,16 +101,16 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
                 {
                     // case:
                     //   join int x |
-                    if (token == joinClause.Identifier && joinClause.Type != null)
+                    if ((token == joinClause.Identifier) && (joinClause.Type != null))
                     {
                         return true;
                     }
 
                     // case:
                     //   join x |
-                    if (joinClause.Type != null &&
+                    if ((joinClause.Type != null) &&
                         joinClause.Type.IsKind(SyntaxKind.IdentifierName) &&
-                        token == ((IdentifierNameSyntax)joinClause.Type).Identifier &&
+                        (token == ((IdentifierNameSyntax)joinClause.Type).Identifier) &&
                         !joinClause.Type.IsPotentialTypeName(context.SemanticModel, cancellationToken))
                     {
                         return true;

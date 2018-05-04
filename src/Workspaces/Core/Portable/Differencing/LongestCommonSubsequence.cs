@@ -18,7 +18,7 @@ namespace Microsoft.CodeAnalysis.Differencing
 
             public VArray(int d)
             {
-                _array = new int[2 * d + 1];
+                _array = new int[(2 * d) + 1];
             }
 
             public void CopyFrom(VArray otherVArray)
@@ -65,7 +65,7 @@ namespace Microsoft.CodeAnalysis.Differencing
             int x = oldLength;
             int y = newLength;
 
-            while (x > 0 || y > 0)
+            while ((x > 0) || (y > 0))
             {
                 VArray currentV = stackOfVs.Pop();
                 int d = stackOfVs.Count;
@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.Differencing
                 int xEnd = yEnd + k;
 
                 // does the snake first go down (insert) or right(delete)?
-                bool right = k == d || (k != -d && currentV[k - 1] > currentV[k + 1]);
+                bool right = (k == d) || ((k != -d) && (currentV[k - 1] > currentV[k + 1]));
                 int kPrev = right ? k - 1 : k + 1;
 
                 // snake start point
@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis.Differencing
             int x = oldLength;
             int y = newLength;
 
-            while (x > 0 || y > 0)
+            while ((x > 0) || (y > 0))
             {
                 VArray currentV = stackOfVs.Pop();
                 int d = stackOfVs.Count;
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.Differencing
                 int xEnd = yEnd + k;
 
                 // does the snake first go down (insert) or right(delete)?
-                bool right = k == d || (k != -d && currentV[k - 1] > currentV[k + 1]);
+                bool right = (k == d) || ((k != -d) && (currentV[k - 1] > currentV[k + 1]));
                 int kPrev = right ? k - 1 : k + 1;
 
                 // snake start point
@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis.Differencing
                 }
 
                 // return the insert/delete between (xStart, yStart) and (xMid, yMid) = the vertical/horizontal part of the snake
-                if (xMid > 0 || yMid > 0)
+                if ((xMid > 0) || (yMid > 0))
                 {
                     if (xStart == xMid)
                     {
@@ -172,9 +172,9 @@ namespace Microsoft.CodeAnalysis.Differencing
         /// </summary>
         protected double ComputeDistance(TSequence oldSequence, int oldLength, TSequence newSequence, int newLength)
         {
-            Debug.Assert(oldLength >= 0 && newLength >= 0);
+            Debug.Assert((oldLength >= 0) && (newLength >= 0));
 
-            if (oldLength == 0 || newLength == 0)
+            if ((oldLength == 0) || (newLength == 0))
             {
                 return (oldLength == newLength) ? 0.0 : 1.0;
             }
@@ -196,7 +196,7 @@ namespace Microsoft.CodeAnalysis.Differencing
 
             int max = Math.Max(oldLength, newLength);
             Debug.Assert(lcsLength <= max);
-            return 1.0 - (double)lcsLength / (double)max;
+            return 1.0 - ((double)lcsLength / (double)max);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace Microsoft.CodeAnalysis.Differencing
 
             bool reachedEnd= false;
 
-            for (int d = 0; d <= oldLength + newLength && !reachedEnd; d++)
+            for (int d = 0; (d <= (oldLength + newLength)) && !reachedEnd; d++)
             {
                 // V is in range [-d...d] => use d to offset the k-based array indices to non-negative values
                 if (d == 0)
@@ -259,7 +259,7 @@ namespace Microsoft.CodeAnalysis.Differencing
                 for (int k = -d; k <= d; k += 2)
                 {
                     // down or right? 
-                    bool right = k == d || (k != -d && currentV[k - 1] > currentV[k + 1]);
+                    bool right = (k == d) || ((k != -d) && (currentV[k - 1] > currentV[k + 1]));
                     int kPrev = right ? k - 1 : k + 1;
 
                     // start point
@@ -275,7 +275,7 @@ namespace Microsoft.CodeAnalysis.Differencing
                     int yEnd = yMid;
 
                     // follow diagonal
-                    while (xEnd < oldLength && yEnd < newLength && ItemsEqual(oldSequence, xEnd, newSequence, yEnd))
+                    while ((xEnd < oldLength) && (yEnd < newLength) && ItemsEqual(oldSequence, xEnd, newSequence, yEnd))
                     {
                         xEnd++;
                         yEnd++;
@@ -283,10 +283,10 @@ namespace Microsoft.CodeAnalysis.Differencing
 
                     // save end point
                     currentV[k] = yEnd;
-                    Debug.Assert(xEnd == yEnd + k);
+                    Debug.Assert(xEnd == (yEnd + k));
 
                     // check for solution
-                    if (xEnd >= oldLength && yEnd >= newLength)
+                    if ((xEnd >= oldLength) && (yEnd >= newLength))
                     {
                         reachedEnd = true;
                     }

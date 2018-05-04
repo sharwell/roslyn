@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Structure
             CSharpStructureHelpers.CollectCommentBlockSpans(indexerDeclaration, spans);
 
             // fault tolerance
-            if (indexerDeclaration.AccessorList == null ||
+            if ((indexerDeclaration.AccessorList == null) ||
                 indexerDeclaration.AccessorList.IsMissing ||
                 indexerDeclaration.AccessorList.OpenBraceToken.IsMissing ||
                 indexerDeclaration.AccessorList.CloseBraceToken.IsMissing)

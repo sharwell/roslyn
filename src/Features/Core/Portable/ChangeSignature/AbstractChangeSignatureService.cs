@@ -102,10 +102,10 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
             {
                 var containingType = method.ContainingType;
 
-                if (method.Name == WellKnownMemberNames.DelegateBeginInvokeName &&
-                    containingType != null &&
+                if ((method.Name == WellKnownMemberNames.DelegateBeginInvokeName) &&
+                    (containingType != null) &&
                     containingType.IsDelegateType() &&
-                    containingType.DelegateInvokeMethod != null)
+                    (containingType.DelegateInvokeMethod != null))
                 {
                     symbol = containingType.DelegateInvokeMethod;
                 }
@@ -118,7 +118,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
 
             if (symbol is INamedTypeSymbol typeSymbol)
             {
-                if (typeSymbol.IsDelegateType() && typeSymbol.DelegateInvokeMethod != null)
+                if (typeSymbol.IsDelegateType() && (typeSymbol.DelegateInvokeMethod != null))
                 {
                     symbol = typeSymbol.DelegateInvokeMethod;
                 }
@@ -134,7 +134,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
                 return new ChangeSignatureAnalyzedContext(CannotChangeSignatureReason.IncorrectKind);
             }
 
-            var parameterConfiguration = ParameterConfiguration.Create(symbol.GetParameters().ToList(), symbol is IMethodSymbol && (symbol as IMethodSymbol).IsExtensionMethod);
+            var parameterConfiguration = ParameterConfiguration.Create(symbol.GetParameters().ToList(), (symbol is IMethodSymbol) && (symbol as IMethodSymbol).IsExtensionMethod);
             if (!parameterConfiguration.IsChangeable())
             {
                 return new ChangeSignatureAnalyzedContext(CannotChangeSignatureReason.InsufficientParameters);
@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
             var notificationService = context.Solution.Workspace.Services.GetService<INotificationService>();
             var changeSignatureOptionsService = context.Solution.Workspace.Services.GetService<IChangeSignatureOptionsService>();
 
-            var isExtensionMethod = context.Symbol is IMethodSymbol && (context.Symbol as IMethodSymbol).IsExtensionMethod;
+            var isExtensionMethod = (context.Symbol is IMethodSymbol) && (context.Symbol as IMethodSymbol).IsExtensionMethod;
             return changeSignatureOptionsService.GetChangeSignatureOptions(context.Symbol, context.ParameterConfiguration, notificationService);
         }
 
@@ -211,8 +211,8 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
 
             foreach (var symbol in symbols)
             {
-                if (symbol.Definition.Kind == SymbolKind.Method &&
-                    ((symbol.Definition as IMethodSymbol).MethodKind == MethodKind.PropertyGet || (symbol.Definition as IMethodSymbol).MethodKind == MethodKind.PropertySet))
+                if ((symbol.Definition.Kind == SymbolKind.Method) &&
+                    (((symbol.Definition as IMethodSymbol).MethodKind == MethodKind.PropertyGet) || ((symbol.Definition as IMethodSymbol).MethodKind == MethodKind.PropertySet)))
                 {
                     continue;
                 }
@@ -241,7 +241,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
                 if (symbolWithSyntacticParameters.Kind == SymbolKind.Event)
                 {
                     var eventSymbol = symbolWithSyntacticParameters as IEventSymbol;
-                    if (eventSymbol.Type is INamedTypeSymbol type && type.DelegateInvokeMethod != null)
+                    if (eventSymbol.Type is INamedTypeSymbol type && (type.DelegateInvokeMethod != null))
                     {
                         symbolWithSemanticParameters = type.DelegateInvokeMethod;
                     }
@@ -259,8 +259,8 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
                         symbolWithSyntacticParameters = methodSymbol.ContainingType;
                     }
 
-                    if (methodSymbol.Name == WellKnownMemberNames.DelegateBeginInvokeName &&
-                        methodSymbol.ContainingType != null &&
+                    if ((methodSymbol.Name == WellKnownMemberNames.DelegateBeginInvokeName) &&
+                        (methodSymbol.ContainingType != null) &&
                         methodSymbol.ContainingType.IsDelegateType())
                     {
                         includeDefinitionLocations = false;
@@ -362,7 +362,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
         private void AddUpdatableNodeToDictionaries(Dictionary<DocumentId, List<SyntaxNode>> nodesToUpdate, DocumentId documentId, SyntaxNode nodeToUpdate, Dictionary<SyntaxNode, ISymbol> definitionToUse, ISymbol symbolWithSemanticParameters)
         {
             nodesToUpdate[documentId].Add(nodeToUpdate);
-            if (definitionToUse.TryGetValue(nodeToUpdate, out var sym) && sym != symbolWithSemanticParameters)
+            if (definitionToUse.TryGetValue(nodeToUpdate, out var sym) && (sym != symbolWithSemanticParameters))
             {
                 Debug.Assert(false, "Change Signature: Attempted to modify node twice with different semantic parameters.");
             }
@@ -435,7 +435,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
                     continue;
                 }
 
-                if ((seenNamedArgument || actualIndex != expectedIndex) && !argument.IsNamed)
+                if ((seenNamedArgument || (actualIndex != expectedIndex)) && !argument.IsNamed)
                 {
                     newArguments.Add(argument.WithName(param.Name).WithAdditionalAnnotations(Formatter.Annotation));
                     seenNamedArgument = true;
@@ -451,11 +451,11 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
 
             // 5. Add the remaining arguments. These will already have names or be params arguments, but may have been removed.
 
-            bool removedParams = updatedSignature.OriginalConfiguration.ParamsParameter != null && updatedSignature.UpdatedConfiguration.ParamsParameter == null;
+            bool removedParams = (updatedSignature.OriginalConfiguration.ParamsParameter != null) && (updatedSignature.UpdatedConfiguration.ParamsParameter == null);
 
             for (int i = declarationParametersToPermute.Count; i < arguments.Count; i++)
             {
-                if (!arguments[i].IsNamed && removedParams && i >= updatedSignature.UpdatedConfiguration.ToListOfParameters().Count)
+                if (!arguments[i].IsNamed && removedParams && (i >= updatedSignature.UpdatedConfiguration.ToListOfParameters().Count))
                 {
                     break;
                 }
@@ -507,7 +507,7 @@ namespace Microsoft.CodeAnalysis.ChangeSignature
 
                     // TODO: file bug for var match = originalParameters.FirstOrDefault(p => p.Name == <ISymbol here>);
                     var match = originalParameters.FirstOrDefault(p => p.Name == name);
-                    if (match == null || originalParameters.IndexOf(match) <= position)
+                    if ((match == null) || (originalParameters.IndexOf(match) <= position))
                     {
                         break;
                     }

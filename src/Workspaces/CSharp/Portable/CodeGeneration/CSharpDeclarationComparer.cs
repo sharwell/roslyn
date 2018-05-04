@@ -281,7 +281,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
 
         private static bool NeitherNull(object x, object y, out int comparisonResult)
         {
-            if (x == null && y == null)
+            if ((x == null) && (y == null))
             {
                 comparisonResult = 0;
                 return false;
@@ -359,7 +359,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                     // All interface members are public
                     return (int)Accessibility.Public;
                 }
-                else if (node.Kind() == SyntaxKind.StructDeclaration || node.Kind() == SyntaxKind.ClassDeclaration)
+                else if ((node.Kind() == SyntaxKind.StructDeclaration) || (node.Kind() == SyntaxKind.ClassDeclaration))
                 {
                     // Members and nested types default to private
                     return (int)Accessibility.Private;

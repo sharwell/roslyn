@@ -424,11 +424,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return false;
             }
 
-            if (_isCheckedBuiltin == other._isCheckedBuiltin &&
-                _parameters.Length == other._parameters.Length &&
+            if ((_isCheckedBuiltin == other._isCheckedBuiltin) &&
+                (_parameters.Length == other._parameters.Length) &&
                 string.Equals(_name, other._name, StringComparison.Ordinal) &&
-                _containingType == other._containingType &&
-                _returnType == other._returnType)
+                (_containingType == other._containingType) &&
+                (_returnType == other._returnType))
             {
                 for (int i = 0; i < _parameters.Length; i++)
                 {
@@ -474,7 +474,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                     return false;
                 }
 
-                return Ordinal == other.Ordinal && ContainingSymbol == other.ContainingSymbol;
+                return (Ordinal == other.Ordinal) && (ContainingSymbol == other.ContainingSymbol);
             }
 
             public override int GetHashCode()

@@ -64,7 +64,7 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.EventHookup
             }
 
             var position = caretPoint.Value.Position;
-            return position - 2 >= 0 && subjectBuffer.CurrentSnapshot.GetText(position - 2, 2) == "+=";
+            return ((position - 2) >= 0) && (subjectBuffer.CurrentSnapshot.GetText(position - 2, 2) == "+=");
         }
 
         public VSCommanding.CommandState GetCommandState(TypeCharCommandArgs args, Func<VSCommanding.CommandState> nextHandler)

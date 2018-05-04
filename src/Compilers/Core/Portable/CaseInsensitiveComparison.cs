@@ -116,7 +116,7 @@ namespace Microsoft.CodeAnalysis
 
             private static bool AreEqualLowerUnicode(char c1, char c2)
             {
-                return c1 == c2 || ToLower(c1) == ToLower(c2);
+                return (c1 == c2) || (ToLower(c1) == ToLower(c2));
             }
 
             public override bool Equals(string str1, string str2)
@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis
                     return true;
                 }
 
-                if ((object)str1 == null || (object)str2 == null)
+                if (((object)str1 == null) || ((object)str2 == null))
                 {
                     return false;
                 }
@@ -154,7 +154,7 @@ namespace Microsoft.CodeAnalysis
                     return true;
                 }
 
-                if ((object)value == null || (object)possibleEnd == null)
+                if (((object)value == null) || ((object)possibleEnd == null))
                 {
                     return false;
                 }
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis
                     return true;
                 }
 
-                if ((object)value == null || (object)possibleStart == null)
+                if (((object)value == null) || ((object)possibleStart == null))
                 {
                     return false;
                 }

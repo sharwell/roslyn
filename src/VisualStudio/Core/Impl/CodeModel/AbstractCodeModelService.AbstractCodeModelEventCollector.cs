@@ -192,7 +192,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 where TNode : SyntaxNode
                 where TParent : SyntaxNode
             {
-                Debug.Assert(oldChildren.Count + delta == newChildren.Count);
+                Debug.Assert((oldChildren.Count + delta) == newChildren.Count);
 
                 // The strategy is to assume that all of the added children are contiguous.
                 // If that turns out not to be the case, an unknown change event is raised
@@ -205,7 +205,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 int oldIndex, newIndex;
                 for (oldIndex = 0, newIndex = 0; newIndex < newChildren.Count; oldIndex++, newIndex++)
                 {
-                    if (oldIndex >= oldChildren.Count || !compare(oldChildren[oldIndex], newChildren[newIndex], newNodeParent, null))
+                    if ((oldIndex >= oldChildren.Count) || !compare(oldChildren[oldIndex], newChildren[newIndex], newNodeParent, null))
                     {
                         firstAdded = newIndex;
                         newIndex += delta;
@@ -244,7 +244,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 where TNode : SyntaxNode
                 where TParent : SyntaxNode
             {
-                Debug.Assert(oldChildren.Count - delta == newChildren.Count);
+                Debug.Assert((oldChildren.Count - delta) == newChildren.Count);
 
                 // The strategy is to assume that all of the removed children are contiguous.
                 // If that turns out not to be the case, an unknown change event is raised
@@ -257,7 +257,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 int oldIndex, newIndex;
                 for (oldIndex = 0, newIndex = 0; oldIndex < oldChildren.Count; oldIndex++, newIndex++)
                 {
-                    if (newIndex >= newChildren.Count || !compare(oldChildren[oldIndex], newChildren[newIndex], newNodeParent, null))
+                    if ((newIndex >= newChildren.Count) || !compare(oldChildren[oldIndex], newChildren[newIndex], newNodeParent, null))
                     {
                         firstRemoved = oldIndex;
                         oldIndex += delta;

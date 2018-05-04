@@ -82,18 +82,18 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         {
             PENamedTypeSymbol type = _typeContextOpt;
 
-            while ((object)type != null && (type.MetadataArity - type.Arity) > position)
+            while (((object)type != null) && ((type.MetadataArity - type.Arity) > position))
             {
                 type = type.ContainingSymbol as PENamedTypeSymbol;
             }
 
-            if ((object)type == null || type.MetadataArity <= position)
+            if (((object)type == null) || (type.MetadataArity <= position))
             {
                 return new UnsupportedMetadataTypeSymbol(); // position of type parameter too large
             }
 
             position -= type.MetadataArity - type.Arity;
-            Debug.Assert(position >= 0 && position < type.Arity);
+            Debug.Assert((position >= 0) && (position < type.Arity));
 
             return type.TypeParameters[position];
         }
@@ -332,7 +332,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             Guid scopeGuidValue = new Guid();
             bool haveScopeGuidValue = false;
 
-            if (isInterface && interfaceGuid != null)
+            if (isInterface && (interfaceGuid != null))
             {
                 haveInterfaceGuidValue = Guid.TryParse(interfaceGuid, out interfaceGuidValue);
 
@@ -361,9 +361,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 Debug.Assert(!candidate.IsGenericType);
 
                 // Ignore type forwarders, error symbols and non-public types
-                if (candidate.Kind == SymbolKind.ErrorType ||
+                if ((candidate.Kind == SymbolKind.ErrorType) ||
                     !ReferenceEquals(candidate.ContainingAssembly, assembly) ||
-                    candidate.DeclaredAccessibility != Accessibility.Public)
+                    (candidate.DeclaredAccessibility != Accessibility.Public))
                 {
                     continue;
                 }
@@ -389,7 +389,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                         }
 
                         // Get candidate's Guid
-                        if (candidate.GetGuidString(out candidateGuid) && candidateGuid != null)
+                        if (candidate.GetGuidString(out candidateGuid) && (candidateGuid != null))
                         {
                             haveCandidateGuidValue = Guid.TryParse(candidateGuid, out candidateGuidValue);
                         }
@@ -408,7 +408,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                         // Let's use a trick. To make sure the kind is the same, make sure
                         // base type is the same.
                         SpecialType baseSpecialType = (candidate.BaseTypeNoUseSiteDiagnostics?.SpecialType).GetValueOrDefault();
-                        if (baseSpecialType == SpecialType.None || baseSpecialType != (baseType?.SpecialType).GetValueOrDefault())
+                        if ((baseSpecialType == SpecialType.None) || (baseSpecialType != (baseType?.SpecialType).GetValueOrDefault()))
                         {
                             continue;
                         }
@@ -422,26 +422,26 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 if (haveInterfaceGuidValue || haveCandidateGuidValue)
                 {
                     if (!haveInterfaceGuidValue || !haveCandidateGuidValue ||
-                        candidateGuidValue != interfaceGuidValue)
+                        (candidateGuidValue != interfaceGuidValue))
                     {
                         continue;
                     }
                 }
                 else
                 {
-                    if (!haveScopeGuidValue || identifier == null || !identifier.Equals(name.FullName))
+                    if (!haveScopeGuidValue || (identifier == null) || !identifier.Equals(name.FullName))
                     {
                         continue;
                     }
 
                     // Scope guid must match candidate's assembly guid.
                     haveCandidateGuidValue = false;
-                    if (assembly.GetGuidString(out candidateGuid) && candidateGuid != null)
+                    if (assembly.GetGuidString(out candidateGuid) && (candidateGuid != null))
                     {
                         haveCandidateGuidValue = Guid.TryParse(candidateGuid, out candidateGuidValue);
                     }
 
-                    if (!haveCandidateGuidValue || scopeGuidValue != candidateGuidValue)
+                    if (!haveCandidateGuidValue || (scopeGuidValue != candidateGuidValue))
                     {
                         continue;
                     }
@@ -473,12 +473,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
         protected override MethodSymbol FindMethodSymbolInType(TypeSymbol typeSymbol, MethodDefinitionHandle targetMethodDef)
         {
-            Debug.Assert(typeSymbol is PENamedTypeSymbol || typeSymbol is ErrorTypeSymbol);
+            Debug.Assert((typeSymbol is PENamedTypeSymbol) || (typeSymbol is ErrorTypeSymbol));
 
             foreach (Symbol member in typeSymbol.GetMembersUnordered())
             {
                 PEMethodSymbol method = member as PEMethodSymbol;
-                if ((object)method != null && method.Handle == targetMethodDef)
+                if (((object)method != null) && (method.Handle == targetMethodDef))
                 {
                     return method;
                 }
@@ -489,12 +489,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
         protected override FieldSymbol FindFieldSymbolInType(TypeSymbol typeSymbol, FieldDefinitionHandle fieldDef)
         {
-            Debug.Assert(typeSymbol is PENamedTypeSymbol || typeSymbol is ErrorTypeSymbol);
+            Debug.Assert((typeSymbol is PENamedTypeSymbol) || (typeSymbol is ErrorTypeSymbol));
 
             foreach (Symbol member in typeSymbol.GetMembersUnordered())
             {
                 PEFieldSymbol field = member as PEFieldSymbol;
-                if ((object)field != null && field.Handle == fieldDef)
+                if (((object)field != null) && (field.Handle == fieldDef))
                 {
                     return field;
                 }
@@ -509,11 +509,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
             if ((object)scope != null)
             {
-                Debug.Assert(scope.Kind == SymbolKind.NamedType || scope.Kind == SymbolKind.ErrorType);
+                Debug.Assert((scope.Kind == SymbolKind.NamedType) || (scope.Kind == SymbolKind.ErrorType));
 
                 // We only want to consider members that are at or above "scope" in the type hierarchy.
                 HashSet<DiagnosticInfo> useSiteDiagnostics = null;
-                if (scope != targetTypeSymbol &&
+                if ((scope != targetTypeSymbol) &&
                     !(targetTypeSymbol.IsInterfaceType()
                         ? scope.AllInterfacesNoUseSiteDiagnostics.Contains((NamedTypeSymbol)targetTypeSymbol)
                         : scope.IsDerivedFrom(targetTypeSymbol, TypeCompareKind.ConsiderEverything, useSiteDiagnostics: ref useSiteDiagnostics)))
@@ -544,7 +544,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             if ((object)typeSymbol != null)
             {
                 PENamedTypeSymbol peTypeSymbol = typeSymbol as PENamedTypeSymbol;
-                if ((object)peTypeSymbol != null && ReferenceEquals(peTypeSymbol.ContainingPEModule, moduleSymbol))
+                if (((object)peTypeSymbol != null) && ReferenceEquals(peTypeSymbol.ContainingPEModule, moduleSymbol))
                 {
                     typeDefsToSearch.Enqueue(peTypeSymbol.Handle);
                 }
@@ -558,7 +558,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
         protected override MethodDefinitionHandle GetMethodHandle(MethodSymbol method)
         {
             PEMethodSymbol peMethod = method as PEMethodSymbol;
-            if ((object)peMethod != null && ReferenceEquals(peMethod.ContainingModule, moduleSymbol))
+            if (((object)peMethod != null) && ReferenceEquals(peMethod.ContainingModule, moduleSymbol))
             {
                 return peMethod.Handle;
             }

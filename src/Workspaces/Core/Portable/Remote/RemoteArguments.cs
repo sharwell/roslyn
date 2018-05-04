@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Remote
             => Equals(obj as SerializableSymbolAndProjectId);
 
         public bool Equals(SerializableSymbolAndProjectId other)
-            => other != null && SymbolKeyData.Equals(other.SymbolKeyData) && ProjectId.Equals(other.ProjectId);
+            => (other != null) && SymbolKeyData.Equals(other.SymbolKeyData) && ProjectId.Equals(other.ProjectId);
 
         public static SerializableSymbolAndProjectId Dehydrate(
             IAliasSymbol alias, Document document)

@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis
         {
             Debug.Assert(filePath?.Length > 0);
             Debug.Assert(Cci.DebugSourceDocument.IsSupportedAlgorithm(checksumAlgorithm));
-            Debug.Assert(!blob.IsDefault && blob.Length >= sizeof(int));
+            Debug.Assert(!blob.IsDefault && (blob.Length >= sizeof(int)));
 
             FilePath = filePath;
             Checksum = checksum;

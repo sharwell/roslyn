@@ -187,7 +187,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                         Contract.Requires(location.IsInSource);
 
                         var document = solution.GetDocument(location.SourceTree, projectId);
-                        if (document == null || thisDocument == document)
+                        if ((document == null) || (thisDocument == document))
                         {
                             continue;
                         }
@@ -198,9 +198,9 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                 private bool IsInternal(ISymbol symbol)
                 {
-                    return symbol.DeclaredAccessibility == Accessibility.Internal ||
-                           symbol.DeclaredAccessibility == Accessibility.ProtectedAndInternal ||
-                           symbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal;
+                    return (symbol.DeclaredAccessibility == Accessibility.Internal) ||
+                           (symbol.DeclaredAccessibility == Accessibility.ProtectedAndInternal) ||
+                           (symbol.DeclaredAccessibility == Accessibility.ProtectedOrInternal);
                 }
 
                 private bool IsType(ISymbol symbol)
@@ -210,10 +210,10 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                 private bool IsMember(ISymbol symbol)
                 {
-                    return symbol.Kind == SymbolKind.Event ||
-                           symbol.Kind == SymbolKind.Field ||
-                           symbol.Kind == SymbolKind.Method ||
-                           symbol.Kind == SymbolKind.Property;
+                    return (symbol.Kind == SymbolKind.Event) ||
+                           (symbol.Kind == SymbolKind.Field) ||
+                           (symbol.Kind == SymbolKind.Method) ||
+                           (symbol.Kind == SymbolKind.Property);
                 }
 
                 private void EnqueueFullProjectDependency(Document document, IAssemblySymbol internalVisibleToAssembly = null)
@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                         if (project.TryGetCompilation(out var compilation))
                         {
                             var assembly = compilation.Assembly;
-                            if (assembly != null && !assembly.IsSameAssemblyOrHasFriendAccessTo(internalVisibleToAssembly))
+                            if ((assembly != null) && !assembly.IsSameAssemblyOrHasFriendAccessTo(internalVisibleToAssembly))
                             {
                                 continue;
                             }
@@ -404,7 +404,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
 
                         // call to this method is serialized. and only this method does the writing.
                         var priorityService = document.GetLanguageService<IWorkCoordinatorPriorityService>();
-                        var isLowPriority = priorityService != null && await priorityService.IsLowPriorityAsync(document, this.CancellationToken).ConfigureAwait(false);
+                        var isLowPriority = (priorityService != null) && await priorityService.IsLowPriorityAsync(document, this.CancellationToken).ConfigureAwait(false);
 
                         _processor.Enqueue(
                             new WorkItem(document.Id, document.Project.Language, InvocationReasons.SemanticChanged,

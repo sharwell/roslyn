@@ -23,8 +23,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
 
         public int OnPropertyChanged(uint itemid, int propid, uint flags)
         {
-            if (propid == (int)__VSHPROPID7.VSHPROPID_SharedItemContextHierarchy ||
-                propid == (int)__VSHPROPID8.VSHPROPID_ActiveIntellisenseProjectContext)
+            if ((propid == (int)__VSHPROPID7.VSHPROPID_SharedItemContextHierarchy) ||
+                (propid == (int)__VSHPROPID8.VSHPROPID_ActiveIntellisenseProjectContext))
             {
                 _workspace.UpdateDocumentContextIfContainsDocument(_sharedHierarchy, _documentId);
                 return VSConstants.S_OK;

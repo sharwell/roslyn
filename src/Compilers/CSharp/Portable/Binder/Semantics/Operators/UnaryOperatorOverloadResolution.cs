@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // Mark all other candidates as worse
                 for (int index = 0; index < candidates.Count; ++index)
                 {
-                    if (candidates[index].Kind != OperatorAnalysisResultKind.Inapplicable && index != bestIndex)
+                    if ((candidates[index].Kind != OperatorAnalysisResultKind.Inapplicable) && (index != bestIndex))
                     {
                         candidates[index] = candidates[index].Worse();
                     }
@@ -181,7 +181,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             BetterResult better = BetterConversionFromExpression(operand, op1.OperandType, op2.OperandType, ref useSiteDiagnostics);
 
-            if (better == BetterResult.Left || better == BetterResult.Right)
+            if ((better == BetterResult.Left) || (better == BetterResult.Right))
             {
                 return better;
             }
@@ -220,11 +220,11 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // Always prefer operators with val parameters over operators with in parameters:
-            if (op1.RefKind == RefKind.None && op2.RefKind == RefKind.In)
+            if ((op1.RefKind == RefKind.None) && (op2.RefKind == RefKind.In))
             {
                 return BetterResult.Left;
             }
-            else if (op2.RefKind == RefKind.None && op1.RefKind == RefKind.In)
+            else if ((op2.RefKind == RefKind.None) && (op1.RefKind == RefKind.In))
             {
                 return BetterResult.Right;
             }
@@ -379,7 +379,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 current = type0.BaseTypeWithDefinitionUseSiteDiagnostics(ref useSiteDiagnostics);
             }
 
-            if ((object)current == null && type0.IsTypeParameter())
+            if (((object)current == null) && type0.IsTypeParameter())
             {
                 current = ((TypeParameterSymbol)type0).EffectiveBaseClass(ref useSiteDiagnostics);
             }
@@ -410,7 +410,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             foreach (MethodSymbol op in type.GetOperators(name))
             {
                 // If we're in error recovery, we might have bad operators. Just ignore it.
-                if (op.ParameterCount != 1 || op.ReturnsVoid)
+                if ((op.ParameterCount != 1) || op.ReturnsVoid)
                 {
                     continue;
                 }

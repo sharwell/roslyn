@@ -98,7 +98,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private ImmutableArray<Symbol> BindMemberCref(MemberCrefSyntax syntax, NamespaceOrTypeSymbol containerOpt, out Symbol ambiguityWinner, DiagnosticBag diagnostics)
         {
-            if ((object)containerOpt != null && containerOpt.Kind == SymbolKind.TypeParameter)
+            if (((object)containerOpt != null) && (containerOpt.Kind == SymbolKind.TypeParameter))
             {
                 // As in normal lookup (see CreateErrorIfLookupOnTypeParameter), you can't dot into a type parameter
                 // (though you can dot into an expression of type parameter type).
@@ -226,7 +226,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // CONSIDER: we're following dev11 by never using a binary operator name if there's
             // exactly one parameter, but doing so would allow us to match single-parameter constructors.
             SyntaxKind operatorTokenKind = syntax.OperatorToken.Kind();
-            string memberName = parameterListSyntax != null && parameterListSyntax.Parameters.Count == 1
+            string memberName = (parameterListSyntax != null) && (parameterListSyntax.Parameters.Count == 1)
                 ? null
                 : OperatorFacts.BinaryOperatorNameFromSyntaxKindIfAny(operatorTokenKind);
             memberName = memberName ?? OperatorFacts.UnaryOperatorNameFromSyntaxKindIfAny(operatorTokenKind);
@@ -276,7 +276,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
             // Filter out methods with the wrong return type, since overload resolution won't catch these.
             sortedSymbols = sortedSymbols.WhereAsArray(symbol =>
-                symbol.Kind != SymbolKind.Method || ((MethodSymbol)symbol).ReturnType == returnType);
+                (symbol.Kind != SymbolKind.Method) || (((MethodSymbol)symbol).ReturnType == returnType));
 
             if (!sortedSymbols.Any())
             {
@@ -382,19 +382,19 @@ namespace Microsoft.CodeAnalysis.CSharp
                             // constructor (unless the type is generic, the cref is on/in the type (but not 
                             // on/in a nested type), and there were no parens after the member name).
 
-                            if (containerType.Name == memberName && (hasParameterList || containerType.Arity == 0 || this.ContainingType != containerType.OriginalDefinition))
+                            if ((containerType.Name == memberName) && (hasParameterList || (containerType.Arity == 0) || (this.ContainingType != containerType.OriginalDefinition)))
                             {
                                 constructorType = containerType;
                             }
                         }
-                        else if ((object)containerOpt == null && hasParameterList)
+                        else if (((object)containerOpt == null) && hasParameterList)
                         {
                             // Case 2: If the name is not qualified by anything, but we're in the scope
                             // of a type with the same name (regardless of arity), then we want a constructor,
                             // as long as there were parens after the member name.
 
                             NamedTypeSymbol binderContainingType = this.ContainingType;
-                            if ((object)binderContainingType != null && memberName == binderContainingType.Name)
+                            if (((object)binderContainingType != null) && (memberName == binderContainingType.Name))
                             {
                                 constructorType = binderContainingType;
                             }
@@ -555,7 +555,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             NamedTypeSymbol containing = type.ContainingType;
             while ((object)containing != null)
             {
-                if (containing.Arity > 0 && containing.IsDefinition)
+                if ((containing.Arity > 0) && containing.IsDefinition)
                 {
                     return true;
                 }
@@ -583,7 +583,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             // If the syntax indicates arity zero, then we match methods of any arity.
             // However, if there are both generic and non-generic methods, then the
             // generic methods should be ignored.
-            if (symbols.Length > 1 && arity == 0)
+            if ((symbols.Length > 1) && (arity == 0))
             {
                 bool hasNonGenericMethod = false;
                 bool hasGenericMethod = false;
@@ -612,7 +612,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (hasNonGenericMethod && hasGenericMethod)
                 {
                     symbols = symbols.WhereAsArray(s =>
-                        s.Kind != SymbolKind.Method || ((MethodSymbol)s).Arity == 0);
+                        (s.Kind != SymbolKind.Method) || (((MethodSymbol)s).Arity == 0));
                 }
             }
 
@@ -774,7 +774,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 if (MemberSignatureComparer.CrefComparer.Equals(signatureMember, candidate))
                 {
-                    Debug.Assert(candidate.GetMemberArity() != 0 || candidate.Name == WellKnownMemberNames.InstanceConstructorName || arity == 0,
+                    Debug.Assert((candidate.GetMemberArity() != 0) || (candidate.Name == WellKnownMemberNames.InstanceConstructorName) || (arity == 0),
                         "Can only have a 0-arity, non-constructor candidate if the desired arity is 0.");
 
                     if (viable == null)
@@ -843,7 +843,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     // Should be in a WithCrefTypeParametersBinder.
                     Debug.Assert(typeArgumentSyntax.ContainsDiagnostics || !typeArgumentSyntax.SyntaxTree.ReportDocumentationCommentDiagnostics() ||
-                        (!unusedDiagnostics.HasAnyErrors() && typeArgumentSymbols[i] is CrefTypeParameterSymbol));
+                        (!unusedDiagnostics.HasAnyErrors() && (typeArgumentSymbols[i] is CrefTypeParameterSymbol)));
 
                     unusedDiagnostics.Clear();
                 }
@@ -897,8 +897,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             // of sync, but this code is also used for included crefs, which don't have BinderFactories.
             // As a compromise, we'll assert that the binding locations match in scenarios where we can go through the factory.
             Debug.Assert(!this.Compilation.ContainsSyntaxTree(typeSyntax.SyntaxTree) ||
-                this.Compilation.GetBinderFactory(typeSyntax.SyntaxTree).GetBinder(typeSyntax).Flags ==
-                (parameterOrReturnTypeBinder.Flags & ~BinderFlags.SemanticModel));
+                (this.Compilation.GetBinderFactory(typeSyntax.SyntaxTree).GetBinder(typeSyntax).Flags ==
+                (parameterOrReturnTypeBinder.Flags & ~BinderFlags.SemanticModel)));
 
             TypeSymbol type = parameterOrReturnTypeBinder.BindType(typeSyntax, unusedDiagnostics);
 
@@ -915,7 +915,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else
             {
-                Debug.Assert(type.TypeKind != TypeKind.Error || typeSyntax.ContainsDiagnostics || !typeSyntax.SyntaxTree.ReportDocumentationCommentDiagnostics(), "Why wasn't there a diagnostic?");
+                Debug.Assert((type.TypeKind != TypeKind.Error) || typeSyntax.ContainsDiagnostics || !typeSyntax.SyntaxTree.ReportDocumentationCommentDiagnostics(), "Why wasn't there a diagnostic?");
             }
 
             unusedDiagnostics.Free();
@@ -948,7 +948,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         private static CrefSyntax GetRootCrefSyntax(MemberCrefSyntax syntax)
         {
             SyntaxNode parentSyntax = syntax.Parent; // Could be null when speculating.
-            return parentSyntax == null || parentSyntax.IsKind(SyntaxKind.XmlCrefAttribute)
+            return (parentSyntax == null) || parentSyntax.IsKind(SyntaxKind.XmlCrefAttribute)
                 ? syntax
                 : (CrefSyntax)parentSyntax;
         }

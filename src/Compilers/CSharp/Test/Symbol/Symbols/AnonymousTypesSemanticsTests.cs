@@ -1743,7 +1743,7 @@ IAnonymousObjectCreationOperation (OperationKind.AnonymousObjectCreation, Type: 
             var anonymousType = (NamedTypeSymbol)type;
 
             var current = identifier;
-            while (current.Span == identifier.Span && !current.IsKind(SyntaxKind.IdentifierName))
+            while ((current.Span == identifier.Span) && !current.IsKind(SyntaxKind.IdentifierName))
             {
                 current = current.ChildNodes().Single();
             }

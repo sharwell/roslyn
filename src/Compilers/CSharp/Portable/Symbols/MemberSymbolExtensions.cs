@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public static bool IsAccessor(this Symbol symbol)
         {
-            return symbol.Kind == SymbolKind.Method && IsAccessor((MethodSymbol)symbol);
+            return (symbol.Kind == SymbolKind.Method) && IsAccessor((MethodSymbol)symbol);
         }
 
         public static bool IsIndexedPropertyAccessor(this MethodSymbol methodSymbol)
@@ -137,27 +137,27 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public static bool IsOperator(this MethodSymbol methodSymbol)
         {
-            return methodSymbol.MethodKind == MethodKind.UserDefinedOperator || methodSymbol.MethodKind == MethodKind.Conversion;
+            return (methodSymbol.MethodKind == MethodKind.UserDefinedOperator) || (methodSymbol.MethodKind == MethodKind.Conversion);
         }
 
         public static bool IsOperator(this Symbol symbol)
         {
-            return symbol.Kind == SymbolKind.Method && IsOperator((MethodSymbol)symbol);
+            return (symbol.Kind == SymbolKind.Method) && IsOperator((MethodSymbol)symbol);
         }
 
         public static bool IsIndexer(this Symbol symbol)
         {
-            return symbol.Kind == SymbolKind.Property && ((PropertySymbol)symbol).IsIndexer;
+            return (symbol.Kind == SymbolKind.Property) && ((PropertySymbol)symbol).IsIndexer;
         }
 
         public static bool IsIndexedProperty(this Symbol symbol)
         {
-            return symbol.Kind == SymbolKind.Property && ((PropertySymbol)symbol).IsIndexedProperty;
+            return (symbol.Kind == SymbolKind.Property) && ((PropertySymbol)symbol).IsIndexedProperty;
         }
 
         public static bool IsUserDefinedConversion(this Symbol symbol)
         {
-            return symbol.Kind == SymbolKind.Method && ((MethodSymbol)symbol).MethodKind == MethodKind.Conversion;
+            return (symbol.Kind == SymbolKind.Method) && (((MethodSymbol)symbol).MethodKind == MethodKind.Conversion);
         }
 
         /// <summary>
@@ -322,7 +322,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         internal static bool IsParameterlessConstructor(this MethodSymbol method)
         {
-            return method.MethodKind == MethodKind.Constructor && method.ParameterCount == 0;
+            return (method.MethodKind == MethodKind.Constructor) && (method.ParameterCount == 0);
         }
 
         /// <summary>

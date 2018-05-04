@@ -254,10 +254,10 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
         protected string RemoveLeadingAndTrailingContent(string expression, int start, int length, Predicate<char> leading, Predicate<char> trailing)
         {
             int oldLength = expression.Length;
-            for (; start < oldLength && leading(expression[start]); start++)
+            for (; (start < oldLength) && leading(expression[start]); start++)
             {
             }
-            for (; length > start && trailing(expression[length - 1]); length--)
+            for (; (length > start) && trailing(expression[length - 1]); length--)
             {
             }
             if ((start > 0) || (length < oldLength))

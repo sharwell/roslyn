@@ -232,8 +232,8 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             Assert.NotEqual(DebugInformationFormat.Embedded, format);
 
-            bool testWindowsPdb = format == 0 || format == DebugInformationFormat.Pdb;
-            bool testPortablePdb = format == 0 || format == DebugInformationFormat.PortablePdb;
+            bool testWindowsPdb = (format == 0) || (format == DebugInformationFormat.Pdb);
+            bool testPortablePdb = (format == 0) || (format == DebugInformationFormat.PortablePdb);
             bool testConversion = (options & PdbValidationOptions.SkipConversionValidation) == 0;
             var pdbToXmlOptions = options.ToPdbToXmlOptions();
 
@@ -341,7 +341,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                     e.RemoveAttributes();
                     e.Add(name);
                 }
-                else if (e.Name == "bucket" && e.Parent.Name == "dynamicLocals")
+                else if ((e.Name == "bucket") && (e.Parent.Name == "dynamicLocals"))
                 {
                     // dynamic flags might be 0-padded differently
 
@@ -412,28 +412,28 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         private static void RemoveEmptyCustomDebugInfo(XElement pdb)
         {
             RemoveElements(from e in pdb.DescendantsAndSelf()
-                           where e.Name == "customDebugInfo" && !e.HasElements
+                           where (e.Name == "customDebugInfo") && !e.HasElements
                            select e);
         }
 
         private static void RemoveEmptyScopes(XElement pdb)
         {
             while (RemoveElements(from e in pdb.DescendantsAndSelf()
-                                  where e.Name == "scope" && !e.HasElements
+                                  where (e.Name == "scope") && !e.HasElements
                                   select e));
         }
 
         private static void RemoveEmptySequencePoints(XElement pdb)
         {
             RemoveElements(from e in pdb.DescendantsAndSelf()
-                           where e.Name == "sequencePoints" && !e.HasElements
+                           where (e.Name == "sequencePoints") && !e.HasElements
                            select e);
         }
 
         private static void RemoveEmptyMethods(XElement pdb)
         {
             RemoveElements(from e in pdb.DescendantsAndSelf()
-                           where e.Name == "method" && !e.HasElements
+                           where (e.Name == "method") && !e.HasElements
                            select e);
         }
 
@@ -441,30 +441,30 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             // The following elements are never present in Portable PDB.
             RemoveElements(from e in expectedNativePdb.DescendantsAndSelf()
-                           where e.Name == "forwardIterator" ||
-                                 e.Name == "forwardToModule" ||
-                                 e.Name == "forward" ||
-                                 e.Name == "tupleElementNames" ||
-                                 e.Name == "dynamicLocals" ||
-                                 e.Name == "using" ||
-                                 e.Name == "currentnamespace" ||
-                                 e.Name == "defaultnamespace" ||
-                                 e.Name == "importsforward" ||
-                                 e.Name == "xmlnamespace" ||
-                                 e.Name == "alias" ||
-                                 e.Name == "namespace" ||
-                                 e.Name == "type" ||
-                                 e.Name == "extern" ||
-                                 e.Name == "externinfo" ||
-                                 e.Name == "defunct" ||
-                                 e.Name == "local" && e.Attributes().Any(a => a.Name.LocalName == "name" && a.Value.StartsWith("$VB$ResumableLocal_"))
+                           where (e.Name == "forwardIterator") ||
+                                 (e.Name == "forwardToModule") ||
+                                 (e.Name == "forward") ||
+                                 (e.Name == "tupleElementNames") ||
+                                 (e.Name == "dynamicLocals") ||
+                                 (e.Name == "using") ||
+                                 (e.Name == "currentnamespace") ||
+                                 (e.Name == "defaultnamespace") ||
+                                 (e.Name == "importsforward") ||
+                                 (e.Name == "xmlnamespace") ||
+                                 (e.Name == "alias") ||
+                                 (e.Name == "namespace") ||
+                                 (e.Name == "type") ||
+                                 (e.Name == "extern") ||
+                                 (e.Name == "externinfo") ||
+                                 (e.Name == "defunct") ||
+                                 ((e.Name == "local") && e.Attributes().Any(a => (a.Name.LocalName == "name") && a.Value.StartsWith("$VB$ResumableLocal_")))
                            select e);
         }
 
         private static void RemoveElementsWithSpecifiedFormat(XElement expectedNativePdb, string format)
         {
             RemoveElements(from e in expectedNativePdb.DescendantsAndSelf()
-                           where e.Attributes().Any(a => a.Name.LocalName == "format" && a.Value == format)
+                           where e.Attributes().Any(a => (a.Name.LocalName == "format") && (a.Value == format))
                            select e);
         }
 
@@ -575,7 +575,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 }
             }
 
-            if ((portablePdbStreamOpt != null || hasEmbeddedPdb) && hashAlgorithm.Name != null)
+            if (((portablePdbStreamOpt != null) || hasEmbeddedPdb) && (hashAlgorithm.Name != null))
             {
                 var entry = entries[entryIndex++];
 

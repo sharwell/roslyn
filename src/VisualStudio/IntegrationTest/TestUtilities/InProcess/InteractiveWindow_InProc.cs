@@ -213,7 +213,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
         private void WaitForPredicate(Func<bool> predicate)
         {
             var beginTime = DateTime.UtcNow;
-            while (!predicate() && DateTime.UtcNow < beginTime.AddMilliseconds(_timeoutInMilliseconds))
+            while (!predicate() && (DateTime.UtcNow < beginTime.AddMilliseconds(_timeoutInMilliseconds)))
             {
                 Thread.Sleep(50);
             }

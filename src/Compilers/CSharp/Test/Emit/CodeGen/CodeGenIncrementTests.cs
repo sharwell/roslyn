@@ -996,7 +996,7 @@ Zero
         private void TestIncrementCompilationAndOutput<T>(T value, T valuePlusOne) where T : struct
         {
             Type type = typeof(T);
-            Assert.True(type.IsPrimitive || type == typeof(decimal), string.Format("Type {0} is neither primitive nor decimal", type));
+            Assert.True(type.IsPrimitive || (type == typeof(decimal)), string.Format("Type {0} is neither primitive nor decimal", type));
 
             // Explicitly provide InvariantCulture to use the proper C# decimal separator '.' in the source regardless of the current culture
             string source = string.Format(CultureInfo.InvariantCulture, NUMERIC_INCREMENT_TEMPLATE, type.FullName, value, valuePlusOne);

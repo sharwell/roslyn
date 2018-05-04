@@ -1958,7 +1958,7 @@ class MyClass
             {
                 var newToken = base.VisitToken(token);
 
-                if (newToken.Width == 0 && newToken.Kind() != SyntaxKind.EndOfFileToken)
+                if ((newToken.Width == 0) && (newToken.Kind() != SyntaxKind.EndOfFileToken))
                 {
                     return newToken;
                 }

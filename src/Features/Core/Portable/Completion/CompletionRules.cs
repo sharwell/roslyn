@@ -104,11 +104,11 @@ namespace Microsoft.CodeAnalysis.Completion
             var newDefaultEnterKeyRule = defaultEnterKeyRule.HasValue ? defaultEnterKeyRule.Value : this.DefaultEnterKeyRule;
             var newSnippetsRule = snippetsRule.HasValue ? snippetsRule.Value : this.SnippetsRule;
 
-            if (newDismissIfEmpty == this.DismissIfEmpty &&
-                newDismissIfLastCharacterDeleted == this.DismissIfLastCharacterDeleted &&
-                newDefaultCommitCharacters == this.DefaultCommitCharacters &&
-                newDefaultEnterKeyRule == this.DefaultEnterKeyRule &&
-                newSnippetsRule == this.SnippetsRule)
+            if ((newDismissIfEmpty == this.DismissIfEmpty) &&
+                (newDismissIfLastCharacterDeleted == this.DismissIfLastCharacterDeleted) &&
+                (newDefaultCommitCharacters == this.DefaultCommitCharacters) &&
+                (newDefaultEnterKeyRule == this.DefaultEnterKeyRule) &&
+                (newSnippetsRule == this.SnippetsRule))
             {
                 return this;
             }

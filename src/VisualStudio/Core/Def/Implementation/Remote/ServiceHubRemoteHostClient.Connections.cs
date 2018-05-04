@@ -139,7 +139,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
             private static void ReportTimeout(Stopwatch watch)
             {
                 // if we tried for 10 min and still couldn't connect. NFW (non fatal watson) some data
-                if (!s_timeoutReported && watch.Elapsed > s_reportTimeout)
+                if (!s_timeoutReported && (watch.Elapsed > s_reportTimeout))
                 {
                     s_timeoutReported = true;
 

@@ -122,7 +122,7 @@ namespace Roslyn.Utilities
                 return;
             }
 
-            Debug.Assert(_pending == Pending.NewLineAndIndent || _pending == Pending.CommaNewLineAndIndent);
+            Debug.Assert((_pending == Pending.NewLineAndIndent) || (_pending == Pending.CommaNewLineAndIndent));
             if (_pending == Pending.CommaNewLineAndIndent)
             {
                 _output.Write(',');
@@ -179,7 +179,7 @@ namespace Roslyn.Utilities
             {
                 char c = value[i];
 
-                if (c == '\"' || c == '\\' || ShouldAppendAsUnicode(c))
+                if ((c == '\"') || (c == '\\') || ShouldAppendAsUnicode(c))
                 {
                     if (b == null)
                     {
@@ -245,10 +245,10 @@ namespace Roslyn.Utilities
             // We only care about NEL, LS, and PS, since the other newline characters are all 
             // control characters so are already encoded. 
 
-            return c < ' ' ||
-                c >= (char)0xfffe || // max char 
-                (c >= (char)0xd800 && c <= (char)0xdfff) || // between high and low surrogate 
-                c == '\u0085' || c == '\u2028' || c == '\u2029'; // Unicode new line characters 
+            return (c < ' ') ||
+                (c >= (char)0xfffe) || // max char 
+                ((c >= (char)0xd800) && (c <= (char)0xdfff)) || // between high and low surrogate 
+                (c == '\u0085') || (c == '\u2028') || (c == '\u2029'); // Unicode new line characters 
         }
     }
 }

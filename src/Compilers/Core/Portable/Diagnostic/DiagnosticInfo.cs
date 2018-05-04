@@ -103,7 +103,7 @@ namespace Microsoft.CodeAnalysis
                 }
 
                 var type = arg.GetType();
-                if (type == typeof(string) || type == typeof(AssemblyIdentity))
+                if ((type == typeof(string)) || (type == typeof(AssemblyIdentity)))
                 {
                     continue;
                 }
@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis
         internal DiagnosticInfo(CommonMessageProvider messageProvider, bool isWarningAsError, int errorCode, params object[] arguments)
             : this(messageProvider, errorCode, arguments)
         {
-            Debug.Assert(!isWarningAsError || _defaultSeverity == DiagnosticSeverity.Warning);
+            Debug.Assert(!isWarningAsError || (_defaultSeverity == DiagnosticSeverity.Warning));
 
             if (isWarningAsError)
             {
@@ -253,8 +253,8 @@ namespace Microsoft.CodeAnalysis
         {
             get
             {
-                return this.DefaultSeverity == DiagnosticSeverity.Warning &&
-                    this.Severity == DiagnosticSeverity.Error;
+                return (this.DefaultSeverity == DiagnosticSeverity.Warning) &&
+                    (this.Severity == DiagnosticSeverity.Error);
             }
         }
 
@@ -328,7 +328,7 @@ namespace Microsoft.CodeAnalysis
                 return string.Empty;
             }
 
-            if (_arguments == null || _arguments.Length == 0)
+            if ((_arguments == null) || (_arguments.Length == 0))
             {
                 return message;
             }
@@ -421,15 +421,15 @@ namespace Microsoft.CodeAnalysis
 
             bool result = false;
 
-            if (other != null &&
-                other._errorCode == _errorCode &&
-                this.GetType() == obj.GetType())
+            if ((other != null) &&
+                (other._errorCode == _errorCode) &&
+                (this.GetType() == obj.GetType()))
             {
-                if (_arguments == null && other._arguments == null)
+                if ((_arguments == null) && (other._arguments == null))
                 {
                     result = true;
                 }
-                else if (_arguments != null && other._arguments != null && _arguments.Length == other._arguments.Length)
+                else if ((_arguments != null) && (other._arguments != null) && (_arguments.Length == other._arguments.Length))
                 {
                     result = true;
                     for (int i = 0; i < _arguments.Length; i++)

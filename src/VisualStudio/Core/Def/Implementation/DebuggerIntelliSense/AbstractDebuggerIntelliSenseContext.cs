@@ -242,8 +242,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.DebuggerIntelli
             var currentLineIndex = _textView.TextSnapshot.GetLineNumberFromPosition(caretLine.Start.Position);
             var questionIndex = GetQuestionIndex(caretLine.GetText());
 
-            if (_immediateWindowContext.QuestionIndex != questionIndex ||
-                _immediateWindowContext.CurrentLineIndex != currentLineIndex)
+            if ((_immediateWindowContext.QuestionIndex != questionIndex) ||
+                (_immediateWindowContext.CurrentLineIndex != currentLineIndex))
             {
                 _immediateWindowContext.QuestionIndex = questionIndex;
                 _immediateWindowContext.CurrentLineIndex = currentLineIndex;

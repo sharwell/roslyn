@@ -40,8 +40,8 @@ namespace Microsoft.CodeAnalysis.AddImport
             public bool DesiredNameDiffersFromSourceName()
             {
                 return !string.IsNullOrEmpty(this.DesiredName) &&
-                    this.NameNode != null &&
-                    this.NameNode.GetFirstToken().ValueText != this.DesiredName;
+                    (this.NameNode != null) &&
+                    (this.NameNode.GetFirstToken().ValueText != this.DesiredName);
             }
 
             public bool DesiredNameDiffersFromSourceNameOnlyByCase()

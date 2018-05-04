@@ -76,10 +76,10 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
 
         public bool NeedsReanalysisOnOptionChanged(object sender, OptionChangedEventArgs e)
         {
-            return e.Option.Feature == nameof(SimplificationOptions) ||
-                   e.Option.Feature == nameof(CodeStyleOptions) ||
-                   e.Option == ServiceFeatureOnOffOptions.ClosedFileDiagnostic ||
-                   e.Option == RuntimeOptions.FullSolutionAnalysis;
+            return (e.Option.Feature == nameof(SimplificationOptions)) ||
+                   (e.Option.Feature == nameof(CodeStyleOptions)) ||
+                   (e.Option == ServiceFeatureOnOffOptions.ClosedFileDiagnostic) ||
+                   (e.Option == RuntimeOptions.FullSolutionAnalysis);
         }
 
         private bool SupportAnalysisKind(DiagnosticAnalyzer analyzer, string language, AnalysisKind kind)
@@ -175,7 +175,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
         private void RaiseDiagnosticsRemoved(
             ProjectId projectId, Solution solution, StateSet stateSet, Action<DiagnosticsUpdatedArgs> raiseEvents)
         {
-            Contract.ThrowIfFalse(solution == null || solution.Workspace == Workspace);
+            Contract.ThrowIfFalse((solution == null) || (solution.Workspace == Workspace));
 
             raiseEvents(DiagnosticsUpdatedArgs.DiagnosticsRemoved(
                 CreateId(stateSet.Analyzer, projectId, AnalysisKind.NonLocal, stateSet.ErrorSourceName),
@@ -202,7 +202,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.EngineV2
         private void RaiseDiagnosticsRemoved(
             DocumentId documentId, Solution solution, StateSet stateSet, AnalysisKind kind, Action<DiagnosticsUpdatedArgs> raiseEvents)
         {
-            Contract.ThrowIfFalse(solution == null || solution.Workspace == Workspace);
+            Contract.ThrowIfFalse((solution == null) || (solution.Workspace == Workspace));
 
             raiseEvents(DiagnosticsUpdatedArgs.DiagnosticsRemoved(
                 CreateId(stateSet.Analyzer, documentId, kind, stateSet.ErrorSourceName),

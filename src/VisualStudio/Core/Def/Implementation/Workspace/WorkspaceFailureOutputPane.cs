@@ -54,7 +54,7 @@ namespace Microsoft.VisualStudio.LanguageServices
                     var hr = outputWindow.GetPane(ref workspacePaneGuid, out _doNotAccessDirectlyOutputPane);
 
                     // If the workspace pane has not been registered before, create it
-                    if (_doNotAccessDirectlyOutputPane == null || hr != VSConstants.S_OK)
+                    if ((_doNotAccessDirectlyOutputPane == null) || (hr != VSConstants.S_OK))
                     {
                         if (ErrorHandler.Failed(outputWindow.CreatePane(ref workspacePaneGuid, ServicesVSResources.IntelliSense, fInitVisible: 1, fClearWithSolution: 1)) ||
                             ErrorHandler.Failed(outputWindow.GetPane(ref workspacePaneGuid, out _doNotAccessDirectlyOutputPane)))

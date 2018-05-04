@@ -446,7 +446,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         private CustomAttributesBag<CSharpAttributeData> GetAttributesBag()
         {
-            if (_lazyCustomAttributesBag == null || !_lazyCustomAttributesBag.IsSealed)
+            if ((_lazyCustomAttributesBag == null) || !_lazyCustomAttributesBag.IsSealed)
             {
                 var mergedAttributes = ((SourceAssemblySymbol)this.ContainingAssembly).GetAttributeDeclarations();
                 if (LoadAndValidateAttributes(OneOrMany.Create(mergedAttributes), ref _lazyCustomAttributesBag))
@@ -481,7 +481,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private CommonModuleWellKnownAttributeData GetDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -533,7 +533,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 CommonAssemblyWellKnownAttributeData<NamedTypeSymbol> decodedData = ((SourceAssemblySymbol)this.ContainingAssembly).GetSourceDecodedWellKnownAttributeData();
-                return decodedData != null && decodedData.HasCompilationRelaxationsAttribute;
+                return (decodedData != null) && decodedData.HasCompilationRelaxationsAttribute;
             }
         }
 
@@ -542,7 +542,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 CommonAssemblyWellKnownAttributeData<NamedTypeSymbol> decodedData = ((SourceAssemblySymbol)this.ContainingAssembly).GetSourceDecodedWellKnownAttributeData();
-                return decodedData != null && decodedData.HasRuntimeCompatibilityAttribute;
+                return (decodedData != null) && decodedData.HasRuntimeCompatibilityAttribute;
             }
         }
 
@@ -551,7 +551,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 var data = GetDecodedWellKnownAttributeData();
-                return data != null && data.HasDefaultCharSetAttribute ? data.DefaultCharacterSet : (CharSet?)null;
+                return (data != null) && data.HasDefaultCharSetAttribute ? data.DefaultCharacterSet : (CharSet?)null;
             }
         }
 

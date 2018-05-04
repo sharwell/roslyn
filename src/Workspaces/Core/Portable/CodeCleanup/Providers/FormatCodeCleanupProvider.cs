@@ -35,7 +35,7 @@ namespace Microsoft.CodeAnalysis.CodeCleanup.Providers
         public async Task<SyntaxNode> CleanupAsync(SyntaxNode root, ImmutableArray<TextSpan> spans, Workspace workspace, CancellationToken cancellationToken)
         {
             // If the old text already exists, use the fast path for formatting.
-            if (root.SyntaxTree != null && root.SyntaxTree.TryGetText(out var oldText))
+            if ((root.SyntaxTree != null) && root.SyntaxTree.TryGetText(out var oldText))
             {
                 var changes = await Formatter.GetFormattedTextChangesAsync(root, spans, workspace, cancellationToken: cancellationToken).ConfigureAwait(false);
 

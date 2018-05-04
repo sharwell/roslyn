@@ -75,8 +75,8 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             var lcs = (comparer != null) ? new LCS<T>(comparer) : LCS<T>.Default;
             toString = toString ?? new Func<T, string>(obj => obj.ToString());
 
-            IList<T> expectedList = expected as IList<T> ?? new List<T>(expected);
-            IList<T> actualList = actual as IList<T> ?? new List<T>(actual);
+            IList<T> expectedList = (expected as IList<T>) ?? new List<T>(expected);
+            IList<T> actualList = (actual as IList<T>) ?? new List<T>(actual);
 
             return string.Join(separator, lcs.CalculateDiff(expectedList, actualList, toString));
         }
@@ -126,13 +126,13 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 int i = lengthA;
                 int j = lengthB;
 
-                while (i != 0 && j != 0)
+                while ((i != 0) && (j != 0))
                 {
-                    if (d[i, j] == d[i - 1, j] + DeleteCost)
+                    if (d[i, j] == (d[i - 1, j] + DeleteCost))
                     {
                         i--;
                     }
-                    else if (d[i, j] == d[i, j - 1] + InsertCost)
+                    else if (d[i, j] == (d[i, j - 1] + InsertCost))
                     {
                         j--;
                     }
@@ -151,14 +151,14 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                 int i = lengthA;
                 int j = lengthB;
 
-                while (i != 0 && j != 0)
+                while ((i != 0) && (j != 0))
                 {
-                    if (d[i, j] == d[i - 1, j] + DeleteCost)
+                    if (d[i, j] == (d[i - 1, j] + DeleteCost))
                     {
                         i--;
                         yield return new Edit(EditKind.Delete, i, -1);
                     }
-                    else if (d[i, j] == d[i, j - 1] + InsertCost)
+                    else if (d[i, j] == (d[i, j - 1] + InsertCost))
                     {
                         j--;
                         yield return new Edit(EditKind.Insert, -1, j);
@@ -194,9 +194,9 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             /// </summary>
             protected double ComputeDistance(TSequence sequenceA, int lengthA, TSequence sequenceB, int lengthB)
             {
-                Debug.Assert(lengthA >= 0 && lengthB >= 0);
+                Debug.Assert((lengthA >= 0) && (lengthB >= 0));
 
-                if (lengthA == 0 || lengthB == 0)
+                if ((lengthA == 0) || (lengthB == 0))
                 {
                     return (lengthA == lengthB) ? 0.0 : 1.0;
                 }
@@ -209,7 +209,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
                 int max = Math.Max(lengthA, lengthB);
                 Debug.Assert(lcsLength <= max);
-                return 1.0 - (double)lcsLength / (double)max;
+                return 1.0 - ((double)lcsLength / (double)max);
             }
 
             /// <summary>

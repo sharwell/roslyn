@@ -126,7 +126,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             get
             {
                 var result = CheckOverflow;
-                return result == OverflowChecks.Enabled || result == OverflowChecks.Implicit && Compilation.Options.CheckOverflow;
+                return (result == OverflowChecks.Enabled) || ((result == OverflowChecks.Implicit) && Compilation.Options.CheckOverflow);
             }
         }
 
@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             get
             {
                 var member = this.ContainingMemberOrLambda;
-                Debug.Assert((object)member == null || member.Kind != SymbolKind.ErrorType);
+                Debug.Assert(((object)member == null) || (member.Kind != SymbolKind.ErrorType));
                 return (object)member == null
                     ? null
                     : member.Kind == SymbolKind.NamedType
@@ -496,7 +496,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         internal void ReportDiagnosticsIfObsolete(DiagnosticBag diagnostics, Conversion conversion, SyntaxNodeOrToken node, bool hasBaseReceiver)
         {
-            if (conversion.IsValid && (object)conversion.Method != null)
+            if (conversion.IsValid && ((object)conversion.Method != null))
             {
                 ReportDiagnosticsIfObsolete(diagnostics, conversion.Method, node, hasBaseReceiver);
             }
@@ -513,11 +513,11 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             Debug.Assert((object)symbol != null);
 
-            Debug.Assert(symbol.Kind == SymbolKind.NamedType ||
-                         symbol.Kind == SymbolKind.Field ||
-                         symbol.Kind == SymbolKind.Method ||
-                         symbol.Kind == SymbolKind.Event ||
-                         symbol.Kind == SymbolKind.Property);
+            Debug.Assert((symbol.Kind == SymbolKind.NamedType) ||
+                         (symbol.Kind == SymbolKind.Field) ||
+                         (symbol.Kind == SymbolKind.Method) ||
+                         (symbol.Kind == SymbolKind.Event) ||
+                         (symbol.Kind == SymbolKind.Property));
 
             // Dev11 also reports on the unconstructed method.  It would be nice to report on 
             // the constructed method, but then we wouldn't be able to walk the override chain.
@@ -714,7 +714,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         sub.Add(new TreeDumperNode("locals", locals, null));
                     }
                     var currentContainer = scope.ContainingMemberOrLambda;
-                    if (currentContainer != null && currentContainer != scope.Next?.ContainingMemberOrLambda)
+                    if ((currentContainer != null) && (currentContainer != scope.Next?.ContainingMemberOrLambda))
                     {
                         sub.Add(new TreeDumperNode("containing symbol", currentContainer.ToDisplayString(), null));
                     }

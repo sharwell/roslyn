@@ -258,7 +258,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateVariable
                 this.IsWrittenTo = semanticFacts.IsWrittenTo(semanticModel, this.SimpleNameOrMemberAccessExpressionOpt, cancellationToken);
                 this.IsOnlyWrittenTo = semanticFacts.IsOnlyWrittenTo(semanticModel, this.SimpleNameOrMemberAccessExpressionOpt, cancellationToken);
                 this.IsInConstructor = DetermineIsInConstructor(document);
-                this.IsInMemberContext = this.SimpleNameOpt != this.SimpleNameOrMemberAccessExpressionOpt ||
+                this.IsInMemberContext = (this.SimpleNameOpt != this.SimpleNameOrMemberAccessExpressionOpt) ||
                                          syntaxFacts.IsObjectInitializerNamedAssignmentIdentifier(this.SimpleNameOrMemberAccessExpressionOpt);
 
                 CheckSurroundingContext(document, SymbolKind.Field, cancellationToken);
@@ -318,7 +318,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateVariable
                 CancellationToken cancellationToken)
             {
                 var syntaxFacts = document.Document.GetLanguageService<ISyntaxFactsService>();
-                if (index >= 0 && index < children.Count)
+                if ((index >= 0) && (index < children.Count))
                 {
                     var sibling = children[index];
                     if (sibling.IsNode)
@@ -330,7 +330,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateVariable
                                 siblingNode, out var left, out var right);
 
                             var symbol = document.SemanticModel.GetSymbolInfo(left, cancellationToken).Symbol;
-                            if (symbol?.Kind == symbolKind &&
+                            if ((symbol?.Kind == symbolKind) &&
                                 symbol.ContainingType.Equals(this.ContainingType))
                             {
                                 return symbol;
@@ -402,7 +402,7 @@ namespace Microsoft.CodeAnalysis.GenerateMember.GenerateVariable
                     compilation, availableTypeParameters);
 
                 var enclosingMethodSymbol = document.SemanticModel.GetEnclosingSymbol<IMethodSymbol>(this.SimpleNameOrMemberAccessExpressionOpt.SpanStart, cancellationToken);
-                if (enclosingMethodSymbol != null && enclosingMethodSymbol.TypeParameters != null && enclosingMethodSymbol.TypeParameters.Length != 0)
+                if ((enclosingMethodSymbol != null) && (enclosingMethodSymbol.TypeParameters != null) && (enclosingMethodSymbol.TypeParameters.Length != 0))
                 {
                     var combinedTypeParameters = new List<ITypeParameterSymbol>();
                     combinedTypeParameters.AddRange(availableTypeParameters);

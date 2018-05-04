@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.Remote
             var newSolutionInfo = await _assetService.GetAssetAsync<SolutionInfo.SolutionAttributes>(newSolutionChecksums.Info, _cancellationToken).ConfigureAwait(false);
 
             // if either solution id or file path changed, then we consider it as new solution
-            return _baseSolution.Id == newSolutionInfo.Id && _baseSolution.FilePath == newSolutionInfo.FilePath;
+            return (_baseSolution.Id == newSolutionInfo.Id) && (_baseSolution.FilePath == newSolutionInfo.FilePath);
         }
 
         public async Task<SolutionInfo> CreateSolutionInfoAsync(Checksum solutionChecksum)
@@ -73,7 +73,7 @@ namespace Microsoft.CodeAnalysis.Remote
                 var newSolutionInfo = await _assetService.GetAssetAsync<SolutionInfo.SolutionAttributes>(newSolutionChecksums.Info, _cancellationToken).ConfigureAwait(false);
 
                 // if either id or file path has changed, then this is not update
-                Contract.ThrowIfFalse(solution.Id == newSolutionInfo.Id && solution.FilePath == newSolutionInfo.FilePath);
+                Contract.ThrowIfFalse((solution.Id == newSolutionInfo.Id) && (solution.FilePath == newSolutionInfo.FilePath));
             }
 
             if (oldSolutionChecksums.Projects.Checksum != newSolutionChecksums.Projects.Checksum)
@@ -594,7 +594,7 @@ namespace Microsoft.CodeAnalysis.Remote
             // filePath will point to actual file on disk, but in memory solultion, or
             // one from AdhocWorkspace and etc, FilePath/OutputFilePath can be a random string.
             // Make sure we return only if given filePath is in right form.
-            if (info.FilePath == null && info.OutputFilePath == null)
+            if ((info.FilePath == null) && (info.OutputFilePath == null))
             {
                 // return empty since that is what IDE does for this case
                 // see AbstractProject.GetStrongNameKeyPaths
@@ -602,13 +602,13 @@ namespace Microsoft.CodeAnalysis.Remote
             }
 
             var builder = ArrayBuilder<string>.GetInstance();
-            if (info.FilePath != null && PathUtilities.IsAbsolute(info.FilePath))
+            if ((info.FilePath != null) && PathUtilities.IsAbsolute(info.FilePath))
             {
                 // desktop strong name provider only knows how to deal with absolute path
                 builder.Add(PathUtilities.GetDirectoryName(info.FilePath));
             }
 
-            if (info.OutputFilePath != null && PathUtilities.IsAbsolute(info.OutputFilePath))
+            if ((info.OutputFilePath != null) && PathUtilities.IsAbsolute(info.OutputFilePath))
             {
                 // desktop strong name provider only knows how to deal with absolute path
                 builder.Add(PathUtilities.GetDirectoryName(info.OutputFilePath));

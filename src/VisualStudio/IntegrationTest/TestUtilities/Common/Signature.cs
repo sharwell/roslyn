@@ -38,7 +38,7 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Common
         }
 
         public bool Equals(Signature other)
-            => other != null
+            => (other != null)
             && Comparison.AreStringValuesEqual(Content, other.Content)
             && Equals(CurrentParameter, other.CurrentParameter)
             && Comparison.AreStringValuesEqual(PrettyPrintedContent, other.PrettyPrintedContent)

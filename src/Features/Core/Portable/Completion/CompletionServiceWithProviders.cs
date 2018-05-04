@@ -119,7 +119,7 @@ namespace Microsoft.CodeAnalysis.Completion
 
             var builtin = GetBuiltInProviders();
             var imported = GetImportedProviders()
-                .Where(lz => lz.Metadata.Roles == null || lz.Metadata.Roles.Length == 0 || roles.Overlaps(lz.Metadata.Roles))
+                .Where(lz => (lz.Metadata.Roles == null) || (lz.Metadata.Roles.Length == 0) || roles.Overlaps(lz.Metadata.Roles))
                 .Select(lz => lz.Value);
 
             var providers = builtin.Concat(imported).Concat(_testProviders);
@@ -161,8 +161,8 @@ namespace Microsoft.CodeAnalysis.Completion
                 ? optionsRule
                 : GetRules().SnippetsRule;
 
-            if (snippetsRule == SnippetsRule.Default ||
-                snippetsRule == SnippetsRule.NeverInclude)
+            if ((snippetsRule == SnippetsRule.Default) ||
+                (snippetsRule == SnippetsRule.NeverInclude))
             {
                 return providers.Where(p => !p.IsSnippetProvider).ToImmutableArray();
             }
@@ -291,7 +291,7 @@ namespace Microsoft.CodeAnalysis.Completion
 
         private static bool HasAnyItems(CompletionContext cc)
         {
-            return cc.Items.Count > 0 || cc.SuggestionModeItem != null;
+            return (cc.Items.Count > 0) || (cc.SuggestionModeItem != null);
         }
 
         private async Task<ImmutableArray<CompletionContext>> ComputeNonEmptyCompletionContextsAsync(
@@ -387,8 +387,8 @@ namespace Microsoft.CodeAnalysis.Completion
         /// </summary>
         protected virtual bool ItemsMatch(CompletionItem item, CompletionItem existingItem)
         {
-            return item.Span == existingItem.Span
-                && item.SortText == existingItem.SortText;
+            return (item.Span == existingItem.Span)
+                && (item.SortText == existingItem.SortText);
         }
 
         /// <summary>
@@ -467,9 +467,9 @@ namespace Microsoft.CodeAnalysis.Completion
                 return false;
             }
 
-            if (trigger.Kind == CompletionTriggerKind.Deletion && this.SupportsTriggerOnDeletion(options))
+            if ((trigger.Kind == CompletionTriggerKind.Deletion) && this.SupportsTriggerOnDeletion(options))
             {
-                return Char.IsLetterOrDigit(trigger.Character) || trigger.Character == '.';
+                return Char.IsLetterOrDigit(trigger.Character) || (trigger.Character == '.');
             }
 
             var providers = GetFilteredProviders(roles, trigger, options);

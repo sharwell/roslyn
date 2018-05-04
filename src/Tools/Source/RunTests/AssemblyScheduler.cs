@@ -153,8 +153,8 @@ namespace RunTests
                 // One item we have to consider here is the maximum command line length in 
                 // Windows which is 32767 characters (XP is smaller but don't care).  Once
                 // we get close then create a partition and move on. 
-                if (_currentTypeInfoList.Sum(x => x.MethodCount) >= _methodLimit ||
-                    _builder.Length > 25000)
+                if ((_currentTypeInfoList.Sum(x => x.MethodCount) >= _methodLimit) ||
+                    (_builder.Length > 25000))
                 {
                     FinishPartition();
                     BeginPartition();
@@ -212,7 +212,7 @@ namespace RunTests
 
             // If the scheduling didn't actually produce multiple partition then send back an unpartitioned
             // representation.
-            if (assemblyInfoList.Count == 1 && !force)
+            if ((assemblyInfoList.Count == 1) && !force)
             {
                 Logger.Log($"Assembly schedule produced a single partition {assemblyPath}");
                 return new[] { CreateAssemblyInfo(assemblyPath) };
@@ -283,11 +283,11 @@ namespace RunTests
         {
             // xunit only handles public, non-abstract classes
             var isPublic =
-                TypeAttributes.Public == (type.Attributes & TypeAttributes.Public) ||
-                TypeAttributes.NestedPublic == (type.Attributes & TypeAttributes.NestedPublic);
+                (TypeAttributes.Public == (type.Attributes & TypeAttributes.Public)) ||
+                (TypeAttributes.NestedPublic == (type.Attributes & TypeAttributes.NestedPublic));
             if (!isPublic ||
-                TypeAttributes.Abstract == (type.Attributes & TypeAttributes.Abstract)  ||
-                TypeAttributes.Class != (type.Attributes & TypeAttributes.Class))
+                (TypeAttributes.Abstract == (type.Attributes & TypeAttributes.Abstract))  ||
+                (TypeAttributes.Class != (type.Attributes & TypeAttributes.Class)))
             {
                 return false;
             }
@@ -317,7 +317,7 @@ namespace RunTests
             foreach (var handle in type.GetMethods())
             {
                 var methodDefinition = reader.GetMethodDefinition(handle);
-                if (methodDefinition.GetCustomAttributes().Count == 0 ||
+                if ((methodDefinition.GetCustomAttributes().Count == 0) ||
                     !IsValidIdentifier(reader, methodDefinition.Name))
                 {
                     continue;
@@ -360,8 +360,8 @@ namespace RunTests
 
             var typeRef = reader.GetTypeReference((TypeReferenceHandle)type.BaseType);
             return 
-                reader.GetString(typeRef.Namespace) == "System" && 
-                reader.GetString(typeRef.Name) == "Object";
+                (reader.GetString(typeRef.Namespace) == "System") && 
+                (reader.GetString(typeRef.Name) == "Object");
         }
 
         private static string GetFullName(MetadataReader reader, TypeDefinition type)

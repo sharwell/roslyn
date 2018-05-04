@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                         // process
                         foreach (var dependingProjectId in dependencyGraph.GetProjectsThatDirectlyDependOnThisProject(projectId))
                         {
-                            if (workQueue.ContainsKey(dependingProjectId) && analyzerService?.ContainsDiagnostics(Workspace, dependingProjectId) == true)
+                            if (workQueue.ContainsKey(dependingProjectId) && (analyzerService?.ContainsDiagnostics(Workspace, dependingProjectId) == true))
                             {
                                 return dependingProjectId;
                             }

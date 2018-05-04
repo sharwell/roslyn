@@ -91,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
                     MetadataSignatureUnitTestHelper.VerifyMemberSignatures(testEnvironment, expectedSignatures);
                 }
 
-                if (expectedOutput != null || expectedReturnCode != null)
+                if ((expectedOutput != null) || (expectedReturnCode != null))
                 {
                     var returnCode = testEnvironment.Execute(mainModuleName, args, expectedOutput);
 

@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis
         /// <param name="trivia">The current trivia syntax that the walker is visiting.</param>
         protected virtual void VisitTrivia(SyntaxTrivia trivia)
         {
-            if (this.Depth >= SyntaxWalkerDepth.StructuredTrivia && trivia.HasStructure)
+            if ((this.Depth >= SyntaxWalkerDepth.StructuredTrivia) && trivia.HasStructure)
             {
                 this.Visit(trivia.GetStructure());
             }

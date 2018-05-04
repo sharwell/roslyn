@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.Editor.Undo
 
         public ISourceTextUndoTransaction RegisterUndoTransaction(SourceText sourceText, string description)
         {
-            if (sourceText != null && !string.IsNullOrWhiteSpace(description))
+            if ((sourceText != null) && !string.IsNullOrWhiteSpace(description))
             {
                 var transaction = new SourceTextUndoTransaction(this, sourceText, description);
                 _transactions.Add(sourceText, transaction);
@@ -53,7 +53,7 @@ namespace Microsoft.CodeAnalysis.Editor.Undo
 
         public bool EndUndoTransaction(ISourceTextUndoTransaction transaction)
         {
-            if (transaction != null && _transactions.ContainsKey(transaction.SourceText))
+            if ((transaction != null) && _transactions.ContainsKey(transaction.SourceText))
             {
                 _transactions.Remove(transaction.SourceText);
                 return true;

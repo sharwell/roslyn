@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // We need to preserve any conversion that changes the type (even identity conversions, like object->dynamic),
                 // or that was explicitly written in code (so that GetSemanticInfo can find the syntax in the bound tree).
-                if (!isCast && source.Type == destination)
+                if (!isCast && (source.Type == destination))
                 {
                     return source;
                 }
@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 return CreateMethodGroupConversion(syntax, source, conversion, isCast, destination, diagnostics);
             }
 
-            if (conversion.IsAnonymousFunction && source.Kind == BoundKind.UnboundLambda)
+            if (conversion.IsAnonymousFunction && (source.Kind == BoundKind.UnboundLambda))
             {
                 return CreateAnonymousFunctionConversion(syntax, source, conversion, isCast, destination, diagnostics);
             }
@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             ConstantValue constantValue = this.FoldConstantConversion(syntax, source, conversion, destination, diagnostics);
-            if (conversion.Kind == ConversionKind.DefaultOrNullLiteral && source.Kind == BoundKind.DefaultExpression)
+            if ((conversion.Kind == ConversionKind.DefaultOrNullLiteral) && (source.Kind == BoundKind.DefaultExpression))
             {
                 source = ((BoundDefaultExpression)source).Update(constantValue, destination);
             }
@@ -186,8 +186,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeSymbol conversionParameterType = conversion.BestUserDefinedConversionAnalysis.Operator.ParameterTypes[0];
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
 
-            if (conversion.BestUserDefinedConversionAnalysis.Kind == UserDefinedConversionAnalysisKind.ApplicableInNormalForm &&
-                conversion.BestUserDefinedConversionAnalysis.FromType != conversionParameterType)
+            if ((conversion.BestUserDefinedConversionAnalysis.Kind == UserDefinedConversionAnalysisKind.ApplicableInNormalForm) &&
+                (conversion.BestUserDefinedConversionAnalysis.FromType != conversionParameterType))
             {
                 // Conversion's "from" type --> conversion method's parameter type.
                 convertedOperand = CreateConversion(
@@ -206,8 +206,8 @@ namespace Microsoft.CodeAnalysis.CSharp
             TypeSymbol conversionToType = conversion.BestUserDefinedConversionAnalysis.ToType;
             Conversion toConversion = conversion.UserDefinedToConversion;
 
-            if (conversion.BestUserDefinedConversionAnalysis.Kind == UserDefinedConversionAnalysisKind.ApplicableInNormalForm &&
-                conversionToType != conversionReturnType)
+            if ((conversion.BestUserDefinedConversionAnalysis.Kind == UserDefinedConversionAnalysisKind.ApplicableInNormalForm) &&
+                (conversionToType != conversionReturnType))
             {
                 // Conversion method's parameter type --> conversion method's return type
                 // NB: not calling CreateConversion here because this is the recursive base case.
@@ -221,7 +221,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     type: conversionReturnType)
                 { WasCompilerGenerated = true };
 
-                if (conversionToType.IsNullableType() && conversionToType.GetNullableUnderlyingType() == conversionReturnType)
+                if (conversionToType.IsNullableType() && (conversionToType.GetNullableUnderlyingType() == conversionReturnType))
                 {
                     // Skip introducing the conversion from C to C?.  The "to" conversion is now wrong though,
                     // because it will still assume converting C? to D?. 
@@ -304,7 +304,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             BoundExpression receiverOpt = group.ReceiverOpt;
             MethodSymbol method = conversion.Method;
             bool hasErrors = false;
-            if (receiverOpt != null && receiverOpt.Kind == BoundKind.BaseReference && method.IsAbstract)
+            if ((receiverOpt != null) && (receiverOpt.Kind == BoundKind.BaseReference) && method.IsAbstract)
             {
                 Error(diagnostics, ErrorCode.ERR_AbstractBaseCall, syntax, method);
                 hasErrors = true;
@@ -568,7 +568,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         {
             // Perform final validation of the method to be invoked.
 
-            Debug.Assert(memberSymbol.Kind != SymbolKind.Method ||
+            Debug.Assert((memberSymbol.Kind != SymbolKind.Method) ||
                 memberSymbol.CanBeReferencedByName);
             //note that the same assert does not hold for all properties. Some properties and (all indexers) are not referenceable by name, yet
             //their binding brings them through here, perhaps needlessly.
@@ -606,7 +606,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     {
                         diagnostics.Add(ErrorCode.ERR_InitializerAddHasWrongSignature, node.Location, memberSymbol);
                     }
-                    else if (node.Kind() == SyntaxKind.AwaitExpression && memberSymbol.Name == WellKnownMemberNames.GetAwaiter)
+                    else if ((node.Kind() == SyntaxKind.AwaitExpression) && (memberSymbol.Name == WellKnownMemberNames.GetAwaiter))
                     {
                         diagnostics.Add(ErrorCode.ERR_BadAwaitArg, node.Location, receiverOpt.Type);
                     }
@@ -624,10 +624,10 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
             else if (WasImplicitReceiver(receiverOpt))
             {
-                if (InFieldInitializer && !ContainingType.IsScriptClass || InConstructorInitializer || InAttributeArgument)
+                if ((InFieldInitializer && !ContainingType.IsScriptClass) || InConstructorInitializer || InAttributeArgument)
                 {
                     SyntaxNode errorNode = node;
-                    if (node.Parent != null && node.Parent.Kind() == SyntaxKind.InvocationExpression)
+                    if ((node.Parent != null) && (node.Parent.Kind() == SyntaxKind.InvocationExpression))
                     {
                         errorNode = node.Parent;
                     }
@@ -639,7 +639,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 // If we could access the member through implicit "this" the receiver would be a BoundThisReference.
                 // If it is null it means that the instance member is inaccessible.
-                if (receiverOpt == null || ContainingMember().IsStatic)
+                if ((receiverOpt == null) || ContainingMember().IsStatic)
                 {
                     Error(diagnostics, ErrorCode.ERR_ObjectRequired, node, memberSymbol);
                     return true;
@@ -718,7 +718,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal bool MethodGroupIsCompatibleWithDelegate(BoundExpression receiverOpt, bool isExtensionMethod, MethodSymbol method, NamedTypeSymbol delegateType, Location errorLocation, DiagnosticBag diagnostics)
         {
             Debug.Assert(delegateType.TypeKind == TypeKind.Delegate);
-            Debug.Assert((object)delegateType.DelegateInvokeMethod != null && !delegateType.DelegateInvokeMethod.HasUseSiteError,
+            Debug.Assert(((object)delegateType.DelegateInvokeMethod != null) && !delegateType.DelegateInvokeMethod.HasUseSiteError,
                          "This method should only be called for valid delegate types.");
 
             MethodSymbol delegateMethod = delegateType.DelegateInvokeMethod;
@@ -730,10 +730,10 @@ namespace Microsoft.CodeAnalysis.CSharp
             var methodParameters = method.Parameters;
             int numParams = delegateParameters.Length;
 
-            if (methodParameters.Length != numParams + (isExtensionMethod ? 1 : 0))
+            if (methodParameters.Length != (numParams + (isExtensionMethod ? 1 : 0)))
             {
                 // This can happen if "method" has optional parameters.
-                Debug.Assert(methodParameters.Length > numParams + (isExtensionMethod ? 1 : 0));
+                Debug.Assert(methodParameters.Length > (numParams + (isExtensionMethod ? 1 : 0)));
                 Error(diagnostics, ErrorCode.ERR_MethDelegateMismatch, errorLocation, method, delegateType);
                 return false;
             }
@@ -752,7 +752,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var delegateParameter = delegateParameters[i];
                 var methodParameter = methodParameters[isExtensionMethod ? i + 1 : i];
 
-                if (delegateParameter.RefKind != methodParameter.RefKind ||
+                if ((delegateParameter.RefKind != methodParameter.RefKind) ||
                     !Conversions.HasIdentityOrImplicitReferenceConversion(delegateParameter.Type, methodParameter.Type, ref useSiteDiagnostics))
                 {
                     // No overload for '{0}' matches delegate '{1}'
@@ -773,7 +773,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                     // - Return types identity-convertible
                                     Conversions.HasIdentityConversion(method.ReturnType, delegateMethod.ReturnType):
                                     // - Return types "match"
-                                    method.ReturnsVoid && delegateMethod.ReturnsVoid ||
+                                    (method.ReturnsVoid && delegateMethod.ReturnsVoid) ||
                                         Conversions.HasIdentityOrImplicitReferenceConversion(method.ReturnType, delegateMethod.ReturnType, ref useSiteDiagnostics);
 
             if (!returnsMatch)
@@ -823,7 +823,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             var sourceMethod = selectedMethod as SourceOrdinaryMethodSymbol;
-            if ((object)sourceMethod != null && sourceMethod.IsPartialWithoutImplementation)
+            if (((object)sourceMethod != null) && sourceMethod.IsPartialWithoutImplementation)
             {
                 // CS0762: Cannot create delegate from method '{0}' because it is a partial method without an implementing declaration
                 Error(diagnostics, ErrorCode.ERR_PartialMethodToDelegate, syntax.Location, selectedMethod);
@@ -924,7 +924,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             var sourceConstantValue = source.ConstantValue;
             if (sourceConstantValue == null)
             {
-                if (conversion.Kind == ConversionKind.DefaultOrNullLiteral && source.Kind == BoundKind.DefaultExpression)
+                if ((conversion.Kind == ConversionKind.DefaultOrNullLiteral) && (source.Kind == BoundKind.DefaultExpression))
                 {
                     return destination.GetDefaultValue();
                 }
@@ -994,7 +994,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             Debug.Assert(!sourceValue.IsBad);
 
             SpecialType destinationType;
-            if ((object)destination != null && destination.IsEnumType())
+            if (((object)destination != null) && destination.IsEnumType())
             {
                 var underlyingType = ((NamedTypeSymbol)destination).EnumUnderlyingType;
                 Debug.Assert((object)underlyingType != null);
@@ -1312,17 +1312,17 @@ namespace Microsoft.CodeAnalysis.CSharp
             // See ExpressionBinder::isConstantInRange.
             switch (destinationType)
             {
-                case SpecialType.System_Byte: return (byte.MinValue - 1D) < value && value < (byte.MaxValue + 1D);
-                case SpecialType.System_Char: return (char.MinValue - 1D) < value && value < (char.MaxValue + 1D);
-                case SpecialType.System_UInt16: return (ushort.MinValue - 1D) < value && value < (ushort.MaxValue + 1D);
-                case SpecialType.System_UInt32: return (uint.MinValue - 1D) < value && value < (uint.MaxValue + 1D);
-                case SpecialType.System_UInt64: return (ulong.MinValue - 1D) < value && value < (ulong.MaxValue + 1D);
-                case SpecialType.System_SByte: return (sbyte.MinValue - 1D) < value && value < (sbyte.MaxValue + 1D);
-                case SpecialType.System_Int16: return (short.MinValue - 1D) < value && value < (short.MaxValue + 1D);
-                case SpecialType.System_Int32: return (int.MinValue - 1D) < value && value < (int.MaxValue + 1D);
+                case SpecialType.System_Byte: return ((byte.MinValue - 1D) < value) && (value < (byte.MaxValue + 1D));
+                case SpecialType.System_Char: return ((char.MinValue - 1D) < value) && (value < (char.MaxValue + 1D));
+                case SpecialType.System_UInt16: return ((ushort.MinValue - 1D) < value) && (value < (ushort.MaxValue + 1D));
+                case SpecialType.System_UInt32: return ((uint.MinValue - 1D) < value) && (value < (uint.MaxValue + 1D));
+                case SpecialType.System_UInt64: return ((ulong.MinValue - 1D) < value) && (value < (ulong.MaxValue + 1D));
+                case SpecialType.System_SByte: return ((sbyte.MinValue - 1D) < value) && (value < (sbyte.MaxValue + 1D));
+                case SpecialType.System_Int16: return ((short.MinValue - 1D) < value) && (value < (short.MaxValue + 1D));
+                case SpecialType.System_Int32: return ((int.MinValue - 1D) < value) && (value < (int.MaxValue + 1D));
                 // Note: Using <= to compare the min value matches the native compiler.
-                case SpecialType.System_Int64: return (long.MinValue - 1D) <= value && value < (long.MaxValue + 1D);
-                case SpecialType.System_Decimal: return ((double)decimal.MinValue - 1D) < value && value < ((double)decimal.MaxValue + 1D);
+                case SpecialType.System_Int64: return ((long.MinValue - 1D) <= value) && (value < (long.MaxValue + 1D));
+                case SpecialType.System_Decimal: return (((double)decimal.MinValue - 1D) < value) && (value < ((double)decimal.MaxValue + 1D));
             }
 
             return true;
@@ -1334,15 +1334,15 @@ namespace Microsoft.CodeAnalysis.CSharp
             // See ExpressionBinder::isConstantInRange.
             switch (destinationType)
             {
-                case SpecialType.System_Byte: return (byte.MinValue - 1M) < value && value < (byte.MaxValue + 1M);
-                case SpecialType.System_Char: return (char.MinValue - 1M) < value && value < (char.MaxValue + 1M);
-                case SpecialType.System_UInt16: return (ushort.MinValue - 1M) < value && value < (ushort.MaxValue + 1M);
-                case SpecialType.System_UInt32: return (uint.MinValue - 1M) < value && value < (uint.MaxValue + 1M);
-                case SpecialType.System_UInt64: return (ulong.MinValue - 1M) < value && value < (ulong.MaxValue + 1M);
-                case SpecialType.System_SByte: return (sbyte.MinValue - 1M) < value && value < (sbyte.MaxValue + 1M);
-                case SpecialType.System_Int16: return (short.MinValue - 1M) < value && value < (short.MaxValue + 1M);
-                case SpecialType.System_Int32: return (int.MinValue - 1M) < value && value < (int.MaxValue + 1M);
-                case SpecialType.System_Int64: return (long.MinValue - 1M) < value && value < (long.MaxValue + 1M);
+                case SpecialType.System_Byte: return ((byte.MinValue - 1M) < value) && (value < (byte.MaxValue + 1M));
+                case SpecialType.System_Char: return ((char.MinValue - 1M) < value) && (value < (char.MaxValue + 1M));
+                case SpecialType.System_UInt16: return ((ushort.MinValue - 1M) < value) && (value < (ushort.MaxValue + 1M));
+                case SpecialType.System_UInt32: return ((uint.MinValue - 1M) < value) && (value < (uint.MaxValue + 1M));
+                case SpecialType.System_UInt64: return ((ulong.MinValue - 1M) < value) && (value < (ulong.MaxValue + 1M));
+                case SpecialType.System_SByte: return ((sbyte.MinValue - 1M) < value) && (value < (sbyte.MaxValue + 1M));
+                case SpecialType.System_Int16: return ((short.MinValue - 1M) < value) && (value < (short.MaxValue + 1M));
+                case SpecialType.System_Int32: return ((int.MinValue - 1M) < value) && (value < (int.MaxValue + 1M));
+                case SpecialType.System_Int64: return ((long.MinValue - 1M) < value) && (value < (long.MaxValue + 1M));
             }
 
             return true;

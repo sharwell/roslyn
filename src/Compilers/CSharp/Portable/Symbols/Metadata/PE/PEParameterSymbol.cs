@@ -434,7 +434,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                 value = _moduleSymbol.Module.GetParamDefaultValue(_handle);
             }
 
-            if (value == null && !ignoreAttributes)
+            if ((value == null) && !ignoreAttributes)
             {
                 value = GetDefaultDecimalOrDateTimeValue();
             }
@@ -768,7 +768,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
 
                 bool filterIsReadOnlyAttribute = this.RefKind == RefKind.In;
 
-                if (filterOutParamArrayAttribute || filterOutConstantAttributeDescription.Signatures != null || filterIsReadOnlyAttribute)
+                if (filterOutParamArrayAttribute || (filterOutConstantAttributeDescription.Signatures != null) || filterIsReadOnlyAttribute)
                 {
                     CustomAttributeHandle paramArrayAttribute;
                     CustomAttributeHandle constantAttribute;

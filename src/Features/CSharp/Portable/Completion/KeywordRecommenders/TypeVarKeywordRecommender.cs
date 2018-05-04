@@ -18,25 +18,25 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
         {
             var token = context.TargetToken;
 
-            if (token.Kind() == SyntaxKind.OpenBracketToken &&
+            if ((token.Kind() == SyntaxKind.OpenBracketToken) &&
                 token.Parent.IsKind(SyntaxKind.AttributeList))
             {
                 var typeParameters = token.GetAncestor<TypeParameterListSyntax>();
                 var type = typeParameters.GetAncestorOrThis<TypeDeclarationSyntax>();
 
-                if (type != null && type.TypeParameterList == typeParameters)
+                if ((type != null) && (type.TypeParameterList == typeParameters))
                 {
                     return true;
                 }
 
                 var @delegate = typeParameters.GetAncestorOrThis<DelegateDeclarationSyntax>();
-                if (@delegate != null && @delegate.TypeParameterList == typeParameters)
+                if ((@delegate != null) && (@delegate.TypeParameterList == typeParameters))
                 {
                     return true;
                 }
 
                 var method = typeParameters.GetAncestorOrThis<MethodDeclarationSyntax>();
-                if (method != null && method.TypeParameterList == typeParameters)
+                if ((method != null) && (method.TypeParameterList == typeParameters))
                 {
                     return true;
                 }

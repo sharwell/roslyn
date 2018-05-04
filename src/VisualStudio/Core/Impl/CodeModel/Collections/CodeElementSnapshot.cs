@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
         {
             get
             {
-                if (index < 0 || index >= _elements.Length)
+                if ((index < 0) || (index >= _elements.Length))
                 {
                     throw new ArgumentOutOfRangeException(nameof(index));
                 }

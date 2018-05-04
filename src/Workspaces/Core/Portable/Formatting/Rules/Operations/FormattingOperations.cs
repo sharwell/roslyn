@@ -135,19 +135,19 @@ namespace Microsoft.CodeAnalysis.Formatting.Rules
         /// </summary>
         public static AdjustSpacesOperation CreateAdjustSpacesOperation(int space, AdjustSpacesOption option)
         {
-            if (space == 1 && option == AdjustSpacesOption.DefaultSpacesIfOnSingleLine)
+            if ((space == 1) && (option == AdjustSpacesOption.DefaultSpacesIfOnSingleLine))
             {
                 return s_defaultOneSpaceIfOnSingleLine;
             }
-            else if (space == 0 && option == AdjustSpacesOption.ForceSpacesIfOnSingleLine)
+            else if ((space == 0) && (option == AdjustSpacesOption.ForceSpacesIfOnSingleLine))
             {
                 return s_forceZeroSpaceIfOnSingleLine;
             }
-            else if (space == 1 && option == AdjustSpacesOption.ForceSpacesIfOnSingleLine)
+            else if ((space == 1) && (option == AdjustSpacesOption.ForceSpacesIfOnSingleLine))
             {
                 return s_forceOneSpaceIfOnSingleLine;
             }
-            else if (space == 1 && option == AdjustSpacesOption.ForceSpaces)
+            else if ((space == 1) && (option == AdjustSpacesOption.ForceSpaces))
             {
                 return s_forceZeroLineUsingSpaceForce;
             }

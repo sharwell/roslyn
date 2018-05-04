@@ -140,7 +140,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
             // next the new window's title and that [Read Only] is appended to title.
             READONLYSTATUS readOnlyStatus = READONLYSTATUS.ROSTATUS_NotReadOnly;
             if (ErrorHandler.Succeeded(textBuffer.GetStateFlags(out var textBufferFlags)) &&
-                0 != (textBufferFlags & ((uint)BUFFERSTATEFLAGS.BSF_FILESYS_READONLY | (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY)))
+                (0 != (textBufferFlags & ((uint)BUFFERSTATEFLAGS.BSF_FILESYS_READONLY | (uint)BUFFERSTATEFLAGS.BSF_USER_READONLY))))
             {
                 readOnlyStatus = READONLYSTATUS.ROSTATUS_ReadOnly;
             }
@@ -197,10 +197,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
         {
             pbstrPhysicalView = null;
 
-            if (rguidLogicalView == VSConstants.LOGVIEWID.Primary_guid ||
-                rguidLogicalView == VSConstants.LOGVIEWID.Debugging_guid ||
-                rguidLogicalView == VSConstants.LOGVIEWID.Code_guid ||
-                rguidLogicalView == VSConstants.LOGVIEWID.TextView_guid)
+            if ((rguidLogicalView == VSConstants.LOGVIEWID.Primary_guid) ||
+                (rguidLogicalView == VSConstants.LOGVIEWID.Debugging_guid) ||
+                (rguidLogicalView == VSConstants.LOGVIEWID.Code_guid) ||
+                (rguidLogicalView == VSConstants.LOGVIEWID.TextView_guid))
             {
                 return VSConstants.S_OK;
             }
@@ -296,7 +296,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                 string originalNewLine = originalText.ToString(CodeAnalysis.Text.TextSpan.FromBounds(originalLine.End, originalLine.EndIncludingLineBreak));
 
                 // Check if we have a line ending, so we don't go adding one to the end if we don't need to.
-                if (originalNewLine.Length > 0 && originalNewLine != targetLineEnding)
+                if ((originalNewLine.Length > 0) && (originalNewLine != targetLineEnding))
                 {
                     var currentLine = formattedText.Lines[originalLine.LineNumber];
                     var currentSpan = CodeAnalysis.Text.TextSpan.FromBounds(currentLine.End, currentLine.EndIncludingLineBreak);

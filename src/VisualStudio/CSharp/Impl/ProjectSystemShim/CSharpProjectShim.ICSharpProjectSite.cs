@@ -93,7 +93,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.ProjectSystemShim
         {
             filename = FileUtilities.NormalizeAbsolutePath(filename);
 
-            if (optionID != CompilerOptions.OPTID_IMPORTS && optionID != CompilerOptions.OPTID_IMPORTSUSINGNOPIA)
+            if ((optionID != CompilerOptions.OPTID_IMPORTS) && (optionID != CompilerOptions.OPTID_IMPORTSUSINGNOPIA))
             {
                 throw new ArgumentException("optionID was an unexpected value.", nameof(optionID));
             }

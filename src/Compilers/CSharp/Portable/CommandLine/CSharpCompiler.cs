@@ -330,7 +330,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             DiagnosticBag diagnostics)
         {
             foreach (LineDirectiveTriviaSyntax directive in tree.GetRoot().GetDirectives(
-                d => d.IsActive && !d.HasErrors && d.Kind() == SyntaxKind.LineDirectiveTrivia))
+                d => d.IsActive && !d.HasErrors && (d.Kind() == SyntaxKind.LineDirectiveTrivia)))
             {
                 string path = (string)directive.File.Value;
                 if (path == null)

@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                             localConstantsBuilder.Add(symbolProvider.GetLocalConstant(name, typeSymbol, value, dynamicFlags, tupleElementNames));
                         }
                     }
-                    catch (Exception e) when (e is UnsupportedSignatureContent || e is BadImageFormatException)
+                    catch (Exception e) when ((e is UnsupportedSignatureContent) || (e is BadImageFormatException))
                     {
                         // ignore scopes with invalid data
                     }

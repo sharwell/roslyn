@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
                 // and 'dynamic' as the same.  However, since they're different types, we don't
                 // want to bail out using the above check.
 
-                if (x.Kind == SymbolKind.DynamicType ||
+                if ((x.Kind == SymbolKind.DynamicType) ||
                     (_objectAndDynamicCompareEqually && IsObjectType(x)))
                 {
                     return Hash.Combine(typeof(IDynamicTypeSymbol), currentHash);
@@ -233,7 +233,7 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
 
             private int CombineHashCodes(INamespaceSymbol x, int currentHash)
             {
-                if (x.IsGlobalNamespace && _symbolEquivalenceComparer._assemblyComparerOpt == null)
+                if (x.IsGlobalNamespace && (_symbolEquivalenceComparer._assemblyComparerOpt == null))
                 {
                     // Exclude global namespace's container's hash when assemblies can differ.
                     return Hash.Combine(x.Name, currentHash);
@@ -282,20 +282,20 @@ namespace Microsoft.CodeAnalysis.Shared.Utilities
             public int CombineHashCodes(ITypeParameterSymbol x, int currentHash)
             {
                 Contract.Requires(
-                    (x.TypeParameterKind == TypeParameterKind.Method && IsConstructedFromSelf(x.DeclaringMethod)) ||
-                    (x.TypeParameterKind == TypeParameterKind.Type && IsConstructedFromSelf(x.ContainingType)) ||
-                    x.TypeParameterKind == TypeParameterKind.Cref);
+                    ((x.TypeParameterKind == TypeParameterKind.Method) && IsConstructedFromSelf(x.DeclaringMethod)) ||
+                    ((x.TypeParameterKind == TypeParameterKind.Type) && IsConstructedFromSelf(x.ContainingType)) ||
+                    (x.TypeParameterKind == TypeParameterKind.Cref));
 
                 currentHash =
                     Hash.Combine(x.Ordinal,
                     Hash.Combine((int)x.TypeParameterKind, currentHash));
 
-                if (x.TypeParameterKind == TypeParameterKind.Method && _compareMethodTypeParametersByIndex)
+                if ((x.TypeParameterKind == TypeParameterKind.Method) && _compareMethodTypeParametersByIndex)
                 {
                     return currentHash;
                 }
 
-                if (x.TypeParameterKind == TypeParameterKind.Type && x.ContainingType.IsAnonymousType)
+                if ((x.TypeParameterKind == TypeParameterKind.Type) && x.ContainingType.IsAnonymousType)
                 {
                     // Anonymous type type parameters compare by index as well to prevent
                     // recursion.

@@ -318,14 +318,14 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         private static bool MatchesTypeParameterCount(ImmutableArray<string> typeArguments, GenericParameterHandleCollection typeParameters, int offset)
         {
-            return typeArguments.Length == typeParameters.Count - offset;
+            return typeArguments.Length == (typeParameters.Count - offset);
         }
 
         // parameterA from string signature, parameterB from metadata.
         private bool MatchesParameter(ParameterSignature parameterA, ParameterSignature parameterB)
         {
             return MatchesType(parameterA.Type, parameterB.Type) &&
-                parameterA.IsByRef == parameterB.IsByRef;
+                (parameterA.IsByRef == parameterB.IsByRef);
         }
 
         // typeA from string signature, typeB from metadata.
@@ -352,7 +352,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                         // Metadata signature may be more qualified than the
                         // string signature but still considered a match
                         // (e.g.: "B<U>.C" should match N.A<T>.B<U>.C).
-                        return (qualifiedA.Qualifier == null || (qualifiedB.Qualifier != null && MatchesType(qualifiedA.Qualifier, qualifiedB.Qualifier))) &&
+                        return ((qualifiedA.Qualifier == null) || ((qualifiedB.Qualifier != null) && MatchesType(qualifiedA.Qualifier, qualifiedB.Qualifier))) &&
                             _stringComparer.Equals(qualifiedA.Name, qualifiedB.Name);
                     }
                 case TypeSignatureKind.ArrayType:
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
                         var arrayA = (ArrayTypeSignature)typeA;
                         var arrayB = (ArrayTypeSignature)typeB;
                         return MatchesType(arrayA.ElementType, arrayB.ElementType) &&
-                            arrayA.Rank == arrayB.Rank;
+                            (arrayA.Rank == arrayB.Rank);
                     }
                 case TypeSignatureKind.PointerType:
                     {

@@ -3108,13 +3108,13 @@ class C
             TestBoundTree(source, edges =>
                 from edge in edges
                 let node = edge.Value
-                where node != null && (node.Text == "eventAssignmentOperator" || node.Text == "compoundAssignmentOperator")
+                where (node != null) && ((node.Text == "eventAssignmentOperator") || (node.Text == "compoundAssignmentOperator"))
                 select string.Join(" ", from child in node.Children
-                                        where child.Text == "@operator" ||
-                                              child.Text == "isAddition" ||
-                                              child.Text == "isDynamic" ||
-                                              child.Text == "leftConversion" ||
-                                              child.Text == "finalConversion"
+                                        where (child.Text == "@operator") ||
+                                              (child.Text == "isAddition") ||
+                                              (child.Text == "isDynamic") ||
+                                              (child.Text == "leftConversion") ||
+                                              (child.Text == "finalConversion")
                                         select child.Text + ": " + (child.Text == "@operator" ? ((BinaryOperatorSignature)child.Value).Kind.ToString() : child.Value.ToString())));
         }
 
@@ -3129,7 +3129,7 @@ class C
 
         private static string FormatTypeArgumentList(ImmutableArray<TypeSymbol>? arguments)
         {
-            if (arguments == null || arguments.Value.IsEmpty)
+            if ((arguments == null) || arguments.Value.IsEmpty)
             {
                 return "";
             }
@@ -6852,7 +6852,7 @@ public class RubyTime
 
                 for (int k = 0; k < operators.Length; k++)
                 {
-                    if (operators[k] == UnaryOperatorKind.PostfixDecrement || operators[k] == UnaryOperatorKind.PostfixIncrement)
+                    if ((operators[k] == UnaryOperatorKind.PostfixDecrement) || (operators[k] == UnaryOperatorKind.PostfixIncrement))
                     {
                         builder.AppendFormat(
     "    var z{0}_1 = x1 {1};\n" +
@@ -6887,7 +6887,7 @@ public class RubyTime
             var semanticModel = compilation.GetSemanticModel(tree);
 
             var nodes = (from node in tree.GetRoot().DescendantNodes()
-                         select ((ExpressionSyntax)(node as PrefixUnaryExpressionSyntax)) ?? node as PostfixUnaryExpressionSyntax).
+                         select ((ExpressionSyntax)(node as PrefixUnaryExpressionSyntax)) ?? (node as PostfixUnaryExpressionSyntax)).
                          Where(node => (object)node != null).ToArray();
 
             n = 0;
@@ -6895,11 +6895,11 @@ public class RubyTime
             {
                 TypeSymbol type;
 
-                if (name == typeNames.Length - 1)
+                if (name == (typeNames.Length - 1))
                 {
                     type = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_Byte));
                 }
-                else if (name == typeNames.Length - 2)
+                else if (name == (typeNames.Length - 2))
                 {
                     type = compilation.DynamicType;
                 }
@@ -6961,9 +6961,9 @@ public class RubyTime
 
             TypeSymbol underlying = type;
 
-            if (op == UnaryOperatorKind.BitwiseComplement ||
-                op == UnaryOperatorKind.PrefixDecrement || op == UnaryOperatorKind.PrefixIncrement ||
-                op == UnaryOperatorKind.PostfixDecrement || op == UnaryOperatorKind.PostfixIncrement)
+            if ((op == UnaryOperatorKind.BitwiseComplement) ||
+                (op == UnaryOperatorKind.PrefixDecrement) || (op == UnaryOperatorKind.PrefixIncrement) ||
+                (op == UnaryOperatorKind.PostfixDecrement) || (op == UnaryOperatorKind.PostfixIncrement))
             {
                 underlying = type.EnumUnderlyingType();
             }
@@ -6978,8 +6978,8 @@ public class RubyTime
                     signature = new UnaryOperatorSignature(op | UnaryOperatorKind.Dynamic, type, type);
                 }
                 else if (type.IsPointerType() &&
-                    (op == UnaryOperatorKind.PrefixDecrement || op == UnaryOperatorKind.PrefixIncrement ||
-                        op == UnaryOperatorKind.PostfixDecrement || op == UnaryOperatorKind.PostfixIncrement))
+                    ((op == UnaryOperatorKind.PrefixDecrement) || (op == UnaryOperatorKind.PrefixIncrement) ||
+                        (op == UnaryOperatorKind.PostfixDecrement) || (op == UnaryOperatorKind.PostfixIncrement)))
                 {
                     signature = new UnaryOperatorSignature(op | UnaryOperatorKind.Pointer, type, type);
                 }
@@ -7010,7 +7010,7 @@ public class RubyTime
             string containerName = signature.OperandType.ToTestDisplayString();
             string returnName = signature.ReturnType.ToTestDisplayString();
 
-            if (op == UnaryOperatorKind.LogicalNegation && type.IsEnumType())
+            if ((op == UnaryOperatorKind.LogicalNegation) && type.IsEnumType())
             {
                 containerName = type.ToTestDisplayString();
                 returnName = containerName;
@@ -7039,7 +7039,7 @@ public class RubyTime
                 case UnaryOperatorKind.PostfixIncrement:
                     expectChecked = type.IsDynamic() || type.IsPointerType() ||
                                      symbol1.ContainingType.EnumUnderlyingType().SpecialType.IsIntegralType() ||
-                                     symbol1.ContainingType.SpecialType == SpecialType.System_Char;
+                                     (symbol1.ContainingType.SpecialType == SpecialType.System_Char);
                     break;
 
                 default:
@@ -7103,7 +7103,7 @@ class Module1
             var semanticModel = compilation.GetSemanticModel(tree);
 
             var nodes = (from node in tree.GetRoot().DescendantNodes()
-                         select ((ExpressionSyntax)(node as PrefixUnaryExpressionSyntax)) ?? node as PostfixUnaryExpressionSyntax).
+                         select ((ExpressionSyntax)(node as PrefixUnaryExpressionSyntax)) ?? (node as PostfixUnaryExpressionSyntax)).
                          Where(node => (object)node != null).ToArray();
 
             Assert.Equal(2, nodes.Length);
@@ -7255,7 +7255,7 @@ class Module1
 
             TypeSymbol[] types = new TypeSymbol[typeNames.Length];
 
-            for (int i = 0; i < typeNames.Length - 3; i++)
+            for (int i = 0; i < (typeNames.Length - 3); i++)
             {
                 types[i] = compilation.GetTypeByMetadataName(typeNames[i]);
             }
@@ -7412,7 +7412,7 @@ class Module1
 
             TypeSymbol[] types = new TypeSymbol[typeNames.Length];
 
-            for (int i = 0; i < typeNames.Length - 3; i++)
+            for (int i = 0; i < (typeNames.Length - 3); i++)
             {
                 types[i] = compilation.GetTypeByMetadataName(typeNames[i]);
             }
@@ -7484,7 +7484,7 @@ class Module1
                 {
                     if (leftType.IsDynamic() || rightType.IsDynamic())
                     {
-                        Assert.True(CandidateReason.LateBound == info1.CandidateReason || CandidateReason.None == info1.CandidateReason);
+                        Assert.True((CandidateReason.LateBound == info1.CandidateReason) || (CandidateReason.None == info1.CandidateReason));
                     }
                     else
                     {
@@ -7520,7 +7520,7 @@ class Module1
             Assert.Equal(symbol3, symbol7);
             Assert.Equal(symbol4, symbol8);
 
-            if ((object)symbol1 != null && symbol1.IsImplicitlyDeclared)
+            if (((object)symbol1 != null) && symbol1.IsImplicitlyDeclared)
             {
                 Assert.NotSame(symbol1, symbol5);
                 Assert.Equal(symbol1.GetHashCode(), symbol5.GetHashCode());
@@ -7560,9 +7560,9 @@ class Module1
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Dynamic, leftType, rightType, rightType);
                 }
-                else if ((op == BinaryOperatorKind.Equal || op == BinaryOperatorKind.NotEqual) &&
+                else if (((op == BinaryOperatorKind.Equal) || (op == BinaryOperatorKind.NotEqual)) &&
                     leftType.IsReferenceType && rightType.IsReferenceType &&
-                    (leftType == rightType || compilation.Conversions.ClassifyConversionFromType(leftType, rightType, ref useSiteDiagnostics).IsReference))
+                    ((leftType == rightType) || compilation.Conversions.ClassifyConversionFromType(leftType, rightType, ref useSiteDiagnostics).IsReference))
                 {
                     if (leftType.IsDelegateType() && rightType.IsDelegateType())
                     {
@@ -7572,7 +7572,7 @@ class Module1
                             leftType, // TODO: this feels like a spec violation
                             compilation.GetSpecialType(SpecialType.System_Boolean));
                     }
-                    else if (leftType.SpecialType == SpecialType.System_Delegate && rightType.SpecialType == SpecialType.System_Delegate)
+                    else if ((leftType.SpecialType == SpecialType.System_Delegate) && (rightType.SpecialType == SpecialType.System_Delegate))
                     {
                         signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Delegate,
                             compilation.GetSpecialType(SpecialType.System_Delegate), compilation.GetSpecialType(SpecialType.System_Delegate),
@@ -7584,7 +7584,7 @@ class Module1
                             compilation.GetSpecialType(SpecialType.System_Boolean));
                     }
                 }
-                else if (op == BinaryOperatorKind.Addition &&
+                else if ((op == BinaryOperatorKind.Addition) &&
                     ((leftType.IsStringType() && !rightType.IsPointerType()) || (!leftType.IsPointerType() && rightType.IsStringType())))
                 {
                     Assert.False(leftType.IsStringType() && rightType.IsStringType());
@@ -7599,7 +7599,7 @@ class Module1
                         signature = new BinaryOperatorSignature(op | BinaryOperatorKind.String, compilation.ObjectType, rightType, rightType);
                     }
                 }
-                else if (op == BinaryOperatorKind.Addition &&
+                else if ((op == BinaryOperatorKind.Addition) &&
                     (((leftType.IsIntegralType() || leftType.IsCharType()) && rightType.IsPointerType()) ||
                     (leftType.IsPointerType() && (rightType.IsIntegralType() || rightType.IsCharType()))))
                 {
@@ -7614,63 +7614,63 @@ class Module1
                         Assert.True(symbol1.Parameters[0].Type.IsIntegralType());
                     }
                 }
-                else if (op == BinaryOperatorKind.Subtraction &&
+                else if ((op == BinaryOperatorKind.Subtraction) &&
                     leftType.IsPointerType() && (rightType.IsIntegralType() || rightType.IsCharType()))
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.String, leftType, symbol1.Parameters[1].Type, leftType);
                     Assert.True(symbol1.Parameters[1].Type.IsIntegralType());
                 }
-                else if (op == BinaryOperatorKind.Subtraction && leftType.IsPointerType() && leftType == rightType)
+                else if ((op == BinaryOperatorKind.Subtraction) && leftType.IsPointerType() && (leftType == rightType))
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Pointer, leftType, rightType, compilation.GetSpecialType(SpecialType.System_Int64));
                 }
-                else if ((op == BinaryOperatorKind.Addition || op == BinaryOperatorKind.Subtraction) &&
+                else if (((op == BinaryOperatorKind.Addition) || (op == BinaryOperatorKind.Subtraction)) &&
                     leftType.IsEnumType() && (rightType.IsIntegralType() || rightType.IsCharType()) &&
-                    (result = OverloadResolution.BinopEasyOut.OpKind(op, leftType.EnumUnderlyingType(), rightType)) != BinaryOperatorKind.Error &&
-                    (signature = compilation.builtInOperators.GetSignature(result)).RightType == leftType.EnumUnderlyingType())
+                    ((result = OverloadResolution.BinopEasyOut.OpKind(op, leftType.EnumUnderlyingType(), rightType)) != BinaryOperatorKind.Error) &&
+                    ((signature = compilation.builtInOperators.GetSignature(result)).RightType == leftType.EnumUnderlyingType()))
                 {
                     signature = new BinaryOperatorSignature(signature.Kind | BinaryOperatorKind.EnumAndUnderlying, leftType, signature.RightType, leftType);
                 }
-                else if ((op == BinaryOperatorKind.Addition || op == BinaryOperatorKind.Subtraction) &&
+                else if (((op == BinaryOperatorKind.Addition) || (op == BinaryOperatorKind.Subtraction)) &&
                     rightType.IsEnumType() && (leftType.IsIntegralType() || leftType.IsCharType()) &&
-                    (result = OverloadResolution.BinopEasyOut.OpKind(op, leftType, rightType.EnumUnderlyingType())) != BinaryOperatorKind.Error &&
-                    (signature = compilation.builtInOperators.GetSignature(result)).LeftType == rightType.EnumUnderlyingType())
+                    ((result = OverloadResolution.BinopEasyOut.OpKind(op, leftType, rightType.EnumUnderlyingType())) != BinaryOperatorKind.Error) &&
+                    ((signature = compilation.builtInOperators.GetSignature(result)).LeftType == rightType.EnumUnderlyingType()))
                 {
                     signature = new BinaryOperatorSignature(signature.Kind | BinaryOperatorKind.EnumAndUnderlying, signature.LeftType, rightType, rightType);
                 }
-                else if (op == BinaryOperatorKind.Subtraction &&
-                    leftType.IsEnumType() && leftType == rightType)
+                else if ((op == BinaryOperatorKind.Subtraction) &&
+                    leftType.IsEnumType() && (leftType == rightType))
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Enum, leftType, rightType, leftType.EnumUnderlyingType());
                 }
-                else if ((op == BinaryOperatorKind.Equal ||
-                          op == BinaryOperatorKind.NotEqual ||
-                          op == BinaryOperatorKind.LessThan ||
-                          op == BinaryOperatorKind.LessThanOrEqual ||
-                          op == BinaryOperatorKind.GreaterThan ||
-                          op == BinaryOperatorKind.GreaterThanOrEqual) &&
-                    leftType.IsEnumType() && leftType == rightType)
+                else if (((op == BinaryOperatorKind.Equal) ||
+                          (op == BinaryOperatorKind.NotEqual) ||
+                          (op == BinaryOperatorKind.LessThan) ||
+                          (op == BinaryOperatorKind.LessThanOrEqual) ||
+                          (op == BinaryOperatorKind.GreaterThan) ||
+                          (op == BinaryOperatorKind.GreaterThanOrEqual)) &&
+                    leftType.IsEnumType() && (leftType == rightType))
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Enum, leftType, rightType, compilation.GetSpecialType(SpecialType.System_Boolean));
                 }
-                else if ((op == BinaryOperatorKind.Xor ||
-                          op == BinaryOperatorKind.And ||
-                          op == BinaryOperatorKind.Or) &&
-                    leftType.IsEnumType() && leftType == rightType)
+                else if (((op == BinaryOperatorKind.Xor) ||
+                          (op == BinaryOperatorKind.And) ||
+                          (op == BinaryOperatorKind.Or)) &&
+                    leftType.IsEnumType() && (leftType == rightType))
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Enum, leftType, rightType, leftType);
                 }
-                else if ((op == BinaryOperatorKind.Addition || op == BinaryOperatorKind.Subtraction) &&
-                    leftType.IsDelegateType() && leftType == rightType)
+                else if (((op == BinaryOperatorKind.Addition) || (op == BinaryOperatorKind.Subtraction)) &&
+                    leftType.IsDelegateType() && (leftType == rightType))
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Delegate, leftType, leftType, leftType);
                 }
-                else if ((op == BinaryOperatorKind.Equal ||
-                          op == BinaryOperatorKind.NotEqual ||
-                          op == BinaryOperatorKind.LessThan ||
-                          op == BinaryOperatorKind.LessThanOrEqual ||
-                          op == BinaryOperatorKind.GreaterThan ||
-                          op == BinaryOperatorKind.GreaterThanOrEqual) &&
+                else if (((op == BinaryOperatorKind.Equal) ||
+                          (op == BinaryOperatorKind.NotEqual) ||
+                          (op == BinaryOperatorKind.LessThan) ||
+                          (op == BinaryOperatorKind.LessThanOrEqual) ||
+                          (op == BinaryOperatorKind.GreaterThan) ||
+                          (op == BinaryOperatorKind.GreaterThanOrEqual)) &&
                     leftType.IsPointerType() && rightType.IsPointerType())
                 {
                     signature = new BinaryOperatorSignature(op | BinaryOperatorKind.Pointer,
@@ -7733,12 +7733,12 @@ class Module1
                     return;
                 }
             }
-            else if ((op == BinaryOperatorKind.Equal || op == BinaryOperatorKind.NotEqual) &&
-                leftType != rightType &&
+            else if (((op == BinaryOperatorKind.Equal) || (op == BinaryOperatorKind.NotEqual)) &&
+                (leftType != rightType) &&
                 (!leftType.IsValueType || !rightType.IsValueType ||
-                 leftType.SpecialType == SpecialType.System_Boolean || rightType.SpecialType == SpecialType.System_Boolean ||
-                 (leftType.SpecialType == SpecialType.System_Decimal && (rightType.SpecialType == SpecialType.System_Double || rightType.SpecialType == SpecialType.System_Single)) ||
-                 (rightType.SpecialType == SpecialType.System_Decimal && (leftType.SpecialType == SpecialType.System_Double || leftType.SpecialType == SpecialType.System_Single))) &&
+                 (leftType.SpecialType == SpecialType.System_Boolean) || (rightType.SpecialType == SpecialType.System_Boolean) ||
+                 ((leftType.SpecialType == SpecialType.System_Decimal) && ((rightType.SpecialType == SpecialType.System_Double) || (rightType.SpecialType == SpecialType.System_Single))) ||
+                 ((rightType.SpecialType == SpecialType.System_Decimal) && ((leftType.SpecialType == SpecialType.System_Double) || (leftType.SpecialType == SpecialType.System_Single)))) &&
                 (!leftType.IsReferenceType || !rightType.IsReferenceType ||
                  !compilation.Conversions.ClassifyConversionFromType(leftType, rightType, ref useSiteDiagnostics).IsReference))
             {
@@ -7764,7 +7764,7 @@ class Module1
             {
                 containerName = compilation.DynamicType.ToTestDisplayString();
             }
-            else if (op == BinaryOperatorKind.Addition || op == BinaryOperatorKind.Subtraction)
+            else if ((op == BinaryOperatorKind.Addition) || (op == BinaryOperatorKind.Subtraction))
             {
                 if (signature.LeftType.IsObjectType() && signature.RightType.IsStringType())
                 {
@@ -7807,7 +7807,7 @@ class Module1
                 case BinaryOperatorKind.Addition:
                 case BinaryOperatorKind.Subtraction:
                 case BinaryOperatorKind.Division:
-                    isChecked = isDynamic || symbol1.ContainingSymbol.Kind == SymbolKind.PointerType || symbol1.ContainingType.EnumUnderlyingType().SpecialType.IsIntegralType();
+                    isChecked = isDynamic || (symbol1.ContainingSymbol.Kind == SymbolKind.PointerType) || symbol1.ContainingType.EnumUnderlyingType().SpecialType.IsIntegralType();
                     break;
 
                 default:
@@ -7824,7 +7824,7 @@ class Module1
             Assert.Null(symbol1.DeclaringCompilation);
             Assert.Equal(symbol1.Name, symbol1.MetadataName);
 
-            Assert.True(symbol1.ContainingSymbol == symbol1.Parameters[0].Type || symbol1.ContainingSymbol == symbol1.Parameters[1].Type);
+            Assert.True((symbol1.ContainingSymbol == symbol1.Parameters[0].Type) || (symbol1.ContainingSymbol == symbol1.Parameters[1].Type));
 
             int match = 0;
             if (symbol1.ContainingSymbol == symbol1.ReturnType)
@@ -7981,7 +7981,7 @@ class Module1
             var tree = compilation.SyntaxTrees.Single();
             var semanticModel = compilation.GetSemanticModel(tree);
 
-            var nodes = tree.GetRoot().DescendantNodes().Where(node => node is BinaryExpressionSyntax || node is AssignmentExpressionSyntax).ToArray();
+            var nodes = tree.GetRoot().DescendantNodes().Where(node => (node is BinaryExpressionSyntax) || (node is AssignmentExpressionSyntax)).ToArray();
 
             Assert.Equal(2, nodes.Length);
 

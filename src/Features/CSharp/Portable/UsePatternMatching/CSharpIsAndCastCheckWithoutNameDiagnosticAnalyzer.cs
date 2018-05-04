@@ -83,7 +83,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UsePatternMatching
             }
 
             var (matches, _) = AnalyzeExpression(workspace, semanticModel, isExpression, cancellationToken);
-            if (matches == null || matches.Count == 0)
+            if ((matches == null) || (matches.Count == 0))
             {
                 return;
             }
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UsePatternMatching
             var type = (TypeSyntax)isExpression.Right;
 
             var typeSymbol = semanticModel.GetTypeInfo(type, cancellationToken).Type;
-            if (typeSymbol == null || typeSymbol.IsNullable())
+            if ((typeSymbol == null) || typeSymbol.IsNullable())
             {
                 // not legal to write "(x is int? y)"
                 return default;

@@ -97,10 +97,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
             ExpansionSession.GetSnippetSpan(fullSnippetSpan);
 
             var isFullSnippetFormat =
-                fullSnippetSpan[0].iStartLine == tsInSurfaceBuffer[0].iStartLine &&
-                fullSnippetSpan[0].iStartIndex == tsInSurfaceBuffer[0].iStartIndex &&
-                fullSnippetSpan[0].iEndLine == tsInSurfaceBuffer[0].iEndLine &&
-                fullSnippetSpan[0].iEndIndex == tsInSurfaceBuffer[0].iEndIndex;
+                (fullSnippetSpan[0].iStartLine == tsInSurfaceBuffer[0].iStartLine) &&
+                (fullSnippetSpan[0].iStartIndex == tsInSurfaceBuffer[0].iStartIndex) &&
+                (fullSnippetSpan[0].iEndLine == tsInSurfaceBuffer[0].iEndLine) &&
+                (fullSnippetSpan[0].iEndIndex == tsInSurfaceBuffer[0].iEndIndex);
             var endPositionTrackingSpan = isFullSnippetFormat ? InsertEmptyCommentAndGetEndPositionTrackingSpan() : null;
 
             var formattingSpan = CommonFormattingHelpers.GetFormattingSpan(SubjectBuffer.CurrentSnapshot, snippetTrackingSpan.GetSpan(SubjectBuffer.CurrentSnapshot));
@@ -255,7 +255,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
             }
             finally
             {
-                if (xmlNode != null && Marshal.IsComObject(xmlNode))
+                if ((xmlNode != null) && Marshal.IsComObject(xmlNode))
                 {
                     Marshal.ReleaseComObject(xmlNode);
                 }
@@ -286,7 +286,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
         /// <param name="endLinePosition"></param>
         internal void PositionCaretForEditingInternal(string endLineText, int endLinePosition)
         {
-            if (indentCaretOnCommit && endLineText == string.Empty)
+            if (indentCaretOnCommit && (endLineText == string.Empty))
             {
                 TextView.TryMoveCaretToAndEnsureVisible(new VirtualSnapshotPoint(TextView.TextSnapshot.GetPoint(endLinePosition), indentDepth));
             }
@@ -377,7 +377,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 
             var buffer = EditorAdaptersFactoryService.GetBufferAdapter(textViewModel.DataBuffer);
             var expansion = buffer as IVsExpansion;
-            if (buffer == null || expansion == null)
+            if ((buffer == null) || (expansion == null))
             {
                 return false;
             }
@@ -541,7 +541,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
                     continue;
                 }
 
-                if (visualStudioWorkspace == null ||
+                if ((visualStudioWorkspace == null) ||
                     !visualStudioWorkspace.TryAddReferenceToProject(projectId, assemblyName))
                 {
                     failedReferenceAdditions.Add(assemblyName);
@@ -589,9 +589,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Snippets
 
         protected static bool TryGetSnippetFunctionInfo(IXMLDOMNode xmlFunctionNode, out string snippetFunctionName, out string param)
         {
-            if (xmlFunctionNode.text.IndexOf('(') == -1 ||
-                xmlFunctionNode.text.IndexOf(')') == -1 ||
-                xmlFunctionNode.text.IndexOf(')') < xmlFunctionNode.text.IndexOf('('))
+            if ((xmlFunctionNode.text.IndexOf('(') == -1) ||
+                (xmlFunctionNode.text.IndexOf(')') == -1) ||
+                (xmlFunctionNode.text.IndexOf(')') < xmlFunctionNode.text.IndexOf('(')))
             {
                 snippetFunctionName = null;
                 param = null;

@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 {
                     var symbolInfo = model.GetSymbolInfo(id);
                     if (symbolInfo.Symbol is IMethodSymbol method &&
-                        method.MethodKind == MethodKind.LocalFunction)
+                        (method.MethodKind == MethodKind.LocalFunction))
                     {
                         return true;
                     }
@@ -214,7 +214,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
             var firstTokenInSelection = root.FindTokenOnRightOfPosition(adjustedSpan.Start, includeSkipped: false);
             var lastTokenInSelection = root.FindTokenOnLeftOfPosition(adjustedSpan.End, includeSkipped: false);
 
-            if (firstTokenInSelection.Kind() == SyntaxKind.None || lastTokenInSelection.Kind() == SyntaxKind.None)
+            if ((firstTokenInSelection.Kind() == SyntaxKind.None) || (lastTokenInSelection.Kind() == SyntaxKind.None))
             {
                 return new SelectionInfo { Status = new OperationStatus(OperationStatusFlag.None, CSharpFeaturesResources.Invalid_selection), OriginalSpan = adjustedSpan };
             }
@@ -336,7 +336,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 selectionInfo = selectionInfo.WithStatus(s => s.With(OperationStatusFlag.None, CSharpFeaturesResources.Selection_can_not_contain_a_pattern_expression));
             }
 
-            var selectionChanged = selectionInfo.FirstTokenInOriginalSpan != selectionInfo.FirstTokenInFinalSpan || selectionInfo.LastTokenInOriginalSpan != selectionInfo.LastTokenInFinalSpan;
+            var selectionChanged = (selectionInfo.FirstTokenInOriginalSpan != selectionInfo.FirstTokenInFinalSpan) || (selectionInfo.LastTokenInOriginalSpan != selectionInfo.LastTokenInFinalSpan);
             if (selectionChanged)
             {
                 selectionInfo = selectionInfo.WithStatus(s => s.MarkSuggestion());
@@ -375,7 +375,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
             {
                 // check one more time to see whether it is an expression case
                 var expression = selectionInfo.CommonRootFromOriginalSpan.GetAncestor<ExpressionSyntax>();
-                if (expression != null && statement1.Span.Contains(expression.Span))
+                if ((expression != null) && statement1.Span.Contains(expression.Span))
                 {
                     return selectionInfo.With(s => s.SelectionInExpression = true)
                                         .With(s => s.FirstTokenInFinalSpan = expression.GetFirstToken(includeZeroWidth: true))
@@ -486,13 +486,13 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
 
             // make sure this method doesn't have return type.
             return method.ReturnType is PredefinedTypeSyntax p &&
-                p.Keyword.Kind() == SyntaxKind.VoidKeyword;
+                (p.Keyword.Kind() == SyntaxKind.VoidKeyword);
         }
 
         private static TextSpan GetAdjustedSpan(SourceText text, TextSpan textSpan)
         {
             // beginning of a file
-            if (textSpan.IsEmpty || textSpan.End == 0)
+            if (textSpan.IsEmpty || (textSpan.End == 0))
             {
                 return textSpan;
             }

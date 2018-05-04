@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics.Analyzers.NamingStyles
         {
             if (conventionsDictionary.TryGetValue($"dotnet_naming_style.{namingStyleName}.{optionName}", out object result))
             {
-                return result as string ?? string.Empty;
+                return (result as string) ?? string.Empty;
             }
 
             return string.Empty;

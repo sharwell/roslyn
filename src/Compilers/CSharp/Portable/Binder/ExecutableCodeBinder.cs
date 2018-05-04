@@ -34,8 +34,8 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal ExecutableCodeBinder(SyntaxNode root, Symbol memberSymbol, Binder next, BinderFlags additionalFlags)
             : base(next, (next.Flags | additionalFlags) & ~BinderFlags.AllClearedAtExecutableCodeBoundary)
         {
-            Debug.Assert((object)memberSymbol == null ||
-                         (memberSymbol.Kind != SymbolKind.Local && memberSymbol.Kind != SymbolKind.RangeVariable && memberSymbol.Kind != SymbolKind.Parameter));
+            Debug.Assert(((object)memberSymbol == null) ||
+                         ((memberSymbol.Kind != SymbolKind.Local) && (memberSymbol.Kind != SymbolKind.RangeVariable) && (memberSymbol.Kind != SymbolKind.Parameter)));
 
             _memberSymbol = memberSymbol;
             _root = root;
@@ -60,7 +60,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             ImmutableArray<MethodSymbol> methodSymbolsWithYield;
 
             // Ensure that the member symbol is a method symbol.
-            if ((object)_memberSymbol != null && _root != null)
+            if (((object)_memberSymbol != null) && (_root != null))
             {
                 var methodsWithYield = ArrayBuilder<SyntaxNode>.GetInstance();
                 var symbolsWithYield = ArrayBuilder<MethodSymbol>.GetInstance();
@@ -68,8 +68,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 foreach (var methodWithYield in methodsWithYield)
                 {
                     Binder binder = this;
-                    if (methodWithYield.Kind() != SyntaxKind.GlobalStatement &&
-                        (methodWithYield == _root || map.TryGetValue(methodWithYield, out binder)))
+                    if ((methodWithYield.Kind() != SyntaxKind.GlobalStatement) &&
+                        ((methodWithYield == _root) || map.TryGetValue(methodWithYield, out binder)))
                     {
                         Symbol containing = binder.ContainingMemberOrLambda;
 
@@ -82,14 +82,14 @@ namespace Microsoft.CodeAnalysis.CSharp
                                 break;
                             binder = binder.Next;
                         }
-                        if (inMethod != null && (object)inMethod.ContainingMemberOrLambda == containing)
+                        if ((inMethod != null) && ((object)inMethod.ContainingMemberOrLambda == containing))
                         {
                             inMethod.MakeIterator();
                             symbolsWithYield.Add((MethodSymbol)inMethod.ContainingMemberOrLambda);
                         }
                         else
                         {
-                            Debug.Assert(methodWithYield == _root && methodWithYield is ExpressionSyntax);
+                            Debug.Assert((methodWithYield == _root) && (methodWithYield is ExpressionSyntax));
                         }
                     }
                     else
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     diagnostics.Add(ErrorCode.ERR_VarargsIterator, iterator.Locations[0]);
                 }
 
-                if (((iterator as SourceMemberMethodSymbol)?.IsUnsafe == true || (iterator as LocalFunctionSymbol)?.IsUnsafe == true)
+                if ((((iterator as SourceMemberMethodSymbol)?.IsUnsafe == true) || ((iterator as LocalFunctionSymbol)?.IsUnsafe == true))
                     && Compilation.Options.AllowUnsafe) // Don't cascade
                 {
                     diagnostics.Add(ErrorCode.ERR_IllegalInnerUnsafe, iterator.Locations[0]);

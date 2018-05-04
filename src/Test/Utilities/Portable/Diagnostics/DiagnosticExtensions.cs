@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis
 
         public static void Verify(this IEnumerable<Diagnostic> actual, bool fallbackToErrorCodeOnlyForNonEnglish, params DiagnosticDescription[] expected)
         {
-            Verify(actual, expected, errorCodeOnly: fallbackToErrorCodeOnlyForNonEnglish && EnsureEnglishUICulture.PreferredOrNull != null);
+            Verify(actual, expected, errorCodeOnly: fallbackToErrorCodeOnlyForNonEnglish && (EnsureEnglishUICulture.PreferredOrNull != null));
         }
 
         public static void VerifyWithFallbackToErrorCodeOnlyForNonEnglish(this IEnumerable<Diagnostic> actual, params DiagnosticDescription[] expected)

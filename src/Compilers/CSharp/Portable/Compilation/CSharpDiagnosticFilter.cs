@@ -113,16 +113,16 @@ namespace Microsoft.CodeAnalysis.CSharp
             }
 
             // Compute if the reporting should be suppressed.
-            if (diagnosticWarningLevel > warningLevelOption  // honor the warning level
-                || report == ReportDiagnostic.Suppress)                // check options (/nowarn)
+            if ((diagnosticWarningLevel > warningLevelOption)  // honor the warning level
+                || (report == ReportDiagnostic.Suppress))                // check options (/nowarn)
             {
                 return ReportDiagnostic.Suppress;
             }
 
             // If location is available, check out pragmas
-            if (location != null &&
-                location.SourceTree != null &&
-                ((SyntaxTree)location.SourceTree).GetPragmaDirectiveWarningState(id, location.SourceSpan.Start) == ReportDiagnostic.Suppress)
+            if ((location != null) &&
+                (location.SourceTree != null) &&
+                (((SyntaxTree)location.SourceTree).GetPragmaDirectiveWarningState(id, location.SourceSpan.Start) == ReportDiagnostic.Suppress))
             {
                 hasPragmaSuppression = true;
             }
@@ -149,7 +149,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         // When doing suppress-all-warnings, don't lower severity for anything other than warning and info.
                         // We shouldn't suppress hidden diagnostics here because then features that use hidden diagnostics to
                         // display a lightbulb would stop working if someone has suppress-all-warnings (/nowarn) specified in their project.
-                        if (severity == DiagnosticSeverity.Warning || severity == DiagnosticSeverity.Info)
+                        if ((severity == DiagnosticSeverity.Warning) || (severity == DiagnosticSeverity.Info))
                         {
                             return ReportDiagnostic.Suppress;
                         }

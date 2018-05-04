@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         internal override bool IsInsertionTrigger(SourceText text, int characterPosition, OptionSet options)
         {
             var ch = text[characterPosition];
-            return ch == ' ' ||
+            return (ch == ' ') ||
                 (CompletionUtilities.IsStartingNewWord(text, characterPosition) &&
                 options.GetOption(CompletionOptions.TriggerOnTypingLetters, LanguageNames.CSharp));
         }
@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         private static bool IsPartialTypeDeclaration(SyntaxNode syntax)
         {
             var declarationSyntax = syntax as BaseTypeDeclarationSyntax;
-            return declarationSyntax != null && declarationSyntax.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.PartialKeyword));
+            return (declarationSyntax != null) && declarationSyntax.Modifiers.Any(modifier => modifier.IsKind(SyntaxKind.PartialKeyword));
         }
 
         protected override ImmutableDictionary<string, string> GetProperties(

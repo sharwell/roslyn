@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Utilities
                 // Keep delaying until at least delayInMilliseconds has elapsed since lastSetTime 
                 await Task.Delay(_delayInMilliseconds).ConfigureAwait(continueOnCapturedContext);
             }
-            while (Environment.TickCount - _lastSetTime < _delayInMilliseconds);
+            while ((Environment.TickCount - _lastSetTime) < _delayInMilliseconds);
 
             _taskCompletionSource.SetResult(null);
         }

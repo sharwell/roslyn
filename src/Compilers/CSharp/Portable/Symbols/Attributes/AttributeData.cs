@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private DeclarativeSecurityAction DecodeSecurityAttributeAction(Symbol targetSymbol, CSharpCompilation compilation, AttributeSyntax nodeOpt, out bool hasErrors, DiagnosticBag diagnostics)
         {
             Debug.Assert((object)targetSymbol != null);
-            Debug.Assert(targetSymbol.Kind == SymbolKind.Assembly || targetSymbol.Kind == SymbolKind.NamedType || targetSymbol.Kind == SymbolKind.Method);
+            Debug.Assert((targetSymbol.Kind == SymbolKind.Assembly) || (targetSymbol.Kind == SymbolKind.NamedType) || (targetSymbol.Kind == SymbolKind.Method));
             Debug.Assert(this.IsSecurityAttribute(compilation));
 
             var ctorArgs = this.CommonConstructorArguments;
@@ -265,7 +265,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             {
                 TypedConstant firstArg = ctorArgs.First();
                 TypeSymbol firstArgType = (TypeSymbol)firstArg.Type;
-                if ((object)firstArgType != null && firstArgType.Equals(compilation.GetWellKnownType(WellKnownType.System_Security_Permissions_SecurityAction)))
+                if (((object)firstArgType != null) && firstArgType.Equals(compilation.GetWellKnownType(WellKnownType.System_Security_Permissions_SecurityAction)))
                 {
                     return DecodeSecurityAction(firstArg, targetSymbol, nodeOpt, diagnostics, out hasErrors);
                 }
@@ -280,7 +280,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private DeclarativeSecurityAction DecodeSecurityAction(TypedConstant typedValue, Symbol targetSymbol, AttributeSyntax nodeOpt, DiagnosticBag diagnostics, out bool hasErrors)
         {
             Debug.Assert((object)targetSymbol != null);
-            Debug.Assert(targetSymbol.Kind == SymbolKind.Assembly || targetSymbol.Kind == SymbolKind.NamedType || targetSymbol.Kind == SymbolKind.Method);
+            Debug.Assert((targetSymbol.Kind == SymbolKind.Assembly) || (targetSymbol.Kind == SymbolKind.NamedType) || (targetSymbol.Kind == SymbolKind.Method));
 
             int securityAction = (int)typedValue.Value;
             bool isPermissionRequestAction;
@@ -333,7 +333,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // Validate security action for symbol kind
             if (isPermissionRequestAction)
             {
-                if (targetSymbol.Kind == SymbolKind.NamedType || targetSymbol.Kind == SymbolKind.Method)
+                if ((targetSymbol.Kind == SymbolKind.NamedType) || (targetSymbol.Kind == SymbolKind.Method))
                 {
                     // Types and methods cannot take permission requests.
 
@@ -373,7 +373,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var argList = nodeOpt.ArgumentList;
-            if (argList == null || argList.Arguments.IsEmpty())
+            if ((argList == null) || argList.Arguments.IsEmpty())
             {
                 // Optional SecurityAction parameter with default value.
                 displayString = typedValue.Value.ToString();
@@ -416,7 +416,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 string filePropName = PermissionSetAttributeWithFileReference.FilePropertyName;
                 string hexPropName = PermissionSetAttributeWithFileReference.HexPropertyName;
 
-                if (namedArg.Key == filePropName &&
+                if ((namedArg.Key == filePropName) &&
                     PermissionSetAttributeTypeHasRequiredProperty(attrType, filePropName))
                 {
                     // resolve file prop path
@@ -451,12 +451,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         private static bool PermissionSetAttributeTypeHasRequiredProperty(NamedTypeSymbol permissionSetType, string propName)
         {
             var members = permissionSetType.GetMembers(propName);
-            if (members.Length == 1 && members[0].Kind == SymbolKind.Property)
+            if ((members.Length == 1) && (members[0].Kind == SymbolKind.Property))
             {
                 var property = (PropertySymbol)members[0];
-                if ((object)property.Type != null && property.Type.SpecialType == SpecialType.System_String &&
-                    property.DeclaredAccessibility == Accessibility.Public && property.GetMemberArity() == 0 &&
-                    (object)property.SetMethod != null && property.SetMethod.DeclaredAccessibility == Accessibility.Public)
+                if (((object)property.Type != null) && (property.Type.SpecialType == SpecialType.System_String) &&
+                    (property.DeclaredAccessibility == Accessibility.Public) && (property.GetMemberArity() == 0) &&
+                    ((object)property.SetMethod != null) && (property.SetMethod.DeclaredAccessibility == Accessibility.Public))
                 {
                     return true;
                 }
@@ -470,7 +470,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(!this.HasErrors);
 
             TypedConstant ctorArgument = this.CommonConstructorArguments[0];
-            Debug.Assert(ctorArgument.Kind == TypedConstantKind.Enum || ctorArgument.Kind == TypedConstantKind.Primitive);
+            Debug.Assert((ctorArgument.Kind == TypedConstantKind.Enum) || (ctorArgument.Kind == TypedConstantKind.Primitive));
 
             ClassInterfaceType interfaceType = ctorArgument.Kind == TypedConstantKind.Enum ?
                 ctorArgument.DecodeValue<ClassInterfaceType>(SpecialType.System_Enum) :
@@ -496,7 +496,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(!this.HasErrors);
 
             TypedConstant ctorArgument = this.CommonConstructorArguments[0];
-            Debug.Assert(ctorArgument.Kind == TypedConstantKind.Enum || ctorArgument.Kind == TypedConstantKind.Primitive);
+            Debug.Assert((ctorArgument.Kind == TypedConstantKind.Enum) || (ctorArgument.Kind == TypedConstantKind.Primitive));
 
             ComInterfaceType interfaceType = ctorArgument.Kind == TypedConstantKind.Enum ?
                 ctorArgument.DecodeValue<ComInterfaceType>(SpecialType.System_Enum) :
@@ -546,7 +546,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </summary>
         internal bool ShouldEmitAttribute(Symbol target, bool isReturnType, bool emittingAssemblyAttributesInNetModule)
         {
-            Debug.Assert(target is SourceAssemblySymbol || target.ContainingAssembly is SourceAssemblySymbol);
+            Debug.Assert((target is SourceAssemblySymbol) || (target.ContainingAssembly is SourceAssemblySymbol));
 
             if (HasErrors)
             {

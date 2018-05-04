@@ -71,7 +71,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                 var projectPath = inputNode.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.Assembly);
                 var filePath = inputNode.Id.GetNestedValueByName<Uri>(CodeGraphNodeIdName.File);
 
-                if (projectPath == null || filePath == null)
+                if ((projectPath == null) || (filePath == null))
                 {
                     return;
                 }
@@ -189,7 +189,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
             }
 
             // We may need to look up source code within this solution
-            if (preferredLocation == null && symbol.Locations.Any(loc => loc.IsInMetadata))
+            if ((preferredLocation == null) && symbol.Locations.Any(loc => loc.IsInMetadata))
             {
                 var newSymbol = await SymbolFinder.FindSourceDefinitionAsync(symbol, contextProject.Solution, _cancellationToken).ConfigureAwait(false);
                 if (newSymbol != null)
@@ -389,7 +389,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
                     node.Label = symbol.MetadataName;
 
                     var propertySymbol = (IPropertySymbol)symbol;
-                    if (propertySymbol.IsIndexer && LanguageNames.CSharp == propertySymbol.Language)
+                    if (propertySymbol.IsIndexer && (LanguageNames.CSharp == propertySymbol.Language))
                     {
                         // For C# indexer, we will strip off the "[]"
                         node.Label = symbol.Name.Replace("[]", string.Empty);
@@ -604,7 +604,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Progression
 
             node.AddCategory(CodeNodeCategories.Method);
 
-            var isOperator = method.MethodKind == MethodKind.UserDefinedOperator || method.MethodKind == MethodKind.Conversion;
+            var isOperator = (method.MethodKind == MethodKind.UserDefinedOperator) || (method.MethodKind == MethodKind.Conversion);
             node[DgmlNodeProperties.Icon] = isOperator
                 ? IconHelper.GetIconName("Operator", method.DeclaredAccessibility)
                 : IconHelper.GetIconName("Method", method.DeclaredAccessibility);

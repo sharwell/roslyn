@@ -106,7 +106,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Library.ObjectB
             {
                 var builder = new StringBuilder(result);
 
-                while (parentHierarchy != null && !(parentHierarchy is IVsSolution))
+                while ((parentHierarchy != null) && !(parentHierarchy is IVsSolution))
                 {
                     if (parentHierarchy.TryGetName(out var parentName))
                     {

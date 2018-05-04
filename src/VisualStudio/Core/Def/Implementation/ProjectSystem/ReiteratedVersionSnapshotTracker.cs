@@ -35,7 +35,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
         public void StartTracking(ITextBuffer buffer)
         {
             // buffer has changed. stop tracking old buffer
-            if (_trackingBuffer != null && buffer != _trackingBuffer)
+            if ((_trackingBuffer != null) && (buffer != _trackingBuffer))
             {
                 _trackingBuffer.ChangedHighPriority -= OnTextBufferChanged;
 
@@ -44,7 +44,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
             }
 
             // start tracking new buffer
-            if (buffer != null && _latestReiteratedVersionSnapshot == null)
+            if ((buffer != null) && (_latestReiteratedVersionSnapshot == null))
             {
                 _latestReiteratedVersionSnapshot = buffer.CurrentSnapshot;
                 _trackingBuffer = buffer;
@@ -55,7 +55,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
 
         public void StopTracking(ITextBuffer buffer)
         {
-            if (_trackingBuffer == buffer && buffer != null && _latestReiteratedVersionSnapshot != null)
+            if ((_trackingBuffer == buffer) && (buffer != null) && (_latestReiteratedVersionSnapshot != null))
             {
                 buffer.ChangedHighPriority -= OnTextBufferChanged;
 
@@ -69,8 +69,8 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
             if (sender is ITextBuffer buffer)
             {
                 var snapshot = _latestReiteratedVersionSnapshot;
-                if (snapshot != null && snapshot.Version != null && e.AfterVersion != null &&
-                    snapshot.Version.ReiteratedVersionNumber < e.AfterVersion.ReiteratedVersionNumber)
+                if ((snapshot != null) && (snapshot.Version != null) && (e.AfterVersion != null) &&
+                    (snapshot.Version.ReiteratedVersionNumber < e.AfterVersion.ReiteratedVersionNumber))
                 {
                     _latestReiteratedVersionSnapshot = e.After;
                 }

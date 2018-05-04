@@ -164,7 +164,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 // filter out operations whose position is before the base indentation
                 var operationSpan = operations[i].TextSpan;
 
-                if (operationSpan.Start < baseSpan.Start ||
+                if ((operationSpan.Start < baseSpan.Start) ||
                     operationSpan.Contains(baseSpan))
                 {
                     continue;
@@ -253,7 +253,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         public void AddInitialSuppressOperation(SuppressOperation operation)
         {
             // don't add stuff if it is empty
-            if (operation == null || operation.TextSpan.IsEmpty)
+            if ((operation == null) || operation.TextSpan.IsEmpty)
             {
                 return;
             }
@@ -306,7 +306,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         private void AddSpacingSuppressOperation(SuppressOperation operation, bool twoTokensOnSameLine)
         {
             // don't add stuff if it is empty
-            if (operation == null ||
+            if ((operation == null) ||
                 operation.TextSpan.IsEmpty)
             {
                 return;
@@ -334,7 +334,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         private void AddWrappingSuppressOperation(SuppressOperation operation, bool twoTokensOnSameLine)
         {
             // don't add stuff if it is empty
-            if (operation == null ||
+            if ((operation == null) ||
                 operation.TextSpan.IsEmpty)
             {
                 return;
@@ -552,7 +552,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
                 // tokenPairIndex is always 0 <= ... < TokenCount - 1
                 var tokenPairIndex = tokenData.IndexInStream;
-                if (_tokenStream.TokenCount - 1 <= tokenPairIndex ||
+                if (((_tokenStream.TokenCount - 1) <= tokenPairIndex) ||
                     _tokenStream.GetTriviaData(tokenPairIndex).SecondTokenIsFirstTokenOnLine)
                 {
                     return lastBaseAnchorData;

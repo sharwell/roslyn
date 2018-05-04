@@ -104,7 +104,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                 var textBuffer = TryGetTextBufferFromDocData(docData);
 
                 // Do a quick check that this is a Roslyn file at all before we go do more expensive things
-                if (textBuffer != null && textBuffer.ContentType.IsOfType(ContentTypeNames.RoslynContentType))
+                if ((textBuffer != null) && textBuffer.ContentType.IsOfType(ContentTypeNames.RoslynContentType))
                 {
                     var textBufferAdapter = _editorAdaptersFactoryService.GetBufferAdapter(textBuffer);
 
@@ -115,7 +115,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation
                         IVsTextView[] views = new IVsTextView[1];
                         uint fetched = 0;
 
-                        if (ErrorHandler.Succeeded(enumTextViews.Next(1, views, ref fetched)) && fetched == 1)
+                        if (ErrorHandler.Succeeded(enumTextViews.Next(1, views, ref fetched)) && (fetched == 1))
                         {
                             var view = _editorAdaptersFactoryService.GetWpfTextView(views[0]);
                             var commandHandlerService = _commandHandlerServiceFactory.GetService(textBuffer);

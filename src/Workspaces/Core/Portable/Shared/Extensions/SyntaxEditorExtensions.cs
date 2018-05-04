@@ -125,14 +125,14 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 n => syntaxFacts.IsStatement(n) ||
                      syntaxFacts.IsParameter(n) ||
                      syntaxFacts.IsVariableDeclarator(n) ||
-                     n.Parent == null);
+                     (n.Parent == null));
         }
 
         private static SyntaxNode GetMethodBodySemanticBoundary(ISyntaxFactsService syntaxFacts, SyntaxNode node)
         {
             return node.FirstAncestorOrSelf<SyntaxNode>(
                 n => syntaxFacts.IsMethodBody(n) ||
-                     n.Parent == null);
+                     (n.Parent == null));
         }
     }
 }

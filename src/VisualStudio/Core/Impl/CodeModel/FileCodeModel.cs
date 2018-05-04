@@ -133,7 +133,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             documentId = null;
 
             // We don't have DocumentId, so try to retrieve it from the workspace.
-            if (_incomingProjectId == null || _incomingFilePath == null)
+            if ((_incomingProjectId == null) || (_incomingFilePath == null))
             {
                 return false;
             }
@@ -356,13 +356,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 
         internal bool TryGetDocument(out Document document)
         {
-            if (IsBatchOpen && _batchDocument != null)
+            if (IsBatchOpen && (_batchDocument != null))
             {
                 document = _batchDocument;
                 return true;
             }
 
-            if (!TryGetDocumentId(out var documentId) && _previousDocument != null)
+            if (!TryGetDocumentId(out var documentId) && (_previousDocument != null))
             {
                 document = _previousDocument;
             }
@@ -534,7 +534,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             var token = leftToken;
             if (leftToken != rightToken)
             {
-                if (leftToken.Span.End == position && rightToken.SpanStart == position)
+                if ((leftToken.Span.End == position) && (rightToken.SpanStart == position))
                 {
                     // If both tokens are touching, we prefer identifiers and keywords to
                     // separators. Note that the language doesn't allow both tokens to be a
@@ -545,7 +545,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                         token = rightToken;
                     }
                 }
-                else if (leftToken.Span.End < position && rightToken.SpanStart <= position)
+                else if ((leftToken.Span.End < position) && (rightToken.SpanStart <= position))
                 {
                     // If only the right token is touching, we have to use it.
                     token = rightToken;
@@ -557,7 +557,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
             // ensure that we don't find members when the position is actually between them.
             // In that case, we should find the enclosing type or namespace.
             var parent = token.Parent;
-            if (token == leftToken && position > token.Span.End)
+            if ((token == leftToken) && (position > token.Span.End))
             {
                 while (parent != null)
                 {
@@ -581,13 +581,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
                 return null;
             }
 
-            if (scope == EnvDTE.vsCMElement.vsCMElementAttribute ||
-                scope == EnvDTE.vsCMElement.vsCMElementImportStmt ||
-                scope == EnvDTE.vsCMElement.vsCMElementParameter ||
-                scope == EnvDTE.vsCMElement.vsCMElementOptionStmt ||
-                scope == EnvDTE.vsCMElement.vsCMElementInheritsStmt ||
-                scope == EnvDTE.vsCMElement.vsCMElementImplementsStmt ||
-                (scope == EnvDTE.vsCMElement.vsCMElementFunction && CodeModelService.IsAccessorNode(node)))
+            if ((scope == EnvDTE.vsCMElement.vsCMElementAttribute) ||
+                (scope == EnvDTE.vsCMElement.vsCMElementImportStmt) ||
+                (scope == EnvDTE.vsCMElement.vsCMElementParameter) ||
+                (scope == EnvDTE.vsCMElement.vsCMElementOptionStmt) ||
+                (scope == EnvDTE.vsCMElement.vsCMElementInheritsStmt) ||
+                (scope == EnvDTE.vsCMElement.vsCMElementImplementsStmt) ||
+                ((scope == EnvDTE.vsCMElement.vsCMElementFunction) && CodeModelService.IsAccessorNode(node)))
             {
                 // Attributes, imports, parameters, Option, Inherits and Implements
                 // don't have node keys of their own and won't be included in our
@@ -726,7 +726,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
         {
             get
             {
-                return _batchMode && _editCount > 0;
+                return _batchMode && (_editCount > 0);
             }
         }
 

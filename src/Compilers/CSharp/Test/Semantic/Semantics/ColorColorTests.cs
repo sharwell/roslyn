@@ -1882,7 +1882,7 @@ class C
             Assert.Equal(SymbolKind.NamedType, symbolInfo.Symbol.Kind);
 
             var model2 = compilation.GetSemanticModel(tree);
-            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => n.Identifier.Text == "E" && (n.Parent is EqualsValueClauseSyntax)).Single();
+            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => (n.Identifier.Text == "E") && (n.Parent is EqualsValueClauseSyntax)).Single();
 
             Assert.Equal("= E", node2.Parent.ToString());
 
@@ -1939,7 +1939,7 @@ class C
             Assert.Equal(SymbolKind.Local, symbolInfo.Symbol.Kind);
 
             var model2 = compilation.GetSemanticModel(tree);
-            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => n.Identifier.Text == "E" && (n.Parent is EqualsValueClauseSyntax)).Single();
+            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => (n.Identifier.Text == "E") && (n.Parent is EqualsValueClauseSyntax)).Single();
 
             Assert.Equal("= E", node2.Parent.ToString());
 
@@ -1996,7 +1996,7 @@ class C
             Assert.Equal(SymbolKind.NamedType, symbolInfo.Symbol.Kind);
 
             var model2 = compilation.GetSemanticModel(tree);
-            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => n.Identifier.Text == "E" && (n.Parent is EqualsValueClauseSyntax)).Single();
+            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => (n.Identifier.Text == "E") && (n.Parent is EqualsValueClauseSyntax)).Single();
 
             Assert.Equal("= E", node2.Parent.ToString());
 
@@ -2045,7 +2045,7 @@ class C
             Assert.Equal("? E", symbolInfo.Symbol.ToTestDisplayString());
 
             var model2 = compilation.GetSemanticModel(tree);
-            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => n.Identifier.Text == "E" && (n.Parent is EqualsValueClauseSyntax)).Single();
+            var node2 = tree.GetRoot().DescendantNodes().OfType<IdentifierNameSyntax>().Where(n => (n.Identifier.Text == "E") && (n.Parent is EqualsValueClauseSyntax)).Single();
 
             Assert.Equal("= E", node2.Parent.ToString());
 

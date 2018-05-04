@@ -42,7 +42,7 @@ namespace Roslyn.Utilities
             IEnumerable<string> searchPaths,
             Func<string, bool> fileExists)
         {
-            Debug.Assert(baseDirectory == null || searchPaths != null || PathUtilities.IsAbsolute(baseDirectory));
+            Debug.Assert((baseDirectory == null) || (searchPaths != null) || PathUtilities.IsAbsolute(baseDirectory));
             Debug.Assert(searchPaths != null);
             Debug.Assert(fileExists != null);
 
@@ -96,7 +96,7 @@ namespace Roslyn.Utilities
 
         internal static string ResolveRelativePath(string path, string basePath, string baseDirectory)
         {
-            Debug.Assert(baseDirectory == null || PathUtilities.IsAbsolute(baseDirectory));
+            Debug.Assert((baseDirectory == null) || PathUtilities.IsAbsolute(baseDirectory));
             return ResolveRelativePath(PathUtilities.GetPathKind(path), path, basePath, baseDirectory);
         }
 
@@ -166,7 +166,7 @@ namespace Roslyn.Utilities
                     }
 
                     Debug.Assert(PathUtilities.IsDirectorySeparator(path[0]));
-                    Debug.Assert(path.Length == 1 || !PathUtilities.IsDirectorySeparator(path[1]));
+                    Debug.Assert((path.Length == 1) || !PathUtilities.IsDirectorySeparator(path[1]));
                     return PathUtilities.CombinePathsUnchecked(baseRoot, path.Substring(1));
 
                 case PathKind.RelativeToDriveDirectory:
@@ -207,7 +207,7 @@ namespace Roslyn.Utilities
         internal static string NormalizeRelativePath(string path, string basePath, string baseDirectory)
         {
             // Does this look like a URI at all or does it have any invalid path characters? If so, just use it as is.
-            if (path.IndexOf("://", StringComparison.Ordinal) >= 0 || path.IndexOfAny(s_invalidPathChars) >= 0)
+            if ((path.IndexOf("://", StringComparison.Ordinal) >= 0) || (path.IndexOfAny(s_invalidPathChars) >= 0))
             {
                 return null;
             }

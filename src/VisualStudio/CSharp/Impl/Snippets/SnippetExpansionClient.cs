@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Snippets
             bool placeSystemNamespaceFirst, CancellationToken cancellationToken)
         {
             var importsNode = snippetNode.Element(XName.Get("Imports", snippetNode.Name.NamespaceName));
-            if (importsNode == null ||
+            if ((importsNode == null) ||
                 !importsNode.HasElements)
             {
                 return document;
@@ -158,7 +158,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.Snippets
 
         private static string GetAliasName(UsingDirectiveSyntax usingDirective)
         {
-            return (usingDirective.Alias == null || usingDirective.Alias.Name == null) ? null : usingDirective.Alias.Name.ToString();
+            return ((usingDirective.Alias == null) || (usingDirective.Alias.Name == null)) ? null : usingDirective.Alias.Name.ToString();
         }
     }
 }

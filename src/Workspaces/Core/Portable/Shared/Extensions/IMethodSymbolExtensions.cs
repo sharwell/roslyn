@@ -177,7 +177,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             params INamedTypeSymbol[] removeAttributeTypes)
         {
             bool shouldRemoveAttribute(AttributeData a) =>
-                removeAttributeTypes.Any(attr => attr != null && attr.Equals(a.AttributeClass)) || !a.AttributeClass.IsAccessibleWithin(accessibleWithin);
+                removeAttributeTypes.Any(attr => (attr != null) && attr.Equals(a.AttributeClass)) || !a.AttributeClass.IsAccessibleWithin(accessibleWithin);
 
             return method.RemoveAttributesCore(
                 shouldRemoveAttribute,

@@ -20,13 +20,13 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
         public bool Equals(ClosureDebugInfo other)
         {
-            return SyntaxOffset == other.SyntaxOffset &&
+            return (SyntaxOffset == other.SyntaxOffset) &&
                    ClosureId.Equals(other.ClosureId);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is ClosureDebugInfo && Equals((ClosureDebugInfo)obj);
+            return (obj is ClosureDebugInfo) && Equals((ClosureDebugInfo)obj);
         }
 
         public override int GetHashCode()

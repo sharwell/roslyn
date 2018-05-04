@@ -144,7 +144,7 @@ namespace Microsoft.CodeAnalysis.Completion
             var match1 = GetMatch(item1.FilterText, pattern, culture);
             var match2 = GetMatch(item2.FilterText, pattern, culture);
 
-            if (match1 != null && match2 != null)
+            if ((match1 != null) && (match2 != null))
             {
                 var result = CompareMatches(match1.Value, match2.Value, item1, item2);
                 if (result != 0)
@@ -168,7 +168,7 @@ namespace Microsoft.CodeAnalysis.Completion
             }
 
             // Prefer things with a keyword tag, if the filter texts are the same.
-            if (!TagsEqual(item1, item2) && item1.FilterText == item2.FilterText)
+            if (!TagsEqual(item1, item2) && (item1.FilterText == item2.FilterText))
             {
                 return IsKeywordItem(item1) ? -1 : IsKeywordItem(item2) ? 1 : 0;
             }
@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis.Completion
 
         private static bool TagsEqual(ImmutableArray<string> tags1, ImmutableArray<string> tags2)
         {
-            return tags1 == tags2 || System.Linq.Enumerable.SequenceEqual(tags1, tags2);
+            return (tags1 == tags2) || System.Linq.Enumerable.SequenceEqual(tags1, tags2);
         }
 
         private static bool IsKeywordItem(CompletionItem item)
@@ -244,13 +244,13 @@ namespace Microsoft.CodeAnalysis.Completion
         {
             // If they both seemed just as good, but they differ on preselection, then
             // item1 is better if it is preselected, otherwise it is worse.
-            if (item1.Rules.MatchPriority == MatchPriority.Preselect &&
-                item2.Rules.MatchPriority != MatchPriority.Preselect)
+            if ((item1.Rules.MatchPriority == MatchPriority.Preselect) &&
+                (item2.Rules.MatchPriority != MatchPriority.Preselect))
             {
                 return -1;
             }
-            else if (item1.Rules.MatchPriority != MatchPriority.Preselect &&
-                     item2.Rules.MatchPriority == MatchPriority.Preselect)
+            else if ((item1.Rules.MatchPriority != MatchPriority.Preselect) &&
+                     (item2.Rules.MatchPriority == MatchPriority.Preselect))
             {
                 return 1;
             }

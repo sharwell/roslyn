@@ -40,7 +40,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
 
         internal static bool InRange(int startIndex, int count, int index)
         {
-            return (index >= startIndex) && (index < startIndex + count);
+            return (index >= startIndex) && (index < (startIndex + count));
         }
 
         internal static void GetIntersection(int startIndex1, int count1, int startIndex2, int count2, out int startIndex3, out int count3)

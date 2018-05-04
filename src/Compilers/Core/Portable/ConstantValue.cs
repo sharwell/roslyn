@@ -626,16 +626,16 @@ namespace Microsoft.CodeAnalysis
 
         public static bool IsFloatingType(ConstantValueTypeDiscriminator discriminator)
         {
-            return discriminator == ConstantValueTypeDiscriminator.Double ||
-                discriminator == ConstantValueTypeDiscriminator.Single;
+            return (discriminator == ConstantValueTypeDiscriminator.Double) ||
+                (discriminator == ConstantValueTypeDiscriminator.Single);
         }
 
         public bool IsFloating
         {
             get
             {
-                return this.Discriminator == ConstantValueTypeDiscriminator.Double ||
-                    this.Discriminator == ConstantValueTypeDiscriminator.Single;
+                return (this.Discriminator == ConstantValueTypeDiscriminator.Double) ||
+                    (this.Discriminator == ConstantValueTypeDiscriminator.Single);
             }
         }
 

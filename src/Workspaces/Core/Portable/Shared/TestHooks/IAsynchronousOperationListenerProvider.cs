@@ -220,7 +220,7 @@ namespace Microsoft.CodeAnalysis.Shared.TestHooks
 
         private IEnumerable<IAsynchronousOperationWaiter> GetCandidateWaiters(string[] featureNames)
         {
-            if (featureNames == null || featureNames.Length == 0)
+            if ((featureNames == null) || (featureNames.Length == 0))
             {
                 return _singletonListeners.Values.Cast<IAsynchronousOperationWaiter>();
             }

@@ -445,7 +445,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             // Check for use-site diagnostics (e.g. missing types in the signature).
             DiagnosticInfo useSiteDiagnosticInfo = null;
             this.CalculateUseSiteDiagnostic(ref useSiteDiagnosticInfo);
-            if (useSiteDiagnosticInfo != null && useSiteDiagnosticInfo.Severity == DiagnosticSeverity.Error)
+            if ((useSiteDiagnosticInfo != null) && (useSiteDiagnosticInfo.Severity == DiagnosticSeverity.Error))
             {
                 diagnostics.Add(useSiteDiagnosticInfo, this.Locations[0]);
                 return;
@@ -664,10 +664,10 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
             if ((object)_thisParameter != null)
             {
                 var typeNameKind = GeneratedNames.GetKind(_thisParameter.Type.Name);
-                if (typeNameKind != GeneratedNameKind.None && typeNameKind != GeneratedNameKind.AnonymousType)
+                if ((typeNameKind != GeneratedNameKind.None) && (typeNameKind != GeneratedNameKind.AnonymousType))
                 {
-                    Debug.Assert(typeNameKind == GeneratedNameKind.LambdaDisplayClass ||
-                        typeNameKind == GeneratedNameKind.StateMachineType,
+                    Debug.Assert((typeNameKind == GeneratedNameKind.LambdaDisplayClass) ||
+                        (typeNameKind == GeneratedNameKind.StateMachineType),
                         $"Unexpected typeNameKind '{typeNameKind}'");
                     return null;
                 }

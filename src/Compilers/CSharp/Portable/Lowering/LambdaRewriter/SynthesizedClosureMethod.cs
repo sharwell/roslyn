@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     throw ExceptionUtilities.UnexpectedValue(closureKind);
             }
 
-            if (!structEnvironments.IsDefaultOrEmpty && typeParameters.Length != 0)
+            if (!structEnvironments.IsDefaultOrEmpty && (typeParameters.Length != 0))
             {
                 var constructedStructClosures = ArrayBuilder<NamedTypeSymbol>.GetInstance();
                 foreach (var env in structEnvironments)

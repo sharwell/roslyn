@@ -40,10 +40,10 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
 
         protected override IAttachedCollectionSource CreateCollectionSource(IVsHierarchyItem item, string relationshipName)
         {
-            if (item != null &&
-                item.HierarchyIdentity != null &&
-                item.HierarchyIdentity.NestedHierarchy != null &&
-                relationshipName == KnownRelationships.Contains)
+            if ((item != null) &&
+                (item.HierarchyIdentity != null) &&
+                (item.HierarchyIdentity.NestedHierarchy != null) &&
+                (relationshipName == KnownRelationships.Contains))
             {
                 if (NestedHierarchyHasProjectTreeCapability(item, "AnalyzerDependency"))
                 {
@@ -118,7 +118,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.SolutionExplore
         private IAttachedCollectionSource CreateCollectionSourceCore(IVsHierarchyItem projectRootItem, IVsHierarchyItem item, string targetFrameworkMoniker)
         {
             var hierarchyMapper = TryGetProjectMap();
-            if (hierarchyMapper != null &&
+            if ((hierarchyMapper != null) &&
                 hierarchyMapper.TryGetProjectId(projectRootItem, targetFrameworkMoniker, out var projectId))
             {
                 var workspace = TryGetWorkspace();

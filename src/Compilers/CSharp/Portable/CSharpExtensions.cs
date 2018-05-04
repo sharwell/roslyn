@@ -184,12 +184,12 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         public static bool IsVerbatimStringLiteral(this SyntaxToken token)
         {
-            return token.IsKind(SyntaxKind.StringLiteralToken) && token.Text.Length > 0 && token.Text[0] == '@';
+            return token.IsKind(SyntaxKind.StringLiteralToken) && (token.Text.Length > 0) && (token.Text[0] == '@');
         }
 
         public static bool IsVerbatimIdentifier(this SyntaxToken token)
         {
-            return token.IsKind(SyntaxKind.IdentifierToken) && token.Text.Length > 0 && token.Text[0] == '@';
+            return token.IsKind(SyntaxKind.IdentifierToken) && (token.Text.Length > 0) && (token.Text[0] == '@');
         }
 
         public static VarianceKind VarianceKindFromToken(this SyntaxToken node)
@@ -208,7 +208,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         /// <returns>A new list with the tokens inserted.</returns>
         public static SyntaxTokenList Insert(this SyntaxTokenList list, int index, params SyntaxToken[] items)
         {
-            if (index < 0 || index > list.Count)
+            if ((index < 0) || (index > list.Count))
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
             }
@@ -348,25 +348,25 @@ namespace Microsoft.CodeAnalysis.CSharp
         internal static bool HasReferenceDirectives(this SyntaxTree tree)
         {
             var csharpTree = tree as CSharpSyntaxTree;
-            return csharpTree != null && csharpTree.HasReferenceDirectives;
+            return (csharpTree != null) && csharpTree.HasReferenceDirectives;
         }
 
         internal static bool HasReferenceOrLoadDirectives(this SyntaxTree tree)
         {
             var csharpTree = tree as CSharpSyntaxTree;
-            return csharpTree != null && csharpTree.HasReferenceOrLoadDirectives;
+            return (csharpTree != null) && csharpTree.HasReferenceOrLoadDirectives;
         }
 
         internal static bool IsAnyPreprocessorSymbolDefined(this SyntaxTree tree, ImmutableArray<string> conditionalSymbols)
         {
             var csharpTree = tree as CSharpSyntaxTree;
-            return csharpTree != null && csharpTree.IsAnyPreprocessorSymbolDefined(conditionalSymbols);
+            return (csharpTree != null) && csharpTree.IsAnyPreprocessorSymbolDefined(conditionalSymbols);
         }
 
         internal static bool IsPreprocessorSymbolDefined(this SyntaxTree tree, string symbolName, int position)
         {
             var csharpTree = tree as CSharpSyntaxTree;
-            return csharpTree != null && csharpTree.IsPreprocessorSymbolDefined(symbolName, position);
+            return (csharpTree != null) && csharpTree.IsPreprocessorSymbolDefined(symbolName, position);
         }
 
         // Given the error code and the source location, get the warning state based on pragma warning directives.

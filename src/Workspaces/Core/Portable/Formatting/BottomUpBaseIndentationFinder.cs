@@ -53,9 +53,9 @@ namespace Microsoft.CodeAnalysis.Formatting
                 // make sure we found new starting point of new indentation.
                 // such operation should start span after the token (a token that is right before the new indentation),
                 // contains current position, and position should be before the existing next token
-                if (token.Span.End <= operation.TextSpan.Start &&
+                if ((token.Span.End <= operation.TextSpan.Start) &&
                     operation.TextSpan.IntersectsWith(position) &&
-                    position <= token.GetNextToken(includeZeroWidth: true).SpanStart)
+                    (position <= token.GetNextToken(includeZeroWidth: true).SpanStart))
                 {
                     return GetIndentationOfCurrentPosition(tree, token, position, cancellationToken);
                 }
@@ -69,8 +69,8 @@ namespace Microsoft.CodeAnalysis.Formatting
             // let's check whether there is any missing token under us and whether
             // there is an align token operation for that missing token.
             var nextToken = token.GetNextToken(includeZeroWidth: true);
-            if (nextToken.RawKind != 0 &&
-                nextToken.Width() <= 0)
+            if ((nextToken.RawKind != 0) &&
+                (nextToken.Width() <= 0))
             {
                 // looks like we have one. find whether there is a align token operation for this token
                 var alignmentBaseToken = GetAlignmentBaseTokenFor(nextToken);
@@ -144,7 +144,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
             if (operation == null)
             {
-                return indentationLevel * _indentationSize + extraSpaces;
+                return (indentationLevel * _indentationSize) + extraSpaces;
             }
 
             if (operation.IsRelativeIndentation)
@@ -166,7 +166,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 }
 
                 var baseIndentation = tokenColumnGetter(baseToken);
-                return Math.Max(0, baseIndentation + (indentationLevel + operation.IndentationDeltaOrPosition) * _indentationSize);
+                return Math.Max(0, baseIndentation + ((indentationLevel + operation.IndentationDeltaOrPosition) * _indentationSize));
             }
 
             if (operation.Option.IsOn(IndentBlockOption.AbsolutePosition))
@@ -186,7 +186,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             {
                 if (operation.Option.IsOn(IndentBlockOption.AbsolutePosition))
                 {
-                    return (operation.IndentationDeltaOrPosition + _indentationSize * indentationLevel, operation);
+                    return (operation.IndentationDeltaOrPosition + (_indentationSize * indentationLevel), operation);
                 }
 
                 if (operation.Option == IndentBlockOption.RelativeToFirstTokenOnBaseTokenLine)
@@ -259,7 +259,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 }
 
                 // make sure we have the given token as one of tokens to be aligned to the base token
-                var match = list.FirstOrDefault(o => o != null && o.Tokens.Contains(token));
+                var match = list.FirstOrDefault(o => (o != null) && o.Tokens.Contains(token));
                 if (match != null)
                 {
                     return match.BaseToken;
@@ -283,7 +283,7 @@ namespace Microsoft.CodeAnalysis.Formatting
             {
                 _formattingRules.AddIndentBlockOperations(list, currentNode, _lastToken);
 
-                if (list.Any(o => o != null && o.TextSpan.Contains(position)))
+                if (list.Any(o => (o != null) && o.TextSpan.Contains(position)))
                 {
                     break;
                 }
@@ -330,7 +330,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
                 // special case for empty span. in case of empty span, consider it
                 // contains the position if start == position
-                if (operation.TextSpan.IsEmpty && operation.TextSpan.Start == position)
+                if (operation.TextSpan.IsEmpty && (operation.TextSpan.Start == position))
                 {
                     yield return operation;
                     continue;
@@ -342,7 +342,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 // its next token is missing token. in this case, we will consider current position 
                 // to belong to current operation.
                 // this can happen in malformed code where end of indentation is missing
-                if (operation.TextSpan.End == position && nextToken.IsMissing)
+                if ((operation.TextSpan.End == position) && nextToken.IsMissing)
                 {
                     yield return operation;
                     continue;
@@ -350,7 +350,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
                 // special case where position is same as end position of the operation and
                 // its next token is right at the position
-                if (operation.TextSpan.End == position && position == nextToken.SpanStart)
+                if ((operation.TextSpan.End == position) && (position == nextToken.SpanStart))
                 {
                     yield return operation;
                     continue;
@@ -359,7 +359,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 // special case for the end of the span == position
                 // if position is at the end of the last token of the tree. consider the position
                 // belongs to the operation
-                if (root.FullSpan.End == position && operation.TextSpan.End == position)
+                if ((root.FullSpan.End == position) && (operation.TextSpan.End == position))
                 {
                     yield return operation;
                     continue;
@@ -367,7 +367,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
                 // more expensive check
                 lastVisibleToken = (lastVisibleToken.RawKind == 0) ? root.GetLastToken() : lastVisibleToken;
-                if (lastVisibleToken.Span.End <= position && operation.TextSpan.End == position)
+                if ((lastVisibleToken.Span.End <= position) && (operation.TextSpan.End == position))
                 {
                     yield return operation;
                     continue;

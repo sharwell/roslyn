@@ -61,7 +61,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
 
             var parameterSyntax = this.CSharpSyntaxNode;
-            if (parameterSyntax != null && parameterSyntax.Default != null)
+            if ((parameterSyntax != null) && (parameterSyntax.Default != null))
             {
                 _parameterSyntaxKind |= ParameterSyntaxKind.DefaultParameter;
             }
@@ -100,7 +100,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             get
             {
                 ParameterEarlyWellKnownAttributeData data = GetEarlyDecodedWellKnownAttributeData();
-                return (data != null && data.DefaultParameterValue != ConstantValue.Unset) ? data.DefaultParameterValue : ConstantValue.NotAvailable;
+                return ((data != null) && (data.DefaultParameterValue != ConstantValue.Unset)) ? data.DefaultParameterValue : ConstantValue.NotAvailable;
             }
         }
 
@@ -202,8 +202,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             // does not have a constant value. The constant value we want is (double)1.
             // The default literal conversion is an exception: (double)default would give the wrong value for M(double? x = default).
 
-            if (convertedExpression.ConstantValue == null && convertedExpression.Kind == BoundKind.Conversion &&
-                !(valueBeforeConversion.Kind == BoundKind.DefaultExpression && valueBeforeConversion.Type == null))
+            if ((convertedExpression.ConstantValue == null) && (convertedExpression.Kind == BoundKind.Conversion) &&
+                !((valueBeforeConversion.Kind == BoundKind.DefaultExpression) && (valueBeforeConversion.Type == null)))
             {
                 if (parameterType.IsNullableType())
                 {
@@ -337,7 +337,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal CommonParameterWellKnownAttributeData GetDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -354,7 +354,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal ParameterEarlyWellKnownAttributeData GetEarlyDecodedWellKnownAttributeData()
         {
             var attributesBag = _lazyCustomAttributesBag;
-            if (attributesBag == null || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
+            if ((attributesBag == null) || !attributesBag.IsEarlyDecodedWellKnownAttributeDataComputed)
             {
                 attributesBag = this.GetAttributesBag();
             }
@@ -370,7 +370,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         /// </remarks>
         internal sealed override CustomAttributesBag<CSharpAttributeData> GetAttributesBag()
         {
-            if (_lazyCustomAttributesBag == null || !_lazyCustomAttributesBag.IsSealed)
+            if ((_lazyCustomAttributesBag == null) || !_lazyCustomAttributesBag.IsSealed)
             {
                 SourceParameterSymbol copyFrom = this.BoundAttributesSource;
 
@@ -635,7 +635,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         private ConstantValue DecodeDefaultParameterValueAttribute(CSharpAttributeData attribute, AttributeSyntax node, bool diagnose, DiagnosticBag diagnosticsOpt)
         {
-            Debug.Assert(!diagnose || diagnosticsOpt != null);
+            Debug.Assert(!diagnose || (diagnosticsOpt != null));
 
             if (HasDefaultArgumentSyntax)
             {
@@ -669,7 +669,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             HashSet<DiagnosticInfo> useSiteDiagnostics = null;
             if (constantValueDiscriminator == ConstantValueTypeDiscriminator.Bad)
             {
-                if (arg.Kind != TypedConstantKind.Array && arg.Value == null)
+                if ((arg.Kind != TypedConstantKind.Array) && (arg.Value == null))
                 {
                     if (this.Type.IsReferenceType)
                     {
@@ -949,10 +949,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         }
 
         internal sealed override bool IsMetadataIn
-            => base.IsMetadataIn || GetDecodedWellKnownAttributeData()?.HasInAttribute == true;
+            => base.IsMetadataIn || (GetDecodedWellKnownAttributeData()?.HasInAttribute == true);
 
         internal sealed override bool IsMetadataOut
-            => base.IsMetadataOut || GetDecodedWellKnownAttributeData()?.HasOutAttribute == true;
+            => base.IsMetadataOut || (GetDecodedWellKnownAttributeData()?.HasOutAttribute == true);
 
         internal sealed override MarshalPseudoCustomAttributeData MarshallingInformation
             => GetDecodedWellKnownAttributeData()?.MarshallingInformation;
@@ -999,7 +999,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             _customModifiers = customModifiers;
             _refCustomModifiers = refCustomModifiers;
 
-            Debug.Assert(refKind != RefKind.None || _refCustomModifiers.IsEmpty);
+            Debug.Assert((refKind != RefKind.None) || _refCustomModifiers.IsEmpty);
         }
 
         public override ImmutableArray<CustomModifier> CustomModifiers => _customModifiers;

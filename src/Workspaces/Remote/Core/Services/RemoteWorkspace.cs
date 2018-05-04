@@ -96,7 +96,7 @@ namespace Microsoft.CodeAnalysis.Remote
             lock (_gate)
             {
                 var oldSolution = this.CurrentSolution;
-                Contract.ThrowIfFalse(oldSolution.Id == solution.Id && oldSolution.FilePath == solution.FilePath);
+                Contract.ThrowIfFalse((oldSolution.Id == solution.Id) && (oldSolution.FilePath == solution.FilePath));
 
                 var newSolution = this.SetCurrentSolution(solution);
                 this.RaiseWorkspaceChangedEventAsync(WorkspaceChangeKind.SolutionChanged, oldSolution, newSolution);

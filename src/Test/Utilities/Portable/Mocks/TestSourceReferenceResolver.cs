@@ -42,7 +42,7 @@ namespace Roslyn.Test.Utilities
 
         public override Stream OpenRead(string resolvedPath)
         {
-            if (_sources != null && resolvedPath != null)
+            if ((_sources != null) && (resolvedPath != null))
             {
                 var data = _sources[resolvedPath];
                 return new MemoryStream((data is string) ? Encoding.UTF8.GetBytes((string)data) : (byte[])data);

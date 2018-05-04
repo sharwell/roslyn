@@ -142,7 +142,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         internal bool HasSameShapeAs(ArrayTypeSymbol other)
         {
-            return Rank == other.Rank && IsSZArray == other.IsSZArray;
+            return (Rank == other.Rank) && (IsSZArray == other.IsSZArray);
         }
 
         /// <summary>
@@ -360,7 +360,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 return true;
             }
 
-            if ((object)other == null || !other.HasSameShapeAs(this) ||
+            if (((object)other == null) || !other.HasSameShapeAs(this) ||
                 !other.ElementType.Equals(ElementType, comparison))
             {
                 return false;
@@ -469,7 +469,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         internal override bool GetUnificationUseSiteDiagnosticRecursive(ref DiagnosticInfo result, Symbol owner, ref HashSet<TypeSymbol> checkedTypes)
         {
             return _elementType.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes) ||
-                   ((object)_baseType != null && _baseType.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes)) ||
+                   (((object)_baseType != null) && _baseType.GetUnificationUseSiteDiagnosticRecursive(ref result, owner, ref checkedTypes)) ||
                    GetUnificationUseSiteDiagnosticRecursive(ref result, this.InterfacesNoUseSiteDiagnostics(), owner, ref checkedTypes) ||
                    GetUnificationUseSiteDiagnosticRecursive(ref result, this.CustomModifiers, owner, ref checkedTypes);
         }
@@ -653,7 +653,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 : base(elementType, rank, array, customModifiers)
             {
                 Debug.Assert(!sizes.IsDefaultOrEmpty || !lowerBounds.IsDefault);
-                Debug.Assert(lowerBounds.IsDefaultOrEmpty || (!lowerBounds.IsEmpty && (lowerBounds.Length != rank || !lowerBounds.All(b => b == 0))));
+                Debug.Assert(lowerBounds.IsDefaultOrEmpty || (!lowerBounds.IsEmpty && ((lowerBounds.Length != rank) || !lowerBounds.All(b => b == 0))));
                 _sizes = sizes.NullToEmpty();
                 _lowerBounds = lowerBounds;
             }

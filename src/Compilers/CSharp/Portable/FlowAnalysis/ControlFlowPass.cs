@@ -237,7 +237,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (!this.State.Alive &&
                 !this.State.Reported &&
                 !statement.WasCompilerGenerated &&
-                statement.Syntax.Span.Length != 0)
+                (statement.Syntax.Span.Length != 0))
             {
                 var firstToken = statement.Syntax.GetFirstToken();
                 Diagnostics.Add(ErrorCode.WRN_UnreachableCode, new SourceLocation(firstToken));

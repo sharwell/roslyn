@@ -178,13 +178,13 @@ namespace Microsoft.CodeAnalysis.ReplaceDocCommentTextWithTag
 
             var startInclusive = span.Start;
             var endExclusive = span.Start;
-            while (startInclusive > 0 &&
+            while ((startInclusive > 0) &&
                    ShouldExpandSpanBackwardOneCharacter(sourceText, startInclusive, fullyQualifiedName))
             {
                 startInclusive--;
             }
 
-            while (endExclusive < sourceText.Length &&
+            while ((endExclusive < sourceText.Length) &&
                    ShouldExpandSpanForwardOneCharacter(sourceText, endExclusive, fullyQualifiedName))
             {
                 endExclusive++;
@@ -205,8 +205,8 @@ namespace Microsoft.CodeAnalysis.ReplaceDocCommentTextWithTag
 
             // Only consume a dot in front of the current word if it is part of a dotted
             // word chain, and isn't just the end of a sentence.
-            if (fullyQualifiedName && currentChar == '.' &&
-                endExclusive + 1 < sourceText.Length && char.IsLetterOrDigit(sourceText[endExclusive + 1]))
+            if (fullyQualifiedName && (currentChar == '.') &&
+                ((endExclusive + 1) < sourceText.Length) && char.IsLetterOrDigit(sourceText[endExclusive + 1]))
             {
                 return true;
             }
@@ -225,7 +225,7 @@ namespace Microsoft.CodeAnalysis.ReplaceDocCommentTextWithTag
                 return true;
             }
 
-            if (fullyQualifiedName && previousCharacter == '.')
+            if (fullyQualifiedName && (previousCharacter == '.'))
             {
                 return true;
             }

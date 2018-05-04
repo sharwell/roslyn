@@ -331,7 +331,7 @@ namespace Microsoft.CodeAnalysis.Editor.Tagging
                     var latest = NextOrDefault(latestEnumerator);
                     var previous = NextOrDefault(previousEnumerator);
 
-                    while (latest != null && previous != null)
+                    while ((latest != null) && (previous != null))
                     {
                         var latestSpan = latest.Span;
                         var previousSpan = previous.Span;

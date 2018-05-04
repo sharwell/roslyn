@@ -22,7 +22,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
     {
         public override bool IsTriggerCharacter(char ch)
         {
-            return ch == '(' || ch == ',';
+            return (ch == '(') || (ch == ',');
         }
 
         public override bool IsRetriggerCharacter(char ch)
@@ -48,7 +48,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
         private static bool IsArgumentListToken(InvocationExpressionSyntax expression, SyntaxToken token)
         {
             return expression.ArgumentList.Span.Contains(token.SpanStart) &&
-                token != expression.ArgumentList.CloseParenToken;
+                (token != expression.ArgumentList.CloseParenToken);
         }
 
         protected override async Task<SignatureHelpItems> GetItemsWorkerAsync(Document document, int position, SignatureHelpTriggerInfo triggerInfo, CancellationToken cancellationToken)
@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                     GetMethodGroupItems(invocationExpression, semanticModel, symbolDisplayService, anonymousTypeDisplayService, documentationCommentFormattingService, within, methodGroup, cancellationToken),
                     textSpan, GetCurrentArgumentState(root, position, syntaxFacts, textSpan, cancellationToken));
             }
-            else if (expressionType != null && expressionType.TypeKind == TypeKind.Delegate)
+            else if ((expressionType != null) && (expressionType.TypeKind == TypeKind.Delegate))
             {
                 return CreateSignatureHelpItems(
                     GetDelegateInvokeItems(invocationExpression, semanticModel, symbolDisplayService, anonymousTypeDisplayService, documentationCommentFormattingService, within, expressionType, cancellationToken),
@@ -120,7 +120,7 @@ namespace Microsoft.CodeAnalysis.CSharp.SignatureHelp
                     SignatureHelpTriggerReason.InvokeSignatureHelpCommand,
                     cancellationToken,
                     out var expression) &&
-                currentSpan.Start == SignatureHelpUtilities.GetSignatureHelpSpan(expression.ArgumentList).Start)
+                (currentSpan.Start == SignatureHelpUtilities.GetSignatureHelpSpan(expression.ArgumentList).Start))
             {
                 return SignatureHelpUtilities.GetSignatureHelpState(expression.ArgumentList, position);
             }

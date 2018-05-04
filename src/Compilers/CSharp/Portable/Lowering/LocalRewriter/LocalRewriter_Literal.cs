@@ -63,13 +63,13 @@ namespace Microsoft.CodeAnalysis.CSharp
             SpecialMember member;
 
             // check if we can call a simpler constructor, or use a predefined constant
-            if (scale == 0 && int.MinValue <= value && value <= int.MaxValue)
+            if ((scale == 0) && (int.MinValue <= value) && (value <= int.MaxValue))
             {
                 // If we are building static constructor of System.Decimal, accessing static fields 
                 // would be bad.
                 var curMethod = _factory.CurrentFunction;
-                if ((curMethod.MethodKind != MethodKind.SharedConstructor ||
-                   curMethod.ContainingType.SpecialType != SpecialType.System_Decimal) &&
+                if (((curMethod.MethodKind != MethodKind.SharedConstructor) ||
+                   (curMethod.ContainingType.SpecialType != SpecialType.System_Decimal)) &&
                    !_inExpressionLambda)
                 {
                     Symbol useField = null;
@@ -87,7 +87,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         useField = _compilation.GetSpecialTypeMember(SpecialMember.System_Decimal__MinusOne);
                     }
 
-                    if ((object)useField != null &&
+                    if (((object)useField != null) &&
                         !useField.HasUseSiteError &&
                         !useField.ContainingType.HasUseSiteError)
                     {
@@ -100,19 +100,19 @@ namespace Microsoft.CodeAnalysis.CSharp
                 member = SpecialMember.System_Decimal__CtorInt32;
                 arguments.Add(new BoundLiteral(syntax, ConstantValue.Create((int)value), _compilation.GetSpecialType(SpecialType.System_Int32)));
             }
-            else if (scale == 0 && uint.MinValue <= value && value <= uint.MaxValue)
+            else if ((scale == 0) && (uint.MinValue <= value) && (value <= uint.MaxValue))
             {
                 //new decimal(uint);
                 member = SpecialMember.System_Decimal__CtorUInt32;
                 arguments.Add(new BoundLiteral(syntax, ConstantValue.Create((uint)value), _compilation.GetSpecialType(SpecialType.System_UInt32)));
             }
-            else if (scale == 0 && long.MinValue <= value && value <= long.MaxValue)
+            else if ((scale == 0) && (long.MinValue <= value) && (value <= long.MaxValue))
             {
                 //new decimal(long);
                 member = SpecialMember.System_Decimal__CtorInt64;
                 arguments.Add(new BoundLiteral(syntax, ConstantValue.Create((long)value), _compilation.GetSpecialType(SpecialType.System_Int64)));
             }
-            else if (scale == 0 && ulong.MinValue <= value && value <= ulong.MaxValue)
+            else if ((scale == 0) && (ulong.MinValue <= value) && (value <= ulong.MaxValue))
             {
                 //new decimal(ulong);
                 member = SpecialMember.System_Decimal__CtorUInt64;

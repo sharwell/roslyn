@@ -244,7 +244,7 @@ namespace Microsoft.CodeAnalysis.CSharp.EditAndContinue.UnitTests
 
         internal static void SaveImages(string outputDirectory, CompilationVerifier baseline, params CompilationDifference[] diffs)
         {
-            bool IsPortablePdb(ImmutableArray<byte> image) => image[0] == 'B' && image[1] == 'S' && image[2] == 'J' && image[3] == 'B';
+            bool IsPortablePdb(ImmutableArray<byte> image) => (image[0] == 'B') && (image[1] == 'S') && (image[2] == 'J') && (image[3] == 'B');
 
             string baseName = baseline.Compilation.AssemblyName;
             string extSuffix = IsPortablePdb(baseline.EmittedAssemblyPdb) ? "x" : "";

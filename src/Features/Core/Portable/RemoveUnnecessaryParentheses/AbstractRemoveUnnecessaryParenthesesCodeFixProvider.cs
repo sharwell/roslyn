@@ -43,7 +43,7 @@ namespace Microsoft.CodeAnalysis.RemoveUnnecessaryParentheses
 
             return editor.ApplyExpressionLevelSemanticEditsAsync(
                 document, originalNodes,
-                (semanticModel, current) => current != null && CanRemoveParentheses(current, semanticModel),
+                (semanticModel, current) => (current != null) && CanRemoveParentheses(current, semanticModel),
                 (_, currentRoot, current) => currentRoot.ReplaceNode(current, syntaxFacts.Unparenthesize(current)),
                 cancellationToken);
         }

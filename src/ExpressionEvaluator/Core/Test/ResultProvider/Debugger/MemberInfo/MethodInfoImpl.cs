@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
         public override bool Equals(object obj)
         {
             var other = obj as MethodInfoImpl;
-            return other != null && this.Method.Equals(other.Method);
+            return (other != null) && this.Method.Equals(other.Method);
         }
 
         /// <remarks>

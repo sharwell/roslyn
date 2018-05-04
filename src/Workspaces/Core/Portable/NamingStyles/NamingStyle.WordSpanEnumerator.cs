@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.NamingStyles
                     break;
                 }
 
-                return Current.Length > 0 && Current.End <= _nameSpan.End;
+                return (Current.Length > 0) && (Current.End <= _nameSpan.End);
             }
         }
     }

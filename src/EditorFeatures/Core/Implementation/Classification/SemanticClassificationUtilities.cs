@@ -90,7 +90,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Classification
 
             var changedSpan = new TextSpan(range.Value.Span.Start, range.Value.NewLength);
             var member = service.GetContainingMemberDeclaration(root, changedSpan.Start);
-            if (member == null || !member.FullSpan.Contains(changedSpan))
+            if ((member == null) || !member.FullSpan.Contains(changedSpan))
             {
                 // The edit was not fully contained in a member.  Reclassify everything.
                 return false;

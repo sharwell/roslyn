@@ -80,7 +80,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
                     //    the relevant word in the foreground, and use a task to figure out whether the
                     //    original word was a renameable identifier or not.
 
-                    if (e.Changes.Count != 1 || ShouldClearTrackingSession(e.Changes.Single()))
+                    if ((e.Changes.Count != 1) || ShouldClearTrackingSession(e.Changes.Single()))
                     {
                         ClearTrackingSession();
                         return;
@@ -166,12 +166,12 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
                 int leftSidePosition = change.OldPosition;
                 int rightSidePosition = change.OldPosition + change.OldText.Length;
 
-                while (leftSidePosition > 0 && IsTrackableCharacter(syntaxFactsService, beforeText[leftSidePosition - 1]))
+                while ((leftSidePosition > 0) && IsTrackableCharacter(syntaxFactsService, beforeText[leftSidePosition - 1]))
                 {
                     leftSidePosition--;
                 }
 
-                while (rightSidePosition < beforeText.Length && IsTrackableCharacter(syntaxFactsService, beforeText[rightSidePosition]))
+                while ((rightSidePosition < beforeText.Length) && IsTrackableCharacter(syntaxFactsService, beforeText[rightSidePosition]))
                 {
                     rightSidePosition++;
                 }
@@ -217,7 +217,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
             {
                 AssertIsForeground();
 
-                if (this.TrackingSession != null && this.TrackingSession.IsDefinitelyRenamableIdentifier())
+                if ((this.TrackingSession != null) && this.TrackingSession.IsDefinitelyRenamableIdentifier())
                 {
                     var document = _buffer.CurrentSnapshot.GetOpenDocumentInCurrentContextWithChanges();
                     if (document != null)

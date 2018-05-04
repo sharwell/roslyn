@@ -135,7 +135,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
         {
             var textFactory = new TextFactoryService();
             var service = new TemporaryStorageServiceFactory.TemporaryStorageService(textFactory);
-            var buffer = new MemoryStream(257 * 1024 + 1);
+            var buffer = new MemoryStream((257 * 1024) + 1);
             for (int i = 0; i < buffer.Length; i++)
             {
                 buffer.WriteByte((byte)i);
@@ -151,9 +151,9 @@ namespace Microsoft.CodeAnalysis.UnitTests
                     {
                         var storage3 = service.CreateTemporaryStreamStorage(CancellationToken.None); // let the finalizer run for this instance
 
-                        storage1.WriteStream(new MemoryStream(buffer.GetBuffer(), 0, 1024 * i - 1));
+                        storage1.WriteStream(new MemoryStream(buffer.GetBuffer(), 0, (1024 * i) - 1));
                         storage2.WriteStream(new MemoryStream(buffer.GetBuffer(), 0, 1024 * i));
-                        storage3.WriteStream(new MemoryStream(buffer.GetBuffer(), 0, 1024 * i + 1));
+                        storage3.WriteStream(new MemoryStream(buffer.GetBuffer(), 0, (1024 * i) + 1));
 
                         await Task.Yield();
 
@@ -161,9 +161,9 @@ namespace Microsoft.CodeAnalysis.UnitTests
                             s2 = storage2.ReadStream(),
                             s3 = storage3.ReadStream())
                         {
-                            Assert.Equal(1024 * i - 1, s1.Length);
+                            Assert.Equal((1024 * i) - 1, s1.Length);
                             Assert.Equal(1024 * i, s2.Length);
-                            Assert.Equal(1024 * i + 1, s3.Length);
+                            Assert.Equal((1024 * i) + 1, s3.Length);
                         }
                     }
                 }
@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
 
                 using (var data = SerializableBytes.CreateWritableStream())
                 {
-                    for (int i = 0; i < 1024 * 128; i++)
+                    for (int i = 0; i < (1024 * 128); i++)
                     {
                         data.WriteByte(1);
                     }
@@ -204,7 +204,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
                         s.WriteStreamAsync(data).Wait();
                     }
 
-                    for (int i = 0; i < 1024 * 5; i++)
+                    for (int i = 0; i < (1024 * 5); i++)
                     {
                         using (var s = storageHandles[i].ReadStreamAsync().Result)
                         {

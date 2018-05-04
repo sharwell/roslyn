@@ -6371,7 +6371,7 @@ class Test
 
             builder.Append("c = new C(), u = 0");
 
-            for (int i = 0; i < depth - 1; i++)
+            for (int i = 0; i < (depth - 1); i++)
             {
                 builder.AppendLine("}, u = 0");
             }
@@ -6437,7 +6437,7 @@ class Program
 
             builder.Append("c = new C(), u = 0");
 
-            for (int i = 0; i < depth - 1; i++)
+            for (int i = 0; i < (depth - 1); i++)
             {
                 builder.AppendLine("}, u = 0");
             }
@@ -6464,7 +6464,7 @@ class Program
 
             builder.Append("c = new C(), u = 0");
 
-            for (int i = 0; i < depth - 1; i++)
+            for (int i = 0; i < (depth - 1); i++)
             {
                 builder.AppendLine("}, u = 0");
             }

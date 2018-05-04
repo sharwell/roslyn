@@ -50,7 +50,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 // 'partial' is actually an identifier.  If we see it just bail.  This does mean
                 // we won't handle overrides that actually return a type called 'partial'.  And
                 // not a single tear was shed.
-                if (typeSyntax is IdentifierNameSyntax &&
+                if ((typeSyntax is IdentifierNameSyntax) &&
                     ((IdentifierNameSyntax)typeSyntax).Identifier.IsKindOrHasMatchingText(SyntaxKind.PartialKeyword))
                 {
                     return false;
@@ -208,7 +208,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             else if (caretTarget is BasePropertyDeclarationSyntax propertyDeclaration)
             {
                 // property: no accessors; move to the end of the declaration
-                if (propertyDeclaration.AccessorList != null && propertyDeclaration.AccessorList.Accessors.Any())
+                if ((propertyDeclaration.AccessorList != null) && propertyDeclaration.AccessorList.Accessors.Any())
                 {
                     // move to the end of the last statement of the first accessor
                     var firstAccessor = propertyDeclaration.AccessorList.Accessors[0];

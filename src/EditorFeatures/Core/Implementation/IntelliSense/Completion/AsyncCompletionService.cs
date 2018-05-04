@@ -66,7 +66,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             // defer to the next handler in the chain.
 
             // Also, if there's an inline rename session then we do not want completion.
-            if (_completionPresenter == null || _inlineRenameService.ActiveSession != null)
+            if ((_completionPresenter == null) || (_inlineRenameService.ActiveSession != null))
             {
                 controller = null;
                 return false;

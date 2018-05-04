@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.AddConstructorParametersFromMembers
                 this.TextSpan = textSpan;
                 this.SelectedMembers = selectedMembers;
                 this.ContainingType = this.SelectedMembers[0].ContainingType;
-                if (this.ContainingType == null || this.ContainingType.TypeKind == TypeKind.Interface)
+                if ((this.ContainingType == null) || (this.ContainingType.TypeKind == TypeKind.Interface))
                 {
                     return false;
                 }

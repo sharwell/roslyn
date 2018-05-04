@@ -52,9 +52,9 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertForToForEach
             // Look for very specific forms.  Basically, only minor variations around:
             // for (var i = 0; i < expr.Lenth; i++)
 
-            if (forStatement.Declaration != null &&
+            if ((forStatement.Declaration != null) &&
                 forStatement.Condition.IsKind(SyntaxKind.LessThanExpression) &&
-                forStatement.Incrementors.Count == 1)
+                (forStatement.Incrementors.Count == 1))
             {
                 var declaration = forStatement.Declaration;
                 if (declaration.Variables.Count == 1)
@@ -69,8 +69,8 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertForToForEach
 
                         // Look for:  i < expr.Length
                         if (binaryExpression.Left is IdentifierNameSyntax identifierName &&
-                            identifierName.Identifier.ValueText == iterationVariable.ValueText &&
-                            binaryExpression.Right is MemberAccessExpressionSyntax)
+                            (identifierName.Identifier.ValueText == iterationVariable.ValueText) &&
+                            (binaryExpression.Right is MemberAccessExpressionSyntax))
                         {
                             memberAccess = (MemberAccessExpressionSyntax)binaryExpression.Right;
 
@@ -123,7 +123,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ConvertForToForEach
             }
 
             return operand is IdentifierNameSyntax identifierName &&
-                identifierName.Identifier.ValueText == iterationVariable.ValueText;
+                (identifierName.Identifier.ValueText == iterationVariable.ValueText);
         }
 
         protected override SyntaxNode ConvertForNode(

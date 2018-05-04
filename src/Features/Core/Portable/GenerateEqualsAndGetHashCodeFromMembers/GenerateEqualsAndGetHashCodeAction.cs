@@ -247,7 +247,7 @@ namespace Microsoft.CodeAnalysis.GenerateEqualsAndGetHashCodeFromMembers
                     compilation, _containingType, _selectedMembers,
                     justMemberReference: true, cancellationToken);
 
-                if (components.Length > 0 && hashCodeType != null)
+                if ((components.Length > 0) && (hashCodeType != null))
                 {
                     return CreateGetHashCodeStatementsUsingSystemHashCode(
                         factory, compilation, hashCodeType, components, cancellationToken);
@@ -272,7 +272,7 @@ namespace Microsoft.CodeAnalysis.GenerateEqualsAndGetHashCodeFromMembers
 
                 // If tuples are available, use (a, b, c).GetHashCode to simply generate the tuple.
                 var valueTupleType = compilation.GetTypeByMetadataName(typeof(ValueTuple).FullName);
-                if (components.Length >= 2 && valueTupleType != null)
+                if ((components.Length >= 2) && (valueTupleType != null))
                 {
                     return ImmutableArray.Create(factory.ReturnStatement(
                         factory.InvocationExpression(

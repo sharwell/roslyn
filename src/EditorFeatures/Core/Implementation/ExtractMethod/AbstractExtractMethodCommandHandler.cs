@@ -188,7 +188,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
 
             // see whether we will allow best effort extraction and if it is possible.
             if (!document.Project.Solution.Options.GetOption(ExtractMethodOptions.AllowBestEffort, document.Project.Language) ||
-                !result.Status.HasBestEffort() || result.Document == null)
+                !result.Status.HasBestEffort() || (result.Document == null))
             {
                 if (notificationService != null)
                 {
@@ -231,7 +231,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.ExtractMethod
 
             var reason = result.Reasons.FirstOrDefault();
             var length = FeaturesResources.Asynchronous_method_cannot_have_ref_out_parameters_colon_bracket_0_bracket.IndexOf(':');
-            if (reason != null && length > 0 && reason.IndexOf(FeaturesResources.Asynchronous_method_cannot_have_ref_out_parameters_colon_bracket_0_bracket.Substring(0, length), 0, length, StringComparison.Ordinal) >= 0)
+            if ((reason != null) && (length > 0) && (reason.IndexOf(FeaturesResources.Asynchronous_method_cannot_have_ref_out_parameters_colon_bracket_0_bracket.Substring(0, length), 0, length, StringComparison.Ordinal) >= 0))
             {
                 options = options.WithChangedOption(ExtractMethodOptions.DontPutOutOrRefOnStruct, document.Project.Language, true);
                 var newResult = ExtractMethodService.ExtractMethodAsync(

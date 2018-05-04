@@ -30,7 +30,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
 
         public bool MoveNext()
         {
-            if (_currentItemIndex >= _snapshot.Count - 1)
+            if (_currentItemIndex >= (_snapshot.Count - 1))
             {
                 return false;
             }

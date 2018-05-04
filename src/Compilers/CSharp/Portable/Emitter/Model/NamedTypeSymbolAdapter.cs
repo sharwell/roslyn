@@ -85,7 +85,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 Debug.Assert(this.IsDefinitionOrDistinct());
 
                 if (!this.IsDefinition &&
-                    this.Arity > 0)
+                    (this.Arity > 0))
                 {
                     return this;
                 }
@@ -106,7 +106,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 Debug.Assert(this.IsDefinitionOrDistinct());
 
                 if (this.IsDefinition &&
-                    (object)this.ContainingType == null)
+                    ((object)this.ContainingType == null))
                 {
                     return this;
                 }
@@ -121,9 +121,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
             Debug.Assert(this.IsDefinitionOrDistinct());
 
-            if ((object)this.ContainingType == null &&
+            if (((object)this.ContainingType == null) &&
                 this.IsDefinition &&
-                this.ContainingModule == moduleBeingBuilt.SourceModule)
+                (this.ContainingModule == moduleBeingBuilt.SourceModule))
             {
                 return this;
             }
@@ -156,9 +156,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             Debug.Assert(this.IsDefinitionOrDistinct());
 
-            if ((object)this.ContainingType != null &&
+            if (((object)this.ContainingType != null) &&
                 this.IsDefinition &&
-                this.ContainingModule == moduleBeingBuilt.SourceModule)
+                (this.ContainingModule == moduleBeingBuilt.SourceModule))
             {
                 return this;
             }
@@ -173,9 +173,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 Debug.Assert(this.IsDefinitionOrDistinct());
 
                 if (!this.IsDefinition &&
-                    (this.Arity == 0 || PEModuleBuilder.IsGenericType(this.ContainingType)))
+                    ((this.Arity == 0) || PEModuleBuilder.IsGenericType(this.ContainingType)))
                 {
-                    Debug.Assert((object)this.ContainingType != null &&
+                    Debug.Assert(((object)this.ContainingType != null) &&
                             PEModuleBuilder.IsGenericType(this.ContainingType));
                     return this;
                 }
@@ -196,7 +196,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             Debug.Assert(this.IsDefinitionOrDistinct());
 
             if (this.IsDefinition && // can't be generic instantiation
-                this.ContainingModule == moduleBeingBuilt.SourceModule) // must be declared in the module we are building
+                (this.ContainingModule == moduleBeingBuilt.SourceModule)) // must be declared in the module we are building
             {
                 return this;
             }
@@ -350,7 +350,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         // between accessors and non-accessors, whereas the runtime does not.
                         yield return new Microsoft.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(method.OverriddenMethod, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
                     }
-                    else if (method.MethodKind == MethodKind.Destructor && this.SpecialType != SpecialType.System_Object)
+                    else if ((method.MethodKind == MethodKind.Destructor) && (this.SpecialType != SpecialType.System_Object))
                     {
                         // New in Roslyn: all destructors explicitly override (or are) System.Object.Finalize so that
                         // they are guaranteed to be runtime finalizers.  As a result, it is no longer possible to create
@@ -361,7 +361,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                         foreach (Symbol objectMember in objectType.GetMembers(WellKnownMemberNames.DestructorName))
                         {
                             MethodSymbol objectMethod = objectMember as MethodSymbol;
-                            if ((object)objectMethod != null && objectMethod.MethodKind == MethodKind.Destructor)
+                            if (((object)objectMethod != null) && (objectMethod.MethodKind == MethodKind.Destructor))
                             {
                                 yield return new Microsoft.Cci.MethodImplementation(method, moduleBeingBuilt.TranslateOverriddenMethodReference(objectMethod, (CSharpSyntaxNode)context.SyntaxNodeOpt, context.Diagnostics));
                             }
@@ -842,7 +842,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
                 // Exception: The EE copies type names from metadata, which may contain dots already.
                 Debug.Assert(this.IsErrorType() ||
                     !unsuffixedName.Contains(".") ||
-                    this.OriginalDefinition is PENamedTypeSymbol, "type name contains dots: " + unsuffixedName);
+                    (this.OriginalDefinition is PENamedTypeSymbol), "type name contains dots: " + unsuffixedName);
 
                 return unsuffixedName;
             }
@@ -872,7 +872,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
         {
             get
             {
-                Debug.Assert((object)this.ContainingType == null && this.ContainingModule is SourceModuleSymbol);
+                Debug.Assert(((object)this.ContainingType == null) && (this.ContainingModule is SourceModuleSymbol));
 
                 return PEModuleBuilder.MemberVisibility(this) == Cci.TypeMemberVisibility.Public;
             }

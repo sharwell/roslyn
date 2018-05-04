@@ -24,7 +24,7 @@ namespace Microsoft.CodeAnalysis.Completion
             Func<char, bool> isWordStartCharacter, Func<char, bool> isWordCharacter)
         {
             int start = position;
-            while (start > 0 && isWordStartCharacter(text[start - 1]))
+            while ((start > 0) && isWordStartCharacter(text[start - 1]))
             {
                 start--;
             }
@@ -38,7 +38,7 @@ namespace Microsoft.CodeAnalysis.Completion
             int end = position;
             if (start != position)
             {
-                while (end < text.Length && isWordCharacter(text[end]))
+                while ((end < text.Length) && isWordCharacter(text[end]))
                 {
                     end++;
                 }
@@ -57,13 +57,13 @@ namespace Microsoft.CodeAnalysis.Completion
 
             // Only want to trigger if we're the first character in an identifier.  If there's a
             // character before or after us, then we don't want to trigger.
-            if (characterPosition > 0 &&
+            if ((characterPosition > 0) &&
                 isWordCharacter(text[characterPosition - 1]))
             {
                 return false;
             }
 
-            if (characterPosition < text.Length - 1 &&
+            if ((characterPosition < (text.Length - 1)) &&
                 isWordCharacter(text[characterPosition + 1]))
             {
                 return false;
@@ -193,7 +193,7 @@ namespace Microsoft.CodeAnalysis.Completion
 
             for (int i = 0; i < value.Length; i++, characterPosition++)
             {
-                if (characterPosition < 0 || characterPosition >= text.Length)
+                if ((characterPosition < 0) || (characterPosition >= text.Length))
                 {
                     return false;
                 }

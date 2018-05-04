@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.ExtractMethod
                 protected override void VisitToken(SyntaxToken token)
                 {
                     if (token.IsMissing ||
-                        token.Width() <= 0 ||
+                        (token.Width() <= 0) ||
                         !_service.IsIdentifier(token) ||
                         !_span.Contains(token.Span) ||
                         _service.IsNamedParameter(token.Parent))

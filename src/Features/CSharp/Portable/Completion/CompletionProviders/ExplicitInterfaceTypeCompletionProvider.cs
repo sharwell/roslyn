@@ -72,7 +72,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
 
             while (typeNode != null)
             {
-                if (typeNode.Parent is TypeSyntax parentType && parentType.Span.End < position)
+                if (typeNode.Parent is TypeSyntax parentType && (parentType.Span.End < position))
                 {
                     typeNode = parentType;
                 }
@@ -125,12 +125,12 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
                 return IsClassOrStruct(tokenBeforeType.Parent);
             }
 
-            if (tokenBeforeType.Kind() == SyntaxKind.CloseBraceToken ||
-                tokenBeforeType.Kind() == SyntaxKind.SemicolonToken)
+            if ((tokenBeforeType.Kind() == SyntaxKind.CloseBraceToken) ||
+                (tokenBeforeType.Kind() == SyntaxKind.SemicolonToken))
             {
                 // Check that we're after a class/struct member.
                 var memberDeclaration = tokenBeforeType.GetAncestor<MemberDeclarationSyntax>();
-                return memberDeclaration?.GetLastToken() == tokenBeforeType &&
+                return (memberDeclaration?.GetLastToken() == tokenBeforeType) &&
                        IsClassOrStruct(memberDeclaration.Parent);
             }
 
@@ -138,6 +138,6 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
         }
 
         private static bool IsClassOrStruct(SyntaxNode node)
-            => node.Kind() == SyntaxKind.ClassDeclaration || node.Kind() == SyntaxKind.StructDeclaration;
+            => (node.Kind() == SyntaxKind.ClassDeclaration) || (node.Kind() == SyntaxKind.StructDeclaration);
     }
 }

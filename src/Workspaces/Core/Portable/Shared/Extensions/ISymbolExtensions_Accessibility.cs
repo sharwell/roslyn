@@ -84,7 +84,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         {
             Contract.ThrowIfNull(symbol);
             Contract.ThrowIfNull(within);
-            Contract.Requires(within is INamedTypeSymbol || within is IAssemblySymbol);
+            Contract.Requires((within is INamedTypeSymbol) || (within is IAssemblySymbol));
 
             failedThroughTypeCheck = false;
             switch (symbol.Kind)
@@ -131,7 +131,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
                     // If this is a synthesized operator of dynamic, it's always accessible.
                     if (symbol.IsKind(SymbolKind.Method) &&
-                        ((IMethodSymbol)symbol).MethodKind == MethodKind.BuiltinOperator &&
+                        (((IMethodSymbol)symbol).MethodKind == MethodKind.BuiltinOperator) &&
                         symbol.ContainingSymbol.IsKind(SymbolKind.DynamicType))
                     {
                         return true;
@@ -139,7 +139,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
 
                     // If it's a synthesized operator on a pointer, use the pointer's PointedAtType.
                     if (symbol.IsKind(SymbolKind.Method) &&
-                        ((IMethodSymbol)symbol).MethodKind == MethodKind.BuiltinOperator &&
+                        (((IMethodSymbol)symbol).MethodKind == MethodKind.BuiltinOperator) &&
                         symbol.ContainingSymbol.IsKind(SymbolKind.PointerType))
                     {
                         return IsSymbolAccessibleCore(((IPointerTypeSymbol)symbol.ContainingSymbol).PointedAtType, within, null, out failedThroughTypeCheck);
@@ -156,7 +156,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         // an assembly.
         private static bool IsNamedTypeAccessible(INamedTypeSymbol type, ISymbol within)
         {
-            Contract.Requires(within is INamedTypeSymbol || within is IAssemblySymbol);
+            Contract.Requires((within is INamedTypeSymbol) || (within is IAssemblySymbol));
             Contract.ThrowIfNull(type);
 
             if (type.IsErrorType())
@@ -173,8 +173,8 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                 {
                     // type parameters are always accessible, so don't check those (so common it's
                     // worth optimizing this).
-                    if (typeArg.Kind != SymbolKind.TypeParameter &&
-                        typeArg.TypeKind != TypeKind.Error &&
+                    if ((typeArg.Kind != SymbolKind.TypeParameter) &&
+                        (typeArg.TypeKind != TypeKind.Error) &&
                         !IsSymbolAccessibleCore(typeArg, within, null, out unused))
                     {
                         return false;
@@ -195,7 +195,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             Accessibility declaredAccessibility,
             ISymbol within)
         {
-            Contract.Requires(within is INamedTypeSymbol || within is IAssemblySymbol);
+            Contract.Requires((within is INamedTypeSymbol) || (within is IAssemblySymbol));
             Contract.ThrowIfNull(assembly);
             var withinAssembly = (within as IAssemblySymbol) ?? ((INamedTypeSymbol)within).ContainingAssembly;
 
@@ -232,7 +232,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             ITypeSymbol throughTypeOpt,
             out bool failedThroughTypeCheck)
         {
-            Contract.Requires(within is INamedTypeSymbol || within is IAssemblySymbol);
+            Contract.Requires((within is INamedTypeSymbol) || (within is IAssemblySymbol));
             Contract.ThrowIfNull(containingType);
 
             failedThroughTypeCheck = false;
@@ -271,7 +271,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                     }
 
                     // private members never accessible from outside a type.
-                    return withinNamedType != null && IsPrivateSymbolAccessible(withinNamedType, originalContainingType);
+                    return (withinNamedType != null) && IsPrivateSymbolAccessible(withinNamedType, originalContainingType);
 
                 case Accessibility.Internal:
                     // An internal type is accessible if we're in the same assembly or we have
@@ -367,7 +367,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
                         // inheritance chains should be very short.  As such, it might actually be
                         // slower to create and check inside the set versus just walking the
                         // inheritance chain.
-                        if (originalThroughTypeOpt == null ||
+                        if ((originalThroughTypeOpt == null) ||
                             originalThroughTypeOpt.InheritsFromOrEqualsIgnoringConstruction(current))
                         {
                             return true;
@@ -391,7 +391,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
             ISymbol within,
             INamedTypeSymbol originalContainingType)
         {
-            Contract.Requires(within is INamedTypeSymbol || within is IAssemblySymbol);
+            Contract.Requires((within is INamedTypeSymbol) || (within is IAssemblySymbol));
 
             var withinType = within as INamedTypeSymbol;
             if (withinType == null)

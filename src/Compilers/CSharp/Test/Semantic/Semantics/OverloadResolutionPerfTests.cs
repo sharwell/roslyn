@@ -167,7 +167,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             builder.AppendLine("{");
             for (int i = 0; i < n; i++)
             {
-                if (i % 2 == 0)
+                if ((i % 2) == 0)
                 {
                     builder.AppendLine($"    internal static void F(this C{i} x) {{ x.G(y => y.G(z => z.F())); }}"); // No match for x.G(...).
                 }

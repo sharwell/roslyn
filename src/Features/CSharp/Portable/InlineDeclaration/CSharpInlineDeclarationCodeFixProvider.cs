@@ -92,7 +92,7 @@ namespace Microsoft.CodeAnalysis.CSharp.InlineDeclaration
                 var block = (BlockSyntax)localDeclarationStatement.Parent;
                 var declarationIndex = block.Statements.IndexOf(localDeclarationStatement);
 
-                if (declarationIndex > 0 &&
+                if ((declarationIndex > 0) &&
                     sourceText.AreOnSameLine(block.Statements[declarationIndex - 1].GetLastToken(), localDeclarationStatement.GetFirstToken()))
                 {
                     // There's another statement on the same line as this declaration statement.
@@ -310,10 +310,10 @@ namespace Microsoft.CodeAnalysis.CSharp.InlineDeclaration
         private SyntaxNode GetTopmostContainer(ExpressionSyntax expression)
         {
             return expression.GetAncestorsOrThis(
-                a => a is StatementSyntax ||
-                     a is EqualsValueClauseSyntax ||
-                     a is ArrowExpressionClauseSyntax ||
-                     a is ConstructorInitializerSyntax).LastOrDefault();
+                a => (a is StatementSyntax) ||
+                     (a is EqualsValueClauseSyntax) ||
+                     (a is ArrowExpressionClauseSyntax) ||
+                     (a is ConstructorInitializerSyntax)).LastOrDefault();
         }
 
         private bool TryGetSpeculativeSemanticModel(

@@ -41,7 +41,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.Colle
             foreach (var collection in _collections)
             {
                 var count = collection.Count;
-                if (index < currentIndex + count)
+                if (index < (currentIndex + count))
                 {
                     // Note: We use index + 1 because CodeModel expects 1-based indices
                     return ErrorHandler.Succeeded(collection.Item(index - currentIndex + 1, out element));

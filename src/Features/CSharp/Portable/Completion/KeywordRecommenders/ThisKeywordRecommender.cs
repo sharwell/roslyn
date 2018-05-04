@@ -42,8 +42,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
 
             var token = context.TargetToken;
 
-            if (token.Kind() == SyntaxKind.ColonToken &&
-                token.Parent is ConstructorInitializerSyntax &&
+            if ((token.Kind() == SyntaxKind.ColonToken) &&
+                (token.Parent is ConstructorInitializerSyntax) &&
                 token.Parent.IsParentKind(SyntaxKind.ConstructorDeclaration))
             {
                 var constructor = token.GetAncestor<ConstructorDeclarationSyntax>();
@@ -70,7 +70,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.KeywordRecommenders
             var method = token.GetAncestor<MethodDeclarationSyntax>();
             var typeDecl = method.GetAncestorOrThis<TypeDeclarationSyntax>();
 
-            if (method == null || typeDecl == null)
+            if ((method == null) || (typeDecl == null))
             {
                 return false;
             }

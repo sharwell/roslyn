@@ -26,7 +26,7 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                 // Document once https://github.com/dotnet/roslyn/issues/5260 is fixed.
                 if (originalDocument == null)
                 {
-                    Debug.Assert(solution.Workspace.Kind == WorkspaceKind.Interactive || solution.Workspace.Kind == WorkspaceKind.MiscellaneousFiles);
+                    Debug.Assert((solution.Workspace.Kind == WorkspaceKind.Interactive) || (solution.Workspace.Kind == WorkspaceKind.MiscellaneousFiles));
                     continue;
                 }
 
@@ -46,9 +46,9 @@ namespace Microsoft.CodeAnalysis.FindSymbols.Finders
                     var semanticModel = await linkedDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
                     var linkedSymbol = semanticModel.GetDeclaredSymbol(linkedNode, cancellationToken);
 
-                    if (linkedSymbol != null &&
-                        linkedSymbol.Kind == symbol.Kind &&
-                        linkedSymbol.Name == symbol.Name)
+                    if ((linkedSymbol != null) &&
+                        (linkedSymbol.Kind == symbol.Kind) &&
+                        (linkedSymbol.Name == symbol.Name))
                     {
                         var linkedSymbolAndProjectId = SymbolAndProjectId.Create(linkedSymbol, linkedDocument.Project.Id);
                         if (!linkedSymbols.Contains(linkedSymbolAndProjectId))

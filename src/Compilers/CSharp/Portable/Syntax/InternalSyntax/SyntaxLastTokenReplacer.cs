@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
         public override CSharpSyntaxNode Visit(CSharpSyntaxNode node)
         {
-            if (node != null && !_found)
+            if ((node != null) && !_found)
             {
                 _count--;
                 if (_count == 0)

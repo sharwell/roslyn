@@ -949,7 +949,7 @@ public class C {}
 
         private ModuleMetadata GetNetModuleWithAssemblyAttributes(string source = null, IEnumerable<MetadataReference> references = null, string assemblyName = null)
         {
-            source = source ?? s_defaultNetModuleSourceHeader + s_defaultNetModuleSourceBody;
+            source = source ?? (s_defaultNetModuleSourceHeader + s_defaultNetModuleSourceBody);
             var netmoduleCompilation = CreateCompilationWithMscorlib40(source, options: TestOptions.ReleaseModule, references: references, assemblyName: assemblyName);
             return ModuleMetadata.CreateFromImage(netmoduleCompilation.EmitToArray());
         }

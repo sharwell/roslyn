@@ -259,8 +259,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             return CommonCompletionUtilities.GetWordSpan(
                 text,
                 position,
-                ch => CompletionUtilities.IsCompletionItemStartCharacter(ch) || ch == '{',
-                ch => CompletionUtilities.IsWordCharacter(ch) || ch == '{' || ch == '}');
+                ch => CompletionUtilities.IsCompletionItemStartCharacter(ch) || (ch == '{'),
+                ch => CompletionUtilities.IsWordCharacter(ch) || (ch == '{') || (ch == '}'));
         }
 
         private IEnumerable<CompletionItem> CreateCompletionItems(
@@ -314,7 +314,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Completion.Providers
             SymbolDisplayFormat unqualifiedCrefFormat)
         {
             builder.Clear();
-            if (symbol is INamespaceOrTypeSymbol && token.IsKind(SyntaxKind.DotToken))
+            if ((symbol is INamespaceOrTypeSymbol) && token.IsKind(SyntaxKind.DotToken))
             {
                 // Handle qualified namespace and type names.
                 builder.Append(symbol.ToDisplayString(QualifiedCrefFormat));

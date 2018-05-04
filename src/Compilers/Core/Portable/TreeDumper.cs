@@ -93,12 +93,12 @@ namespace Microsoft.CodeAnalysis
                 }
 
                 _sb.Append(indent);
-                _sb.Append(i == children.Count - 1 ? '\u2514' : '\u251C');
+                _sb.Append(i == (children.Count - 1) ? '\u2514' : '\u251C');
                 _sb.Append('\u2500');
 
                 // First precondition met; now work out the string needed to indent 
                 // the child node's children:
-                DoDumpCompact(child, indent + (i == children.Count - 1 ? "  " : "\u2502 "));
+                DoDumpCompact(child, indent + (i == (children.Count - 1) ? "  " : "\u2502 "));
             }
         }
 
@@ -158,7 +158,7 @@ namespace Microsoft.CodeAnalysis
         private static bool IsDefaultImmutableArray(Object o)
         {
             var ti = o.GetType().GetTypeInfo();
-            return ti.IsGenericType && ti.GetGenericTypeDefinition() == typeof(ImmutableArray<>) &&
+            return ti.IsGenericType && (ti.GetGenericTypeDefinition() == typeof(ImmutableArray<>)) &&
                 (bool)ti.GetDeclaredMethod("get_IsDefault").Invoke(o, Array.Empty<object>());
         }
 

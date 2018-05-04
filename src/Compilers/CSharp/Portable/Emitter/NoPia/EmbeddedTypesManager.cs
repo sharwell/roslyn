@@ -77,7 +77,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit.NoPia
                                                                          out info,
                                                                          isOptional: false);
 
-                if (info != null && info.Severity == DiagnosticSeverity.Error)
+                if ((info != null) && (info.Severity == DiagnosticSeverity.Error))
                 {
                     symbol = null;
                 }
@@ -220,7 +220,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit.NoPia
         {
             // We do not embed SpecialTypes (they must be defined in Core assembly), error types and 
             // types from assemblies that aren't linked.
-            if (namedType.SpecialType != SpecialType.None || namedType.IsErrorType() || !namedType.ContainingAssembly.IsLinked)
+            if ((namedType.SpecialType != SpecialType.None) || namedType.IsErrorType() || !namedType.ContainingAssembly.IsLinked)
             {
                 // Assuming that we already complained about an error type, no additional diagnostics necessary.
                 return false;
@@ -270,7 +270,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit.NoPia
         private static void ReportNotEmbeddableSymbol(ErrorCode error, Symbol symbol, SyntaxNode syntaxNodeOpt, DiagnosticBag diagnostics, EmbeddedTypesManager optTypeManager)
         {
             // Avoid complaining about the same symbol too much.
-            if (optTypeManager == null || optTypeManager._reportedSymbolsMap.TryAdd(symbol.OriginalDefinition, true))
+            if ((optTypeManager == null) || optTypeManager._reportedSymbolsMap.TryAdd(symbol.OriginalDefinition, true))
             {
                 Error(diagnostics, error, syntaxNodeOpt, symbol.OriginalDefinition);
             }
@@ -338,10 +338,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit.NoPia
 
             if (!isInterface)
             {
-                Debug.Assert(namedType.TypeKind == TypeKind.Struct || namedType.TypeKind == TypeKind.Enum || namedType.TypeKind == TypeKind.Delegate);
+                Debug.Assert((namedType.TypeKind == TypeKind.Struct) || (namedType.TypeKind == TypeKind.Enum) || (namedType.TypeKind == TypeKind.Delegate));
                 // For structures, enums and delegates we embed all members.
 
-                if (namedType.TypeKind == TypeKind.Struct || namedType.TypeKind == TypeKind.Enum)
+                if ((namedType.TypeKind == TypeKind.Struct) || (namedType.TypeKind == TypeKind.Enum))
                 {
                     // TODO: When building debug versions in the IDE, the compiler will insert some extra members
                     // that support ENC. These make no sense in local types, so we will skip them. We have to
@@ -394,8 +394,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit.NoPia
             var containerKind = field.ContainingType.TypeKind;
 
             // Structures may contain only public instance fields. 
-            if (containerKind == TypeKind.Interface || containerKind == TypeKind.Delegate ||
-                (containerKind == TypeKind.Struct && (field.IsStatic || field.DeclaredAccessibility != Accessibility.Public)))
+            if ((containerKind == TypeKind.Interface) || (containerKind == TypeKind.Delegate) ||
+                ((containerKind == TypeKind.Struct) && (field.IsStatic || (field.DeclaredAccessibility != Accessibility.Public))))
             {
                 // ERRID.ERR_InvalidStructMemberNoPIA1/ERR_InteropStructContainsMethods 
                 ReportNotEmbeddableSymbol(ErrorCode.ERR_InteropStructContainsMethods, field.ContainingType, syntaxNodeOpt, diagnostics, this);

@@ -150,8 +150,8 @@ namespace Microsoft.CodeAnalysis.DocumentationComments
 
             var name = element.Name.LocalName;
 
-            if (name == "see" ||
-                name == "seealso")
+            if ((name == "see") ||
+                (name == "seealso"))
             {
                 foreach (var attribute in element.Attributes())
                 {
@@ -160,8 +160,8 @@ namespace Microsoft.CodeAnalysis.DocumentationComments
 
                 return;
             }
-            else if (name == "paramref" ||
-                     name == "typeparamref")
+            else if ((name == "paramref") ||
+                     (name == "typeparamref"))
             {
                 foreach (var attribute in element.Attributes())
                 {
@@ -230,7 +230,7 @@ namespace Microsoft.CodeAnalysis.DocumentationComments
 
         private static string TrimCrefPrefix(string value)
         {
-            if (value.Length >= 2 && value[1] == ':')
+            if ((value.Length >= 2) && (value[1] == ':'))
             {
                 value = value.Substring(startIndex: 2);
             }

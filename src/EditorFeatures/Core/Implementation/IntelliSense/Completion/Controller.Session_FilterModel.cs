@@ -68,7 +68,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 // We want to dismiss the session if the caret ever moved outside our bounds.
                 // Do this before we check the _filterId.  We don't want this work to not happen
                 // just because the user typed more text and added more filter items.
-                if (filterReason == CompletionFilterReason.CaretPositionChanged &&
+                if ((filterReason == CompletionFilterReason.CaretPositionChanged) &&
                     Controller.IsCaretOutsideAllItemBounds(model, caretPosition))
                 {
                     return null;
@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 //
                 // We'll bring up the completion list here (as VB has completion on <space>). 
                 // If the user then types '3', we don't want to match against Int32.
-                var filterTextStartsWithANumber = filterText.Length > 0 && char.IsNumber(filterText[0]);
+                var filterTextStartsWithANumber = (filterText.Length > 0) && char.IsNumber(filterText[0]);
                 if (filterTextStartsWithANumber)
                 {
                     if (!IsAfterDot(model, model.TriggerSnapshot, textSpanToText))
@@ -161,9 +161,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                         //     cases we just always keep all the items in the list.
 
                         var wasTriggeredByDeleteOrSimpleInvoke =
-                            model.Trigger.Kind == CompletionTriggerKind.Deletion ||
-                            model.Trigger.Kind == CompletionTriggerKind.Invoke;
-                        var shouldKeepItem = filterText.Length <= 1 || wasTriggeredByDeleteOrSimpleInvoke;
+                            (model.Trigger.Kind == CompletionTriggerKind.Deletion) ||
+                            (model.Trigger.Kind == CompletionTriggerKind.Invoke);
+                        var shouldKeepItem = (filterText.Length <= 1) || wasTriggeredByDeleteOrSimpleInvoke;
 
                         if (shouldKeepItem)
                         {
@@ -227,7 +227,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 // Since we just need to look at the Document's contents, it should
                 // be safe to do this check by inspecting model.TriggerSnapshot
                 var text = model.TriggerSnapshot.GetText(span);
-                return text.Length > 0 && text[0] == '.';
+                return (text.Length > 0) && (text[0] == '.');
             }
 
             private Model HandleNormalFiltering(
@@ -273,9 +273,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 // like "WriteLine" since no filter text has actually been provided.  HOwever,
                 // if "Console.WriteL$$" is typed, then we do want "WriteLine" to be committed.
                 var matchingItemCount = matchingCompletionItems.Length;
-                var isUnique = bestCompletionItem != null &&
-                    matchingItemCount == 1 &&
-                    filterText.Length > 0;
+                var isUnique = (bestCompletionItem != null) &&
+                    (matchingItemCount == 1) &&
+                    (filterText.Length > 0);
 
                 var result = model.WithFilteredItems(filterResults.Select(r => r.CompletionItem).AsImmutable())
                                   .WithSelectedItem(bestOrFirstCompletionItem)
@@ -338,7 +338,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             private Model HandleDeletionTrigger(
                 Model model, CompletionFilterReason filterReason, List<FilterResult> filterResults)
             {
-                if (filterReason == CompletionFilterReason.Insertion &&
+                if ((filterReason == CompletionFilterReason.Insertion) &&
                     !filterResults.Any(r => r.MatchedFilterText))
                 {
                     // The user has typed something, but nothing in the actual list matched what
@@ -354,7 +354,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 int matchCount = 0;
                 foreach (var currentFilterResult in filterResults.Where(r => r.MatchedFilterText))
                 {
-                    if (bestFilterResult == null ||
+                    if ((bestFilterResult == null) ||
                         IsBetterDeletionMatch(currentFilterResult, bestFilterResult.Value))
                     {
                         // We had no best result yet, so this is now our best result.
@@ -428,7 +428,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 CompletionFilterReason filterReason)
             {
                 if (model.DismissIfEmpty &&
-                    filterReason == CompletionFilterReason.Insertion)
+                    (filterReason == CompletionFilterReason.Insertion))
                 {
                     // If the user was just typing, and the list went to empty *and* this is a 
                     // language that wants to dismiss on empty, then just return a null model
@@ -468,8 +468,8 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 // Specifically, to avoid being too aggressive when matching an item during 
                 // completion, we require that the current filter text be a prefix of the 
                 // item in the list.
-                if (filterReason == CompletionFilterReason.Deletion &&
-                    trigger.Kind == CompletionTriggerKind.Deletion)
+                if ((filterReason == CompletionFilterReason.Deletion) &&
+                    (trigger.Kind == CompletionTriggerKind.Deletion))
                 {
                     return item.FilterText.GetCaseInsensitivePrefixLength(filterText) > 0;
                 }
@@ -483,7 +483,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                         return true;
                     }
 
-                    if (!recentItems.IsDefault && GetRecentItemIndex(recentItems, item) <= 0)
+                    if (!recentItems.IsDefault && (GetRecentItemIndex(recentItems, item) <= 0))
                     {
                         return true;
                     }
@@ -506,7 +506,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
             {
                 for (int i = 0; i < filterText.Length; i++)
                 {
-                    if (filterText[i] < '0' || filterText[i] > '9')
+                    if ((filterText[i] < '0') || (filterText[i] > '9'))
                     {
                         return false;
                     }
@@ -522,7 +522,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 CompletionHelper completionHelper,
                 CompletionFilterReason reason)
             {
-                if (bestFilterMatch == null || model.UseSuggestionMode)
+                if ((bestFilterMatch == null) || model.UseSuggestionMode)
                 {
                     return false;
                 }
@@ -564,7 +564,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 // We want the filter span non-empty because we still want hard selection in the following case:
                 //
                 //  A a = new |
-                if (caretPosition == itemViewSpan.TextSpan.Start && itemViewSpan.TextSpan.Length > 0)
+                if ((caretPosition == itemViewSpan.TextSpan.Start) && (itemViewSpan.TextSpan.Length > 0))
                 {
                     return false;
                 }
@@ -584,7 +584,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
                 // It's possible the user is just typing language punctuation and selecting
                 // anything in the list will interfere.  We only allow this if the filter text
                 // exactly matches something in the list already. 
-                if (filterText.Length > 0 && IsAllPunctuation(filterText) && filterText != item.DisplayText)
+                if ((filterText.Length > 0) && IsAllPunctuation(filterText) && (filterText != item.DisplayText))
                 {
                     return true;
                 }
@@ -610,7 +610,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.Completion
 
                 // The user typed something, or the item asked to be preselected.  In 
                 // either case, don't soft select this.
-                Debug.Assert(filterText.Length > 0 || item.Rules.MatchPriority != MatchPriority.Default);
+                Debug.Assert((filterText.Length > 0) || (item.Rules.MatchPriority != MatchPriority.Default));
                 return false;
             }
 

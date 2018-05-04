@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis
                 return SpecializedTasks.EmptyTask;
             }
 
-            if (projectId == null && documentId != null)
+            if ((projectId == null) && (documentId != null))
             {
                 projectId = documentId.ProjectId;
             }
@@ -110,7 +110,7 @@ namespace Microsoft.CodeAnalysis
         protected Task RaiseDocumentOpenedEventAsync(Document document)
         {
             var ev = _eventMap.GetEventHandlers<EventHandler<DocumentEventArgs>>(DocumentOpenedEventName);
-            if (ev.HasHandlers && document != null)
+            if (ev.HasHandlers && (document != null))
             {
                 return this.ScheduleTask(() =>
                 {
@@ -143,7 +143,7 @@ namespace Microsoft.CodeAnalysis
         protected Task RaiseDocumentClosedEventAsync(Document document)
         {
             var ev = _eventMap.GetEventHandlers<EventHandler<DocumentEventArgs>>(DocumentClosedEventName);
-            if (ev.HasHandlers && document != null)
+            if (ev.HasHandlers && (document != null))
             {
                 return this.ScheduleTask(() =>
                 {
@@ -183,7 +183,7 @@ namespace Microsoft.CodeAnalysis
         protected Task RaiseDocumentActiveContextChangedEventAsync(SourceTextContainer sourceTextContainer, DocumentId oldActiveContextDocumentId, DocumentId newActiveContextDocumentId)
         {
             var ev = _eventMap.GetEventHandlers<EventHandler<DocumentActiveContextChangedEventArgs>>(DocumentActiveContextChangedName);
-            if (ev.HasHandlers && sourceTextContainer != null && oldActiveContextDocumentId != null && newActiveContextDocumentId != null)
+            if (ev.HasHandlers && (sourceTextContainer != null) && (oldActiveContextDocumentId != null) && (newActiveContextDocumentId != null))
             {
                 // Capture the current solution snapshot (inside the _serializationLock of OnDocumentContextUpdated)
                 var currentSolution = this.CurrentSolution;

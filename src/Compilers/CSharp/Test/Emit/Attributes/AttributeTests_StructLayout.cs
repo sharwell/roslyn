@@ -172,7 +172,7 @@ class Structs
                     ushort expectedPack = 0;
                     TypeAttributes expectedKind = TypeAttributes.AutoLayout;
 
-                    if (typeName != "Structs" && typeName != "Classes")
+                    if ((typeName != "Structs") && (typeName != "Classes"))
                     {
                         foreach (var part in typeName.Split('_'))
                         {
@@ -202,7 +202,7 @@ class Structs
                     }
 
                     // unlike Dev10, we don't add ClassLayout if .pack == 0 & .size == 0
-                    Assert.False(expectedPack == 0 && expectedSize == 0, "Either expectedPack or expectedSize should be non-zero");
+                    Assert.False((expectedPack == 0) && (expectedSize == 0), "Either expectedPack or expectedSize should be non-zero");
 
                     Assert.Equal(expectedPack, layout.PackingSize);
                     Assert.Equal(expectedSize, (uint)layout.Size);

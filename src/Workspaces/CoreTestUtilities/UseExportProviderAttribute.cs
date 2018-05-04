@@ -146,7 +146,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
         private MefHostServices CreateMefHostServices(IEnumerable<Assembly> assemblies, bool requestingDefaultAssemblies)
         {
-            if (requestingDefaultAssemblies && ExportProviderCache.ExportProviderForCleanup != null)
+            if (requestingDefaultAssemblies && (ExportProviderCache.ExportProviderForCleanup != null))
             {
                 if (_hostServices == null)
                 {

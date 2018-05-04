@@ -494,7 +494,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
                 else if (sourceType.IsTupleType)
                 {
                     var otherDef = (NamedTypeSymbol)this.Visit(sourceType.TupleUnderlyingType);
-                    if ((object)otherDef == null || !otherDef.IsTupleOrCompatibleWithTupleOfCardinality(sourceType.TupleElementTypes.Length))
+                    if (((object)otherDef == null) || !otherDef.IsTupleOrCompatibleWithTupleOfCardinality(sourceType.TupleElementTypes.Length))
                     {
                         return null;
                     }
@@ -662,7 +662,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
                     foreach (var otherMember in otherMembers)
                     {
                         T other = otherMember as T;
-                        if (other != null && predicate(sourceMember, other))
+                        if ((other != null) && predicate(sourceMember, other))
                         {
                             return other;
                         }
@@ -816,7 +816,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Emit
                 members.AddRange(otherType.GetPropertiesToEmit());
 
                 ImmutableArray<Cci.ITypeDefinitionMember> synthesizedMembers;
-                if (_otherSynthesizedMembersOpt != null && _otherSynthesizedMembersOpt.TryGetValue(otherType, out synthesizedMembers))
+                if ((_otherSynthesizedMembersOpt != null) && _otherSynthesizedMembersOpt.TryGetValue(otherType, out synthesizedMembers))
                 {
                     members.AddRange(synthesizedMembers);
                 }

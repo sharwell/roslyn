@@ -54,19 +54,19 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             string xmlManif;
             Encoding encoding;
             //If unicode (little endian)
-            if (ar[0] == 0xFF && ar[1] == 0xFE)
+            if ((ar[0] == 0xFF) && (ar[1] == 0xFE))
             {
                 encoding = Encoding.Unicode;
                 xmlManif = GetManifestString(mfRsrc, 2, (int)rsrcSize - 2, encoding);
             }
             // if unicode (big endian)
-            else if (ar[0] == 0xFE && ar[1] == 0xFF)
+            else if ((ar[0] == 0xFE) && (ar[1] == 0xFF))
             {
                 encoding = Encoding.BigEndianUnicode;
                 xmlManif = GetManifestString(mfRsrc, 2, (int)rsrcSize - 2, encoding);
             }
             // if UTF-8
-            else if (ar[0] == 0xEF && ar[1] == 0xBB && ar[2] == 0xBF)
+            else if ((ar[0] == 0xEF) && (ar[1] == 0xBB) && (ar[2] == 0xBF))
             {
                 encoding = Encoding.UTF8;
                 xmlManif = GetManifestString(mfRsrc, 3, (int)rsrcSize - 3, encoding);
@@ -111,7 +111,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             {
                 cbuffer[i] = reader.ReadChar();
             }
-            while (cbuffer[i] != '\0' && ++i < cbuffer.Length);
+            while ((cbuffer[i] != '\0') && (++i < cbuffer.Length));
 
             return new string(cbuffer).TrimEnd(new char[] { '\0' });
         }
@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             s = ReadString(reader);    //"12345678"
             reader.BaseStream.Position = (reader.BaseStream.Position + 3) & ~3; //round up to 32bit boundary
 
-            while (reader.BaseStream.Position - startPosition + sizeConsumed < sizeTotalStringFileInfo)
+            while (((reader.BaseStream.Position - startPosition + sizeConsumed)) < sizeTotalStringFileInfo)
             {
                 result.Add(GetVerStringPair(reader));
                 reader.BaseStream.Position = (reader.BaseStream.Position + 3) & ~3; //round up to 32bit boundary

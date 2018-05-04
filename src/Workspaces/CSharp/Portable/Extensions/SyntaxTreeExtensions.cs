@@ -121,9 +121,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             return token.GetAncestors<BaseTypeDeclarationSyntax>().Where(t => BaseTypeDeclarationContainsPosition(t, position));
         }
 
-        private static readonly Func<SyntaxKind, bool> s_isDotOrArrow = k => k == SyntaxKind.DotToken || k == SyntaxKind.MinusGreaterThanToken;
+        private static readonly Func<SyntaxKind, bool> s_isDotOrArrow = k => (k == SyntaxKind.DotToken) || (k == SyntaxKind.MinusGreaterThanToken);
         private static readonly Func<SyntaxKind, bool> s_isDotOrArrowOrColonColon =
-            k => k == SyntaxKind.DotToken || k == SyntaxKind.MinusGreaterThanToken || k == SyntaxKind.ColonColonToken;
+            k => (k == SyntaxKind.DotToken) || (k == SyntaxKind.MinusGreaterThanToken) || (k == SyntaxKind.ColonColonToken);
 
         public static bool IsRightOfDotOrArrowOrColonColon(this SyntaxTree syntaxTree, int position, CancellationToken cancellationToken)
         {
@@ -252,14 +252,14 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
                 if (endsWithNewLine)
                 {
-                    if (position > fullSpan.Start && position < fullSpan.End)
+                    if ((position > fullSpan.Start) && (position < fullSpan.End))
                     {
                         return true;
                     }
                 }
                 else
                 {
-                    if (position > fullSpan.Start && position <= fullSpan.End)
+                    if ((position > fullSpan.Start) && (position <= fullSpan.End))
                     {
                         return true;
                     }
@@ -278,7 +278,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             {
                 var span = trivia.FullSpan;
 
-                if (position > span.Start && position < span.End)
+                if ((position > span.Start) && (position < span.End))
                 {
                     return true;
                 }
@@ -297,8 +297,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 var span = trivia.FullSpan;
 
                 return trivia.IsCompleteMultiLineComment()
-                    ? position > span.Start && position < span.End
-                    : position > span.Start && position <= span.End;
+                    ? (position > span.Start) && (position < span.End)
+                    : (position > span.Start) && (position <= span.End);
             }
 
             return false;
@@ -333,7 +333,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             {
                 var span = trivia.FullSpan;
 
-                if (position > span.Start && position <= span.End)
+                if ((position > span.Start) && (position <= span.End))
                 {
                     return true;
                 }
@@ -359,7 +359,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
             {
                 var span = trivia.FullSpan;
 
-                if (position > span.Start && position <= span.End)
+                if ((position > span.Start) && (position <= span.End))
                 {
                     return true;
                 }
@@ -381,8 +381,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 startLength = 2;
             }
 
-            return position == token.Span.End &&
-                (token.Span.Length == startLength || (token.Span.Length > startLength && token.ToString().Cast<char>().LastOrDefault() != lastChar));
+            return (position == token.Span.End) &&
+                ((token.Span.Length == startLength) || ((token.Span.Length > startLength) && (token.ToString().Cast<char>().LastOrDefault() != lastChar)));
         }
 
         public static bool IsEntirelyWithinStringOrCharLiteral(
@@ -412,13 +412,13 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 // cases:
                 // "|"
                 // "|  (e.g. incomplete string literal)
-                return (position > span.Start && position < span.End)
+                return ((position > span.Start) && (position < span.End))
                     || AtEndOfIncompleteStringOrCharLiteral(token, position, '"');
             }
 
             if (token.IsKind(SyntaxKind.InterpolatedStringStartToken, SyntaxKind.InterpolatedStringTextToken, SyntaxKind.InterpolatedStringEndToken))
             {
-                return token.SpanStart < position && token.Span.End > position;
+                return (token.SpanStart < position) && (token.Span.End > position);
             }
 
             return false;
@@ -445,7 +445,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
                 // cases:
                 // '|'
                 // '|  (e.g. incomplete char literal)
-                return (position > span.Start && position < span.End)
+                return ((position > span.Start) && (position < span.End))
                     || AtEndOfIncompleteStringOrCharLiteral(token, position, '\'');
             }
 
@@ -708,8 +708,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
         {
             var genericName = token.Parent as GenericNameSyntax;
 
-            return genericName != null && genericName.TypeArgumentList != null &&
-                   genericName.TypeArgumentList.LessThanToken == lessThanToken && !genericName.TypeArgumentList.GreaterThanToken.IsMissing;
+            return (genericName != null) && (genericName.TypeArgumentList != null) &&
+                   (genericName.TypeArgumentList.LessThanToken == lessThanToken) && !genericName.TypeArgumentList.GreaterThanToken.IsMissing;
         }
     }
 }

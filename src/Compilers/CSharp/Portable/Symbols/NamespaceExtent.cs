@@ -114,7 +114,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
         public override bool Equals(object obj)
         {
-            return obj is NamespaceExtent && Equals((NamespaceExtent)obj);
+            return (obj is NamespaceExtent) && Equals((NamespaceExtent)obj);
         }
 
         public bool Equals(NamespaceExtent other)

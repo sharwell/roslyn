@@ -147,7 +147,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
         internal void FocusNextElement()
         {
-            FocusElement(_tabNavigableChildren.First(), i => i == _tabNavigableChildren.Count - 1 ? 0 : i + 1);
+            FocusElement(_tabNavigableChildren.First(), i => i == (_tabNavigableChildren.Count - 1) ? 0 : i + 1);
         }
 
         internal void FocusPreviousElement()
@@ -171,7 +171,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         {
             _presentationSource = presentationSource ?? throw new ArgumentNullException(nameof(presentationSource));
 
-            if (Application.Current != null && Application.Current.MainWindow != null)
+            if ((Application.Current != null) && (Application.Current.MainWindow != null))
             {
                 _rootDependencyObject = Application.Current.MainWindow as DependencyObject;
             }
@@ -182,7 +182,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
 
             _rootInputElement = _rootDependencyObject as IInputElement;
 
-            if (_rootDependencyObject != null && _rootInputElement != null)
+            if ((_rootDependencyObject != null) && (_rootInputElement != null))
             {
                 foreach (string accessKey in _renameAccessKeys)
                 {
@@ -282,7 +282,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.InlineRename
         private void PositionDashboard()
         {
             var top = _textView.ViewportTop;
-            if (_findAdornmentLayer != null && _findAdornmentLayer.Elements.Count != 0)
+            if ((_findAdornmentLayer != null) && (_findAdornmentLayer.Elements.Count != 0))
             {
                 var adornment = _findAdornmentLayer.Elements[0].Adornment;
                 top += adornment.RenderSize.Height;
