@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             statementBuilder.Add(rewrittenBody);
             statementBuilder.Add(_factory.HiddenSequencePoint());
 
-            Debug.Assert(statementBuilder.Count == ((numFixedLocals + 1 + 1)));
+            Debug.Assert(statementBuilder.Count == numFixedLocals + 1 + 1);
 
             // In principle, the cleanup code (i.e. nulling out the pinned variables) is always
             // in a finally block.  However, we can optimize finally away (keeping the cleanup

@@ -1054,8 +1054,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 if (((object)type != null) && ((object)operandType != null))
                 {
                     if ((type.SpecialType == SpecialType.System_Object) ||
-                        ((operandType.IsArray() && type.IsArray() &&
-                        (((ArrayTypeSymbol)type).ElementType.SpecialType == SpecialType.System_Object))))
+                        operandType.IsArray() && type.IsArray() &&
+                        (((ArrayTypeSymbol)type).ElementType.SpecialType == SpecialType.System_Object))
                     {
                         var typedConstantKind = operandType.GetAttributeParameterTypedConstantKind(_binder.Compilation);
                         return VisitExpression(operand, typedConstantKind, diagnostics, ref attrHasErrors, curArgumentHasErrors);

@@ -289,7 +289,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ChangeSignature
 
                 var index = SelectedIndex.Value;
                 index = _thisParameter == null ? index : index - 1;
-                if ((index < 0) || (index == (_parameterGroup1.Count - 1)) || (index >= ((_parameterGroup1.Count + _parameterGroup2.Count - 1))))
+                if ((index < 0) || (index == (_parameterGroup1.Count - 1)) || (index >= _parameterGroup1.Count + _parameterGroup2.Count - 1))
                 {
                     return false;
                 }

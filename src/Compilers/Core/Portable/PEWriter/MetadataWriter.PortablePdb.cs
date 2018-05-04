@@ -32,7 +32,7 @@ namespace Microsoft.Cci
             public bool Equals(IImportScope x, IImportScope y)
             {
                 return ((object)x == y) ||
-                       ((((x != null) && (y != null) && Equals(x.Parent, y.Parent) && x.GetUsedNamespaces().SequenceEqual(y.GetUsedNamespaces()))));
+                       (x != null) && (y != null) && Equals(x.Parent, y.Parent) && x.GetUsedNamespaces().SequenceEqual(y.GetUsedNamespaces());
             }
 
             public int GetHashCode(IImportScope obj)

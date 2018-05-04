@@ -993,7 +993,7 @@ namespace Microsoft.CodeAnalysis
         internal static bool SplitNameEqualsFullyQualifiedName(string namespaceName, string typeName, string fullyQualified)
         {
             // Look for "[namespaceName].[typeName]" exactly
-            return (fullyQualified.Length == ((namespaceName.Length + typeName.Length + 1))) &&
+            return (fullyQualified.Length == namespaceName.Length + typeName.Length + 1) &&
                    (fullyQualified[namespaceName.Length] == MetadataHelpers.DotDelimiter) &&
                    fullyQualified.StartsWith(namespaceName, StringComparison.Ordinal) &&
                    fullyQualified.EndsWith(typeName, StringComparison.Ordinal);

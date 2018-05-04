@@ -623,7 +623,7 @@ namespace Microsoft.CodeAnalysis
                     start = n.Position;
                 }
 
-                if (i == ((first + length - 1)))
+                if (i == first + length - 1)
                 {
                     end = n.EndPosition;
                     break;
@@ -648,7 +648,7 @@ namespace Microsoft.CodeAnalysis
                     start = n.Position;
                 }
 
-                if (i == ((first + length - 1)))
+                if (i == first + length - 1)
                 {
                     end = n.EndPosition;
                     break;

@@ -1900,7 +1900,7 @@ done:
 
                     default:
                         if (((node is QueryExpressionSyntax) && (parent is QueryContinuationSyntax)) ||
-                            ((((((((!(node is ExpressionSyntax) &&
+                            !(node is ExpressionSyntax) &&
                             !(node is StatementSyntax) &&
                             !(node is SelectOrGroupClauseSyntax) &&
                             !(node is QueryClauseSyntax) &&
@@ -1908,7 +1908,7 @@ done:
                             !(node is JoinIntoClauseSyntax) &&
                             !(node is QueryContinuationSyntax) &&
                             !(node is ConstructorInitializerSyntax) &&
-                            !(node is ArrowExpressionClauseSyntax))))))))))
+                            !(node is ArrowExpressionClauseSyntax))
                         {
                             return GetBindableSyntaxNode(parent);
                         }

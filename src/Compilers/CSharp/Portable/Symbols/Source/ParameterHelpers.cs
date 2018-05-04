@@ -388,7 +388,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             }
             else if (!conversion.Exists ||
                 conversion.IsUserDefined ||
-                ((conversion.IsIdentity && (parameterType.SpecialType == SpecialType.System_Object) && defaultExpression.Type.IsDynamic())))
+                conversion.IsIdentity && (parameterType.SpecialType == SpecialType.System_Object) && defaultExpression.Type.IsDynamic())
             {
                 // If we had no implicit conversion, or a user-defined conversion, report an error.
                 //
@@ -401,10 +401,10 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
 
                 hasErrors = true;
             }
-            else if ((((conversion.IsReference &&
+            else if (conversion.IsReference &&
                 ((parameterType.SpecialType == SpecialType.System_Object) || (parameterType.Kind == SymbolKind.DynamicType)) &&
                 ((object)defaultExpression.Type != null) &&
-                (defaultExpression.Type.SpecialType == SpecialType.System_String)))) ||
+                (defaultExpression.Type.SpecialType == SpecialType.System_String) ||
                 conversion.IsBoxing)
             {
                 // We don't allow object x = "hello", object x = 123, dynamic x = "hello", etc.

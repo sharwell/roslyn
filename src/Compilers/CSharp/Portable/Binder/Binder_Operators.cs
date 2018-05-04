@@ -607,8 +607,8 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                 bool isNullableEquality = ((object)signature.Method == null) &&
                     ((signature.Kind.Operator() == BinaryOperatorKind.Equal) || (signature.Kind.Operator() == BinaryOperatorKind.NotEqual)) &&
-                    (((leftNull && ((object)rightType != null) && rightType.IsNullableType())) ||
-                        ((rightNull && ((object)leftType != null) && leftType.IsNullableType())));
+                    (leftNull && ((object)rightType != null) && rightType.IsNullableType() ||
+                        rightNull && ((object)leftType != null) && leftType.IsNullableType());
 
                 if (isNullableEquality)
                 {

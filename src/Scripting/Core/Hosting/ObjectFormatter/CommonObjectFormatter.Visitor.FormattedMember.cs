@@ -39,7 +39,7 @@ namespace Microsoft.CodeAnalysis.Scripting.Hosting
 
                 public string GetDisplayName()
                 {
-                    return Name ?? (("[" + Index.ToString() + "]"));
+                    return Name ?? ("[" + Index.ToString() + "]");
                 }
 
                 public bool HasKeyName()

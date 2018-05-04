@@ -1395,7 +1395,7 @@ namespace Microsoft.Cci
             // of the helpers (esp IsTooLongInternal) in a way that allows us to forego
             // string concatenation (unless a diagnostic is actually reported).
 
-            if (((namespaceName.Length + 1 + mangledTypeName.Length)) > (NameLengthLimit / 3))
+            if (namespaceName.Length + 1 + mangledTypeName.Length > (NameLengthLimit / 3))
             {
                 int utf8Length =
                     s_utf8Encoding.GetByteCount(namespaceName) +

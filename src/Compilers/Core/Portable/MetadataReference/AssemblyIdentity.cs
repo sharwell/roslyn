@@ -245,14 +245,14 @@ namespace Microsoft.CodeAnalysis
         private static bool IsValid(Version value)
         {
             return (value == null)
-                || ((((((((value.Major >= 0)
+                || (value.Major >= 0)
                 && (value.Minor >= 0)
                 && (value.Build >= 0)
                 && (value.Revision >= 0)
                 && (value.Major <= ushort.MaxValue)
                 && (value.Minor <= ushort.MaxValue)
                 && (value.Build <= ushort.MaxValue)
-                && (value.Revision <= ushort.MaxValue))))))));
+                && (value.Revision <= ushort.MaxValue);
         }
 
         private static bool IsValid(AssemblyContentType value)

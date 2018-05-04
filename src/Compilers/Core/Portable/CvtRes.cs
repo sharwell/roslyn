@@ -753,7 +753,7 @@ namespace Microsoft.CodeAnalysis
 
             internal int GetDataSize()
             {
-                int sizeEXEVERRESOURCE = ((sizeof(WORD) * 3 * 5)) + (2 * sizeof(WORD)) + //five headers + two words for CP and lang
+                int sizeEXEVERRESOURCE = sizeof(WORD) * 3 * 5 + (2 * sizeof(WORD)) + //five headers + two words for CP and lang
                     KEYBYTES(vsVersionInfoKey) +
                     KEYBYTES(varFileInfoKey) +
                     KEYBYTES(translationKey) +

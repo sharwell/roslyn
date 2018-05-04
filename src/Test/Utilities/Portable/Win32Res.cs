@@ -145,7 +145,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
             s = ReadString(reader);    //"12345678"
             reader.BaseStream.Position = (reader.BaseStream.Position + 3) & ~3; //round up to 32bit boundary
 
-            while (((reader.BaseStream.Position - startPosition + sizeConsumed)) < sizeTotalStringFileInfo)
+            while (reader.BaseStream.Position - startPosition + sizeConsumed < sizeTotalStringFileInfo)
             {
                 result.Add(GetVerStringPair(reader));
                 reader.BaseStream.Position = (reader.BaseStream.Position + 3) & ~3; //round up to 32bit boundary

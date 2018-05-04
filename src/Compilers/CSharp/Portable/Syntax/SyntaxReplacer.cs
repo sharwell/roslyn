@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
             {
                 get
                 {
-                    return ((_nodeSet.Count + _tokenSet.Count + _triviaSet.Count)) > 0;
+                    return _nodeSet.Count + _tokenSet.Count + _triviaSet.Count > 0;
                 }
             }
 

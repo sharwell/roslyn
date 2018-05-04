@@ -700,7 +700,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             //   ret
             //
             // Do not emit this pattern if the method doesn't include user code or doesn't have a block body.
-            return (((_ilEmitStyle == ILEmitStyle.Debug) && _method.GenerateDebugInfo && (_methodBodySyntaxOpt?.IsKind(SyntaxKind.Block) == true))) ||
+            return (_ilEmitStyle == ILEmitStyle.Debug) && _method.GenerateDebugInfo && (_methodBodySyntaxOpt?.IsKind(SyntaxKind.Block) == true) ||
                    _builder.InExceptionHandler;
         }
 

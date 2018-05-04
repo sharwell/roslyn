@@ -47,7 +47,7 @@ namespace Roslyn.Utilities
                 // We avoid expanding the array until the number of new items added exceeds half of its capacity.
                 Shrink(firstDead, alive);
             }
-            else if (alive >= ((3 * _items.Length / 4)))
+            else if (alive >= 3 * _items.Length / 4)
             {
                 // If we have a lot of items alive we expand the array since just compacting them 
                 // wouldn't free up much space (we would end up calling Resize again after adding a few more items).
@@ -72,7 +72,7 @@ namespace Roslyn.Utilities
                 Compact(firstDead, _items);
             }
 
-            Debug.Assert((_items.Length > 0) && (_size < ((3 * _items.Length / 4))), "length: " + _items.Length + " size: " + _size);
+            Debug.Assert((_items.Length > 0) && (_size < 3 * _items.Length / 4), "length: " + _items.Length + " size: " + _size);
         }
 
         private void Shrink(int firstDead, int alive)

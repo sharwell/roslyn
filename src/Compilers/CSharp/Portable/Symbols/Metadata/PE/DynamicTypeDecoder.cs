@@ -138,7 +138,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
             Debug.Assert(_index >= 0);
 
             if (!HasFlag ||
-                ((PeekFlag() && (type.SpecialType != SpecialType.System_Object) && !type.IsDynamic())))
+                PeekFlag() && (type.SpecialType != SpecialType.System_Object) && !type.IsDynamic())
             {
                 // Bail, since flags are invalid.
                 return null;

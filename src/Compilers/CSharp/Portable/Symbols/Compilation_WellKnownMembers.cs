@@ -311,7 +311,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                             }
 
                             if ((method.Arity != descriptor.Arity) || (methodKind != targetMethodKind) ||
-                                (((descriptor.Flags & MemberFlags.Virtual) != 0 != (method.IsVirtual || method.IsOverride || method.IsAbstract))))
+                                (descriptor.Flags & MemberFlags.Virtual) != 0 != (method.IsVirtual || method.IsOverride || method.IsAbstract))
                             {
                                 continue;
                             }

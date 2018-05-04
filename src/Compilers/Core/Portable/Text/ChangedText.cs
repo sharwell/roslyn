@@ -274,7 +274,7 @@ namespace Microsoft.CodeAnalysis.Text
                         newIndex++;
                         goto nextNewChange;
                     }
-                    else if (newChange.Span.Start > ((oldChange.Span.Start + oldDelta + oldChange.NewLength)))
+                    else if (newChange.Span.Start > oldChange.Span.Start + oldDelta + oldChange.NewLength)
                     {
                         // new change occurs entirely after old change
                         AddRange(list, oldChange);
