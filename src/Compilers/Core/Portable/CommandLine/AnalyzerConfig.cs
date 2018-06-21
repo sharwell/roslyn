@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Text.RegularExpressions;
 using Roslyn.Utilities;
 
@@ -14,7 +13,7 @@ namespace Microsoft.CodeAnalysis
     /// <summary>
     /// Represents a single EditorConfig file, see http://editorconfig.org for details about the format.
     /// </summary>
-    internal sealed partial class EditorConfig
+    public sealed partial class AnalyzerConfig
     {
         // Matches EditorConfig section header such as "[*.{js,py}]", see http://editorconfig.org for details
         private static readonly Regex s_sectionMatcher = new Regex(@"^\s*\[(([^#;]|\\#|\\;)+)\]\s*([#;].*)?$", RegexOptions.Compiled);
@@ -59,13 +58,13 @@ namespace Microsoft.CodeAnalysis
         public string NormalizedDirectory { get; }
 
         /// <summary>
-        /// The path passed to <see cref="EditorConfig.Parse(string, string)"/> during construction.
+        /// The path passed to <see cref="AnalyzerConfig.Parse(string, string)"/> during construction.
         /// </summary>
         public string PathToFile { get; }
 
         public ImmutableArray<Section> NamedSections { get; }
 
-        private EditorConfig(
+        private AnalyzerConfig(
             Section globalSection,
             ImmutableArray<Section> namedSections,
             string pathToFile)
@@ -90,7 +89,7 @@ namespace Microsoft.CodeAnalysis
         /// Parses an editor config file text located at the given path. No parsing
         /// errors are reported. If any line contains a parse error, it is dropped.
         /// </summary>
-        public static EditorConfig Parse(string text, string pathToFile)
+        public static AnalyzerConfig Parse(string text, string pathToFile)
         {
             if (!Path.IsPathRooted(pathToFile) || string.IsNullOrEmpty(Path.GetFileName(pathToFile)))
             {
@@ -183,7 +182,7 @@ namespace Microsoft.CodeAnalysis
                 namedSectionBuilder.Add(lastSection);
             }
 
-            return new EditorConfig(globalSection, namedSectionBuilder.ToImmutable(), pathToFile);
+            return new AnalyzerConfig(globalSection, namedSectionBuilder.ToImmutable(), pathToFile);
         }
 
         private static bool IsComment(string line)
@@ -204,7 +203,7 @@ namespace Microsoft.CodeAnalysis
         /// Represents a named section of the editorconfig file, which consists of a name followed by a set
         /// of key-value pairs.
         /// </summary>
-        internal sealed class Section
+        public sealed class Section
         {
             /// <summary>
             /// Used to compare <see cref="Name"/>s of sections. Specified by editorconfig to
@@ -232,8 +231,8 @@ namespace Microsoft.CodeAnalysis
             /// <summary>
             /// Keys and values for this section. All keys are lower-cased according to the
             /// EditorConfig specification and keys are compared case-insensitively. Values are
-            /// lower-cased if the value appears in <see cref="EditorConfig.ReservedValues" />
-            /// or if the corresponding key is in <see cref="EditorConfig.ReservedKeys" />. Otherwise,
+            /// lower-cased if the value appears in <see cref="AnalyzerConfig.ReservedValues" />
+            /// or if the corresponding key is in <see cref="AnalyzerConfig.ReservedKeys" />. Otherwise,
             /// the values are the literal values present in the source.
             /// </summary>
             public ImmutableDictionary<string, string> Properties { get; }

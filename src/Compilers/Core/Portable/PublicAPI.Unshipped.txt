@@ -1,3 +1,14 @@
+Microsoft.CodeAnalysis.AnalyzerConfig
+Microsoft.CodeAnalysis.AnalyzerConfig.GlobalSection.get -> Microsoft.CodeAnalysis.AnalyzerConfig.Section
+Microsoft.CodeAnalysis.AnalyzerConfig.IsRoot.get -> bool
+Microsoft.CodeAnalysis.AnalyzerConfig.NamedSections.get -> System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.AnalyzerConfig.Section>
+Microsoft.CodeAnalysis.AnalyzerConfig.NormalizedDirectory.get -> string
+Microsoft.CodeAnalysis.AnalyzerConfig.PathToFile.get -> string
+Microsoft.CodeAnalysis.AnalyzerConfig.Section
+Microsoft.CodeAnalysis.AnalyzerConfig.Section.Name.get -> string
+Microsoft.CodeAnalysis.AnalyzerConfig.Section.Properties.get -> System.Collections.Immutable.ImmutableDictionary<string, string>
+Microsoft.CodeAnalysis.AnalyzerConfig.Section.Section(string name, System.Collections.Immutable.ImmutableDictionary<string, string> properties) -> void
+Microsoft.CodeAnalysis.CommandLineParser.GetAnalyzerConfigOptions(System.Collections.Generic.IReadOnlyList<string> sourcePaths, System.Collections.Generic.IReadOnlyList<Microsoft.CodeAnalysis.AnalyzerConfig> analyzerConfigs, out System.Collections.Immutable.ImmutableArray<Microsoft.CodeAnalysis.Diagnostic> diagnostics) -> System.Collections.Immutable.ImmutableArray<(System.Collections.Immutable.ImmutableDictionary<string, Microsoft.CodeAnalysis.ReportDiagnostic> treeOptions, Microsoft.CodeAnalysis.Options.OptionSet analyzerOptions)>
 abstract Microsoft.CodeAnalysis.Compilation.ClassifyCommonConversion(Microsoft.CodeAnalysis.ITypeSymbol source, Microsoft.CodeAnalysis.ITypeSymbol destination) -> Microsoft.CodeAnalysis.Operations.CommonConversion
 abstract Microsoft.CodeAnalysis.Compilation.ContainsSymbolsWithName(string name, Microsoft.CodeAnalysis.SymbolFilter filter = Microsoft.CodeAnalysis.SymbolFilter.TypeAndMember, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> bool
 abstract Microsoft.CodeAnalysis.Compilation.GetSymbolsWithName(string name, Microsoft.CodeAnalysis.SymbolFilter filter = Microsoft.CodeAnalysis.SymbolFilter.TypeAndMember, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) -> System.Collections.Generic.IEnumerable<Microsoft.CodeAnalysis.ISymbol>
@@ -54,6 +65,11 @@ override Microsoft.CodeAnalysis.Options.Option<T>.ToString() -> string
 override Microsoft.CodeAnalysis.Options.OptionKey.Equals(object obj) -> bool
 override Microsoft.CodeAnalysis.Options.OptionKey.GetHashCode() -> int
 override Microsoft.CodeAnalysis.Options.PerLanguageOption<T>.ToString() -> string
+static Microsoft.CodeAnalysis.AnalyzerConfig.Parse(string text, string pathToFile) -> Microsoft.CodeAnalysis.AnalyzerConfig
+static Microsoft.CodeAnalysis.AnalyzerConfig.ReservedKeys.get -> System.Collections.Immutable.ImmutableHashSet<string>
+static Microsoft.CodeAnalysis.AnalyzerConfig.ReservedValues.get -> System.Collections.Immutable.ImmutableHashSet<string>
+static Microsoft.CodeAnalysis.AnalyzerConfig.Section.NameComparer.get -> System.StringComparison
+static Microsoft.CodeAnalysis.AnalyzerConfig.Section.PropertiesKeyComparer.get -> System.Collections.Generic.IEqualityComparer<string>
 static Microsoft.CodeAnalysis.Options.Option<T>.implicit operator Microsoft.CodeAnalysis.Options.OptionKey(Microsoft.CodeAnalysis.Options.Option<T> option) -> Microsoft.CodeAnalysis.Options.OptionKey
 static Microsoft.CodeAnalysis.Options.OptionKey.operator !=(Microsoft.CodeAnalysis.Options.OptionKey left, Microsoft.CodeAnalysis.Options.OptionKey right) -> bool
 static Microsoft.CodeAnalysis.Options.OptionKey.operator ==(Microsoft.CodeAnalysis.Options.OptionKey left, Microsoft.CodeAnalysis.Options.OptionKey right) -> bool

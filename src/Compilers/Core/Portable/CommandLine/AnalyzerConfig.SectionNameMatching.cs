@@ -8,14 +8,14 @@ using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis
 {
-    internal sealed partial class EditorConfig
+    public sealed partial class AnalyzerConfig
     {
         /// <summary>
         /// Takes a <see cref="Section.Name"/> and compiles the file glob
         /// inside to a regex which recognizes the given language. Returns
         /// null if the section name is invalid.
         /// </summary>
-        public static string TryCompileSectionNameToRegEx(string sectionName)
+        internal static string TryCompileSectionNameToRegEx(string sectionName)
         {
             // An editorconfig section name is a language for recognizing file paths
             // defined by the following grammar:

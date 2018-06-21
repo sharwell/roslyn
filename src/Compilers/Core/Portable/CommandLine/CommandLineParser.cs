@@ -8,9 +8,11 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Utilities;
+using TreeDiagnosticOptions = System.Collections.Immutable.ImmutableDictionary<string, Microsoft.CodeAnalysis.ReportDiagnostic>;
 
 namespace Microsoft.CodeAnalysis
 {
@@ -41,6 +43,52 @@ namespace Microsoft.CodeAnalysis
             return new StreamReader(
                 new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read),
                                detectEncodingFromByteOrderMarks: true);
+        }
+
+        /// <summary>
+        /// Takes a list of paths to source files and a list of AnalyzeConfigs and produces a
+        /// resultant dictionary of diagnostic configurations for each of the source paths.
+        /// Source paths are matched by checking if they are members of the language recognized by
+        /// <see cref="AnalyzerConfig.Section.Name"/>s.
+        /// </summary>
+        /// <param name="sourcePaths">
+        /// Absolute, normalized paths to source files. These paths are expected to be normalized
+        /// using the same mechanism used to normalize the path passed to the path paramater of 
+        /// <see cref="AnalyzerConfig.Parse(string, string)"/>. Source files will only be considered
+        /// applicable for a given <see cref="AnalyzerConfig"/> if the config path is an ordinal
+        /// prefix of the source path.
+        /// </param>
+        /// <param name="analyzerConfigs">
+        /// Parsed AnalyzerConfig files. The <see cref="AnalyzerConfig.NormalizedDirectory"/>
+        /// must be an ordinal prefix of a source file path to be considered applicable.
+        /// </param>
+        /// <param name="diagnostics">Any produced diagnostics.</param>
+        /// <returns>
+        /// A list of diagnostic and analyzer options, where the dictionary index corresponds
+        /// to the options for the source path at the same index. If there are
+        /// no options for the given path, the entry is null. Otherwise, the diagnostic
+        /// options are a map from diagnostic ID to diagnostic severity, and
+        /// correspond to options provided for <see cref="SyntaxTree.DiagnosticOptions"/>.
+        /// The analyzerOptions are an OptionSet consisting of all properties that were not
+        /// diagnostic options.
+        /// </returns>
+        public ImmutableArray<(TreeDiagnosticOptions treeOptions, OptionSet analyzerOptions)> GetAnalyzerConfigOptions(
+            IReadOnlyList<string> sourcePaths,
+            IReadOnlyList<AnalyzerConfig> analyzerConfigs,
+            out ImmutableArray<Diagnostic> diagnostics)
+        {
+            var analyzerConfigsBuilder = ArrayBuilder<AnalyzerConfig>.GetInstance(analyzerConfigs.Count);
+            analyzerConfigsBuilder.AddRange(analyzerConfigs);
+
+            var bag = DiagnosticBag.GetInstance();
+            var options = CommonCompiler.GetAnalyzerConfigOptions(
+                sourcePaths,
+                analyzerConfigsBuilder,
+                MessageProvider,
+                bag);
+            diagnostics = bag.ToReadOnlyAndFree();
+
+            return options;
         }
 
         /// <summary>
