@@ -19,12 +19,10 @@ using System.Security.Cryptography;
 using Microsoft.CodeAnalysis.PooledObjects;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis.Options;
+using TreeDiagnosticOptions = System.Collections.Immutable.ImmutableDictionary<string, Microsoft.CodeAnalysis.ReportDiagnostic>;
 
 namespace Microsoft.CodeAnalysis
 {
-    using TreeDiagnosticOptions = ImmutableDictionary<string, ReportDiagnostic>;
-    using AnalyzerDiagnosticOptions = OptionSet;
-
     internal struct BuildPaths
     {
         /// <summary>
@@ -281,11 +279,11 @@ namespace Microsoft.CodeAnalysis
         /// The analyzerOptions are an OptionSet consisting of all properties that were not
         /// diagnostic options.
         /// </returns>
-        internal static ImmutableArray<(TreeDiagnosticOptions treeOptions, AnalyzerDiagnosticOptions analyzerOptions)>
-            GetAnalyzerConfigOptions(IReadOnlyList<string> sourcePaths,
-                                     ArrayBuilder<AnalyzerConfig> analyzerConfigs,
-                                     CommonMessageProvider messageProvider,
-                                     DiagnosticBag diagnostics)
+        internal static ImmutableArray<(TreeDiagnosticOptions treeOptions, OptionSet analyzerOptions)> GetAnalyzerConfigOptions(
+            IReadOnlyList<string> sourcePaths,
+            ArrayBuilder<AnalyzerConfig> analyzerConfigs,
+            CommonMessageProvider messageProvider,
+            DiagnosticBag diagnostics)
         {
             // Sort editorconfig paths from shortest to longest.
             // Since paths are compared as ordinal string comparisons, the least nested
@@ -293,8 +291,7 @@ namespace Microsoft.CodeAnalysis
             analyzerConfigs.Sort(Comparer<AnalyzerConfig>.Create(
                 (e1, e2) => e1.NormalizedDirectory.Length.CompareTo(e2.NormalizedDirectory.Length)));
 
-            var allDiagnosticOptions =
-                ArrayBuilder<(TreeDiagnosticOptions, AnalyzerDiagnosticOptions)>.GetInstance(sourcePaths.Count);
+            var allDiagnosticOptions = ArrayBuilder<(TreeDiagnosticOptions, OptionSet)>.GetInstance(sourcePaths.Count);
 
             var allRegexes = PooledDictionary<AnalyzerConfig, ImmutableArray<Regex>>.GetInstance();
             foreach (var config in analyzerConfigs)
@@ -319,7 +316,7 @@ namespace Microsoft.CodeAnalysis
                 CaseInsensitiveComparison.Comparer);
             foreach (var sourceFile in sourcePaths)
             {
-                AnalyzerDiagnosticOptions analyzerOptions = null;
+                OptionSet analyzerOptions = null;
 
                 var normalizedPath = PathWithForwardSlashSeparators(sourceFile);
                 // The editorconfig paths are sorted from shortest to longest, so matches
@@ -365,7 +362,7 @@ namespace Microsoft.CodeAnalysis
             void addOptions(
                 AnalyzerConfig.Section section,
                 TreeDiagnosticOptions.Builder treeBuilder,
-                ref AnalyzerDiagnosticOptions analyzerOptionSet,
+                ref OptionSet analyzerOptionSet,
                 string analyzerConfigPath)
             {
                 const string DiagnosticOptionPrefix = "dotnet_diagnostic.";
@@ -434,15 +431,13 @@ namespace Microsoft.CodeAnalysis
             }
         }
 
-        public ImmutableArray<
-            (TreeDiagnosticOptions treeOptions,
-             AnalyzerDiagnosticOptions analyzerOptions)>
-            ProcessAnalyzerConfigFiles(ImmutableArray<string> analyzerConfigPaths,
-                                       ImmutableArray<CommandLineSourceFile> sourceFiles,
-                                       ref bool hadErrors,
-                                       DiagnosticBag diagnostics)
+        internal ImmutableArray<(TreeDiagnosticOptions treeOptions, OptionSet analyzerOptions)> ProcessAnalyzerConfigFiles(
+            ImmutableArray<string> analyzerConfigPaths,
+            ImmutableArray<CommandLineSourceFile> sourceFiles,
+            ref bool hadErrors,
+            DiagnosticBag diagnostics)
         {
-            var analyzerConfigs = ArrayBuilder<AnalyzerConfig>.GetInstance();
+            var analyzerConfigs = ArrayBuilder<AnalyzerConfig>.GetInstance(analyzerConfigPaths.Length);
 
             readEditorConfigFiles(analyzerConfigPaths, analyzerConfigs, diagnostics);
 
@@ -454,7 +449,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             var sourcePaths = sourceFiles.SelectAsArray(file => file.Path);
-            ImmutableArray<(TreeDiagnosticOptions, AnalyzerDiagnosticOptions)> diagnosticOptions =
+            ImmutableArray<(TreeDiagnosticOptions, OptionSet)> diagnosticOptions =
                 GetAnalyzerConfigOptions(sourcePaths, analyzerConfigs, MessageProvider, diagnostics);
 
             analyzerConfigs.Free();
