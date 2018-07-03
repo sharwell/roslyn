@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis.Options;
 using Roslyn.Utilities;
 
@@ -44,6 +45,11 @@ namespace Microsoft.CodeAnalysis.Diagnostics
             public IEnumerator<KeyValuePair<Option<string>, string>> GetEnumerator() => _options.GetEnumerator();
 
             IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+            public override IEnumerable<OptionKey> GetChangedOptions(OptionSet optionSet)
+            {
+                return _options.Keys.Select(option => new OptionKey(option));
+            }
 
             internal class CompilerOptionSetKeyComparer : IEqualityComparer<Option<string>>
             {

@@ -15,10 +15,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Options
 
         public static void Log(OptionSet oldOptions, OptionSet newOptions)
         {
-            if (!(newOptions is IInternalOptionSet internalNewOptions))
-                throw new NotSupportedException();
-
-            foreach (var optionKey in internalNewOptions.GetChangedOptions(oldOptions))
+            foreach (var optionKey in newOptions.GetChangedOptions(oldOptions))
             {
                 var oldValue = oldOptions.GetOption(optionKey);
                 var currentValue = newOptions.GetOption(optionKey);
