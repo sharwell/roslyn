@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.SolutionCrawler;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TaskStatusCenter;
 using Roslyn.Utilities;
@@ -12,7 +14,9 @@ using Roslyn.Utilities;
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
 {
     [Export(typeof(DiagnosticProgressReporter))]
-    internal sealed class DiagnosticProgressReporter
+    [PreloadServices(typeof(SVsTaskStatusCenterService))]
+    [Shared]
+    internal sealed class DiagnosticProgressReporter : IPreloadService
     {
         private static readonly TimeSpan s_minimumInterval = TimeSpan.FromMilliseconds(200);
 
@@ -30,6 +34,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Diagnostics
         private volatile ITaskHandler _taskHandler;
 
         [ImportingConstructor]
+        [Obsolete(MefConstruction.ImportingConstructorMessage, error: true)]
         public DiagnosticProgressReporter(
             SVsServiceProvider serviceProvider,
             IDiagnosticService diagnosticService,

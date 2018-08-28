@@ -1,20 +1,25 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.ComponentModel.Composition;
-using Microsoft.CodeAnalysis;
+using System;
+using System.Composition;
 using Microsoft.CodeAnalysis.Editor;
+using Microsoft.CodeAnalysis.Host.Mef;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation
 {
     [Export(typeof(VisualStudioMetadataAsSourceFileSupportService))]
-    internal sealed class VisualStudioMetadataAsSourceFileSupportService : IVsSolutionEvents
+    [PreloadServices(typeof(SVsSolution))]
+    [Shared]
+    internal sealed class VisualStudioMetadataAsSourceFileSupportService : IVsSolutionEvents, IPreloadService
     {
         private readonly IMetadataAsSourceFileService _metadataAsSourceFileService;
         private uint _eventCookie;
 
         [ImportingConstructor]
+        [Obsolete(MefConstruction.ImportingConstructorMessage, error: true)]
         public VisualStudioMetadataAsSourceFileSupportService(SVsServiceProvider serviceProvider, IMetadataAsSourceFileService metadataAsSourceFileService)
         {
             _metadataAsSourceFileService = metadataAsSourceFileService;

@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Packaging;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.SymbolSearch;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
 using Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem;
 using Microsoft.VisualStudio.Settings;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -29,8 +30,10 @@ namespace Microsoft.VisualStudio.LanguageServices.SymbolSearch
     /// This implementation also spawns a task which will attempt to keep that database up to
     /// date by downloading patches on a daily basis.
     /// </summary>
-    [ExportWorkspaceService(typeof(ISymbolSearchService), ServiceLayer.Host), Shared]
-    internal partial class VisualStudioSymbolSearchService : AbstractDelayStartedService, ISymbolSearchService
+    [ExportWorkspaceService(typeof(ISymbolSearchService), ServiceLayer.Host)]
+    [PreloadServices(typeof(SVsActivityLog))]
+    [Shared]
+    internal partial class VisualStudioSymbolSearchService : AbstractDelayStartedService, ISymbolSearchService, IPreloadService
     {
         private readonly SemaphoreSlim _gate = new SemaphoreSlim(initialCount: 1);
         private ISymbolSearchUpdateEngine _updateEngine;

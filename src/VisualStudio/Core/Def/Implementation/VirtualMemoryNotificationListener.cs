@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Shared.Options;
 using Microsoft.VisualStudio.LanguageServices.Implementation;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
 using Microsoft.VisualStudio.LanguageServices.Implementation.Utilities;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -22,8 +23,10 @@ namespace Microsoft.VisualStudio.LanguageServices
     /// Listens to broadcast notifications from the Visual Studio Shell indicating that the application is running
     /// low on available virtual memory.
     /// </summary>
-    [Export, Shared]
-    internal sealed class VirtualMemoryNotificationListener : ForegroundThreadAffinitizedObject, IVsBroadcastMessageEvents
+    [Export]
+    [PreloadServices(typeof(SVsShell))]
+    [Shared]
+    internal sealed class VirtualMemoryNotificationListener : ForegroundThreadAffinitizedObject, IVsBroadcastMessageEvents, IPreloadService
     {
         // memory threshold to turn off full solution analysis - 200MB
         private const long MemoryThreshold = 200 * 1024 * 1024;

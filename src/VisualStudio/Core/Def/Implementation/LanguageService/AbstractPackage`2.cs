@@ -95,12 +95,12 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
                 Workspace.AdviseSolutionEvents(solution);
             }
 
-            LoadComponentsInUIContextOnceSolutionFullyLoaded(cancellationToken);
+            _ = LoadComponentsInUIContextOnceSolutionFullyLoadedAsync(cancellationToken);
         }
 
-        protected override void LoadComponentsInUIContext(CancellationToken cancellationToken)
+        protected override async Task LoadComponentsAsync(CancellationToken cancellationToken)
         {
-            ForegroundObject.AssertIsForeground();
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
             // Ensure the nuget package services are initialized after we've loaded
             // the solution.

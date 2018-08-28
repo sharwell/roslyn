@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Scripting;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Editor;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.Text;
@@ -25,7 +26,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem
     using Workspace = Microsoft.CodeAnalysis.Workspace;
 
     [Export(typeof(MiscellaneousFilesWorkspace))]
-    internal sealed partial class MiscellaneousFilesWorkspace : Workspace, IVsRunningDocTableEvents2
+    [PreloadServices(typeof(SVsRunningDocumentTable), typeof(SVsTextManager))]
+    [Shared]
+    internal sealed partial class MiscellaneousFilesWorkspace : Workspace, IVsRunningDocTableEvents2, IPreloadService
     {
         private readonly IVsEditorAdaptersFactoryService _editorAdaptersFactoryService;
         private readonly IMetadataAsSourceFileService _fileTrackingMetadataAsSourceService;

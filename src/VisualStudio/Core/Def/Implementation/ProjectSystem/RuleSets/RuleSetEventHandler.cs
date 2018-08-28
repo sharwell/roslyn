@@ -2,11 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.CodeAnalysis.Host.Mef;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Roslyn.Utilities;
@@ -15,15 +14,17 @@ using VSLangProj;
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.ProjectSystem.RuleSets
 {
     [Export(typeof(RuleSetEventHandler))]
-    internal sealed class RuleSetEventHandler : IVsTrackProjectDocumentsEvents2, IVsTrackProjectDocumentsEvents3, IVsTrackProjectDocumentsEvents4
+    [PreloadServices(typeof(SVsTrackProjectDocuments))]
+    [Shared]
+    internal sealed class RuleSetEventHandler : IVsTrackProjectDocumentsEvents2, IVsTrackProjectDocumentsEvents3, IVsTrackProjectDocumentsEvents4, IPreloadService
     {
         private readonly IServiceProvider _serviceProvider;
         private bool _eventsHookedUp = false;
         private uint _cookie = 0;
 
         [ImportingConstructor]
-        public RuleSetEventHandler(
-            [Import(typeof(SVsServiceProvider))]IServiceProvider serviceProvider)
+        [Obsolete(MefConstruction.ImportingConstructorMessage, error: true)]
+        public RuleSetEventHandler(SVsServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
         }

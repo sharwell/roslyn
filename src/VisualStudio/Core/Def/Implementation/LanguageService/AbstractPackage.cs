@@ -27,36 +27,33 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService
             ForegroundObject = new ForegroundThreadAffinitizedObject(componentModel.GetService<IThreadingContext>());
         }
 
-        protected void LoadComponentsInUIContextOnceSolutionFullyLoaded(CancellationToken cancellationToken)
+        protected async Task LoadComponentsInUIContextOnceSolutionFullyLoadedAsync(CancellationToken cancellationToken)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+            await KnownUIContexts.SolutionExistsAndFullyLoadedContext;
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-            if (KnownUIContexts.SolutionExistsAndFullyLoadedContext.IsActive)
+            var componentModel = (IComponentModel)await GetServiceAsync(typeof(SComponentModel));
+            Assumes.Present(componentModel);
+
+            // Make sure the service dependencies are loaded, then preload services that require construction on the
+            // main thread.
+            var preloadServices = componentModel.DefaultExportProvider.GetExports<IPreloadService, PreloadServiceMetadata>();
+            foreach (var preloadService in preloadServices)
             {
-                // if we are already in the right UI context, load it right away
-                LoadComponentsInUIContext(cancellationToken);
+                foreach (var serviceType in preloadService.Metadata.PreloadedServices)
+                {
+                    await GetServiceAsync(serviceType);
+                }
             }
-            else
+
+            foreach (var preloadService in preloadServices)
             {
-                // load them when it is a right context.
-                KnownUIContexts.SolutionExistsAndFullyLoadedContext.UIContextChanged += OnSolutionExistsAndFullyLoadedContext;
+                _ = preloadService.Value;
             }
+
+            await LoadComponentsAsync(cancellationToken);
         }
 
-        private void OnSolutionExistsAndFullyLoadedContext(object sender, UIContextChangedEventArgs e)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            if (e.Activated)
-            {
-                // unsubscribe from it
-                KnownUIContexts.SolutionExistsAndFullyLoadedContext.UIContextChanged -= OnSolutionExistsAndFullyLoadedContext;
-
-                // load components
-                LoadComponentsInUIContext(CancellationToken.None);
-            }
-        }
-
-        protected abstract void LoadComponentsInUIContext(CancellationToken cancellationToken);
+        protected abstract Task LoadComponentsAsync(CancellationToken cancellationToken);
     }
 }

@@ -1,20 +1,25 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
-using System.ComponentModel.Composition;
+using System.Composition;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio.LanguageServices.Implementation.Suppression;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
+using Microsoft.CodeAnalysis.Host.Mef;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
     [Export(typeof(VisualStudioDiagnosticListTableCommandHandler))]
-    internal partial class VisualStudioDiagnosticListTableCommandHandler
+    [PreloadServices]
+    [Shared]
+    internal partial class VisualStudioDiagnosticListTableCommandHandler : IPreloadService
     {
         private readonly VisualStudioSuppressionFixService _suppressionFixService;
         private readonly VisualStudioDiagnosticListSuppressionStateService _suppressionStateService;
 
         [ImportingConstructor]
+        [Obsolete(MefConstruction.ImportingConstructorMessage, error: true)]
         public VisualStudioDiagnosticListTableCommandHandler(
             IVisualStudioSuppressionFixService suppressionFixService,
             IVisualStudioDiagnosticListSuppressionStateService suppressionStateService)

@@ -77,7 +77,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Setup
             InitializeColors();
 
             // load some services that have to be loaded in UI thread
-            LoadComponentsInUIContextOnceSolutionFullyLoaded(cancellationToken);
+            _ = LoadComponentsInUIContextOnceSolutionFullyLoadedAsync(cancellationToken);
 
             _solutionEventMonitor = new SolutionEventMonitor(_workspace);
         }
@@ -93,21 +93,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Setup
             CodeAnalysisColors.AccentBarColorKey = EnvironmentColors.FileTabInactiveDocumentBorderEdgeBrushKey;
         }
 
-        protected override void LoadComponentsInUIContext(CancellationToken cancellationToken)
+        protected override async Task LoadComponentsAsync(CancellationToken cancellationToken)
         {
+            await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
+
             // we need to load it as early as possible since we can have errors from
             // package from each language very early
-            this.ComponentModel.GetService<DiagnosticProgressReporter>();
-            this.ComponentModel.GetService<VisualStudioDiagnosticListTable>();
-            this.ComponentModel.GetService<VisualStudioTodoListTable>();
             this.ComponentModel.GetService<VisualStudioDiagnosticListTableCommandHandler>().Initialize(this);
-
-            this.ComponentModel.GetService<VisualStudioMetadataAsSourceFileSupportService>();
-            this.ComponentModel.GetService<VirtualMemoryNotificationListener>();
-
-            // The misc files workspace needs to be loaded on the UI thread.  This way it will have
-            // the appropriate task scheduler to report events on.
-            this.ComponentModel.GetService<MiscellaneousFilesWorkspace>();
 
             LoadAnalyzerNodeComponents();
 

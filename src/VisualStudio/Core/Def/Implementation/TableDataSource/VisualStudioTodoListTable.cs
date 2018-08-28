@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
-using System.ComponentModel.Composition;
-using Microsoft.CodeAnalysis;
+using System.Composition;
 using Microsoft.CodeAnalysis.Editor;
+using Microsoft.VisualStudio.LanguageServices.Implementation.LanguageService;
 using Microsoft.VisualStudio.Shell.TableManager;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
@@ -10,7 +10,9 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
     using Workspace = Microsoft.CodeAnalysis.Workspace;
 
     [Export(typeof(VisualStudioTodoListTable))]
-    internal class VisualStudioTodoListTable : VisualStudioBaseTodoListTable
+    [PreloadServices]
+    [Shared]
+    internal class VisualStudioTodoListTable : VisualStudioBaseTodoListTable, IPreloadService
     {
         internal const string IdentifierString = nameof(VisualStudioTodoListTable);
 

@@ -15,7 +15,7 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.TableDataSource
 {
     using Workspace = Microsoft.CodeAnalysis.Workspace;
 
-    internal partial class VisualStudioDiagnosticListTable : VisualStudioBaseDiagnosticListTable
+    internal partial class VisualStudioDiagnosticListTable
     {
         private class BuildTableDataSource : AbstractTableDataSource<DiagnosticData>
         {
