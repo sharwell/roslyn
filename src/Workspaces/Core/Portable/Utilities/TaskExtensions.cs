@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.ErrorReporting;
 
 #if DEBUG
@@ -477,6 +478,226 @@ namespace Roslyn.Utilities
             // > ~67s     // switch to thread 67
             // > !dso     // dump stack objects
             FatalError.Report(exception);
+        }
+
+        public static CancellationAsCompletionTaskAwaitable WithCancellationAsCompletion(this Task task)
+        {
+            return new CancellationAsCompletionTaskAwaitable(task);
+        }
+
+        public static CancellationAsCompletionTaskAwaitable<T> WithCancellationAsCompletion<T>(this Task<T> task)
+        {
+            return new CancellationAsCompletionTaskAwaitable<T>(task);
+        }
+
+        public readonly struct CancellationAsCompletionTaskAwaitable
+        {
+            private readonly Task _task;
+
+            public CancellationAsCompletionTaskAwaitable(Task task)
+            {
+                _task = task;
+            }
+
+            public CancellationAsCompletionTaskAwaiter GetAwaiter()
+                => new CancellationAsCompletionTaskAwaiter(_task);
+
+            public ConfiguredCancellationAsCompletionTaskAwaitable ConfigureAwait(bool continueOnCapturedContext)
+            {
+                return new ConfiguredCancellationAsCompletionTaskAwaitable(_task, continueOnCapturedContext);
+            }
+
+            public readonly struct CancellationAsCompletionTaskAwaiter : ICriticalNotifyCompletion
+            {
+                private readonly Task _task;
+                private readonly TaskAwaiter _taskAwaiter;
+
+                public CancellationAsCompletionTaskAwaiter(Task task)
+                {
+                    _task = task;
+                    _taskAwaiter = task.GetAwaiter();
+                }
+
+                public bool IsCompleted => _taskAwaiter.IsCompleted;
+
+                public void OnCompleted(Action continuation)
+                    => _taskAwaiter.OnCompleted(continuation);
+
+                public void UnsafeOnCompleted(Action continuation)
+                    => _taskAwaiter.UnsafeOnCompleted(continuation);
+
+                public void GetResult()
+                {
+                    if (!_task.IsCompleted)
+                    {
+                        // This should never occur
+                        Task.WhenAll(_task).Wait();
+                    }
+
+                    if (_task.IsCanceled)
+                    {
+                        return;
+                    }
+
+                    _taskAwaiter.GetResult();
+                }
+            }
+        }
+
+        public readonly struct ConfiguredCancellationAsCompletionTaskAwaitable
+        {
+            private readonly Task _task;
+            private readonly bool _continueOnCapturedContext;
+
+            public ConfiguredCancellationAsCompletionTaskAwaitable(Task task, bool continueOnCapturedContext)
+            {
+                _task = task;
+                _continueOnCapturedContext = continueOnCapturedContext;
+            }
+
+            public ConfiguredCancellationAsCompletionTaskAwaiter GetAwaiter()
+                => new ConfiguredCancellationAsCompletionTaskAwaiter(_task, _continueOnCapturedContext);
+
+            public readonly struct ConfiguredCancellationAsCompletionTaskAwaiter
+            {
+                private readonly Task _task;
+                private readonly ConfiguredTaskAwaitable.ConfiguredTaskAwaiter _taskAwaiter;
+
+                public ConfiguredCancellationAsCompletionTaskAwaiter(Task task, bool continueOnCapturedContext)
+                {
+                    _task = task;
+                    _taskAwaiter = task.ConfigureAwait(continueOnCapturedContext).GetAwaiter();
+                }
+
+                public bool IsCompleted => _taskAwaiter.IsCompleted;
+
+                public void OnCompleted(Action continuation)
+                    => _taskAwaiter.OnCompleted(continuation);
+
+                public void UnsafeOnCompleted(Action continuation)
+                    => _taskAwaiter.UnsafeOnCompleted(continuation);
+
+                public void GetResult()
+                {
+                    if (!_task.IsCompleted)
+                    {
+                        // This should never occur
+                        Task.WhenAll(_task).Wait();
+                    }
+
+                    if (_task.IsCanceled)
+                    {
+                        return;
+                    }
+
+                    _taskAwaiter.GetResult();
+                }
+            }
+        }
+
+        public readonly struct CancellationAsCompletionTaskAwaitable<T>
+        {
+            private readonly Task<T> _task;
+
+            public CancellationAsCompletionTaskAwaitable(Task<T> task)
+            {
+                _task = task;
+            }
+
+            public CancellationAsCompletionTaskAwaiter GetAwaiter()
+                => new CancellationAsCompletionTaskAwaiter(_task);
+
+            public ConfiguredCancellationAsCompletionTaskAwaitable<T> ConfigureAwait(bool continueOnCapturedContext)
+            {
+                return new ConfiguredCancellationAsCompletionTaskAwaitable<T>(_task, continueOnCapturedContext);
+            }
+
+            public readonly struct CancellationAsCompletionTaskAwaiter : ICriticalNotifyCompletion
+            {
+                private readonly Task<T> _task;
+                private readonly TaskAwaiter<T> _taskAwaiter;
+
+                public CancellationAsCompletionTaskAwaiter(Task<T> task)
+                {
+                    _task = task;
+                    _taskAwaiter = task.GetAwaiter();
+                }
+
+                public bool IsCompleted => _taskAwaiter.IsCompleted;
+
+                public void OnCompleted(Action continuation)
+                    => _taskAwaiter.OnCompleted(continuation);
+
+                public void UnsafeOnCompleted(Action continuation)
+                    => _taskAwaiter.UnsafeOnCompleted(continuation);
+
+                public Optional<T> GetResult()
+                {
+                    if (!_task.IsCompleted)
+                    {
+                        // This should never occur
+                        Task.WhenAll(_task).Wait();
+                    }
+
+                    if (_task.IsCanceled)
+                    {
+                        return default;
+                    }
+
+                    return new Optional<T>(_taskAwaiter.GetResult());
+                }
+            }
+        }
+
+        public readonly struct ConfiguredCancellationAsCompletionTaskAwaitable<T>
+        {
+            private readonly Task<T> _task;
+            private readonly bool _continueOnCapturedContext;
+
+            public ConfiguredCancellationAsCompletionTaskAwaitable(Task<T> task, bool continueOnCapturedContext)
+            {
+                _task = task;
+                _continueOnCapturedContext = continueOnCapturedContext;
+            }
+
+            public ConfiguredCancellationAsCompletionTaskAwaiter GetAwaiter()
+                => new ConfiguredCancellationAsCompletionTaskAwaiter(_task, _continueOnCapturedContext);
+
+            public readonly struct ConfiguredCancellationAsCompletionTaskAwaiter
+            {
+                private readonly Task<T> _task;
+                private readonly ConfiguredTaskAwaitable<T>.ConfiguredTaskAwaiter _taskAwaiter;
+
+                public ConfiguredCancellationAsCompletionTaskAwaiter(Task<T> task, bool continueOnCapturedContext)
+                {
+                    _task = task;
+                    _taskAwaiter = task.ConfigureAwait(continueOnCapturedContext).GetAwaiter();
+                }
+
+                public bool IsCompleted => _taskAwaiter.IsCompleted;
+
+                public void OnCompleted(Action continuation)
+                    => _taskAwaiter.OnCompleted(continuation);
+
+                public void UnsafeOnCompleted(Action continuation)
+                    => _taskAwaiter.UnsafeOnCompleted(continuation);
+
+                public Optional<T> GetResult()
+                {
+                    if (!_task.IsCompleted)
+                    {
+                        // This should never occur
+                        Task.WhenAll(_task).Wait();
+                    }
+
+                    if (_task.IsCanceled)
+                    {
+                        return default;
+                    }
+
+                    return new Optional<T>(_taskAwaiter.GetResult());
+                }
+            }
         }
     }
 }
