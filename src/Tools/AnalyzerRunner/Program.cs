@@ -84,6 +84,14 @@ namespace AnalyzerRunner
 
                 Console.WriteLine($"Loaded solution in {stopwatch.ElapsedMilliseconds}ms");
 
+                stopwatch.Restart();
+                Console.WriteLine(await solution.State.GetChecksumAsync(cancellationToken).ConfigureAwait(false));
+                if (1.ToString() == "1")
+                {
+                    Console.WriteLine($"Calculated checksum in {stopwatch.ElapsedMilliseconds}ms");
+                    return;
+                }
+
                 if (options.ShowStats)
                 {
                     List<Project> projects = solution.Projects.Where(project => project.Language == LanguageNames.CSharp || project.Language == LanguageNames.VisualBasic).ToList();
