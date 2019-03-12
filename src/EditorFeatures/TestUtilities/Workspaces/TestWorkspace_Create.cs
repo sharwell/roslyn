@@ -19,7 +19,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
         private const string VisualBasicExtension = ".vb";
         private const string VisualBasicScriptExtension = ".vbx";
 
-        private const string WorkspaceElementName = "Workspace";
+        internal const string WorkspaceElementName = "Workspace";
         private const string ProjectElementName = "Project";
         private const string SubmissionElementName = "Submission";
         private const string MetadataReferenceElementName = "MetadataReference";
@@ -44,7 +44,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
         private const string CommonReferencesNet45AttributeName = "CommonReferencesNet45";
         private const string CommonReferencesPortableAttributeName = "CommonReferencesPortable";
         private const string CommonReferenceFacadeSystemRuntimeAttributeName = "CommonReferenceFacadeSystemRuntime";
-        private const string FilePathAttributeName = "FilePath";
+        internal const string FilePathAttributeName = "FilePath";
         private const string FoldersAttributeName = "Folders";
         private const string KindAttributeName = "Kind";
         private const string LanguageAttributeName = "Language";

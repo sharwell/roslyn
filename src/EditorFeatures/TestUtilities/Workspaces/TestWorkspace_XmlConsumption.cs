@@ -129,7 +129,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
                 projectNameToTestHostProject.Add(submission.Name, submission);
             }
 
-            var solution = new TestHostSolution(projectNameToTestHostProject.Values.ToArray());
+            var solution = new TestHostSolution(workspaceElement, projectNameToTestHostProject.Values.ToArray());
             workspace.AddTestSolution(solution);
 
             foreach (var projectElement in workspaceElement.Elements(ProjectElementName))
