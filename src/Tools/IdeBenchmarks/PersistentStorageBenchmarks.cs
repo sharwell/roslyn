@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Composition;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,8 @@ using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.FindSymbols.SymbolTree;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Host.Mef;
+using Microsoft.CodeAnalysis.IncrementalCaches;
+using Microsoft.CodeAnalysis.SolutionCrawler;
 using Microsoft.CodeAnalysis.Storage;
 using Microsoft.CodeAnalysis.Test.Utilities;
 using Microsoft.VisualStudio.Composition;
@@ -28,7 +31,7 @@ namespace IdeBenchmarks
         private ComposableCatalog _catalog;
         private IExportProviderFactory _exportProviderFactory;
 
-        [Params(0, 1000, 10000)]
+        [Params(1, 1000, 10000)]
         public int ClassCount { get; set; }
 
         [GlobalSetup]
@@ -80,7 +83,8 @@ class Class{i}
 
         private async Task<SymbolTreeInfo> WriteStorageAsync(XElement workspaceElement, ParseOptions parseOptions)
         {
-            using (var workspace = TestWorkspace.Create(workspaceElement.ToString(), exportProvider: _exportProviderFactory.CreateExportProvider()))
+            var exportProvider = _exportProviderFactory.CreateExportProvider();
+            using (var workspace = TestWorkspace.Create(workspaceElement.ToString(), exportProvider: exportProvider))
             {
                 workspace.Options = workspace.Options.WithChangedOption(StorageOptions.SolutionSizeThreshold, -1);
 
@@ -90,6 +94,12 @@ class Class{i}
                 {
                     throw new InvalidOperationException("Benchmark is not configured to use persistent storage.");
                 }
+
+                var incrementalAnalyzerProvider = exportProvider.GetExportedValues<IIncrementalAnalyzerProvider>().OfType<SymbolTreeInfoIncrementalAnalyzerProvider>().Single();
+                var incrementalAnalyzer = incrementalAnalyzerProvider.CreateIncrementalAnalyzer(workspace);
+                var solutionCrawlerRegistrationService = (SolutionCrawlerRegistrationService)workspace.Services.GetRequiredService<ISolutionCrawlerRegistrationService>();
+                solutionCrawlerRegistrationService.Register(workspace);
+                solutionCrawlerRegistrationService.WaitUntilCompletion_ForTestingPurposesOnly(workspace, ImmutableArray.Create(incrementalAnalyzer));
 
                 var symbolTreeInfoCacheService = workspace.Services.GetRequiredService<ISymbolTreeInfoCacheService>();
                 var symbolTreeInfo = await symbolTreeInfoCacheService.TryGetSourceSymbolTreeInfoAsync(workspace.CurrentSolution.Projects.Single(), CancellationToken.None);

@@ -75,6 +75,7 @@
     <InternalsVisibleTo Include="Roslyn.VisualStudio.Test.Utilities.Next" />
     <InternalsVisibleTo Include="Roslyn.VisualStudio.Next.UnitTests" />
     <InternalsVisibleTo Include="Roslyn.Services.Test.Utilities" />
+    <InternalsVisibleTo Include="IdeBenchmarks" />
     <InternalsVisibleTo Include="Microsoft.CodeAnalysis.EditorFeatures.Test.Utilities" />
     <InternalsVisibleTo Include="RoslynETAHost" />
     <InternalsVisibleTo Include="RoslynTaoActions" />
