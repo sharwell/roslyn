@@ -1,5 +1,9 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#nullable enable
+
+using System.Diagnostics.CodeAnalysis;
+
 namespace Microsoft.CodeAnalysis
 {
     public static partial class ISymbolExtensions
@@ -8,7 +12,7 @@ namespace Microsoft.CodeAnalysis
         /// Returns the constructed form of the ReducedFrom property,
         /// including the type arguments that were either inferred during reduction or supplied at the call site.
         /// </summary>
-        public static IMethodSymbol GetConstructedReducedFrom(this IMethodSymbol method)
+        public static IMethodSymbol? GetConstructedReducedFrom(this IMethodSymbol method)
         {
             if (method.MethodKind != MethodKind.ReducedExtension)
             {
@@ -65,7 +69,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         internal static bool IsTupleElement(this IFieldSymbol field)
         {
-            return (object)field.CorrespondingTupleField != null;
+            return (object?)field.CorrespondingTupleField != null;
         }
 
         /// <summary>
@@ -76,12 +80,12 @@ namespace Microsoft.CodeAnalysis
         /// Note that it is possible for an element to be both "Default" and to have a user provided name.
         /// That could happen if the provided name matches the default name such as "Item10"
         /// </remarks>
-        internal static string ProvidedTupleElementNameOrNull(this IFieldSymbol field)
+        internal static string? ProvidedTupleElementNameOrNull(this IFieldSymbol field)
         {
             return field.IsTupleElement() && !field.IsImplicitlyDeclared ? field.Name : null;
         }
 
-        internal static INamespaceSymbol GetNestedNamespace(this INamespaceSymbol container, string name)
+        internal static INamespaceSymbol? GetNestedNamespace(this INamespaceSymbol container, string name)
         {
             foreach (var sym in container.GetMembers(name))
             {
@@ -94,7 +98,7 @@ namespace Microsoft.CodeAnalysis
             return null;
         }
 
-        internal static bool IsNetModule(this IAssemblySymbol assembly) =>
+        internal static bool IsNetModule([NotNullWhen(returnValue: true)] this IAssemblySymbol? assembly) =>
             assembly is ISourceAssemblySymbol sourceAssembly && sourceAssembly.Compilation.Options.OutputKind.IsNetModule();
 
         internal static bool IsInSource(this ISymbol symbol)

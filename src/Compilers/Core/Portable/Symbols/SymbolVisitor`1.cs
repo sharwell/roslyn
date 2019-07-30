@@ -1,19 +1,25 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#nullable enable
+
+using System.Diagnostics.CodeAnalysis;
+
 namespace Microsoft.CodeAnalysis
 {
     public abstract class SymbolVisitor<TResult>
     {
-        public virtual TResult Visit(ISymbol symbol)
+        [return: MaybeNull]
+        public virtual TResult Visit(ISymbol? symbol)
         {
             return symbol == null
-                ? default(TResult)
+                ? default(TResult)!
                 : symbol.Accept(this);
         }
 
+        [return: MaybeNull]
         public virtual TResult DefaultVisit(ISymbol symbol)
         {
-            return default(TResult);
+            return default(TResult)!;
         }
 
         public virtual TResult VisitAlias(IAliasSymbol symbol)

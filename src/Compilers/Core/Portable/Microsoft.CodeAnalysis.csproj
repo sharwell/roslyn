@@ -20,6 +20,7 @@
     </PackageDescription>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\Workspaces\Core\Portable\Utilities\NullableHelpers\NullableAttributes.cs" Link="NullableAttributes.cs" />
     <Compile Include="..\..\Shared\DesktopShim.cs" />
     <Compile Update="CodeAnalysisResources.Designer.cs">
       <AutoGen>True</AutoGen>
