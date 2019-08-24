@@ -20,7 +20,7 @@ namespace Microsoft.CodeAnalysis
                 return null;
             }
 
-            var reducedFrom = method.ReducedFrom;
+            var reducedFrom = method.ReducedFrom!;
             if (!reducedFrom.IsGenericMethod)
             {
                 // not generic, no inferences were made
@@ -37,10 +37,10 @@ namespace Microsoft.CodeAnalysis
                 // make sure we don't construct with type parameters originating from reduced symbol.
                 if (arg.Equals(method.TypeParameters[i]))
                 {
-                    arg = method.TypeParameters[i].ReducedFrom;
+                    arg = method.TypeParameters[i].ReducedFrom!;
                 }
 
-                typeArgs[method.TypeParameters[i].ReducedFrom.Ordinal] = arg;
+                typeArgs[method.TypeParameters[i].ReducedFrom!.Ordinal] = arg;
             }
 
             // add any inferences
