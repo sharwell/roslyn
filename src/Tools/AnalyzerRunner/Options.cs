@@ -13,6 +13,8 @@ namespace AnalyzerRunner
         public readonly string AnalyzerPath;
         public readonly string SolutionPath;
         public readonly ImmutableHashSet<string> AnalyzerNames;
+        public readonly bool FixAll;
+        public readonly bool ApplyChanges;
 
         public readonly bool RunConcurrent;
         public readonly bool ReportSuppressedDiagnostics;
@@ -34,6 +36,8 @@ namespace AnalyzerRunner
             string analyzerPath,
             string solutionPath,
             ImmutableHashSet<string> analyzerIds,
+            bool fixAll,
+            bool applyChanges,
             bool runConcurrent,
             bool reportSuppressedDiagnostics,
             bool showStats,
@@ -51,6 +55,8 @@ namespace AnalyzerRunner
             AnalyzerPath = analyzerPath;
             SolutionPath = solutionPath;
             AnalyzerNames = analyzerIds;
+            FixAll = fixAll;
+            ApplyChanges = applyChanges;
             RunConcurrent = runConcurrent;
             ReportSuppressedDiagnostics = reportSuppressedDiagnostics;
             ShowStats = showStats;
@@ -71,6 +77,8 @@ namespace AnalyzerRunner
             string analyzerPath = null;
             string solutionPath = null;
             var builder = ImmutableHashSet.CreateBuilder<string>();
+            bool fixAll = false;
+            bool applyChanges = false;
             bool runConcurrent = false;
             bool reportSuppressedDiagnostics = false;
             bool showStats = false;
@@ -122,6 +130,12 @@ namespace AnalyzerRunner
                     case "/a":
                         builder.Add(ReadValue());
                         break;
+                    case "/apply":
+                        applyChanges = true;
+                        break;
+                    case "/fixall":
+                        fixAll = true;
+                        break;
                     case "/log":
                         logFileName = ReadValue();
                         break;
@@ -170,6 +184,8 @@ namespace AnalyzerRunner
                 analyzerPath: analyzerPath,
                 solutionPath: solutionPath,
                 analyzerIds: builder.ToImmutableHashSet(),
+                fixAll: fixAll,
+                applyChanges: applyChanges,
                 runConcurrent: runConcurrent,
                 reportSuppressedDiagnostics: reportSuppressedDiagnostics,
                 showStats: showStats,

@@ -6,13 +6,17 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Diagnostics.Telemetry;
+using Microsoft.CodeAnalysis.PooledObjects;
 using static AnalyzerRunner.Program;
 
 namespace AnalyzerRunner
@@ -128,6 +132,11 @@ namespace AnalyzerRunner
             {
                 WriteDiagnosticResults(analysisResult.SelectMany(pair => pair.Value.GetAllDiagnostics().Select(j => Tuple.Create(pair.Key, j))).ToImmutableArray(), _options.LogFileName);
             }
+
+            if (_options.FixAll)
+            {
+                await TestFixAllAsync(stopwatch, solution, analysisResult, _options.ApplyChanges, cancellationToken).ConfigureAwait(true);
+            }
         }
 
         private static async Task<DocumentAnalyzerPerformance> TestDocumentPerformanceAsync(ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzers, Project project, DocumentId documentId, Options analyzerOptionsInternal, CancellationToken cancellationToken)
@@ -191,6 +200,63 @@ namespace AnalyzerRunner
 
             File.WriteAllText(fileName, completeOutput.ToString(), Encoding.UTF8);
             File.WriteAllText(uniqueFileName, uniqueOutput.ToString(), Encoding.UTF8);
+        }
+
+        private static async Task TestFixAllAsync(Stopwatch stopwatch, Solution solution, ImmutableDictionary<ProjectId, AnalysisResult> analysisResult, bool applyChanges, CancellationToken cancellationToken)
+        {
+            Console.WriteLine("Calculating fixes");
+
+            var codeFixers = GetCodeFixes(LanguageNames.CSharp).SelectMany(x => x.Value).Distinct();
+
+            var equivalenceGroups = new List<CodeFixEquivalenceGroup>();
+
+            foreach (var codeFixer in codeFixers)
+            {
+                equivalenceGroups.AddRange(await CodeFixEquivalenceGroup.CreateAsync(codeFixer, analysisResult, solution, cancellationToken).ConfigureAwait(true));
+            }
+
+            Console.WriteLine($"Found {equivalenceGroups.Count} equivalence groups.");
+            if (applyChanges && equivalenceGroups.Count > 1)
+            {
+                Console.Error.WriteLine("/apply can only be used with a single equivalence group.");
+                return;
+            }
+
+            Console.WriteLine("Calculating changes");
+
+            foreach (var fix in equivalenceGroups)
+            {
+                try
+                {
+                    stopwatch.Restart();
+                    Console.WriteLine($"Calculating fix for {fix.CodeFixEquivalenceKey} using {fix.FixAllProvider} for {fix.NumberOfDiagnostics} instances.");
+                    var operations = await fix.GetOperationsAsync(cancellationToken).ConfigureAwait(true);
+                    if (applyChanges)
+                    {
+                        var applyOperations = operations.OfType<ApplyChangesOperation>().ToList();
+                        if (applyOperations.Count > 1)
+                        {
+                            Console.Error.WriteLine("/apply can only apply a single code action operation.");
+                        }
+                        else if (applyOperations.Count == 0)
+                        {
+                            Console.WriteLine("No changes were found to apply.");
+                        }
+                        else
+                        {
+                            applyOperations[0].Apply(solution.Workspace, cancellationToken);
+                        }
+                    }
+
+                    WriteLine($"Calculating changes completed in {stopwatch.ElapsedMilliseconds}ms. This is {fix.NumberOfDiagnostics / stopwatch.Elapsed.TotalSeconds:0.000} instances/second.", ConsoleColor.Yellow);
+                }
+                catch (Exception ex)
+                {
+                    // Report thrown exceptions
+                    WriteLine($"The fix '{fix.CodeFixEquivalenceKey}' threw an exception after {stopwatch.ElapsedMilliseconds}ms:", ConsoleColor.Yellow);
+                    WriteLine(ex.ToString(), ConsoleColor.Yellow);
+                }
+            }
         }
 
         private static ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> FilterAnalyzers(ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzers, Options options)
@@ -267,6 +333,88 @@ namespace AnalyzerRunner
             return ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>>.Empty
                 .Add(LanguageNames.CSharp, csharpAnalyzers)
                 .Add(LanguageNames.VisualBasic, basicAnalyzers);
+        }
+
+        private static ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> GetCodeFixes(string path)
+        {
+            if (File.Exists(path))
+            {
+                return GetCodeFixesFromFile(path);
+            }
+            else if (Directory.Exists(path))
+            {
+                return Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories)
+                    .SelectMany(file => GetCodeFixesFromFile(file))
+                    .ToLookup(codeFixProviders => codeFixProviders.Key, codeFixProviders => codeFixProviders.Value)
+                    .ToImmutableDictionary(
+                        group => group.Key,
+                        group => group.SelectMany(codeFixProvider => codeFixProvider).ToImmutableArray());
+            }
+
+            throw new InvalidDataException($"Cannot find {path}.");
+        }
+
+        private static ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> GetCodeFixesFromFile(string path)
+        {
+            var analyzerReference = new AnalyzerFileReference(path, AssemblyLoader.Instance);
+            var csharpAnalyzers = CreateFixers(analyzerReference, LanguageNames.CSharp);
+            var basicAnalyzers = CreateFixers(analyzerReference, LanguageNames.VisualBasic);
+            return ImmutableDictionary<string, ImmutableArray<CodeFixProvider>>.Empty
+                .Add(LanguageNames.CSharp, csharpAnalyzers)
+                .Add(LanguageNames.VisualBasic, basicAnalyzers);
+
+            static ImmutableArray<CodeFixProvider> CreateFixers(AnalyzerReference analyzerReference, string language)
+            {
+                // check whether the analyzer reference knows how to return fixers directly.
+                if (analyzerReference is ICodeFixProviderFactory codeFixProviderFactory)
+                {
+                    return codeFixProviderFactory.GetFixers();
+                }
+
+                // otherwise, see whether we can pick it up from reference itself
+                if (!(analyzerReference is AnalyzerFileReference analyzerFileReference))
+                {
+                    return ImmutableArray<CodeFixProvider>.Empty;
+                }
+
+                using var builderDisposer = ArrayBuilder<CodeFixProvider>.GetInstance(out var builder);
+
+                try
+                {
+                    var analyzerAssembly = analyzerFileReference.GetAssembly();
+                    var typeInfos = analyzerAssembly.DefinedTypes;
+
+                    foreach (var typeInfo in typeInfos)
+                    {
+                        if (typeInfo.IsSubclassOf(typeof(CodeFixProvider)))
+                        {
+                            try
+                            {
+                                var attribute = typeInfo.GetCustomAttribute<ExportCodeFixProviderAttribute>();
+                                if (attribute != null)
+                                {
+                                    if (attribute.Languages == null ||
+                                        attribute.Languages.Length == 0 ||
+                                        attribute.Languages.Contains(language))
+                                    {
+                                        builder.Add((CodeFixProvider)Activator.CreateInstance(typeInfo.AsType()));
+                                    }
+                                }
+                            }
+                            catch
+                            {
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    // REVIEW: is the below message right?
+                    // NOTE: We could report "unable to load analyzer" exception here but it should have been already reported by DiagnosticService.
+                }
+
+                return builder.ToImmutable();
+            }
         }
 
         private static async Task<ImmutableDictionary<ProjectId, AnalysisResult>> GetAnalysisResultAsync(
