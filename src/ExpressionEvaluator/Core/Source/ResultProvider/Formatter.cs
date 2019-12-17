@@ -1,4 +1,6 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+#pragma warning disable IDE0057 // Use range operator
 #pragma warning disable CA1825 // Avoid zero-length array allocations.
 
 using System;
@@ -263,7 +265,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             }
             if ((start > 0) || (length < oldLength))
             {
-                return expression[start..length];
+                return expression.Substring(start, length - start);
             }
             return expression;
         }

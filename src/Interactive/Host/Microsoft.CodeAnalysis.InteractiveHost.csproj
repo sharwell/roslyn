@@ -49,7 +49,9 @@
     <Compile Include="..\..\Compilers\Core\Portable\InternalUtilities\FailFast.cs" Link="Utilities\FailFast.cs" />
     <Compile Include="..\..\Compilers\Core\Portable\InternalUtilities\FatalError.cs" Link="Utilities\FatalError.cs" />
     <Compile Include="..\..\Compilers\Core\Portable\InternalUtilities\FileNameUtilities.cs" Link="Utilities\FileNameUtilities.cs" />
+    <Compile Include="..\..\Compilers\Core\Portable\InternalUtilities\Index.cs" Link="Utilities\Index.cs" />
     <Compile Include="..\..\Compilers\Core\Portable\InternalUtilities\PlatformInformation.cs" Link="Utilities\PlatformInformation.cs" />
+    <Compile Include="..\..\Compilers\Core\Portable\InternalUtilities\Range.cs" Link="Utilities\Range.cs" />
     <Compile Include="..\..\Compilers\Core\Portable\InternalUtilities\Hash.cs" Link="Utilities\Hash.cs" />
     <Compile Include="..\..\Compilers\Core\Portable\FileSystem\FileUtilities.cs" Link="Utilities\FileUtilities.cs" />
     <Compile Include="..\..\Compilers\Core\Portable\FileSystem\PathUtilities.cs" Link="Utilities\PathUtilities.cs" />

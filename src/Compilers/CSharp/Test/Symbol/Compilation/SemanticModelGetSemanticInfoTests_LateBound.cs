@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#pragma warning disable IDE0057 // Use range operator
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -691,7 +693,7 @@ class C
                 Assert.True(semanticInfo.ConvertedType.IsDynamic());
                 Assert.Equal(ConversionKind.Identity, semanticInfo.ImplicitConversion.Kind);
 
-                Assert.Equal("dynamic.operator " + op[0..^1] + "(dynamic, dynamic)", semanticInfo.Symbol.ToString());
+                Assert.Equal("dynamic.operator " + op.Substring(0, op.Length - 1) + "(dynamic, dynamic)", semanticInfo.Symbol.ToString());
                 Assert.Equal(CandidateReason.LateBound, semanticInfo.CandidateReason);
                 Assert.Equal(0, semanticInfo.CandidateSymbols.Length);
                 Assert.Equal(0, semanticInfo.MethodGroup.Length);

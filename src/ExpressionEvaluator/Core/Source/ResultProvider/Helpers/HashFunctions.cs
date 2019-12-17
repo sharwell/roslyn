@@ -15,6 +15,14 @@ namespace Roslyn.Utilities
 
         internal const int FnvPrime = 16777619;
 
+        /// <summary>
+        /// This is how VB Anonymous Types combine hash values for fields.
+        /// </summary>
+        internal static int Combine(int newKey, int currentKey)
+        {
+            return unchecked((currentKey * (int)0xA5555529) + newKey);
+        }
+
         internal static int CombineFNVHash(int hashCode, char ch)
         {
             return unchecked((hashCode ^ ch) * Hash.FnvPrime);

@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.CodeAnalysis.PooledObjects;
 
 #pragma warning disable CA1200 // Avoid using cref tags with a prefix
+#pragma warning disable IDE0057 // Use range operator
 
 namespace Microsoft.CodeAnalysis.Debugging
 {
@@ -844,7 +845,7 @@ RETRY:
             // Allow zero-length after for an XML alias in VB ("@PX:=").  Not sure what it means.
             if (offset <= separatorPos && separatorPos < input.Length)
             {
-                before = input[offset..separatorPos];
+                before = input.Substring(offset, separatorPos - offset);
                 after = separatorPos + 1 == input.Length
                     ? ""
                     : input.Substring(separatorPos + 1);

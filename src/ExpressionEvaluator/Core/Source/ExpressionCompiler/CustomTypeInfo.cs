@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
+#pragma warning disable IDE0057 // Use range operator
+
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.VisualStudio.Debugger.Evaluation.ClrCompilation;
 using System;
@@ -184,7 +186,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             while (true)
             {
                 int next = str.IndexOf(NameSeparator, offset);
-                var name = (next < 0) ? str.Substring(offset) : str[offset..next];
+                var name = (next < 0) ? str.Substring(offset) : str.Substring(offset, next - offset);
                 builder.Add((name.Length == 0) ? null : name);
                 if (next < 0)
                 {
