@@ -217,7 +217,7 @@ namespace Roslyn.Utilities
             if (arg.Length > 1 && arg[0] == '"' && arg[arg.Length - 1] == '"')
             {
                 quoted = true;
-                return arg.Substring(1, arg.Length - 2);
+                return arg[1..^1];
             }
             else
             {

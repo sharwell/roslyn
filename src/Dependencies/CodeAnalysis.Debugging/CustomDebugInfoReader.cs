@@ -844,7 +844,7 @@ RETRY:
             // Allow zero-length after for an XML alias in VB ("@PX:=").  Not sure what it means.
             if (offset <= separatorPos && separatorPos < input.Length)
             {
-                before = input.Substring(offset, separatorPos - offset);
+                before = input[offset..separatorPos];
                 after = separatorPos + 1 == input.Length
                     ? ""
                     : input.Substring(separatorPos + 1);

@@ -112,7 +112,7 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 {
                     if (start >= 0)
                     {
-                        var token = expr.Substring(start, offset - start);
+                        var token = expr[start..offset];
                         if (expectingComma)
                         {
                             ReportInvalidFormatSpecifier(token, diagnostics);

@@ -2963,8 +2963,8 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             Assert.NotEqual(default, token);
             Assert.Equal(SyntaxKind.IdentifierToken, token.Kind());
             Assert.Equal(0, errors.Length);
-            Assert.Equal(text.Substring(0, text.Length - 1), token.Text);
-            Assert.Equal(text.Substring(0, text.Length - 1), token.Value);
+            Assert.Equal(text[0..^1], token.Text);
+            Assert.Equal(text[0..^1], token.Value);
         }
 
         [Fact]
@@ -3067,7 +3067,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             Assert.NotEqual(default, token);
             Assert.Equal(SyntaxKind.NumericLiteralToken, token.Kind());
             Assert.Equal(1, errors.Length);
-            Assert.Equal(text.Substring(0, text.Length - 1), token.Text);
+            Assert.Equal(text[0..^1], token.Text);
             Assert.Equal(0x123, token.Value);
 
             text = "123L#";
@@ -3077,7 +3077,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             Assert.NotEqual(default, token);
             Assert.Equal(SyntaxKind.NumericLiteralToken, token.Kind());
             Assert.Equal(1, errors.Length);
-            Assert.Equal(text.Substring(0, text.Length - 1), token.Text);
+            Assert.Equal(text[0..^1], token.Text);
             Assert.Equal(123L, token.Value);
 
             // Current syntax.

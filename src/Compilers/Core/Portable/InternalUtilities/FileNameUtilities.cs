@@ -115,7 +115,7 @@ namespace Roslyn.Utilities
             // trim last ".", if present
             if (path.Length > 0 && path[path.Length - 1] == '.')
             {
-                return path.Substring(0, path.Length - 1);
+                return path[0..^1];
             }
 
             return path;

@@ -189,8 +189,8 @@ namespace Roslyn.Utilities
             // consider them as they won't add anything to the edit cost.
             while (source.Length > 0 && source[source.Length - 1] == target[target.Length - 1])
             {
-                source = source.Slice(0, source.Length - 1);
-                target = target.Slice(0, target.Length - 1);
+                source = source[0..^1];
+                target = target[0..^1];
             }
 
             while (source.Length > 0 && source[0] == target[0])

@@ -1384,7 +1384,7 @@ namespace System.Runtime.CompilerServices
             int end = text.IndexOf(endTag, StringComparison.Ordinal);
             Assert.True(end > start, "Bind Pos: end > start");
             // get rid of white spaces if any
-            var bindText = text.Substring(start, end - start).Trim();
+            var bindText = text[start..end].Trim();
             if (String.IsNullOrWhiteSpace(bindText))
                 return null;
 

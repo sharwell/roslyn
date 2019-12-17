@@ -263,7 +263,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             }
             if ((start > 0) || (length < oldLength))
             {
-                return expression.Substring(start, length - start);
+                return expression[start..length];
             }
             return expression;
         }

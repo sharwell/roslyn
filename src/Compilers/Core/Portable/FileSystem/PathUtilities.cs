@@ -434,7 +434,7 @@ namespace Roslyn.Utilities
         {
             if (path.Length > 0 && IsDirectorySeparator(path[path.Length - 1]))
             {
-                return path.Substring(0, path.Length - 1);
+                return path[0..^1];
             }
             else
             {

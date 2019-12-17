@@ -691,7 +691,7 @@ class C
                 Assert.True(semanticInfo.ConvertedType.IsDynamic());
                 Assert.Equal(ConversionKind.Identity, semanticInfo.ImplicitConversion.Kind);
 
-                Assert.Equal("dynamic.operator " + op.Substring(0, op.Length - 1) + "(dynamic, dynamic)", semanticInfo.Symbol.ToString());
+                Assert.Equal("dynamic.operator " + op[0..^1] + "(dynamic, dynamic)", semanticInfo.Symbol.ToString());
                 Assert.Equal(CandidateReason.LateBound, semanticInfo.CandidateReason);
                 Assert.Equal(0, semanticInfo.CandidateSymbols.Length);
                 Assert.Equal(0, semanticInfo.MethodGroup.Length);

@@ -345,7 +345,7 @@ namespace Microsoft.CodeAnalysis
 
                     int exponentMagnitude = 0;
 
-                    if (int.TryParse(source.Substring(firstExponent, lastExponent - firstExponent), out exponentMagnitude) &&
+                    if (int.TryParse(source[firstExponent..lastExponent], out exponentMagnitude) &&
                         exponentMagnitude <= MAX_EXP)
                     {
                         if (exponentSign == '-')

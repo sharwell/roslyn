@@ -388,7 +388,7 @@ namespace Microsoft.CodeAnalysis.NamingStyles
                 return name;
             }
 
-            name = name.Substring(Prefix.Length, name.Length - Suffix.Length - Prefix.Length);
+            name = name[Prefix.Length..^Suffix.Length];
             IEnumerable<string> words = new[] { name };
 
             if (!string.IsNullOrEmpty(WordSeparator))
@@ -408,7 +408,7 @@ namespace Microsoft.CodeAnalysis.NamingStyles
                     var newWords = new string[parts.Count];
                     for (var i = 0; i < parts.Count; i++)
                     {
-                        newWords[i] = name.Substring(parts[i].Start, parts[i].End - parts[i].Start);
+                        newWords[i] = name[parts[i].Start..parts[i].End];
                     }
                     words = newWords;
                 }

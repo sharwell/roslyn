@@ -107,7 +107,7 @@ namespace Microsoft.CodeAnalysis
 
             if (colon >= 0)
             {
-                name = arg.Substring(1, colon - 1);
+                name = arg[1..colon];
                 value = arg.Substring(colon + 1);
             }
             else
@@ -797,7 +797,7 @@ namespace Microsoft.CodeAnalysis
             {
                 if (splitHere(str[c]))
                 {
-                    yield return str.Substring(nextPiece, c - nextPiece);
+                    yield return str[nextPiece..c];
                     nextPiece = c + 1;
                 }
             }

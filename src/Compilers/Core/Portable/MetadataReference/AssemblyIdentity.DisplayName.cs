@@ -531,7 +531,7 @@ namespace Microsoft.CodeAnalysis
 
             if (!containsEscapes)
             {
-                value = displayName.Substring(valueStart, valueEnd - valueStart);
+                value = displayName[valueStart..valueEnd];
                 return true;
             }
             else
@@ -839,7 +839,7 @@ namespace Microsoft.CodeAnalysis
 
                     try
                     {
-                        int codepoint = Convert.ToInt32(str.Substring(i, semicolon - i), 16);
+                        int codepoint = Convert.ToInt32(str[i..semicolon], 16);
 
                         // \0 is not valid in an assembly name
                         if (codepoint == 0)

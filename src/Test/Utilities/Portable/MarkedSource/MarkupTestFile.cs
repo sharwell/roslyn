@@ -107,7 +107,7 @@ namespace Roslyn.Test.Utilities
                 var matchString = firstMatch.name;
 
                 var matchIndexInOutput = matchIndexInInput - inputOutputOffset;
-                outputBuilder.Append(input.Substring(currentIndexInInput, matchIndexInInput - currentIndexInInput));
+                outputBuilder.Append(input[currentIndexInInput..matchIndexInInput]);
 
                 currentIndexInInput = matchIndexInInput + matchString.Length;
                 inputOutputOffset += matchString.Length;

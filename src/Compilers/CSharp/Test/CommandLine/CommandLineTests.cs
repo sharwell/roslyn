@@ -5550,7 +5550,7 @@ class Test { static void Main() {} }").Path;
             int exitCode = CreateCSharpCompiler(null, baseDir, new[] { "/nologo", "/t:module", source1 }).Run(outWriter);
             Assert.Equal(0, exitCode);
 
-            var modfile = source1.Substring(0, source1.Length - 2) + "netmodule";
+            var modfile = source1[0..^2] + "netmodule";
             outWriter = new StringWriter(CultureInfo.InvariantCulture);
             var parsedArgs = DefaultParse(new[] { "/nologo", "/addmodule:" + modfile, source }, WorkingDirectory);
             parsedArgs.Errors.Verify();
@@ -5562,7 +5562,7 @@ class Test { static void Main() {} }").Path;
             exitCode = CreateCSharpCompiler(null, baseDir, new[] { "/nologo", "/t:module", source2 }).Run(outWriter);
             Assert.Equal(0, exitCode);
 
-            modfile = source2.Substring(0, source2.Length - 2) + "netmodule";
+            modfile = source2[0..^2] + "netmodule";
             outWriter = new StringWriter(CultureInfo.InvariantCulture);
             parsedArgs = DefaultParse(new[] { "/nologo", "/addmodule:" + modfile, source }, WorkingDirectory);
             parsedArgs.Errors.Verify();
@@ -5587,7 +5587,7 @@ class Test { static void Main() {} }").Path;
             int exitCode = CreateCSharpCompiler(null, baseDir, new[] { "/nologo", "/t:module", source1 }).Run(outWriter);
             Assert.Equal(0, exitCode);
 
-            var modfile = source1.Substring(0, source1.Length - 2) + "netmodule";
+            var modfile = source1[0..^2] + "netmodule";
             outWriter = new StringWriter(CultureInfo.InvariantCulture);
             exitCode = CreateCSharpCompiler(null, baseDir, new[] { "/nologo", "/addmodule:" + modfile, source2 }).Run(outWriter);
             Assert.Equal(0, exitCode);
@@ -5607,7 +5607,7 @@ class Test { static void Main() {} }").Path;
             int exitCode = CreateCSharpCompiler(null, baseDir, new[] { "/nologo", "/t:module", source1 }).Run(outWriter);
             Assert.Equal(0, exitCode);
 
-            var modfile = source1.Substring(0, source1.Length - 2) + "netmodule";
+            var modfile = source1[0..^2] + "netmodule";
             outWriter = new StringWriter(CultureInfo.InvariantCulture);
             exitCode = CreateCSharpCompiler(null, baseDir, new[] { "/nologo", "/preferreduilang:en", "/addmodule:" + modfile, "/linkres:" + modfile, source2 }).Run(outWriter);
             Assert.Equal(1, exitCode);

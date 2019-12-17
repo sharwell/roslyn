@@ -275,7 +275,7 @@ namespace Microsoft.CodeAnalysis
             }
             else if (name.EndsWith(".this[]"))
             {
-                name = name.Substring(0, name.Length - 6) + "Item";
+                name = name[0..^6] + "Item";
             }
 
             return name;
@@ -292,7 +292,7 @@ namespace Microsoft.CodeAnalysis
                 }
                 else if (name.EndsWith(".Item"))
                 {
-                    name = name.Substring(0, name.Length - 4) + "this[]";
+                    name = name[0..^4] + "this[]";
                 }
             }
 
@@ -1477,7 +1477,7 @@ namespace Microsoft.CodeAnalysis
                 int delimiterOffset = id.IndexOfAny(s_nameDelimiters, index);
                 if (delimiterOffset >= 0)
                 {
-                    name = id.Substring(index, delimiterOffset - index);
+                    name = id[index..delimiterOffset];
                     index = delimiterOffset;
                 }
                 else

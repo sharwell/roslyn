@@ -314,7 +314,7 @@ ExitDecodeTypeName:
                 AdvanceTo(i);
 
                 // Get the emitted name.
-                return _input.Substring(start, _offset - start);
+                return _input[start.._offset];
             }
 
             private AssemblyQualifiedTypeName[] DecodeTypeArguments()
@@ -400,7 +400,7 @@ ExitDecodeTypeName:
                     i = _input.Length;
                 }
 
-                string name = _input.Substring(_offset, i - _offset);
+                string name = _input[_offset..i];
                 AdvanceTo(i);
                 return name;
             }
@@ -446,7 +446,7 @@ ExitDecodeTypeName:
                             if (Current != ']')
                             {
                                 // Error case, process as regular characters
-                                typeNameBuilder.Append(_input.Substring(start, _offset - start));
+                                typeNameBuilder.Append(_input[start.._offset]);
                                 return;
                             }
 
@@ -456,13 +456,13 @@ ExitDecodeTypeName:
                         default:
                             // Error case, process as regular characters
                             Advance();
-                            typeNameBuilder.Append(_input.Substring(start, _offset - start));
+                            typeNameBuilder.Append(_input[start.._offset]);
                             return;
                     }
                 }
 
                 // Error case, process as regular characters
-                typeNameBuilder.Append(_input.Substring(start, _offset - start));
+                typeNameBuilder.Append(_input[start.._offset]);
             }
         }
 
@@ -892,7 +892,7 @@ DoneWithSequence:
             }
             else
             {
-                return fullName.Substring(parentNamespaceNameLength, index - parentNamespaceNameLength);
+                return fullName[parentNamespaceNameLength..index];
             }
         }
 

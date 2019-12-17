@@ -184,7 +184,7 @@ namespace Microsoft.CodeAnalysis.ExpressionEvaluator
             while (true)
             {
                 int next = str.IndexOf(NameSeparator, offset);
-                var name = (next < 0) ? str.Substring(offset) : str.Substring(offset, next - offset);
+                var name = (next < 0) ? str.Substring(offset) : str[offset..next];
                 builder.Add((name.Length == 0) ? null : name);
                 if (next < 0)
                 {

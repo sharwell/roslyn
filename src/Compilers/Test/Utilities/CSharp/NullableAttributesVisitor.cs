@@ -218,7 +218,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Test.Utilities
             builder.Append("[");
 
             var name = attribute.AttributeClass.Name;
-            if (name.EndsWith("Attribute")) name = name.Substring(0, name.Length - 9);
+            if (name.EndsWith("Attribute")) name = name[0..^9];
             builder.Append(name);
 
             var arguments = attribute.ConstructorArguments.ToImmutableArray();

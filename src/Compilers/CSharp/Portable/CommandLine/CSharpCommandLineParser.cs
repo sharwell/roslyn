@@ -1631,7 +1631,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             if (!value.IsEmpty() &&
                 (value.Last() == ';' || value.Last() == ','))
             {
-                value = value.Substring(0, value.Length - 1);
+                value = value[0..^1];
             }
 
             string[] values = value.Split(new char[] { ';', ',' } /*, StringSplitOptions.RemoveEmptyEntries*/);

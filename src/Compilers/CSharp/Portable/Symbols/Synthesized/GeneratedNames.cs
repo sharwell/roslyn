@@ -101,7 +101,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols
             if (typeParameterName.StartsWith("<", StringComparison.Ordinal) &&
                 typeParameterName.EndsWith(">j__TPar", StringComparison.Ordinal))
             {
-                propertyName = typeParameterName.Substring(1, typeParameterName.Length - 9);
+                propertyName = typeParameterName[1..^8];
                 return true;
             }
 

@@ -262,7 +262,7 @@ namespace Microsoft.CodeAnalysis.Diagnostics
 
                 if (delimiterOffset >= 0)
                 {
-                    segment = _name.Substring(_index, delimiterOffset - _index);
+                    segment = _name[_index..delimiterOffset];
                     _index = delimiterOffset;
                 }
                 else
