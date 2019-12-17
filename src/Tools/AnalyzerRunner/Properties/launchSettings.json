@@ -32,6 +32,14 @@
       "commandName": "Project",
       "commandLineArgs": "$(OutDir) $(SolutionDir)Roslyn.sln /stats /a FormattingDiagnosticAnalyzer"
     },
+    "Fix All CSharpUseRangeOperatorDiagnosticAnalyzer": {
+      "commandName": "Project",
+      "commandLineArgs": "$(OutDir) $(SolutionDir)Roslyn.sln /concurrent /stats /a CSharpUseRangeOperatorDiagnosticAnalyzer /fixall /apply"
+    },
+    "Fix All CSharpUseIndexOperatorDiagnosticAnalyzer": {
+      "commandName": "Project",
+      "commandLineArgs": "$(OutDir) $(SolutionDir)Roslyn.sln /concurrent /stats /a CSharpUseIndexOperatorDiagnosticAnalyzer /fixall /apply"
+    },
     "IIncrementalAnalyzer SyntaxTreeInfoIncrementalAnalyzerProvider": {
       "commandName": "Project",
       "commandLineArgs": "$(OutDir) $(SolutionDir)Roslyn.sln /stats /ia SyntaxTreeInfoIncrementalAnalyzerProvider /persist /profileroot $(SolutionDir)artifacts\\profileRoot"
