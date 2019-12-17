@@ -25,6 +25,7 @@ namespace AnalyzerRunner
     {
         private readonly Options _options;
         private readonly ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> _analyzers;
+        private readonly ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> _codeFixes;
 
         public DiagnosticAnalyzerRunner(Options options)
         {
@@ -32,6 +33,8 @@ namespace AnalyzerRunner
 
             var analyzers = GetDiagnosticAnalyzers(options.AnalyzerPath);
             _analyzers = FilterAnalyzers(analyzers, options);
+
+            _codeFixes = GetCodeFixes(options.AnalyzerPath);
         }
 
         public bool HasAnalyzers => _analyzers.Any(pair => pair.Value.Any());
@@ -135,7 +138,7 @@ namespace AnalyzerRunner
 
             if (_options.FixAll)
             {
-                await TestFixAllAsync(stopwatch, solution, analysisResult, _options.ApplyChanges, cancellationToken).ConfigureAwait(true);
+                await TestFixAllAsync(stopwatch, solution, _codeFixes, analysisResult, _options.ApplyChanges, cancellationToken).ConfigureAwait(true);
             }
         }
 
@@ -202,11 +205,11 @@ namespace AnalyzerRunner
             File.WriteAllText(uniqueFileName, uniqueOutput.ToString(), Encoding.UTF8);
         }
 
-        private static async Task TestFixAllAsync(Stopwatch stopwatch, Solution solution, ImmutableDictionary<ProjectId, AnalysisResult> analysisResult, bool applyChanges, CancellationToken cancellationToken)
+        private static async Task TestFixAllAsync(Stopwatch stopwatch, Solution solution, ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> codeFixes, ImmutableDictionary<ProjectId, AnalysisResult> analysisResult, bool applyChanges, CancellationToken cancellationToken)
         {
             Console.WriteLine("Calculating fixes");
 
-            var codeFixers = GetCodeFixes(LanguageNames.CSharp).SelectMany(x => x.Value).Distinct();
+            var codeFixers = codeFixes.SelectMany(x => x.Value).Distinct();
 
             var equivalenceGroups = new List<CodeFixEquivalenceGroup>();
 
