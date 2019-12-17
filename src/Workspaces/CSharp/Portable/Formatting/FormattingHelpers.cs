@@ -25,7 +25,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
             if (lastNewLinePos != -1)
             {
                 var start = lastNewLinePos + NewLine.Length;
-                indent = indent.Substring(start, indent.Length - start);
+                indent = indent[start..];
             }
 
             return indent;

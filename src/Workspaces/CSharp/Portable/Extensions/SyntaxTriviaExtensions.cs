@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
                 if (commentText.EndsWith("*/", StringComparison.Ordinal))
                 {
-                    commentText = commentText.Substring(0, commentText.Length - 2);
+                    commentText = commentText[0..^2];
                 }
 
                 if (commentText.StartsWith("/*", StringComparison.Ordinal))
