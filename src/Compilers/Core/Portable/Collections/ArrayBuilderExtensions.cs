@@ -162,7 +162,7 @@ namespace Microsoft.CodeAnalysis
 
         public static T Peek<T>(this ArrayBuilder<T> builder)
         {
-            return builder[builder.Count - 1];
+            return builder[^1];
         }
 
         public static ImmutableArray<T> ToImmutableOrEmptyAndFree<T>(this ArrayBuilder<T>? builder)

@@ -218,9 +218,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                     }
 
                     // For the last label add the rest of the statements of the switch
-                    if (switchSection.Labels[switchSection.Labels.Count - 1] != null)
+                    if (switchSection.Labels[^1] != null)
                     {
-                        AddSuppressWrappingIfOnSingleLineOperation(list, switchSection.Labels[switchSection.Labels.Count - 1].GetFirstToken(includeZeroWidth: true), switchSection.GetLastToken(includeZeroWidth: true));
+                        AddSuppressWrappingIfOnSingleLineOperation(list, switchSection.Labels[^1].GetFirstToken(includeZeroWidth: true), switchSection.GetLastToken(includeZeroWidth: true));
                     }
 
                     return;

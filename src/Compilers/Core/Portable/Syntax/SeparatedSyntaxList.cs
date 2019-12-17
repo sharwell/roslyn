@@ -194,14 +194,14 @@ namespace Microsoft.CodeAnalysis
 
         public TNode Last()
         {
-            return this[this.Count - 1];
+            return this[^1];
         }
 
         public TNode LastOrDefault()
         {
             if (this.Any())
             {
-                return this[this.Count - 1];
+                return this[^1];
             }
 
             return null;

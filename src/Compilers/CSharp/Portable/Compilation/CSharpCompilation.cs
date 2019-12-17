@@ -3585,7 +3585,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return null;
                 }
 
-                var symbol = GetCachedSymbol(spine[spine.Count - 1]);
+                var symbol = GetCachedSymbol(spine[^1]);
                 if (symbol != null)
                 {
                     return symbol;

@@ -1643,7 +1643,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             }
 
             EmitSymbolToken(actualMethodTargetedByTheCall, call.Syntax,
-                            actualMethodTargetedByTheCall.IsVararg ? (BoundArgListOperator)call.Arguments[call.Arguments.Length - 1] : null);
+                            actualMethodTargetedByTheCall.IsVararg ? (BoundArgListOperator)call.Arguments[^1] : null);
 
             if (!method.ReturnsVoid)
             {
@@ -1976,7 +1976,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
 
                 // for variadic ctors emit expanded ctor token
                 EmitSymbolToken(constructor, expression.Syntax,
-                                constructor.IsVararg ? (BoundArgListOperator)expression.Arguments[expression.Arguments.Length - 1] : null);
+                                constructor.IsVararg ? (BoundArgListOperator)expression.Arguments[^1] : null);
 
                 EmitPopIfUnused(used);
             }
@@ -2214,7 +2214,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGen
             _builder.EmitOpCode(ILOpCode.Call, stackAdjustment);
             // for variadic ctors emit expanded ctor token
             EmitSymbolToken(constructor, objCreation.Syntax,
-                            constructor.IsVararg ? (BoundArgListOperator)objCreation.Arguments[objCreation.Arguments.Length - 1] : null);
+                            constructor.IsVararg ? (BoundArgListOperator)objCreation.Arguments[^1] : null);
 
             if (used)
             {

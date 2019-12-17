@@ -62,7 +62,7 @@ namespace Roslyn.Utilities
         /// </summary>
         public static string EnsureTrailingSeparator(string s)
         {
-            if (s.Length == 0 || IsAnyDirectorySeparator(s[s.Length - 1]))
+            if (s.Length == 0 || IsAnyDirectorySeparator(s[^1]))
             {
                 return s;
             }
@@ -421,7 +421,7 @@ namespace Roslyn.Utilities
         {
             Debug.Assert(!string.IsNullOrEmpty(root));
 
-            char c = root[root.Length - 1];
+            char c = root[^1];
             if (!IsDirectorySeparator(c) && c != VolumeSeparatorChar)
             {
                 return root + DirectorySeparatorStr + relativePath;
@@ -432,7 +432,7 @@ namespace Roslyn.Utilities
 
         private static string RemoveTrailingDirectorySeparator(string path)
         {
-            if (path.Length > 0 && IsDirectorySeparator(path[path.Length - 1]))
+            if (path.Length > 0 && IsDirectorySeparator(path[^1]))
             {
                 return path[0..^1];
             }
@@ -558,7 +558,7 @@ namespace Roslyn.Utilities
             return parentPath.Length > 0
                 && childPath.Length > parentPath.Length
                 && PathsEqual(childPath, parentPath, parentPath.Length)
-                && (IsDirectorySeparator(parentPath[parentPath.Length - 1]) || IsDirectorySeparator(childPath[parentPath.Length]));
+                && (IsDirectorySeparator(parentPath[^1]) || IsDirectorySeparator(childPath[parentPath.Length]));
         }
 
         private static string GetRelativeChildPath(string parentPath, string childPath)

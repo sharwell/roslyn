@@ -159,7 +159,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
 
             const int maxTokenLength = 11;
             var firstLine = lines[0];
-            var lastLine = lines[lines.Length - 1];
+            var lastLine = lines[^1];
             var prefix = firstLine.Length <= maxTokenLength ? firstLine : firstLine.Substring(0, maxTokenLength);
             var suffix = lastLine.Length <= maxTokenLength ? lastLine : lastLine.Substring(lastLine.Length - maxTokenLength, maxTokenLength);
             return $"'{prefix} ... {suffix}'";

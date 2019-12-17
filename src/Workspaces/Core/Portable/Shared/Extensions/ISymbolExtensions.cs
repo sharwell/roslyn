@@ -436,7 +436,7 @@ namespace Microsoft.CodeAnalysis.Shared.Extensions
         public static bool IsParams([NotNullWhen(returnValue: true)] this ISymbol? symbol)
         {
             var parameters = symbol.GetParameters();
-            return parameters.Length > 0 && parameters[parameters.Length - 1].IsParams;
+            return parameters.Length > 0 && parameters[^1].IsParams;
         }
 
         public static ImmutableArray<IParameterSymbol> GetParameters(this ISymbol? symbol)

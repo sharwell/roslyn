@@ -879,7 +879,7 @@ namespace Microsoft.CodeAnalysis
                 container = next;
             }
 
-            foreach (INamedTypeSymbol candidate in container.GetTypeMembers(parts[parts.Length - 1]))
+            foreach (INamedTypeSymbol candidate in container.GetTypeMembers(parts[^1]))
             {
                 if (candidate.IsScriptClass)
                 {

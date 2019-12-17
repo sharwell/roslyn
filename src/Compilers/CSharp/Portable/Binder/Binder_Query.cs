@@ -344,7 +344,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
                     // record the into clause in the bound tree
                     var arguments = invocation.Arguments;
-                    arguments = arguments.SetItem(arguments.Length - 1, MakeQueryClause(join.Into, arguments[arguments.Length - 1], g));
+                    arguments = arguments.SetItem(arguments.Length - 1, MakeQueryClause(join.Into, arguments[^1], g));
 
                     invocation = invocation.Update(invocation.ReceiverOpt, invocation.Method, arguments);
                 }
@@ -399,7 +399,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                         diagnostics);
 
                     var arguments = invocation.Arguments;
-                    arguments = arguments.SetItem(arguments.Length - 1, MakeQueryClause(join.Into, arguments[arguments.Length - 1], g));
+                    arguments = arguments.SetItem(arguments.Length - 1, MakeQueryClause(join.Into, arguments[^1], g));
 
                     invocation = invocation.Update(invocation.ReceiverOpt, invocation.Method, arguments);
                 }
@@ -478,7 +478,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 invocation = invocation.Update(
                     invocation.ReceiverOpt,
                     invocation.Method,
-                    arguments.SetItem(arguments.Length - 2, MakeQueryClause(from, arguments[arguments.Length - 2], x2, invocation, castInvocation)));
+                    arguments.SetItem(arguments.Length - 2, MakeQueryClause(from, arguments[^2], x2, invocation, castInvocation)));
 
                 state.Clear();
                 state.fromExpression = MakeQueryClause(from, invocation, definedSymbol: x2, queryInvocation: invocation);
@@ -541,7 +541,7 @@ namespace Microsoft.CodeAnalysis.CSharp
             state.rangeVariable = state.TransparentRangeVariable(this);
             state.AddTransparentIdentifier(x1.Name);
             var x2m = state.allRangeVariables[x2];
-            x2m[x2m.Count - 1] = x2.Name;
+            x2m[^1] = x2.Name;
             return result;
         }
 

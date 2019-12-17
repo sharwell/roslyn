@@ -122,7 +122,7 @@ namespace Microsoft.CodeAnalysis.CodeGen
 
                 // Add root scope if it was not already added.
                 // we add it even if it does not contain any locals
-                if (result.Count > 0 && result[result.Count - 1].Length != expectedRootScopeLength)
+                if (result.Count > 0 && result[^1].Length != expectedRootScopeLength)
                 {
                     result.Add(new Cci.LocalScope(
                         0,

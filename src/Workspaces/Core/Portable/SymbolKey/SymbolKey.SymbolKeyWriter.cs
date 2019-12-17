@@ -530,7 +530,7 @@ namespace Microsoft.CodeAnalysis
             public void PopMethod(IMethodSymbol method)
             {
                 Contract.ThrowIfTrue(_methodSymbolStack.Count == 0);
-                Contract.ThrowIfFalse(method.Equals(_methodSymbolStack[_methodSymbolStack.Count - 1]));
+                Contract.ThrowIfFalse(method.Equals(_methodSymbolStack[^1]));
                 _methodSymbolStack.RemoveAt(_methodSymbolStack.Count - 1);
             }
         }

@@ -367,11 +367,11 @@ tryAgain:
         {
             if (list.Count > 0)
             {
-                var last = list[list.Count - 1];
+                var last = list[^1];
                 if (last.Span.End == range.Span.Start)
                 {
                     // merge changes together if they are adjacent
-                    list[list.Count - 1] = new TextChangeRange(new TextSpan(last.Span.Start, last.Span.Length + range.Span.Length), last.NewLength + range.NewLength);
+                    list[^1] = new TextChangeRange(new TextSpan(last.Span.Start, last.Span.Length + range.Span.Length), last.NewLength + range.NewLength);
                     return;
                 }
                 else

@@ -3977,7 +3977,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     // Use a smaller span that excludes the parens.
                     var argSyntax = analyzedArguments.Arguments[0].Syntax;
                     var start = argSyntax.SpanStart;
-                    var end = analyzedArguments.Arguments[analyzedArguments.Arguments.Count - 1].Syntax.Span.End;
+                    var end = analyzedArguments.Arguments[^1].Syntax.Span.End;
                     var errorSpan = new TextSpan(start, end - start);
 
                     var loc = new SourceLocation(argSyntax.SyntaxTree, errorSpan);

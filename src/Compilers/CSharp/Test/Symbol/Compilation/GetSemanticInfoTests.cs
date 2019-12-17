@@ -1047,7 +1047,7 @@ class Test
             Assert.Equal("", exprSyntaxList[4].ToFullString());
             Assert.Equal("", exprSyntaxList[5].ToFullString());
 
-            var exprSyntaxToBind = exprSyntaxList[exprSyntaxList.Count - 2];
+            var exprSyntaxToBind = exprSyntaxList[^2];
 
             model.GetSemanticInfoSummary(exprSyntaxToBind);
         }

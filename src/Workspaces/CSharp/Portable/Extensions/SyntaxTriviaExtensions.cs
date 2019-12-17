@@ -62,8 +62,8 @@ namespace Microsoft.CodeAnalysis.CSharp.Extensions
 
             var text = trivia.ToFullString();
             return text.Length >= 4
-                && text[text.Length - 1] == '/'
-                && text[text.Length - 2] == '*';
+                && text[^1] == '/'
+                && text[^2] == '*';
         }
 
         public static bool IsDocComment(this SyntaxTrivia trivia)

@@ -79,7 +79,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                                     diagnostics.Add(ErrorCode.ERR_EmptyFormatSpecifier, interpolation.FormatClause.Location);
                                     hasErrors = true;
                                 }
-                                else if (SyntaxFacts.IsWhitespace(lastChar = text[text.Length - 1]) || SyntaxFacts.IsNewLine(lastChar))
+                                else if (SyntaxFacts.IsWhitespace(lastChar = text[^1]) || SyntaxFacts.IsNewLine(lastChar))
                                 {
                                     diagnostics.Add(ErrorCode.ERR_TrailingWhitespaceInFormatSpecifier, interpolation.FormatClause.Location);
                                     hasErrors = true;

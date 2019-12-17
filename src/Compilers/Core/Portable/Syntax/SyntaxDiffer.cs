@@ -565,11 +565,11 @@ namespace Microsoft.CodeAnalysis
         {
             if (_changes.Count > 0)
             {
-                var last = _changes[_changes.Count - 1];
+                var last = _changes[^1];
                 if (last.Range.Span.End == change.Range.Span.Start)
                 {
                     // merge changes...
-                    _changes[_changes.Count - 1] = new ChangeRecord(
+                    _changes[^1] = new ChangeRecord(
                         new TextChangeRange(new TextSpan(last.Range.Span.Start, last.Range.Span.Length + change.Range.Span.Length), last.Range.NewLength + change.Range.NewLength),
                         Combine(last.OldNodes, change.OldNodes),
                         Combine(last.NewNodes, change.NewNodes));
@@ -586,13 +586,13 @@ namespace Microsoft.CodeAnalysis
         {
             if (_changes.Count > 0)
             {
-                var last = _changes[_changes.Count - 1];
+                var last = _changes[^1];
                 if (last.Range.Span.End == textChangeRange.Span.Start)
                 {
                     // merge changes...
                     last.OldNodes?.Enqueue(removedNode);
                     last.NewNodes?.Enqueue(insertedNode);
-                    _changes[_changes.Count - 1] = new ChangeRecord(
+                    _changes[^1] = new ChangeRecord(
                         new TextChangeRange(new TextSpan(last.Range.Span.Start, last.Range.Span.Length + textChangeRange.Span.Length), last.Range.NewLength + textChangeRange.NewLength),
                         last.OldNodes ?? CreateQueue(removedNode),
                         last.NewNodes ?? CreateQueue(insertedNode));

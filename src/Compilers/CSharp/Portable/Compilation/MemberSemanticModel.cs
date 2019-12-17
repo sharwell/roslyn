@@ -546,7 +546,7 @@ namespace Microsoft.CodeAnalysis.CSharp
 
         private static BoundNode GetLowerBoundNode(ImmutableArray<BoundNode> boundNodes)
         {
-            return boundNodes[boundNodes.Length - 1];
+            return boundNodes[^1];
         }
 
         public override ImmutableArray<Diagnostic> GetSyntaxDiagnostics(TextSpan? span = null, CancellationToken cancellationToken = default(CancellationToken))

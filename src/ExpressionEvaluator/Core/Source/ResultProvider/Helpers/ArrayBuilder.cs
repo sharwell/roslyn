@@ -57,7 +57,7 @@ namespace Microsoft.CodeAnalysis
 
         public T Peek()
         {
-            return _items[_items.Count - 1];
+            return _items[^1];
         }
 
         public void Push(T item)

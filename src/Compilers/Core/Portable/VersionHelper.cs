@@ -62,7 +62,7 @@ namespace Microsoft.CodeAnalysis
 
             // If the wildcard is being used, the first two elements must be specified explicitly, and
             // the last must be a exactly single asterisk without whitespace.
-            bool hasWildcard = allowWildcard && elements[elements.Length - 1] == "*";
+            bool hasWildcard = allowWildcard && elements[^1] == "*";
 
             if ((hasWildcard && elements.Length < 3) || elements.Length > 4)
             {

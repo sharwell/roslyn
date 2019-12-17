@@ -349,7 +349,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
                 var hasRightOperand = rangeExpression.RightOperand != null;
 #else
                 var childSyntax = previousToken.Parent.ChildNodesAndTokens();
-                var hasRightOperand = childSyntax.Count > 1 && childSyntax[childSyntax.Count - 2].IsKind(SyntaxKindEx.DotDotToken);
+                var hasRightOperand = childSyntax.Count > 1 && childSyntax[^2].IsKind(SyntaxKindEx.DotDotToken);
 #endif
                 if (hasRightOperand)
                 {

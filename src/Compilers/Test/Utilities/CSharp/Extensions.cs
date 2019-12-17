@@ -210,7 +210,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                 }
             }
 
-            return lastContainer.GetMembers(parts[parts.Length - 1]);
+            return lastContainer.GetMembers(parts[^1]);
         }
 
         private static ImmutableArray<ISymbol> GetMembers(INamespaceOrTypeSymbol container, string qualifiedName, out INamespaceOrTypeSymbol lastContainer)
@@ -233,7 +233,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
                 }
             }
 
-            return lastContainer.GetMembers(parts[parts.Length - 1]);
+            return lastContainer.GetMembers(parts[^1]);
         }
 
         public static Symbol GetMember(this NamespaceOrTypeSymbol container, string qualifiedName)

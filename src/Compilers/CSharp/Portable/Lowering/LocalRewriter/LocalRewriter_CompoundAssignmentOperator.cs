@@ -316,12 +316,12 @@ namespace Microsoft.CodeAnalysis.CSharp
             // Step two: If we have a params array, build the array and fill in the argument.
             if (expanded)
             {
-                BoundExpression array = BuildParamsArray(syntax, indexer, argsToParamsOpt, rewrittenArguments, parameters, actualArguments[actualArguments.Length - 1]);
+                BoundExpression array = BuildParamsArray(syntax, indexer, argsToParamsOpt, rewrittenArguments, parameters, actualArguments[^1]);
                 BoundAssignmentOperator storeToTemp;
                 var boundTemp = _factory.StoreToTemp(array, out storeToTemp);
                 stores.Add(storeToTemp);
                 temps.Add(boundTemp.LocalSymbol);
-                actualArguments[actualArguments.Length - 1] = boundTemp;
+                actualArguments[^1] = boundTemp;
             }
 
             // Step three: Now fill in the optional arguments. (Dev11 uses the getter for optional arguments in

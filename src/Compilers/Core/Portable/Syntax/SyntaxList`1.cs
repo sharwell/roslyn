@@ -130,7 +130,7 @@ namespace Microsoft.CodeAnalysis
                 }
                 else
                 {
-                    return TextSpan.FromBounds(this[0].FullSpan.Start, this[this.Count - 1].FullSpan.End);
+                    return TextSpan.FromBounds(this[0].FullSpan.Start, this[^1].FullSpan.End);
                 }
             }
         }
@@ -148,7 +148,7 @@ namespace Microsoft.CodeAnalysis
                 }
                 else
                 {
-                    return TextSpan.FromBounds(this[0].Span.Start, this[this.Count - 1].Span.End);
+                    return TextSpan.FromBounds(this[0].Span.Start, this[^1].Span.End);
                 }
             }
         }
@@ -357,7 +357,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public TNode Last()
         {
-            return this[this.Count - 1];
+            return this[^1];
         }
 
         /// <summary>
@@ -367,7 +367,7 @@ namespace Microsoft.CodeAnalysis
         {
             if (this.Any())
             {
-                return this[this.Count - 1];
+                return this[^1];
             }
             else
             {

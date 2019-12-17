@@ -136,7 +136,7 @@ namespace Roslyn.Utilities
 
                 // If the quote string is surrounded by quotes with no interior quotes then 
                 // remove the quotes here. 
-                if (quoteCount == 2 && builder[0] == '"' && builder[builder.Length - 1] == '"')
+                if (quoteCount == 2 && builder[0] == '"' && builder[^1] == '"')
                 {
                     builder.Remove(0, length: 1);
                     builder.Remove(builder.Length - 1, length: 1);

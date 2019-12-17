@@ -1520,9 +1520,9 @@ tryAgain:
         {
             if (members.Count > 0)
             {
-                var tmp = members[members.Count - 1];
+                var tmp = members[^1];
                 this.SkipBadMemberListTokens(ref tmp);
-                members[members.Count - 1] = tmp;
+                members[^1] = tmp;
             }
             else
             {
@@ -7913,9 +7913,9 @@ tryAgain:
                 while (IsPossibleSwitchSection());
 
                 // Next, parse statement list stopping for new sections
-                CSharpSyntaxNode tmp = labels[labels.Count - 1];
+                CSharpSyntaxNode tmp = labels[^1];
                 this.ParseStatements(ref tmp, statements, true);
-                labels[labels.Count - 1] = (SwitchLabelSyntax)tmp;
+                labels[^1] = (SwitchLabelSyntax)tmp;
 
                 return _syntaxFactory.SwitchSection(labels, statements);
             }

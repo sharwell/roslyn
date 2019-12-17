@@ -779,7 +779,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     else
                     {
                         var first = lines[0];
-                        var last = lines[lines.Length - 1].Trim();
+                        var last = lines[^1].Trim();
                         var lastSize = Math.Min(last.Length, 12);
                         snippet = first.Substring(0, Math.Min(first.Length, 12)) + " ... " + last.Substring(last.Length - lastSize, lastSize);
                     }

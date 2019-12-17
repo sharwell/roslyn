@@ -1084,7 +1084,7 @@ using goo.bar;
             var children = tree.GetCompilationUnitRoot().Members[0].ChildNodesAndTokens().ToList();
             var reversed = children.AsEnumerable().Reverse().ToList();
             var list = new List<SyntaxNodeOrToken>();
-            for (var child = children[children.Count - 1]; child.Kind() != SyntaxKind.None; child = child.GetPreviousSibling())
+            for (var child = children[^1]; child.Kind() != SyntaxKind.None; child = child.GetPreviousSibling())
             {
                 list.Add(child);
             }

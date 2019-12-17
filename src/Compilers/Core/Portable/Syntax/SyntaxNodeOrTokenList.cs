@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         public SyntaxNodeOrToken Last()
         {
-            return this[this.Count - 1];
+            return this[^1];
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Microsoft.CodeAnalysis
         public SyntaxNodeOrToken LastOrDefault()
         {
             return this.Any()
-                ? this[this.Count - 1]
+                ? this[^1]
                 : default(SyntaxNodeOrToken);
         }
 

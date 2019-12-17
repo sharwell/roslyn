@@ -41,11 +41,11 @@ namespace Microsoft.CodeAnalysis.CSharp
                 var arguments = call.Arguments;
                 if (call.Method.Name == "Select")
                 {
-                    this.Visit(arguments[arguments.Length - 1]);
+                    this.Visit(arguments[^1]);
                 }
                 else if (call.Method.Name == "GroupBy")
                 {
-                    this.Visit(arguments[arguments.Length - 2]);
+                    this.Visit(arguments[^2]);
                 }
             }
         }

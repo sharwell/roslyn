@@ -7414,14 +7414,14 @@ class Module1
                 types[i] = compilation.GetTypeByMetadataName(typeNames[i]);
             }
 
-            Assert.Null(types[types.Length - 3]);
-            types[types.Length - 3] = compilation.DynamicType;
+            Assert.Null(types[^3]);
+            types[^3] = compilation.DynamicType;
 
-            Assert.Null(types[types.Length - 2]);
-            types[types.Length - 2] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_Byte));
+            Assert.Null(types[^2]);
+            types[^2] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_Byte));
 
-            Assert.Null(types[types.Length - 1]);
-            types[types.Length - 1] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_SByte));
+            Assert.Null(types[^1]);
+            types[^1] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_SByte));
 
             var nodes = (from node in tree.GetRoot().DescendantNodes()
                          select (node as BinaryExpressionSyntax)).
@@ -7571,14 +7571,14 @@ class Module1
                 types[i] = compilation.GetTypeByMetadataName(typeNames[i]);
             }
 
-            Assert.Null(types[types.Length - 3]);
-            types[types.Length - 3] = compilation.DynamicType;
+            Assert.Null(types[^3]);
+            types[^3] = compilation.DynamicType;
 
-            Assert.Null(types[types.Length - 2]);
-            types[types.Length - 2] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_Byte));
+            Assert.Null(types[^2]);
+            types[^2] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_Byte));
 
-            Assert.Null(types[types.Length - 1]);
-            types[types.Length - 1] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_SByte));
+            Assert.Null(types[^1]);
+            types[^1] = compilation.CreatePointerTypeSymbol(compilation.GetSpecialType(SpecialType.System_SByte));
 
             var nodes = (from node in tree.GetRoot().DescendantNodes()
                          select (node as AssignmentExpressionSyntax)).

@@ -729,7 +729,7 @@ namespace Microsoft.CodeAnalysis
             }
 
             bool quoted = false;
-            if (IsWhiteSpace(name[0]) || IsWhiteSpace(name[name.Length - 1]))
+            if (IsWhiteSpace(name[0]) || IsWhiteSpace(name[^1]))
             {
                 result.Append('"');
                 quoted = true;

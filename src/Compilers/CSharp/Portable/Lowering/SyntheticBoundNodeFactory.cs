@@ -820,7 +820,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                     builder.Add(parts[i]);
                 }
             }
-            var lastExpression = parts[parts.Length - 1];
+            var lastExpression = parts[^1];
 
             if (locals.IsDefaultOrEmpty && builder.Count == 0)
             {

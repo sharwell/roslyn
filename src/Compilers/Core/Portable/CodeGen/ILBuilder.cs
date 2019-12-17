@@ -976,7 +976,7 @@ tryAgain:
                         else
                         {
                             // override previous sequence point at the same location
-                            seqPoints[seqPoints.Count - 1] = seqPoint;
+                            seqPoints[^1] = seqPoint;
                         }
                     }
                 }

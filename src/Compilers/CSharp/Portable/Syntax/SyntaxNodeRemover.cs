@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
                     return;
                 }
 
-                if (_residualTrivia.Count == 0 || !IsEndOfLine(_residualTrivia[_residualTrivia.Count - 1]))
+                if (_residualTrivia.Count == 0 || !IsEndOfLine(_residualTrivia[^1]))
                 {
                     _residualTrivia.Add(eolTrivia.Value);
                 }
@@ -241,9 +241,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax
 
                             if (!nextSeparatorBelongsToNode &&
                                 alternate.Count > 0 &&
-                                alternate[alternate.Count - 1].IsToken)
+                                alternate[^1].IsToken)
                             {
-                                var separator = alternate[alternate.Count - 1].AsToken();
+                                var separator = alternate[^1].AsToken();
                                 this.AddTrivia(separator, node);
                                 alternate.RemoveLast();
                             }

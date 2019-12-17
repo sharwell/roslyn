@@ -214,7 +214,7 @@ namespace Roslyn.Utilities
 
         internal static string Unquote(this string arg, out bool quoted)
         {
-            if (arg.Length > 1 && arg[0] == '"' && arg[arg.Length - 1] == '"')
+            if (arg.Length > 1 && arg[0] == '"' && arg[^1] == '"')
             {
                 quoted = true;
                 return arg[1..^1];
@@ -260,7 +260,7 @@ namespace Roslyn.Utilities
         // String isn't IEnumerable<char> in the current Portable profile. 
         internal static char Last(this string arg)
         {
-            return arg[arg.Length - 1];
+            return arg[^1];
         }
 
         // String isn't IEnumerable<char> in the current Portable profile. 
