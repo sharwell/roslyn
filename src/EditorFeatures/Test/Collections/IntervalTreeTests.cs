@@ -28,14 +28,14 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.Collections
             }
         }
 
-        private static IEnumerable<SimpleIntervalTree<Tuple<int, int, string>, TupleIntrospector<string>>> CreateTrees(params Tuple<int, int, string>[] values)
+        private static IEnumerable<IntervalTree<Tuple<int, int, string>, TupleIntrospector<string>>> CreateTrees(params Tuple<int, int, string>[] values)
         {
             return CreateTrees((IEnumerable<Tuple<int, int, string>>)values);
         }
 
-        private static IEnumerable<SimpleIntervalTree<Tuple<int, int, string>, TupleIntrospector<string>>> CreateTrees(IEnumerable<Tuple<int, int, string>> values)
+        private static IEnumerable<IntervalTree<Tuple<int, int, string>, TupleIntrospector<string>>> CreateTrees(IEnumerable<Tuple<int, int, string>> values)
         {
-            yield return SimpleIntervalTree.Create(new TupleIntrospector<string>(), values);
+            yield return IntervalTree.Create(new TupleIntrospector<string>(), values);
         }
 
         [Fact]

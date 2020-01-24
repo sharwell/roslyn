@@ -9,12 +9,13 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Microsoft.CodeAnalysis.Shared.Extensions
 {
-    internal static class SimpleIntervalTreeExtensions
+    internal static class IntervalTreeExtensions
     {
         /// <summary>
         /// check whether the given span is intersects with the tree
         /// </summary>
-        public static bool HasIntervalThatIntersectsWith(this SimpleIntervalTree<TextSpan, TextSpanIntervalIntrospector> tree, TextSpan span)
+        public static bool HasIntervalThatIntersectsWith<TIntervalIntrospector>(this IntervalTree<TextSpan, TIntervalIntrospector> tree, TextSpan span)
+            where TIntervalIntrospector : struct, IIntervalIntrospector<TextSpan>
             => tree.HasIntervalThatIntersectsWith(span.Start, span.Length);
     }
 }

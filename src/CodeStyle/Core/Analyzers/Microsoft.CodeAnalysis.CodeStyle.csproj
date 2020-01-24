@@ -152,12 +152,11 @@
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Collections\IIntervalIntrospector.cs" Link="Formatting\Context\IIntervalIntrospector.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Collections\IntervalTree`2.cs" Link="Formatting\Context\IntervalTree`2.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Collections\IntervalTree`2.Node.cs" Link="Formatting\Context\IntervalTree`2.Node.cs" />
-    <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Collections\SimpleIntervalTree.cs" Link="Formatting\SimpleIntervalTree.cs" />
-    <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Collections\SimpleIntervalTree`2.cs" Link="Formatting\Context\SimpleIntervalTree`2.cs" />
+    <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Collections\IntervalTree.cs" Link="Formatting\IntervalTree.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Collections\TextSpanIntervalIntrospector.cs" Link="Formatting\TextSpanIntervalIntrospector.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Extensions\ChildSyntaxListExtensions.cs" Link="Formatting\ChildSyntaxListExtensions.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Extensions\LinkedListExtensions.cs" Link="Formatting\LinkedListExtensions.cs" />
-    <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Extensions\SimpleIntervalTreeExtensions.cs" Link="Formatting\SimpleIntervalTreeExtensions.cs" />
+    <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Extensions\IntervalTreeExtensions.cs" Link="Formatting\IntervalTreeExtensions.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Extensions\SourceTextExtensions_SharedWithCodeStyle.cs" Link="Formatting\SourceTextExtensions_SharedWithCodeStyle.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Extensions\StringExtensions.cs" Link="Formatting\StringExtensions.cs" />
     <Compile Include="..\..\..\Workspaces\Core\Portable\Shared\Extensions\SyntaxNodeExtensions.cs" Link="Formatting\SyntaxNodeExtensions.cs" />

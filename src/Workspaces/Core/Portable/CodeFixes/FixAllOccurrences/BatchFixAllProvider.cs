@@ -324,7 +324,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             // More complex case.  We have multiple changes to the document.  Apply them in order
             // to get the final document.
 
-            var totalChangesIntervalTree = SimpleIntervalTree.Create(new TextChangeIntervalIntrospector(), Array.Empty<TextChange>());
+            var totalChangesIntervalTree = IntervalTree.Create(new TextChangeIntervalIntrospector(), Array.Empty<TextChange>());
 
             var oldDocument = oldSolution.GetDocument(orderedDocuments[0].document.Id);
             var differenceService = oldSolution.Workspace.Services.GetService<IDocumentTextDifferencingService>();
@@ -399,7 +399,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             IDocumentTextDifferencingService differenceService,
             Document oldDocument,
             Document newDocument,
-            SimpleIntervalTree<TextChange, TextChangeIntervalIntrospector> cumulativeChanges,
+            IntervalTree<TextChange, TextChangeIntervalIntrospector> cumulativeChanges,
             CancellationToken cancellationToken)
         {
             var currentChanges = await differenceService.GetTextChangesAsync(
@@ -415,7 +415,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
         }
 
         private static bool AllChangesCanBeApplied(
-            SimpleIntervalTree<TextChange, TextChangeIntervalIntrospector> cumulativeChanges,
+            IntervalTree<TextChange, TextChangeIntervalIntrospector> cumulativeChanges,
             ImmutableArray<TextChange> currentChanges)
         {
             var overlappingSpans = ArrayBuilder<TextChange>.GetInstance();
@@ -433,7 +433,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
         }
 
         private static bool AllChangesCanBeApplied(
-            SimpleIntervalTree<TextChange, TextChangeIntervalIntrospector> cumulativeChanges,
+            IntervalTree<TextChange, TextChangeIntervalIntrospector> cumulativeChanges,
             ImmutableArray<TextChange> currentChanges,
             ArrayBuilder<TextChange> overlappingSpans,
             ArrayBuilder<TextChange> intersectingSpans)

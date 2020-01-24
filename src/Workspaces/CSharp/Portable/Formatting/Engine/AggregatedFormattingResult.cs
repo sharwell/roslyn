@@ -17,7 +17,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Formatting
 {
     internal class AggregatedFormattingResult : AbstractAggregatedFormattingResult
     {
-        public AggregatedFormattingResult(SyntaxNode node, IList<AbstractFormattingResult> results, SimpleIntervalTree<TextSpan, TextSpanIntervalIntrospector> formattingSpans)
+        public AggregatedFormattingResult(SyntaxNode node, IList<AbstractFormattingResult> results, IntervalTree<TextSpan, TextSpanIntervalIntrospector> formattingSpans)
             : base(node, results, formattingSpans)
         {
         }

@@ -50,6 +50,16 @@ namespace Microsoft.CodeAnalysis.Shared.Collections
 
         protected ref readonly TIntrospector Introspector => ref _introspector;
 
+        /// <summary>
+        /// Warning.  Mutates the tree in place.
+        /// </summary>
+        /// <param name="value"></param>
+        public void AddIntervalInPlace(T value)
+        {
+            var newNode = new Node(value);
+            this.root = Insert(root, newNode, in Introspector);
+        }
+
         protected static bool Contains(T value, int start, int length, in TIntrospector introspector)
         {
             var otherStart = start;

@@ -37,7 +37,7 @@ Namespace Microsoft.CodeAnalysis.CodeCleanup.Providers
         Protected MustInherit Class Rewriter
             Inherits VisualBasicSyntaxRewriter
 
-            Protected ReadOnly _spans As SimpleIntervalTree(Of TextSpan, TextSpanIntervalIntrospector)
+            Protected ReadOnly _spans As IntervalTree(Of TextSpan, TextSpanIntervalIntrospector)
             Protected ReadOnly _cancellationToken As CancellationToken
 
             ' a global state indicating whether the visitor is visiting structured trivia or not
@@ -48,7 +48,7 @@ Namespace Microsoft.CodeAnalysis.CodeCleanup.Providers
                 MyBase.New(visitIntoStructuredTrivia:=True)
 
                 _cancellationToken = cancellationToken
-                _spans = New SimpleIntervalTree(Of TextSpan, TextSpanIntervalIntrospector)(New TextSpanIntervalIntrospector(), spans)
+                _spans = New IntervalTree(Of TextSpan, TextSpanIntervalIntrospector)(New TextSpanIntervalIntrospector(), spans)
                 _underStructuredTrivia = False
             End Sub
 
