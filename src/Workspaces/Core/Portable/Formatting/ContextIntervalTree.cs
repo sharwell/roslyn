@@ -69,7 +69,7 @@ namespace Microsoft.CodeAnalysis.Formatting
         private T GetSmallestContainingIntervalWorker(int start, int length, Func<T, int, int, bool> predicate)
         {
             var result = default(T);
-            if (root == null || MaxEndValue(root) < start)
+            if (root == null || MaxEndValue(root, in this.Introspector) < start)
             {
                 return result;
             }
@@ -99,7 +99,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 if (Introspector.GetStart(currentNode.Value) <= start)
                 {
                     var right = currentNode.Right;
-                    if (right != null && end < MaxEndValue(right))
+                    if (right != null && end < MaxEndValue(right, in this.Introspector))
                     {
                         spineNodes.Push(right);
                         continue;
@@ -109,7 +109,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                 // right side, sub tree doesn't contain the given span, put current node on
                 // stack, and move down to left sub tree
                 var left = currentNode.Left;
-                if (left != null && end <= MaxEndValue(left))
+                if (left != null && end <= MaxEndValue(left, in this.Introspector))
                 {
                     spineNodes.Push(left);
                     continue;
@@ -152,7 +152,7 @@ namespace Microsoft.CodeAnalysis.Formatting
                     if (parentNode.Right == currentNode)
                     {
                         // try left side of parent node if it can have better answer
-                        if (parentNode.Left != null && end <= MaxEndValue(parentNode.Left))
+                        if (parentNode.Left != null && end <= MaxEndValue(parentNode.Left, in this.Introspector))
                         {
                             // right side tree doesn't have any answer or if the right side has
                             // an answer but left side can have better answer then try left side

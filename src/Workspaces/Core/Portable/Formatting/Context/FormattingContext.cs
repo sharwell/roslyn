@@ -438,7 +438,7 @@ namespace Microsoft.CodeAnalysis.Formatting
 
         public IEnumerable<IndentBlockOperation> GetAllRelativeIndentBlockOperations()
         {
-            return _relativeIndentationTree.GetIntervalsThatIntersectWith(this.TreeData.StartPosition, this.TreeData.EndPosition, new FormattingContextIntervalIntrospector()).Select(i => i.Operation);
+            return _relativeIndentationTree.GetIntervalsThatIntersectWith(this.TreeData.StartPosition, this.TreeData.EndPosition).Select(i => i.Operation);
         }
 
         public bool TryGetEndTokenForRelativeIndentationSpan(SyntaxToken token, int maxChainDepth, out SyntaxToken endToken, CancellationToken cancellationToken)

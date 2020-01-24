@@ -47,7 +47,7 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Tagging
             Debug.Assert(snapshot.TextBuffer == _textBuffer);
 
             var introspector = new IntervalIntrospector(snapshot);
-            var intersectingIntervals = _tree.GetIntervalsThatIntersectWith(snapshotSpan.Start, snapshotSpan.Length, introspector);
+            var intersectingIntervals = _tree.GetIntervalsThatIntersectWith(snapshotSpan.Start, snapshotSpan.Length);
 
             List<ITagSpan<TTag>> result = null;
             foreach (var tagNode in intersectingIntervals)
