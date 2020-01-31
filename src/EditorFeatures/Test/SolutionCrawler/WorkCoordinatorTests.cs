@@ -666,17 +666,33 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.SolutionCrawler
             var analyzerConfigDocFilePath = PathUtilities.CombineAbsoluteAndRelativePaths(Temp.CreateDirectory().Path, ".editorconfig");
             var analyzerConfigFile = DocumentInfo.Create(DocumentId.CreateNewId(project.Id), ".editorconfig", filePath: analyzerConfigDocFilePath);
 
+            // When the file is initially added, it is empty, so it has no impact on analysis
             var worker = await ExecuteOperationAsync(workspace, w => w.OnAnalyzerConfigDocumentAdded(analyzerConfigFile));
-            Assert.Equal(expectedDocumentSyntaxEvents, worker.SyntaxDocumentIds.Count);
-            Assert.Equal(expectedDocumentSemanticEvents, worker.DocumentIds.Count);
+            Assert.Empty(worker.SyntaxDocumentIds);
+            Assert.Empty(worker.DocumentIds);
 
-            worker = await ExecuteOperationAsync(workspace, w => w.ChangeAnalyzerConfigDocument(analyzerConfigFile.Id, SourceText.From("//")));
+            // When root=true is added for an .editorconfig that was already the root, it has no impact on analysis
+            var sourceText = SourceText.From("root = true" + Environment.NewLine);
+            worker = await ExecuteOperationAsync(workspace, w => w.ChangeAnalyzerConfigDocument(analyzerConfigFile.Id, sourceText));
+            Assert.Empty(worker.SyntaxDocumentIds);
+            Assert.Empty(worker.DocumentIds);
 
+            var stringToInsert = "# This is a long comment which does not affect analysis";
+            var insertionIndex = sourceText.Length;
+            for (var i = 0; i < stringToInsert.Length; i++)
+            {
+                sourceText = sourceText.WithChanges(new TextChange(new TextSpan(insertionIndex + i, 0), stringToInsert[i].ToString()));
+                worker = await ExecuteOperationAsync(workspace, w => w.ChangeAnalyzerConfigDocument(analyzerConfigFile.Id, sourceText));
+                Assert.Empty(worker.SyntaxDocumentIds);
+                Assert.Empty(worker.DocumentIds);
+            }
+
+            sourceText = sourceText.WithChanges(new TextChange(new TextSpan(sourceText.Length, 0), Environment.NewLine + "key = value" + Environment.NewLine));
+            worker = await ExecuteOperationAsync(workspace, w => w.ChangeAnalyzerConfigDocument(analyzerConfigFile.Id, sourceText));
             Assert.Equal(expectedDocumentSyntaxEvents, worker.SyntaxDocumentIds.Count);
             Assert.Equal(expectedDocumentSemanticEvents, worker.DocumentIds.Count);
 
             worker = await ExecuteOperationAsync(workspace, w => w.OnAnalyzerConfigDocumentRemoved(analyzerConfigFile.Id));
-
             Assert.Equal(expectedDocumentSyntaxEvents, worker.SyntaxDocumentIds.Count);
             Assert.Equal(expectedDocumentSemanticEvents, worker.DocumentIds.Count);
         }
