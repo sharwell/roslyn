@@ -5,8 +5,10 @@
 using System;
 using System.Composition;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.ErrorReporting;
 using Microsoft.CodeAnalysis.Host.Mef;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.SymbolSearch;
 using Microsoft.VisualStudio.TaskStatusCenter;
 using VSShell = Microsoft.VisualStudio.Shell;
@@ -18,15 +20,17 @@ namespace Microsoft.VisualStudio.LanguageServices.SymbolSearch
     {
         private readonly object _gate = new object();
         private readonly Lazy<IVsTaskStatusCenterService> _taskCenterServiceOpt;
+        private readonly IGlobalOptionService _globalOptionService;
 
         private TaskCompletionSource<bool> _taskCompletionSource = new TaskCompletionSource<bool>();
 
         [ImportingConstructor]
         [Obsolete(MefConstruction.ImportingConstructorMessage, error: true)]
-        public VisualStudioSymbolSearchProgressService(VSShell.SVsServiceProvider serviceProvider)
+        public VisualStudioSymbolSearchProgressService(VSShell.SVsServiceProvider serviceProvider, IGlobalOptionService globalOptionService)
         {
             _taskCenterServiceOpt = new Lazy<IVsTaskStatusCenterService>(() =>
                 (IVsTaskStatusCenterService)serviceProvider.GetService(typeof(SVsTaskStatusCenterService)));
+            _globalOptionService = globalOptionService;
         }
 
         public async Task OnDownloadFullDatabaseStartedAsync(string title)
@@ -62,8 +66,14 @@ namespace Microsoft.VisualStudio.LanguageServices.SymbolSearch
                 localTaskCompletionSource = _taskCompletionSource;
             }
 
-            var handler = _taskCenterServiceOpt.Value?.PreRegister(options, data);
-            handler?.RegisterTask(localTaskCompletionSource.Task);
+            // Only show the status UI if the feature is enabled for one of the languages
+            var showProgress = _globalOptionService.GetOption(SymbolSearchOptions.SuggestForTypesInNuGetPackages, LanguageNames.CSharp)
+                || _globalOptionService.GetOption(SymbolSearchOptions.SuggestForTypesInNuGetPackages, LanguageNames.VisualBasic);
+            if (showProgress)
+            {
+                var handler = _taskCenterServiceOpt.Value?.PreRegister(options, data);
+                handler?.RegisterTask(localTaskCompletionSource.Task);
+            }
 
             return Task.CompletedTask;
         }
