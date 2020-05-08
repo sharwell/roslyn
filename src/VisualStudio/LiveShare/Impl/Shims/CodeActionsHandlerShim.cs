@@ -39,7 +39,7 @@ namespace Microsoft.VisualStudio.LanguageServices.LiveShare
         /// <param name="requestContext"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async override Task<object[]> HandleAsync(CodeActionParams param, RequestContext<Solution> requestContext, CancellationToken cancellationToken)
+        public override async Task<object[]> HandleAsync(CodeActionParams param, RequestContext<Solution> requestContext, CancellationToken cancellationToken)
         {
             var result = await base.HandleAsync(param, requestContext, cancellationToken).ConfigureAwait(false);
 
