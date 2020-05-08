@@ -13,7 +13,9 @@ Imports Microsoft.CodeAnalysis.Editor.UnitTests
 
 Namespace Microsoft.VisualStudio.LanguageServices.UnitTests
     Public Module VisualStudioTestExportProvider
-        Private Sub New()
+#Disable Warning IDE0040 ' Add accessibility modifiers https://github.com/dotnet/roslyn/issues/44076
+        Sub New()
+#Enable Warning IDE0040 ' Add accessibility modifiers
             Dim additionalAssemblies = {GetType(CSharpCodeModelService).Assembly,
                                         GetType(VisualBasicCodeModelService).Assembly}
 
