@@ -13,7 +13,10 @@ using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Shared.TestHooks;
 using Microsoft.CodeAnalysis.Shared.Utilities;
 using Microsoft.VisualStudio.CodingConventions;
+
+#if !NETCOREAPP
 using Roslyn.Utilities;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor.Options
 {
@@ -57,7 +60,7 @@ namespace Microsoft.CodeAnalysis.Editor.Options
         /// </summary>
         partial void OnCodingConventionContextCreated(DocumentId documentId, ICodingConventionContext context);
 
-        private void Workspace_DocumentClosed(object sender, DocumentEventArgs e)
+        private void Workspace_DocumentClosed(object? sender, DocumentEventArgs e)
         {
             lock (_gate)
             {
@@ -69,7 +72,7 @@ namespace Microsoft.CodeAnalysis.Editor.Options
             }
         }
 
-        private void Workspace_DocumentOpened(object sender, DocumentEventArgs e)
+        private void Workspace_DocumentOpened(object? sender, DocumentEventArgs e)
         {
             lock (_gate)
             {
@@ -88,7 +91,7 @@ namespace Microsoft.CodeAnalysis.Editor.Options
             }
         }
 
-        private void Workspace_WorkspaceChanged(object sender, WorkspaceChangeEventArgs e)
+        private void Workspace_WorkspaceChanged(object? sender, WorkspaceChangeEventArgs e)
         {
             switch (e.Kind)
             {
@@ -142,7 +145,7 @@ namespace Microsoft.CodeAnalysis.Editor.Options
 
         public async Task<IDocumentOptions?> GetOptionsForDocumentAsync(Document document, CancellationToken cancellationToken)
         {
-            Task<ICodingConventionContext> contextTask;
+            Task<ICodingConventionContext>? contextTask;
 
             lock (_gate)
             {
@@ -172,7 +175,7 @@ namespace Microsoft.CodeAnalysis.Editor.Options
                 {
                     if (document.Name != null && document.Project.FilePath != null)
                     {
-                        path = Path.Combine(Path.GetDirectoryName(document.Project.FilePath), document.Name);
+                        path = Path.Combine(Path.GetDirectoryName(document.Project.FilePath)!, document.Name);
                     }
                     else
                     {

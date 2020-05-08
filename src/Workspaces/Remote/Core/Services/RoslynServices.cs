@@ -10,7 +10,10 @@ using System.Reflection;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.VisualStudio.CodingConventions;
+
+#if !NETCOREAPP
 using Microsoft.VisualStudio.Telemetry;
+#endif
 
 namespace Microsoft.CodeAnalysis.Remote
 {
@@ -21,7 +24,9 @@ namespace Microsoft.CodeAnalysis.Remote
     /// </summary>
     internal sealed class RoslynServices
     {
+#if !NETCOREAPP
         private static TelemetrySession? s_telemetrySession;
+#endif
 
         private static readonly object s_hostServicesGuard = new object();
 
@@ -60,6 +65,7 @@ namespace Microsoft.CodeAnalysis.Remote
             }
         }
 
+#if !NETCOREAPP
         /// <summary>
         /// Set default telemetry session
         /// </summary>
@@ -75,6 +81,7 @@ namespace Microsoft.CodeAnalysis.Remote
         /// Check whether current user is microsoft internal or not
         /// </summary>
         public static bool IsUserMicrosoftInternal => TelemetrySession?.IsUserMicrosoftInternal ?? false;
+#endif
 
         internal TestAccessor GetTestAccessor()
             => new TestAccessor(this);
