@@ -4,6 +4,8 @@
 
 #nullable enable
 
+#if !NETCOREAPP
+
 using Microsoft.CodeAnalysis.Editor;
 
 namespace Microsoft.CodeAnalysis.ExternalAccess.VSTypeScript.Api
@@ -13,3 +15,5 @@ namespace Microsoft.CodeAnalysis.ExternalAccess.VSTypeScript.Api
         public const string SignatureHelpAfterCompletion = PredefinedCommandHandlerNames.SignatureHelpAfterCompletion;
     }
 }
+
+#endif

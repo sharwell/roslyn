@@ -4,6 +4,8 @@
 
 #nullable enable
 
+#if !NETCOREAPP
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -145,3 +147,5 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Peek
         }
     }
 }
+
+#endif

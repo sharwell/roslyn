@@ -4,6 +4,8 @@
 
 #nullable enable
 
+#if !NETCOREAPP
+
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.VisualStudio.Text;
@@ -17,3 +19,5 @@ namespace Microsoft.CodeAnalysis.ExternalAccess.VSTypeScript.Api
             => new SignatureHelpClassifier(textBuffer, typeMap);
     }
 }
+
+#endif

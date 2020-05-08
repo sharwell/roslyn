@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -10,11 +11,14 @@ using Microsoft.CodeAnalysis.Editor.Tagging;
 using Microsoft.CodeAnalysis.Notification;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Shared.TestHooks;
-using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Classification;
 using Microsoft.VisualStudio.Text.Editor;
 using Roslyn.Utilities;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor.Shared.Tagging
 {
@@ -32,12 +36,14 @@ namespace Microsoft.CodeAnalysis.Editor.Shared.Tagging
         public static ITaggerEventSource OnCaretPositionChanged(ITextView textView, ITextBuffer subjectBuffer, TaggerDelay delay)
             => new CaretPositionChangedEventSource(textView, subjectBuffer, delay);
 
+#if !NETCOREAPP
         public static ITaggerEventSource OnCompletionClosed(
             IIntellisenseSessionStack sessionStack,
             TaggerDelay delay)
         {
             return new CompletionClosedEventSource(sessionStack, delay);
         }
+#endif
 
         public static ITaggerEventSource OnTextChanged(ITextBuffer subjectBuffer, TaggerDelay delay)
         {

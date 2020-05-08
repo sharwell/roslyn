@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#if !NETCOREAPP
 using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor
 {
@@ -135,6 +137,8 @@ namespace Microsoft.CodeAnalysis.Editor
         /// </summary>
         public const string RenameTrackingCancellation = "Rename Tracking Cancellation Command Handler";
 
+#if !NETCOREAPP
+
         /// <summary>
         /// Command handler name for a Signature Help command handler executing before <see cref="PredefinedCompletionNames.CompletionCommandHandler"/>.
         /// </summary>
@@ -144,6 +148,8 @@ namespace Microsoft.CodeAnalysis.Editor
         /// Command handler name for a Signature Help command handler executing after <see cref="PredefinedCompletionNames.CompletionCommandHandler"/>.
         /// </summary>
         public const string SignatureHelpAfterCompletion = "Signature Help After Completion Command Handler";
+
+#endif
 
         /// <summary>
         /// Command handler name for Toggle Block Comments.

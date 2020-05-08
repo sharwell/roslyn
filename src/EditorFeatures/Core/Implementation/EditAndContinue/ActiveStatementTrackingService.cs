@@ -136,7 +136,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.EditAndContinue
                 _service.OnTrackingSpansChanged(leafChanged: true);
             }
 
-            private void DocumentOpened(object sender, DocumentEventArgs e)
+            private void DocumentOpened(object? sender, DocumentEventArgs e)
                 => _ = DocumentOpenedAsync(e.Document);
 
             private async Task DocumentOpenedAsync(Document document)

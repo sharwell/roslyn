@@ -17,7 +17,6 @@ using Microsoft.CodeAnalysis.Internal.Log;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding;
@@ -26,6 +25,10 @@ using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
 
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
+
 namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
 {
     [Export]
@@ -33,7 +36,9 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Formatting
     [ContentType(ContentTypeNames.RoslynContentType)]
     [Name(PredefinedCommandHandlerNames.FormatDocument)]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
+#if !NETCOREAPP
     [Order(Before = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     internal partial class FormatCommandHandler :
         ICommandHandler<FormatDocumentCommandArgs>,
         ICommandHandler<FormatSelectionCommandArgs>,

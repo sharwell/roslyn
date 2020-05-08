@@ -7,9 +7,12 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
 {
@@ -17,10 +20,14 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.RenameTracking
     [ContentType(ContentTypeNames.RoslynContentType)]
     [ContentType(ContentTypeNames.XamlContentType)]
     [Name(PredefinedCommandHandlerNames.RenameTrackingCancellation)]
+#if !NETCOREAPP
     [Order(After = PredefinedCommandHandlerNames.SignatureHelpBeforeCompletion)]
     [Order(After = PredefinedCommandHandlerNames.SignatureHelpAfterCompletion)]
+#endif
     [Order(After = PredefinedCommandHandlerNames.AutomaticCompletion)]
+#if !NETCOREAPP
     [Order(After = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     [Order(After = PredefinedCommandHandlerNames.QuickInfo)]
     [Order(After = PredefinedCommandHandlerNames.EventHookup)]
     internal class RenameTrackingCancellationCommandHandler : ICommandHandler<EscapeKeyCommandArgs>
