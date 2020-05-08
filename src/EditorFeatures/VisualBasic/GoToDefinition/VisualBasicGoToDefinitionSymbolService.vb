@@ -4,7 +4,6 @@
 
 Imports System.Composition
 Imports Microsoft.CodeAnalysis.Editor.GoToDefinition
-Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Host.Mef
 Imports Microsoft.CodeAnalysis.VisualBasic.Utilities
 

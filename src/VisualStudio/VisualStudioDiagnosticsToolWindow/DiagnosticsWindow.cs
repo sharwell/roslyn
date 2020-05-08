@@ -5,8 +5,6 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
-using Microsoft.VisualStudio.ComponentModelHost;
-using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.Shell;
 using Roslyn.Hosting.Diagnostics.PerfMargin;
 using Roslyn.VisualStudio.DiagnosticsWindow.Telemetry;

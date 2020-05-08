@@ -5,7 +5,6 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces;
 using Microsoft.VisualStudio.LanguageServices.LiveShare.Protocol;
 using Xunit;
 using LSP = Microsoft.VisualStudio.LanguageServer.Protocol;

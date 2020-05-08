@@ -4,10 +4,6 @@
 
 #nullable enable
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.ErrorReporting;
 using Microsoft.CodeAnalysis.FindUsages;
 using Microsoft.CodeAnalysis.Text;
 using Newtonsoft.Json.Linq;

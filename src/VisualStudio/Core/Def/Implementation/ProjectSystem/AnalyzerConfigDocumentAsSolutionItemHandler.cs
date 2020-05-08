@@ -17,7 +17,6 @@ using Microsoft.CodeAnalysis.Editor.Shared.Utilities;
 using Microsoft.CodeAnalysis.Extensions;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Options;
-using Microsoft.VisualStudio.Shell;
 using Roslyn.Utilities;
 using Task = System.Threading.Tasks.Task;
 

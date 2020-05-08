@@ -12,7 +12,6 @@ using System.Reflection.PortableExecutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using System.Reflection;
-using System.Diagnostics;
 using SystemMetadataReader = System.Reflection.Metadata.MetadataReader;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation

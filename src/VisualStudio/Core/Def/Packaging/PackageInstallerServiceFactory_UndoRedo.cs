@@ -4,7 +4,6 @@
 
 using System;
 using Microsoft.VisualStudio.OLE.Interop;
-using Microsoft.VisualStudio.Text;
 
 namespace Microsoft.VisualStudio.LanguageServices.Packaging
 {

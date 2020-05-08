@@ -2,18 +2,13 @@
 ' The .NET Foundation licenses this file to you under the MIT license.
 ' See the LICENSE file in the project root for more information.
 
-Imports System.Text
 Imports System.Threading
-Imports Microsoft.CodeAnalysis.Classification
 Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.Implementation.IntelliSense.QuickInfo
 Imports Microsoft.CodeAnalysis.Editor.Shared.Utilities
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 Imports Microsoft.CodeAnalysis.QuickInfo
-Imports Microsoft.VisualStudio.Core.Imaging
-Imports Microsoft.VisualStudio.Imaging
 Imports Microsoft.VisualStudio.Text
-Imports Microsoft.VisualStudio.Text.Adornments
 Imports Moq
 
 Imports VSQuickInfoItem = Microsoft.VisualStudio.Language.Intellisense.QuickInfoItem

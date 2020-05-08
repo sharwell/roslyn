@@ -4,7 +4,6 @@
 
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.VisualStudio.Telemetry;
 
 namespace Microsoft.VisualStudio.IntegrationTest.Utilities.InProcess
