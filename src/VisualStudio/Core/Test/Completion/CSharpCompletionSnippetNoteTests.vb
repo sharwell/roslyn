@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Completion
     <[UseExportProvider]>
     Public Class CSharpCompletionSnippetNoteTests
         Private ReadOnly _markup As XElement = <document>
-                                          <![CDATA[using System;
+                                                   <![CDATA[using System;
 class C
 {
     $$

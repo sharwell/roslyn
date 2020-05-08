@@ -13,7 +13,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.Completion
     <[UseExportProvider]>
     Public Class VisualBasicCompletionSnippetNoteTests
         Private ReadOnly _markup As XElement = <document>
-                                          <![CDATA[Imports System
+                                                   <![CDATA[Imports System
 Class Goo
     $$
 End Class]]></document>
