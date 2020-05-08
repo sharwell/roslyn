@@ -29,7 +29,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel
         Public SystemWindowsFormsPath As String
         Public SystemDrawingPath As String
 
-        Sub New()
+        Private Sub New()
             SystemWindowsFormsPath = GetType(System.Windows.Forms.Form).Assembly.Location
             SystemDrawingPath = GetType(System.Drawing.Point).Assembly.Location
         End Sub

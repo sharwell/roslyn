@@ -12,7 +12,7 @@ using System.ComponentModel;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.MoveToNamespace
 {
-    class MoveToNamespaceDialogViewModel : AbstractNotifyPropertyChanged, IDataErrorInfo
+    internal class MoveToNamespaceDialogViewModel : AbstractNotifyPropertyChanged, IDataErrorInfo
     {
         private readonly ISyntaxFacts _syntaxFacts;
 

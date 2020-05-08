@@ -843,7 +843,7 @@ End Structure
             Await TestInRegularAndScriptAsync(text, expected, options:=GetTestOptions(host))
         End Function
 
-        Sub foo(a As Integer, b As Integer)
+        Public Sub foo(a As Integer, b As Integer)
 
         End Sub
 

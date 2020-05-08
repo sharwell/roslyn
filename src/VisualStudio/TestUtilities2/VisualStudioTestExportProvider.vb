@@ -13,7 +13,7 @@ Imports Microsoft.CodeAnalysis.Editor.UnitTests
 
 Namespace Microsoft.VisualStudio.LanguageServices.UnitTests
     Public Module VisualStudioTestExportProvider
-        Sub New()
+        Private Sub New()
             Dim additionalAssemblies = {GetType(CSharpCodeModelService).Assembly,
                                         GetType(VisualBasicCodeModelService).Assembly}
 

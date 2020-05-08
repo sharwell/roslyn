@@ -19,7 +19,7 @@ namespace Microsoft.VisualStudio.LanguageServices.EditAndContinue
 #endif
 {
     // Utilities that are testable. Linked to test project to allow mocking.
-    partial class VisualStudioActiveStatementProvider
+    internal partial class VisualStudioActiveStatementProvider
     {
         // internal for testing
         internal static void GroupActiveStatementsByInstructionId(
