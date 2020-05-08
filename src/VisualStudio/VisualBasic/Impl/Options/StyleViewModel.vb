@@ -14,7 +14,7 @@ Namespace Microsoft.VisualStudio.LanguageServices.VisualBasic.Options
 
 #Region "Preview Text"
 
-        Private Shared ReadOnly s_fieldDeclarationPreviewTrue As String = "
+        Private Const s_fieldDeclarationPreviewTrue As String = "
 Class C
     Private capacity As Integer
     Sub Method()
@@ -25,7 +25,7 @@ Class C
 End Class
 "
 
-        Private Shared ReadOnly s_fieldDeclarationPreviewFalse As String = "
+        Private Const s_fieldDeclarationPreviewFalse As String = "
 Class C
     Private capacity As Integer
     Sub Method()
@@ -36,7 +36,7 @@ Class C
 End Class
 "
 
-        Private Shared ReadOnly s_propertyDeclarationPreviewTrue As String = "
+        Private Const s_propertyDeclarationPreviewTrue As String = "
 Class C
     Public Property Id As Integer
     Sub Method()
@@ -47,7 +47,7 @@ Class C
 End Class
 "
 
-        Private Shared ReadOnly s_propertyDeclarationPreviewFalse As String = "
+        Private Const s_propertyDeclarationPreviewFalse As String = "
 Class C
     Public Property Id As Integer
     Sub Method()
@@ -58,7 +58,7 @@ Class C
 End Class
 "
 
-        Private Shared ReadOnly s_methodDeclarationPreviewTrue As String = "
+        Private Const s_methodDeclarationPreviewTrue As String = "
 Class C
     Sub Display()
         '//[
@@ -68,7 +68,7 @@ Class C
 End Class
 "
 
-        Private Shared ReadOnly s_methodDeclarationPreviewFalse As String = "
+        Private Const s_methodDeclarationPreviewFalse As String = "
 Class C
     Sub Display()
         '//[
@@ -78,7 +78,7 @@ Class C
 End Class
 "
 
-        Private Shared ReadOnly s_eventDeclarationPreviewTrue As String = "
+        Private Const s_eventDeclarationPreviewTrue As String = "
 Imports System
 Class C
     Public Event Elapsed As EventHandler
@@ -90,7 +90,7 @@ Class C
 End Class
 "
 
-        Private Shared ReadOnly s_eventDeclarationPreviewFalse As String = "
+        Private Const s_eventDeclarationPreviewFalse As String = "
 Imports System
 Class C
     Public Event Elapsed As EventHandler
