@@ -17,7 +17,6 @@ using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.Text.Shared.Extensions;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
@@ -25,12 +24,18 @@ using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
 
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
+
 namespace Microsoft.CodeAnalysis.Editor.CSharp.BlockCommentEditing
 {
     [Export(typeof(ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(nameof(BlockCommentEditingCommandHandler))]
+#if !NETCOREAPP
     [Order(After = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     internal sealed class BlockCommentEditingCommandHandler : ICommandHandler<ReturnKeyCommandArgs>
     {
         private readonly ITextUndoHistoryRegistry _undoHistoryRegistry;

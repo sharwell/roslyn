@@ -13,7 +13,6 @@ using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
@@ -21,12 +20,18 @@ using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
 
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
+
 namespace Microsoft.CodeAnalysis.Editor.CSharp.SplitStringLiteral
 {
     [Export(typeof(ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(nameof(SplitStringLiteralCommandHandler))]
+#if !NETCOREAPP
     [Order(After = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     internal partial class SplitStringLiteralCommandHandler : ICommandHandler<ReturnKeyCommandArgs>
     {
         private readonly ITextUndoHistoryRegistry _undoHistoryRegistry;

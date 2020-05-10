@@ -11,18 +11,23 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
 {
     [Export(typeof(ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(nameof(XmlTagCompletionCommandHandler))]
+#if !NETCOREAPP
     [Order(Before = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     internal class XmlTagCompletionCommandHandler : AbstractXmlTagCompletionCommandHandler
     {
         [ImportingConstructor]

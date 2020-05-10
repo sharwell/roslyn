@@ -14,9 +14,12 @@ using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
 {
@@ -24,7 +27,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.DocumentationComments
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(PredefinedCommandHandlerNames.DocumentationComments)]
     [Order(After = PredefinedCommandHandlerNames.Rename)]
+#if !NETCOREAPP
     [Order(After = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     internal class DocumentationCommentCommandHandler
         : AbstractDocumentationCommentCommandHandler<DocumentationCommentTriviaSyntax, MemberDeclarationSyntax>
     {

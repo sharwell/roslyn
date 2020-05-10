@@ -18,10 +18,13 @@ using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.CodeAnalysis.Text.Shared.Extensions;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using Microsoft.VisualStudio.Utilities;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.CompleteStatement
 {
@@ -31,7 +34,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.CompleteStatement
     [Export(typeof(ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(nameof(CompleteStatementCommandHandler))]
+#if !NETCOREAPP
     [Order(After = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     internal sealed class CompleteStatementCommandHandler : IChainedCommandHandler<TypeCharCommandArgs>
     {
         public CommandState GetCommandState(TypeCharCommandArgs args, Func<CommandState> nextCommandHandler) => nextCommandHandler();

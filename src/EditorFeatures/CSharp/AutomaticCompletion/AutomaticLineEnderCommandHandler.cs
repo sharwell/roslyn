@@ -17,10 +17,13 @@ using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
 using Microsoft.VisualStudio.Commanding;
-using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
 using Microsoft.VisualStudio.Text.Operations;
 using Microsoft.VisualStudio.Utilities;
 using Roslyn.Utilities;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion;
+#endif
 
 namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
 {
@@ -30,7 +33,9 @@ namespace Microsoft.CodeAnalysis.Editor.CSharp.AutomaticCompletion
     [Export(typeof(ICommandHandler))]
     [ContentType(ContentTypeNames.CSharpContentType)]
     [Name(PredefinedCommandHandlerNames.AutomaticLineEnder)]
+#if !NETCOREAPP
     [Order(After = PredefinedCompletionNames.CompletionCommandHandler)]
+#endif
     internal class AutomaticLineEnderCommandHandler : AbstractAutomaticLineEnderCommandHandler
     {
         [ImportingConstructor]
