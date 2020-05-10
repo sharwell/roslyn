@@ -12,20 +12,31 @@ Imports Microsoft.CodeAnalysis.Editor.Shared.Utilities
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor
 Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
+#If Not NETCOREAPP Then
+Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
+#End If
+
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.EndConstructGeneration
+#If Not NETCOREAPP Then
     <Export(GetType(ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.EndConstruct)>
     <Order(After:=PredefinedCompletionNames.CompletionCommandHandler)>
     <Order(After:=PredefinedCommandHandlerNames.AutomaticLineEnder)>
     Friend Class EndConstructCommandHandler
+#Else
+    <Export(GetType(ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name(PredefinedCommandHandlerNames.EndConstruct)>
+    <Order(After:=PredefinedCommandHandlerNames.AutomaticLineEnder)>
+    Friend Class EndConstructCommandHandler
+#End If
         Implements IChainedCommandHandler(Of ReturnKeyCommandArgs)
         Implements IChainedCommandHandler(Of TypeCharCommandArgs)
         Implements IChainedCommandHandler(Of AutomaticLineEnderCommandArgs)

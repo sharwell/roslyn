@@ -8,18 +8,28 @@ Imports System.Threading
 Imports Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
+#If Not NETCOREAPP Then
+Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
+#End If
+
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.DocumentationComments
+#If Not NETCOREAPP Then
     <Export(GetType(ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name("XmlTagCompletionCommandHandler")>
     <Order(Before:=PredefinedCompletionNames.CompletionCommandHandler)>
     Friend Class XmlTagCompletionCommandHandler
+#Else
+    <Export(GetType(ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name("XmlTagCompletionCommandHandler")>
+    Friend Class XmlTagCompletionCommandHandler
+#End If
         Inherits AbstractXmlTagCompletionCommandHandler
 
         <ImportingConstructor>

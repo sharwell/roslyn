@@ -9,19 +9,29 @@ Imports Microsoft.CodeAnalysis.Editor.Implementation.AutomaticCompletion
 Imports Microsoft.CodeAnalysis.Host.Mef
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
+
+#If Not NETCOREAPP Then
+Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
+#End If
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.AutomaticCompletion
     ' <summary>
     ' visual basic automatic line ender command handler
     ' </summary>
+#If Not NETCOREAPP Then
     <Export(GetType(ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.AutomaticLineEnder)>
     <Order(Before:=PredefinedCompletionNames.CompletionCommandHandler)>
     Friend Class AutomaticLineEnderCommandHandler
+#Else
+    <Export(GetType(ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name(PredefinedCommandHandlerNames.AutomaticLineEnder)>
+    Friend Class AutomaticLineEnderCommandHandler
+#End If
         Inherits AbstractAutomaticLineEnderCommandHandler
 
         <ImportingConstructor>

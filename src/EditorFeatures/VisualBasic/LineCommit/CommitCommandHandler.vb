@@ -11,12 +11,15 @@ Imports Microsoft.CodeAnalysis.Formatting.Rules
 Imports Microsoft.CodeAnalysis.Text
 Imports Microsoft.CodeAnalysis.Text.Shared.Extensions
 Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
 Imports Microsoft.VisualStudio.Text
 Imports Microsoft.VisualStudio.Text.Editor
 Imports Microsoft.VisualStudio.Text.Editor.Commanding.Commands
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
+
+#If Not NETCOREAPP Then
+Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
+#End If
 
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
     ''' <summary>
@@ -25,12 +28,20 @@ Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.LineCommit
     ''' <remarks>This particular command filter acts as a "wrapper" around any other command, as it
     ''' wishes to invoke the commit after whatever processed the enter is done doing what it's
     ''' doing.</remarks>
+#If Not NETCOREAPP Then
     <Export(GetType(ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.Commit)>
     <Order(Before:=PredefinedCommandHandlerNames.EndConstruct)>
     <Order(Before:=PredefinedCompletionNames.CompletionCommandHandler)>
     Friend Class CommitCommandHandler
+#Else
+    <Export(GetType(ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name(PredefinedCommandHandlerNames.Commit)>
+    <Order(Before:=PredefinedCommandHandlerNames.EndConstruct)>
+    Friend Class CommitCommandHandler
+#End If
         Implements IChainedCommandHandler(Of ReturnKeyCommandArgs)
         Implements IChainedCommandHandler(Of PasteCommandArgs)
         Implements IChainedCommandHandler(Of SaveCommandArgs)

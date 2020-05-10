@@ -9,17 +9,28 @@ Imports Microsoft.CodeAnalysis.Editor.VisualBasic.Utilities.CommandHandlers
 Imports Microsoft.CodeAnalysis.ImplementAbstractClass
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
+#If Not NETCOREAPP Then
+Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
+#End If
+
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.ImplementAbstractClass
+#If Not NETCOREAPP Then
     <Export(GetType(ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name("ImplementAbstractClassCommandHandler")>
     <Order(Before:=PredefinedCommandHandlerNames.EndConstruct)>
     <Order(After:=PredefinedCompletionNames.CompletionCommandHandler)>
     Friend Class ImplementAbstractClassCommandHandler
+#Else
+    <Export(GetType(ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name("ImplementAbstractClassCommandHandler")>
+    <Order(Before:=PredefinedCommandHandlerNames.EndConstruct)>
+    Friend Class ImplementAbstractClassCommandHandler
+#End If
         Inherits AbstractImplementAbstractClassOrInterfaceCommandHandler
 
         <ImportingConstructor>

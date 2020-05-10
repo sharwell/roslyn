@@ -9,17 +9,28 @@ Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.Implementation.DocumentationComments
 Imports Microsoft.CodeAnalysis.VisualBasic.Syntax
 Imports Microsoft.VisualStudio.Commanding
-Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
 Imports Microsoft.VisualStudio.Text.Operations
 Imports Microsoft.VisualStudio.Utilities
 
+#If Not NETCOREAPP Then
+Imports Microsoft.VisualStudio.Language.Intellisense.AsyncCompletion
+#End If
+
 Namespace Microsoft.CodeAnalysis.Editor.VisualBasic.DocumentationComments
+#If Not NETCOREAPP Then
     <Export(GetType(ICommandHandler))>
     <ContentType(ContentTypeNames.VisualBasicContentType)>
     <Name(PredefinedCommandHandlerNames.DocumentationComments)>
     <Order(After:=PredefinedCommandHandlerNames.Rename)>
     <Order(After:=PredefinedCompletionNames.CompletionCommandHandler)>
     Friend Class DocumentationCommentCommandHandler
+#Else
+    <Export(GetType(ICommandHandler))>
+    <ContentType(ContentTypeNames.VisualBasicContentType)>
+    <Name(PredefinedCommandHandlerNames.DocumentationComments)>
+    <Order(After:=PredefinedCommandHandlerNames.Rename)>
+    Friend Class DocumentationCommentCommandHandler
+#End If
         Inherits AbstractDocumentationCommentCommandHandler(Of DocumentationCommentTriviaSyntax, DeclarationStatementSyntax)
 
         <ImportingConstructor()>
