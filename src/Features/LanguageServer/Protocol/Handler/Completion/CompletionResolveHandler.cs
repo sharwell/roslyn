@@ -10,9 +10,13 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Completion;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.LanguageServer.CustomProtocol;
-using Microsoft.VisualStudio.Text.Adornments;
 using Newtonsoft.Json.Linq;
+using Roslyn.Utilities;
 using LSP = Microsoft.VisualStudio.LanguageServer.Protocol;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Text.Adornments;
+#endif
 
 namespace Microsoft.CodeAnalysis.LanguageServer.Handler
 {
@@ -71,9 +75,13 @@ namespace Microsoft.CodeAnalysis.LanguageServer.Handler
             LSP.CompletionItem resolvedCompletionItem;
             if (lspVSClientCapability)
             {
+#if !NETCOREAPP
                 resolvedCompletionItem = CloneVSCompletionItem(completionItem);
                 ((LSP.VSCompletionItem)resolvedCompletionItem).Description = new ClassifiedTextElement(description.TaggedParts
                     .Select(tp => new ClassifiedTextRun(tp.Tag.ToClassificationTypeName(), tp.Text)));
+#else
+                throw ExceptionUtilities.Unreachable;
+#endif
             }
             else
             {
@@ -86,6 +94,7 @@ namespace Microsoft.CodeAnalysis.LanguageServer.Handler
             return resolvedCompletionItem;
         }
 
+#if !NETCOREAPP
         private LSP.VSCompletionItem CloneVSCompletionItem(LSP.CompletionItem completionItem)
         {
             return new LSP.VSCompletionItem
@@ -105,5 +114,6 @@ namespace Microsoft.CodeAnalysis.LanguageServer.Handler
                 TextEdit = completionItem.TextEdit
             };
         }
+#endif
     }
 }

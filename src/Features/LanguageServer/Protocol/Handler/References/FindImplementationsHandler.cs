@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Editor.FindUsages;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.PooledObjects;
+using Roslyn.Utilities;
 using LSP = Microsoft.VisualStudio.LanguageServer.Protocol;
 
 namespace Microsoft.CodeAnalysis.LanguageServer.Handler
@@ -49,7 +50,11 @@ namespace Microsoft.CodeAnalysis.LanguageServer.Handler
                 {
                     if (clientCapabilities?.HasVisualStudioLspCapability() == true)
                     {
+#if !NETCOREAPP
                         locations.Add(await ProtocolConversions.DocumentSpanToLocationWithTextAsync(sourceSpan, text, cancellationToken).ConfigureAwait(false));
+#else
+                        throw ExceptionUtilities.Unreachable;
+#endif
                     }
                     else
                     {

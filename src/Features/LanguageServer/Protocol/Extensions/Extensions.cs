@@ -39,10 +39,12 @@ namespace Microsoft.CodeAnalysis.LanguageServer
 
         public static bool HasVisualStudioLspCapability(this ClientCapabilities clientCapabilities)
         {
+#if !NETCOREAPP
             if (clientCapabilities is VSClientCapabilities vsClientCapabilities)
             {
                 return vsClientCapabilities.SupportsVisualStudioExtensions;
             }
+#endif
 
             return false;
         }

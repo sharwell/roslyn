@@ -10,9 +10,12 @@ using Microsoft.CodeAnalysis.DocumentHighlighting;
 using Microsoft.CodeAnalysis.NavigateTo;
 using Microsoft.CodeAnalysis.Tags;
 using Microsoft.CodeAnalysis.Text;
-using Microsoft.VisualStudio.Text.Adornments;
 using Roslyn.Utilities;
 using LSP = Microsoft.VisualStudio.LanguageServer.Protocol;
+
+#if !NETCOREAPP
+using Microsoft.VisualStudio.Text.Adornments;
+#endif
 
 namespace Microsoft.CodeAnalysis.LanguageServer
 {
@@ -117,6 +120,7 @@ namespace Microsoft.CodeAnalysis.LanguageServer
         public static Task<LSP.Location> DocumentSpanToLocationAsync(DocumentSpan documentSpan, CancellationToken cancellationToken)
             => TextSpanToLocationAsync(documentSpan.Document, documentSpan.SourceSpan, cancellationToken);
 
+#if !NETCOREAPP
         public static async Task<LSP.LocationWithText> DocumentSpanToLocationWithTextAsync(DocumentSpan documentSpan, ClassifiedTextElement text, CancellationToken cancellationToken)
         {
             var sourceText = await documentSpan.Document.GetTextAsync(cancellationToken).ConfigureAwait(false);
@@ -130,6 +134,7 @@ namespace Microsoft.CodeAnalysis.LanguageServer
 
             return locationWithText;
         }
+#endif
 
         public static LSP.Location RangeToLocation(LSP.Range range, string uriString)
         {

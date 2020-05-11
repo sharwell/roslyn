@@ -9,11 +9,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Completion;
-using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.LanguageServer.CustomProtocol;
-using Microsoft.VisualStudio.Text.Adornments;
 using LSP = Microsoft.VisualStudio.LanguageServer.Protocol;
+
+#if !NETCOREAPP
+using Microsoft.CodeAnalysis.Editor.Shared.Extensions;
+using Microsoft.VisualStudio.Text.Adornments;
+#else
+using Roslyn.Utilities;
+#endif
 
 namespace Microsoft.CodeAnalysis.LanguageServer.Handler
 {
@@ -68,9 +73,13 @@ namespace Microsoft.CodeAnalysis.LanguageServer.Handler
             {
                 if (useVSCompletionItem)
                 {
+#if !NETCOREAPP
                     var vsCompletionItem = CreateCompletionItem<LSP.VSCompletionItem>(request, item);
                     vsCompletionItem.Icon = new ImageElement(item.Tags.GetFirstGlyph().GetImageId());
                     return vsCompletionItem;
+#else
+                    throw ExceptionUtilities.Unreachable;
+#endif
                 }
                 else
                 {
