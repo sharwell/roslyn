@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeGeneration;
 using Microsoft.CodeAnalysis.CSharp.Extensions;
+using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.LanguageServices;
@@ -481,6 +482,21 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
             else if (destinationMember is AccessorDeclarationSyntax accessorDeclaration)
             {
                 return (accessorDeclaration.Body == null) ? destinationMember : Cast<TDeclarationNode>(accessorDeclaration.AddBodyStatements(StatementGenerator.GenerateStatements(statements).ToArray()));
+            }
+            else if (destinationMember is CompilationUnitSyntax compilationUnit)
+            {
+                // Insert the new global statement(s) at the end of any current global statements
+                var insertionIndex = compilationUnit.Members.LastIndexOf(memberDeclaration => memberDeclaration.IsKind(SyntaxKind.GlobalStatement)) + 1;
+                var wrappedStatements = StatementGenerator.GenerateStatements(statements).Select(generated => SyntaxFactory.GlobalStatement(generated)).ToArray();
+                return Cast<TDeclarationNode>(compilationUnit.WithMembers(compilationUnit.Members.InsertRange(insertionIndex, wrappedStatements)));
+            }
+            else if (destinationMember is StatementSyntax statement && statement.IsParentKind(SyntaxKind.GlobalStatement))
+            {
+                // We are adding a statement to a global statement in script, where the CompilationUnitSyntax is not a
+                // statement container. If the global statement is not already a block, create a block which can hold
+                // both the original statement and any new statements we are adding to it.
+                var block = statement as BlockSyntax ?? SyntaxFactory.Block(statement);
+                return Cast<TDeclarationNode>(block.AddStatements(StatementGenerator.GenerateStatements(statements).ToArray()));
             }
             else
             {

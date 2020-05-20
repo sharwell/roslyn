@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.LanguageServices;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.ExtractMethod;
 using Microsoft.CodeAnalysis.Formatting;
@@ -66,6 +67,13 @@ namespace Microsoft.CodeAnalysis.CSharp.ExtractMethod
                 // check whether we are extracting whole global statement out
                 if (OriginalSelectionResult.FinalSpan.Contains(memberNode.Span))
                 {
+                    return await InsertionPoint.CreateAsync(document, globalStatement.Parent, cancellationToken).ConfigureAwait(false);
+                }
+
+                // check whether the global statement is a statement container
+                if (!globalStatement.Statement.IsStatementContainerNode() && !root.SyntaxTree.IsScript())
+                {
+                    // The extracted function will be a new global statement
                     return await InsertionPoint.CreateAsync(document, globalStatement.Parent, cancellationToken).ConfigureAwait(false);
                 }
 
