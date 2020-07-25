@@ -189,7 +189,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.ChangeSignature
         /// </summary>
         /// <param name="signaturePartCounts">A four element array containing [s, m, n, p] as 
         /// described above.</param>
-        public static IEnumerable<object> GetAllSignatureSpecificationsForTheory(int[] signaturePartCounts)
+        public static IEnumerable<object[]> GetAllSignatureSpecificationsForTheory(int[] signaturePartCounts)
         {
             Assert.Equal(4, signaturePartCounts.Length);
             Assert.True(signaturePartCounts[0] == 0 || signaturePartCounts[0] == 1);
