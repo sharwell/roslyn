@@ -28,7 +28,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
             if (editDistance1 > 0)
             {
                 var editDistance4 = EditDistance.GetEditDistance(s, t, editDistance1 - 1);
-                Assert.Equal(editDistance4, EditDistance.BeyondThreshold);
+                Assert.Equal(EditDistance.BeyondThreshold, editDistance4);
             }
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.CodeAnalysis.UnitTests
         public void EditDistance11()
         {
             var editDistance = EditDistance.GetEditDistance("book", "moons", 1);
-            Assert.Equal(editDistance, EditDistance.BeyondThreshold);
+            Assert.Equal(EditDistance.BeyondThreshold, editDistance);
             VerifyEditDistance("book", "moons", 3);
         }
 
