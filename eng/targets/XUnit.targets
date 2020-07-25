@@ -11,6 +11,10 @@
     <AdditionalFiles Include="$(MSBuildThisFileDirectory)..\config\test\BannedSymbols.txt" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="xunit.analyzers" Version="$(xunitanalyzersVersion)" IsImplicitlyDefined="true" PrivateAssets="all" />
+  </ItemGroup>
+
   <!-- Add a default test app.config, if the project doesn't already have one-->
   <Target Name="AddDefaultTestAppConfig">
     <PropertyGroup>
