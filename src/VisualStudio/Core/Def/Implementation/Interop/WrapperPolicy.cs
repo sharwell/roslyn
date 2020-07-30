@@ -3,9 +3,9 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Runtime.InteropServices;
+using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Roslyn.Utilities;
 
 namespace Microsoft.VisualStudio.LanguageServices.Implementation.Interop
 {
@@ -13,12 +13,26 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Interop
     {
         /// <summary>
         /// Factory object for creating IComWrapper instances.
-        /// Internal and not readonly so that unit tests can provide an alternative implementation.
         /// </summary>
-        internal static IComWrapperFactory s_ComWrapperFactory =
-            PackageUtilities.CreateInstance(typeof(IComWrapperFactory).GUID) as IComWrapperFactory;
+        private static IComWrapperFactory s_comWrapperFactory;
 
-        internal static object CreateAggregatedObject(object managedObject) => s_ComWrapperFactory.CreateAggregatedObject(managedObject);
+        private static IComWrapperFactory ComWrapperFactory
+        {
+            get
+            {
+                var factory = s_comWrapperFactory;
+                if (factory is null)
+                {
+                    factory = PackageUtilities.CreateInstance(typeof(IComWrapperFactory).GUID) as IComWrapperFactory;
+                    factory = Interlocked.CompareExchange(ref s_comWrapperFactory, factory, null) ?? factory;
+                }
+
+                Assumes.Present(factory);
+                return factory;
+            }
+        }
+
+        internal static object CreateAggregatedObject(object managedObject) => ComWrapperFactory.CreateAggregatedObject(managedObject);
 
         /// <summary>
         /// Return the RCW for the native IComWrapper instance aggregating "managedObject"
@@ -45,6 +59,11 @@ namespace Microsoft.VisualStudio.LanguageServices.Implementation.Interop
             {
                 Marshal.Release(ptr);
             }
+        }
+
+        internal readonly struct TestAccessor
+        {
+            public static ref IComWrapperFactory ComWrapperFactory => ref s_comWrapperFactory;
         }
     }
 }

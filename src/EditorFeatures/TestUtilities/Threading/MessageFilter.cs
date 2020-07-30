@@ -3,16 +3,20 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Linq;
+using Microsoft.CodeAnalysis.Test.Utilities;
 using IMessageFilter = Microsoft.VisualStudio.OLE.Interop.IMessageFilter;
 using INTERFACEINFO = Microsoft.VisualStudio.OLE.Interop.INTERFACEINFO;
+using IOleServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
 using PENDINGMSG = Microsoft.VisualStudio.OLE.Interop.PENDINGMSG;
 using SERVERCALL = Microsoft.VisualStudio.OLE.Interop.SERVERCALL;
 
-namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Harness
+namespace Roslyn.Test.Utilities
 {
-    public sealed class MessageFilter : IMessageFilter, IDisposable
+    public sealed class MessageFilter : IMessageFilter, IOleServiceProvider, IDisposable
     {
         private const uint CancelCall = ~0U;
+        private const int E_NOTIMPL = -2147467263;
 
         private readonly MessageFilterSafeHandle _messageFilterRegistration;
         private readonly TimeSpan _timeout;
@@ -59,6 +63,19 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Harness
         public void Dispose()
         {
             _messageFilterRegistration.Dispose();
+        }
+
+        int IOleServiceProvider.QueryService(ref Guid guidService, ref Guid riid, out IntPtr ppvObject)
+        {
+            var exportProvider = ExportProviderCache.LocalExportProviderForCleanup;
+            var serviceProvider = exportProvider?.GetExportedValues<IOleServiceProvider>().SingleOrDefault();
+            if (serviceProvider is object)
+            {
+                return serviceProvider.QueryService(ref guidService, ref riid, out ppvObject);
+            }
+
+            ppvObject = IntPtr.Zero;
+            return E_NOTIMPL;
         }
     }
 }

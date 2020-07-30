@@ -76,33 +76,26 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel
             End Get
         End Property
 
-#Region "IDisposable Support"
         Private _disposedValue As Boolean ' To detect redundant calls
 
-        Protected Overridable Sub Dispose(disposing As Boolean)
-            If Not disposing Then
+        Protected Overrides Sub Finalize()
+            If Not Environment.HasShutdownStarted Then
                 FailFast.Fail("TestWorkspaceAndFileModelCodel GC'd without call to Dispose()!")
             End If
+        End Sub
+
+        Public Sub Dispose() Implements IDisposable.Dispose
+            ' We only use the finalizer to ensure Dispose was called explicitly. Suppress that call early to avoid
+            ' crashing the process for an unrelated exception within the Dispose implementation.
+            GC.SuppressFinalize(Me)
 
             If Not Me._disposedValue Then
-                If disposing Then
-                    Workspace.Dispose()
-                End If
+                VisualStudioWorkspace.Dispose()
+                Workspace.Dispose()
             End If
 
             Me._disposedValue = True
         End Sub
-
-        Protected Overrides Sub Finalize()
-            Dispose(False)
-            MyBase.Finalize()
-        End Sub
-
-        Public Sub Dispose() Implements IDisposable.Dispose
-            Dispose(True)
-            GC.SuppressFinalize(Me)
-        End Sub
-#End Region
 
     End Class
 End Namespace

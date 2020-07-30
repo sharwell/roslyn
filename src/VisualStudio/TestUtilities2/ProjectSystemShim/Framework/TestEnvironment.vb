@@ -63,9 +63,9 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.ProjectSystemShim.Fr
             GetType(VisualStudioRuleSetManagerFactory),
             GetType(VsMetadataServiceFactory),
             GetType(VisualStudioMetadataReferenceManagerFactory),
-            GetType(MockWorkspaceEventListenerProvider),
             GetType(MockDiagnosticUpdateSourceRegistrationService),
-            GetType(HostDiagnosticUpdateSource))
+            GetType(HostDiagnosticUpdateSource),
+            GetType(StubOleServiceProvider))
 
         Private ReadOnly _workspace As VisualStudioWorkspaceImpl
         Private ReadOnly _projectFilePaths As New List(Of String)
@@ -76,7 +76,6 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.ProjectSystemShim.Fr
             ExportProvider = composition.ExportProviderFactory.CreateExportProvider()
             _workspace = ExportProvider.GetExportedValue(Of VisualStudioWorkspaceImpl)
             ThreadingContext = ExportProvider.GetExportedValue(Of IThreadingContext)()
-            Interop.WrapperPolicy.s_ComWrapperFactory = MockComWrapperFactory.Instance
 
             Dim mockServiceProvider As MockServiceProvider = ExportProvider.GetExportedValue(Of MockServiceProvider)()
             mockServiceProvider.MockMonitorSelection = New MockShellMonitorSelection(True)

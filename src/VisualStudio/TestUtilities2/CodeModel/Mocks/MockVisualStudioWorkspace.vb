@@ -25,6 +25,14 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel.Mocks
             SetCurrentSolution(workspace.CurrentSolution)
         End Sub
 
+        Protected Overrides Sub Dispose(finalize As Boolean)
+            If Not finalize Then
+                _fileCodeModels.Clear()
+            End If
+
+            MyBase.Dispose(finalize)
+        End Sub
+
         Public Overrides Function CanApplyChange(feature As ApplyChangesKind) As Boolean
             Return _workspace.CanApplyChange(feature)
         End Function

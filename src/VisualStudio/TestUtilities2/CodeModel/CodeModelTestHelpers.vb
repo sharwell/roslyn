@@ -6,14 +6,12 @@ Imports System.Runtime.CompilerServices
 Imports System.Runtime.ExceptionServices
 Imports System.Runtime.InteropServices
 Imports EnvDTE
-Imports EnvDTE80
 Imports Microsoft.CodeAnalysis
 Imports Microsoft.CodeAnalysis.Editor
 Imports Microsoft.CodeAnalysis.Editor.Shared.Utilities
 Imports Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces
 Imports Microsoft.CodeAnalysis.Shared.TestHooks
 Imports Microsoft.CodeAnalysis.Test.Utilities
-Imports Microsoft.VisualStudio.ComponentModelHost
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.ExternalElements
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.InternalElements
@@ -22,6 +20,7 @@ Imports Microsoft.VisualStudio.LanguageServices.Implementation.Interop
 Imports Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel.Mocks
 Imports Microsoft.VisualStudio.Shell.Interop
 Imports Roslyn.Test.Utilities
+Imports ServiceProvider = Microsoft.VisualStudio.Shell.ServiceProvider
 
 Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel
     Friend Module CodeModelTestHelpers
@@ -48,10 +47,8 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel
 
             Dim result As CodeModelTestState = Nothing
             Try
-                Dim mockComponentModel = New MockComponentModel(workspace.ExportProvider)
-                Dim mockServiceProvider = New MockServiceProvider(mockComponentModel)
+                Dim mockServiceProvider = ServiceProvider.GlobalProvider
                 Dim mockVisualStudioWorkspace = New MockVisualStudioWorkspace(workspace)
-                WrapperPolicy.s_ComWrapperFactory = MockComWrapperFactory.Instance
 
                 ' The Code Model test infrastructure assumes that a test workspace only ever contains a single project.
                 ' If tests are written that require multiple projects, additional support will need to be added.
@@ -94,61 +91,6 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel
 
             Return result
         End Function
-
-        Public Class MockServiceProvider
-            Implements IServiceProvider
-
-            Private ReadOnly _componentModel As MockComponentModel
-
-            Public Sub New(componentModel As MockComponentModel)
-                _componentModel = componentModel
-            End Sub
-
-            Public Function GetService(serviceType As Type) As Object Implements IServiceProvider.GetService
-                If serviceType = GetType(SComponentModel) Then
-                    Return Me._componentModel
-                End If
-
-                If serviceType = GetType(EnvDTE.IVsExtensibility) Then
-                    Return Nothing
-                End If
-
-                Throw New NotImplementedException($"No service exists for {serviceType.FullName}")
-            End Function
-        End Class
-
-        Friend Class MockComWrapperFactory
-            Implements IComWrapperFactory
-
-            Public Shared ReadOnly Instance As IComWrapperFactory = New MockComWrapperFactory
-
-            Public Function CreateAggregatedObject(managedObject As Object) As Object Implements IComWrapperFactory.CreateAggregatedObject
-                Dim wrapperUnknown = BlindAggregatorFactory.CreateWrapper()
-                Try
-                    Dim innerUnknown = Marshal.CreateAggregatedObject(wrapperUnknown, managedObject)
-                    Try
-                        Dim handle = GCHandle.Alloc(managedObject, GCHandleType.Normal)
-                        Dim freeHandle = True
-                        Try
-#Disable Warning RS0042 ' Do not copy value
-                            BlindAggregatorFactory.SetInnerObject(wrapperUnknown, innerUnknown, GCHandle.ToIntPtr(handle))
-#Enable Warning RS0042 ' Do not copy value
-                            freeHandle = False
-                        Finally
-                            If freeHandle Then handle.Free()
-                        End Try
-
-                        Dim wrapperRCW = Marshal.GetObjectForIUnknown(wrapperUnknown)
-                        Return CType(wrapperRCW, IComWrapper)
-                    Finally
-                        Marshal.Release(innerUnknown)
-                    End Try
-                Finally
-                    Marshal.Release(wrapperUnknown)
-                End Try
-            End Function
-
-        End Class
 
         <Extension()>
         Public Function GetDocumentAtCursor(state As CodeModelTestState) As Microsoft.CodeAnalysis.Document

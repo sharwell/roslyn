@@ -55,7 +55,7 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         /// to completion. If this timeout is exceeded by the asynchronous operations running after a test completes,
         /// the test is failed.
         /// </summary>
-        private static readonly TimeSpan CleanupTimeout = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan CleanupTimeout = TimeSpan.FromSeconds(5);
 
         private readonly Lazy<MefHostServices> _remoteHostServices = new Lazy<MefHostServices>(
             CreateRemoteHostServices,
@@ -89,8 +89,14 @@ namespace Microsoft.CodeAnalysis.Test.Utilities
         {
             try
             {
-                DisposeExportProvider(ExportProviderCache.LocalExportProviderForCleanup);
-                DisposeExportProvider(ExportProviderCache.RemoteExportProviderForCleanup);
+                try
+                {
+                    DisposeExportProvider(ExportProviderCache.LocalExportProviderForCleanup);
+                }
+                finally
+                {
+                    DisposeExportProvider(ExportProviderCache.RemoteExportProviderForCleanup);
+                }
             }
             finally
             {

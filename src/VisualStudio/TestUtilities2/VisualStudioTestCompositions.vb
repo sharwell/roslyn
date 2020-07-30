@@ -5,7 +5,7 @@
 Imports Microsoft.CodeAnalysis.Editor.Host
 Imports Microsoft.CodeAnalysis.Editor.UnitTests
 Imports Microsoft.CodeAnalysis.Notification
-Imports Microsoft.CodeAnalysis.Remote
+Imports Microsoft.CodeAnalysis.Remote.Testing
 Imports Microsoft.CodeAnalysis.Test.Utilities
 Imports Microsoft.VisualStudio.LanguageServices.CSharp
 Imports Microsoft.VisualStudio.LanguageServices.Implementation.Utilities
@@ -23,7 +23,8 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests
                 GetType(CSharpVSResources).Assembly,
                 GetType(BasicVSResources).Assembly).
             AddParts(
-                GetType(MockWorkspaceEventListenerProvider),         ' avoid running Solution Crawler
+                GetType(InProcRemoteHostClientProvider.Factory),
+                GetType(StubOleServiceProvider),
                 GetType(StubVsEditorAdaptersFactoryService)).
             AddExcludedPartTypes(
                 GetType(ServiceHubRemoteHostClientProvider.Factory), ' Do not use ServiceHub in VS unit tests, run services locally.

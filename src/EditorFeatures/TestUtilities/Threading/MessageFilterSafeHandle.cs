@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 using IMessageFilter = Microsoft.VisualStudio.OLE.Interop.IMessageFilter;
 
-namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Harness
+namespace Roslyn.Test.Utilities
 {
     internal sealed class MessageFilterSafeHandle : SafeHandleMinusOneIsInvalid
     {
@@ -20,13 +20,14 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Harness
 
             try
             {
-                if (CoRegisterMessageFilter(handle, out _oldFilter) != VSConstants.S_OK)
+                if (CoRegisterMessageFilter(handle, out _oldFilter) != 0)
                 {
                     throw new InvalidOperationException("Failed to register a new message filter");
                 }
             }
             catch
             {
+                Marshal.Release(handle);
                 SetHandleAsInvalid();
                 throw;
             }
@@ -44,8 +45,13 @@ namespace Microsoft.VisualStudio.IntegrationTest.Utilities.Harness
 
         protected override bool ReleaseHandle()
         {
-            if (CoRegisterMessageFilter(_oldFilter, out _) == VSConstants.S_OK)
+            if (CoRegisterMessageFilter(_oldFilter, out _) == 0)
             {
+                // Release twice:
+                // 1. The call to 'GetComInterfaceForObject'
+                Marshal.Release(handle);
+
+                // 2. The call to 'CoRegisterMessageFilter'
                 Marshal.Release(handle);
             }
 

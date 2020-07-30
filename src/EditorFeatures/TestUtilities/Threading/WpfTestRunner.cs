@@ -76,6 +76,8 @@ namespace Roslyn.Test.Utilities
                         }
                         else
                         {
+                            using var _ = new MessageFilter();
+
                             // Just call back into the normal xUnit dispatch process now that we are on an STA Thread with no synchronization context.
                             var invoker = new XunitTestInvoker(Test, MessageBus, TestClass, ConstructorArguments, TestMethod, TestMethodArguments, BeforeAfterAttributes, aggregator, CancellationTokenSource);
                             return invoker.RunAsync().JoinUsingDispatcher(CancellationTokenSource.Token);

@@ -5,6 +5,7 @@
 #nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,20 +26,13 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
     internal sealed class VisualStudioWorkspaceServiceHubConnector : IEventListener<object>, IEventListenerStoppable
     {
         private readonly IAsynchronousOperationListenerProvider _listenerProvider;
-
-        private GlobalNotificationRemoteDeliveryService? _globalNotificationDelivery;
-        private Task<RemoteHostClient?>? _remoteClientInitializationTask;
-        private SolutionChecksumUpdater? _checksumUpdater;
-#pragma warning disable IDE0044 // Add readonly modifier
-        private CancellationTokenSource _disposalCancellationSource;
-#pragma warning restore IDE0044 // Add readonly modifier
+        private readonly Dictionary<Workspace, Connection> _connectedEvents = new Dictionary<Workspace, Connection>();
 
         [ImportingConstructor]
         [Obsolete(MefConstruction.ImportingConstructorMessage, error: true)]
         public VisualStudioWorkspaceServiceHubConnector(IAsynchronousOperationListenerProvider listenerProvider)
         {
             _listenerProvider = listenerProvider;
-            _disposalCancellationSource = new CancellationTokenSource();
         }
 
         public void StartListening(Workspace workspace, object serviceOpt)
@@ -48,14 +42,19 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
                 return;
             }
 
-            // only push solution snapshot from primary (VS) workspace:
-            _checksumUpdater = new SolutionChecksumUpdater(workspace, _listenerProvider, _disposalCancellationSource.Token);
-
-            _globalNotificationDelivery = new GlobalNotificationRemoteDeliveryService(workspace.Services, _disposalCancellationSource.Token);
-
-            // start launching remote process, so that the first service that needs it doesn't need to wait for it:
-            var service = workspace.Services.GetRequiredService<IRemoteHostClientProvider>();
-            _remoteClientInitializationTask = service.TryGetRemoteHostClientAsync(_disposalCancellationSource.Token);
+            var connection = new Connection(_listenerProvider, workspace);
+            lock (_connectedEvents)
+            {
+                try
+                {
+                    _connectedEvents.Add(workspace, connection);
+                }
+                catch
+                {
+                    connection.Dispose();
+                    throw;
+                }
+            }
         }
 
         public void StopListening(Workspace workspace)
@@ -65,18 +64,52 @@ namespace Microsoft.VisualStudio.LanguageServices.Remote
                 return;
             }
 
-            _disposalCancellationSource.Cancel();
-            _disposalCancellationSource.Dispose();
+            Connection connection;
+            lock (_connectedEvents)
+            {
+                connection = _connectedEvents[workspace];
+                _connectedEvents.Remove(workspace);
+            }
 
-            _checksumUpdater?.Shutdown();
-            _globalNotificationDelivery?.Dispose();
+            connection.Dispose();
+        }
 
-            // dispose remote client if its initialization has completed:
-            _remoteClientInitializationTask?.ContinueWith(
-                previousTask => previousTask.Result?.Dispose(),
-                CancellationToken.None,
-                TaskContinuationOptions.OnlyOnRanToCompletion,
-                TaskScheduler.Default);
+        private class Connection : IDisposable
+        {
+            private readonly CancellationTokenSource _disposalCancellationSource;
+            private readonly GlobalNotificationRemoteDeliveryService _globalNotificationDelivery;
+            private readonly Task<RemoteHostClient?> _remoteClientInitializationTask;
+            private readonly SolutionChecksumUpdater _checksumUpdater;
+
+            public Connection(IAsynchronousOperationListenerProvider listenerProvider, Workspace workspace)
+            {
+                _disposalCancellationSource = new CancellationTokenSource();
+
+                // only push solution snapshot from primary (VS) workspace:
+                _checksumUpdater = new SolutionChecksumUpdater(workspace, listenerProvider, _disposalCancellationSource.Token);
+
+                _globalNotificationDelivery = new GlobalNotificationRemoteDeliveryService(workspace.Services, _disposalCancellationSource.Token);
+
+                // start launching remote process, so that the first service that needs it doesn't need to wait for it:
+                var service = workspace.Services.GetRequiredService<IRemoteHostClientProvider>();
+                _remoteClientInitializationTask = service.TryGetRemoteHostClientAsync(_disposalCancellationSource.Token);
+            }
+
+            public void Dispose()
+            {
+                _disposalCancellationSource.Cancel();
+                _disposalCancellationSource.Dispose();
+
+                _checksumUpdater.Shutdown();
+                _globalNotificationDelivery.Dispose();
+
+                // dispose remote client if its initialization has completed:
+                _remoteClientInitializationTask.ContinueWith(
+                    previousTask => previousTask.Result?.Dispose(),
+                    CancellationToken.None,
+                    TaskContinuationOptions.OnlyOnRanToCompletion,
+                    TaskScheduler.Default);
+            }
         }
     }
 }

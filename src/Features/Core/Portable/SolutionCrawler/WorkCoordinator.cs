@@ -134,7 +134,14 @@ namespace Microsoft.CodeAnalysis.SolutionCrawler
                         _documentAndProjectWorkerProcessor.AsyncProcessorTask,
                         _semanticChangeProcessor.AsyncProcessorTask);
 
-                    shutdownTask.Wait(TimeSpan.FromSeconds(5));
+                    try
+                    {
+                        shutdownTask.Wait(TimeSpan.FromSeconds(5));
+                    }
+                    catch (AggregateException e)
+                    {
+                        e.Handle(e => e is OperationCanceledException);
+                    }
 
                     if (!shutdownTask.IsCompleted)
                     {

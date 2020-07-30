@@ -3,11 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using EnvDTE;
 using Microsoft.CodeAnalysis.Editor.UnitTests.Workspaces;
 using Microsoft.CodeAnalysis.Test.Utilities;
 using Microsoft.VisualStudio.LanguageServices.Implementation.Interop;
+using Microsoft.VisualStudio.LanguageServices.UnitTests.CodeModel.Mocks;
 using Roslyn.Test.Utilities;
 using SyntaxNodeKey = Microsoft.VisualStudio.LanguageServices.Implementation.CodeModel.SyntaxNodeKey;
 
@@ -21,14 +23,14 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.UnitTests.CodeModel
     public abstract class AbstractFileCodeElementTests : IDisposable
     {
         private readonly string _contents;
-        private Tuple<TestWorkspace, FileCodeModel> _workspaceAndCodeModel;
+        private Tuple<TestWorkspace, MockVisualStudioWorkspace, FileCodeModel> _workspaceAndCodeModel;
 
         public AbstractFileCodeElementTests(string contents)
         {
             _contents = contents;
         }
 
-        public Tuple<TestWorkspace, FileCodeModel> WorkspaceAndCodeModel
+        internal Tuple<TestWorkspace, MockVisualStudioWorkspace, FileCodeModel> WorkspaceAndCodeModel
         {
             get
             {
@@ -41,9 +43,12 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.UnitTests.CodeModel
             return WorkspaceAndCodeModel.Item1;
         }
 
+        private protected MockVisualStudioWorkspace GetVisualStudioWorkspace()
+            => WorkspaceAndCodeModel.Item2;
+
         protected FileCodeModel GetCodeModel()
         {
-            return WorkspaceAndCodeModel.Item2;
+            return WorkspaceAndCodeModel.Item3;
         }
 
         protected Microsoft.CodeAnalysis.Solution GetCurrentSolution()
@@ -55,7 +60,7 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.UnitTests.CodeModel
         protected Microsoft.CodeAnalysis.Document GetCurrentDocument()
             => GetCurrentProject().Documents.Single();
 
-        protected static Tuple<TestWorkspace, EnvDTE.FileCodeModel> CreateWorkspaceAndFileCodeModelAsync(string file)
+        private protected static Tuple<TestWorkspace, MockVisualStudioWorkspace, EnvDTE.FileCodeModel> CreateWorkspaceAndFileCodeModelAsync(string file)
             => FileCodeModelTestHelpers.CreateWorkspaceAndFileCodeModel(file);
 
         protected CodeElement GetCodeElement(params object[] path)
@@ -77,8 +82,10 @@ namespace Microsoft.VisualStudio.LanguageServices.CSharp.UnitTests.CodeModel
             return codeElement;
         }
 
+        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize", Justification = "The pattern from CA1816 is not followed by this project.")]
         public void Dispose()
         {
+            GetVisualStudioWorkspace().Dispose();
             GetWorkspace().Dispose();
         }
 

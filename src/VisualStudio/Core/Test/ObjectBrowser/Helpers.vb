@@ -15,15 +15,18 @@ Namespace Microsoft.VisualStudio.LanguageServices.UnitTests.ObjectBrowser
             Implements IDisposable
 
             Private ReadOnly _workspace As TestWorkspace
+            Private ReadOnly _vsWorkspace As VisualStudioWorkspace
             Private ReadOnly _libraryManager As AbstractObjectBrowserLibraryManager
 
-            Public Sub New(workspace As TestWorkspace, libraryManager As AbstractObjectBrowserLibraryManager)
+            Public Sub New(workspace As TestWorkspace, vsWorkspace As VisualStudioWorkspace, libraryManager As AbstractObjectBrowserLibraryManager)
                 _workspace = workspace
+                _vsWorkspace = vsWorkspace
                 _libraryManager = libraryManager
             End Sub
 
             Public Sub Dispose() Implements IDisposable.Dispose
                 _libraryManager.Dispose()
+                _vsWorkspace.Dispose()
                 _workspace.Dispose()
             End Sub
 
