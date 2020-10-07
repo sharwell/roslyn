@@ -33,7 +33,9 @@ namespace Microsoft.CodeAnalysis.Interactive
                     Application.Run();
                 });
 
+#pragma warning disable CA1416 // analyzer is warning this API is only available on Windows, but this project only targets windows.
                 uiThread.SetApartmentState(ApartmentState.STA);
+#pragma warning restore CA1416
                 uiThread.IsBackground = true;
                 uiThread.Start();
                 resetEvent.Wait();
