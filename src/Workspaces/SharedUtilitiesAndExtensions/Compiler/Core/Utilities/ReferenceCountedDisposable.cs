@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
@@ -136,7 +137,7 @@ namespace Roslyn.Utilities
                 return null;
             }
 
-            return TryAddReferenceImpl(target, referenceCount);
+            return TryAddReferenceImpl(target, referenceCount, needNewInstance: true);
         }
 
         IReferenceCountedDisposable<T>? IReferenceCountedDisposable<T>.TryAddReference()
@@ -146,7 +147,7 @@ namespace Roslyn.Utilities
         /// Provides the implementation for <see cref="TryAddReference"/> and
         /// <see cref="WeakReference.TryAddReference"/>.
         /// </summary>
-        private static ReferenceCountedDisposable<T>? TryAddReferenceImpl(T? target, StrongBox<int> referenceCount)
+        private static ReferenceCountedDisposable<T>? TryAddReferenceImpl(T? target, StrongBox<int> referenceCount, bool needNewInstance)
         {
             // Cannot use Interlocked.Increment because we need to latch the reference count when it reaches 0 (i.e.
             // once it reaches zero, it is no longer allowed to ever be non-zero).
@@ -163,10 +164,20 @@ namespace Roslyn.Utilities
 
                 if (Interlocked.CompareExchange(ref referenceCount.Value, checked(currentValue + 1), currentValue) == currentValue)
                 {
-                    // Must return a new instance, in order for the Dispose operation on each individual instance to
-                    // be idempotent.
                     RoslynDebug.AssertNotNull(target);
-                    return new ReferenceCountedDisposable<T>(target, referenceCount);
+
+                    if (needNewInstance)
+                    {
+                        // Must return a new instance, in order for the Dispose operation on each individual instance to
+                        // be idempotent.
+                        return new ReferenceCountedDisposable<T>(target, referenceCount);
+                    }
+                    else
+                    {
+                        // Instances can be shared for use in leases. The caller will handle this case according to the
+                        // value of 'referenceCount' at return.
+                        return null;
+                    }
                 }
             }
         }
@@ -230,6 +241,72 @@ namespace Roslyn.Utilities
             {
                 RoslynDebug.AssertNotNull(instance);
                 instance.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Returns a lease on the <see cref="ReferenceCountedDisposable{T}"/>.
+        /// </summary>
+        /// <remarks>
+        /// <para>The value returned by this method is intended for use as the variable of a <c>using</c> statement,
+        /// where the leased value is only used within the body of the <c>using</c> statement. This method is lock-free
+        /// and allocation-free.</para>
+        /// </remarks>
+        public StrongLease Lease()
+        {
+            var (target, referenceCount) = AtomicReadState();
+            if (referenceCount == null)
+            {
+                return default;
+            }
+
+            TryAddReferenceImpl(target, referenceCount, needNewInstance: false);
+            if (referenceCount.Value == 0)
+            {
+                return default;
+            }
+
+            RoslynDebug.AssertNotNull(target);
+            return new StrongLease(target, referenceCount);
+        }
+
+        public readonly struct StrongLease : IDisposable
+        {
+            private readonly T? _instance;
+            private readonly StrongBox<int>? _referenceCount;
+
+            internal StrongLease(T instance, StrongBox<int> referenceCount)
+            {
+                _instance = instance;
+                _referenceCount = referenceCount;
+            }
+
+            [MemberNotNullWhen(true, nameof(Target))]
+            public bool HasValue
+            {
+                get
+                {
+#pragma warning disable CS8775 // Member must have a non-null value when exiting in some condition.
+                    return _referenceCount?.Value > 0;
+#pragma warning restore CS8775 // Member must have a non-null value when exiting in some condition.
+                }
+            }
+
+            public T? Target => _instance;
+
+            public void Dispose()
+            {
+                if (_referenceCount is null)
+                    return;
+
+                // StrongLease does not provide the protections that a full ReferenceCountedDisposable<T> instance does.
+                // It is intended for use as a local variable within an 'using' statement for maximum efficiency.
+                var decrementedValue = Interlocked.Decrement(ref _referenceCount.Value);
+                if (decrementedValue == 0)
+                {
+                    RoslynDebug.AssertNotNull(_instance);
+                    _instance.Dispose();
+                }
             }
         }
 
@@ -302,7 +379,7 @@ namespace Roslyn.Utilities
                     return null;
                 }
 
-                return TryAddReferenceImpl(target, referenceCount);
+                return TryAddReferenceImpl(target, referenceCount, needNewInstance: true);
             }
         }
     }
