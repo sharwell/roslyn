@@ -125,6 +125,29 @@ class C
             await VerifyDefaultValueAsync(markup, expectedDefaultValue: null, previousDefaultValue: "prior");
         }
 
+        [Fact]
+        public async Task TestCancellationTokenFromContextProperty()
+        {
+            var markup = @"
+class C
+{
+    void Method(Context context)
+    {
+        this.Target($$);
+    }
+
+    void Target(CancellationToken cancellationToken) { }
+}
+
+struct Context
+{
+    public CancellationToken CancellationToken { get; }
+}
+";
+
+            await VerifyDefaultValueAsync(markup, "context.CancellationToken");
+        }
+
         // Note: The current implementation checks for exact type match for primitive types. If this changes, some of
         // these tests may need to be updated to account for the new behavior.
         [Theory]
