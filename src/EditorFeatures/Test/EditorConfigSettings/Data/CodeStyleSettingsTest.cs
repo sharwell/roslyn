@@ -57,8 +57,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.EditorConfigSettings.Data
 
         private static Option2<CodeStyleOption2<bool>> CreateBoolOption(bool @default = false)
         {
-            var option = CodeStyleOption2<bool>.Default;
-            option.Value = @default;
+            var option = new CodeStyleOption2<bool>(@default, NotificationOption2.Silent);
             return new Option2<CodeStyleOption2<bool>>(feature: "TestFeature",
                                                        name: "TestOption",
                                                        defaultValue: option);
@@ -67,8 +66,7 @@ namespace Microsoft.CodeAnalysis.Editor.UnitTests.EditorConfigSettings.Data
         private static Option2<CodeStyleOption2<T>> CreateEnumOption<T>(T @default)
             where T : notnull, Enum
         {
-            var option = CodeStyleOption2<T>.Default;
-            option.Value = @default;
+            var option = new CodeStyleOption2<T>(@default, NotificationOption2.Silent);
             return new Option2<CodeStyleOption2<T>>(feature: "TestFeature",
                                                     name: "TestOption",
                                                     defaultValue: option);
