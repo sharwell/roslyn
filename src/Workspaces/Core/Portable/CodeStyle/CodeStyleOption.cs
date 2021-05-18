@@ -11,7 +11,7 @@ using Roslyn.Utilities;
 namespace Microsoft.CodeAnalysis.CodeStyle
 {
     /// <inheritdoc cref="CodeStyleOption2{T}"/>
-    public class CodeStyleOption<T> : ICodeStyleOption, IEquatable<CodeStyleOption<T>>
+    public sealed class CodeStyleOption<T> : ICodeStyleOption, IEquatable<CodeStyleOption<T>>
     {
         static CodeStyleOption()
         {
@@ -34,7 +34,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
             get => _codeStyleOptionImpl.Value;
 
             [Obsolete("Modifying a CodeStyleOption<T> is not supported.", error: true)]
-            set => throw new NotSupportedException();
+            set => throw new InvalidOperationException();
         }
 
         bool IObjectWritable.ShouldReuseInSerialization => _codeStyleOptionImpl.ShouldReuseInSerialization;
@@ -51,7 +51,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
             get => (NotificationOption)_codeStyleOptionImpl.Notification;
 
             [Obsolete("Modifying a CodeStyleOption<T> is not supported.", error: true)]
-            set => throw new NotSupportedException();
+            set => throw new InvalidOperationException();
         }
 
         internal CodeStyleOption2<T> UnderlyingOption => _codeStyleOptionImpl;

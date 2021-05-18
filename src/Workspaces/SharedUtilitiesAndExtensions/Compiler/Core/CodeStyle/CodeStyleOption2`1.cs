@@ -37,7 +37,7 @@ namespace Microsoft.CodeAnalysis.CodeStyle
     /// hosts that expect the value to be a boolean.  Specifically, if the enum value is 0 or 1
     /// then those values will write back as false/true.
     /// </summary>
-    internal partial class CodeStyleOption2<T> : ICodeStyleOption, IEquatable<CodeStyleOption2<T>?>
+    internal sealed partial class CodeStyleOption2<T> : ICodeStyleOption, IEquatable<CodeStyleOption2<T>?>
     {
         static CodeStyleOption2()
         {
