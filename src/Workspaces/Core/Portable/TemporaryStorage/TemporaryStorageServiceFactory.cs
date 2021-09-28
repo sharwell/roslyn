@@ -242,7 +242,7 @@ namespace Microsoft.CodeAnalysis.Host
                     }
                 }
 
-                public Task<SourceText> ReadTextAsync(CancellationToken cancellationToken)
+                public async Task<SourceText> ReadTextAsync(CancellationToken cancellationToken)
                 {
                     // There is a reason for implementing it like this: proper async implementation
                     // that reads the underlying memory mapped file stream in an asynchronous fashion
@@ -254,7 +254,13 @@ namespace Microsoft.CodeAnalysis.Host
                     // of a page fault. Therefore, if we're going to be blocking a thread, we should
                     // just block one thread and do the whole thing at once vs. a fake "async"
                     // implementation which will continue to requeue work back to the thread pool.
-                    return Task.Factory.StartNew(() => ReadText(cancellationToken), cancellationToken, TaskCreationOptions.None, TaskScheduler.Default);
+                    if (!Thread.CurrentThread.IsThreadPoolThread)
+                    {
+                        // Switch to the thread pool to avoid blocking a main thread
+                        await Task.Yield().ConfigureAwait(false);
+                    }
+
+                    return ReadText(cancellationToken);
                 }
 
                 public void WriteText(SourceText text, CancellationToken cancellationToken)
@@ -281,10 +287,16 @@ namespace Microsoft.CodeAnalysis.Host
                     }
                 }
 
-                public Task WriteTextAsync(SourceText text, CancellationToken cancellationToken = default)
+                public async Task WriteTextAsync(SourceText text, CancellationToken cancellationToken = default)
                 {
                     // See commentary in ReadTextAsync for why this is implemented this way.
-                    return Task.Factory.StartNew(() => WriteText(text, cancellationToken), cancellationToken, TaskCreationOptions.None, TaskScheduler.Default);
+                    if (!Thread.CurrentThread.IsThreadPoolThread)
+                    {
+                        // Switch to the thread pool to avoid blocking a main thread
+                        await Task.Yield().ConfigureAwait(false);
+                    }
+
+                    WriteText(text, cancellationToken);
                 }
 
                 private static unsafe TextReader CreateTextReaderFromTemporaryStorage(ISupportDirectMemoryAccess accessor, int streamLength)
@@ -343,10 +355,16 @@ namespace Microsoft.CodeAnalysis.Host
                     }
                 }
 
-                public Task<Stream> ReadStreamAsync(CancellationToken cancellationToken = default)
+                public async Task<Stream> ReadStreamAsync(CancellationToken cancellationToken = default)
                 {
                     // See commentary in ReadTextAsync for why this is implemented this way.
-                    return Task.Factory.StartNew(() => ReadStream(cancellationToken), cancellationToken, TaskCreationOptions.None, TaskScheduler.Default);
+                    if (!Thread.CurrentThread.IsThreadPoolThread)
+                    {
+                        // Switch to the thread pool to avoid blocking a main thread
+                        await Task.Yield().ConfigureAwait(false);
+                    }
+
+                    return ReadStream(cancellationToken);
                 }
 
                 public void WriteStream(Stream stream, CancellationToken cancellationToken = default)
