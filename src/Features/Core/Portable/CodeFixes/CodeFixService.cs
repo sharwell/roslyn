@@ -624,7 +624,7 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             }
 
             // If the fix provider supports fix all occurrences, then get the corresponding FixAllProviderInfo and fix all context.
-            var fixAllProviderInfo = extensionManager.PerformFunction<FixAllProviderInfo?>(fixer, () => ImmutableInterlocked.GetOrAdd(ref _fixAllProviderMap, fixer, FixAllProviderInfo.Create), defaultValue: null);
+            var fixAllProviderInfo = extensionManager.PerformFunction(fixer, arg => ImmutableInterlocked.GetOrAdd(ref _fixAllProviderMap, arg, FixAllProviderInfo.Create), arg: fixer, defaultValue: null);
 
             FixAllState? fixAllState = null;
             var supportedScopes = ImmutableArray<FixAllScope>.Empty;
@@ -814,7 +814,8 @@ namespace Microsoft.CodeAnalysis.CodeFixes
             {
                 return extensionManager.PerformFunction(
                     fixer,
-                    () => ImmutableInterlocked.GetOrAdd(ref _fixerToFixableIdsMap, fixer, f => GetAndTestFixableDiagnosticIds(f)),
+                    arg => ImmutableInterlocked.GetOrAdd(ref _fixerToFixableIdsMap, arg, f => GetAndTestFixableDiagnosticIds(f)),
+                    arg: fixer,
                     defaultValue: ImmutableArray<DiagnosticId>.Empty);
             }
 
