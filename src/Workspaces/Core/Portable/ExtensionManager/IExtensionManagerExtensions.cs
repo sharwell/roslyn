@@ -139,22 +139,35 @@ namespace Microsoft.CodeAnalysis.Extensions
         {
             var map = new ConcurrentDictionary<Type, ImmutableArray<TExtension>>();
 
-            ImmutableArray<TExtension> GetExtensions(Type t1)
+            return n =>
             {
-                return extensions.WhereAsArray(
-                    static (e, arg) =>
-                    {
-                        var types = arg.extensionManager.PerformFunction(
-                            e,
-                            static arg => arg.nodeTypeGetter(arg.e),
-                            (arg.nodeTypeGetter, e),
-                            ImmutableArray<Type>.Empty);
-                        return types.IsEmpty || types.Any(static (t2, t1) => t1 == t2 || t1.GetTypeInfo().IsSubclassOf(t2), arg: arg.t1);
-                    },
-                    (extensionManager, nodeTypeGetter, t1));
-            }
+                var key = n.GetType();
+                if (map.TryGetValue(key, out var cachedExtensions))
+                    return cachedExtensions;
 
-            return n => map.GetOrAdd(n.GetType(), GetExtensions);
+                return GetExtensionsSlow(extensionManager, extensions, nodeTypeGetter, map, key);
+            };
+
+            // Helper method to avoid capturing allocations on fast paths
+            static ImmutableArray<TExtension> GetExtensionsSlow(IExtensionManager extensionManager, ImmutableArray<TExtension> extensions, Func<TExtension, ImmutableArray<Type>> nodeTypeGetter, ConcurrentDictionary<Type, ImmutableArray<TExtension>> map, Type key)
+            {
+                return map.GetOrAdd(key, GetExtensions);
+
+                ImmutableArray<TExtension> GetExtensions(Type t1)
+                {
+                    return extensions.WhereAsArray(
+                        static (e, arg) =>
+                        {
+                            var types = arg.extensionManager.PerformFunction(
+                                e,
+                                static arg => arg.nodeTypeGetter(arg.e),
+                                arg: (arg.nodeTypeGetter, e),
+                                defaultValue: ImmutableArray<Type>.Empty);
+                            return types.IsEmpty || types.Any(static (t2, t1) => t1 == t2 || t1.GetTypeInfo().IsSubclassOf(t2), arg: arg.t1);
+                        },
+                        (extensionManager, nodeTypeGetter, t1));
+                }
+            }
         }
 
         public static Func<SyntaxToken, ImmutableArray<TExtension>> CreateTokenExtensionGetter<TExtension>(
@@ -162,22 +175,36 @@ namespace Microsoft.CodeAnalysis.Extensions
             where TExtension : notnull
         {
             var map = new ConcurrentDictionary<int, ImmutableArray<TExtension>>();
-            ImmutableArray<TExtension> GetExtensions(int k)
-            {
-                return extensions.WhereAsArray(
-                    static (e, arg) =>
-                    {
-                        var kinds = arg.extensionManager.PerformFunction(
-                            e,
-                            static arg => arg.tokenKindGetter(arg.e),
-                            (arg.tokenKindGetter, e),
-                            ImmutableArray<int>.Empty);
-                        return kinds.IsEmpty || kinds.Contains(arg.k);
-                    },
-                    (extensionManager, tokenKindGetter, k));
-            }
 
-            return t => map.GetOrAdd(t.RawKind, GetExtensions);
+            return t =>
+            {
+                var key = t.RawKind;
+                if (map.TryGetValue(key, out var cachedExtensions))
+                    return cachedExtensions;
+
+                return GetExtensionsSlow(extensionManager, extensions, tokenKindGetter, map, key);
+            };
+
+            // Helper method to avoid capturing allocations on fast paths
+            static ImmutableArray<TExtension> GetExtensionsSlow(IExtensionManager extensionManager, ImmutableArray<TExtension> extensions, Func<TExtension, ImmutableArray<int>> tokenKindGetter, ConcurrentDictionary<int, ImmutableArray<TExtension>> map, int key)
+            {
+                return map.GetOrAdd(key, GetExtensions);
+
+                ImmutableArray<TExtension> GetExtensions(int k)
+                {
+                    return extensions.WhereAsArray(
+                        static (e, arg) =>
+                        {
+                            var kinds = arg.extensionManager.PerformFunction(
+                                e,
+                                static arg => arg.tokenKindGetter(arg.e),
+                                arg: (arg.tokenKindGetter, e),
+                                defaultValue: ImmutableArray<int>.Empty);
+                            return kinds.IsEmpty || kinds.Contains(arg.k);
+                        },
+                        (extensionManager, tokenKindGetter, k));
+                }
+            }
         }
     }
 }
