@@ -1706,7 +1706,7 @@ symIsHidden:;
                             else
                             {
                                 // Using the generic {1} '{0}' requires {2} type arguments
-                                diagInfo = diagnose ? new CSDiagnosticInfo(ErrorCode.ERR_BadArity, namedType, MessageID.IDS_SK_TYPE.Localize(), namedType.Arity) : null;
+                                diagInfo = diagnose ? new CSDiagnosticInfo(ErrorCode.ERR_BadArity, namedType, MessageID.IDS_SK_TYPE.Localize(), Boxes.Box(namedType.Arity)) : null;
                             }
                             return true;
                         }
@@ -1727,7 +1727,7 @@ symIsHidden:;
                             else
                             {
                                 // Using the generic {1} '{0}' requires {2} type arguments
-                                diagInfo = diagnose ? new CSDiagnosticInfo(ErrorCode.ERR_BadArity, method, MessageID.IDS_SK_METHOD.Localize(), method.Arity) : null;
+                                diagInfo = diagnose ? new CSDiagnosticInfo(ErrorCode.ERR_BadArity, method, MessageID.IDS_SK_METHOD.Localize(), Boxes.Box(method.Arity)) : null;
                             }
                             return true;
                         }
