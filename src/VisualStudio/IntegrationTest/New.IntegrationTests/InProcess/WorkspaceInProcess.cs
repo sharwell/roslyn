@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Editor.Shared.Options;
@@ -88,7 +90,21 @@ namespace Microsoft.VisualStudio.Extensibility.Testing
                 await searchHost.IsFullyLoadedAsync(cancellationToken);
             }
 
-            await listenerProvider.WaitAllAsync(workspace, featureNames).WithCancellation(cancellationToken);
+            try
+            {
+                await listenerProvider.WaitAllAsync(workspace, featureNames).WithCancellation(cancellationToken);
+            }
+            catch (OperationCanceledException ex) when (cancellationToken.IsCancellationRequested)
+            {
+                // Provide information about operations which did not complete in time
+                var messageBuilder = new StringBuilder("Failed to clean up listeners in a timely manner.");
+                foreach (var token in listenerProvider.GetTokens())
+                {
+                    messageBuilder.AppendLine().Append($"  {token}");
+                }
+
+                throw new TimeoutException(messageBuilder.ToString(), ex);
+            }
         }
     }
 }
