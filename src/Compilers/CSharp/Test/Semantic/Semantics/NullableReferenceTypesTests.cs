@@ -2646,18 +2646,12 @@ unsafe class C<T>
                 // (6,26): error CS0208: Cannot take the address of, get the size of, or declare a pointer to a managed type ('C<string>')
                 //         C<string?>* y1 = &x;
                 Diagnostic(ErrorCode.ERR_ManagedAddr, "&x").WithArguments("C<string>").WithLocation(6, 26),
-                // (6,26): warning CS8619: Nullability of reference types in value of type 'C<string>*' doesn't match target type 'C<string?>*'.
-                //         C<string?>* y1 = &x;
-                Diagnostic(ErrorCode.WRN_NullabilityMismatchInAssignment, "&x").WithArguments("C<string>*", "C<string?>*").WithLocation(6, 26),
                 // (7,9): error CS0208: Cannot take the address of, get the size of, or declare a pointer to a managed type ('C<string?>')
                 //         C<string?>* y2 = &x!;
                 Diagnostic(ErrorCode.ERR_ManagedAddr, "C<string?>*").WithArguments("C<string?>").WithLocation(7, 9),
                 // (7,26): error CS0208: Cannot take the address of, get the size of, or declare a pointer to a managed type ('C<string>')
                 //         C<string?>* y2 = &x!;
                 Diagnostic(ErrorCode.ERR_ManagedAddr, "&x!").WithArguments("C<string>").WithLocation(7, 26),
-                // (7,26): warning CS8619: Nullability of reference types in value of type 'C<string>*' doesn't match target type 'C<string?>*'.
-                //         C<string?>* y2 = &x!;
-                Diagnostic(ErrorCode.WRN_NullabilityMismatchInAssignment, "&x!").WithArguments("C<string>*", "C<string?>*").WithLocation(7, 26),
                 // (7,27): error CS8598: The suppression operator is not allowed in this context
                 //         C<string?>* y2 = &x!;
                 Diagnostic(ErrorCode.ERR_IllegalSuppression, "x").WithLocation(7, 27)
@@ -156107,6 +156101,292 @@ unsafe class C
                 // (9,18): error CS0826: No best type found for implicitly-typed array
                 //         var s2 = stackalloc[] { x => x };
                 Diagnostic(ErrorCode.ERR_ImplicitlyTypedArrayNoBestType, "stackalloc[] { x => x }").WithLocation(9, 18)
+                );
+        }
+
+        [Fact]
+        public void NullableBoolInVariousTests()
+        {
+            var comp = CreateCompilation(@"
+#nullable enable
+class C
+{
+    public static void M(bool? x)
+    {
+        if (x) // 1
+        {
+            x.Value.ToString(); // 2
+        }
+
+        _ = x ? x.Value.ToString() : string.Empty; // 3, 4
+
+        if (x == true)
+        {
+            x.Value.ToString();
+        }
+
+        _ = (x == true) ? x.Value.ToString() : string.Empty;
+
+        _ = x switch
+        {
+            true => x.Value.ToString(),
+            _ => string.Empty
+        };
+    }
+}
+");
+
+            comp.VerifyDiagnostics(
+                // (7,13): error CS0266: Cannot implicitly convert type 'bool?' to 'bool'. An explicit conversion exists (are you missing a cast?)
+                //         if (x) // 1
+                Diagnostic(ErrorCode.ERR_NoImplicitConvCast, "x").WithArguments("bool?", "bool").WithLocation(7, 13),
+                // (9,13): warning CS8629: Nullable value type may be null.
+                //             x.Value.ToString(); // 2
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "x").WithLocation(9, 13),
+                // (12,13): error CS0266: Cannot implicitly convert type 'bool?' to 'bool'. An explicit conversion exists (are you missing a cast?)
+                //         _ = x ? x.Value.ToString() : string.Empty; // 3, 4
+                Diagnostic(ErrorCode.ERR_NoImplicitConvCast, "x").WithArguments("bool?", "bool").WithLocation(12, 13),
+                // (12,17): warning CS8629: Nullable value type may be null.
+                //         _ = x ? x.Value.ToString() : string.Empty; // 3, 4
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "x").WithLocation(12, 17)
+                );
+        }
+
+        [Theory, WorkItem(61361, "https://github.com/dotnet/roslyn/issues/61361")]
+        [InlineData("<")]
+        [InlineData("<=")]
+        [InlineData(">")]
+        [InlineData(">=")]
+        public void LiftedRelationalOperation(string op)
+        {
+            var comp = CreateCompilation($$"""
+#nullable enable
+class C
+{
+    public static void Test(int? first, int? second)
+    {
+        if (first {{op}} second)
+        {
+            first.Value.ToString();
+            second.Value.ToString();
+        }
+        else
+        {
+            first.Value.ToString(); // 1
+            second.Value.ToString(); // 2
+        }
+    }
+
+    public static void Test2(int? first, int? second)
+    {
+        _ = (first {{op}} second)
+            ? (first.Value.ToString() + second.Value.ToString())
+            : (first.Value.ToString() + second.Value.ToString()); // 3, 4
+    }
+
+    public static void Test3(int? first, int? second)
+    {
+        _ = (first {{op}} second) switch
+        {
+            true => first.Value.ToString() + second.Value.ToString(),
+            _ => first.Value.ToString() + second.Value.ToString() // 5, 6
+        };
+    }
+}
+""");
+            comp.VerifyDiagnostics(
+                // (13,13): warning CS8629: Nullable value type may be null.
+                //             first.Value.ToString(); // 1
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "first").WithLocation(13, 13),
+                // (14,13): warning CS8629: Nullable value type may be null.
+                //             second.Value.ToString(); // 2
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "second").WithLocation(14, 13),
+                // (22,16): warning CS8629: Nullable value type may be null.
+                //             : (first.Value.ToString() + second.Value.ToString()); // 3, 4
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "first").WithLocation(22, 16),
+                // (22,41): warning CS8629: Nullable value type may be null.
+                //             : (first.Value.ToString() + second.Value.ToString()); // 3, 4
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "second").WithLocation(22, 41),
+                // (30,18): warning CS8629: Nullable value type may be null.
+                //             _ => first.Value.ToString() + second.Value.ToString() // 5, 6
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "first").WithLocation(30, 18),
+                // (30,43): warning CS8629: Nullable value type may be null.
+                //             _ => first.Value.ToString() + second.Value.ToString() // 5, 6
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "second").WithLocation(30, 43)
+                );
+        }
+
+        [Theory, WorkItem(61361, "https://github.com/dotnet/roslyn/issues/61361")]
+        [InlineData("==")]
+        [InlineData("!=")]
+        public void LiftedEqualityOperation(string op)
+        {
+            var comp = CreateCompilation($$"""
+#nullable enable
+class C
+{
+    public static void Test(int? first, int? second)
+    {
+        if (first {{op}} second)
+        {
+            first.Value.ToString(); // 1
+            second.Value.ToString(); // 2
+        }
+
+        _ = (first {{op}} second)
+            ? (first.Value.ToString() + second.Value.ToString()) // 3, 4
+            : string.Empty;
+
+        _ = (first {{op}} second) switch
+        {
+            true => first.Value.ToString() + second.Value.ToString(), // 5, 6
+            _ => string.Empty
+        };
+    }
+}
+""");
+            comp.VerifyDiagnostics(
+                // (8,13): warning CS8629: Nullable value type may be null.
+                //             first.Value.ToString(); // 1
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "first").WithLocation(8, 13),
+                // (9,13): warning CS8629: Nullable value type may be null.
+                //             second.Value.ToString(); // 2
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "second").WithLocation(9, 13),
+                // (13,16): warning CS8629: Nullable value type may be null.
+                //             ? (first.Value.ToString() + second.Value.ToString()) // 3, 4
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "first").WithLocation(13, 16),
+                // (13,41): warning CS8629: Nullable value type may be null.
+                //             ? (first.Value.ToString() + second.Value.ToString()) // 3, 4
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "second").WithLocation(13, 41),
+                // (18,21): warning CS8629: Nullable value type may be null.
+                //             true => first.Value.ToString() + second.Value.ToString(), // 5, 6
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "first").WithLocation(18, 21),
+                // (18,46): warning CS8629: Nullable value type may be null.
+                //             true => first.Value.ToString() + second.Value.ToString(), // 5, 6
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "second").WithLocation(18, 46)
+                );
+        }
+
+        [Fact, WorkItem(61361, "https://github.com/dotnet/roslyn/issues/61361")]
+        public void LiftedRelationalOperation_DateTime()
+        {
+            var comp = CreateCompilation(@"
+using System;
+
+#nullable enable
+class C
+{
+    public static DateTime Test(DateTime? first, DateTime? second, DateTime? third)
+    {
+        if (first < third)
+        {
+            if (second < first.Value)
+            {
+            }
+        }
+
+        return DateTime.Now;
+    }
+}
+");
+            comp.VerifyDiagnostics();
+        }
+
+        [Fact, WorkItem(61361, "https://github.com/dotnet/roslyn/issues/61361")]
+        public void LiftedRelationalOperation_UserDefined()
+        {
+            var comp = CreateCompilation(@"
+#nullable enable
+
+struct C
+{
+    public static void M(C? c1, C c2)
+    {
+        _ = c1 < c2;
+        _ = c2 < c1;
+    }
+    public static string operator <(C c1, C c2) => string.Empty;
+    public static string operator >(C c1, C c2) => string.Empty;
+}
+");
+            comp.VerifyDiagnostics(
+                // (8,13): error CS0019: Operator '<' cannot be applied to operands of type 'C?' and 'C'
+                //         _ = c1 < c2;
+                Diagnostic(ErrorCode.ERR_BadBinaryOps, "c1 < c2").WithArguments("<", "C?", "C").WithLocation(8, 13),
+                // (9,13): error CS0019: Operator '<' cannot be applied to operands of type 'C' and 'C?'
+                //         _ = c2 < c1;
+                Diagnostic(ErrorCode.ERR_BadBinaryOps, "c2 < c1").WithArguments("<", "C", "C?").WithLocation(9, 13)
+                );
+        }
+
+        [Fact, WorkItem(61361, "https://github.com/dotnet/roslyn/issues/61361")]
+        public void LiftedRelationalOperation_UserDefined_BoolReturning()
+        {
+            var comp = CreateCompilation(@"
+#nullable enable
+
+struct C
+{
+    public static void M(C? c1, C c2)
+    {
+        if (c1 < c2)
+        {
+            c1.Value.ToString();
+        }
+        else
+        {
+            c1.Value.ToString(); // 1
+        }
+    }
+    public static void M(C c1, C? c2)
+    {
+        if (c1 < c2)
+        {
+            c2.Value.ToString();
+        }
+        else
+        {
+            c2.Value.ToString(); // 2
+        }
+    }
+
+    public static bool operator <(C c1, C c2) => true;
+    public static bool operator >(C c1, C c2) => false;
+}
+");
+            comp.VerifyDiagnostics(
+                // (14,13): warning CS8629: Nullable value type may be null.
+                //             c1.Value.ToString(); // 1
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "c1").WithLocation(14, 13),
+                // (25,13): warning CS8629: Nullable value type may be null.
+                //             c2.Value.ToString(); // 2
+                Diagnostic(ErrorCode.WRN_NullableValueTypeMayBeNull, "c2").WithLocation(25, 13)
+                );
+        }
+
+        [Fact, WorkItem(61462, "https://github.com/dotnet/roslyn/issues/61462")]
+        public void NoNullabilityWarningUnlessAssignmentConversionExists()
+        {
+            var comp = CreateCompilation("""
+#nullable enable
+
+public static class S
+{
+    public const string A = "a";
+}
+
+public class C
+{
+    public (string, string) M()
+    {
+        return ("a", S.B);
+    }
+}
+""");
+            comp.VerifyDiagnostics(
+                // (12,24): error CS0117: 'S' does not contain a definition for 'B'
+                //         return ("a", S.B);
+                Diagnostic(ErrorCode.ERR_NoSuchMember, "B").WithArguments("S", "B").WithLocation(12, 24)
                 );
         }
     }

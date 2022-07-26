@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Host;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
@@ -37,8 +38,8 @@ namespace Microsoft.CodeAnalysis
             _state = state;
         }
 
-        internal Solution(Workspace workspace, SolutionInfo.SolutionAttributes solutionAttributes, SerializableOptionSet options, IReadOnlyList<AnalyzerReference> analyzerReferences)
-            : this(new SolutionState(workspace.PrimaryBranchId, new SolutionServices(workspace), solutionAttributes, options, analyzerReferences))
+        internal Solution(Workspace workspace, SolutionInfo.SolutionAttributes solutionAttributes, SolutionOptionSet options, IReadOnlyList<AnalyzerReference> analyzerReferences)
+            : this(new SolutionState(workspace.PrimaryBranchId, workspace.Services, solutionAttributes, options, analyzerReferences))
         {
         }
 
@@ -46,7 +47,7 @@ namespace Microsoft.CodeAnalysis
 
         internal int WorkspaceVersion => _state.WorkspaceVersion;
 
-        internal SolutionServices Services => _state.Services;
+        internal HostWorkspaceServices Services => _state.Services;
 
         internal BranchId BranchId => _state.BranchId;
 
@@ -1774,6 +1775,25 @@ namespace Microsoft.CodeAnalysis
         }
 
         /// <summary>
+        /// Returns a new Solution which represents the same state as before, but with the cached generator driver state from the given project updated to match.
+        /// </summary>
+        /// <remarks>
+        /// When generators are ran in a Solution snapshot, they may cache state to speed up future runs. For Razor, we only run their generator on forked
+        /// solutions that are thrown away; this API gives us a way to reuse that cached state in other forked solutions, since otherwise there's no way to reuse
+        /// the cached state.
+        /// </remarks>
+        internal Solution WithCachedSourceGeneratorState(ProjectId projectToUpdate, Project projectWithCachedGeneratorState)
+        {
+            var newState = _state.WithCachedSourceGeneratorState(projectToUpdate, projectWithCachedGeneratorState);
+            if (newState == _state)
+            {
+                return this;
+            }
+
+            return new Solution(newState);
+        }
+
+        /// <summary>
         /// Gets an objects that lists the added, changed and removed projects between
         /// this solution and the specified solution.
         /// </summary>
@@ -1816,7 +1836,7 @@ namespace Microsoft.CodeAnalysis
         {
             return options switch
             {
-                SerializableOptionSet serializableOptions => WithOptions(serializableOptions),
+                SolutionOptionSet serializableOptions => WithOptions(serializableOptions),
                 null => throw new ArgumentNullException(nameof(options)),
                 _ => throw new ArgumentException(WorkspacesResources.Options_did_not_come_from_specified_Solution, paramName: nameof(options))
             };
@@ -1825,7 +1845,7 @@ namespace Microsoft.CodeAnalysis
         /// <summary>
         /// Creates a new solution instance with the specified serializable <paramref name="options"/>.
         /// </summary>
-        internal Solution WithOptions(SerializableOptionSet options)
+        internal Solution WithOptions(SolutionOptionSet options)
         {
             var newState = _state.WithOptions(options: options);
             if (newState == _state)

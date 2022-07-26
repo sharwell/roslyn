@@ -20,7 +20,9 @@ using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Indentation;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Test.Utilities;
+using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
+using Newtonsoft.Json.Linq;
 using Roslyn.Test.Utilities;
 using Xunit;
 using Xunit.Abstractions;
@@ -1635,6 +1637,54 @@ class C
             await AssertFormatAsync(expected, code, spans: null);
         }
 
+        [WpfFact]
+        [WorkItem(57465, "https://github.com/dotnet/roslyn/issues/57465")]
+        public async Task FormatLambdaWithComment()
+        {
+            var code = @"namespace N
+{
+    public class C
+    {
+        protected void Render()
+        {
+if (true)
+            {
+            M(() => 
+            {
+                if (true)
+                {
+/* marker */
+                                    }
+                                });
+                }
+        }
+    }
+}
+";
+            var expected = @"namespace N
+{
+    public class C
+    {
+        protected void Render()
+        {
+            if (true)
+            {
+                M(() =>
+                {
+                    if (true)
+                    {
+                        /* marker */
+                    }
+                });
+            }
+        }
+    }
+}
+";
+
+            await AssertFormatAsync(expected, code, spans: null);
+        }
+
         [WpfTheory]
         [CombinatorialData]
         [WorkItem(59637, "https://github.com/dotnet/roslyn/issues/59637")]
@@ -2130,7 +2180,7 @@ using MS.A;
 using MS.B;
 ";
 
-            AssertFormatWithView(expected, code, (GenerationOptions.SeparateImportDirectiveGroups, true));
+            AssertFormatWithView(expected, code, new OptionsCollection(LanguageNames.CSharp) { { GenerationOptions.SeparateImportDirectiveGroups, true } });
         }
 
         [WorkItem(25003, "https://github.com/dotnet/roslyn/issues/25003")]
@@ -2159,7 +2209,7 @@ using MS.A;
 using MS.B;
 ";
 
-            AssertFormatWithView(expected, code, (GenerationOptions.SeparateImportDirectiveGroups, true));
+            AssertFormatWithView(expected, code, new OptionsCollection(LanguageNames.CSharp) { { GenerationOptions.SeparateImportDirectiveGroups, true } });
         }
 
         [WorkItem(25003, "https://github.com/dotnet/roslyn/issues/25003")]
@@ -2180,7 +2230,7 @@ using MS.B;
 using MS.A;
 ";
 
-            AssertFormatWithView(expected, code, (GenerationOptions.SeparateImportDirectiveGroups, true));
+            AssertFormatWithView(expected, code, new OptionsCollection(LanguageNames.CSharp) { { GenerationOptions.SeparateImportDirectiveGroups, true } });
         }
 
         [WorkItem(25003, "https://github.com/dotnet/roslyn/issues/25003")]
@@ -2202,7 +2252,7 @@ using MS.A;
 using MS.B;
 ";
 
-            AssertFormatWithView(expected, code, (GenerationOptions.SeparateImportDirectiveGroups, true));
+            AssertFormatWithView(expected, code, new OptionsCollection(LanguageNames.CSharp) { { GenerationOptions.SeparateImportDirectiveGroups, true } });
         }
 
         [WorkItem(25003, "https://github.com/dotnet/roslyn/issues/25003")]
@@ -2224,7 +2274,7 @@ using System.A;
 using System.B;
 ";
 
-            AssertFormatWithView(expected, code, (GenerationOptions.SeparateImportDirectiveGroups, true));
+            AssertFormatWithView(expected, code, new OptionsCollection(LanguageNames.CSharp) { { GenerationOptions.SeparateImportDirectiveGroups, true } });
         }
 
         [WpfFact]
@@ -2568,13 +2618,16 @@ interface I1
         {
             using var workspace = TestWorkspace.CreateCSharp(code, parseOptions: parseOptions);
 
-            globalOptions?.SetGlobalOptions(workspace.GlobalOptions);
-
             var subjectDocument = workspace.Documents.Single();
 
             var commandHandler = workspace.GetService<FormatCommandHandler>();
             var typedChar = subjectDocument.GetTextBuffer().CurrentSnapshot.GetText(subjectDocument.CursorPosition.Value - 1, 1);
-            commandHandler.ExecuteCommand(new TypeCharCommandArgs(subjectDocument.GetTextView(), subjectDocument.GetTextBuffer(), typedChar[0]), () => { }, TestCommandExecutionContext.Create());
+            var textView = subjectDocument.GetTextView();
+
+            globalOptions?.SetGlobalOptions(workspace.GlobalOptions);
+            workspace.GlobalOptions.SetEditorOptions(textView.Options.GlobalOptions, subjectDocument.Project.Language);
+
+            commandHandler.ExecuteCommand(new TypeCharCommandArgs(textView, subjectDocument.GetTextBuffer(), typedChar[0]), () => { }, TestCommandExecutionContext.Create());
 
             var newSnapshot = subjectDocument.GetTextBuffer().CurrentSnapshot;
 
