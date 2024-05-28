@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.LanguageServer.Features.Diagnostics;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.PooledObjects;
 using Microsoft.CodeAnalysis.SolutionCrawler;
+using Microsoft.VisualStudio.Threading;
 using Roslyn.LanguageServer.Protocol;
 using Roslyn.Utilities;
 using LSP = Roslyn.LanguageServer.Protocol;
@@ -104,11 +105,16 @@ internal abstract partial class AbstractPullDiagnosticHandler<TDiagnosticsParams
 
     /// <summary>
     /// Used by public workspace pull diagnostics to allow it to keep the connection open until
-    /// changes occur to avoid the client spamming the server with requests.
+    /// changes occur to avoid the client spamming the server with requests. The cancellation token returned by this
+    /// method will transition to the cancelled state when <em>either</em> changes have been detected or the input
+    /// <paramref name="cancellationToken"/> is cancelled.
     /// </summary>
-    protected virtual Task WaitForChangesAsync(string? category, RequestContext context, CancellationToken cancellationToken)
+    /// <returns>A cancellation token that transitions to the cancelled state when either changes have been detected or
+    /// the input <paramref name="cancellationToken"/> is cancelled; otherwise, <see cref="CancellationToken.None"/> if
+    /// this implementation does not support and/or need to wait for changes prior to closing diagnostics requests.</returns>
+    protected virtual CancellationToken GetWaitForChangesCancellationToken(string? category, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        return CancellationToken.None;
     }
 
     public async Task<TReturn?> HandleRequestAsync(
@@ -129,6 +135,7 @@ internal abstract partial class AbstractPullDiagnosticHandler<TDiagnosticsParams
 
             var clientCapabilities = context.GetRequiredClientCapabilities();
             var category = GetRequestDiagnosticCategory(diagnosticsParams);
+            var waitForChangesToken = GetWaitForChangesCancellationToken(category, cancellationToken);
             var handlerName = $"{this.GetType().Name}(category: {category})";
             context.TraceInformation($"{handlerName} started getting diagnostics");
 
@@ -221,7 +228,15 @@ internal abstract partial class AbstractPullDiagnosticHandler<TDiagnosticsParams
             // Some implementations of the spec will re-open requests as soon as we close them, spamming the server.
             // In those cases, we wait for the implementation to indicate that changes have occurred, then we close the connection
             // so that the client asks us again.
-            await WaitForChangesAsync(category, context, cancellationToken).ConfigureAwait(false);
+            if (waitForChangesToken.CanBeCanceled)
+            {
+                await Task.Delay(Timeout.InfiniteTimeSpan, waitForChangesToken).NoThrowAwaitable(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                // Changes were detected without otherwise cancelling the operation, so log the status before closing
+                // the request.
+                context.TraceInformation("Closing workspace/diagnostics request");
+            }
 
             // If we had a progress object, then we will have been reporting to that.  Otherwise, take what we've been
             // collecting and return that.

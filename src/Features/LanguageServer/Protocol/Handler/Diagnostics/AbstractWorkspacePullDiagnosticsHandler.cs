@@ -5,13 +5,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.LanguageServer.Handler.Diagnostics.DiagnosticSources;
 using Microsoft.CodeAnalysis.Options;
 using Roslyn.LanguageServer.Protocol;
+using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.LanguageServer.Handler.Diagnostics;
 
@@ -24,15 +24,10 @@ internal abstract class AbstractWorkspacePullDiagnosticsHandler<TDiagnosticsPara
     protected readonly IDiagnosticSourceManager DiagnosticSourceManager;
 
     /// <summary>
-    /// Gate to guard access to <see cref="_categoryToLspChanged"/>
-    /// </summary>
-    private readonly object _gate = new();
-
-    /// <summary>
     /// Stores the LSP changed state on a per category basis.  This ensures that requests for different categories
     /// are 'walled off' from each other and only reset state for their own category.
     /// </summary>
-    private readonly Dictionary<string, bool> _categoryToLspChanged = new();
+    private ImmutableDictionary<string, CancellationSeries> _categoryToLspChanged = ImmutableDictionary<string, CancellationSeries>.Empty;
 
     protected AbstractWorkspacePullDiagnosticsHandler(
         LspWorkspaceManager workspaceManager,
@@ -81,50 +76,17 @@ internal abstract class AbstractWorkspacePullDiagnosticsHandler<TDiagnosticsPara
 
     private void UpdateLspChanged()
     {
-        lock (_gate)
+        // Loop through our map of source -> has changed and mark them as all having changed.
+        foreach (var (_, cancellationSeries) in _categoryToLspChanged)
         {
-            // Loop through our map of source -> has changed and mark them as all having changed.
-            foreach (var category in _categoryToLspChanged.Keys.ToImmutableArray())
-            {
-                _categoryToLspChanged[category] = true;
-            }
+            _ = cancellationSeries.CreateNext();
         }
     }
 
-    protected override async Task WaitForChangesAsync(string? category, RequestContext context, CancellationToken cancellationToken)
+    protected override CancellationToken GetWaitForChangesCancellationToken(string? category, CancellationToken cancellationToken)
     {
-        // A null category counts a separate category and should track changes independently of other categories, so we'll add an empty entry in our map for it.
-        category ??= string.Empty;
-
-        // Spin waiting until our LSP change flag has been set.  When the flag is set (meaning LSP has changed),
-        // we reset the flag to false and exit out of the loop allowing the request to close.
-        // The client will automatically trigger a new request as soon as we close it, bringing us up to date on diagnostics.
-        while (!HasChanged())
-        {
-            // There have been no changes between now and when the last request finished - we will hold the connection open while we poll for changes.
-            await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken).ConfigureAwait(false);
-        }
-
-        // We've hit a change, so we close the current request to allow the client to open a new one.
-        context.TraceInformation("Closing workspace/diagnostics request");
-        return;
-
-        bool HasChanged()
-        {
-            lock (_gate)
-            {
-                // Get the LSP changed value of this category.  If it doesn't exist we add it with a value of 'changed' since this is the first
-                // request for the category and we don't know if it has changed since the request started.
-                var changed = _categoryToLspChanged.GetOrAdd(category, true);
-                if (changed)
-                {
-                    // We've observed a change, so we reset the flag to false for this source and return true.
-                    _categoryToLspChanged[category] = false;
-                }
-
-                return changed;
-            }
-        }
+        var series = ImmutableInterlocked.GetOrAdd(ref _categoryToLspChanged, category ?? "", static _ => new CancellationSeries());
+        return series.CreateNext(cancellationToken);
     }
 
     internal abstract TestAccessor GetTestAccessor();
