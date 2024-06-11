@@ -61,14 +61,6 @@ internal abstract class AsyncLazy<T>
         private Task<T>? _cachedResult;
 
         /// <summary>
-        /// Mutex used to protect reading and writing to all mutable objects and fields.  Traces
-        /// indicate that there's negligible contention on this lock, hence we can save some memory
-        /// by using a single lock for all AsyncLazy instances.  Only trivial and non-reentrant work
-        /// should be done while holding the lock.
-        /// </summary>
-        private static readonly NonReentrantLock s_gate = new(useThisInstanceForSynchronization: true);
-
-        /// <summary>
         /// The hash set of all currently outstanding asynchronous requests. Null if there are no requests,
         /// and will never be empty.
         /// </summary>
@@ -118,6 +110,13 @@ internal abstract class AsyncLazy<T>
             _data = data;
         }
 
+        /// <summary>
+        /// Mutex used to protect reading and writing to all mutable objects and fields. Only trivial and non-reentrant
+        /// work should be done while holding the lock, as cancellation is not supported while waiting to acquire this
+        /// lock.
+        /// </summary>
+        private object SyncObject => this;
+
         public static AsyncLazy<T> CreateImpl(T value)
             => new AsyncLazyImpl<VoidResult>(value);
 
@@ -136,7 +135,10 @@ internal abstract class AsyncLazy<T>
         /// </summary>
         private WaitThatValidatesInvariants TakeLock(CancellationToken cancellationToken)
         {
-            s_gate.Wait(cancellationToken);
+            Contract.ThrowIfTrue(Monitor.IsEntered(SyncObject));
+
+            cancellationToken.ThrowIfCancellationRequested();
+            Monitor.Enter(SyncObject);
             AssertInvariants_NoLock();
             return new WaitThatValidatesInvariants(this);
         }
@@ -146,7 +148,8 @@ internal abstract class AsyncLazy<T>
             public void Dispose()
             {
                 asyncLazy.AssertInvariants_NoLock();
-                s_gate.Release();
+                Contract.ThrowIfFalse(Monitor.IsEntered(asyncLazy.SyncObject));
+                Monitor.Exit(asyncLazy.SyncObject);
             }
         }
 
